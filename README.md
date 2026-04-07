@@ -1,18 +1,23 @@
 # 100m1s.com — 회사 홈페이지
 
-> **100 Million, 1 Step** — 1억, 한 걸음에.
+> **Far. One Step.** — 멀리, 한 걸음.
 
-100M1S 회사 공식 홈페이지. PM320 v2 라이트 테마 디자인 시스템 기반.
+100M1S 회사 공식 홈페이지. 샴페인 골드 + 루비 액센트 톤. R5 (Pure S Serpent) 로고.
 
 ## 구조
 
 ```
 .
-├── index.html      # 메인 페이지 (Hero / About / Products / Contact)
-├── privacy.html    # 개인정보처리방침
-├── terms.html      # 이용약관
-├── SETUP.md        # 배포 + DNS 설정 가이드
-└── README.md       # 이 파일
+├── index.html              # 메인 페이지 (Hero / About / Products / Contact)
+├── privacy.html            # 개인정보처리방침
+├── terms.html              # 이용약관
+├── favicon.svg             # R5 로고 (모든 디지털 용도)
+├── apple-touch-icon.png    # iOS 홈 화면 아이콘 (180x180)
+├── og-image.svg            # OG 이미지 소스 (1200x630)
+├── og-image.png            # OG 이미지 PNG (카카오톡/페이스북/트위터)
+├── CNAME                   # 100m1s.com (GitHub Pages 커스텀 도메인)
+├── SETUP.md                # 배포 + DNS 설정 가이드
+└── README.md               # 이 파일
 ```
 
 ## 로컬 미리보기
