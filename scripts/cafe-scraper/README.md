@@ -91,9 +91,41 @@ python main.py
 
 성공하면 `data/cafe/` 아래에 JSON이 떨어집니다.
 
+## 인증 — 쿠키 권장
+
+**ID/PW 자동 로그인은 GitHub Actions 환경에서 거의 항상 실패**합니다 (IP보안, 봇 감지, 캡차). 쿠키 기반 인증이 유일한 안정 해법.
+
+### 쿠키 추출 (5분, 1회)
+
+1. Chrome에 **Cookie-Editor** 확장 설치 ([크롬 웹스토어](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm))
+2. 일반 Chrome에서 https://www.naver.com 로그인 (IP보안 인증 정상 절차)
+3. Cookie-Editor 아이콘 클릭 → naver.com 도메인 쿠키 표시
+4. **`Export` → `JSON`** → 클립보드 복사
+5. GitHub Secrets에 `NAVER_COOKIES` 이름으로 등록 (대괄호 `[` `]` 포함 전체 JSON)
+
+### sameSite 정규화
+
+Cookie-Editor export는 sameSite 값을 다양한 형식으로 출력합니다 (`no_restriction`, `unspecified`, `lax` 등). main.py가 자동으로 Playwright 형식 (`Strict`/`Lax`/`None`)으로 변환:
+
+| Cookie-Editor | Playwright |
+|---------------|-----------|
+| `no_restriction` / `none` | `None` |
+| `lax` / `unspecified` / 빈값 | `Lax` |
+| `strict` | `Strict` |
+
+`expirationDate` (Cookie-Editor) → `expires` (Playwright)도 자동 변환.
+
+### 쿠키 인증 검증
+
+스크레이퍼는 쿠키 주입 후 https://www.naver.com에 접근해서 body에 "로그아웃" 또는 "MY" 텍스트가 있는지 확인합니다. 없으면 *쿠키 만료/무효*로 간주하고 종료 (ID/PW fallback 안 함).
+
+### 쿠키 만료 시 (1~3개월)
+
+워크플로 실패 → 디버그 PNG에서 로그인 페이지 확인 → 동일 절차로 새 쿠키 추출 → secret 갱신.
+
 ## 알려진 위험
 
-1. **네이버 봇 감지** — 자동 로그인은 captcha/2FA로 막힐 수 있음. 실패 시 `data/cafe/debug_login.html` 저장됨. 다음 시도: 모바일 m.cafe.naver.com 또는 세션 쿠키 재사용.
+1. **네이버 봇 감지** — 자동 로그인은 captcha/2FA/IP보안으로 막힘. 쿠키 인증이 답.
 2. **HTML 구조 변경** — 카페 신/구 버전 + iframe 변동성. 셀렉터 다중 시도로 방어하지만 깨질 수 있음.
 3. **Gemini 비용** — 게시글 1건당 최대 5개 뉴스 → 5번 호출. 한 시간에 1글이라도 하루 ~120 호출. flash 모델 무료 tier로 충분.
 4. **저작권** — 카페·뉴스 원문은 저장하지 않음. 요약 + 메타데이터만.
