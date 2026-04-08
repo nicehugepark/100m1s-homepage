@@ -3,7 +3,16 @@ name: 뉴지 카페 스크레이퍼 (시간당)
 on:
   schedule:
     - cron: '5 * * * *'  # 매 시 5분 (UTC)
-  workflow_dispatch:  # 수동 트리거 허용
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: '백필 모드 (state.json 무시하고 모든 신규글 처리)'
+        type: boolean
+        default: false
+      max_articles:
+        description: '한 번에 처리할 최대 article 수'
+        type: string
+        default: '10'
 
 permissions:
   contents: write
@@ -36,6 +45,8 @@ jobs:
           NAVER_CAFE_ID: ${{ secrets.NAVER_CAFE_ID }}
           NAVER_CAFE_PASSWORD: ${{ secrets.NAVER_CAFE_PASSWORD }}
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          BACKFILL: ${{ inputs.backfill && '1' || '' }}
+          MAX_ARTICLES: ${{ inputs.max_articles || '10' }}
         run: python scripts/cafe-scraper/main.py
 
       - name: 변경사항 커밋·푸시

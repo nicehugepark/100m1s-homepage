@@ -459,7 +459,21 @@ def run() -> int:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     state = load_state()
     index = load_index()
-    seen_ids = set(state.get("seen_article_ids", []))
+
+    # 백필 모드: BACKFILL=1 이면 state.json 무시, 모든 article 처리
+    backfill = os.environ.get("BACKFILL", "").strip() in ("1", "true", "True", "yes")
+    if backfill:
+        log("🔁 BACKFILL 모드 — state.json 무시, 모든 신규 article 처리")
+        seen_ids: set[str] = set()
+    else:
+        seen_ids = set(state.get("seen_article_ids", []))
+
+    # 한 번에 처리할 최대 article 수 (default 10, MAX_ARTICLES env로 override)
+    try:
+        max_articles = int(os.environ.get("MAX_ARTICLES", "10"))
+    except ValueError:
+        max_articles = 10
+    log(f"최대 처리 article: {max_articles}")
 
     naver_id = os.environ.get("NAVER_CAFE_ID")
     naver_pw = os.environ.get("NAVER_CAFE_PASSWORD")
@@ -492,15 +506,16 @@ def run() -> int:
         log(f"신규 article: {len(new_ids)}")
 
         new_posts = []
-        for aid in new_ids[:10]:  # 한 번에 최대 10개
+        for aid in new_ids[:max_articles]:
             log(f"→ article {aid} 처리 중…")
             html = fetch_article_html(page, aid)
             if not html:
                 continue
             parsed = parse_post(html)
 
-            # 종목별 뉴스 카드에 Gemini 분석 적용 — post 당 최대 30 호출
-            MAX_GEMINI_PER_POST = 30
+            # 종목별 뉴스 카드에 Gemini 분석 적용 — post 당 최대 50 호출
+            # (멀티 뉴스 종목 안전 처리)
+            MAX_GEMINI_PER_POST = 50
             calls = 0
             for section in parsed["sections"]:
                 for stock in section["stocks"]:
