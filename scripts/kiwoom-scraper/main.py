@@ -60,19 +60,25 @@ def parse_kiwoom_stock(s: dict) -> dict:
       302: 종목명
       10:  현재가
       11:  전일대비
-      12:  등락률
+      12:  등락률 (×1000 스케일 — 9590 = 9.59%)
       13:  거래량
-      14:  거래대금 (백만원 단위)
+      14:  거래대금 (백만원 단위, 미반환되는 경우 있음 → price×volume fallback)
     """
     code = str(s.get("9001", "")).lstrip("A")
+    price = parse_int(s.get("10", ""))
+    volume = parse_int(s.get("13", ""))
+    raw_amount = parse_int(s.get("14", "")) * 1_000_000  # 백만원 → 원
+    # ka10172는 fid 14를 비워두는 경우가 많음 → price×volume으로 근사
+    trade_amount = raw_amount if raw_amount > 0 else price * volume
     return {
         "ticker": code,
         "name": str(s.get("302", "")).strip(),
-        "price": parse_int(s.get("10", "")),
+        "price": price,
         "change": parse_int(s.get("11", "")),
-        "change_pct": parse_float(s.get("12", "")),
-        "volume": parse_int(s.get("13", "")),
-        "trade_amount": parse_int(s.get("14", "")) * 1_000_000,  # 백만원 → 원
+        "change_pct": parse_float(s.get("12", ""))
+        / 1000.0,  # FLR-20260408 등락률 스케일
+        "volume": volume,
+        "trade_amount": trade_amount,
     }
 
 
