@@ -213,10 +213,70 @@ footer .links { display: flex; gap: 20px; justify-content: center; margin-bottom
 footer .links a:hover { color: var(--am2); }
 footer .copyright { color: var(--dm); opacity: 0.6; }
 
+/* ───── 키움 거래대금 500억+ 블록 ───── */
+.kiwoom-block {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #FFF9E8 0%, #FFFFFF 60%);
+  border: 1px solid var(--am2);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+.kiwoom-header {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(196,153,48,0.25);
+  padding-bottom: 10px;
+}
+.kiwoom-title {
+  font-size: 13px; font-weight: 800; color: var(--am);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.kiwoom-meta {
+  font-size: 10px; color: var(--dm);
+  font-family: 'SF Mono', monospace;
+}
+.kiwoom-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 6px;
+}
+.kiwoom-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  gap: 8px;
+  align-items: baseline;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.7);
+  font-size: 12px;
+}
+.kiwoom-row:hover { background: rgba(255,255,255,1); }
+.kiwoom-row.matched-cafe { border-left: 2px solid var(--c3); padding-left: 8px; }
+.kiwoom-rank {
+  font-size: 10px; color: var(--dm); font-weight: 700;
+  font-family: 'SF Mono', monospace;
+}
+.kiwoom-name {
+  font-weight: 700; color: var(--tx); letter-spacing: -0.2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.kiwoom-amount {
+  font-size: 11px; color: var(--am); font-weight: 700;
+  font-family: 'SF Mono', monospace;
+}
+.kiwoom-pct {
+  font-size: 11px; font-weight: 800;
+  font-family: 'SF Mono', monospace;
+  text-align: right; min-width: 56px;
+}
+.kiwoom-pct.up { color: #C53939; }
+.kiwoom-pct.down { color: #1958C7; }
+
 @media (max-width: 640px) {
   .stock-main { grid-template-columns: 28px 1fr auto; }
   .stock-price { display: none; }
   .stock-news { padding: 10px 14px 12px 24px; }
+  .kiwoom-row { grid-template-columns: 24px 1fr auto; }
+  .kiwoom-amount { display: none; }
 }
 </style>
 </head>
@@ -303,6 +363,30 @@ async function loadPost(postId) {
   } catch (e) { return null; }
 }
 
+async function loadKiwoomIndex() {
+  try {
+    const res = await fetch('/data/kiwoom/index.json?t=' + Date.now());
+    if (!res.ok) throw new Error('kiwoom/index.json HTTP ' + res.status);
+    return await res.json();
+  } catch (e) { return null; }
+}
+
+async function loadKiwoomDate(date) {
+  try {
+    const res = await fetch(`/data/kiwoom/${date}.json?t=` + Date.now());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) { return null; }
+}
+
+function fmtTradeAmount(won) {
+  if (won == null) return '—';
+  if (won >= 1_000_000_000_000) return (won / 1_000_000_000_000).toFixed(1) + '조';
+  if (won >= 100_000_000) return Math.round(won / 100_000_000).toLocaleString() + '억';
+  if (won >= 10_000) return Math.round(won / 10_000).toLocaleString() + '만';
+  return won.toLocaleString();
+}
+
 function fmtNum(n) {
   if (n === null || n === undefined) return '—';
   return n.toLocaleString('ko-KR');
@@ -378,20 +462,68 @@ function renderSection(section) {
   `;
 }
 
-function renderDateGroup(date, posts) {
+function renderKiwoomBlock(kiwoom, cafeStockNames) {
+  if (!kiwoom) return '';
+  const stocks = kiwoom.daily_top || kiwoom.latest_stocks || [];
+  if (stocks.length === 0) return '';
+  const top = stocks.slice(0, 30);
+  const lastUpdate = (kiwoom.last_snapshot_at || kiwoom.fetched_at || '').slice(11, 16);
+  const snapCount = kiwoom.snapshot_count || 0;
+  const rowsHtml = top.map((s, i) => {
+    // change_pct: max_change_pct (daily_top) 또는 change_pct (latest)
+    const pct = s.max_change_pct ?? s.change_pct ?? 0;
+    const dir = pct >= 0 ? 'up' : 'down';
+    const sign = pct >= 0 ? '+' : '';
+    // 카페에 같은 종목 등장 시 표시
+    const matchedClass = cafeStockNames.has(s.name) ? ' matched-cafe' : '';
+    return `
+      <div class="kiwoom-row${matchedClass}">
+        <div class="kiwoom-rank">#${i + 1}</div>
+        <div class="kiwoom-name">${escapeHtml(s.name)}</div>
+        <div class="kiwoom-amount">${fmtTradeAmount(s.max_trade_amount ?? s.trade_amount)}</div>
+        <div class="kiwoom-pct ${dir}">${sign}${pct.toFixed(2)}%</div>
+      </div>
+    `;
+  }).join('');
+  return `
+    <div class="kiwoom-block">
+      <div class="kiwoom-header">
+        <div class="kiwoom-title">📊 거래대금 500억+ Top 30</div>
+        <div class="kiwoom-meta">${lastUpdate || '—'} 갱신 · ${snapCount}회 · ${top.length}종목</div>
+      </div>
+      <div class="kiwoom-list">${rowsHtml}</div>
+    </div>
+  `;
+}
+
+function collectCafeStockNames(posts) {
+  const names = new Set();
+  for (const p of posts) {
+    for (const sec of (p.sections || [])) {
+      for (const st of (sec.stocks || [])) {
+        if (st.name) names.add(st.name);
+      }
+    }
+  }
+  return names;
+}
+
+function renderDateGroup(date, posts, kiwoom) {
   const totalStocks = posts.reduce((s, p) => s + (p.stock_count || 0), 0);
   const totalNews = posts.reduce((s, p) => {
     return s + (p.sections || []).reduce((s2, sec) => {
       return s2 + (sec.stocks || []).reduce((s3, st) => s3 + (st.news_cards?.length || 0), 0);
     }, 0);
   }, 0);
+  const cafeStockNames = collectCafeStockNames(posts);
+  const kiwoomCount = kiwoom ? (kiwoom.daily_top?.length || kiwoom.latest_stocks?.length || 0) : 0;
+
   const allSections = [];
   for (const p of posts) {
     for (const sec of (p.sections || [])) {
       allSections.push(sec);
     }
   }
-  // 같은 type의 섹션 머지
   const merged = {};
   for (const sec of allSections) {
     if (!merged[sec.type]) merged[sec.type] = { type: sec.type, stocks: [] };
@@ -402,12 +534,20 @@ function renderDateGroup(date, posts) {
     .filter(t => merged[t])
     .map(t => renderSection(merged[t]))
     .join('');
+
+  const kiwoomHtml = renderKiwoomBlock(kiwoom, cafeStockNames);
+  const statsParts = [];
+  if (kiwoomCount > 0) statsParts.push(`거래대금 ${kiwoomCount}종목`);
+  if (totalStocks > 0) statsParts.push(`카페 ${totalStocks}종목 · ${totalNews}뉴스`);
+  const statsText = statsParts.join(' · ') || '데이터 없음';
+
   return `
     <div class="date-group">
       <div class="date-header">
         <div class="date-label">${escapeHtml(date)}</div>
-        <div class="date-stats">${totalStocks}종목 · ${totalNews}뉴스</div>
+        <div class="date-stats">${statsText}</div>
       </div>
+      ${kiwoomHtml}
       ${sectionsHtml}
     </div>
   `;
@@ -417,40 +557,55 @@ async function init() {
   const meta = document.getElementById('meta');
   const content = document.getElementById('content');
 
-  const index = await loadIndex();
-  if (!index) {
-    content.innerHTML = '<div class="error">⚠️ 인덱스를 불러오지 못했습니다.</div>';
-    meta.textContent = '— 데이터 없음';
-    return;
-  }
+  // 카페 + 키움 인덱스 병행 로드
+  const [cafeIndex, kiwoomIndex] = await Promise.all([loadIndex(), loadKiwoomIndex()]);
 
-  meta.textContent = `최종 갱신: ${index.updated_at || '—'} · 누적 ${index.posts.length}건`;
+  const cafeUpdated = cafeIndex?.updated_at || '—';
+  const kiwoomUpdated = kiwoomIndex?.updated_at || '—';
+  meta.textContent = `카페: ${cafeUpdated} · 거래대금: ${kiwoomUpdated}`;
 
-  let postIds = (index.posts || []).map(p => p.post_id);
-  if (postIds.length === 0) {
-    postIds = ['sample'];
-  }
-
+  // 카페 글 로드
+  let postIds = (cafeIndex?.posts || []).map(p => p.post_id);
+  if (postIds.length === 0) postIds = ['sample'];
   const posts = [];
   for (const id of postIds.slice(0, 30)) {
     const p = await loadPost(id);
     if (p) posts.push(p);
   }
 
-  if (posts.length === 0) {
-    content.innerHTML = '<div class="empty">아직 수집된 글이 없습니다.<br>스크레이퍼가 매 시간 자동으로 갱신합니다.</div>';
+  // 카페 글의 날짜 + 키움 인덱스 날짜 합집합
+  const dateSet = new Set();
+  for (const p of posts) dateSet.add(deriveDate(p));
+  for (const d of (kiwoomIndex?.dates || [])) dateSet.add(d);
+  if (dateSet.size === 0) dateSet.add('sample');
+
+  // 키움 데이터를 날짜별로 fetch (병렬)
+  const kiwoomByDate = {};
+  await Promise.all(Array.from(dateSet).map(async d => {
+    if (d === 'sample') {
+      kiwoomByDate[d] = await loadKiwoomDate('sample');
+    } else {
+      kiwoomByDate[d] = await loadKiwoomDate(d);
+    }
+  }));
+
+  // 카페 글 날짜별 그룹
+  const postsByDate = {};
+  for (const p of posts) {
+    const d = deriveDate(p);
+    if (!postsByDate[d]) postsByDate[d] = [];
+    postsByDate[d].push(p);
+  }
+
+  if (dateSet.size === 0) {
+    content.innerHTML = '<div class="empty">아직 수집된 데이터가 없습니다.</div>';
     return;
   }
 
-  // 날짜별 그룹
-  const byDate = {};
-  for (const p of posts) {
-    const d = deriveDate(p);
-    if (!byDate[d]) byDate[d] = [];
-    byDate[d].push(p);
-  }
-  const sortedDates = Object.keys(byDate).sort().reverse();
-  content.innerHTML = sortedDates.map(d => renderDateGroup(d, byDate[d])).join('');
+  const sortedDates = Array.from(dateSet).sort().reverse();
+  content.innerHTML = sortedDates
+    .map(d => renderDateGroup(d, postsByDate[d] || [], kiwoomByDate[d]))
+    .join('');
 }
 
 init();
