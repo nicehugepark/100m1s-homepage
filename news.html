@@ -313,8 +313,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-nav:disabled { color: var(--bd); cursor: not-allowed; }
 .toss-cal-sub { font-size: 11px; color: var(--dm); font-family: 'SF Mono', monospace; }
 .toss-cal-grid {
-  display: grid; grid-template-columns: repeat(7, 40px); gap: 8px;
-  justify-content: space-between;
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
 }
 .toss-cal-dow {
   font-size: 10px; font-weight: 700; color: var(--dm);
@@ -323,7 +322,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-dow.sun { color: #C53939; }
 .toss-cal-dow.sat { color: #1958C7; }
 .toss-cal-cell {
-  width: 40px; height: 40px; border-radius: 10px;
+  width: 100%; aspect-ratio: 1; height: auto; border-radius: 10px;
   position: relative; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; font-weight: 700; color: var(--tx);
@@ -339,6 +338,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-cell.lv3 { background: rgba(196,153,48,0.5); }
 .toss-cal-cell.lv4 { background: rgba(196,153,48,0.75); color: #fff; }
 .toss-cal-cell.selected { border-color: var(--am); }
+.toss-cal-cell.weekend { opacity: 0.6; }
 .toss-cal-cell:hover:not(.future):not(.selected) { transform: scale(1.05); }
 .toss-cal-dots {
   position: absolute; bottom: 3px; right: 4px;
@@ -412,11 +412,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 2px solid var(--dm); border-radius: 50%;
   margin-bottom: 10px; opacity: 0.5;
 }
-@media (max-width: 640px) {
-  .toss-cal-grid { grid-template-columns: repeat(7, 1fr); }
-  .toss-cal-cell { width: 100%; aspect-ratio: 1; height: auto; }
-}
-
 @media (max-width: 640px) {
   .stock-main { grid-template-columns: 28px 1fr auto; }
   .stock-price { display: none; }
@@ -810,6 +805,16 @@ async function loadCalendarIndex() {
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 function ymd(y, m, d) { return `${y}-${pad2(m)}-${pad2(d)}`; }
+function formatKoDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dow = ['일','월','화','수','목','금','토'][new Date(y, m - 1, d).getDay()];
+  return `${m}월 ${d}일 (${dow})`;
+}
+function isWeekendDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dow = new Date(y, m - 1, d).getDay();
+  return dow === 0 || dow === 6;
+}
 
 function calActivityLevel(date) {
   // index가 없으면 모든 날 빈 상태
@@ -872,10 +877,13 @@ function renderCalendar() {
                      (calViewYear === todayY && calViewMonth > todayM) ||
                      (calViewYear === todayY && calViewMonth === todayM && d > todayD);
     const lv = isFuture ? 0 : calActivityLevel(date);
+    const dow = new Date(calViewYear, calViewMonth - 1, d).getDay();
+    const isWeekend = (dow === 0 || dow === 6);
     const classes = ['toss-cal-cell'];
     if (isFuture) classes.push('future');
     else if (lv === 0) classes.push('empty');
     else classes.push('lv' + lv);
+    if (isWeekend) classes.push('weekend');
     if (date === calSelectedDate) classes.push('selected');
     const dotsHtml = lv > 0
       ? `<div class="toss-cal-dots">${'<div class="toss-cal-dot"></div>'.repeat(lv)}</div>`
@@ -908,7 +916,7 @@ async function onCalCellClick(date) {
   const inner = document.getElementById('toss-cal-expand-inner');
   inner.innerHTML = `
     <button class="toss-cal-close" aria-label="닫기">×</button>
-    <div class="toss-cal-expand-date">${date}</div>
+    <div class="toss-cal-expand-date">${formatKoDate(date)}</div>
     <div class="toss-cal-empty-inline">불러오는 중…</div>
   `;
   inner.querySelector('.toss-cal-close').addEventListener('click', closeCalExpand);
@@ -968,10 +976,10 @@ function renderCalExpandContent(date, data) {
   if (!hasAny) {
     inner.innerHTML = `
       <button class="toss-cal-close" aria-label="닫기">×</button>
-      <div class="toss-cal-expand-date">${date}</div>
+      <div class="toss-cal-expand-date">${formatKoDate(date)}</div>
       <div class="toss-cal-empty-inline">
         <div class="toss-cal-empty-circle"></div>
-        <div>수집 데이터 없음</div>
+        <div>${isWeekendDate(date) ? '주말 — 장 휴장' : '수집 데이터 없음'}</div>
       </div>
     `;
     inner.querySelector('.toss-cal-close').addEventListener('click', closeCalExpand);
@@ -1053,7 +1061,7 @@ function renderCalExpandContent(date, data) {
 
   inner.innerHTML = `
     <button class="toss-cal-close" aria-label="닫기">×</button>
-    <div class="toss-cal-expand-date">${date}</div>
+    <div class="toss-cal-expand-date">${formatKoDate(date)}</div>
     ${narrHtml}
     ${kiwoomHtml}
     ${cafeHtml}
