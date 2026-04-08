@@ -61,10 +61,13 @@ jobs:
             git push
           fi
 
-      - name: 디버그 아티팩트 (실패 시)
-        if: failure()
+      - name: 디버그 아티팩트 (항상)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cafe-scrape-debug
-          path: data/cafe/debug_*.html
+          path: |
+            data/cafe/debug_*.html
+            data/cafe/debug_*.png
           retention-days: 7
+          if-no-files-found: ignore

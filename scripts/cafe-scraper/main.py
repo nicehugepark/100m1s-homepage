@@ -75,35 +75,92 @@ def get_browser_context(p):
     return browser, context
 
 
-def naver_login(page, naver_id: str, naver_pw: str) -> bool:
-    """네이버 로그인. 봇 감지 가능성 있음 — 실패 시 raw HTML 저장."""
+def _save_debug(page, tag: str) -> None:
+    """디버그용 HTML + 스크린샷 저장."""
     try:
-        page.goto("https://nid.naver.com/nidlogin.login", wait_until="domcontentloaded")
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        (DATA_DIR / f"debug_{tag}.html").write_text(page.content(), encoding="utf-8")
+    except Exception:
+        pass
+    try:
+        page.screenshot(path=str(DATA_DIR / f"debug_{tag}.png"), full_page=True)
+    except Exception:
+        pass
+
+
+def naver_login(page, naver_id: str, naver_pw: str) -> bool:
+    """네이버 로그인. networkidle 의존 제거 + URL polling + 스크린샷 디버그."""
+    try:
+        page.goto(
+            "https://nid.naver.com/nidlogin.login",
+            wait_until="domcontentloaded",
+            timeout=20000,
+        )
         page.wait_for_selector("#id", timeout=10000)
+
         # JS로 직접 set (붙여넣기 감지 회피)
         page.evaluate(
             """([id, pw]) => {
-                document.querySelector('#id').value = id;
-                document.querySelector('#pw').value = pw;
+                const idEl = document.querySelector('#id');
+                const pwEl = document.querySelector('#pw');
+                if (idEl) { idEl.value = id; idEl.dispatchEvent(new Event('input', {bubbles: true})); }
+                if (pwEl) { pwEl.value = pw; pwEl.dispatchEvent(new Event('input', {bubbles: true})); }
             }""",
             [naver_id, naver_pw],
         )
-        page.click(".btn_login, #log\\.login")
-        page.wait_for_load_state("networkidle", timeout=15000)
-        # 로그인 성공 검증 — naver.com 메인으로 리다이렉트되는지
-        if "nid.naver.com" in page.url and "login" in page.url:
-            log(f"⚠️ 로그인 실패 가능성. 현재 URL: {page.url}")
+
+        # 클릭 (셀렉터 후보 다중 시도)
+        clicked = False
+        for sel in ["#log\\.login", "button.btn_login", ".btn_login", "input[type='submit']"]:
+            try:
+                el = page.query_selector(sel)
+                if el:
+                    el.click()
+                    clicked = True
+                    break
+            except Exception:
+                continue
+        if not clicked:
+            # JS로 폼 직접 submit
+            try:
+                page.evaluate("document.querySelector('form').submit()")
+                clicked = True
+            except Exception:
+                pass
+
+        # networkidle 대신 URL 변화 polling — 네이버는 networkidle 절대 안 됨
+        try:
+            page.wait_for_function(
+                "() => !location.href.includes('nidlogin.login')",
+                timeout=15000,
+            )
+        except Exception:
+            pass
+        time.sleep(2)
+
+        current_url = page.url
+        log(f"로그인 후 URL: {current_url}")
+
+        # 로그인 페이지 또는 캡차/2단계 인증 페이지에 머물러 있으면 실패
+        if "nidlogin" in current_url or "captcha" in current_url or "otp" in current_url:
+            log("⚠️ 로그인 실패 — 캡차·2FA·차단 가능성")
+            _save_debug(page, "login_failed")
             return False
+
+        # 성공 시에도 1회 디버그 저장 (참고용)
+        _save_debug(page, "login_success")
         return True
+
     except Exception as e:
         log(f"⚠️ 로그인 예외: {e}")
+        _save_debug(page, "login_exception")
         return False
 
 
 def fetch_menu_article_ids(page) -> list[str]:
     """메뉴 페이지의 글 목록에서 article ID 리스트 수집."""
-    page.goto(MENU_URL, wait_until="networkidle")
-    time.sleep(2)
+    page.goto(MENU_URL, wait_until="domcontentloaded", timeout=20000)
+    time.sleep(4)  # SPA 렌더링 대기
     # 카페는 iframe 안에 게시판이 들어있는 경우 + f-e 신버전은 SPA
     # 두 패턴 모두 시도
     article_ids: set[str] = set()
@@ -130,8 +187,8 @@ def fetch_article_html(page, article_id: str) -> str | None:
     """글 본문 HTML(텍스트 위주) 수집."""
     url = ARTICLE_URL_TEMPLATE.format(article_id=article_id)
     try:
-        page.goto(url, wait_until="networkidle")
-        time.sleep(2)
+        page.goto(url, wait_until="domcontentloaded", timeout=20000)
+        time.sleep(3)
         # 본문 영역 셀렉터 후보 (네이버 카페 신/구 버전)
         for sel in [
             ".se-main-container",
