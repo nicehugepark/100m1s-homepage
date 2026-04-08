@@ -6,6 +6,7 @@
 
 저작권: 원문은 저장하지 않음. 요약 + 메타데이터만.
 """
+from __future__ import annotations
 
 import json
 import os
@@ -405,15 +406,428 @@ def extract_stock_news_blocks(html: str) -> list[dict]:
     return pairs
 
 
-def parse_post(html: str) -> dict:
-    """본문 HTML → 구조화된 데이터.
+TITLE_DATE_RE = re.compile(r"\[?\(?\s*(20\d{2})[./\-](\d{1,2})[./\-](\d{1,2})\.?\s*\)?\]?")
+# "2026년 4월 8일" / "2026년 04월 07일"
+TITLE_YMD_KO_RE = re.compile(r"(20\d{2})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일")
+# "4월 8일" / "3월6일" (공백 무관)
+TITLE_KOREAN_DATE_RE = re.compile(r"(\d{1,2})\s*월\s*(\d{1,2})\s*일")
+# "04/07" / "4/7" — 연도 없음 (년도 표현 없을 때만 사용)
+TITLE_MD_SLASH_RE = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})(?!\d)")
+# HTML meta 셀렉터용 정규식
+META_PUBLISHED_RE = re.compile(
+    r'<meta[^>]+property=["\']article:published_time["\'][^>]+content=["\']([^"\']+)["\']',
+    re.IGNORECASE,
+)
+META_TIME_DT_RE = re.compile(
+    r'<time[^>]+datetime=["\']([^"\']+)["\']',
+    re.IGNORECASE,
+)
+STOPWORDS = {
+    "상승", "하락", "상한가", "하한가", "종목", "관련주", "기대감", "수혜",
+    "이슈", "공시", "테마", "차익", "실현", "재부각", "부각", "신규상장",
+    "시장", "정리", "이하", "미만", "이상", "거래대금", "펀드", "리츠",
+    "우선주", "스팩", "환기", "관리", "상승률", "하락률", "그룹", "기업",
+    "주가", "강세", "약세", "매수", "매도", "투자", "추가", "최대주주",
+    "지분", "양도", "기준", "경우", "포함", "제외", "하였", "하였습니다",
+    "영향", "여파", "기대", "수준", "소식", "이야기", "마감", "오늘", "내일",
+    "작년", "올해", "분기", "실적", "전망", "본격", "사업", "부문", "인수",
+}
+
+
+SHORT_NOTE_RE = re.compile(
+    r"^\s*(\d{1,2})/(\d{1,2})\s*(하향|상향|상승|하락)\s*[::]\s*(.+)$"
+)
+
+
+def detect_format(text: str) -> str:
+    """본문 텍스트로 형식 판별."""
+    has_rise = "[상승]" in text
+    has_fall = "[하락]" in text
+    if has_rise or has_fall:
+        return "rank_table"
+    # short_note: 첫 비어있지 않은 줄이 "M/D 방향: 종목,종목,..." 형식
+    for line in text.split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        if SHORT_NOTE_RE.match(line):
+            return "short_note"
+        break
+    if len(text) >= 200:
+        return "essay"
+    return "unknown"
+
+
+def parse_short_note(html: str, text: str, title: str | None) -> dict:
+    """짧은 메모 형식: "M/D 하향: 종목A, 종목B, ..." 한 줄 포맷.
+
+    - 방향 키워드 정규화: 상승→상향, 하락→하향
+    - 종목명 콤마 분리 (STOPWORDS·길이·문자 필터)
+    - post_date: 제목 우선, 실패 시 본문 M/D + 현재 연도
+    """
+    direction: str | None = None
+    stocks_raw: list[str] = []
+    md_month: int | None = None
+    md_day: int | None = None
+
+    for line in text.split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        m = SHORT_NOTE_RE.match(line)
+        if m:
+            md_month = int(m.group(1))
+            md_day = int(m.group(2))
+            raw_dir = m.group(3)
+            direction = "상승" if raw_dir in ("상향", "상승") else "하향"
+            payload = m.group(4)
+            for tok in re.split(r"[,，、]", payload):
+                tok = tok.strip().strip("()[]【】 .·*-").strip()
+                if not tok or len(tok) < 2 or len(tok) > 20:
+                    continue
+                if not re.search(r"[가-힣A-Za-z]", tok):
+                    continue
+                if tok in STOPWORDS:
+                    continue
+                stocks_raw.append(tok)
+        break
+
+    stocks = [
+        {"name": n, "ticker": None, "theme_label": None, "news_cards": []}
+        for n in stocks_raw
+    ]
+
+    # post_date
+    post_date = _extract_post_date(text, title, html)
+    if not post_date and md_month and md_day:
+        try:
+            if 1 <= md_month <= 12 and 1 <= md_day <= 31:
+                yi = datetime.now(KST).year
+                post_date = f"{yi:04d}-{md_month:02d}-{md_day:02d}"
+        except ValueError:
+            pass
+
+    section_type = direction or "상승"
+    return {
+        "sections": [{"type": section_type, "stocks": stocks}] if stocks else [],
+        "post_date": post_date,
+        "direction": direction,
+    }
+
+
+def _valid_ymd(y: int, m: int, d: int) -> bool:
+    if not (2000 <= y <= 2100 and 1 <= m <= 12 and 1 <= d <= 31):
+        return False
+    try:
+        datetime(y, m, d)
+        return True
+    except ValueError:
+        return False
+
+
+def _resolve_year_from_md(mi: int, di: int) -> int | None:
+    """월·일만 주어졌을 때 연도 결정. 기본 현재 연도, 미래면 작년(12월→1월 경계)."""
+    if not (1 <= mi <= 12 and 1 <= di <= 31):
+        return None
+    today = datetime.now(KST).date()
+    yi = today.year
+    try:
+        candidate = datetime(yi, mi, di).date()
+    except ValueError:
+        return None
+    if candidate > today:
+        yi -= 1
+        try:
+            datetime(yi, mi, di)
+        except ValueError:
+            return None
+    return yi
+
+
+def _extract_post_date(
+    text: str, title: str | None, html: str | None = None
+) -> str | None:
+    """다중 소스 post_date 추출. 추측 금지 — 실패 시 None.
+
+    순서:
+      1) 제목: YYYY-MM-DD / YYYY.MM.DD. / [YYYY/MM/DD] / (YYYY.MM.DD.)
+      2) 제목: YYYY년 M월 D일
+      3) 제목: M월 D일 (연도 없음 → 현재연도, 미래면 작년)
+      4) 제목: MM/DD (연도 없음 → 동일 규칙)
+      5) 본문 첫 1500자: 위와 동일 순서
+      6) HTML 메타: article:published_time / time[datetime]
+    """
+    # helpers
+    def from_ymd(y, mo, d):
+        try:
+            yi, mi, di = int(y), int(mo), int(d)
+            if _valid_ymd(yi, mi, di):
+                return f"{yi:04d}-{mi:02d}-{di:02d}"
+        except ValueError:
+            return None
+        return None
+
+    def from_md(mo, d):
+        try:
+            mi, di = int(mo), int(d)
+            yi = _resolve_year_from_md(mi, di)
+            if yi and _valid_ymd(yi, mi, di):
+                return f"{yi:04d}-{mi:02d}-{di:02d}"
+        except ValueError:
+            return None
+        return None
+
+    # 1~4) 제목
+    if title:
+        m = TITLE_YMD_KO_RE.search(title)
+        if m and (r := from_ymd(*m.groups())):
+            return r
+        m = TITLE_DATE_RE.search(title)
+        if m and (r := from_ymd(*m.groups())):
+            return r
+        m = TITLE_KOREAN_DATE_RE.search(title)
+        if m and (r := from_md(*m.groups())):
+            return r
+        m = TITLE_MD_SLASH_RE.search(title)
+        if m and (r := from_md(*m.groups())):
+            return r
+
+    # 5) 본문 첫 1500자
+    head = text[:1500] if text else ""
+    if head:
+        m = TITLE_YMD_KO_RE.search(head)
+        if m and (r := from_ymd(*m.groups())):
+            return r
+        m = TITLE_DATE_RE.search(head)
+        if m and (r := from_ymd(*m.groups())):
+            return r
+        m = TITLE_KOREAN_DATE_RE.search(head)
+        if m and (r := from_md(*m.groups())):
+            return r
+        m = TITLE_MD_SLASH_RE.search(head)
+        if m and (r := from_md(*m.groups())):
+            return r
+
+    # 6) HTML 메타
+    if html:
+        for rx in (META_PUBLISHED_RE, META_TIME_DT_RE):
+            mm = rx.search(html)
+            if mm:
+                val = mm.group(1)
+                if len(val) >= 10 and val[4] == "-" and val[7] == "-":
+                    try:
+                        yi, mi, di = int(val[0:4]), int(val[5:7]), int(val[8:10])
+                        if _valid_ymd(yi, mi, di):
+                            return f"{yi:04d}-{mi:02d}-{di:02d}"
+                    except ValueError:
+                        pass
+    return None
+
+
+def _extract_stock_names_from_line(line: str) -> list[str]:
+    """한 라인에서 종목명 후보 추출. ':' 이전이 리스트인 경우 + 콤마 분리 패턴."""
+    # ':' 있으면 이전 부분만
+    head = line.split(":", 1)[0] if ":" in line else line
+    # <카테고리 제목> 제거
+    head = re.sub(r"<[^>]+>", " ", head)
+    head = head.strip("() [](){}【】·\t ")
+    names: list[str] = []
+    for tok in re.split(r"[,，、/]", head):
+        tok = tok.strip().strip("()[]【】 .·*-").strip()
+        if not tok or len(tok) < 2 or len(tok) > 20:
+            continue
+        if not re.search(r"[가-힣A-Za-z]", tok):
+            continue
+        # 숫자·퍼센트 라인 제외
+        if re.search(r"\d%", tok) or re.fullmatch(r"[\d,./]+", tok):
+            continue
+        if tok in STOPWORDS:
+            continue
+        # 접미사 '들'·조사 잘라냄 생략 — 원문 그대로
+        names.append(tok)
+    return names
+
+
+NAME_LIST_COLON_RE = re.compile(
+    r"([가-힣A-Za-z][가-힣A-Za-z0-9&·\-]{1,19}"
+    r"(?:\s*,\s*[가-힣A-Za-z][가-힣A-Za-z0-9&·\-]{1,19}){0,9})"
+    r"\s*[::]"
+)
+
+
+def parse_rank_table(html: str, text: str, title: str | None) -> dict:
+    """[상승]/[하락] 형식 파서.
 
     전략:
-    1. 표 라인 정규식 → 종목 메타데이터 (가격, 등락률 등)
-    2. 블록 기반 종목-뉴스 페어 추출 → 종목별 뉴스 매칭
-    3. 두 결과를 종목명 키로 병합. 표에 없지만 페어에 있는 종목도 추가.
-    4. 날짜 추출 (제목/본문 첫 500자)
+    - `[상승]` / `[하락]` 마커로 본문을 섹션별로 분할
+    - 각 섹션 내에서 `종목명[, 종목명]... :` 정규식으로 종목명 리스트 추출
+    - 섹션 내 콤마 구분 종목 리스트도 캡처 (예: "흥아해운, 한국ANKOR유전, ...")
+    - extract_stock_news_blocks 로 블록 기반 news_cards 매칭 (기존 로직 재사용)
     """
+    sections: dict[str, list[dict]] = {"상승": [], "하락": []}
+    index: dict[str, dict[str, dict]] = {"상승": {}, "하락": {}}
+
+    def get_or_create(section: str, name: str) -> dict:
+        if name in index[section]:
+            return index[section][name]
+        stock = {
+            "name": name,
+            "ticker": None,
+            "theme_label": None,
+            "news_cards": [],
+        }
+        index[section][name] = stock
+        sections[section].append(stock)
+        return stock
+
+    # 1) 섹션 분할
+    rise_start = text.find("[상승]")
+    fall_start = text.find("[하락]")
+    span_map: dict[str, str] = {}
+    if rise_start >= 0:
+        end = fall_start if fall_start > rise_start else len(text)
+        span_map["상승"] = text[rise_start:end]
+    if fall_start >= 0:
+        end = rise_start if rise_start > fall_start else len(text)
+        span_map["하락"] = text[fall_start:end]
+
+    # 2) 섹션별 종목명 추출
+    for sect, span in span_map.items():
+        # 카테고리 제목 블록 처리: <건설주 / 재건주> 다음에 콤마 리스트
+        # <...> 를 분리자로 남김
+        cleaned = re.sub(r"<[^<>]{1,40}>", " | ", span)
+        # 첫째 패턴: "종목[, 종목...] :"
+        for m in NAME_LIST_COLON_RE.finditer(cleaned):
+            raw = m.group(1)
+            for tok in re.split(r"[,，、]", raw):
+                tok = tok.strip()
+                if not tok or len(tok) < 2 or len(tok) > 20:
+                    continue
+                if tok in STOPWORDS:
+                    continue
+                if re.fullmatch(r"[\d,./%+\-]+", tok):
+                    continue
+                if not re.search(r"[가-힣A-Za-z]", tok):
+                    continue
+                # 필터 단어 포함 제외
+                if any(
+                    k in tok
+                    for k in ("거래대금", "상승률", "하락률", "종목은", "기준")
+                ):
+                    continue
+                get_or_create(sect, tok)
+
+        # 둘째 패턴: 카테고리 제목 뒤 콤마 리스트 (': ' 없이 나열)
+        # "|" 마커(원 <...>) 직후 라인의 콤마 리스트 잡기
+        for chunk in cleaned.split("|"):
+            # 콤마 3개 이상 연속 한글 리스트
+            for lm in re.finditer(
+                r"((?:[가-힣A-Za-z][가-힣A-Za-z0-9&·\-]{1,19}\s*,\s*){2,}"
+                r"[가-힣A-Za-z][가-힣A-Za-z0-9&·\-]{1,19})",
+                chunk,
+            ):
+                for tok in lm.group(1).split(","):
+                    tok = tok.strip()
+                    if not tok or len(tok) < 2 or len(tok) > 20:
+                        continue
+                    if tok in STOPWORDS:
+                        continue
+                    get_or_create(sect, tok)
+
+    # 블록 기반 news_cards (기존 로직) — 단 유효 종목만 매칭
+    pairs = extract_stock_news_blocks(html)
+    for pair in pairs:
+        for sname in pair["stock_names"]:
+            # 카테고리 제목 조각 필터 (<...> 부스러기)
+            if "<" in sname or ">" in sname:
+                continue
+            if len(sname) > 20 or len(sname) < 2:
+                continue
+            if " " in sname:  # 공백 포함 복합 토큰 제거
+                continue
+            target = None
+            matched = sname
+            for sect in ("상승", "하락"):
+                for existing in index[sect]:
+                    if sname == existing or sname in existing or existing in sname:
+                        target = sect
+                        matched = existing
+                        break
+                if target:
+                    break
+            if target is None:
+                target = "상승"
+                matched = sname
+                get_or_create(target, matched)
+            stock = index[target][matched]
+            if not stock["theme_label"]:
+                stock["theme_label"] = pair["theme_label"]
+            if not any(c.get("url") == pair["url"] for c in stock["news_cards"]):
+                stock["news_cards"].append(
+                    {
+                        "url": pair["url"],
+                        "source": pair["source"],
+                        "theme_hint": pair["theme_label"],
+                    }
+                )
+
+    return {
+        "sections": [{"type": k, "stocks": v} for k, v in sections.items() if v],
+        "post_date": _extract_post_date(text, title, html),
+    }
+
+
+def parse_essay(html: str, text: str, title: str | None) -> dict:
+    """에세이·회고·강의 형식. 종목 표 없음 → sections 비움, 본문 요약 보존."""
+    # 본문 앞 1500자 요약 (저작권상 원문 전체 저장 금지)
+    body_snippet = text[:1500]
+    # 키워드 후보 — 2~6자 한글 어절 빈도, stopword 제외
+    words = re.findall(r"[가-힣]{2,6}", text)
+    freq: dict[str, int] = {}
+    for w in words:
+        if w in STOPWORDS:
+            continue
+        freq[w] = freq.get(w, 0) + 1
+    top_keywords = [w for w, _ in sorted(freq.items(), key=lambda x: -x[1])[:15]]
+    return {
+        "sections": [],
+        "post_date": _extract_post_date(text, title, html),
+        "essay": {
+            "body_snippet": body_snippet,
+            "top_keywords": top_keywords,
+        },
+    }
+
+
+def parse_post(html: str, title: str | None = None) -> dict:
+    """본문 HTML → 구조화된 데이터. 형식별로 분기.
+
+    반환 스키마:
+      parse_format: "rank_table" | "essay" | "unknown"
+      parse_status: "ok" | "unsupported_format"
+      sections: list  (essay·unknown 은 [])
+      post_date: str|None
+      essay: dict (essay 형식만)
+    """
+    text = html_to_text(html)
+    fmt = detect_format(text)
+    base = {"parse_format": fmt, "parse_status": "ok"}
+    if fmt == "rank_table":
+        return {**base, **parse_rank_table(html, text, title)}
+    if fmt == "short_note":
+        return {**base, **parse_short_note(html, text, title)}
+    if fmt == "essay":
+        return {**base, **parse_essay(html, text, title)}
+    return {
+        **base,
+        "parse_status": "unsupported_format",
+        "sections": [],
+        "post_date": _extract_post_date(text, title, html),
+    }
+
+
+def _legacy_parse_post_unused(html: str) -> dict:
+    """구버전 단일 가정 파서 — 폐기. 보관용."""
     text = html_to_text(html)
     lines = [l.strip() for l in text.split("\n") if l.strip()]
 
@@ -648,8 +1062,9 @@ def run() -> int:
 
     naver_id = os.environ.get("NAVER_CAFE_ID")
     naver_pw = os.environ.get("NAVER_CAFE_PASSWORD")
-    if not naver_id or not naver_pw:
-        log("❌ NAVER_CAFE_ID / NAVER_CAFE_PASSWORD 환경변수 없음")
+    cookies_env_present = bool(os.environ.get("NAVER_COOKIES", "").strip())
+    if not cookies_env_present and (not naver_id or not naver_pw):
+        log("❌ NAVER_COOKIES 없음 + NAVER_CAFE_ID/PASSWORD 없음")
         return 2
 
     try:
@@ -775,7 +1190,7 @@ def run() -> int:
             html = fetch_article_html(page, aid)
             if not html:
                 continue
-            parsed = parse_post(html)
+            parsed = parse_post(html)  # run()에선 title 미수집 — 제목 포함 날짜는 본문 fallback
 
             # 종목별 뉴스 카드에 Gemini 분석 적용 — post 당 최대 50 호출
             # (멀티 뉴스 종목 안전 처리)
@@ -809,10 +1224,14 @@ def run() -> int:
                 "post_url": ARTICLE_URL_TEMPLATE.format(article_id=aid),  # 내부용
                 "post_date": parsed.get("post_date"),
                 "fetched_at": datetime.now(KST).isoformat(timespec="seconds"),
+                "parse_format": parsed.get("parse_format"),
+                "parse_status": parsed.get("parse_status"),
                 "stock_count": stock_count,
                 "news_count": news_count,
                 "sections": parsed["sections"],
             }
+            if "essay" in parsed:
+                post_record["essay"] = parsed["essay"]
 
             # 개별 파일 저장
             post_dir = DATA_DIR / "posts"
