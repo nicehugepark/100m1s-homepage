@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>News — 100M1S</title>
-<meta name="description" content="100M1S 뉴지 — 시장 정보 + 종목 + 호재/악재 분석. 매 시간 자동 갱신.">
+<meta name="description" content="100M1S 뉴지 — 시장 정보 + 종목별 호재/악재 분석. 매 시간 자동 갱신.">
 <meta name="robots" content="index,follow">
 <meta property="og:title" content="News — 100M1S">
-<meta property="og:description" content="시장 정보 + 종목 + 호재/악재 분석. 매 시간 자동 갱신.">
+<meta property="og:description" content="시장 정보 + 종목별 호재/악재 분석. 매 시간 자동 갱신.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://100m1s.com/news.html">
 <meta property="og:image" content="https://100m1s.com/og-image.png">
@@ -53,7 +53,7 @@ header {
 
 main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 
-.page-header { margin-bottom: 32px; }
+.page-header { margin-bottom: 36px; }
 .page-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 12px; background: var(--am3);
@@ -79,94 +79,129 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   padding: 16px 20px; border-radius: 6px; color: var(--neg);
   font-size: 13px; margin: 24px 0;
 }
+
+/* ───── 날짜 그룹 ───── */
+.date-group { margin-bottom: 36px; }
+.date-header {
+  display: flex; align-items: baseline; gap: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--tx);
+  margin-bottom: 18px;
+}
+.date-label {
+  font-size: 22px; font-weight: 900;
+  letter-spacing: -0.6px;
+}
+.date-stats {
+  font-size: 11px; color: var(--dm);
+  font-family: 'SF Mono', monospace;
+}
+
+/* ───── 섹션 (상승/하락) ───── */
+.section-block { margin-bottom: 28px; }
+.section-title {
+  font-size: 12px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 14px;
+  display: inline-block;
+  padding: 4px 12px; border-radius: 6px;
+}
+.section-title.up { color: #C53939; background: #FFF0F0; }
+.section-title.down { color: #1958C7; background: #EAF1FF; }
+
+/* ───── 종목 리스트 (1단계 계단식) ───── */
+.stocks-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.stock-row {
+  background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
+  overflow: hidden;
+}
+.stock-main {
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 36px 1fr auto auto;
+  gap: 14px;
+  align-items: baseline;
+}
+.stock-rank {
+  font-size: 11px; font-weight: 800; color: var(--dm);
+  font-family: 'SF Mono', monospace;
+}
+.stock-name {
+  font-size: 16px; font-weight: 800; letter-spacing: -0.3px;
+}
+.stock-price {
+  font-size: 12px; color: var(--dm);
+  font-family: 'SF Mono', monospace;
+}
+.stock-pct {
+  font-size: 16px; font-weight: 800;
+  font-family: 'SF Mono', monospace;
+  min-width: 80px; text-align: right;
+}
+.stock-pct.up { color: #C53939; }
+.stock-pct.down { color: #1958C7; }
+.stock-theme {
+  padding: 0 18px 12px;
+  font-size: 13px; color: var(--tx2); line-height: 1.55;
+}
+.stock-theme::before { content: '└ '; color: var(--dm); margin-right: 2px; }
+
+/* ───── 종목 안 뉴스 카드 (계단식 한 단 안쪽) ───── */
+.stock-news {
+  background: var(--bg2);
+  border-top: 1px dashed var(--bd);
+  padding: 12px 18px 14px 36px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.news-card {
+  background: var(--sf); border: 1px solid var(--bd); border-radius: 8px;
+  padding: 10px 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.news-judgment {
+  flex-shrink: 0;
+  font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.news-judgment.호재 { background: var(--pos-bg); color: var(--pos); }
+.news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
+.news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
+.news-content { flex: 1; min-width: 0; }
+.news-summary { font-size: 12.5px; line-height: 1.6; color: var(--tx); margin-bottom: 4px; }
+.news-meta {
+  font-size: 10px; color: var(--dm); font-family: 'SF Mono', monospace;
+  display: flex; gap: 10px; align-items: center;
+}
+.news-meta .conf { color: var(--am); font-weight: 700; }
+.news-reasoning {
+  font-size: 11px; color: var(--tx2); font-style: italic;
+  margin-top: 4px; line-height: 1.5;
+}
+
+/* ───── 빈 상태 ───── */
 .empty {
   background: var(--bg2); border-radius: 12px;
   padding: 60px 24px; text-align: center;
   color: var(--dm); font-size: 14px;
 }
 
-.posts-list { display: flex; flex-direction: column; gap: 20px; }
-
-.post-card {
-  background: var(--sf); border: 1px solid var(--bd); border-radius: 16px;
-  overflow: hidden;
+/* ───── 향후 기능 안내 ───── */
+.coming-soon {
+  margin-top: 56px; padding: 24px;
+  background: var(--am4); border: 1px dashed var(--am2);
+  border-radius: 12px; text-align: center;
 }
-.post-header {
-  padding: 20px 24px; border-bottom: 1px solid var(--bd);
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  flex-wrap: wrap;
+.coming-soon h3 {
+  font-size: 13px; font-weight: 800; color: var(--am);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 8px;
 }
-.post-meta { font-size: 11px; color: var(--dm); font-family: 'SF Mono', monospace; }
-.post-link {
-  font-size: 11px; font-weight: 700;
-  color: var(--am); padding: 5px 12px;
-  background: var(--am3); border-radius: 6px;
+.coming-soon p {
+  font-size: 12px; color: var(--tx2); line-height: 1.6;
+  max-width: 520px; margin: 0 auto;
 }
-.post-link:hover { background: var(--am); color: white; }
-
-.section-block { padding: 16px 24px; border-bottom: 1px solid var(--bd); }
-.section-block:last-child { border-bottom: 0; }
-.section-title {
-  font-size: 12px; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 1px; margin-bottom: 12px; color: var(--am);
-}
-.section-title.up { color: #C53939; }
-.section-title.down { color: #1958C7; }
-
-.stocks-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-}
-.stock-card {
-  background: var(--bg); border: 1px solid var(--bd); border-radius: 10px;
-  padding: 14px 16px;
-}
-.stock-row1 { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
-.stock-rank { font-size: 10px; font-weight: 800; color: var(--dm); min-width: 18px; }
-.stock-name { font-size: 15px; font-weight: 800; flex: 1; letter-spacing: -0.3px; }
-.stock-pct { font-size: 14px; font-weight: 800; }
-.stock-pct.up { color: #C53939; }
-.stock-pct.down { color: #1958C7; }
-.stock-row2 { font-size: 11px; color: var(--dm); margin-bottom: 6px; }
-.stock-theme {
-  font-size: 12px; color: var(--tx2); line-height: 1.5;
-  background: var(--am4); padding: 6px 10px; border-radius: 6px;
-  border-left: 2px solid var(--am2);
-}
-.stock-strength {
-  font-size: 10px; color: var(--am); font-weight: 700;
-  margin-top: 6px;
-}
-
-.news-cards-block {
-  background: var(--bg2); padding: 20px 24px; border-top: 1px solid var(--bd);
-}
-.news-cards-title {
-  font-size: 12px; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 1px; margin-bottom: 14px; color: var(--tx2);
-}
-.news-cards { display: flex; flex-direction: column; gap: 10px; }
-.news-card {
-  background: var(--sf); border: 1px solid var(--bd); border-radius: 10px;
-  padding: 14px 16px; display: flex; gap: 14px;
-}
-.news-judgment {
-  flex-shrink: 0; align-self: flex-start;
-  font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
-  text-transform: uppercase; letter-spacing: 0.5px;
-}
-.news-judgment.호재 { background: var(--pos-bg); color: var(--pos); }
-.news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
-.news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
-.news-content { flex: 1; min-width: 0; }
-.news-summary { font-size: 13px; line-height: 1.6; color: var(--tx); margin-bottom: 6px; }
-.news-meta {
-  font-size: 11px; color: var(--dm); font-family: 'SF Mono', monospace;
-  display: flex; gap: 12px; flex-wrap: wrap;
-}
-.news-meta a { color: var(--am); }
-.news-meta a:hover { text-decoration: underline; }
-.news-reasoning { font-size: 11px; color: var(--tx2); font-style: italic; margin-top: 4px; }
 
 footer {
   background: var(--tx); color: var(--dm); text-align: center;
@@ -176,6 +211,12 @@ footer {
 footer .links { display: flex; gap: 20px; justify-content: center; margin-bottom: 16px; font-weight: 600; }
 footer .links a:hover { color: var(--am2); }
 footer .copyright { color: var(--dm); opacity: 0.6; }
+
+@media (max-width: 640px) {
+  .stock-main { grid-template-columns: 28px 1fr auto; }
+  .stock-price { display: none; }
+  .stock-news { padding: 10px 14px 12px 24px; }
+}
 </style>
 </head>
 <body>
@@ -215,14 +256,22 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     <div class="page-eyebrow">Newzy · 뉴지</div>
     <h1 class="page-title">시장은 <span class="accent">매 시간</span> 새로 쓰인다</h1>
     <p class="page-desc">
-      뉴지가 매 시간 시장 게시판에서 신규 정리글을 수집하고, 종목·테마·뉴스를 추출한 뒤
-      주주가 호재/악재를 판단합니다. 박성진 대표가 향후 피드백으로 판단력을 보정합니다.
+      뉴지가 매 시간 시장 데이터를 수집하고, 종목·테마·뉴스를 추출한 뒤
+      주주가 호재/악재를 판단합니다.
     </p>
     <div class="page-meta" id="meta">로딩 중…</div>
   </div>
 
   <div id="content">
     <div class="loading">📡 데이터 불러오는 중…</div>
+  </div>
+
+  <div class="coming-soon">
+    <h3>🗺️ 다음 기능</h3>
+    <p>
+      종목별 테마 지도 + 테마별 종목 지도 + 시장 흐름 분석.
+      테마의 세기로 종목의 세기를 판단합니다.
+    </p>
   </div>
 </main>
 
@@ -242,9 +291,7 @@ async function loadIndex() {
     const res = await fetch('/data/cafe/index.json?t=' + Date.now());
     if (!res.ok) throw new Error('index.json HTTP ' + res.status);
     return await res.json();
-  } catch (e) {
-    return null;
-  }
+  } catch (e) { return null; }
 }
 
 async function loadPost(postId) {
@@ -252,9 +299,7 @@ async function loadPost(postId) {
     const res = await fetch(`/data/cafe/posts/${postId}.json?t=` + Date.now());
     if (!res.ok) throw new Error(postId + ' HTTP ' + res.status);
     return await res.json();
-  } catch (e) {
-    return null;
-  }
+  } catch (e) { return null; }
 }
 
 function fmtNum(n) {
@@ -265,42 +310,26 @@ function fmtNum(n) {
 function escapeHtml(s) {
   if (s == null) return '';
   return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-function renderStockCard(stock) {
-  const dir = stock.change_pct >= 0 ? 'up' : 'down';
-  const sign = stock.change_pct >= 0 ? '+' : '';
-  return `
-    <div class="stock-card">
-      <div class="stock-row1">
-        <div class="stock-rank">#${stock.rank ?? '?'}</div>
-        <div class="stock-name">${escapeHtml(stock.name)}</div>
-        <div class="stock-pct ${dir}">${sign}${stock.change_pct?.toFixed(2) ?? '?'}%</div>
-      </div>
-      <div class="stock-row2">${fmtNum(stock.price_won)}원${stock.ticker ? ' · ' + escapeHtml(stock.ticker) : ''}</div>
-      ${stock.theme_label ? `<div class="stock-theme">${escapeHtml(stock.theme_label)}</div>` : ''}
-      ${stock.strength_score != null ? `<div class="stock-strength">세기 ${stock.strength_score}</div>` : ''}
-    </div>
-  `;
+function deriveDate(post) {
+  if (post.post_date) return post.post_date;
+  if (post.fetched_at) return post.fetched_at.slice(0, 10);
+  return '날짜 미상';
 }
 
 function renderNewsCard(card) {
   const j = card.judgment || '중립';
-  const conf = card.confidence != null ? Math.round(card.confidence * 100) + '%' : '—';
+  const conf = card.confidence != null ? Math.round(card.confidence * 100) + '%' : '';
   return `
     <div class="news-card">
       <div class="news-judgment ${j}">${j}</div>
       <div class="news-content">
         <div class="news-summary">${escapeHtml(card.summary || '(요약 없음)')}</div>
         <div class="news-meta">
-          <span>신뢰도 ${conf}</span>
-          <span>${escapeHtml(card.source || '')}</span>
-          <a href="${escapeHtml(card.url)}" target="_blank" rel="noopener">원문 →</a>
+          ${conf ? `<span class="conf">신뢰도 ${conf}</span>` : ''}
         </div>
         ${card.reasoning ? `<div class="news-reasoning">${escapeHtml(card.reasoning)}</div>` : ''}
       </div>
@@ -308,36 +337,74 @@ function renderNewsCard(card) {
   `;
 }
 
-function renderPost(post) {
-  const sectionsHtml = (post.sections || []).map(sec => {
-    const cls = sec.type === '상승' ? 'up' : (sec.type === '하락' ? 'down' : '');
-    const stocksHtml = (sec.stocks || []).map(renderStockCard).join('');
-    return `
-      <div class="section-block">
-        <div class="section-title ${cls}">[${sec.type}] · ${sec.stocks?.length || 0}종목</div>
-        <div class="stocks-grid">${stocksHtml}</div>
-      </div>
-    `;
-  }).join('');
-
-  const newsHtml = (post.news_cards || []).length > 0 ? `
-    <div class="news-cards-block">
-      <div class="news-cards-title">📰 뉴스 카드 · ${post.news_cards.length}건 (주주 판단)</div>
-      <div class="news-cards">${post.news_cards.map(renderNewsCard).join('')}</div>
+function renderStockRow(stock) {
+  const dir = (stock.change_pct ?? 0) >= 0 ? 'up' : 'down';
+  const sign = (stock.change_pct ?? 0) >= 0 ? '+' : '';
+  const pctText = stock.change_pct != null ? `${sign}${stock.change_pct.toFixed(2)}%` : '—';
+  const priceText = stock.price_won != null ? `${fmtNum(stock.price_won)}원` : '';
+  const themeHtml = stock.theme_label ? `<div class="stock-theme">${escapeHtml(stock.theme_label)}</div>` : '';
+  const newsHtml = (stock.news_cards && stock.news_cards.length > 0) ? `
+    <div class="stock-news">
+      ${stock.news_cards.map(renderNewsCard).join('')}
     </div>
   ` : '';
-
   return `
-    <article class="post-card">
-      <div class="post-header">
-        <div>
-          <div class="post-meta">post ${escapeHtml(post.post_id)} · ${escapeHtml(post.fetched_at || '')} · ${post.stock_count || 0}종목</div>
-        </div>
-        <a href="${escapeHtml(post.post_url)}" target="_blank" rel="noopener" class="post-link">원문 카페 →</a>
+    <div class="stock-row">
+      <div class="stock-main">
+        <div class="stock-rank">${stock.rank ? '#' + stock.rank : ''}</div>
+        <div class="stock-name">${escapeHtml(stock.name)}</div>
+        <div class="stock-price">${priceText}</div>
+        <div class="stock-pct ${dir}">${pctText}</div>
+      </div>
+      ${themeHtml}
+      ${newsHtml}
+    </div>
+  `;
+}
+
+function renderSection(section) {
+  const cls = section.type === '상승' ? 'up' : (section.type === '하락' ? 'down' : '');
+  const stocksHtml = (section.stocks || []).map(renderStockRow).join('');
+  return `
+    <div class="section-block">
+      <div class="section-title ${cls}">[${section.type}] · ${section.stocks?.length || 0}종목</div>
+      <div class="stocks-list">${stocksHtml}</div>
+    </div>
+  `;
+}
+
+function renderDateGroup(date, posts) {
+  const totalStocks = posts.reduce((s, p) => s + (p.stock_count || 0), 0);
+  const totalNews = posts.reduce((s, p) => {
+    return s + (p.sections || []).reduce((s2, sec) => {
+      return s2 + (sec.stocks || []).reduce((s3, st) => s3 + (st.news_cards?.length || 0), 0);
+    }, 0);
+  }, 0);
+  const allSections = [];
+  for (const p of posts) {
+    for (const sec of (p.sections || [])) {
+      allSections.push(sec);
+    }
+  }
+  // 같은 type의 섹션 머지
+  const merged = {};
+  for (const sec of allSections) {
+    if (!merged[sec.type]) merged[sec.type] = { type: sec.type, stocks: [] };
+    merged[sec.type].stocks.push(...(sec.stocks || []));
+  }
+  const order = ['상승', '하락'];
+  const sectionsHtml = order
+    .filter(t => merged[t])
+    .map(t => renderSection(merged[t]))
+    .join('');
+  return `
+    <div class="date-group">
+      <div class="date-header">
+        <div class="date-label">${escapeHtml(date)}</div>
+        <div class="date-stats">${totalStocks}종목 · ${totalNews}뉴스</div>
       </div>
       ${sectionsHtml}
-      ${newsHtml}
-    </article>
+    </div>
   `;
 }
 
@@ -347,21 +414,20 @@ async function init() {
 
   const index = await loadIndex();
   if (!index) {
-    content.innerHTML = '<div class="error">⚠️ 인덱스를 불러오지 못했습니다. 스크레이퍼가 아직 첫 실행되지 않았을 수 있습니다.</div>';
+    content.innerHTML = '<div class="error">⚠️ 인덱스를 불러오지 못했습니다.</div>';
     meta.textContent = '— 데이터 없음';
     return;
   }
 
-  meta.textContent = `최종 갱신: ${index.updated_at || '—'} · ${index.posts.length}건`;
+  meta.textContent = `최종 갱신: ${index.updated_at || '—'} · 누적 ${index.posts.length}건`;
 
-  // 인덱스에 글이 없으면 sample 시도
   let postIds = (index.posts || []).map(p => p.post_id);
   if (postIds.length === 0) {
     postIds = ['sample'];
   }
 
   const posts = [];
-  for (const id of postIds.slice(0, 20)) {
+  for (const id of postIds.slice(0, 30)) {
     const p = await loadPost(id);
     if (p) posts.push(p);
   }
@@ -371,7 +437,15 @@ async function init() {
     return;
   }
 
-  content.innerHTML = `<div class="posts-list">${posts.map(renderPost).join('')}</div>`;
+  // 날짜별 그룹
+  const byDate = {};
+  for (const p of posts) {
+    const d = deriveDate(p);
+    if (!byDate[d]) byDate[d] = [];
+    byDate[d].push(p);
+  }
+  const sortedDates = Object.keys(byDate).sort().reverse();
+  content.innerHTML = sortedDates.map(d => renderDateGroup(d, byDate[d])).join('');
 }
 
 init();

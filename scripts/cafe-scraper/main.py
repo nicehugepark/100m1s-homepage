@@ -161,16 +161,18 @@ def fetch_article_html(page, article_id: str) -> str | None:
 
 
 # ─── 파싱 ────────────────────────────────────────────
+# 표 라인 매처 — 매우 관대 (공백/특수문자 다양)
 STOCK_LINE_RE = re.compile(
-    r"(?P<rank>\d{1,3})\s+"
-    r"(?P<tag>[신경주증]?)\s*"
-    r"(?P<name>[가-힣A-Za-z0-9&·\-]+)\s+"
-    r"(?P<price>[\d,]+)\s*"
-    r"[▲▼↑↓]?\s*"
-    r"(?P<change>[\d,]+)\s+"
-    r"(?P<change_pct>[+\-][\d.]+)"
+    r"(?P<rank>\d{1,3})\s*"
+    r"(?P<tag>[신경주증])?\s*"
+    r"(?P<name>[가-힣][가-힣A-Za-z0-9&·\-]{0,29})\s*"
+    r"(?P<price>[\d,]+)\s*[▲▼↑↓]?\s*"
+    r"(?P<change>[\d,]+)\s*"
+    r"(?P<change_pct>[+\-]?\d{1,2}\.\d{1,2})"
 )
-THEME_LINE_RE = re.compile(r"^([가-힣A-Za-z0-9·]+)\s*:\s*(.+)$")
+# 종목명만 매처 — 표 외 종목도 잡기 위해
+KOREAN_NAME_RE = re.compile(r"[가-힣][가-힣A-Za-z0-9&·\-]{1,28}")
+DATE_RE = re.compile(r"(20\d{2})[\-./]?(\d{1,2})[\-./]?(\d{1,2})")
 
 
 def html_to_text(html: str) -> str:
@@ -186,101 +188,194 @@ def html_to_text(html: str) -> str:
     return text.strip()
 
 
-def extract_news_links(html: str) -> list[dict]:
-    """본문에서 외부 뉴스 링크 추출. 네이버 카페 내부 링크는 제외."""
-    links = []
-    seen = set()
-    for m in re.finditer(r'href="(https?://[^"]+)"', html):
-        url = m.group(1)
-        host = urlparse(url).netloc
-        if "cafe.naver.com" in host or "naver.com/articles" in url:
+BLOCK_RE = re.compile(r"<(p|div|li)[^>]*>(.*?)</\1>", re.DOTALL | re.IGNORECASE)
+LINK_RE = re.compile(
+    r'<a[^>]+href="(https?://[^"]+)"[^>]*>(.*?)</a>', re.DOTALL | re.IGNORECASE
+)
+
+
+def extract_stock_news_blocks(html: str) -> list[dict]:
+    """HTML 블록 단위로 (종목명 리스트, 뉴스 URL, 테마 라벨) 페어 추출.
+
+    네이버 카페 본문은 보통 <p>종목1, 종목2 : <a href="news">설명</a></p> 형태.
+    이 패턴을 잡아 종목과 뉴스를 1:1 또는 N:1 로 매칭한다.
+    """
+    pairs = []
+    seen_pair_keys = set()
+
+    for bm in BLOCK_RE.finditer(html):
+        block_html = bm.group(2)
+        # 외부 링크 수집
+        external = []
+        for lm in LINK_RE.finditer(block_html):
+            url = lm.group(1)
+            host = urlparse(url).netloc
+            if "cafe.naver.com" in host:
+                continue
+            if "naver.com/articles" in url:
+                continue
+            external.append({"url": url, "source": host})
+        if not external:
             continue
-        if url in seen:
+
+        block_text = html_to_text(block_html)
+        # "종목명들 : 설명" 패턴
+        if " : " not in block_text:
             continue
-        seen.add(url)
-        links.append({"url": url, "source": host})
-    return links
+        prefix, _, theme = block_text.partition(" : ")
+        # 종목명 분리 (콤마/슬래시/, 등)
+        raw_names = re.split(r"[,，、/]", prefix)
+        stock_names = []
+        for n in raw_names:
+            n = n.strip().strip("()[]【】").strip()
+            # 너무 길거나 짧으면 제외
+            if 1 < len(n) <= 30 and re.search(r"[가-힣A-Za-z]", n):
+                stock_names.append(n)
+        if not stock_names:
+            continue
+
+        for ext in external:
+            key = (tuple(stock_names), ext["url"])
+            if key in seen_pair_keys:
+                continue
+            seen_pair_keys.add(key)
+            pairs.append(
+                {
+                    "stock_names": stock_names,
+                    "url": ext["url"],
+                    "source": ext["source"],
+                    "theme_label": theme.strip(),
+                }
+            )
+    return pairs
 
 
 def parse_post(html: str) -> dict:
     """본문 HTML → 구조화된 데이터.
-    종목 누락 방지를 위해 여러 패턴을 시도하고, 추출된 모든 종목을 보존."""
+
+    전략:
+    1. 표 라인 정규식 → 종목 메타데이터 (가격, 등락률 등)
+    2. 블록 기반 종목-뉴스 페어 추출 → 종목별 뉴스 매칭
+    3. 두 결과를 종목명 키로 병합. 표에 없지만 페어에 있는 종목도 추가.
+    4. 날짜 추출 (제목/본문 첫 500자)
+    """
     text = html_to_text(html)
     lines = [l.strip() for l in text.split("\n") if l.strip()]
 
-    sections = {"상승": [], "하락": []}
+    sections: dict[str, list[dict]] = {"상승": [], "하락": []}
+    section_index: dict[str, dict[str, dict]] = {"상승": {}, "하락": {}}
     current_section = None
 
-    # 1) 종목 표 추출 — 매우 관대하게
+    def get_or_create(section: str, name: str) -> dict:
+        if name in section_index[section]:
+            return section_index[section][name]
+        stock = {
+            "rank": None,
+            "name": name,
+            "ticker": None,
+            "price_won": None,
+            "change_won": None,
+            "change_pct": None,
+            "theme_label": None,
+            "news_cards": [],
+            "strength_score": None,
+        }
+        section_index[section][name] = stock
+        sections[section].append(stock)
+        return stock
+
+    # 1) 표 라인 파싱 (느슨)
     for line in lines:
-        if "[상승]" in line or line.startswith("상승"):
+        if "[상승]" in line:
             current_section = "상승"
             continue
-        if "[하락]" in line or line.startswith("하락"):
+        if "[하락]" in line:
             current_section = "하락"
             continue
+        if not current_section:
+            continue
+        m = STOCK_LINE_RE.search(line)
+        if not m:
+            continue
+        try:
+            name = m.group("name").strip()
+            if not name or len(name) < 2:
+                continue
+            stock = get_or_create(current_section, name)
+            if stock["rank"] is None:
+                stock["rank"] = int(m.group("rank"))
+            stock["price_won"] = int(m.group("price").replace(",", ""))
+            stock["change_won"] = int(m.group("change").replace(",", ""))
+            stock["change_pct"] = float(m.group("change_pct"))
+        except (ValueError, AttributeError):
+            continue
 
-        if current_section:
-            m = STOCK_LINE_RE.search(line)
-            if m:
-                try:
-                    sections[current_section].append(
-                        {
-                            "rank": int(m.group("rank")),
-                            "category_tag": m.group("tag") or None,
-                            "name": m.group("name"),
-                            "price_won": int(m.group("price").replace(",", "")),
-                            "change_won": int(m.group("change").replace(",", "")),
-                            "change_pct": float(m.group("change_pct")),
-                            "ticker": None,  # KRX 매핑 미구현
-                            "theme_label": None,
-                            "news_links": [],
-                        }
-                    )
-                except (ValueError, AttributeError):
-                    pass
-
-    # 2) 테마 라벨 매칭 — "종목명 : 설명" 패턴
-    theme_map: dict[str, str] = {}
-    for line in lines:
-        m = THEME_LINE_RE.match(line)
-        if m:
-            name = m.group(1).strip()
-            theme = m.group(2).strip()
-            if 1 < len(name) < 30:
-                theme_map[name] = theme
-
-    for section in sections.values():
-        for stock in section:
-            for name_key, theme in theme_map.items():
-                if name_key in stock["name"] or stock["name"] in name_key:
-                    stock["theme_label"] = theme
+    # 2) 블록 기반 종목-뉴스 페어 (가장 reliable)
+    pairs = extract_stock_news_blocks(html)
+    for pair in pairs:
+        for sname in pair["stock_names"]:
+            # 표에 이미 있는 섹션 우선
+            target_section = None
+            for sect in ("상승", "하락"):
+                # 부분 일치 허용 (이름 표기 차이 흡수)
+                for existing in section_index[sect]:
+                    if sname == existing or sname in existing or existing in sname:
+                        target_section = sect
+                        sname = existing  # 정규화
+                        break
+                if target_section:
                     break
+            if target_section is None:
+                target_section = "상승"  # 새 종목 기본
+            stock = get_or_create(target_section, sname)
+            if not stock["theme_label"]:
+                stock["theme_label"] = pair["theme_label"]
+            # 중복 URL 방지
+            if not any(c.get("url") == pair["url"] for c in stock["news_cards"]):
+                stock["news_cards"].append(
+                    {
+                        "url": pair["url"],
+                        "source": pair["source"],
+                        "theme_hint": pair["theme_label"],
+                    }
+                )
 
-    # 3) 뉴스 링크 (전체 본문 기준 — 종목별 매칭은 LLM 단계로 위임)
-    all_news_links = extract_news_links(html)
-
-    # strength_score 계산
+    # 3) strength_score 계산 (가능한 경우만)
     import math
 
     for section in sections.values():
         for stock in section:
             try:
-                ta = max(stock["change_won"] * stock.get("price_won", 1), 1_000_000_000)
-                # 거래대금 추출이 누락된 경우 fallback
-                stock["strength_score"] = round(
-                    abs(stock["change_pct"]) * math.log10(ta / 1_000_000_000),
-                    2,
-                )
+                if (
+                    stock.get("change_pct") is not None
+                    and stock.get("price_won")
+                    and stock.get("change_won")
+                ):
+                    ta = max(
+                        abs(stock["change_won"]) * stock["price_won"],
+                        1_000_000_000,
+                    )
+                    stock["strength_score"] = round(
+                        abs(stock["change_pct"]) * math.log10(ta / 1_000_000_000),
+                        2,
+                    )
             except Exception:
-                stock["strength_score"] = None
+                pass
+
+    # 4) 날짜 추출
+    post_date = None
+    head_text = text[:800]
+    m = DATE_RE.search(head_text)
+    if m:
+        y, mo, d = m.groups()
+        try:
+            post_date = f"{y}-{int(mo):02d}-{int(d):02d}"
+        except ValueError:
+            pass
 
     return {
         "sections": [{"type": k, "stocks": v} for k, v in sections.items() if v],
-        "all_news_links": all_news_links,
-        "raw_text_excerpt": text[:200] + "…"
-        if len(text) > 200
-        else text,  # 디버깅용 일부
+        "post_date": post_date,
     }
 
 
@@ -404,18 +499,40 @@ def run() -> int:
                 continue
             parsed = parse_post(html)
 
-            # 뉴스 링크 분석 (상위 5개만 — 비용 제한)
-            for nl in parsed["all_news_links"][:5]:
-                analysis = gemini_analyze_news(nl["url"])
-                nl.update(analysis)
+            # 종목별 뉴스 카드에 Gemini 분석 적용 — post 당 최대 30 호출
+            MAX_GEMINI_PER_POST = 30
+            calls = 0
+            for section in parsed["sections"]:
+                for stock in section["stocks"]:
+                    for card in stock.get("news_cards", []):
+                        if calls >= MAX_GEMINI_PER_POST:
+                            break
+                        hint = f"{stock['name']} {card.get('theme_hint', '')}"
+                        analysis = gemini_analyze_news(card["url"], hint)
+                        card.update(analysis)
+                        # theme_hint는 내부용 — 응답에서 제거
+                        card.pop("theme_hint", None)
+                        calls += 1
+                    if calls >= MAX_GEMINI_PER_POST:
+                        break
+                if calls >= MAX_GEMINI_PER_POST:
+                    break
+
+            stock_count = sum(len(s["stocks"]) for s in parsed["sections"])
+            news_count = sum(
+                len(stock.get("news_cards", []))
+                for s in parsed["sections"]
+                for stock in s["stocks"]
+            )
 
             post_record = {
                 "post_id": aid,
-                "post_url": ARTICLE_URL_TEMPLATE.format(article_id=aid),
+                "post_url": ARTICLE_URL_TEMPLATE.format(article_id=aid),  # 내부용
+                "post_date": parsed.get("post_date"),
                 "fetched_at": datetime.now(KST).isoformat(timespec="seconds"),
+                "stock_count": stock_count,
+                "news_count": news_count,
                 "sections": parsed["sections"],
-                "news_cards": parsed["all_news_links"][:5],
-                "stock_count": sum(len(s["stocks"]) for s in parsed["sections"]),
             }
 
             # 개별 파일 저장
@@ -428,10 +545,10 @@ def run() -> int:
             new_posts.append(
                 {
                     "post_id": aid,
-                    "post_url": post_record["post_url"],
+                    "post_date": post_record["post_date"],
                     "fetched_at": post_record["fetched_at"],
-                    "stock_count": post_record["stock_count"],
-                    "news_count": len(post_record["news_cards"]),
+                    "stock_count": stock_count,
+                    "news_count": news_count,
                 }
             )
             seen_ids.add(aid)
