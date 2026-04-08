@@ -632,47 +632,103 @@ def run() -> int:
     with sync_playwright() as p:
         browser, context = get_browser_context(p)
 
+        cookies_loaded = False
         if cookies_json:
             try:
                 cookie_list = json.loads(cookies_json)
-                # 표준화: name/value/domain/path 필드 필수
                 normalized = []
+                # Cookie-Editor / Chrome export → Playwright 형식 정규화
+                ss_map = {
+                    "no_restriction": "None",
+                    "norestriction": "None",
+                    "none": "None",
+                    "lax": "Lax",
+                    "strict": "Strict",
+                    "unspecified": "Lax",
+                    "": "Lax",
+                }
                 for c in cookie_list:
-                    if "name" in c and "value" in c:
-                        normalized.append(
-                            {
-                                "name": c["name"],
-                                "value": c["value"],
-                                "domain": c.get("domain", ".naver.com"),
-                                "path": c.get("path", "/"),
-                                "httpOnly": c.get("httpOnly", False),
-                                "secure": c.get("secure", True),
-                                "sameSite": c.get("sameSite", "Lax"),
-                            }
-                        )
-                context.add_cookies(normalized)
-                log(f"🍪 NAVER_COOKIES 주입 완료 ({len(normalized)}개)")
+                    name = c.get("name")
+                    value = c.get("value")
+                    if not name or value is None:
+                        continue
+                    domain = (c.get("domain") or ".naver.com").strip()
+                    if not domain:
+                        domain = ".naver.com"
+                    # naver.com만 허용 (혹시 다른 도메인 섞여 있으면 제외)
+                    if "naver.com" not in domain:
+                        continue
+                    # leading dot 보정 — Playwright는 양식 그대로 받음
+                    same_site = (c.get("sameSite") or "").strip().lower()
+                    same_site_norm = ss_map.get(same_site, "Lax")
+                    cookie = {
+                        "name": str(name),
+                        "value": str(value),
+                        "domain": domain,
+                        "path": c.get("path") or "/",
+                        "httpOnly": bool(c.get("httpOnly", False)),
+                        "secure": bool(c.get("secure", True)),
+                        "sameSite": same_site_norm,
+                    }
+                    # expirationDate (Cookie-Editor) → expires (Playwright)
+                    exp = c.get("expirationDate") or c.get("expires")
+                    if exp:
+                        try:
+                            exp_f = float(exp)
+                            if exp_f > 0:
+                                cookie["expires"] = exp_f
+                        except (TypeError, ValueError):
+                            pass
+                    normalized.append(cookie)
+
+                if normalized:
+                    context.add_cookies(normalized)
+                    log(f"🍪 NAVER_COOKIES 주입 완료 ({len(normalized)}개)")
+                    cookies_loaded = True
+                else:
+                    log("⚠️ NAVER_COOKIES 정규화 후 유효 쿠키 0건")
             except Exception as e:
-                log(f"⚠️ NAVER_COOKIES 파싱 실패: {e} — ID/PW 로그인으로 fallback")
-                cookies_json = ""
+                log(f"⚠️ NAVER_COOKIES 파싱 실패: {e}")
 
         page = context.new_page()
 
-        if not cookies_json:
+        if cookies_loaded:
+            log("쿠키 기반 인증 모드 — 로그인 단계 스킵")
+            # 검증: 카페 메인 접근 → 로그인 상태 확인
+            try:
+                page.goto(
+                    "https://www.naver.com",
+                    wait_until="domcontentloaded",
+                    timeout=15000,
+                )
+                time.sleep(2)
+                # 로그인 상태 확인 — "MY" 또는 "로그아웃" 텍스트 또는 nickname
+                logged_in = page.evaluate(
+                    """() => {
+                        const text = document.body.innerText || '';
+                        return text.includes('로그아웃') || text.includes('MY');
+                    }"""
+                )
+                _save_debug(page, "cookie_auth_check")
+                if not logged_in:
+                    log("❌ 쿠키 인증 실패 — 쿠키 만료 또는 무효")
+                    log("→ 새 쿠키 추출 후 NAVER_COOKIES secret 갱신 필요")
+                    browser.close()
+                    return 5
+                log("✓ 쿠키 인증 성공")
+            except Exception as e:
+                log(f"⚠️ 쿠키 검증 예외: {e}")
+                _save_debug(page, "cookie_check_exception")
+                browser.close()
+                return 6
+        else:
+            # 쿠키 없거나 실패 — ID/PW fallback
             log("네이버 로그인 시도 (ID/PW)…")
             if not naver_login(page, naver_id, naver_pw):
                 log("❌ 로그인 실패. 디버그 HTML 저장 후 종료.")
                 _save_debug(page, "login_final")
                 browser.close()
                 return 4
-        else:
-            log("쿠키 기반 인증 모드 — 로그인 단계 스킵")
-            # 검증: 카페 메인 접근하여 로그인 상태 확인
-            page.goto(
-                "https://cafe.naver.com", wait_until="domcontentloaded", timeout=15000
-            )
-            time.sleep(2)
-            _save_debug(page, "cookie_auth_check")
 
         log("메뉴 article 목록 수집…")
         article_ids = fetch_menu_article_ids(page)
