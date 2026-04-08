@@ -44,6 +44,7 @@ jobs:
         env:
           NAVER_CAFE_ID: ${{ secrets.NAVER_CAFE_ID }}
           NAVER_CAFE_PASSWORD: ${{ secrets.NAVER_CAFE_PASSWORD }}
+          NAVER_COOKIES: ${{ secrets.NAVER_COOKIES }}
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
           BACKFILL: ${{ inputs.backfill && '1' || '' }}
           MAX_ARTICLES: ${{ inputs.max_articles || '10' }}
@@ -71,3 +72,18 @@ jobs:
             data/cafe/debug_*.png
           retention-days: 7
           if-no-files-found: ignore
+
+      # 1회용 진단: 실패 시 디버그 PNG/HTML을 main에 임시 commit (1회 진단 후 제거 권장)
+      - name: 디버그 파일 임시 commit (실패 시 1회용)
+        if: failure()
+        run: |
+          git config user.name "newzy-bot"
+          git config user.email "newzy-bot@100m1s.com"
+          if ls data/cafe/debug_*.png data/cafe/debug_*.html 2>/dev/null; then
+            git add data/cafe/debug_*.png data/cafe/debug_*.html
+            if ! git diff --cached --quiet; then
+              git commit -m "debug(newzy): failed run snapshot $(TZ=Asia/Seoul date '+%H:%M KST')"
+              git pull --rebase origin main || true
+              git push || true
+            fi
+          fi

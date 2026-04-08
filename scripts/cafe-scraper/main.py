@@ -562,16 +562,49 @@ def run() -> int:
         )
         return 3
 
+    # 쿠키 기반 인증 (NAVER_COOKIES JSON env 있으면 우선) — 봇 감지 우회
+    cookies_json = os.environ.get("NAVER_COOKIES", "").strip()
+
     with sync_playwright() as p:
         browser, context = get_browser_context(p)
+
+        if cookies_json:
+            try:
+                cookie_list = json.loads(cookies_json)
+                # 표준화: name/value/domain/path 필드 필수
+                normalized = []
+                for c in cookie_list:
+                    if "name" in c and "value" in c:
+                        normalized.append({
+                            "name": c["name"],
+                            "value": c["value"],
+                            "domain": c.get("domain", ".naver.com"),
+                            "path": c.get("path", "/"),
+                            "httpOnly": c.get("httpOnly", False),
+                            "secure": c.get("secure", True),
+                            "sameSite": c.get("sameSite", "Lax"),
+                        })
+                context.add_cookies(normalized)
+                log(f"🍪 NAVER_COOKIES 주입 완료 ({len(normalized)}개)")
+            except Exception as e:
+                log(f"⚠️ NAVER_COOKIES 파싱 실패: {e} — ID/PW 로그인으로 fallback")
+                cookies_json = ""
+
         page = context.new_page()
 
-        log("네이버 로그인 시도…")
-        if not naver_login(page, naver_id, naver_pw):
-            log("❌ 로그인 실패. 디버그 HTML 저장 후 종료.")
-            (DATA_DIR / "debug_login.html").write_text(page.content(), encoding="utf-8")
-            browser.close()
-            return 4
+        if not cookies_json:
+            log("네이버 로그인 시도 (ID/PW)…")
+            if not naver_login(page, naver_id, naver_pw):
+                log("❌ 로그인 실패. 디버그 HTML 저장 후 종료.")
+                _save_debug(page, "login_final")
+                browser.close()
+                return 4
+        else:
+            log("쿠키 기반 인증 모드 — 로그인 단계 스킵")
+            # 검증: 카페 메인 접근하여 로그인 상태 확인
+            page.goto("https://cafe.naver.com", wait_until="domcontentloaded", timeout=15000)
+            time.sleep(2)
+            _save_debug(page, "cookie_auth_check")
 
         log("메뉴 article 목록 수집…")
         article_ids = fetch_menu_article_ids(page)
