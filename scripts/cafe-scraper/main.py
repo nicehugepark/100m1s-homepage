@@ -89,7 +89,13 @@ def _save_debug(page, tag: str) -> None:
 
 
 def naver_login(page, naver_id: str, naver_pw: str) -> bool:
-    """네이버 로그인. networkidle 의존 제거 + URL polling + 스크린샷 디버그."""
+    """네이버 로그인.
+
+    핵심 전략:
+    1. page.fill() — 실제 input event 발생 (JS evaluate 대신)
+    2. IP보안 토글 자동 OFF (cloud IP 인증 challenge 회피)
+    3. 텍스트 매칭 클릭 (셀렉터 변화 견딤)
+    """
     try:
         page.goto(
             "https://nid.naver.com/nidlogin.login",
@@ -97,38 +103,94 @@ def naver_login(page, naver_id: str, naver_pw: str) -> bool:
             timeout=20000,
         )
         page.wait_for_selector("#id", timeout=10000)
+        time.sleep(1)
 
-        # JS로 직접 set (붙여넣기 감지 회피)
-        page.evaluate(
-            """([id, pw]) => {
-                const idEl = document.querySelector('#id');
-                const pwEl = document.querySelector('#pw');
-                if (idEl) { idEl.value = id; idEl.dispatchEvent(new Event('input', {bubbles: true})); }
-                if (pwEl) { pwEl.value = pw; pwEl.dispatchEvent(new Event('input', {bubbles: true})); }
-            }""",
-            [naver_id, naver_pw],
-        )
+        # 1) ID/PW 입력 — page.fill() 사용 (input event 자동 발생)
+        try:
+            page.fill("#id", naver_id)
+            page.fill("#pw", naver_pw)
+        except Exception:
+            # fallback: JS 값 set
+            page.evaluate(
+                """([id, pw]) => {
+                    const idEl = document.querySelector('#id');
+                    const pwEl = document.querySelector('#pw');
+                    if (idEl) { idEl.value = id; idEl.dispatchEvent(new Event('input', {bubbles: true})); }
+                    if (pwEl) { pwEl.value = pw; pwEl.dispatchEvent(new Event('input', {bubbles: true})); }
+                }""",
+                [naver_id, naver_pw],
+            )
 
-        # 클릭 (셀렉터 후보 다중 시도)
+        # 2) IP보안 토글 OFF — 새 IP 인증 challenge 회피
+        try:
+            ip_off = page.evaluate(
+                """() => {
+                    // 후보 1: 표준 checkbox name=switch
+                    const cb = document.querySelector('input#switch, input[name="switch"]');
+                    if (cb && cb.checked) {
+                        cb.checked = false;
+                        cb.dispatchEvent(new Event('change', {bubbles: true}));
+                        cb.dispatchEvent(new Event('click', {bubbles: true}));
+                        return 'unchecked-input';
+                    }
+                    // 후보 2: 토글 라벨/스위치 — 클래스 패턴
+                    const toggleLabel = document.querySelector('label[for="switch"]');
+                    if (toggleLabel) {
+                        toggleLabel.click();
+                        return 'clicked-label';
+                    }
+                    // 후보 3: ARIA 스위치 (요즘 네이버 UI)
+                    const switches = document.querySelectorAll('[role="switch"]');
+                    for (const s of switches) {
+                        if (s.getAttribute('aria-checked') === 'true') {
+                            s.click();
+                            return 'clicked-aria-switch';
+                        }
+                    }
+                    return 'no-toggle-found';
+                }"""
+            )
+            log(f"IP보안 토글 처리: {ip_off}")
+            time.sleep(0.5)
+        except Exception as e:
+            log(f"⚠️ IP보안 토글 처리 실패: {e}")
+
+        # 3) 로그인 버튼 클릭 — 텍스트 매칭 우선
         clicked = False
-        for sel in ["#log\\.login", "button.btn_login", ".btn_login", "input[type='submit']"]:
-            try:
-                el = page.query_selector(sel)
-                if el:
-                    el.click()
-                    clicked = True
-                    break
-            except Exception:
-                continue
+        try:
+            btn = page.get_by_role("button", name="로그인")
+            if btn:
+                btn.click(timeout=3000)
+                clicked = True
+                log("로그인 버튼 클릭 (role=button name=로그인)")
+        except Exception:
+            pass
         if not clicked:
-            # JS로 폼 직접 submit
+            for sel in [
+                "button:has-text('로그인')",
+                "#log\\.login",
+                "button.btn_login",
+                ".btn_login",
+                "input[type='submit']",
+            ]:
+                try:
+                    el = page.query_selector(sel)
+                    if el:
+                        el.click()
+                        clicked = True
+                        log(f"로그인 버튼 클릭: {sel}")
+                        break
+                except Exception:
+                    continue
+        if not clicked:
             try:
                 page.evaluate("document.querySelector('form').submit()")
                 clicked = True
+                log("form.submit() fallback")
             except Exception:
                 pass
 
-        # networkidle 대신 URL 변화 polling — 네이버는 networkidle 절대 안 됨
+        # URL 변화 polling
         try:
             page.wait_for_function(
                 "() => !location.href.includes('nidlogin.login')",
@@ -141,13 +203,15 @@ def naver_login(page, naver_id: str, naver_pw: str) -> bool:
         current_url = page.url
         log(f"로그인 후 URL: {current_url}")
 
-        # 로그인 페이지 또는 캡차/2단계 인증 페이지에 머물러 있으면 실패
-        if "nidlogin" in current_url or "captcha" in current_url or "otp" in current_url:
-            log("⚠️ 로그인 실패 — 캡차·2FA·차단 가능성")
+        if (
+            "nidlogin" in current_url
+            or "captcha" in current_url
+            or "otp" in current_url
+        ):
+            log("⚠️ 로그인 실패 — 캡차·2FA·IP차단 가능성")
             _save_debug(page, "login_failed")
             return False
 
-        # 성공 시에도 1회 디버그 저장 (참고용)
         _save_debug(page, "login_success")
         return True
 
@@ -575,15 +639,17 @@ def run() -> int:
                 normalized = []
                 for c in cookie_list:
                     if "name" in c and "value" in c:
-                        normalized.append({
-                            "name": c["name"],
-                            "value": c["value"],
-                            "domain": c.get("domain", ".naver.com"),
-                            "path": c.get("path", "/"),
-                            "httpOnly": c.get("httpOnly", False),
-                            "secure": c.get("secure", True),
-                            "sameSite": c.get("sameSite", "Lax"),
-                        })
+                        normalized.append(
+                            {
+                                "name": c["name"],
+                                "value": c["value"],
+                                "domain": c.get("domain", ".naver.com"),
+                                "path": c.get("path", "/"),
+                                "httpOnly": c.get("httpOnly", False),
+                                "secure": c.get("secure", True),
+                                "sameSite": c.get("sameSite", "Lax"),
+                            }
+                        )
                 context.add_cookies(normalized)
                 log(f"🍪 NAVER_COOKIES 주입 완료 ({len(normalized)}개)")
             except Exception as e:
@@ -602,7 +668,9 @@ def run() -> int:
         else:
             log("쿠키 기반 인증 모드 — 로그인 단계 스킵")
             # 검증: 카페 메인 접근하여 로그인 상태 확인
-            page.goto("https://cafe.naver.com", wait_until="domcontentloaded", timeout=15000)
+            page.goto(
+                "https://cafe.naver.com", wait_until="domcontentloaded", timeout=15000
+            )
             time.sleep(2)
             _save_debug(page, "cookie_auth_check")
 
