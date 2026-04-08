@@ -161,20 +161,21 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .news-judgment {
   flex-shrink: 0;
-  font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px;
-  text-transform: uppercase; letter-spacing: 0.5px;
+  font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
+  letter-spacing: 0.3px;
   white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 4px;
 }
 .news-judgment.호재 { background: var(--pos-bg); color: var(--pos); }
 .news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
 .news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
+.judgment-strength {
+  font-weight: 700;
+  font-size: 9px;
+  opacity: 0.75;
+}
 .news-content { flex: 1; min-width: 0; }
 .news-summary { font-size: 12.5px; line-height: 1.6; color: var(--tx); margin-bottom: 4px; }
-.news-meta {
-  font-size: 10px; color: var(--dm); font-family: 'SF Mono', monospace;
-  display: flex; gap: 10px; align-items: center;
-}
-.news-meta .conf { color: var(--am); font-weight: 700; }
 .news-reasoning {
   font-size: 11px; color: var(--tx2); font-style: italic;
   margin-top: 4px; line-height: 1.5;
@@ -322,15 +323,19 @@ function deriveDate(post) {
 
 function renderNewsCard(card) {
   const j = card.judgment || '중립';
-  const conf = card.confidence != null ? Math.round(card.confidence * 100) + '%' : '';
+  // 강도 — % 숫자 대신 카테고리. 구버전 호환: confidence가 있으면 임계값으로 변환
+  let strength = card.strength;
+  if (!strength && card.confidence != null) {
+    if (card.confidence >= 0.75) strength = '강';
+    else if (card.confidence >= 0.5) strength = '중';
+    else strength = '약';
+  }
+  const strengthHtml = strength ? `<span class="judgment-strength">·${strength}</span>` : '';
   return `
     <div class="news-card">
-      <div class="news-judgment ${j}">${j}</div>
+      <div class="news-judgment ${j}">${j}${strengthHtml}</div>
       <div class="news-content">
         <div class="news-summary">${escapeHtml(card.summary || '(요약 없음)')}</div>
-        <div class="news-meta">
-          ${conf ? `<span class="conf">신뢰도 ${conf}</span>` : ''}
-        </div>
         ${card.reasoning ? `<div class="news-reasoning">${escapeHtml(card.reasoning)}</div>` : ''}
       </div>
     </div>

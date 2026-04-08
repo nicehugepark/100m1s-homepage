@@ -381,13 +381,17 @@ def parse_post(html: str) -> dict:
 
 # ─── 뉴스 요약 + 호재/악재 (Gemini) ──────────────────────
 def gemini_analyze_news(news_url: str, news_title_hint: str = "") -> dict:
-    """Gemini로 뉴스 요약 + 호재/악재 판단. API 키 없으면 mock."""
+    """Gemini로 뉴스 요약 + 호재/악재/강도 판단. API 키 없으면 mock.
+
+    참고: strength(강/중/약)는 LLM 자가 보고 — calibration 데이터 0.
+    거짓 정밀성 회피를 위해 % 숫자 대신 카테고리만 사용. (FLR-20260408-AGT-001)
+    """
     api_key = os.environ.get("GOOGLE_AI_API_KEY") or os.environ.get("GEMINI_API_KEY")
     if not api_key:
         return {
             "summary": f"[mock] {news_title_hint or '(요약 미생성 — API 키 없음)'}",
             "judgment": "중립",
-            "confidence": 0.0,
+            "strength": "약",
             "reasoning": "API 키 없음",
         }
     try:
@@ -406,14 +410,22 @@ def gemini_analyze_news(news_url: str, news_title_hint: str = "") -> dict:
         # 2) Gemini 호출
         prompt = f"""당신은 100M1S 회사의 주식투자팀 에이전트 "주주"입니다.
 박성진 대표는 차트 위주 종가배팅 트레이더입니다.
+종목 컨텍스트: {news_title_hint}
 
 다음 뉴스를 한국 주식 시장 관점에서 분석하세요:
 
 URL: {news_url}
 본문(일부): {news_text}
 
+판단:
+- judgment: "호재" / "악재" / "중립"
+- strength: 신호의 강도 — "강" / "중" / "약" 셋 중 하나
+  · 강 = 명확하고 즉시 영향, 다중 출처/데이터 뒷받침
+  · 중 = 영향 가능성 있으나 확정적이지 않음
+  · 약 = 단서 수준, 추측 동반
+
 다음 JSON 형식으로만 답하세요:
-{{"summary": "3-5줄 한국어 요약", "judgment": "호재" 또는 "악재" 또는 "중립", "confidence": 0.0~1.0 숫자, "reasoning": "1-2줄 판단 근거"}}"""
+{{"summary": "3-5줄 한국어 요약", "judgment": "호재"|"악재"|"중립", "strength": "강"|"중"|"약", "reasoning": "1-2줄 판단 근거"}}"""
 
         payload = json.dumps(
             {
@@ -438,10 +450,14 @@ URL: {news_url}
             result = json.loads(resp.read())
         text = result["candidates"][0]["content"]["parts"][0]["text"]
         parsed = json.loads(text)
+        # strength 정규화 (혹시 LLM이 다른 값 반환 시)
+        strength = parsed.get("strength", "중")
+        if strength not in ("강", "중", "약"):
+            strength = "중"
         return {
             "summary": parsed.get("summary", ""),
             "judgment": parsed.get("judgment", "중립"),
-            "confidence": float(parsed.get("confidence", 0.0)),
+            "strength": strength,
             "reasoning": parsed.get("reasoning", ""),
         }
     except Exception as e:
@@ -449,7 +465,7 @@ URL: {news_url}
         return {
             "summary": f"[분석 실패] {news_url}",
             "judgment": "중립",
-            "confidence": 0.0,
+            "strength": "약",
             "reasoning": f"오류: {e}",
         }
 
