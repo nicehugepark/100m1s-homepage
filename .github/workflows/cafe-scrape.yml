@@ -1,0 +1,59 @@
+name: 뉴지 카페 스크레이퍼 (시간당)
+
+on:
+  schedule:
+    - cron: '5 * * * *'  # 매 시 5분 (UTC)
+  workflow_dispatch:  # 수동 트리거 허용
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cafe-scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 셋업
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/cafe-scraper/requirements.txt
+          playwright install --with-deps chromium
+
+      - name: 스크레이퍼 실행
+        env:
+          NAVER_CAFE_ID: ${{ secrets.NAVER_CAFE_ID }}
+          NAVER_CAFE_PASSWORD: ${{ secrets.NAVER_CAFE_PASSWORD }}
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+        run: python scripts/cafe-scraper/main.py
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name "newzy-bot"
+          git config user.email "newzy-bot@100m1s.com"
+          git add data/cafe/
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 커밋 스킵"
+          else
+            git commit -m "chore(newzy): cafe scrape $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi
+
+      - name: 디버그 아티팩트 (실패 시)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cafe-scrape-debug
+          path: data/cafe/debug_*.html
+          retention-days: 7
