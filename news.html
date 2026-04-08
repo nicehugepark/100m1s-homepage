@@ -579,14 +579,15 @@ async function init() {
   for (const d of (kiwoomIndex?.dates || [])) dateSet.add(d);
   if (dateSet.size === 0) dateSet.add('sample');
 
-  // 키움 데이터를 날짜별로 fetch (병렬)
+  // 키움 데이터를 날짜별로 fetch (병렬). 실제 파일 없으면 sample.json fallback.
   const kiwoomByDate = {};
   await Promise.all(Array.from(dateSet).map(async d => {
-    if (d === 'sample') {
-      kiwoomByDate[d] = await loadKiwoomDate('sample');
-    } else {
-      kiwoomByDate[d] = await loadKiwoomDate(d);
+    let k = await loadKiwoomDate(d);
+    if (!k && (kiwoomIndex?.dates?.length ?? 0) === 0) {
+      // 실제 데이터 0건 — 시각 검증용 sample fallback
+      k = await loadKiwoomDate('sample');
     }
+    kiwoomByDate[d] = k;
   }));
 
   // 카페 글 날짜별 그룹
