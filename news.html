@@ -243,8 +243,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   display: grid;
   grid-template-columns: 28px 1fr auto auto;
   gap: 12px;
-  align-items: baseline;
-  padding: 6px 10px;
+  align-items: center;
+  padding: 8px 10px;
   border-radius: 6px;
   background: rgba(255,255,255,0.7);
   font-size: 12px;
@@ -255,10 +255,31 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 10px; color: var(--dm); font-weight: 700;
   font-family: 'SF Mono', monospace;
 }
+.kiwoom-name-cell {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px;
+  min-width: 0;
+}
 .kiwoom-name {
   font-weight: 700; color: var(--tx); letter-spacing: -0.2px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
 }
+.kiwoom-themes {
+  display: flex; flex-wrap: wrap; gap: 3px;
+}
+.kiwoom-theme-chip {
+  display: inline-block;
+  font-size: 9px; font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: rgba(196,153,48,0.12);
+  color: var(--am);
+  border: 1px solid rgba(196,153,48,0.25);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.kiwoom-theme-chip:hover { background: rgba(196,153,48,0.25); }
+.kiwoom-theme-chip.src-owner { background: rgba(196,153,48,0.3); border-color: var(--am); }
+.kiwoom-theme-chip.src-llm { border-style: dashed; opacity: 0.85; }
 .kiwoom-amount {
   font-size: 11px; color: var(--am); font-weight: 700;
   font-family: 'SF Mono', monospace;
@@ -348,6 +369,16 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 </footer>
 
 <script>
+let themesData = null;
+
+async function loadThemes() {
+  try {
+    const res = await fetch('/data/themes/themes.json?t=' + Date.now());
+    if (!res.ok) throw new Error('themes.json HTTP ' + res.status);
+    return await res.json();
+  } catch (e) { return null; }
+}
+
 async function loadIndex() {
   try {
     const res = await fetch('/data/cafe/index.json?t=' + Date.now());
@@ -477,10 +508,21 @@ function renderKiwoomBlock(kiwoom, cafeStockNames) {
     const sign = pct >= 0 ? '+' : '';
     // 카페에 같은 종목 등장 시 표시
     const matchedClass = cafeStockNames.has(s.name) ? ' matched-cafe' : '';
+    const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 5);
+    const themesHtml = themes.length > 0
+      ? `<span class="kiwoom-themes">${themes.map(t => {
+          const srcClass = t.source === 'owner_input' ? ' src-owner'
+                         : t.source === 'llm_inference' ? ' src-llm' : '';
+          return `<span class="kiwoom-theme-chip${srcClass}" data-theme="${escapeHtml(t.name)}">${escapeHtml(t.name)}</span>`;
+        }).join('')}</span>`
+      : '';
     return `
       <div class="kiwoom-row${matchedClass}">
         <div class="kiwoom-rank">#${i + 1}</div>
-        <div class="kiwoom-name">${escapeHtml(s.name)}</div>
+        <div class="kiwoom-name-cell">
+          <span class="kiwoom-name">${escapeHtml(s.name)}</span>
+          ${themesHtml}
+        </div>
         <div class="kiwoom-pct ${dir}">${sign}${pct.toFixed(2)}%</div>
         <div class="kiwoom-amount">${fmtTradeAmount(s.max_trade_amount ?? s.trade_amount)}</div>
       </div>
@@ -558,8 +600,9 @@ async function init() {
   const meta = document.getElementById('meta');
   const content = document.getElementById('content');
 
-  // 카페 + 키움 인덱스 병행 로드
-  const [cafeIndex, kiwoomIndex] = await Promise.all([loadIndex(), loadKiwoomIndex()]);
+  // 카페 + 키움 인덱스 + 테마 병행 로드
+  const [cafeIndex, kiwoomIndex, themes] = await Promise.all([loadIndex(), loadKiwoomIndex(), loadThemes()]);
+  themesData = themes;
 
   const cafeUpdated = cafeIndex?.updated_at || '—';
   const kiwoomUpdated = kiwoomIndex?.updated_at || '—';
