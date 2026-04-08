@@ -248,8 +248,12 @@ def fetch_menu_article_ids(page) -> list[str]:
 
 
 def fetch_article_html(page, article_id: str) -> str | None:
-    """글 본문 HTML(텍스트 위주) 수집."""
+    """글 본문 HTML(텍스트 위주) 수집.
+
+    DEBUG_FETCH=1 환경변수 설정 시 디버그 HTML을 data/debug_article_<id>_<source>.html 저장.
+    """
     url = ARTICLE_URL_TEMPLATE.format(article_id=article_id)
+    debug = os.environ.get("DEBUG_FETCH") == "1"
     try:
         page.goto(url, wait_until="domcontentloaded", timeout=20000)
         time.sleep(3)
@@ -263,7 +267,16 @@ def fetch_article_html(page, article_id: str) -> str | None:
             try:
                 el = page.query_selector(sel)
                 if el:
-                    return el.inner_html()
+                    html = el.inner_html()
+                    if debug:
+                        (
+                            DATA_DIR
+                            / f"debug_article_{article_id}_main_{sel.replace('.', '').replace('#', '')}.html"
+                        ).write_text(html, encoding="utf-8")
+                    log(
+                        f"  [{article_id}] main page selector {sel} 매칭 ({len(html)} bytes)"
+                    )
+                    return html
             except Exception:
                 continue
         # iframe 내부
@@ -272,10 +285,28 @@ def fetch_article_html(page, article_id: str) -> str | None:
                 try:
                     el = frame.query_selector(sel)
                     if el:
-                        return el.inner_html()
+                        html = el.inner_html()
+                        if debug:
+                            (
+                                DATA_DIR
+                                / f"debug_article_{article_id}_iframe_{sel.replace('.', '').replace('#', '')}.html"
+                            ).write_text(html, encoding="utf-8")
+                        log(
+                            f"  [{article_id}] iframe selector {sel} 매칭 ({len(html)} bytes)"
+                        )
+                        return html
                 except Exception:
                     continue
-        return page.content()
+        # fallback: 전체 페이지
+        full = page.content()
+        if debug:
+            (DATA_DIR / f"debug_article_{article_id}_fallback.html").write_text(
+                full, encoding="utf-8"
+            )
+        log(
+            f"  [{article_id}] ⚠️ 셀렉터 매칭 실패, 전체 페이지 fallback ({len(full)} bytes)"
+        )
+        return full
     except Exception as e:
         log(f"⚠️ article {article_id} fetch 실패: {e}")
         return None
@@ -309,7 +340,10 @@ def html_to_text(html: str) -> str:
     return text.strip()
 
 
-BLOCK_RE = re.compile(r"<(p|div|li)[^>]*>(.*?)</\1>", re.DOTALL | re.IGNORECASE)
+BLOCK_RE = re.compile(
+    r"<(p|div|li|section|article|figure)[^>]*>(.*?)</\1>",
+    re.DOTALL | re.IGNORECASE,
+)
 LINK_RE = re.compile(
     r'<a[^>]+href="(https?://[^"]+)"[^>]*>(.*?)</a>', re.DOTALL | re.IGNORECASE
 )
