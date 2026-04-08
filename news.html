@@ -241,8 +241,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .kiwoom-row {
   display: grid;
-  grid-template-columns: 28px 1fr auto auto;
-  gap: 8px;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
   align-items: baseline;
   padding: 6px 10px;
   border-radius: 6px;
@@ -275,7 +275,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .stock-main { grid-template-columns: 28px 1fr auto; }
   .stock-price { display: none; }
   .stock-news { padding: 10px 14px 12px 24px; }
-  .kiwoom-row { grid-template-columns: 24px 1fr auto auto; gap: 6px; }
+  .kiwoom-row { grid-template-columns: 1fr auto auto; gap: 8px; }
   .kiwoom-amount { font-size: 10px; }
   .kiwoom-pct { font-size: 10px; min-width: 48px; }
 }
@@ -479,10 +479,9 @@ function renderKiwoomBlock(kiwoom, cafeStockNames) {
     const matchedClass = cafeStockNames.has(s.name) ? ' matched-cafe' : '';
     return `
       <div class="kiwoom-row${matchedClass}">
-        <div class="kiwoom-rank">#${i + 1}</div>
         <div class="kiwoom-name">${escapeHtml(s.name)}</div>
-        <div class="kiwoom-amount">${fmtTradeAmount(s.max_trade_amount ?? s.trade_amount)}</div>
         <div class="kiwoom-pct ${dir}">${sign}${pct.toFixed(2)}%</div>
+        <div class="kiwoom-amount">${fmtTradeAmount(s.max_trade_amount ?? s.trade_amount)}</div>
       </div>
     `;
   }).join('');
