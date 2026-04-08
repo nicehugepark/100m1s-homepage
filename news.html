@@ -292,125 +292,250 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .kiwoom-pct.up { color: #C53939; }
 .kiwoom-pct.down { color: #1958C7; }
 
-/* ───── 토스 스타일 캘린더 ───── */
+/* ───── 캘린더 + 콘텐츠 2컬럼 레이아웃 ───── */
+.cal-layout {
+  display: grid;
+  grid-template-columns: 296px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+.cal-layout > .cal-side { position: sticky; top: 88px; }
+
 .toss-cal {
-  max-width: 560px; margin: 0 auto 32px;
-  padding: 0 20px;
+  background: linear-gradient(180deg, #FFFCF3 0%, var(--sf) 70%);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 16px 14px 14px;
+  box-shadow: 0 2px 12px rgba(26,29,38,0.04);
 }
 .toss-cal-header {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px; padding: 0 4px;
 }
 .toss-cal-title {
-  font-size: 20px; font-weight: 900; letter-spacing: -0.6px;
-  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 800; letter-spacing: -0.3px;
+  display: flex; align-items: center; gap: 6px; color: var(--tx);
 }
 .toss-cal-nav {
-  background: none; border: none; cursor: pointer;
-  font-size: 18px; color: var(--tx2); padding: 4px 8px;
-  font-weight: 700;
+  background: var(--bg2); border: none; cursor: pointer;
+  width: 26px; height: 26px; border-radius: 8px;
+  font-size: 13px; color: var(--tx2); font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center;
 }
-.toss-cal-nav:disabled { color: var(--bd); cursor: not-allowed; }
-.toss-cal-sub { font-size: 11px; color: var(--dm); font-family: 'SF Mono', monospace; }
+.toss-cal-nav:hover:not(:disabled) { background: var(--am3); color: var(--am); }
+.toss-cal-nav:disabled { color: var(--bd); cursor: not-allowed; background: transparent; }
+.toss-cal-sub {
+  font-size: 10px; color: var(--dm); font-family: 'SF Mono', monospace;
+  padding: 0 4px 8px; text-align: right;
+}
 .toss-cal-grid {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
 }
 .toss-cal-dow {
-  font-size: 10px; font-weight: 700; color: var(--dm);
-  text-align: center; height: 20px; line-height: 20px;
+  font-size: 11px; font-weight: 700; color: var(--dm);
+  text-align: center; height: 24px; line-height: 24px;
 }
 .toss-cal-dow.sun { color: #C53939; }
 .toss-cal-dow.sat { color: #1958C7; }
 .toss-cal-cell {
-  width: 100%; aspect-ratio: 1; height: auto; border-radius: 10px;
+  width: 100%; aspect-ratio: 1; border-radius: 9px;
   position: relative; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: var(--tx);
-  background: rgba(196,153,48,0);
-  border: 2px solid transparent;
-  transition: transform 0.15s;
+  font-size: 12px; font-weight: 700; color: var(--tx);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background 0.12s, color 0.12s;
 }
-.toss-cal-cell.empty { color: #2a2a2a; cursor: pointer; }
-.toss-cal-cell.future { color: #1a1a1a; cursor: not-allowed; pointer-events: none; }
+.toss-cal-cell.empty { color: var(--tx2); }
+.toss-cal-cell.future { color: var(--bd); cursor: not-allowed; pointer-events: none; }
 .toss-cal-cell.outside { visibility: hidden; }
-.toss-cal-cell.lv1 { background: rgba(196,153,48,0.15); }
-.toss-cal-cell.lv2 { background: rgba(196,153,48,0.3); }
-.toss-cal-cell.lv3 { background: rgba(196,153,48,0.5); }
-.toss-cal-cell.lv4 { background: rgba(196,153,48,0.75); color: #fff; }
-.toss-cal-cell.selected { border-color: var(--am); }
-.toss-cal-cell.weekend { opacity: 0.6; }
-.toss-cal-cell:hover:not(.future):not(.selected) { transform: scale(1.05); }
+.toss-cal-cell.lv1 { background: rgba(232,192,99,0.18); }
+.toss-cal-cell.lv2 { background: rgba(232,192,99,0.34); }
+.toss-cal-cell.lv3 { background: rgba(196,153,48,0.55); color: #3a2a05; }
+.toss-cal-cell.lv4 { background: linear-gradient(135deg, #E8C063 0%, #C49930 100%); color: #fff; }
+.toss-cal-cell.weekend:not(.lv3):not(.lv4) { opacity: 0.7; }
+.toss-cal-cell:hover:not(.future):not(.selected) {
+  background: var(--am3);
+  border-color: rgba(196,153,48,0.3);
+}
+.toss-cal-cell.selected {
+  background: var(--am) !important;
+  color: #fff !important;
+  border-color: var(--am);
+  box-shadow: 0 2px 8px rgba(196,153,48,0.45);
+}
+.toss-cal-cell.today::after {
+  content: ''; position: absolute;
+  top: 3px; right: 3px; width: 5px; height: 5px;
+  border-radius: 50%; background: #A01528;
+}
+.toss-cal-cell.selected.today::after { background: #fff; }
 .toss-cal-dots {
-  position: absolute; bottom: 3px; right: 4px;
-  display: flex; gap: 1px;
+  position: absolute; bottom: 3px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 2px;
 }
 .toss-cal-dot {
   width: 3px; height: 3px; border-radius: 50%;
-  background: currentColor; opacity: 0.55;
+  background: currentColor; opacity: 0.5;
 }
-.toss-cal-expand {
-  max-width: 560px; margin: 0 auto 40px;
-  padding: 0 20px;
-  max-height: 0; overflow: hidden;
-  transition: max-height 240ms ease;
+.toss-cal-cell.selected .toss-cal-dot { background: #fff; opacity: 0.85; }
+.toss-cal-legend {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 12px; padding: 10px 4px 2px;
+  border-top: 1px dashed var(--bd);
+  font-size: 9px; color: var(--dm);
+  font-family: 'SF Mono', monospace;
 }
-.toss-cal-expand.open { max-height: 8000px; }
-.toss-cal-expand-inner {
-  background: var(--sf); border: 1px solid var(--bd); border-radius: 14px;
-  padding: 20px; margin-top: 8px; position: relative;
+.toss-cal-legend-swatch {
+  width: 10px; height: 10px; border-radius: 3px;
 }
-.toss-cal-close {
-  position: absolute; top: 12px; right: 12px;
-  background: none; border: none; font-size: 20px;
-  cursor: pointer; color: var(--dm); line-height: 1;
-  width: 28px; height: 28px; border-radius: 50%;
+
+/* ───── 캘린더 콘텐츠 영역 ───── */
+.cal-content {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 24px 26px;
+  min-height: 320px;
 }
-.toss-cal-close:hover { background: var(--bg2); color: var(--tx); }
-.toss-cal-expand-date {
-  font-size: 15px; font-weight: 900; letter-spacing: -0.3px;
-  margin-bottom: 16px; padding-right: 32px;
+.cal-content-head {
+  display: flex; align-items: baseline; gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 14px; margin-bottom: 18px;
+  border-bottom: 2px solid var(--tx);
 }
-.toss-cal-section {
-  margin-bottom: 20px;
+.cal-content-date {
+  font-size: 24px; font-weight: 900; letter-spacing: -0.7px;
+  color: var(--tx);
 }
-.toss-cal-section:last-child { margin-bottom: 0; }
-.toss-cal-section-title {
-  font-size: 10px; font-weight: 800; color: var(--dm);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 10px;
+.cal-content-meta {
+  font-size: 11px; color: var(--dm);
+  font-family: 'SF Mono', monospace;
 }
-.toss-narr-stack {
-  display: flex; flex-direction: column; gap: 6px;
+.cal-section { margin-bottom: 22px; }
+.cal-section:last-child { margin-bottom: 0; }
+.cal-section-title {
+  font-size: 11px; font-weight: 800; color: var(--am);
+  text-transform: uppercase; letter-spacing: 1.1px;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
 }
-.toss-narr-pill {
+.cal-section-title::before {
+  content: ''; display: inline-block;
+  width: 4px; height: 14px; border-radius: 2px;
+  background: linear-gradient(180deg, #E8C063, #C49930);
+}
+.cal-section-title .count {
+  color: var(--dm); font-weight: 700;
+  font-family: 'SF Mono', monospace;
+}
+
+.cal-narr-stack { display: flex; flex-direction: column; gap: 6px; }
+.cal-narr-pill {
   display: inline-block;
   padding: 8px 14px; border-radius: 999px;
-  background: var(--am4); border: 1px solid var(--am3);
+  background: var(--am4); border: 1px solid var(--am2);
   font-size: 13px; color: var(--tx); line-height: 1.5;
   width: fit-content; max-width: 100%;
 }
-.toss-stock-line {
-  display: flex; flex-wrap: wrap; align-items: center;
-  gap: 6px; padding: 8px 0;
-  border-bottom: 1px solid var(--bd);
+
+.cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
+.cal-trade-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg2);
   font-size: 13px;
+  transition: background 0.12s;
 }
-.toss-stock-line:last-child { border-bottom: none; }
-.toss-stock-name { font-weight: 700; color: var(--tx); }
-.toss-ind-chip {
-  display: inline-block; font-size: 10px; font-weight: 600;
-  padding: 2px 6px; border-radius: 3px;
-  background: rgba(196,153,48,0.12); color: var(--am);
-  border: 1px solid rgba(196,153,48,0.25);
+.cal-trade-row:hover { background: var(--am4); }
+.cal-trade-rank {
+  font-size: 10px; color: var(--dm); font-weight: 800;
+  font-family: 'SF Mono', monospace;
 }
-.toss-cal-empty-inline {
-  text-align: center; padding: 40px 0;
+.cal-trade-name-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
+.cal-trade-name { font-weight: 800; color: var(--tx); letter-spacing: -0.2px; }
+.cal-trade-amount {
+  font-size: 11px; color: var(--am); font-weight: 800;
+  font-family: 'SF Mono', monospace;
+}
+.cal-trade-pct {
+  font-size: 12px; font-weight: 800;
+  font-family: 'SF Mono', monospace;
+  text-align: right; min-width: 56px;
+}
+.cal-trade-pct.up { color: #C53939; }
+.cal-trade-pct.down { color: #1958C7; }
+.cal-ind-chip {
+  display: inline-block; font-size: 9px; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px;
+  background: rgba(25,88,199,0.10); color: #1958C7;
+  border: 1px solid rgba(25,88,199,0.20);
+}
+
+/* 특징주 (카드 + 들여쓴 뉴스) */
+.cal-feature-list { display: flex; flex-direction: column; gap: 12px; }
+.cal-feature-card {
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--sf);
+}
+.cal-feature-head {
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: linear-gradient(90deg, #FFF9E8 0%, var(--sf) 100%);
+  border-bottom: 1px solid var(--bd);
+}
+.cal-feature-name {
+  font-size: 15px; font-weight: 800; letter-spacing: -0.3px;
+}
+.cal-feature-pct {
+  font-size: 12px; font-weight: 800;
+  font-family: 'SF Mono', monospace;
+}
+.cal-feature-pct.up { color: #C53939; }
+.cal-feature-pct.down { color: #1958C7; }
+.cal-feature-source {
+  font-size: 9px; font-weight: 700; padding: 2px 7px;
+  border-radius: 999px; letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.cal-feature-source.cafe { background: var(--pos-bg); color: var(--pos); }
+.cal-feature-source.fallback { background: var(--neu-bg); color: var(--neu); }
+.cal-feature-news {
+  padding: 10px 16px 14px 28px;
+  background: var(--bg);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.cal-feature-news-empty {
+  font-size: 11px; color: var(--dm); padding: 4px 0;
+}
+
+.cal-empty {
+  text-align: center; padding: 50px 20px;
   color: var(--dm); font-size: 13px;
 }
-.toss-cal-empty-circle {
-  display: inline-block; width: 28px; height: 28px;
+.cal-empty-circle {
+  display: inline-block; width: 32px; height: 32px;
   border: 2px solid var(--dm); border-radius: 50%;
-  margin-bottom: 10px; opacity: 0.5;
+  margin-bottom: 12px; opacity: 0.4;
+}
+
+@media (max-width: 880px) {
+  .cal-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .cal-layout > .cal-side { position: static; }
+  .toss-cal { max-width: 360px; margin: 0 auto; }
+  .cal-content { padding: 20px 18px; }
+  .cal-content-date { font-size: 20px; }
 }
 @media (max-width: 640px) {
   .stock-main { grid-template-columns: 28px 1fr auto; }
@@ -419,6 +544,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .kiwoom-row { grid-template-columns: 24px 1fr auto auto; gap: 8px; }
   .kiwoom-amount { font-size: 10px; }
   .kiwoom-pct { font-size: 10px; min-width: 48px; }
+  .cal-trade-row { grid-template-columns: 24px 1fr auto auto; gap: 8px; padding: 9px 10px; }
+  .cal-trade-amount { font-size: 10px; }
+  .cal-trade-pct { font-size: 11px; min-width: 48px; }
+  .cal-feature-news { padding-left: 18px; }
 }
 </style>
 </head>
@@ -465,19 +594,30 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     <div class="page-meta" id="meta">로딩 중…</div>
   </div>
 
-  <section class="toss-cal" id="toss-cal" aria-label="수집 캘린더">
-    <div class="toss-cal-header">
-      <div class="toss-cal-title">
-        <button class="toss-cal-nav" id="toss-cal-prev" aria-label="이전 달">&lt;</button>
-        <span id="toss-cal-ym">—</span>
-        <button class="toss-cal-nav" id="toss-cal-next" aria-label="다음 달">&gt;</button>
-      </div>
-      <div class="toss-cal-sub" id="toss-cal-sub">수집 0일 · 종목 0</div>
-    </div>
-    <div class="toss-cal-grid" id="toss-cal-grid"></div>
-  </section>
-  <div class="toss-cal-expand" id="toss-cal-expand" aria-live="polite">
-    <div class="toss-cal-expand-inner" id="toss-cal-expand-inner"></div>
+  <div class="cal-layout">
+    <aside class="cal-side">
+      <section class="toss-cal" id="toss-cal" aria-label="수집 캘린더">
+        <div class="toss-cal-header">
+          <div class="toss-cal-title" id="toss-cal-ym">—</div>
+          <div>
+            <button class="toss-cal-nav" id="toss-cal-prev" aria-label="이전 달">&lt;</button>
+            <button class="toss-cal-nav" id="toss-cal-next" aria-label="다음 달">&gt;</button>
+          </div>
+        </div>
+        <div class="toss-cal-sub" id="toss-cal-sub">수집 0일 · 종목 0</div>
+        <div class="toss-cal-grid" id="toss-cal-grid"></div>
+        <div class="toss-cal-legend">
+          <span class="toss-cal-legend-swatch" style="background:rgba(232,192,99,0.18)"></span>
+          <span class="toss-cal-legend-swatch" style="background:rgba(232,192,99,0.34)"></span>
+          <span class="toss-cal-legend-swatch" style="background:rgba(196,153,48,0.55)"></span>
+          <span class="toss-cal-legend-swatch" style="background:linear-gradient(135deg,#E8C063,#C49930)"></span>
+          <span>활성도</span>
+        </div>
+      </section>
+    </aside>
+    <section class="cal-content" id="cal-content" aria-live="polite">
+      <div class="cal-empty"><div class="cal-empty-circle"></div><div>날짜를 선택하세요</div></div>
+    </section>
   </div>
 
   <div id="content">
@@ -879,16 +1019,18 @@ function renderCalendar() {
     const lv = isFuture ? 0 : calActivityLevel(date);
     const dow = new Date(calViewYear, calViewMonth - 1, d).getDay();
     const isWeekend = (dow === 0 || dow === 6);
+    const isToday = (date === todayStr);
     const classes = ['toss-cal-cell'];
     if (isFuture) classes.push('future');
     else if (lv === 0) classes.push('empty');
     else classes.push('lv' + lv);
     if (isWeekend) classes.push('weekend');
+    if (isToday) classes.push('today');
     if (date === calSelectedDate) classes.push('selected');
     const dotsHtml = lv > 0
-      ? `<div class="toss-cal-dots">${'<div class="toss-cal-dot"></div>'.repeat(lv)}</div>`
+      ? `<div class="toss-cal-dots">${'<div class="toss-cal-dot"></div>'.repeat(Math.min(lv,3))}</div>`
       : '';
-    const aria = `${date} 활성도 ${lv}/4`;
+    const aria = `${date} 활성도 ${lv}/4${isToday ? ' (오늘)' : ''}`;
     html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isFuture ? -1 : 0}" aria-label="${aria}">${d}${dotsHtml}</div>`;
   }
   grid.innerHTML = html;
@@ -899,30 +1041,17 @@ function renderCalendar() {
   });
 }
 
-function closeCalExpand() {
-  calSelectedDate = null;
-  document.getElementById('toss-cal-expand').classList.remove('open');
-  renderCalendar();
-}
-
 async function onCalCellClick(date) {
-  if (calSelectedDate === date) {
-    closeCalExpand();
-    return;
-  }
   calSelectedDate = date;
   renderCalendar();
-  const expand = document.getElementById('toss-cal-expand');
-  const inner = document.getElementById('toss-cal-expand-inner');
+  const inner = document.getElementById('cal-content');
   inner.innerHTML = `
-    <button class="toss-cal-close" aria-label="닫기">×</button>
-    <div class="toss-cal-expand-date">${formatKoDate(date)}</div>
-    <div class="toss-cal-empty-inline">불러오는 중…</div>
+    <div class="cal-content-head">
+      <div class="cal-content-date">${formatKoDate(date)}</div>
+      <div class="cal-content-meta">불러오는 중…</div>
+    </div>
+    <div class="cal-empty"><div>데이터 로드 중</div></div>
   `;
-  inner.querySelector('.toss-cal-close').addEventListener('click', closeCalExpand);
-  expand.classList.add('open');
-
-  // 데이터 로드
   const data = await loadCalDayData(date);
   renderCalExpandContent(date, data);
 }
@@ -968,106 +1097,148 @@ async function loadCalDayData(date) {
 }
 
 function renderCalExpandContent(date, data) {
-  const inner = document.getElementById('toss-cal-expand-inner');
-  const hasAny = (data.narratives.length > 0) ||
-                 (data.kiwoom && (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []).length > 0) ||
-                 (data.cafePosts.length > 0);
+  const inner = document.getElementById('cal-content');
+  const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
+  const hasAny = (data.narratives.length > 0) || kiwoomStocks.length > 0 || data.cafePosts.length > 0;
 
   if (!hasAny) {
     inner.innerHTML = `
-      <button class="toss-cal-close" aria-label="닫기">×</button>
-      <div class="toss-cal-expand-date">${formatKoDate(date)}</div>
-      <div class="toss-cal-empty-inline">
-        <div class="toss-cal-empty-circle"></div>
-        <div>${isWeekendDate(date) ? '주말 — 장 휴장' : '수집 데이터 없음'}</div>
+      <div class="cal-content-head">
+        <div class="cal-content-date">${formatKoDate(date)}</div>
+        <div class="cal-content-meta">데이터 없음</div>
+      </div>
+      <div class="cal-empty">
+        <div class="cal-empty-circle"></div>
+        <div>${isWeekendDate(date) ? '주말 — 장 휴장' : '수집된 데이터가 없습니다'}</div>
       </div>
     `;
-    inner.querySelector('.toss-cal-close').addEventListener('click', closeCalExpand);
     return;
   }
 
+  // 카페 특징주 수집 (종목명 → 뉴스카드 매핑 포함)
+  const cafeStockMap = new Map(); // name → { stock, newsCards[] }
+  for (const p of data.cafePosts) {
+    for (const sec of (p.sections || [])) {
+      for (const st of (sec.stocks || [])) {
+        if (!st.name) continue;
+        if (!cafeStockMap.has(st.name)) {
+          cafeStockMap.set(st.name, { stock: st, newsCards: [] });
+        }
+        const entry = cafeStockMap.get(st.name);
+        for (const nc of (st.news_cards || [])) entry.newsCards.push(nc);
+      }
+    }
+  }
+
+  // 특징주 결정: 카페 우선, 비면 거래대금 TOP fallback
+  let featureSource = 'cafe';
+  let featureItems = []; // { name, pct, themes, newsCards, ticker }
+  if (cafeStockMap.size > 0) {
+    for (const [name, e] of cafeStockMap.entries()) {
+      const pct = e.stock.change_pct ?? null;
+      const ticker = e.stock.ticker;
+      const themes = (themesData?.stocks?.[ticker]?.themes || []).slice(0, 3);
+      featureItems.push({ name, pct, themes, newsCards: e.newsCards, ticker });
+    }
+    featureItems = featureItems.slice(0, 12);
+  } else if (kiwoomStocks.length > 0) {
+    featureSource = 'fallback';
+    featureItems = kiwoomStocks.slice(0, 6).map(s => {
+      const pct = s.max_change_pct ?? s.change_pct ?? null;
+      const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
+      return { name: s.name, pct, themes, newsCards: [], ticker: s.ticker };
+    });
+  }
+
+  // 메타: 활성도 요약
+  const newsTotal = featureItems.reduce((s, i) => s + i.newsCards.length, 0);
+  const metaParts = [];
+  if (kiwoomStocks.length > 0) metaParts.push(`거래대금 ${kiwoomStocks.length}종목`);
+  if (featureItems.length > 0) metaParts.push(`특징주 ${featureItems.length}`);
+  if (newsTotal > 0) metaParts.push(`뉴스 ${newsTotal}`);
+  const metaText = metaParts.join(' · ') || '—';
+
   // ① 내러티브
   const narrHtml = data.narratives.length > 0 ? `
-    <div class="toss-cal-section">
-      <div class="toss-cal-section-title">오늘의 내러티브</div>
-      <div class="toss-narr-stack">
-        ${data.narratives.map(n => `<span class="toss-narr-pill">${escapeHtml(n)}</span>`).join('')}
+    <div class="cal-section">
+      <div class="cal-section-title">오늘의 내러티브 <span class="count">${data.narratives.length}</span></div>
+      <div class="cal-narr-stack">
+        ${data.narratives.slice(0, 8).map(n => `<span class="cal-narr-pill">${escapeHtml(n)}</span>`).join('')}
       </div>
     </div>
   ` : '';
 
   // ② 거래대금 TOP
-  const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
   const kiwoomHtml = kiwoomStocks.length > 0 ? `
-    <div class="toss-cal-section">
-      <div class="toss-cal-section-title">거래대금 TOP</div>
-      ${kiwoomStocks.slice(0, 15).map(s => {
-        const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
-        return `
-          <div class="toss-stock-line">
-            <span class="toss-stock-name">${escapeHtml(s.name)}</span>
-            ${themes.map(t => `<span class="toss-ind-chip">${escapeHtml(t.name)}</span>`).join('')}
-          </div>
-        `;
-      }).join('')}
+    <div class="cal-section">
+      <div class="cal-section-title">거래대금 TOP <span class="count">${Math.min(kiwoomStocks.length, 15)}</span></div>
+      <div class="cal-trade-list">
+        ${kiwoomStocks.slice(0, 15).map((s, i) => {
+          const pct = s.max_change_pct ?? s.change_pct ?? 0;
+          const dir = pct >= 0 ? 'up' : 'down';
+          const sign = pct >= 0 ? '+' : '';
+          const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
+          return `
+            <div class="cal-trade-row">
+              <div class="cal-trade-rank">#${i + 1}</div>
+              <div class="cal-trade-name-cell">
+                <span class="cal-trade-name">${escapeHtml(s.name)}</span>
+                ${themes.map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}
+              </div>
+              <div class="cal-trade-amount">${fmtTradeAmount(s.max_trade_amount ?? s.trade_amount)}</div>
+              <div class="cal-trade-pct ${dir}">${sign}${pct.toFixed(2)}%</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
     </div>
-  ` : '';
-
-  // ③ 카페 특징주
-  const cafeStocks = [];
-  const seenCafe = new Set();
-  for (const p of data.cafePosts) {
-    for (const sec of (p.sections || [])) {
-      for (const st of (sec.stocks || [])) {
-        if (st.name && !seenCafe.has(st.name)) {
-          seenCafe.add(st.name);
-          cafeStocks.push(st);
-        }
-      }
-    }
-  }
-  const cafeHtml = cafeStocks.length > 0 ? `
-    <div class="toss-cal-section">
-      <div class="toss-cal-section-title">카페 특징주</div>
-      ${cafeStocks.slice(0, 20).map(s => {
-        const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
-        return `
-          <div class="toss-stock-line">
-            <span class="toss-stock-name">${escapeHtml(s.name)}</span>
-            ${themes.map(t => `<span class="toss-ind-chip">${escapeHtml(t.name)}</span>`).join('')}
-          </div>
-        `;
-      }).join('')}
+  ` : `
+    <div class="cal-section">
+      <div class="cal-section-title">거래대금 TOP</div>
+      <div class="cal-empty" style="padding:24px 0;">${isWeekendDate(date) ? '주말/휴장' : '거래대금 데이터 없음'}</div>
     </div>
-  ` : '';
+  `;
 
-  // ④ 뉴스 카드
-  const newsCards = [];
-  for (const p of data.cafePosts) {
-    for (const sec of (p.sections || [])) {
-      for (const st of (sec.stocks || [])) {
-        for (const nc of (st.news_cards || [])) {
-          newsCards.push(nc);
-        }
-      }
-    }
-  }
-  const newsHtml = newsCards.length > 0 ? `
-    <div class="toss-cal-section">
-      <div class="toss-cal-section-title">뉴스</div>
-      ${newsCards.slice(0, 20).map(renderNewsCard).join('')}
+  // ③ 특징주 + 뉴스 (nested)
+  const featureHtml = featureItems.length > 0 ? `
+    <div class="cal-section">
+      <div class="cal-section-title">
+        특징주 <span class="count">${featureItems.length}</span>
+        <span class="cal-feature-source ${featureSource}">${featureSource === 'cafe' ? '카페' : '거래대금 기반'}</span>
+      </div>
+      <div class="cal-feature-list">
+        ${featureItems.map(it => {
+          const pct = it.pct;
+          const dir = (pct ?? 0) >= 0 ? 'up' : 'down';
+          const sign = (pct ?? 0) >= 0 ? '+' : '';
+          const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
+          const newsInner = it.newsCards.length > 0
+            ? it.newsCards.slice(0, 6).map(renderNewsCard).join('')
+            : `<div class="cal-feature-news-empty">뉴스 없음</div>`;
+          return `
+            <div class="cal-feature-card">
+              <div class="cal-feature-head">
+                <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+                ${pctText ? `<span class="cal-feature-pct ${dir}">${pctText}</span>` : ''}
+                ${it.themes.map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}
+              </div>
+              <div class="cal-feature-news">${newsInner}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
     </div>
   ` : '';
 
   inner.innerHTML = `
-    <button class="toss-cal-close" aria-label="닫기">×</button>
-    <div class="toss-cal-expand-date">${formatKoDate(date)}</div>
+    <div class="cal-content-head">
+      <div class="cal-content-date">${formatKoDate(date)}</div>
+      <div class="cal-content-meta">${metaText}</div>
+    </div>
     ${narrHtml}
     ${kiwoomHtml}
-    ${cafeHtml}
-    ${newsHtml}
+    ${featureHtml}
   `;
-  inner.querySelector('.toss-cal-close').addEventListener('click', closeCalExpand);
 }
 
 async function initCalendar() {
@@ -1075,7 +1246,11 @@ async function initCalendar() {
   const now = new Date();
   calViewYear = now.getFullYear();
   calViewMonth = now.getMonth() + 1;
+  const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  calSelectedDate = todayStr;
   renderCalendar();
+  // 오늘 자동 선택 → 콘텐츠 즉시 로드
+  onCalCellClick(todayStr);
 
   document.getElementById('toss-cal-prev').addEventListener('click', () => {
     calViewMonth--;
