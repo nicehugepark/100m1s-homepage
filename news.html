@@ -627,6 +627,16 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding: 2px 0; margin-top: 2px;
   opacity: 0.75;
 }
+.cal-streak-badge {
+  display: inline-block; font-size: 9px; font-weight: 800;
+  padding: 2px 7px; border-radius: 999px;
+  background: var(--am3); color: var(--am); border: 1px solid var(--am2);
+  margin-left: 6px; vertical-align: middle;
+}
+.cal-theme-row {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  padding-top: 4px;
+}
 
 .cal-empty {
   text-align: center; padding: 50px 20px;
@@ -1121,14 +1131,16 @@ async function loadCalDayData(date) {
       }
     }
 
-    // 전일 해석 전파: prev_pick이 있는데 해석이 빈약한 종목 → 전일 데이터에서 보충
+    }
+  } catch (e) { console.warn('stock-*.json load:', e); }
+
+  // 전일 해석 전파 (stock-*.json try-catch 밖 — 에러 삼킴 방지)
+  try {
     const prevPickDates = new Set();
-    for (const st of (stockDaily.stocks || [])) {
-      if (st.prev_pick && st.prev_pick.date && interpretedByName.has(st.name)) {
-        const curr = interpretedByName.get(st.name);
+    for (const [name, curr] of interpretedByName) {
+      if (curr.prev_pick && curr.prev_pick.date) {
         const chain = curr.causal_chain || [];
-        const hasMeaningful = chain.length > 0;
-        if (!hasMeaningful) prevPickDates.add(st.prev_pick.date);
+        if (chain.length === 0) prevPickDates.add(curr.prev_pick.date);
       }
     }
     for (const prevDate of prevPickDates) {
@@ -1137,11 +1149,8 @@ async function loadCalDayData(date) {
       for (const [name, prevInterp] of prevData.interpretedByName) {
         if (!interpretedByName.has(name)) continue;
         const curr = interpretedByName.get(name);
-        const chain = curr.causal_chain || [];
-        const hasMeaningful = chain.length > 0;
-        if (hasMeaningful) continue;
+        if ((curr.causal_chain || []).length > 0) continue;
         if ((prevInterp.causal_chain || []).length > 0) {
-          // 전일 해석 전파 + 오늘의 연속 선정/pick 정보 보존
           const merged = Object.assign({}, prevInterp);
           if (curr.pick_count) merged.pick_count = curr.pick_count;
           if (curr.prev_pick) merged.prev_pick = curr.prev_pick;
@@ -1149,7 +1158,7 @@ async function loadCalDayData(date) {
         }
       }
     }
-  } catch (e) { /* stock-*.json 없음 허용 */ }
+  } catch (e) { console.warn('prev-day propagation:', e); }
   const result = {
     kiwoom,
     cafePosts: postsOfDay,
@@ -1340,13 +1349,16 @@ function renderCalExpandContent(date, data) {
       const pickMeta = pp
         ? `<div class="cal-pick-meta">연속 ${st.pick_count || 2}회 선정 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
         : '';
+      // 종목명 우측 연속 배지
+      const pickBadge = pp ? `<span class="cal-streak-badge">${st.pick_count || 2}연속</span>` : '';
+      // 테마 칩은 링크 아래 별도 줄
       return `
         <div class="cal-feature-card">
           <div class="cal-feature-head">
             <div class="cal-trade-rank">#${it.rank}</div>
             <div class="cal-feature-namecell">
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
-              ${themesHtml}
+              ${pickBadge}
             </div>
             <div class="cal-trade-amount">${amountText}</div>
             <div class="cal-feature-pct ${dir}">${pctText}</div>
@@ -1354,8 +1366,9 @@ function renderCalExpandContent(date, data) {
           <div class="cal-feature-body">
             ${newzyHtml}
             ${causalHtml}
-            ${pickMeta}
             ${linksHtml}
+            ${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}
+            ${pickMeta}
           </div>
         </div>`;
     }
@@ -1368,11 +1381,15 @@ function renderCalExpandContent(date, data) {
       return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
     }).join('');
     const linksHtml = cafeLinks ? `<div class="cal-feature-links" style="margin-top:4px;">${cafeLinks}</div>` : '';
+    // compact에도 연속 배지
+    const compactPP = it.interp?.prev_pick;
+    const compactBadge = compactPP ? `<span class="cal-streak-badge">${it.interp?.pick_count || 2}연속</span>` : '';
     return `
       <div class="cal-trade-row">
         <div class="cal-trade-rank">#${it.rank}</div>
         <div class="cal-trade-name-cell">
           <span class="cal-trade-name">${escapeHtml(it.name)}</span>
+          ${compactBadge}
           ${themesHtml}
           ${linksHtml}
         </div>
