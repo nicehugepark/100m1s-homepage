@@ -1119,6 +1119,35 @@ async function loadCalDayData(date) {
         macroEvents = stockDaily.macro_events;
       }
     }
+
+    // 전일 해석 전파: prev_pick이 있는데 해석이 빈약한 종목 → 전일 데이터에서 보충
+    const prevPickDates = new Set();
+    for (const st of (stockDaily.stocks || [])) {
+      if (st.prev_pick && st.prev_pick.date && interpretedByName.has(st.name)) {
+        const curr = interpretedByName.get(st.name);
+        const chain = curr.causal_chain || [];
+        const hasMeaningful = chain.length > 0 && !String(chain[0] || '').startsWith('연속');
+        if (!hasMeaningful) prevPickDates.add(st.prev_pick.date);
+      }
+    }
+    for (const prevDate of prevPickDates) {
+      const prevData = await loadCalDayData(prevDate);
+      if (!prevData.interpretedByName) continue;
+      for (const [name, prevInterp] of prevData.interpretedByName) {
+        if (!interpretedByName.has(name)) continue;
+        const curr = interpretedByName.get(name);
+        const chain = curr.causal_chain || [];
+        const hasMeaningful = chain.length > 0 && !String(chain[0] || '').startsWith('연속');
+        if (hasMeaningful) continue;
+        if ((prevInterp.causal_chain || []).length > 0) {
+          // 전일 해석 전파 + 오늘의 연속 선정/pick 정보 보존
+          const merged = Object.assign({}, prevInterp);
+          if (curr.pick_count) merged.pick_count = curr.pick_count;
+          if (curr.prev_pick) merged.prev_pick = curr.prev_pick;
+          interpretedByName.set(name, merged);
+        }
+      }
+    }
   } catch (e) { /* stock-*.json 없음 허용 */ }
   const result = {
     kiwoom,
