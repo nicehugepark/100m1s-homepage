@@ -622,6 +622,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 1px solid #E5A4AB;
 }
 .cal-feature-card.no-interp { opacity: 0.55; }
+.cal-pick-meta {
+  font-size: 10.5px; color: var(--dm); font-style: italic;
+  padding: 2px 0; margin-top: 2px;
+  opacity: 0.75;
+}
 
 .cal-empty {
   text-align: center; padding: 50px 20px;
@@ -1084,16 +1089,12 @@ async function loadCalDayData(date) {
           // stock-*.json 형식 → 기존 렌더러 호환 변환
           const newsItems = (st.news || []).filter(n => !(n.newzy_verdict || '').startsWith('반대'));
           const topNews = newsItems[0];
-          // 연속 선정 + 전일 정보 조합
+          // 전일 정보는 부수적 메타로만 (causal_chain에 넣지 않음)
           const pp = st.prev_pick;
-          const pickLabel = pp
-            ? `연속 ${st.pick_count || 2}회 선정 · 전일 #${pp.rank} ${fmtTradeAmount(pp.trade_amount)} ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%`
-            : '';
           const industryLabel = st.industry ? `업종: ${st.industry}` : '';
           const sectorLabel = st.sector ? st.sector.split(',')[0] : '';
           const diffParts = [
             topNews ? topNews.causal_chain : '',
-            pickLabel,
             !topNews && industryLabel ? industryLabel : '',
             !topNews && sectorLabel ? `주요제품: ${sectorLabel}` : '',
           ].filter(Boolean);
@@ -1101,7 +1102,7 @@ async function loadCalDayData(date) {
           interpretedByName.set(st.name, {
             name: st.name,
             themes: (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t),
-            causal_chain: topNews ? [topNews.causal_chain].filter(Boolean) : (pickLabel ? [pickLabel] : []),
+            causal_chain: topNews ? [topNews.causal_chain].filter(Boolean) : [],
             differentiator: diffParts.join(' · '),
             macro_event: topNews?.macro_event || null,
             news_digest: newsItems.map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
@@ -1126,7 +1127,7 @@ async function loadCalDayData(date) {
       if (st.prev_pick && st.prev_pick.date && interpretedByName.has(st.name)) {
         const curr = interpretedByName.get(st.name);
         const chain = curr.causal_chain || [];
-        const hasMeaningful = chain.length > 0 && !String(chain[0] || '').startsWith('연속');
+        const hasMeaningful = chain.length > 0;
         if (!hasMeaningful) prevPickDates.add(st.prev_pick.date);
       }
     }
@@ -1137,7 +1138,7 @@ async function loadCalDayData(date) {
         if (!interpretedByName.has(name)) continue;
         const curr = interpretedByName.get(name);
         const chain = curr.causal_chain || [];
-        const hasMeaningful = chain.length > 0 && !String(chain[0] || '').startsWith('연속');
+        const hasMeaningful = chain.length > 0;
         if (hasMeaningful) continue;
         if ((prevInterp.causal_chain || []).length > 0) {
           // 전일 해석 전파 + 오늘의 연속 선정/pick 정보 보존
@@ -1334,6 +1335,11 @@ function renderCalExpandContent(date, data) {
         return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
       }).join('');
       const linksHtml = (digestLinks || cafeLinks) ? `<div class="cal-feature-links">${digestLinks}${cafeLinks}</div>` : '';
+      // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
+      const pp = st.prev_pick;
+      const pickMeta = pp
+        ? `<div class="cal-pick-meta">연속 ${st.pick_count || 2}회 선정 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
+        : '';
       return `
         <div class="cal-feature-card">
           <div class="cal-feature-head">
@@ -1348,6 +1354,7 @@ function renderCalExpandContent(date, data) {
           <div class="cal-feature-body">
             ${newzyHtml}
             ${causalHtml}
+            ${pickMeta}
             ${linksHtml}
           </div>
         </div>`;
