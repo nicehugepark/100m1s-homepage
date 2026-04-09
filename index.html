@@ -86,8 +86,68 @@ header {
   color: var(--tx2);
 }
 .nav-links a:hover { color: var(--am); }
-@media (max-width: 640px) {
+
+/* 모바일 햄버거 */
+.menu-toggle {
+  display: none;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer;
+  padding: 0;
+}
+.menu-toggle span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--tx);
+  position: relative;
+}
+.menu-toggle span::before,
+.menu-toggle span::after {
+  content: ''; position: absolute; left: 0;
+  width: 22px; height: 2px; background: var(--tx);
+  transition: transform .2s;
+}
+.menu-toggle span::before { top: -7px; }
+.menu-toggle span::after { top: 7px; }
+.menu-toggle.open span { background: transparent; }
+.menu-toggle.open span::before { top: 0; transform: rotate(45deg); }
+.menu-toggle.open span::after { top: 0; transform: rotate(-45deg); }
+
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  top: 0; right: 0;
+  width: 75%; max-width: 300px;
+  height: 100vh;
+  background: var(--sf);
+  border-left: 1px solid var(--bd);
+  padding: 80px 28px 24px;
+  z-index: 200;
+  transform: translateX(100%);
+  transition: transform .25s ease-out;
+  box-shadow: -8px 0 24px rgba(0,0,0,0.06);
+}
+.mobile-drawer.open { transform: translateX(0); }
+.mobile-drawer a {
+  display: block;
+  padding: 14px 0;
+  font-size: 17px; font-weight: 700;
+  color: var(--tx);
+  border-bottom: 1px solid var(--bd);
+}
+.mobile-drawer a:hover { color: var(--am); }
+.drawer-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.32);
+  z-index: 150;
+}
+.drawer-backdrop.open { display: block; }
+
+@media (max-width: 720px) {
   .nav-links { display: none; }
+  .menu-toggle { display: inline-flex; }
+  .mobile-drawer { display: block; }
 }
 
 /* ─── Hero ─── */
@@ -412,8 +472,34 @@ footer .copyright {
       <a href="/news.html">News</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
   </div>
 </header>
+<div class="drawer-backdrop" id="drawer-backdrop"></div>
+<nav class="mobile-drawer" id="mobile-drawer" aria-label="모바일 메뉴">
+  <a href="#about">About</a>
+  <a href="#products">Products</a>
+  <a href="/news.html">News</a>
+  <a href="#contact">Contact</a>
+</nav>
+<script>
+(function(){
+  var btn=document.getElementById('menu-toggle');
+  var drw=document.getElementById('mobile-drawer');
+  var bd=document.getElementById('drawer-backdrop');
+  if(!btn||!drw||!bd)return;
+  function toggle(open){
+    var willOpen = (typeof open==='boolean')?open:!drw.classList.contains('open');
+    drw.classList.toggle('open',willOpen);
+    bd.classList.toggle('open',willOpen);
+    btn.classList.toggle('open',willOpen);
+    btn.setAttribute('aria-expanded',willOpen);
+  }
+  btn.addEventListener('click',function(){toggle();});
+  bd.addEventListener('click',function(){toggle(false);});
+  drw.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){toggle(false);});});
+})();
+</script>
 
 <section class="hero">
   <div class="hero-inner">

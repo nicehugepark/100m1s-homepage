@@ -582,9 +582,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding: 3px 8px; border-radius: 999px;
   text-transform: uppercase;
 }
-.cal-grade-badge.grade-관심 { background: #FFF4D1; color: #6B4A0A; border: 1px solid #C49930; }
-.cal-grade-badge.grade-대기 { background: #F1F2F5; color: #6B7280; border: 1px solid #C9CCD2; }
-.cal-grade-badge.grade-회피 { background: #FCE7E9; color: #A01528; border: 1px solid #E5A4AB; }
+.cal-grade-badge.grade-관심, .cal-grade-badge.grade-상 { background: #FFF4D1; color: #6B4A0A; border: 1px solid #C49930; }
+.cal-grade-badge.grade-대기, .cal-grade-badge.grade-중 { background: #F1F2F5; color: #6B7280; border: 1px solid #C9CCD2; }
+.cal-grade-badge.grade-회피, .cal-grade-badge.grade-하 { background: #FCE7E9; color: #A01528; border: 1px solid #E5A4AB; }
 .cal-newzy-line {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
 }
@@ -717,8 +717,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 
 <main>
   <div class="page-header">
-    <div class="page-eyebrow">100M1S News · A안 (정보 피드)</div>
-    <div style="font-size:11px;color:#8B95A8;margin-bottom:12px;">↔ <a href="/news-b.html" style="color:#C49930;font-weight:700;">B안 (중요도 라벨 유지) 비교</a> · 비교 종료 후 한쪽 삭제</div>
+    <div class="page-eyebrow">100M1S News · B안 (중요도 라벨)</div>
+    <div style="font-size:11px;color:#8B95A8;margin-bottom:12px;">↔ <a href="/news.html" style="color:#C49930;font-weight:700;">A안 (정보 피드) 비교</a> · 비교 종료 후 한쪽 삭제</div>
     <h1 class="page-title">시장은 <span class="accent">매 시간</span> 새로 쓰인다</h1>
     <p class="page-desc">
       매 시간 시장 데이터가 자동으로 수집되며, 종목·테마·뉴스가 추출되고
@@ -1203,12 +1203,15 @@ function renderCalExpandContent(date, data) {
     </div>
   `;
 
-  // ③ 특징주 + 해석 (A안: 추천 UI 제거 — 정보 피드만)
+  // ③ 특징주 + 해석 (B안: 중요도 라벨로 리네이밍, 정보형 유지)
   const macroEvents = data.macroEvents || [];
+  const joojuGroupReview = data.joojuGroupReview || null;
   const macroHtml = macroEvents.length > 0
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
     : '';
-  const topPickHtml = '';
+  const topPickHtml = (joojuGroupReview && joojuGroupReview.top_pick)
+    ? `<div class="cal-toppick"><b>이번 사이클 최강 스토리 · ${escapeHtml(joojuGroupReview.top_pick.name)}</b> — ${escapeHtml(sanitize(joojuGroupReview.top_pick.reason || ''))}</div>`
+    : '';
 
   const renderFactors = (st) => {
     const ff = st.five_factors || {};
@@ -1225,13 +1228,18 @@ function renderCalExpandContent(date, data) {
     }).join('');
   };
 
+  // B안: 등급 라벨 리네이밍 (관심/대기/회피 → 상/중/하)
+  const gradeRename = { '관심': '상', '대기': '중', '회피': '하' };
+
   const renderInterpCard = (it) => {
     const st = it.interp;
     const pct = it.pct;
     const dir = (pct ?? 0) >= 0 ? 'up' : 'down';
     const sign = (pct ?? 0) >= 0 ? '+' : '';
     const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
-    // A안: jooju_review 기반 추천 UI 전부 제거 (등급 배지·주주 박스·dissent)
+    const jr = st.jooju_review;
+    const gradeLabel = jr ? (gradeRename[jr.final_grade] || jr.final_grade) : '';
+    const gradeBadge = jr ? `<span class="cal-grade-badge grade-${gradeLabel}" title="중요도 ${gradeLabel}">중요도 ${gradeLabel}</span>` : '';
     const causal = (st.causal_chain || []).slice(0, 3);
     const causalHtml = causal.length > 0
       ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c))}${i < causal.length - 1 ? '<span class="arrow">→</span>' : ''}`).join('')}</div>`
@@ -1246,10 +1254,24 @@ function renderCalExpandContent(date, data) {
       return `<a class="cal-feature-link" href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sanitize(n.inferred_title || ''))}">${escapeHtml(label)}</a>`;
     }).join('');
     const linksHtml = newsLinks ? `<div class="cal-feature-links">${newsLinks}</div>` : '';
+    let extraHtml = '';
+    if (jr) {
+      const risks = (jr.risk_flags || []).slice(0, 5).map(r => `<span class="cal-risk-chip">${escapeHtml(sanitize(r))}</span>`).join('');
+      const dissent = jr.dissent_from_newzy && jr.dissent_from_newzy !== '없음'
+        ? `<div class="dissent">추가 관점: ${escapeHtml(sanitize(jr.dissent_from_newzy))}</div>` : '';
+      const oneLine = sanitize(jr.one_line || '');
+      extraHtml = `
+        <div class="cal-jooju">
+          ${oneLine ? `<div class="one-line">${escapeHtml(oneLine)}</div>` : ''}
+          ${risks ? `<div class="cal-risk-flags">${risks}</div>` : ''}
+          ${dissent}
+        </div>`;
+    }
     return `
       <div class="cal-feature-card">
         <div class="cal-feature-head">
           <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+          ${gradeBadge}
           ${pctText ? `<span class="cal-feature-pct ${dir} right">${pctText}</span>` : ''}
         </div>
         <div class="cal-feature-body">
@@ -1257,6 +1279,7 @@ function renderCalExpandContent(date, data) {
           ${causalHtml}
           ${factorsHtml}
           ${linksHtml}
+          ${extraHtml}
         </div>
       </div>`;
   };
