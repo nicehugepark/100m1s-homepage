@@ -998,11 +998,8 @@ function renderCalendar() {
     if (isWeekend) classes.push('weekend');
     if (isToday) classes.push('today');
     if (date === calSelectedDate) classes.push('selected');
-    const dotsHtml = lv > 0
-      ? `<div class="toss-cal-dots">${'<div class="toss-cal-dot"></div>'.repeat(Math.min(lv,3))}</div>`
-      : '';
     const aria = `${date} 활성도 ${lv}/4${isToday ? ' (오늘)' : ''}`;
-    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isFuture ? -1 : 0}" aria-label="${aria}">${d}${dotsHtml}</div>`;
+    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isFuture ? -1 : 0}" aria-label="${aria}">${d}</div>`;
   }
   grid.innerHTML = html;
 
@@ -1012,8 +1009,14 @@ function renderCalendar() {
   });
 }
 
-async function onCalCellClick(date) {
+async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
+  // Static URL — 날짜 공유 가능
+  if (pushState !== false) {
+    const url = new URL(window.location);
+    url.searchParams.set('date', date);
+    history.pushState(null, '', url);
+  }
   renderCalendar();
   const inner = document.getElementById('cal-content');
   inner.innerHTML = `
@@ -1274,11 +1277,9 @@ function renderCalExpandContent(date, data) {
   // 메타
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
-  const metaParts = [];
-  if (todayStocks.length > 0) metaParts.push(`${todayStocks.length}종목`);
-  if (interpCount > 0) metaParts.push(`분석 ${interpCount}`);
-  if (newsTotal > 0) metaParts.push(`뉴스 ${newsTotal}`);
-  const metaText = metaParts.join(' · ') || '—';
+  const metaText = todayStocks.length > 0
+    ? `오늘의 종목 : ${todayStocks.length}개`
+    : '—';
 
   // ① 내러티브
   const narrHtml = data.narratives.length > 0 ? `
@@ -1329,19 +1330,13 @@ function renderCalExpandContent(date, data) {
         : '';
       const newzyLine = st.differentiator || st.outlook || '';
       const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
-      const digestLinks = (st.news_digest || []).map(n => {
-        const label = (() => {
-          try { return new URL(n.url).hostname.replace(/^www\./, ''); } catch (e) { return '링크'; }
-        })();
-        return `<a class="cal-feature-link" href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sanitize(n.inferred_title || ''))}">${escapeHtml(label)}</a>`;
-      }).join('');
-      const cafeLinks = (it.links || []).map(l => {
-        const label = (() => {
-          try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return '링크'; }
-        })();
-        return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
-      }).join('');
-      const linksHtml = (digestLinks || cafeLinks) ? `<div class="cal-feature-links">${digestLinks}${cafeLinks}</div>` : '';
+      // 뉴스 링크 URL 중복 제거
+      const linkSeen = new Set();
+      const allLinks = [...(st.news_digest || []).map(n => ({ url: n.url, title: n.inferred_title })), ...(it.links || []).map(l => ({ url: l.url, title: '' }))];
+      const linksHtml = allLinks.length > 0 ? `<div class="cal-feature-links">${allLinks.filter(l => { if (!l.url || linkSeen.has(l.url)) return false; linkSeen.add(l.url); return true; }).map(l => {
+        const label = (() => { try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return '링크'; } })();
+        return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sanitize(l.title || ''))}">${escapeHtml(label)}</a>`;
+      }).join('')}</div>` : '';
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
       const pickMeta = pp
@@ -1398,7 +1393,7 @@ function renderCalExpandContent(date, data) {
 
   const todayHtml = todayStocks.length > 0 ? `
     <div class="cal-section">
-      <div class="cal-section-title">오늘의 종목 <span class="count">${todayStocks.length}</span></div>
+      <div class="cal-section-title">거래대금 TOP</div>
       ${macroHtml}
       <div class="cal-trade-list" style="margin-top:10px;">
         ${todayStocks.map(renderTodayCard).join('')}
@@ -1429,8 +1424,9 @@ async function initCalendar() {
   themesData = themes;
   const now = new Date();
   const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
-  // 기본 선택: 오늘 데이터가 있으면 오늘, 없으면 가장 최근 수집일로 폴백
-  let initialDate = todayStr;
+  // URL ?date= 파라미터 우선, 없으면 오늘 또는 최근 수집일
+  const urlDate = new URLSearchParams(window.location.search).get('date');
+  let initialDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate)) ? urlDate : todayStr;
   if (calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
       .filter(d => d <= todayStr)
@@ -1444,7 +1440,13 @@ async function initCalendar() {
   calViewMonth = im;
   calSelectedDate = initialDate;
   renderCalendar();
-  onCalCellClick(initialDate);
+  onCalCellClick(initialDate, false); // 초기 로드 시 pushState 안 함
+
+  // 브라우저 뒤로/앞으로 지원
+  window.addEventListener('popstate', () => {
+    const d = new URLSearchParams(window.location.search).get('date');
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) onCalCellClick(d, false);
+  });
 
   document.getElementById('toss-cal-prev').addEventListener('click', () => {
     calViewMonth--;
