@@ -1060,6 +1060,17 @@ async function loadCalDayData(date) {
     if (interp.macro_events) macroEvents = macroEvents.concat(interp.macro_events);
     if (interp.jooju_group_review && !joojuGroupReview) joojuGroupReview = interp.jooju_group_review;
   }
+  // 일일 standalone 해석 파일 (거래대금 기반, 카페와 독립) — 없으면 skip
+  try {
+    const dailyRes = await fetch(`/data/interpreted/kiwoom-${date}.json?t=` + Date.now());
+    if (dailyRes.ok) {
+      const daily = await dailyRes.json();
+      for (const st of (daily.stocks || [])) {
+        if (st.name && !interpretedByName.has(st.name)) interpretedByName.set(st.name, st);
+      }
+      if (Array.isArray(daily.macro_events) && macroEvents.length === 0) macroEvents = daily.macro_events;
+    }
+  } catch (e) { /* 파일 없음 허용 */ }
   const result = {
     kiwoom,
     cafePosts: postsOfDay,
@@ -1223,7 +1234,6 @@ function renderCalExpandContent(date, data) {
       const causalHtml = causal.length > 0
         ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c))}${i < causal.length - 1 ? '<span class="arrow">→</span>' : ''}`).join('')}</div>`
         : '';
-      const factorsHtml = `<div class="cal-factors">${renderFactors(st)}</div>`;
       const newzyLine = st.differentiator || st.outlook || '';
       const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
       const digestLinks = (st.news_digest || []).map(n => {
@@ -1250,7 +1260,6 @@ function renderCalExpandContent(date, data) {
             ${amountText ? `<div class="cal-trade-amount" style="color:var(--dm);font-size:11px;">거래대금 ${amountText}</div>` : ''}
             ${newzyHtml}
             ${causalHtml}
-            ${factorsHtml}
             ${linksHtml}
           </div>
         </div>`;
