@@ -1130,8 +1130,6 @@ async function loadCalDayData(date) {
         macroEvents = stockDaily.macro_events;
       }
     }
-
-    }
   } catch (e) { console.warn('stock-*.json load:', e); }
 
   // 전일 해석 전파 (stock-*.json try-catch 밖 — 에러 삼킴 방지)
