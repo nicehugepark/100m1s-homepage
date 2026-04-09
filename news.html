@@ -182,7 +182,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 
 /* ───── 빈 상태 ───── */
-.empty {
+.empty-state {
   background: var(--bg2); border-radius: 12px;
   padding: 60px 24px; text-align: center;
   color: var(--dm); font-size: 14px;
@@ -295,7 +295,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 /* ───── 캘린더 + 콘텐츠 2컬럼 레이아웃 ───── */
 .cal-layout {
   display: grid;
-  grid-template-columns: 296px 1fr;
+  grid-template-columns: 248px 1fr;
   gap: 28px;
   align-items: start;
   margin-bottom: 40px;
@@ -305,8 +305,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal {
   background: linear-gradient(180deg, #FFFCF3 0%, var(--sf) 70%);
   border: 1px solid var(--bd);
-  border-radius: 16px;
-  padding: 16px 14px 14px;
+  border-radius: 14px;
+  padding: 14px 12px 12px;
   box-shadow: 0 2px 12px rgba(26,29,38,0.04);
 }
 .toss-cal-header {
@@ -330,19 +330,26 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding: 0 4px 8px; text-align: right;
 }
 .toss-cal-grid {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
+  display: grid;
+  grid-template-columns: repeat(7, 30px);
+  grid-auto-rows: 30px;
+  gap: 2px;
+  justify-content: space-between;
+  align-items: center;
 }
 .toss-cal-dow {
-  font-size: 11px; font-weight: 700; color: var(--dm);
-  text-align: center; height: 24px; line-height: 24px;
+  font-size: 10px; font-weight: 700; color: var(--dm);
+  text-align: center; width: 30px; height: 20px; line-height: 20px;
 }
 .toss-cal-dow.sun { color: #C53939; }
 .toss-cal-dow.sat { color: #1958C7; }
 .toss-cal-cell {
-  width: 100%; aspect-ratio: 1; border-radius: 9px;
+  width: 30px; height: 30px;
+  box-sizing: border-box;
+  border-radius: 8px;
   position: relative; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: var(--tx);
+  font-size: 11px; font-weight: 700; color: var(--tx);
   background: transparent;
   border: 1px solid transparent;
   transition: background 0.12s, color 0.12s;
@@ -367,7 +374,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .toss-cal-cell.today::after {
   content: ''; position: absolute;
-  top: 3px; right: 3px; width: 5px; height: 5px;
+  top: 2px; right: 2px; width: 4px; height: 4px;
   border-radius: 50%; background: #A01528;
 }
 .toss-cal-cell.selected.today::after { background: #fff; }
@@ -506,16 +513,93 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border-radius: 999px; letter-spacing: 0.4px;
   text-transform: uppercase;
 }
-.cal-feature-source.cafe { background: var(--pos-bg); color: var(--pos); }
-.cal-feature-source.fallback { background: var(--neu-bg); color: var(--neu); }
-.cal-feature-news {
-  padding: 10px 16px 14px 28px;
+.cal-feature-pct-spacer { flex: 1 1 auto; }
+.cal-feature-pct.right { margin-left: auto; }
+.cal-feature-body {
+  padding: 10px 16px 14px 16px;
   background: var(--bg);
-  display: flex; flex-direction: column; gap: 6px;
+  display: flex; flex-direction: column; gap: 8px;
 }
+.cal-feature-reason {
+  font-size: 12.5px; line-height: 1.55; color: var(--tx);
+  white-space: pre-wrap;
+}
+.cal-feature-links {
+  display: flex; flex-wrap: wrap; gap: 6px 8px;
+  padding-top: 2px;
+}
+.cal-feature-link {
+  font-size: 11px; color: var(--c3); text-decoration: none;
+  padding: 3px 8px; border: 1px solid var(--bd); border-radius: 999px;
+  background: var(--sf);
+}
+.cal-feature-link:hover { background: var(--pos-bg); }
 .cal-feature-news-empty {
   font-size: 11px; color: var(--dm); padding: 4px 0;
 }
+
+/* 해석 (뉴지 + 주주) */
+.cal-macro-strip {
+  display: flex; flex-wrap: wrap; gap: 6px 8px;
+  padding: 8px 0 4px 0;
+}
+.cal-macro-chip {
+  font-size: 11px; font-weight: 700; letter-spacing: -0.2px;
+  padding: 5px 10px; border-radius: 999px;
+  background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
+  border: 1px solid #E8C063; color: #6B4A0A;
+}
+.cal-toppick {
+  margin-top: 10px; padding: 10px 14px;
+  border: 1px solid #E8C063; border-radius: 10px;
+  background: linear-gradient(90deg, #FFF9E8, #FFFBEF);
+  font-size: 12.5px; line-height: 1.5;
+}
+.cal-toppick b { color: #6B4A0A; }
+.cal-grade-badge {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  padding: 3px 8px; border-radius: 999px;
+  text-transform: uppercase;
+}
+.cal-grade-badge.grade-관심 { background: #FFF4D1; color: #6B4A0A; border: 1px solid #C49930; }
+.cal-grade-badge.grade-대기 { background: #F1F2F5; color: #6B7280; border: 1px solid #C9CCD2; }
+.cal-grade-badge.grade-회피 { background: #FCE7E9; color: #A01528; border: 1px solid #E5A4AB; }
+.cal-newzy-line {
+  font-size: 12.5px; line-height: 1.55; color: var(--tx);
+}
+.cal-causal {
+  font-size: 11px; color: var(--dm); line-height: 1.5;
+}
+.cal-causal .arrow { color: #C49930; margin: 0 4px; font-weight: 700; }
+.cal-factors {
+  display: flex; flex-wrap: wrap; gap: 4px 12px;
+  font-size: 10.5px; color: var(--dm);
+}
+.cal-factor { display: inline-flex; align-items: center; gap: 4px; }
+.cal-factor .label { font-weight: 700; color: #555; }
+.cal-dots { display: inline-flex; gap: 2px; }
+.cal-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #E5E7EB;
+}
+.cal-dot.on { background: #C49930; }
+.cal-jooju {
+  margin-top: 6px; padding: 8px 10px;
+  border-left: 3px solid #C49930;
+  background: rgba(232,192,99,0.08);
+  font-size: 11.5px; line-height: 1.5;
+  border-radius: 0 6px 6px 0;
+}
+.cal-jooju .one-line { color: var(--tx); font-weight: 600; }
+.cal-jooju .dissent { color: #A01528; font-size: 10.5px; margin-top: 4px; }
+.cal-risk-flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.cal-risk-chip {
+  font-size: 9.5px; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px;
+  background: #FCE7E9; color: #A01528;
+  border: 1px solid #E5A4AB;
+}
+.cal-feature-card.no-interp { opacity: 0.55; }
 
 .cal-empty {
   text-align: center; padding: 50px 20px;
@@ -533,7 +617,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     gap: 18px;
   }
   .cal-layout > .cal-side { position: static; }
-  .toss-cal { max-width: 360px; margin: 0 auto; }
+  .toss-cal { max-width: 280px; margin: 0 auto; }
   .cal-content { padding: 20px 18px; }
   .cal-content-date { font-size: 20px; }
 }
@@ -620,10 +704,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     </section>
   </div>
 
-  <div id="content">
-    <div class="loading">📡 데이터 불러오는 중…</div>
-  </div>
-
   <div class="coming-soon">
     <h3>🗺️ 다음 기능</h3>
     <p>
@@ -676,6 +756,14 @@ async function loadKiwoomIndex() {
     if (!res.ok) throw new Error('kiwoom/index.json HTTP ' + res.status);
     return await res.json();
   } catch (e) { return null; }
+}
+
+async function loadInterpreted(postId) {
+  try {
+    const res = await fetch(`/data/interpreted/${postId}.json?t=` + Date.now());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) { console.warn('interpreted load fail', postId, e); return null; }
 }
 
 async function loadKiwoomDate(date) {
@@ -731,202 +819,6 @@ function renderNewsCard(card) {
       </div>
     </div>
   `;
-}
-
-function renderStockRow(stock) {
-  const dir = (stock.change_pct ?? 0) >= 0 ? 'up' : 'down';
-  const sign = (stock.change_pct ?? 0) >= 0 ? '+' : '';
-  const pctText = stock.change_pct != null ? `${sign}${stock.change_pct.toFixed(2)}%` : '—';
-  const priceText = stock.price_won != null ? `${fmtNum(stock.price_won)}원` : '';
-  const themeHtml = stock.theme_label ? `<div class="stock-theme">${escapeHtml(stock.theme_label)}</div>` : '';
-  const newsHtml = (stock.news_cards && stock.news_cards.length > 0) ? `
-    <div class="stock-news">
-      ${stock.news_cards.map(renderNewsCard).join('')}
-    </div>
-  ` : '';
-  return `
-    <div class="stock-row">
-      <div class="stock-main">
-        <div class="stock-rank">${stock.rank ? '#' + stock.rank : ''}</div>
-        <div class="stock-name">${escapeHtml(stock.name)}</div>
-        <div class="stock-price">${priceText}</div>
-        <div class="stock-pct ${dir}">${pctText}</div>
-      </div>
-      ${themeHtml}
-      ${newsHtml}
-    </div>
-  `;
-}
-
-function renderSection(section) {
-  const cls = section.type === '상승' ? 'up' : (section.type === '하락' ? 'down' : '');
-  const stocksHtml = (section.stocks || []).map(renderStockRow).join('');
-  return `
-    <div class="section-block">
-      <div class="section-title ${cls}">[${section.type}] · ${section.stocks?.length || 0}종목</div>
-      <div class="stocks-list">${stocksHtml}</div>
-    </div>
-  `;
-}
-
-function renderKiwoomBlock(kiwoom, cafeStockNames) {
-  if (!kiwoom) return '';
-  const stocks = kiwoom.daily_top || kiwoom.latest_stocks || [];
-  if (stocks.length === 0) return '';
-  const top = stocks.slice(0, 30);
-  const lastUpdate = (kiwoom.last_snapshot_at || kiwoom.fetched_at || '').slice(11, 16);
-  const snapCount = kiwoom.snapshot_count || 0;
-  const rowsHtml = top.map((s, i) => {
-    // change_pct: max_change_pct (daily_top) 또는 change_pct (latest)
-    const pct = s.max_change_pct ?? s.change_pct ?? 0;
-    const dir = pct >= 0 ? 'up' : 'down';
-    const sign = pct >= 0 ? '+' : '';
-    // 카페에 같은 종목 등장 시 표시
-    const matchedClass = cafeStockNames.has(s.name) ? ' matched-cafe' : '';
-    const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 5);
-    const themesHtml = themes.length > 0
-      ? `<span class="kiwoom-themes">${themes.map(t => {
-          const srcClass = t.source === 'owner_input' ? ' src-owner'
-                         : t.source === 'llm_inference' ? ' src-llm' : '';
-          return `<span class="kiwoom-theme-chip${srcClass}" data-theme="${escapeHtml(t.name)}">${escapeHtml(t.name)}</span>`;
-        }).join('')}</span>`
-      : '';
-    return `
-      <div class="kiwoom-row${matchedClass}">
-        <div class="kiwoom-rank">#${i + 1}</div>
-        <div class="kiwoom-name-cell">
-          <span class="kiwoom-name">${escapeHtml(s.name)}</span>
-          ${themesHtml}
-        </div>
-        <div class="kiwoom-pct ${dir}">${sign}${pct.toFixed(2)}%</div>
-        <div class="kiwoom-amount">${fmtTradeAmount(s.max_trade_amount ?? s.trade_amount)}</div>
-      </div>
-    `;
-  }).join('');
-  return `
-    <div class="kiwoom-block">
-      <div class="kiwoom-header">
-        <div class="kiwoom-title">📊 거래대금 500억+ Top 30</div>
-        <div class="kiwoom-meta">${lastUpdate || '—'} 갱신 · ${snapCount}회 · ${top.length}종목</div>
-      </div>
-      <div class="kiwoom-list">${rowsHtml}</div>
-    </div>
-  `;
-}
-
-function collectCafeStockNames(posts) {
-  const names = new Set();
-  for (const p of posts) {
-    for (const sec of (p.sections || [])) {
-      for (const st of (sec.stocks || [])) {
-        if (st.name) names.add(st.name);
-      }
-    }
-  }
-  return names;
-}
-
-function renderDateGroup(date, posts, kiwoom) {
-  const totalStocks = posts.reduce((s, p) => s + (p.stock_count || 0), 0);
-  const totalNews = posts.reduce((s, p) => {
-    return s + (p.sections || []).reduce((s2, sec) => {
-      return s2 + (sec.stocks || []).reduce((s3, st) => s3 + (st.news_cards?.length || 0), 0);
-    }, 0);
-  }, 0);
-  const cafeStockNames = collectCafeStockNames(posts);
-  const kiwoomCount = kiwoom ? (kiwoom.daily_top?.length || kiwoom.latest_stocks?.length || 0) : 0;
-
-  const allSections = [];
-  for (const p of posts) {
-    for (const sec of (p.sections || [])) {
-      allSections.push(sec);
-    }
-  }
-  const merged = {};
-  for (const sec of allSections) {
-    if (!merged[sec.type]) merged[sec.type] = { type: sec.type, stocks: [] };
-    merged[sec.type].stocks.push(...(sec.stocks || []));
-  }
-  const order = ['상승', '하락'];
-  const sectionsHtml = order
-    .filter(t => merged[t])
-    .map(t => renderSection(merged[t]))
-    .join('');
-
-  const kiwoomHtml = renderKiwoomBlock(kiwoom, cafeStockNames);
-  const statsParts = [];
-  if (kiwoomCount > 0) statsParts.push(`거래대금 ${kiwoomCount}종목`);
-  if (totalStocks > 0) statsParts.push(`카페 ${totalStocks}종목 · ${totalNews}뉴스`);
-  const statsText = statsParts.join(' · ') || '데이터 없음';
-
-  return `
-    <div class="date-group">
-      <div class="date-header">
-        <div class="date-label">${escapeHtml(date)}</div>
-        <div class="date-stats">${statsText}</div>
-      </div>
-      ${kiwoomHtml}
-      ${sectionsHtml}
-    </div>
-  `;
-}
-
-async function init() {
-  const meta = document.getElementById('meta');
-  const content = document.getElementById('content');
-
-  // 카페 + 키움 인덱스 + 테마 병행 로드
-  const [cafeIndex, kiwoomIndex, themes] = await Promise.all([loadIndex(), loadKiwoomIndex(), loadThemes()]);
-  themesData = themes;
-
-  const cafeUpdated = cafeIndex?.updated_at || '—';
-  const kiwoomUpdated = kiwoomIndex?.updated_at || '—';
-  meta.textContent = '';
-
-  // 카페 글 로드 (sample fallback 없음 — 실제 데이터만)
-  const postIds = (cafeIndex?.posts || []).map(p => p.post_id);
-  const posts = [];
-  for (const id of postIds.slice(0, 30)) {
-    const p = await loadPost(id);
-    if (p) posts.push(p);
-  }
-
-  // 카페 글의 날짜 + 키움 인덱스 날짜 합집합
-  const dateSet = new Set();
-  for (const p of posts) dateSet.add(deriveDate(p));
-  for (const d of (kiwoomIndex?.dates || [])) dateSet.add(d);
-
-  if (dateSet.size === 0) {
-    content.innerHTML = `
-      <div class="empty">
-        <strong>⏳ 아직 수집된 데이터가 없습니다.</strong><br>
-        뉴지(카페)와 키움 스크레이퍼가 첫 실행에 성공하면 이 자리에 표시됩니다.<br>
-        <small style="display:block; margin-top: 12px; opacity: 0.6;">
-          실제 데이터가 들어오기 전까지 어떠한 가짜·샘플 데이터도 표시하지 않습니다.
-        </small>
-      </div>
-    `;
-    return;
-  }
-
-  // 키움 데이터를 날짜별로 fetch (병렬, sample fallback 없음)
-  const kiwoomByDate = {};
-  await Promise.all(Array.from(dateSet).map(async d => {
-    kiwoomByDate[d] = await loadKiwoomDate(d);
-  }));
-
-  // 카페 글 날짜별 그룹
-  const postsByDate = {};
-  for (const p of posts) {
-    const d = deriveDate(p);
-    if (!postsByDate[d]) postsByDate[d] = [];
-    postsByDate[d].push(p);
-  }
-
-  const sortedDates = Array.from(dateSet).sort().reverse();
-  content.innerHTML = sortedDates
-    .map(d => renderDateGroup(d, postsByDate[d] || [], kiwoomByDate[d]))
-    .join('');
 }
 
 /* ───── 토스 캘린더 로직 ───── */
@@ -1062,7 +954,7 @@ async function loadCalDayData(date) {
     loadKiwoomDate(date),
     loadIndex()
   ]);
-  // 해당 날짜 카페 포스트 수집
+  // 해당 날짜 소스 포스트 수집
   const postsOfDay = [];
   if (cafeIndex && cafeIndex.posts) {
     const idsOfDay = cafeIndex.posts
@@ -1087,10 +979,30 @@ async function loadCalDayData(date) {
       }
     }
   }
+  // 해석 파일 로드 (post 단위) — 폴백 허용
+  const interpretedList = [];
+  for (const p of postsOfDay) {
+    const interp = await loadInterpreted(p.post_id);
+    if (interp) interpretedList.push(interp);
+  }
+  // 종목명 → 해석 stock 객체 병합 맵
+  const interpretedByName = new Map();
+  let macroEvents = [];
+  let joojuGroupReview = null;
+  for (const interp of interpretedList) {
+    for (const st of (interp.stocks || [])) {
+      if (st.name && !interpretedByName.has(st.name)) interpretedByName.set(st.name, st);
+    }
+    if (interp.macro_events) macroEvents = macroEvents.concat(interp.macro_events);
+    if (interp.jooju_group_review && !joojuGroupReview) joojuGroupReview = interp.jooju_group_review;
+  }
   const result = {
     kiwoom,
     cafePosts: postsOfDay,
-    narratives: Array.from(narrSet)
+    narratives: Array.from(narrSet),
+    interpretedByName,
+    macroEvents,
+    joojuGroupReview
   };
   calDayCache[date] = result;
   return result;
@@ -1115,7 +1027,7 @@ function renderCalExpandContent(date, data) {
     return;
   }
 
-  // 카페 특징주 수집 (종목명 → 뉴스카드 매핑 포함)
+  // 특징주 수집 (종목명 → 뉴스카드 매핑 포함)
   const cafeStockMap = new Map(); // name → { stock, newsCards[] }
   for (const p of data.cafePosts) {
     for (const sec of (p.sections || [])) {
@@ -1130,31 +1042,54 @@ function renderCalExpandContent(date, data) {
     }
   }
 
-  // 특징주 결정: 카페 우선, 비면 거래대금 TOP fallback
-  let featureSource = 'cafe';
-  let featureItems = []; // { name, pct, themes, newsCards, ticker }
+  // 키움 name → {ticker, change_pct} 맵 (특징주 join용)
+  const kiwoomByName = new Map();
+  for (const s of kiwoomStocks) {
+    if (s && s.name) kiwoomByName.set(s.name, s);
+  }
+
+  // 특징주 결정: 부각 종목 우선, 비면 거래대금 TOP fallback
+  let featureSource = 'primary';
+  let featureItems = []; // { name, pct, themes, newsCards, ticker, reason }
   if (cafeStockMap.size > 0) {
     for (const [name, e] of cafeStockMap.entries()) {
-      const pct = e.stock.change_pct ?? null;
-      const ticker = e.stock.ticker;
+      const kw = kiwoomByName.get(name);
+      const ticker = e.stock.ticker || kw?.ticker;
+      const pct = e.stock.change_pct ?? kw?.max_change_pct ?? kw?.change_pct ?? null;
       const themes = (themesData?.stocks?.[ticker]?.themes || []).slice(0, 3);
-      featureItems.push({ name, pct, themes, newsCards: e.newsCards, ticker });
+      // 사유: theme_label 우선, 없으면 news_cards[0].theme_hint
+      let reason = (e.stock.theme_label || '').trim();
+      if (!reason && e.newsCards.length > 0) {
+        reason = (e.newsCards[0].theme_hint || '').trim();
+      }
+      // URL 중복 제거
+      const seenUrl = new Set();
+      const links = [];
+      for (const nc of e.newsCards) {
+        if (!nc.url || seenUrl.has(nc.url)) continue;
+        seenUrl.add(nc.url);
+        links.push({ url: nc.url, source: nc.source || '' });
+      }
+      const interp = data.interpretedByName ? data.interpretedByName.get(name) : null;
+      featureItems.push({ name, pct, themes, links, ticker, reason, interp });
     }
-    featureItems = featureItems.slice(0, 12);
+    // 해석 있는 것 우선 정렬
+    featureItems.sort((a, b) => (b.interp ? 1 : 0) - (a.interp ? 1 : 0));
+    featureItems = featureItems.slice(0, 14);
   } else if (kiwoomStocks.length > 0) {
     featureSource = 'fallback';
     featureItems = kiwoomStocks.slice(0, 6).map(s => {
       const pct = s.max_change_pct ?? s.change_pct ?? null;
       const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
-      return { name: s.name, pct, themes, newsCards: [], ticker: s.ticker };
+      return { name: s.name, pct, themes, links: [], ticker: s.ticker, reason: '' };
     });
   }
 
   // 메타: 활성도 요약
-  const newsTotal = featureItems.reduce((s, i) => s + i.newsCards.length, 0);
+  const newsTotal = featureItems.reduce((s, i) => s + (i.links ? i.links.length : 0), 0);
   const metaParts = [];
   if (kiwoomStocks.length > 0) metaParts.push(`거래대금 ${kiwoomStocks.length}종목`);
-  if (featureItems.length > 0) metaParts.push(`특징주 ${featureItems.length}`);
+  if (featureItems.length > 0) metaParts.push(`특징주 ${featureItems.length}종목`);
   if (newsTotal > 0) metaParts.push(`뉴스 ${newsTotal}`);
   const metaText = metaParts.join(' · ') || '—';
 
@@ -1171,9 +1106,9 @@ function renderCalExpandContent(date, data) {
   // ② 거래대금 TOP
   const kiwoomHtml = kiwoomStocks.length > 0 ? `
     <div class="cal-section">
-      <div class="cal-section-title">거래대금 TOP <span class="count">${Math.min(kiwoomStocks.length, 15)}</span></div>
+      <div class="cal-section-title">거래대금 TOP <span class="count">${Math.min(kiwoomStocks.length, 20)}</span></div>
       <div class="cal-trade-list">
-        ${kiwoomStocks.slice(0, 15).map((s, i) => {
+        ${kiwoomStocks.slice(0, 20).map((s, i) => {
           const pct = s.max_change_pct ?? s.change_pct ?? 0;
           const dir = pct >= 0 ? 'up' : 'down';
           const sign = pct >= 0 ? '+' : '';
@@ -1199,33 +1134,110 @@ function renderCalExpandContent(date, data) {
     </div>
   `;
 
-  // ③ 특징주 + 뉴스 (nested)
+  // ③ 특징주 + 해석 (뉴지 + 주주)
+  const macroEvents = data.macroEvents || [];
+  const joojuGroupReview = data.joojuGroupReview || null;
+  const macroHtml = macroEvents.length > 0
+    ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(m.summary || '')}">${escapeHtml(m.title || '')}</span>`).join('')}</div>`
+    : '';
+  const topPickHtml = (joojuGroupReview && joojuGroupReview.top_pick)
+    ? `<div class="cal-toppick"><b>주주 Top Pick · ${escapeHtml(joojuGroupReview.top_pick.name)}</b> — ${escapeHtml(joojuGroupReview.top_pick.reason || '')}</div>`
+    : '';
+
+  const renderFactors = (st) => {
+    const ff = st.five_factors || {};
+    const ev = st.five_factors_evidence || {};
+    const labels = { freshness: '신선', durability: '지속', magnitude: '크기', spreadability: '전파', liquidity: '환급' };
+    const entries = Object.entries(ff)
+      .map(([k, v]) => ({ k, v, label: labels[k] || k, ev: ev[k] || '' }))
+      .sort((a, b) => b.v - a.v)
+      .slice(0, 3);
+    return entries.map(e => {
+      const filled = Math.round(e.v * 5);
+      const dots = Array.from({ length: 5 }, (_, i) => `<span class="cal-dot ${i < filled ? 'on' : ''}"></span>`).join('');
+      return `<span class="cal-factor" title="${escapeHtml(e.ev)}"><span class="label">${e.label}</span><span class="cal-dots">${dots}</span></span>`;
+    }).join('');
+  };
+
+  const renderInterpCard = (it) => {
+    const st = it.interp;
+    const pct = it.pct;
+    const dir = (pct ?? 0) >= 0 ? 'up' : 'down';
+    const sign = (pct ?? 0) >= 0 ? '+' : '';
+    const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
+    const jr = st.jooju_review;
+    const gradeBadge = jr ? `<span class="cal-grade-badge grade-${jr.final_grade}">${jr.final_grade}</span>` : '';
+    const causal = (st.causal_chain || []).slice(0, 3);
+    const causalHtml = causal.length > 0
+      ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(c)}${i < causal.length - 1 ? '<span class="arrow">→</span>' : ''}`).join('')}</div>`
+      : '';
+    const factorsHtml = `<div class="cal-factors">${renderFactors(st)}</div>`;
+    const newzyLine = st.differentiator || st.outlook || '';
+    const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(newzyLine)}</div>` : '';
+    const newsLinks = (st.news_digest || []).map(n => {
+      const label = (() => {
+        try { return new URL(n.url).hostname.replace(/^www\./, ''); } catch (e) { return '링크'; }
+      })();
+      return `<a class="cal-feature-link" href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(n.inferred_title || '')}">${escapeHtml(label)}</a>`;
+    }).join('');
+    const linksHtml = newsLinks ? `<div class="cal-feature-links">${newsLinks}</div>` : '';
+    let joojuHtml = '';
+    if (jr) {
+      const risks = (jr.risk_flags || []).slice(0, 5).map(r => `<span class="cal-risk-chip">${escapeHtml(r)}</span>`).join('');
+      const dissent = jr.dissent_from_newzy && jr.dissent_from_newzy !== '없음'
+        ? `<div class="dissent">주주 이견: ${escapeHtml(jr.dissent_from_newzy)}</div>` : '';
+      joojuHtml = `
+        <div class="cal-jooju">
+          <div class="one-line">${escapeHtml(jr.one_line || '')}</div>
+          ${risks ? `<div class="cal-risk-flags">${risks}</div>` : ''}
+          ${dissent}
+        </div>`;
+    }
+    return `
+      <div class="cal-feature-card">
+        <div class="cal-feature-head">
+          <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+          ${gradeBadge}
+          ${pctText ? `<span class="cal-feature-pct ${dir} right">${pctText}</span>` : ''}
+        </div>
+        <div class="cal-feature-body">
+          ${newzyHtml}
+          ${causalHtml}
+          ${factorsHtml}
+          ${linksHtml}
+          ${joojuHtml}
+        </div>
+      </div>`;
+  };
+
+  const renderFallbackCard = (it) => {
+    const pct = it.pct;
+    const dir = (pct ?? 0) >= 0 ? 'up' : 'down';
+    const sign = (pct ?? 0) >= 0 ? '+' : '';
+    const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
+    // 해석 없음 → reason 노출 안 함 (원문 복사 금지). 회색 처리
+    return `
+      <div class="cal-feature-card no-interp">
+        <div class="cal-feature-head">
+          <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+          ${it.themes.map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}
+          ${pctText ? `<span class="cal-feature-pct ${dir} right">${pctText}</span>` : ''}
+        </div>
+        <div class="cal-feature-body">
+          <div class="cal-feature-news-empty">해석 대기 중 (뉴지 미처리)</div>
+        </div>
+      </div>`;
+  };
+
   const featureHtml = featureItems.length > 0 ? `
     <div class="cal-section">
       <div class="cal-section-title">
         특징주 <span class="count">${featureItems.length}</span>
-        <span class="cal-feature-source ${featureSource}">${featureSource === 'cafe' ? '카페' : '거래대금 기반'}</span>
       </div>
-      <div class="cal-feature-list">
-        ${featureItems.map(it => {
-          const pct = it.pct;
-          const dir = (pct ?? 0) >= 0 ? 'up' : 'down';
-          const sign = (pct ?? 0) >= 0 ? '+' : '';
-          const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
-          const newsInner = it.newsCards.length > 0
-            ? it.newsCards.slice(0, 6).map(renderNewsCard).join('')
-            : `<div class="cal-feature-news-empty">뉴스 없음</div>`;
-          return `
-            <div class="cal-feature-card">
-              <div class="cal-feature-head">
-                <span class="cal-feature-name">${escapeHtml(it.name)}</span>
-                ${pctText ? `<span class="cal-feature-pct ${dir}">${pctText}</span>` : ''}
-                ${it.themes.map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}
-              </div>
-              <div class="cal-feature-news">${newsInner}</div>
-            </div>
-          `;
-        }).join('')}
+      ${macroHtml}
+      ${topPickHtml}
+      <div class="cal-feature-list" style="margin-top:10px;">
+        ${featureItems.map(it => it.interp ? renderInterpCard(it) : renderFallbackCard(it)).join('')}
       </div>
     </div>
   ` : '';
@@ -1242,15 +1254,29 @@ function renderCalExpandContent(date, data) {
 }
 
 async function initCalendar() {
-  calIndex = await loadCalendarIndex(); // null이면 모든 날 빈 상태
+  const meta = document.getElementById('meta');
+  if (meta) meta.textContent = '';
+  const [calIdx, themes] = await Promise.all([loadCalendarIndex(), loadThemes()]);
+  calIndex = calIdx;
+  themesData = themes;
   const now = new Date();
-  calViewYear = now.getFullYear();
-  calViewMonth = now.getMonth() + 1;
   const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
-  calSelectedDate = todayStr;
+  // 기본 선택: 오늘 데이터가 있으면 오늘, 없으면 가장 최근 수집일로 폴백
+  let initialDate = todayStr;
+  if (calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
+    const collectedDays = Object.keys(calIndex.days)
+      .filter(d => d <= todayStr)
+      .sort();
+    if (collectedDays.length > 0) {
+      initialDate = collectedDays[collectedDays.length - 1];
+    }
+  }
+  const [iy, im] = initialDate.split('-').map(Number);
+  calViewYear = iy;
+  calViewMonth = im;
+  calSelectedDate = initialDate;
   renderCalendar();
-  // 오늘 자동 선택 → 콘텐츠 즉시 로드
-  onCalCellClick(todayStr);
+  onCalCellClick(initialDate);
 
   document.getElementById('toss-cal-prev').addEventListener('click', () => {
     calViewMonth--;
@@ -1268,7 +1294,6 @@ async function initCalendar() {
 }
 
 initCalendar();
-init();
 </script>
 
 </body>

@@ -17,6 +17,12 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
+try:
+    from bs4 import BeautifulSoup, NavigableString, Tag  # type: ignore
+    _BS4_AVAILABLE = True
+except Exception:  # pragma: no cover
+    _BS4_AVAILABLE = False
+
 # ─── 설정 ──────────────────────────────────────────────
 CAFE_ID = "11974608"
 MENU_ID = "167"
@@ -655,6 +661,274 @@ NAME_LIST_COLON_RE = re.compile(
 )
 
 
+_SECTOR_HEADER_RE = re.compile(r"^\s*[<〈<]([^<>〈〉]{1,40})[>〉>]\s*$")
+_COMMA_SPLIT_RE = re.compile(r"\s*[,，、]\s*")
+_STOCK_NAME_TOKEN_RE = re.compile(r"^[가-힣A-Za-z][가-힣A-Za-z0-9&·\-\s]{0,30}$")
+
+
+def _clean_stock_name(tok: str) -> str | None:
+    tok = tok.strip().strip("*·•-—()[]【】{}").strip()
+    # 끝 콜론/물결 제거
+    tok = re.sub(r"[::]\s*$", "", tok).strip()
+    if not tok or len(tok) < 2 or len(tok) > 20:
+        return None
+    if not re.search(r"[가-힣A-Za-z]", tok):
+        return None
+    if re.fullmatch(r"[\d,./%+\-]+", tok):
+        return None
+    # 종목명은 공백을 거의 포함하지 않음 (있어도 1개 이내 복합 브랜드)
+    if tok.count(" ") >= 2:
+        return None
+    bad_kw = ("거래대금", "상승률", "하락률", "기준", "종목은", "포함하는", "제외",
+              "너무", "많기", "올리는", "줄여서", "무의미", "탓에", "다보니")
+    if any(k in tok for k in bad_kw):
+        return None
+    if tok in STOPWORDS:
+        return None
+    return tok
+
+
+def _parse_rank_table_dom(html: str, title: str | None) -> dict | None:
+    """DOM(`<p>` 단위) 기반 rank_table 파서.
+
+    네이버 SmartEditor 구조 가정:
+      - 본문 블록은 `p.se-text-paragraph` 단위
+      - 한 <p> 내에 "종목명 : <a href=뉴스URL>이유</a>" 1:1 구조
+      - `<카테고리>` 헤더 <p> → 다음 <p>들에 sector 상속
+      - "종목A, 종목B, ..." 콤마 리스트 <p>는 sector 내 다중 종목 선언
+
+    실패 시 None → 호출부가 regex fallback으로 폴백.
+    """
+    if not _BS4_AVAILABLE:
+        return None
+    try:
+        soup = BeautifulSoup(html, "html.parser")
+    except Exception:
+        return None
+
+    # 1) 본문 <p> 순서대로 수집. se-text-paragraph 우선, 없으면 모든 <p>.
+    paragraphs = soup.select("p.se-text-paragraph")
+    if not paragraphs:
+        paragraphs = soup.find_all("p")
+    if not paragraphs:
+        return None
+
+    sections: dict[str, list[dict]] = {"상승": [], "하락": []}
+    index: dict[str, dict[str, dict]] = {"상승": {}, "하락": {}}
+    current_section: str | None = None
+    current_sector: str | None = None
+    # 이전 콤마 리스트 <p>에서 선언된 sector 멤버 (다음 <p>에서 "*종목:이유"가 오면 매칭용)
+    sector_members: dict[str, list[str]] = {}
+    # 섹터 헤더 직후 콤마 리스트가 나오기 전까지 수집된 공통 이유 링크
+    sector_pending_links: list[dict] = []
+    sector_pending_reason: str | None = None
+    # 섹터별 마지막 공통 이유·링크 (같은 섹터 내 후속 콤마 리스트에 상속)
+    sector_last_reason: dict[str, str] = {}
+    sector_last_links: dict[str, list[dict]] = {}
+
+    def get_or_create(sect: str, name: str) -> dict:
+        if name in index[sect]:
+            return index[sect][name]
+        stock = {
+            "name": name,
+            "ticker": None,
+            "theme_label": None,
+            "sector_label": None,  # 섹터 상속은 콤마 리스트 처리에서 명시적으로만
+            "news_cards": [],
+        }
+        index[sect][name] = stock
+        sections[sect].append(stock)
+        return stock
+
+    for p in paragraphs:
+        ptext = p.get_text(" ", strip=True).replace("\xa0", " ").strip()
+        if not ptext:
+            continue
+
+        # 섹션 마커
+        if "[상승]" in ptext:
+            current_section = "상승"
+            current_sector = None
+            continue
+        if "[하락]" in ptext:
+            current_section = "하락"
+            current_sector = None
+            continue
+        if current_section is None:
+            continue
+
+        # 필터 안내 라인 스킵
+        if "거래대금" in ptext and "제외" in ptext:
+            continue
+        if "상한가" in ptext and "포함" in ptext:
+            continue
+
+        # 섹터 헤더 `<건설주 / 재건주>`
+        m_sector = _SECTOR_HEADER_RE.match(ptext)
+        if m_sector:
+            current_sector = m_sector.group(1).strip()
+            sector_members[current_sector] = []
+            sector_pending_links = []
+            sector_pending_reason = None
+            continue
+
+        # <p> 내 링크 수집
+        links = []
+        for a in p.find_all("a"):
+            href = (a.get("href") or "").strip()
+            if not href.startswith("http"):
+                continue
+            host = urlparse(href).netloc
+            if "cafe.naver.com" in host:
+                continue
+            atext = a.get_text(" ", strip=True)
+            links.append({"url": href, "source": host, "text": atext})
+
+        # 콜론(":" 또는 전각 "：") 기준 분리
+        if ":" in ptext or "：" in ptext:
+            # 첫 콜론 분리
+            idx = min(
+                (i for i in (ptext.find(":"), ptext.find("：")) if i >= 0),
+                default=-1,
+            )
+            head = ptext[:idx].strip()
+            tail = ptext[idx + 1 :].strip()
+            # head에서 선행 장식 제거
+            head = re.sub(r"^[*·•\-\s]+", "", head).strip()
+
+            # head가 콤마 리스트? → 다중 종목 (공통 이유)
+            tokens = [_clean_stock_name(t) for t in _COMMA_SPLIT_RE.split(head)]
+            tokens = [t for t in tokens if t]
+            if not tokens:
+                continue
+
+            # 이유 = tail (링크 텍스트 기반 우선)
+            # tail에서 링크 뒤 꼬리말 (", 영향(?)", "(?)") 잘라내기 위해 링크 텍스트 우선
+            if links:
+                reason = links[0]["text"] or tail
+            else:
+                reason = tail
+            # 꼬리 물음표·공백 정리
+            reason = re.sub(r"\s+", " ", reason).strip(" .-")
+
+            # 단일 종목 라인(`종목명 : 이유`)은 독립 테마 — 섹터 상속 금지.
+            # 단 현재 섹터 콤마 리스트에 이미 있던 종목(예: `* 화성밸브 : 보강`)은 예외.
+            sector_member_set = set(sector_members.get(current_sector or "", []))
+            is_sector_reinforce = bool(sector_member_set) and any(
+                t in sector_member_set for t in tokens
+            )
+            for name in tokens:
+                stock = get_or_create(current_section, name)
+                if not stock["theme_label"]:
+                    stock["theme_label"] = reason or None
+                # 섹터 멤버 보강 케이스에만 sector_label 유지/부여
+                if is_sector_reinforce and current_sector and not stock.get("sector_label"):
+                    stock["sector_label"] = current_sector
+                for lk in links:
+                    if any(c.get("url") == lk["url"] for c in stock["news_cards"]):
+                        continue
+                    stock["news_cards"].append(
+                        {
+                            "url": lk["url"],
+                            "source": lk["source"],
+                            "theme_hint": reason or lk["text"] or None,
+                        }
+                    )
+            # 단일 종목 라인이 섹터 멤버 보강이 아니면 → 섹터 영향권 이탈
+            if not is_sector_reinforce:
+                current_sector = None
+                sector_pending_links = []
+                sector_pending_reason = None
+            continue
+
+        # 콜론 없음 → 콤마 리스트 (섹터 멤버 선언) 가능성
+        # 예: "대우건설, GS건설, 수산세보틱스, ..."
+        if "," in ptext:
+            tokens = [_clean_stock_name(t) for t in _COMMA_SPLIT_RE.split(ptext)]
+            tokens = [t for t in tokens if t]
+            if len(tokens) >= 2:
+                # 섹터 공통 이유: 섹터 헤더 이후 쌓인 sector_pending_links 우선,
+                # 없으면 이번 <p>의 링크 사용
+                effective_links = list(sector_pending_links) + list(links)
+                effective_reason = sector_pending_reason or (
+                    links[0]["text"] if links else None
+                )
+                # 같은 섹터의 이전 콤마 리스트에서 쓰인 이유·링크 상속 (pending이 비었을 때만)
+                if current_sector and not effective_links:
+                    effective_links = list(sector_last_links.get(current_sector, []))
+                if current_sector and not effective_reason:
+                    effective_reason = sector_last_reason.get(current_sector)
+                for name in tokens:
+                    stock = get_or_create(current_section, name)
+                    if current_sector and not stock.get("sector_label"):
+                        stock["sector_label"] = current_sector
+                    if effective_reason and not stock["theme_label"]:
+                        stock["theme_label"] = effective_reason
+                    for lk in effective_links:
+                        if any(c.get("url") == lk["url"] for c in stock["news_cards"]):
+                            continue
+                        stock["news_cards"].append(
+                            {
+                                "url": lk["url"],
+                                "source": lk["source"],
+                                "theme_hint": lk.get("text") or effective_reason,
+                            }
+                        )
+                if current_sector is not None:
+                    sector_members[current_sector] = tokens
+                    if effective_reason:
+                        sector_last_reason[current_sector] = effective_reason
+                    if effective_links:
+                        sector_last_links[current_sector] = effective_links
+                # 멤버들이 공통 이유를 받았으므로 pending 소진
+                sector_pending_links = []
+                sector_pending_reason = None
+                continue
+
+        # 링크 <p>이지만 콜론/콤마 없음 → 섹터 공통 이유로 pending
+        if links and current_sector is not None:
+            sector_pending_links.extend(links)
+            sector_pending_reason = sector_pending_reason or links[0]["text"]
+        # 이미 콤마 리스트가 이전에 나왔으면, 그 멤버들에 소급 적용
+        if links and current_sector:
+            sector_reason = links[0]["text"]
+            for name in sector_members.get(current_sector, []):
+                # 해당 종목이 index에 있으면 보강
+                for sect in ("상승", "하락"):
+                    if name in index[sect]:
+                        st = index[sect][name]
+                        if not st["theme_label"]:
+                            st["theme_label"] = sector_reason
+                        if not any(c.get("url") == links[0]["url"] for c in st["news_cards"]):
+                            st["news_cards"].append(
+                                {
+                                    "url": links[0]["url"],
+                                    "source": links[0]["source"],
+                                    "theme_hint": sector_reason,
+                                }
+                            )
+
+    # 검증: 최소 1종목 이상 채워졌고, 단일 종목에 모든 링크가 몰리지 않았는지
+    total_stocks = sum(len(v) for v in sections.values())
+    if total_stocks == 0:
+        return None
+    # 첫 종목에 뉴스가 ≥7개 몰림 = regex 파서와 동일 증상 → 실패 처리
+    for sect_list in sections.values():
+        if sect_list and len(sect_list[0]["news_cards"]) >= 7 and all(
+            len(s["news_cards"]) == 0 for s in sect_list[1:]
+        ):
+            return None
+
+    return {
+        "sections": [
+            {"type": k, "stocks": v} for k, v in sections.items() if v
+        ],
+        "post_date": _extract_post_date(
+            BeautifulSoup(html, "html.parser").get_text(" ", strip=True), title, html
+        ),
+    }
+
+
 def parse_rank_table(html: str, text: str, title: str | None) -> dict:
     """[상승]/[하락] 형식 파서.
 
@@ -663,7 +937,15 @@ def parse_rank_table(html: str, text: str, title: str | None) -> dict:
     - 각 섹션 내에서 `종목명[, 종목명]... :` 정규식으로 종목명 리스트 추출
     - 섹션 내 콤마 구분 종목 리스트도 캡처 (예: "흥아해운, 한국ANKOR유전, ...")
     - extract_stock_news_blocks 로 블록 기반 news_cards 매칭 (기존 로직 재사용)
+
+    2026-04-08: DOM(`<p>` 단위) 파서를 우선 시도. 실패 시 아래 regex fallback.
+    근거: 원본 HTML은 `<p>종목명 : <a href=뉴스URL>이유</a></p>` 1:1 구조인데
+    html_to_text로 평문화 후 정규식 재추출하면 손실 발생(FLR 카페 파서 다양성).
     """
+    dom_result = _parse_rank_table_dom(html, title)
+    if dom_result is not None:
+        return dom_result
+
     sections: dict[str, list[dict]] = {"상승": [], "하락": []}
     index: dict[str, dict[str, dict]] = {"상승": {}, "하락": {}}
 
