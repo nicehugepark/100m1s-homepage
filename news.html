@@ -1254,7 +1254,7 @@ function renderCalExpandContent(date, data) {
 
   // 오늘의 종목: 거래대금 TOP을 base로, 카페·해석 정보 join
   const interpByName = data.interpretedByName || new Map();
-  const todayStocks = (kiwoomStocks || []).slice(0, 20).map((s, i) => {
+  const todayStocks = (kiwoomStocks || []).map((s, i) => {
     const pct = s.max_change_pct ?? s.change_pct ?? null;
     const interp = interpByName.get(s.name);
     // 테마 우선순위: interp.themes (뉴스 기반 자동 추출) > themesData 정적 > []
@@ -1280,8 +1280,10 @@ function renderCalExpandContent(date, data) {
   // 메타
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
+  const streakCount = todayStocks.filter(i => i.interp?.prev_pick).length;
+  const streakSuffix = streakCount > 0 ? ` · 연속선정 ${streakCount}종` : '';
   const metaText = todayStocks.length > 0
-    ? `오늘의 종목 : ${todayStocks.length}개`
+    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}`
     : '—';
 
   // ① 내러티브
