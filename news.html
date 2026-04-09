@@ -1084,17 +1084,33 @@ async function loadCalDayData(date) {
           // stock-*.json 형식 → 기존 렌더러 호환 변환
           const newsItems = (st.news || []).filter(n => !(n.newzy_verdict || '').startsWith('반대'));
           const topNews = newsItems[0];
+          // 연속 선정 + 전일 정보 조합
+          const pp = st.prev_pick;
+          const pickLabel = pp
+            ? `연속 ${st.pick_count || 2}회 선정 (전일 #${pp.rank} ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%)`
+            : '';
+          const industryLabel = st.industry ? `업종: ${st.industry}` : '';
+          const sectorLabel = st.sector ? st.sector.split(',')[0] : '';
+          const diffParts = [
+            topNews ? topNews.causal_chain : '',
+            pickLabel,
+            !topNews && industryLabel ? industryLabel : '',
+            !topNews && sectorLabel ? `주요제품: ${sectorLabel}` : '',
+          ].filter(Boolean);
+
           interpretedByName.set(st.name, {
             name: st.name,
             themes: (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t),
-            causal_chain: topNews ? [topNews.causal_chain].filter(Boolean) : [],
-            differentiator: topNews ? topNews.causal_chain : (st.industry ? `업종: ${st.industry}` : ''),
+            causal_chain: topNews ? [topNews.causal_chain].filter(Boolean) : (pickLabel ? [pickLabel] : []),
+            differentiator: diffParts.join(' · '),
             macro_event: topNews?.macro_event || null,
             news_digest: newsItems.map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
             industry: st.industry,
             sector: st.sector,
             fallback: st.fallback,
             fallback_date: st.fallback_date,
+            pick_count: st.pick_count,
+            prev_pick: pp,
           });
         }
       }
