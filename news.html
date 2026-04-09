@@ -904,6 +904,7 @@ function renderNewsCard(card) {
 let calIndex = null;           // data/calendar/index.json (없으면 null)
 let calViewYear, calViewMonth; // 현재 보기 연·월 (month: 1~12)
 let calSelectedDate = null;    // 'YYYY-MM-DD'
+let calCategory = 'stock';     // 'stock' | 'realestate' | 'policy' (Phase 2/3 확장용)
 const calDayCache = {};        // date → { kiwoom, cafePosts, narratives }
 
 async function loadCalendarIndex() {
@@ -1015,6 +1016,8 @@ async function onCalCellClick(date, pushState) {
   if (pushState !== false) {
     const url = new URL(window.location);
     url.searchParams.set('date', date);
+    if (calCategory !== 'stock') url.searchParams.set('cat', calCategory);
+    else url.searchParams.delete('cat'); // stock은 기본값이므로 URL에 안 넣음
     history.pushState(null, '', url);
   }
   renderCalendar();
@@ -1092,7 +1095,7 @@ async function loadCalDayData(date) {
 
   // Phase 1 뉴스 파이프라인 산출물 (stock-YYYY-MM-DD.json) — DB 종목 마스터 + 뉴지/주주 해석
   try {
-    const stockRes = await fetch(`/data/interpreted/stock-${date}.json?t=` + Date.now());
+    const stockRes = await fetch(`/data/interpreted/${calCategory}-${date}.json?t=` + Date.now());
     if (stockRes.ok) {
       const stockDaily = await stockRes.json();
       for (const st of (stockDaily.stocks || [])) {
@@ -1424,8 +1427,11 @@ async function initCalendar() {
   themesData = themes;
   const now = new Date();
   const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
-  // URL ?date= 파라미터 우선, 없으면 오늘 또는 최근 수집일
-  const urlDate = new URLSearchParams(window.location.search).get('date');
+  // URL ?cat= / ?date= 파라미터. cat 기본값 stock.
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlCat = urlParams.get('cat');
+  if (urlCat && ['stock', 'realestate', 'policy'].includes(urlCat)) calCategory = urlCat;
+  const urlDate = urlParams.get('date');
   let initialDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate)) ? urlDate : todayStr;
   if (calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
@@ -1444,7 +1450,10 @@ async function initCalendar() {
 
   // 브라우저 뒤로/앞으로 지원
   window.addEventListener('popstate', () => {
-    const d = new URLSearchParams(window.location.search).get('date');
+    const p = new URLSearchParams(window.location.search);
+    const d = p.get('date');
+    const c = p.get('cat');
+    if (c && ['stock', 'realestate', 'policy'].includes(c)) calCategory = c;
     if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) onCalCellClick(d, false);
   });
 
