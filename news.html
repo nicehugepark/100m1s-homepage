@@ -1286,8 +1286,9 @@ function renderCalExpandContent(date, data) {
     if (it.interp) {
       const st = it.interp;
       const causal = (st.causal_chain || []).slice(0, 3);
+      const styledArrow = '<span class="arrow">→</span>';
       const causalHtml = causal.length > 0
-        ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c))}${i < causal.length - 1 ? '<span class="arrow">→</span>' : ''}`).join('')}</div>`
+        ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c)).replace(/→/g, styledArrow)}${i < causal.length - 1 ? styledArrow : ''}`).join('')}</div>`
         : '';
       const newzyLine = st.differentiator || st.outlook || '';
       const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
