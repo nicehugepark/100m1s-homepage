@@ -1071,6 +1071,39 @@ async function loadCalDayData(date) {
       if (Array.isArray(daily.macro_events) && macroEvents.length === 0) macroEvents = daily.macro_events;
     }
   } catch (e) { /* 파일 없음 허용 */ }
+
+  // Phase 1 뉴스 파이프라인 산출물 (stock-YYYY-MM-DD.json) — DB 종목 마스터 + 뉴지/주주 해석
+  try {
+    const stockRes = await fetch(`/data/interpreted/stock-${date}.json?t=` + Date.now());
+    if (stockRes.ok) {
+      const stockDaily = await stockRes.json();
+      for (const st of (stockDaily.stocks || [])) {
+        if (!st.name) continue;
+        // 기존 해석이 없는 종목만 추가 (카페/kiwoom 해석 우선)
+        if (!interpretedByName.has(st.name)) {
+          // stock-*.json 형식 → 기존 렌더러 호환 변환
+          const newsItems = (st.news || []).filter(n => !(n.newzy_verdict || '').startsWith('반대'));
+          const topNews = newsItems[0];
+          interpretedByName.set(st.name, {
+            name: st.name,
+            themes: (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t),
+            causal_chain: topNews ? [topNews.causal_chain].filter(Boolean) : [],
+            differentiator: topNews ? topNews.causal_chain : (st.industry ? `업종: ${st.industry}` : ''),
+            macro_event: topNews?.macro_event || null,
+            news_digest: newsItems.map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
+            industry: st.industry,
+            sector: st.sector,
+            fallback: st.fallback,
+            fallback_date: st.fallback_date,
+          });
+        }
+      }
+      // 매크로 이벤트 보충
+      if (Array.isArray(stockDaily.macro_events) && macroEvents.length === 0) {
+        macroEvents = stockDaily.macro_events;
+      }
+    }
+  } catch (e) { /* stock-*.json 없음 허용 */ }
   const result = {
     kiwoom,
     cafePosts: postsOfDay,
