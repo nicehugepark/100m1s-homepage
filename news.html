@@ -1087,7 +1087,7 @@ async function loadCalDayData(date) {
           // 연속 선정 + 전일 정보 조합
           const pp = st.prev_pick;
           const pickLabel = pp
-            ? `연속 ${st.pick_count || 2}회 선정 (전일 #${pp.rank} ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%)`
+            ? `연속 ${st.pick_count || 2}회 선정 · 전일 #${pp.rank} ${fmtTradeAmount(pp.trade_amount)} ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%`
             : '';
           const industryLabel = st.industry ? `업종: ${st.industry}` : '';
           const sectorLabel = st.sector ? st.sector.split(',')[0] : '';
