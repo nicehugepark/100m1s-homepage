@@ -1164,9 +1164,15 @@ function renderCalExpandContent(date, data) {
   const interpByName = data.interpretedByName || new Map();
   const todayStocks = (kiwoomStocks || []).slice(0, 20).map((s, i) => {
     const pct = s.max_change_pct ?? s.change_pct ?? null;
-    const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
-    const cafe = cafeStockMap.get(s.name);
     const interp = interpByName.get(s.name);
+    // 테마 우선순위: interp.themes (뉴스 기반 자동 추출) > themesData 정적 > []
+    let themes;
+    if (interp && Array.isArray(interp.themes) && interp.themes.length > 0) {
+      themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
+    } else {
+      themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
+    }
+    const cafe = cafeStockMap.get(s.name);
     const links = [];
     const seen = new Set();
     if (cafe) {
@@ -1254,6 +1260,7 @@ function renderCalExpandContent(date, data) {
           <div class="cal-feature-head">
             <span class="cal-trade-rank">#${it.rank}</span>
             <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+            ${themesHtml}
             ${pctText ? `<span class="cal-feature-pct ${dir} right">${pctText}</span>` : ''}
           </div>
           <div class="cal-feature-body">
