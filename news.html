@@ -1353,10 +1353,13 @@ function renderCalExpandContent(date, data) {
       const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
       // 뉴스 제목 + 링크 (제목 표시)
       const linkSeen = new Set();
-      const allLinks = [...(st.news_digest || []).map(n => ({ url: n.url, title: n.inferred_title })), ...(it.links || []).map(l => ({ url: l.url, title: '' }))];
+      const sourceMap = {'hankyung.com':'한경','mk.co.kr':'매경','edaily.co.kr':'이데일리','biz.chosun.com':'조선비즈','etoday.co.kr':'이투데이','news.naver.com':'네이버','n.news.naver.com':'네이버'};
+      const allLinks = [...(st.news_digest || []).map(n => ({ url: n.url, title: n.inferred_title, source: n.source })), ...(it.links || []).map(l => ({ url: l.url, title: '', source: '' }))];
       const linksHtml = allLinks.length > 0 ? `<div class="cal-feature-links">${allLinks.filter(l => { if (!l.url || linkSeen.has(l.url)) return false; linkSeen.add(l.url); return true; }).map(l => {
         const host = (() => { try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return ''; } })();
-        const label = l.title ? `${l.title} — ${host}` : host || '링크';
+        const src = l.source || sourceMap[host] || host;
+        const trimTitle = l.title ? (l.title.length > 30 ? l.title.slice(0, 30) + '…' : l.title) : '';
+        const label = trimTitle ? `[${src}] ${trimTitle}` : src;
         return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitize(label))}</a>`;
       }).join('')}</div>` : '';
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
