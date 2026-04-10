@@ -1336,7 +1336,7 @@ function renderCalExpandContent(date, data) {
     const sign = (pct ?? 0) >= 0 ? '+' : '';
     const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
     const amountText = it.amount ? fmtTradeAmount(it.amount) : '';
-    const themesHtml = it.themes.map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('');
+    const themesHtml = it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('');
 
     // 해석 있으면 카드 확장, 없으면 compact 한 줄
     if (it.interp) {
@@ -1446,10 +1446,10 @@ async function initCalendar() {
   const urlCat = urlParams.get('cat');
   if (urlCat && ['stock', 'realestate', 'policy'].includes(urlCat)) calCategory = urlCat;
   const urlDate = urlParams.get('date');
-  let initialDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate)) ? urlDate : todayStr;
-  // 오늘 데이터가 calendar index에 없고, activity도 0이면 최근 수집일로 폴백
-  const todayInIndex = calIndex && calIndex.days && calIndex.days[todayStr];
-  if (!todayInIndex && calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
+  const hasUrlDate = urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate);
+  let initialDate = hasUrlDate ? urlDate : todayStr;
+  // URL 날짜가 없고, 오늘 데이터도 없으면 최근 수집일로 폴백
+  if (!hasUrlDate && calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
       .filter(d => d <= todayStr)
       .sort();
