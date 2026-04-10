@@ -562,8 +562,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding: 2px 7px; border-radius: 4px;
   background: rgba(25,88,199,0.10); color: #1958C7;
 }
-.cal-ind-chip.cal-theme-path .path-arrow {
-  color: #8B95A8; font-weight: 400; margin: 0 1px;
+.cal-theme-sep {
+  color: #C8CDD6; font-size: 11px; margin: 0 6px; vertical-align: middle;
   border: 1px solid rgba(25,88,199,0.20);
 }
 
@@ -1405,7 +1405,10 @@ function renderCalExpandContent(date, data) {
     // 테마칩: theme_paths가 있으면 경로 표시, 없으면 기존 칩
     const tp = it.interp?.theme_paths || [];
     const themesHtml = tp.length > 0
-      ? tp.map(p => `<span class="cal-ind-chip cal-theme-path">${p.path.map(s => escapeHtml(s)).join(' <span class="path-arrow">›</span> ')}</span>`).join('')
+      ? tp.map((p, pi) => {
+          const chips = p.path.map(s => `<span class="cal-ind-chip">${escapeHtml(s)}</span>`).join('');
+          return (pi > 0 ? '<span class="cal-theme-sep">│</span>' : '') + chips;
+        }).join('')
       : it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('');
 
     // 해석 있으면 카드 확장, 없으면 compact 한 줄
