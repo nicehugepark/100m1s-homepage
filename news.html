@@ -394,13 +394,22 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
 .trend-detail-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
-.td-candle { width: 20px; padding: 4px 2px; }
-.th-candle { width: 20px; }
+.td-candle { width: 20px; min-width: 16px; padding: 4px 2px; }
+.th-candle { width: 20px; min-width: 16px; }
 @media (max-width: 640px) {
-  .trend-detail-table { font-size: 10px; }
-  .trend-detail-table th { padding: 4px 4px; }
-  .trend-detail-table td { padding: 4px 4px; }
-  .trend-detail-table td:nth-child(1) { max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trend-detail-table { font-size: 10px; table-layout: fixed; width: 100%; }
+  .trend-detail-table th { padding: 4px 3px; }
+  .trend-detail-table td { padding: 4px 3px; }
+  .trend-detail-table th:nth-child(1),
+  .trend-detail-table td:nth-child(1) { width: 28%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trend-detail-table th:nth-child(2),
+  .trend-detail-table td:nth-child(2) { width: 22%; }
+  .trend-detail-table .th-candle,
+  .trend-detail-table .td-candle { width: 16px; min-width: 16px; }
+  .trend-detail-table th:nth-child(4),
+  .trend-detail-table td:nth-child(4) { width: 22%; }
+  .trend-detail-table th:nth-child(5),
+  .trend-detail-table td:nth-child(5) { width: 22%; }
 }
 
 footer {
@@ -1770,8 +1779,15 @@ async function initCalendar() {
 
 initCalendar();
 
-function miniCandle(open, high, low, close) {
-  if (!open || !high || !low || !close) return '';
+function miniCandle(open, high, low, close, changePct) {
+  if (!close) return '';
+  // Fallback: OHLC가 없으면 종가+등락률로 역산
+  if (!open && close && changePct !== undefined) {
+    open = close / (1 + (changePct || 0) / 100);
+  }
+  if (!open) return '';
+  if (!high) high = Math.max(open, close);
+  if (!low) low = Math.min(open, close);
   const W = 12, H = 24;
   const isUp = close >= open;
   const color = isUp ? '#E03131' : '#1971C2';
@@ -1978,7 +1994,7 @@ async function initThemeTrend() {
         stocks.forEach(s => {
           const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
-          html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price) + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
+          html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
         html += '</tbody></table>';
       }
