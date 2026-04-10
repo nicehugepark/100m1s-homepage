@@ -1041,7 +1041,7 @@ function sanitize(s) {
     .replace(/박성진\s*(?:스타일|매매스타일)/g, '내부 거래 스타일')
     .replace(/박성진/g, '내부 기준')
     .replace(/주주\s*이견[:：]?/g, '추가 관점:')
-    .replace(/주주\s*Top\s*Pick/gi, '주목 종목')
+    .replace(/주주\s*Top\s*Pick/gi, '엄선 종목')
     .replace(/주주\s*검증/g, '재검증')
     .replace(/주주가\s*/g, '')
     .replace(/주주\s*/g, '')
@@ -1129,6 +1129,18 @@ function isWeekendDate(iso) {
   const [y, m, d] = iso.split('-').map(Number);
   const dow = new Date(y, m - 1, d).getDay();
   return dow === 0 || dow === 6;
+}
+
+// 다음 거래일 계산 (최대 10일 탐색)
+function getNextTradingDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  for (let i = 0; i < 10; i++) {
+    dt.setDate(dt.getDate() + 1);
+    const next = ymd(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
+    if (!isMarketClosed(next)) return next;
+  }
+  return null;
 }
 
 function calActivityLevel(date) {
@@ -1397,15 +1409,36 @@ function renderCalExpandContent(date, data) {
   const hasAny = (data.narratives.length > 0) || kiwoomStocks.length > 0 || data.cafePosts.length > 0;
 
   if (!hasAny) {
+    const closed = isMarketClosed(date);
+    let emptyMsg;
+    if (closed) {
+      const reason = getHolidayName(date) || '주말';
+      const nextDate = getNextTradingDate(date);
+      const nextLabel = nextDate ? formatKoDate(nextDate) : '';
+      emptyMsg = `
+        <div style="text-align:center;padding:32px 0;">
+          <div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div>
+          <div style="font-size:12px;color:var(--dm);">${escapeHtml(reason)}${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}</div>
+        </div>`;
+    } else {
+      emptyMsg = `
+        <div class="cal-empty">
+          <div class="cal-empty-circle"></div>
+          <div>수집된 데이터가 없습니다</div>
+        </div>`;
+    }
+    // 휴장일이라도 매크로 이벤트가 있으면 표시
+    const closedMacro = (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10).slice(0, 5);
+    const closedMacroHtml = closedMacro.length > 0
+      ? `<div class="cal-macro-strip">${closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
+      : '';
     inner.innerHTML = `
       <div class="cal-content-head">
         <div class="cal-content-date">${formatKoDate(date)}</div>
-        <div class="cal-content-meta">데이터 없음</div>
+        <div class="cal-content-meta">${closed ? '휴장' : '데이터 없음'}</div>
       </div>
-      <div class="cal-empty">
-        <div class="cal-empty-circle"></div>
-        <div>${isMarketClosed(date) ? (getHolidayName(date) ? getHolidayName(date) + ' — 장 휴장' : '주말 — 장 휴장') : '수집된 데이터가 없습니다'}</div>
-      </div>
+      ${closedMacroHtml}
+      ${emptyMsg}
     `;
     return;
   }
@@ -1497,7 +1530,7 @@ function renderCalExpandContent(date, data) {
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
   const streakCount = todayStocks.filter(i => i.interp?.prev_pick).length;
-  const streakSuffix = streakCount > 0 ? ` · 연속선정 ${streakCount}종` : '';
+  const streakSuffix = streakCount > 0 ? ` · 연속등장 ${streakCount}종` : '';
   const metaText = todayStocks.length > 0
     ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}`
     : '—';
@@ -1592,7 +1625,7 @@ function renderCalExpandContent(date, data) {
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
       const pickMeta = pp
-        ? `<div class="cal-pick-meta">연속 ${st.pick_count || 2}회 선정 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
+        ? `<div class="cal-pick-meta">연속 ${st.pick_count || 2}회 등장 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
         : '';
       // 종목명 우측 연속 배지
       const pickBadge = pp ? `<span class="cal-streak-badge">${st.pick_count || 2}연속</span>` : '';
@@ -1653,7 +1686,7 @@ function renderCalExpandContent(date, data) {
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
       ` : `
-        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (getHolidayName(date) || '주말') + ' — 휴장' : '데이터 없음'}</div>
+        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (() => { const r = getHolidayName(date) || '주말'; const nd = getNextTradingDate(date); return '오늘은 장이 쉽니다 (' + r + ')' + (nd ? ' · 다음 거래일: ' + formatKoDate(nd) : ''); })() : '데이터 없음'}</div>
       `}
     </div>
   `;
@@ -2167,6 +2200,10 @@ async function initThemeTree() {
 }
 initThemeTree();
 </script>
+
+<footer style="max-width:1100px;margin:0 auto;padding:0 24px 40px;">
+  <p style="font-size:10px;color:#8B95A8;text-align:center;margin-top:24px;line-height:1.6;">본 페이지의 정보는 투자 참고 자료이며, 특정 종목의 매수·매도를 권유하지 않습니다. 투자 책임은 본인에게 있습니다.</p>
+</footer>
 
 </body>
 </html>
