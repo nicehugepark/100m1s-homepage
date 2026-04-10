@@ -1148,6 +1148,15 @@ function isMarketClosed(iso) {
   return iso in holidayData.market_closed;
 }
 
+// 비거래일이면 테마트리·거래대금 추이 숨김
+function toggleThemeSections(iso) {
+  const closed = isMarketClosed(iso);
+  const tree = document.getElementById('theme-tree');
+  const trend = document.getElementById('theme-trend');
+  if (tree) tree.style.display = closed ? 'none' : '';
+  if (trend) trend.style.display = closed ? 'none' : '';
+}
+
 function pad2(n) { return String(n).padStart(2, '0'); }
 function ymd(y, m, d) { return `${y}-${pad2(m)}-${pad2(d)}`; }
 function formatKoDate(iso) {
@@ -1246,6 +1255,7 @@ function renderCalendar() {
 
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
+  toggleThemeSections(date);
   // Static URL — 날짜 공유 가능
   if (pushState !== false) {
     const url = new URL(window.location);
