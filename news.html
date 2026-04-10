@@ -828,9 +828,22 @@ async function loadInterpreted(postId) {
 async function loadKiwoomDate(date) {
   try {
     const res = await fetch(`/data/kiwoom/${date}.json?t=` + Date.now());
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (e) { return null; }
+    if (res.ok) return await res.json();
+  } catch (e) { /* fall through */ }
+  // 폴백: stock-*.json에서 종목 리스트 추출 (kiwoom 파일 미생성 시)
+  try {
+    const fb = await fetch(`/data/interpreted/stock-${date}.json?t=` + Date.now());
+    if (fb.ok) {
+      const d = await fb.json();
+      if (d.stocks && d.stocks.length > 0) {
+        return { daily_top: d.stocks.map(s => ({
+          ticker: s.code, name: s.name, rank: s.rank,
+          max_trade_amount: s.trade_amount, max_change_pct: s.change_pct
+        })) };
+      }
+    }
+  } catch (e) { /* ignore */ }
+  return null;
 }
 
 function fmtTradeAmount(won) {
@@ -1435,7 +1448,9 @@ async function initCalendar() {
   if (urlCat && ['stock', 'realestate', 'policy'].includes(urlCat)) calCategory = urlCat;
   const urlDate = urlParams.get('date');
   let initialDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate)) ? urlDate : todayStr;
-  if (calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
+  // 오늘 데이터가 calendar index에 없고, activity도 0이면 최근 수집일로 폴백
+  const todayInIndex = calIndex && calIndex.days && calIndex.days[todayStr];
+  if (!todayInIndex && calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
       .filter(d => d <= todayStr)
       .sort();
