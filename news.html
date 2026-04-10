@@ -1367,14 +1367,9 @@ function renderCalExpandContent(date, data) {
   const narrItems = data.narratives.length > 0
     ? data.narratives.slice(0, 8)
     : macroEvents.map(m => m.summary).slice(0, 5);
-  const narrHtml = narrItems.length > 0 ? `
-    <div class="cal-section">
-      <div class="cal-section-title">오늘의 뉴스 요약</div>
-      <div class="cal-narr-stack">
-        ${narrItems.map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}
-      </div>
-    </div>
-  ` : '';
+  const narrPillsHtml = narrItems.length > 0
+    ? `<div class="cal-narr-stack">${narrItems.map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}</div>`
+    : '';
 
   const renderFactors = (st) => {
     const ff = st.five_factors || {};
@@ -1476,18 +1471,18 @@ function renderCalExpandContent(date, data) {
       </div>`;
   };
 
-  const todayHtml = todayStocks.length > 0 ? `
+  const todayHtml = `
     <div class="cal-section">
-      <div class="cal-section-title">거래대금 TOP</div>
+      <div class="cal-section-title">오늘의 뉴스요약</div>
+      ${narrPillsHtml}
       ${macroHtml}
-      <div class="cal-trade-list" style="margin-top:10px;">
-        ${todayStocks.map(renderTodayCard).join('')}
-      </div>
-    </div>
-  ` : `
-    <div class="cal-section">
-      <div class="cal-section-title">오늘의 종목</div>
-      <div class="cal-empty" style="padding:24px 0;">${isWeekendDate(date) ? '주말/휴장' : '데이터 없음'}</div>
+      ${todayStocks.length > 0 ? `
+        <div class="cal-trade-list" style="margin-top:10px;">
+          ${todayStocks.map(renderTodayCard).join('')}
+        </div>
+      ` : `
+        <div class="cal-empty" style="padding:24px 0;">${isWeekendDate(date) ? '주말/휴장' : '데이터 없음'}</div>
+      `}
     </div>
   `;
 
@@ -1496,7 +1491,6 @@ function renderCalExpandContent(date, data) {
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">${metaText}</div>
     </div>
-    ${narrHtml}
     ${todayHtml}
   `;
 }
