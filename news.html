@@ -945,7 +945,9 @@ function calActivityLevel(date) {
   if (!calIndex || !calIndex.days) return 0;
   const entry = calIndex.days[date];
   if (!entry) return 0;
-  // 뉴스 1건 이상이어야 활성화 (빈 달력 원칙)
+  // stock_count 없으면 구 스키마 — 표시 가능 데이터 없음
+  const stocks = entry.stock_count ?? 0;
+  if (stocks < 1) return 0;
   const news = entry.news_count ?? 0;
   if (news < 1) return 0;
   if (news >= 20) return 4;
