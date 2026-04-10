@@ -787,7 +787,7 @@ let themesData = null;
 
 async function loadThemes() {
   try {
-    const res = await fetch('/data/themes/themes.json?t=' + Date.now());
+    const res = await fetch('/data/themes/themes.json');
     if (!res.ok) throw new Error('themes.json HTTP ' + res.status);
     return await res.json();
   } catch (e) { return null; }
@@ -795,7 +795,7 @@ async function loadThemes() {
 
 async function loadIndex() {
   try {
-    const res = await fetch('/data/cafe/index.json?t=' + Date.now());
+    const res = await fetch('/data/cafe/index.json');
     if (!res.ok) throw new Error('index.json HTTP ' + res.status);
     return await res.json();
   } catch (e) { return null; }
@@ -811,7 +811,7 @@ async function loadPost(postId) {
 
 async function loadKiwoomIndex() {
   try {
-    const res = await fetch('/data/kiwoom/index.json?t=' + Date.now());
+    const res = await fetch('/data/kiwoom/index.json');
     if (!res.ok) throw new Error('kiwoom/index.json HTTP ' + res.status);
     return await res.json();
   } catch (e) { return null; }
@@ -922,7 +922,7 @@ const calDayCache = {};        // date → { kiwoom, cafePosts, narratives }
 
 async function loadCalendarIndex() {
   try {
-    const res = await fetch('/data/calendar/index.json?t=' + Date.now());
+    const res = await fetch('/data/calendar/index.json');
     if (!res.ok) return null;
     return await res.json();
   } catch (e) { return null; }
@@ -1054,19 +1054,17 @@ async function loadCalDayData(date) {
     loadKiwoomDate(date),
     loadIndex()
   ]);
-  // 해당 날짜 소스 포스트 수집
-  const postsOfDay = [];
+  // 해당 날짜 소스 포스트 수집 (병렬 로드)
+  let postsOfDay = [];
   if (cafeIndex && cafeIndex.posts) {
     const idsOfDay = cafeIndex.posts
       .filter(p => {
         const d = p.post_date || (p.fetched_at || '').slice(0, 10);
         return d === date;
       })
-      .map(p => p.post_id);
-    for (const id of idsOfDay.slice(0, 10)) {
-      const post = await loadPost(id);
-      if (post) postsOfDay.push(post);
-    }
+      .map(p => p.post_id)
+      .slice(0, 10);
+    postsOfDay = (await Promise.all(idsOfDay.map(id => loadPost(id)))).filter(Boolean);
   }
   // 내러티브 dedupe
   const narrSet = new Set();
@@ -1079,12 +1077,8 @@ async function loadCalDayData(date) {
       }
     }
   }
-  // 해석 파일 로드 (post 단위) — 폴백 허용
-  const interpretedList = [];
-  for (const p of postsOfDay) {
-    const interp = await loadInterpreted(p.post_id);
-    if (interp) interpretedList.push(interp);
-  }
+  // 해석 파일 로드 (병렬)
+  const interpretedList = (await Promise.all(postsOfDay.map(p => loadInterpreted(p.post_id)))).filter(Boolean);
   // 종목명 → 해석 stock 객체 병합 맵
   const interpretedByName = new Map();
   let macroEvents = [];
@@ -1311,8 +1305,8 @@ function renderCalExpandContent(date, data) {
     </div>
   ` : '';
 
-  // 매크로 이벤트 칩 (오늘의 종목 섹션 상단)
-  const macroEvents = data.macroEvents || [];
+  // 매크로 이벤트 칩 (오늘의 종목 섹션 상단, 최대 5개)
+  const macroEvents = (data.macroEvents || []).slice(0, 5);
   const macroHtml = macroEvents.length > 0
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
     : '';
