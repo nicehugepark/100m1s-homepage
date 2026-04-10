@@ -394,9 +394,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
 .trend-detail-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
+.td-candle { width: 20px; padding: 4px 2px; }
+.th-candle { width: 20px; }
 @media (max-width: 640px) {
-  .trend-detail-table .td-price, .trend-detail-table .th-price,
-  .trend-detail-table .td-amount, .trend-detail-table .th-amount { display: none; }
+  .trend-detail-table .td-price, .trend-detail-table .th-price { display: none; }
 }
 
 footer {
@@ -1766,6 +1767,25 @@ async function initCalendar() {
 
 initCalendar();
 
+function miniCandle(open, high, low, close) {
+  if (!open || !high || !low || !close) return '';
+  const W = 12, H = 24;
+  const isUp = close >= open;
+  const color = isUp ? '#E03131' : '#1971C2';
+  const range = high - low;
+  if (range === 0) return '<svg width="'+W+'" height="'+H+'"><line x1="6" y1="0" x2="6" y2="'+H+'" stroke="#8B95A8" stroke-width="1"/></svg>';
+  const scale = H / range;
+  const wickTop = 0;
+  const wickBot = H;
+  const bodyTop = (high - Math.max(open, close)) * scale;
+  const bodyBot = (high - Math.min(open, close)) * scale;
+  const bodyH = Math.max(bodyBot - bodyTop, 1);
+  return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
+    '<line x1="6" y1="'+wickTop+'" x2="6" y2="'+wickBot+'" stroke="'+color+'" stroke-width="1"/>' +
+    '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/>' +
+    '</svg>';
+}
+
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
   try {
@@ -1951,11 +1971,11 @@ async function initThemeTrend() {
       if (stocks.length === 0) {
         html += '<div style="font-size:12px;color:var(--dm);padding:8px 0;">종목 데이터가 없습니다</div>';
       } else {
-        html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+        html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
         stocks.forEach(s => {
           const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
-          html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
+          html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price) + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
         html += '</tbody></table>';
       }
