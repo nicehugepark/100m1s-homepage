@@ -268,11 +268,11 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 14px; padding-left: 4px;
 }
 .theme-trend-legend-item {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 12px; font-weight: 700; color: var(--tx); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; color: var(--tx); cursor: pointer;
 }
 .theme-trend-legend-item .swatch {
-  width: 12px; height: 4px; border-radius: 2px; flex-shrink: 0;
+  width: 10px; height: 3px; border-radius: 2px; flex-shrink: 0;
 }
 .theme-trend-tooltip {
   position: absolute; pointer-events: none;
@@ -1631,13 +1631,13 @@ async function initThemeTrend() {
 
       if (points.length === 1) {
         // 단일 점은 원으로
-        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="4" fill="' + color + '" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" class="tt-hit" style="cursor:pointer"/>';
+        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="3" fill="' + color + '" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" class="tt-hit" style="cursor:pointer"/>';
       } else {
         const polyPts = points.map(p => p.x + ',' + p.y).join(' ');
-        svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>';
+        svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>';
         points.forEach(p => {
           svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="12" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" class="tt-hit" style="cursor:pointer"/>';
-          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="3.5" fill="' + color + '"/>';
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="2.5" fill="' + color + '"/>';
         });
       }
     });
@@ -1668,7 +1668,7 @@ async function initThemeTrend() {
       const date = hit.dataset.date || '';
       tooltip.textContent = name + ' ' + fmtDate(date) + ' ' + fmtTril(amount);
       tooltip.classList.add('show');
-      const rect = container.getBoundingClientRect();
+      const rect = wrap.getBoundingClientRect();
       tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
       tooltip.style.top = (e.clientY - rect.top - 28) + 'px';
     });
