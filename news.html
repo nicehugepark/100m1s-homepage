@@ -1346,14 +1346,18 @@ function renderCalExpandContent(date, data) {
       const causalHtml = causal.length > 0
         ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c)).replace(/→/g, styledArrow)}${i < causal.length - 1 ? styledArrow : ''}`).join('')}</div>`
         : '';
-      const newzyLine = st.differentiator || st.outlook || '';
+      // differentiator가 causal_chain과 동일하면 중복 제거
+      const causalText = (causal[0] || '').trim();
+      const diffRaw = (st.differentiator || st.outlook || '').trim();
+      const newzyLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
       const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
-      // 뉴스 링크 URL 중복 제거
+      // 뉴스 제목 + 링크 (제목 표시)
       const linkSeen = new Set();
       const allLinks = [...(st.news_digest || []).map(n => ({ url: n.url, title: n.inferred_title })), ...(it.links || []).map(l => ({ url: l.url, title: '' }))];
       const linksHtml = allLinks.length > 0 ? `<div class="cal-feature-links">${allLinks.filter(l => { if (!l.url || linkSeen.has(l.url)) return false; linkSeen.add(l.url); return true; }).map(l => {
-        const label = (() => { try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return '링크'; } })();
-        return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sanitize(l.title || ''))}">${escapeHtml(label)}</a>`;
+        const host = (() => { try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return ''; } })();
+        const label = l.title ? `${l.title} — ${host}` : host || '링크';
+        return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitize(label))}</a>`;
       }).join('')}</div>` : '';
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
