@@ -1892,7 +1892,7 @@ async function initThemeTrend() {
         if (el.classList.contains('tt-hit')) return;
         const idx = parseInt(el.dataset.themeIdx);
         const active = none || selectedSet.has(idx);
-        el.style.opacity = active ? '' : '0.3';
+        el.style.opacity = active ? '' : '0.1';
       });
       // 레전드 스타일
       legendItems.forEach(li => {
@@ -1926,11 +1926,6 @@ async function initThemeTrend() {
       const key = themeName + '|' + dateStr;
       // 기존 골드 링 제거
       svgEl.querySelectorAll('.tt-gold-ring').forEach(el => el.remove());
-      if (activePoint === key) {
-        activePoint = null;
-        detailDiv.classList.remove('open');
-        return;
-      }
       activePoint = key;
       // 테마 데이터에서 stocks 찾기
       const theme = themes[themeIdx];
@@ -1958,7 +1953,7 @@ async function initThemeTrend() {
       } else {
         html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
         stocks.forEach(s => {
-          const pctClass = s.change_pct > 0 ? 'var(--pos)' : s.change_pct < 0 ? 'var(--neg)' : 'var(--tx)';
+          const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
           html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
@@ -1994,7 +1989,14 @@ async function initThemeTrend() {
 
     wrap.addEventListener('click', function(e) {
       const hit = e.target.closest('.tt-hit');
-      if (!hit) return;
+      if (!hit) {
+        // 포인트 외 클릭 → 선택 해제
+        svgEl.querySelectorAll('.tt-gold-ring').forEach(el => el.remove());
+        activePoint = null;
+        detailDiv.classList.remove('open');
+        detailDiv.innerHTML = '';
+        return;
+      }
       tooltip.classList.remove('show');
       const themeName = hit.dataset.theme;
       const dateStr = hit.dataset.date;
