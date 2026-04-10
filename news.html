@@ -942,16 +942,16 @@ function isWeekendDate(iso) {
 }
 
 function calActivityLevel(date) {
-  // index가 없으면 모든 날 빈 상태
   if (!calIndex || !calIndex.days) return 0;
   const entry = calIndex.days[date];
   if (!entry) return 0;
-  const score = entry.activity ?? entry.stock_count ?? 0;
-  if (score >= 30) return 4;
-  if (score >= 15) return 3;
-  if (score >= 5) return 2;
-  if (score >= 1) return 1;
-  return 0;
+  // 뉴스 1건 이상이어야 활성화 (빈 달력 원칙)
+  const news = entry.news_count ?? 0;
+  if (news < 1) return 0;
+  if (news >= 20) return 4;
+  if (news >= 10) return 3;
+  if (news >= 3) return 2;
+  return 1;
 }
 
 function renderCalendar() {
@@ -1401,7 +1401,6 @@ function renderCalExpandContent(date, data) {
         <div class="cal-trade-name-cell">
           <span class="cal-trade-name">${escapeHtml(it.name)}</span>
           ${compactBadge}
-          ${themesHtml}
           ${linksHtml}
         </div>
         <div class="cal-trade-amount">${amountText}</div>
