@@ -1322,23 +1322,26 @@ function renderCalExpandContent(date, data) {
     ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}`
     : '—';
 
-  // ① 내러티브
-  const narrHtml = data.narratives.length > 0 ? `
-    <div class="cal-section">
-      <div class="cal-section-title">오늘의 내러티브 <span class="count">${data.narratives.length}</span></div>
-      <div class="cal-narr-stack">
-        ${data.narratives.slice(0, 8).map(n => `<span class="cal-narr-pill">${escapeHtml(n)}</span>`).join('')}
-      </div>
-    </div>
-  ` : '';
-
-  // 매크로 이벤트 칩 — summary가 title과 다른 것만 (키워드 단독 제외), 최대 5개
+  // ① 매크로 이벤트 (내러티브 폴백에도 사용)
   const macroEvents = (data.macroEvents || [])
     .filter(m => m.summary && m.summary !== m.title && m.summary.length > m.title.length)
     .slice(0, 5);
   const macroHtml = macroEvents.length > 0
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
     : '';
+
+  // ② 내러티브: 카페 요약 우선, 없으면 매크로 이벤트 summary로 대체
+  const narrItems = data.narratives.length > 0
+    ? data.narratives.slice(0, 8)
+    : macroEvents.map(m => m.summary).slice(0, 5);
+  const narrHtml = narrItems.length > 0 ? `
+    <div class="cal-section">
+      <div class="cal-section-title">오늘의 뉴스 요약</div>
+      <div class="cal-narr-stack">
+        ${narrItems.map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}
+      </div>
+    </div>
+  ` : '';
 
   const renderFactors = (st) => {
     const ff = st.five_factors || {};
