@@ -63,6 +63,9 @@ def parse_kiwoom_stock(s: dict) -> dict:
       12:  등락률 (×1000 스케일 — 9590 = 9.59%)
       13:  거래량
       14:  거래대금 (백만원 단위, 미반환되는 경우 있음 → price×volume fallback)
+      16:  시가
+      17:  고가
+      18:  저가
     """
     code = str(s.get("9001", "")).lstrip("A")
     price = parse_int(s.get("10", ""))
@@ -74,6 +77,9 @@ def parse_kiwoom_stock(s: dict) -> dict:
         "ticker": code,
         "name": str(s.get("302", "")).strip(),
         "price": price,
+        "open": parse_int(s.get("16", "")),
+        "high": parse_int(s.get("17", "")),
+        "low": parse_int(s.get("18", "")),
         "change": parse_int(s.get("11", "")),
         "change_pct": parse_float(s.get("12", ""))
         / 1000.0,  # FLR-20260408 등락률 스케일
@@ -98,6 +104,13 @@ def merge_into_daily(daily: dict, snapshot: dict) -> None:
             ex["appearances"] = ex.get("appearances", 0) + 1
             ex["last_seen"] = snap_time
             ex["last_price"] = st["price"]
+            # OHLC 갱신: high/low는 하루 중 최대/최소
+            if st.get("high"):
+                ex["high"] = max(ex.get("high", 0), st["high"])
+            if st.get("low") and st["low"] > 0:
+                ex["low"] = min(ex.get("low", st["low"]), st["low"])
+            if st.get("open") and not ex.get("open"):
+                ex["open"] = st["open"]
         else:
             accum[ticker] = {
                 "ticker": ticker,
@@ -109,6 +122,9 @@ def merge_into_daily(daily: dict, snapshot: dict) -> None:
                 "last_seen": snap_time,
                 "appearances": 1,
                 "last_price": st["price"],
+                "open": st.get("open", 0),
+                "high": st.get("high", 0),
+                "low": st.get("low", 0),
             }
 
 
