@@ -381,6 +381,23 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .theme-trend-tooltip.show { opacity: 1; }
+.theme-trend-legend-item { min-height: 36px; padding: 6px 10px; border-radius: 6px; transition: color 0.15s; }
+.theme-trend-legend-item.dimmed { color: var(--dm); }
+.theme-trend-legend-item .swatch { position: relative; }
+.theme-trend-legend-item.selected .swatch::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 2px; background: #C49930; border-radius: 1px;
+}
+.trend-detail { margin-top: 12px; overflow: hidden; transition: max-height 0.2s ease-out; max-height: 0; }
+.trend-detail.open { max-height: 400px; }
+.trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 8px; }
+.trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
+.trend-detail-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
+@media (max-width: 640px) {
+  .trend-detail-table .td-price, .trend-detail-table .th-price,
+  .trend-detail-table .td-amount, .trend-detail-table .th-amount { display: none; }
+}
 
 footer {
   background: var(--tx); color: var(--dm); text-align: center;
@@ -969,7 +986,7 @@ async function loadIndex() {
 
 async function loadPost(postId) {
   try {
-    const res = await fetch(`/data/cafe/posts/${postId}.json?t=` + Date.now());
+    const res = await fetch(`/data/cafe/posts/${postId}.json`);
     if (!res.ok) throw new Error(postId + ' HTTP ' + res.status);
     return await res.json();
   } catch (e) { return null; }
@@ -985,20 +1002,21 @@ async function loadKiwoomIndex() {
 
 async function loadInterpreted(postId) {
   try {
-    const res = await fetch(`/data/interpreted/${postId}.json?t=` + Date.now());
+    const res = await fetch(`/data/interpreted/${postId}.json`);
     if (!res.ok) return null;
     return await res.json();
   } catch (e) { console.warn('interpreted load fail', postId, e); return null; }
 }
 
 async function loadKiwoomDate(date) {
+  const dateHash = date.replace(/-/g, '');
   try {
-    const res = await fetch(`/data/kiwoom/${date}.json?t=` + Date.now());
+    const res = await fetch(`/data/kiwoom/${date}.json?v=${dateHash}`);
     if (res.ok) return await res.json();
   } catch (e) { /* fall through */ }
   // 폴백: stock-*.json에서 종목 리스트 추출 (kiwoom 파일 미생성 시)
   try {
-    const fb = await fetch(`/data/interpreted/stock-${date}.json?t=` + Date.now());
+    const fb = await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
     if (fb.ok) {
       const d = await fb.json();
       if (d.stocks && d.stocks.length > 0) {
@@ -1265,8 +1283,13 @@ async function loadCalDayData(date) {
       }
     }
   }
-  // 해석 파일 로드 (병렬)
-  const interpretedList = (await Promise.all(postsOfDay.map(p => loadInterpreted(p.post_id)))).filter(Boolean);
+  // 해석 파일 로드 (병렬 — interpreted + kiwoom-daily + stock-daily 동시)
+  const dateHash = date.replace(/-/g, '');
+  const [interpretedList, dailyData, stockDailyData] = await Promise.all([
+    Promise.all(postsOfDay.map(p => loadInterpreted(p.post_id))).then(r => r.filter(Boolean)),
+    fetch(`/data/interpreted/kiwoom-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null)
+  ]);
   // 종목명 → 해석 stock 객체 병합 맵
   const interpretedByName = new Map();
   let macroEvents = [];
@@ -1279,22 +1302,17 @@ async function loadCalDayData(date) {
     if (interp.jooju_group_review && !joojuGroupReview) joojuGroupReview = interp.jooju_group_review;
   }
   // 일일 standalone 해석 파일 (거래대금 기반, 카페와 독립) — 없으면 skip
-  try {
-    const dailyRes = await fetch(`/data/interpreted/kiwoom-${date}.json?t=` + Date.now());
-    if (dailyRes.ok) {
-      const daily = await dailyRes.json();
-      for (const st of (daily.stocks || [])) {
-        if (st.name && !interpretedByName.has(st.name)) interpretedByName.set(st.name, st);
-      }
-      if (Array.isArray(daily.macro_events) && macroEvents.length === 0) macroEvents = daily.macro_events;
+  if (dailyData) {
+    for (const st of (dailyData.stocks || [])) {
+      if (st.name && !interpretedByName.has(st.name)) interpretedByName.set(st.name, st);
     }
-  } catch (e) { /* 파일 없음 허용 */ }
+    if (Array.isArray(dailyData.macro_events) && macroEvents.length === 0) macroEvents = dailyData.macro_events;
+  }
 
   // Phase 1 뉴스 파이프라인 산출물 (stock-YYYY-MM-DD.json) — DB 종목 마스터 + 뉴지/주주 해석
   try {
-    const stockRes = await fetch(`/data/interpreted/${calCategory}-${date}.json?t=` + Date.now());
-    if (stockRes.ok) {
-      const stockDaily = await stockRes.json();
+    if (stockDailyData) {
+      const stockDaily = stockDailyData;
       for (const st of (stockDaily.stocks || [])) {
         if (!st.name) continue;
         // 기존 해석이 없는 종목만 추가 (카페/kiwoom 해석 우선)
@@ -1354,7 +1372,7 @@ async function loadCalDayData(date) {
         macroEvents = stockDaily.macro_events;
       }
     }
-  } catch (e) { console.warn('stock-*.json load:', e); }
+  } catch (e) { console.warn('stock-daily merge:', e); }
 
   // 전일 해석 전파 (stock-*.json try-catch 밖 — 에러 삼킴 방지)
   try {
@@ -1821,7 +1839,6 @@ async function initThemeTrend() {
     // 각 테마 polyline + 투명 히트 서클
     themes.forEach((theme, ti) => {
       const color = COLORS[ti % COLORS.length];
-      // 날짜 배열 기준으로 포인트 — 데이터 없는 날짜는 건너뜀
       const points = [];
       const dataMap = {};
       theme.data.forEach(d => { dataMap[d.date] = d; });
@@ -1835,17 +1852,16 @@ async function initThemeTrend() {
       if (points.length < 1) return;
 
       if (points.length === 1) {
-        // 단일 점은 원으로
-        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="3" fill="' + color + '" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" class="tt-hit" style="cursor:pointer"/>';
+        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="3" fill="' + color + '" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" data-theme-idx="' + ti + '" class="tt-hit tt-dot" style="cursor:pointer"/>';
       } else {
         const polyPts = points.map(p => p.x + ',' + p.y).join(' ');
         const strokeW = isMobile ? 2 : 1.2;
         const dotR = isMobile ? 3.5 : 2;
         const hitR = isMobile ? 16 : 12;
-        svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="' + strokeW + '" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>';
+        svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="' + strokeW + '" stroke-linecap="round" stroke-linejoin="round" opacity="0.8" data-theme-idx="' + ti + '"/>';
         points.forEach(p => {
-          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + hitR + '" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" class="tt-hit" style="cursor:pointer"/>';
-          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + dotR + '" fill="' + color + '"/>';
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + hitR + '" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" data-theme-idx="' + ti + '" class="tt-hit" style="cursor:pointer"/>';
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + dotR + '" fill="' + color + '" data-theme-idx="' + ti + '" class="tt-dot"/>';
         });
       }
     });
@@ -1855,35 +1871,138 @@ async function initThemeTrend() {
     // 레전드
     let legend = '<div class="theme-trend-legend">';
     themes.forEach((t, i) => {
-      legend += '<span class="theme-trend-legend-item"><span class="swatch" style="background:' + COLORS[i % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
+      legend += '<span class="theme-trend-legend-item" data-legend-idx="' + i + '"><span class="swatch" style="background:' + COLORS[i % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
     });
     legend += '</div>';
 
     const dateRange = fmtDate(dates[0]) + ' ~ ' + fmtDate(dates[dates.length - 1]);
     container.innerHTML =
       '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 20영업일 · ' + dateRange + '</div></div>' +
-      '<div class="theme-trend-wrap">' + svg + legend + '<div class="theme-trend-tooltip" id="tt-trend"></div></div>';
+      '<div class="theme-trend-wrap">' + svg + legend + '<div id="trend-detail" class="trend-detail"></div><div class="theme-trend-tooltip" id="tt-trend"></div></div>';
 
-    // 툴팁
+    // ── 레전드 토글 (멀티 선택) ──
+    const selectedSet = new Set();
+    const legendItems = container.querySelectorAll('.theme-trend-legend-item');
+    const svgEl = container.querySelector('.theme-trend-svg');
+
+    function applyLegendFilter() {
+      const none = selectedSet.size === 0;
+      // SVG 요소 opacity
+      svgEl.querySelectorAll('[data-theme-idx]').forEach(el => {
+        if (el.classList.contains('tt-hit')) return;
+        const idx = parseInt(el.dataset.themeIdx);
+        const active = none || selectedSet.has(idx);
+        el.style.opacity = active ? '' : '0.3';
+      });
+      // 레전드 스타일
+      legendItems.forEach(li => {
+        const idx = parseInt(li.dataset.legendIdx);
+        const active = none || selectedSet.has(idx);
+        li.classList.toggle('selected', selectedSet.has(idx));
+        li.classList.toggle('dimmed', !none && !active);
+      });
+    }
+
+    legendItems.forEach(li => {
+      li.addEventListener('click', () => {
+        const idx = parseInt(li.dataset.legendIdx);
+        if (selectedSet.has(idx)) selectedSet.delete(idx);
+        else selectedSet.add(idx);
+        applyLegendFilter();
+      });
+    });
+
+    // ── 포인트 클릭 → 종목 테이블 ──
+    const detailDiv = document.getElementById('trend-detail');
+    let activePoint = null; // "theme|date" key
+
+    function fmtAmount(v) {
+      if (v >= 1e12) return (v / 1e12).toFixed(1) + '조';
+      if (v >= 1e8) return (v / 1e8).toFixed(0) + '억';
+      return v.toLocaleString();
+    }
+
+    function showStockDetail(themeName, dateStr, themeIdx) {
+      const key = themeName + '|' + dateStr;
+      // 기존 골드 링 제거
+      svgEl.querySelectorAll('.tt-gold-ring').forEach(el => el.remove());
+      if (activePoint === key) {
+        activePoint = null;
+        detailDiv.classList.remove('open');
+        return;
+      }
+      activePoint = key;
+      // 테마 데이터에서 stocks 찾기
+      const theme = themes[themeIdx];
+      if (!theme) return;
+      const dayData = theme.data.find(d => d.date === dateStr);
+      const stocks = dayData && dayData.stocks ? dayData.stocks : [];
+      // 골드 링 추가
+      const hits = svgEl.querySelectorAll('.tt-hit[data-theme="' + themeName.replace(/"/g, '\\"') + '"][data-date="' + dateStr + '"]');
+      hits.forEach(h => {
+        const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('cx', h.getAttribute('cx'));
+        ring.setAttribute('cy', h.getAttribute('cy'));
+        ring.setAttribute('r', '5');
+        ring.setAttribute('fill', 'none');
+        ring.setAttribute('stroke', '#C49930');
+        ring.setAttribute('stroke-width', '2');
+        ring.classList.add('tt-gold-ring');
+        svgEl.appendChild(ring);
+      });
+      // 테이블 렌더
+      const chipDate = dateStr.slice(5).replace('-', '/');
+      let html = '<div class="trend-detail-chip">' + chipDate + ' &middot; ' + escapeHtml(themeName) + '</div>';
+      if (stocks.length === 0) {
+        html += '<div style="font-size:12px;color:var(--dm);padding:8px 0;">종목 데이터가 없습니다</div>';
+      } else {
+        html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+        stocks.forEach(s => {
+          const pctClass = s.change_pct > 0 ? 'var(--pos)' : s.change_pct < 0 ? 'var(--neg)' : 'var(--tx)';
+          const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
+          html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
+        });
+        html += '</tbody></table>';
+      }
+      detailDiv.innerHTML = html;
+      // 트랜지션
+      detailDiv.classList.remove('open');
+      requestAnimationFrame(() => { detailDiv.classList.add('open'); });
+    }
+
+    // ── 툴팁 + 클릭 ──
     const tooltip = document.getElementById('tt-trend');
     const wrap = container.querySelector('.theme-trend-wrap');
-    wrap.addEventListener('mousemove', function(e) {
+
+    if (!isMobile) {
+      wrap.addEventListener('mousemove', function(e) {
+        const hit = e.target.closest('.tt-hit');
+        if (!hit) { tooltip.classList.remove('show'); return; }
+        const name = hit.dataset.theme;
+        const amount = Number(hit.dataset.amount);
+        tooltip.textContent = name + ' ' + fmtTril(amount);
+        tooltip.classList.add('show');
+        const rect = wrap.getBoundingClientRect();
+        let left = e.clientX - rect.left + 12;
+        const ttWidth = tooltip.offsetWidth || 120;
+        if (left + ttWidth > rect.width) left = e.clientX - rect.left - ttWidth - 12;
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = (e.clientY - rect.top - 28) + 'px';
+      });
+      wrap.addEventListener('mouseleave', function() { tooltip.classList.remove('show'); });
+    }
+
+    wrap.addEventListener('click', function(e) {
       const hit = e.target.closest('.tt-hit');
-      if (!hit) { tooltip.classList.remove('show'); return; }
-      const name = hit.dataset.theme;
-      const amount = Number(hit.dataset.amount);
-      const date = hit.dataset.date || '';
-      tooltip.textContent = name + ' ' + fmtTril(amount);
-      tooltip.classList.add('show');
-      const rect = wrap.getBoundingClientRect();
-      let left = e.clientX - rect.left + 12;
-      // 오른쪽 잘림 방지: tooltip이 wrap 밖으로 나가면 왼쪽에 표시
-      const ttWidth = tooltip.offsetWidth || 120;
-      if (left + ttWidth > rect.width) left = e.clientX - rect.left - ttWidth - 12;
-      tooltip.style.left = left + 'px';
-      tooltip.style.top = (e.clientY - rect.top - 28) + 'px';
+      if (!hit) return;
+      tooltip.classList.remove('show');
+      const themeName = hit.dataset.theme;
+      const dateStr = hit.dataset.date;
+      const themeIdx = parseInt(hit.dataset.themeIdx);
+      // 레전드 필터 활성 시, 비선택 테마 클릭 무시
+      if (selectedSet.size > 0 && !selectedSet.has(themeIdx)) return;
+      showStockDetail(themeName, dateStr, themeIdx);
     });
-    wrap.addEventListener('mouseleave', function() { tooltip.classList.remove('show'); });
 
   } catch (e) { console.warn('theme-trend:', e); }
 }
