@@ -190,6 +190,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .news-judgment.호재 { background: var(--pos-bg); color: var(--pos); }
 .news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
 .news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
+.cal-disclosure { display:flex; align-items:center; gap:6px; font-size:11.5px; padding:4px 0; color:var(--tx2); text-decoration:none; cursor:pointer; }
+.cal-disclosure:hover { opacity:0.8; }
+.cal-disclosure-icon { font-size:12px; flex-shrink:0; }
+.cal-disclosure-text { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .judgment-strength {
   font-weight: 700;
   font-size: 9px;
@@ -904,6 +908,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     <a href="/terms.html">Terms</a>
   </div>
   <div class="copyright">© 2026 100M1S · Far. One Step.</div>
+  <div class="copyright" style="margin-top:4px;font-size:10px;">공시 정보 출처: DART 전자공시시스템</div>
 </footer>
 
 <script>
@@ -1505,6 +1510,9 @@ function renderCalExpandContent(date, data) {
       const diffRaw = (st.differentiator || st.outlook || '').trim();
       const newzyLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
       const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
+      // 공시 (DART)
+      const disc = it.disclosure;
+      const disclosureHtml = disc && disc.text ? `<a class="cal-disclosure" href="${escapeHtml(disc.url || '#')}" target="_blank" rel="noopener noreferrer"><span class="cal-disclosure-icon">\uD83D\uDCCB</span><span class="cal-disclosure-text">${escapeHtml(disc.text)}</span></a>` : '';
       // 뉴스 제목 + 링크 (제목 표시)
       const linkSeen = new Set();
       const sourceMap = {'hankyung.com':'한경','mk.co.kr':'매경','edaily.co.kr':'이데일리','biz.chosun.com':'조선비즈','etoday.co.kr':'이투데이','news.naver.com':'네이버','n.news.naver.com':'네이버'};
@@ -1536,6 +1544,7 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="cal-feature-body">
             ${newzyHtml}
+            ${disclosureHtml}
             ${causalHtml}
             ${linksHtml}
             ${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}
