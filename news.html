@@ -1438,10 +1438,10 @@ function renderCalExpandContent(date, data) {
 
   // ① 매크로 이벤트 (내러티브 폴백에도 사용)
   const macroEvents = (data.macroEvents || [])
-    .filter(m => m.summary && m.summary !== m.title)
+    .filter(m => m.summary && m.summary.length >= 10)
     .slice(0, 5);
   const macroHtml = macroEvents.length > 0
-    ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
+    ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
     : '';
 
   // ② 내러티브: 카페 요약이 있을 때만 표시 (매크로 폴백은 macroHtml 칩과 중복되므로 제거)
