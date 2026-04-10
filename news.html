@@ -209,21 +209,48 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   color: var(--dm); font-size: 14px;
 }
 
-/* ───── 향후 기능 안내 ───── */
-.coming-soon {
-  margin-top: 56px; padding: 24px;
-  background: var(--am4); border: 1px dashed var(--am2);
-  border-radius: 12px; text-align: center;
+/* ───── 테마 지도 ───── */
+.theme-map { margin-top: 40px; }
+.theme-map-title {
+  font-size: 14px; font-weight: 800; color: var(--am);
+  margin-bottom: 12px; padding-left: 8px;
+  border-left: 3px solid var(--am);
 }
-.coming-soon h3 {
-  font-size: 13px; font-weight: 800; color: var(--am);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 8px;
+.theme-map-grid {
+  display: flex; flex-wrap: wrap; gap: 8px;
 }
-.coming-soon p {
-  font-size: 12px; color: var(--tx2); line-height: 1.6;
-  max-width: 520px; margin: 0 auto;
+.theme-map-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-weight: 700;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--am4); color: var(--am);
+  border: 1px solid var(--am2);
+  cursor: pointer; transition: all 0.15s;
 }
+.theme-map-chip:hover { background: var(--am2); }
+.theme-map-chip.active { background: var(--am); color: #fff; border-color: var(--am); }
+.theme-map-chip .chip-count {
+  font-size: 10px; font-weight: 800; color: var(--dm);
+  background: var(--bd); border-radius: 999px; padding: 1px 5px;
+}
+.theme-map-chip.active .chip-count { background: rgba(255,255,255,0.3); color: #fff; }
+.theme-map-expand {
+  margin-top: 12px; padding: 12px 16px;
+  background: var(--sf); border: 1px solid var(--bd); border-radius: 10px;
+  display: none;
+}
+.theme-map-expand.show { display: block; }
+.theme-map-expand-title {
+  font-size: 13px; font-weight: 800; color: var(--tx); margin-bottom: 8px;
+}
+.theme-map-stock {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 0; border-bottom: 1px solid var(--bd);
+  font-size: 12px; color: var(--tx);
+}
+.theme-map-stock:last-child { border-bottom: none; }
+.theme-map-stock-name { font-weight: 700; min-width: 80px; }
+.theme-map-stock-industry { color: var(--dm); font-size: 11px; }
 
 footer {
   background: var(--tx); color: var(--dm); text-align: center;
@@ -763,12 +790,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     </section>
   </div>
 
-  <div class="coming-soon">
-    <h3>🗺️ 다음 기능</h3>
-    <p>
-      종목별 테마 지도 + 테마별 종목 지도 + 시장 흐름 분석.
-      테마의 세기로 종목의 세기를 판단합니다.
-    </p>
+  <div class="theme-map" id="theme-map">
+    <div class="theme-map-title">테마 지도</div>
+    <div class="theme-map-grid" id="theme-map-grid"></div>
+    <div class="theme-map-expand" id="theme-map-expand"></div>
   </div>
 </main>
 
@@ -1496,6 +1521,64 @@ async function initCalendar() {
 }
 
 initCalendar();
+
+// ───── 테마 지도 ─────
+async function initThemeMap() {
+  try {
+    const res = await fetch('/data/themes/theme-map.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    const grid = document.getElementById('theme-map-grid');
+    const expand = document.getElementById('theme-map-expand');
+    if (!grid || !data.themes) return;
+
+    // 종목 2개 이상 테마만 표시
+    const themes = data.themes.filter(t => t.stock_count >= 2);
+    if (themes.length === 0) return;
+
+    let activeTheme = null;
+
+    grid.innerHTML = themes.map(t =>
+      `<span class="theme-map-chip" data-theme-id="${t.id}">${escapeHtml(t.name)}<span class="chip-count">${t.stock_count}</span></span>`
+    ).join('');
+
+    grid.addEventListener('click', (e) => {
+      const chip = e.target.closest('.theme-map-chip');
+      if (!chip) return;
+      const tid = parseInt(chip.dataset.themeId);
+      const theme = themes.find(t => t.id === tid);
+      if (!theme) return;
+
+      // 토글
+      if (activeTheme === tid) {
+        activeTheme = null;
+        expand.classList.remove('show');
+        chip.classList.remove('active');
+        return;
+      }
+
+      // 이전 active 해제
+      grid.querySelectorAll('.active').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeTheme = tid;
+
+      // 확장 패널
+      const stocksHtml = theme.stocks.slice(0, 10).map(s =>
+        `<div class="theme-map-stock">
+          <span class="theme-map-stock-name">${escapeHtml(s.name)}</span>
+          <span class="theme-map-stock-industry">${escapeHtml(s.industry || '')}</span>
+        </div>`
+      ).join('');
+
+      expand.innerHTML = `
+        <div class="theme-map-expand-title">${escapeHtml(theme.name)} — ${theme.stock_count}종목</div>
+        ${stocksHtml}
+      `;
+      expand.classList.add('show');
+    });
+  } catch (e) { console.warn('theme-map:', e); }
+}
+initThemeMap();
 </script>
 
 </body>
