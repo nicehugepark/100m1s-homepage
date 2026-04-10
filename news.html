@@ -252,70 +252,54 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .theme-map-stock-name { font-weight: 700; min-width: 80px; }
 .theme-map-stock-industry { color: var(--dm); font-size: 11px; }
 
-/* ───── 테마 트리 마인드맵 ───── */
+/* ───── 테마 트리 (Indented Tree + Inline Bar) ───── */
 .theme-tree { margin-top: 40px; }
 .theme-tree-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
 .theme-tree-title { font-size: 14px; font-weight: 800; color: var(--am); }
 .theme-tree-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
-.theme-tree-wrap {
+.theme-tree-container {
   background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
-  padding: 20px; overflow-x: auto; position: relative;
+  padding: 12px 16px; max-height: 500px; overflow-y: auto;
 }
-.theme-tree-svg { display: block; width: 100%; min-height: 200px; }
-.theme-tree-svg text { font-family: 'Inter', 'Pretendard', sans-serif; }
-.theme-tree-tooltip {
-  position: absolute; pointer-events: none;
-  background: var(--tx); color: #fff; font-size: 12px; font-weight: 700;
-  padding: 8px 14px; border-radius: 8px; white-space: nowrap;
-  opacity: 0; transition: opacity 0.12s;
-  z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+.theme-tree-row {
+  display: flex; align-items: center; height: 36px; cursor: pointer;
+  border-radius: 6px; padding: 0 8px; transition: background 0.12s;
+  user-select: none;
 }
-.theme-tree-tooltip.show { opacity: 1; }
-.theme-tree-tooltip .tt-name { font-weight: 800; margin-bottom: 3px; }
-.theme-tree-tooltip .tt-row { font-weight: 500; font-size: 11px; color: #ccc; }
-/* 모바일: 수직 아코디언 대체 */
-.theme-tree-mobile { display: none; }
+.theme-tree-row:hover { background: rgba(255,255,255,0.04); }
+.theme-tree-arrow {
+  width: 16px; font-size: 9px; color: var(--dm); transition: transform 0.2s;
+  flex-shrink: 0; text-align: center;
+}
+.theme-tree-arrow.expanded { transform: rotate(90deg); }
+.theme-tree-arrow.leaf { visibility: hidden; }
+.theme-tree-bar {
+  height: 14px; border-radius: 3px; margin: 0 10px; flex-shrink: 0;
+  transition: width 0.2s;
+}
+.theme-tree-name {
+  font-size: 13px; font-weight: 700; color: var(--tx); white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-tree-name.zero { color: var(--dm); font-weight: 500; }
+.theme-tree-amt {
+  font-size: 11px; color: var(--dm); margin-left: 8px; white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-tree-pct {
+  font-size: 11px; font-weight: 700; margin-left: 8px; white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-tree-uncollected { font-size: 10px; color: var(--dm); margin-left: 6px; }
+.theme-tree-children {
+  overflow: hidden; transition: max-height 0.2s ease;
+}
+.theme-tree-children.collapsed { max-height: 0 !important; }
 @media (max-width: 720px) {
-  .theme-tree-wrap { display: none; }
-  .theme-tree-mobile { display: block; }
-  .theme-tree-mobile-root {
-    background: var(--sf); border: 1px solid var(--bd); border-radius: 10px;
-    margin-bottom: 8px; overflow: hidden;
-  }
-  .theme-tree-mobile-root-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px; cursor: pointer; font-size: 13px; font-weight: 700;
-    color: var(--tx);
-  }
-  .theme-tree-mobile-root-header .m-bar {
-    height: 6px; border-radius: 3px; flex: 1; margin: 0 12px;
-    background: var(--bd); overflow: hidden;
-  }
-  .theme-tree-mobile-root-header .m-bar-fill {
-    height: 100%; border-radius: 3px; transition: width 0.3s;
-  }
-  .theme-tree-mobile-root-header .m-arrow {
-    font-size: 10px; color: var(--dm); transition: transform 0.2s;
-  }
-  .theme-tree-mobile-root.open .m-arrow { transform: rotate(90deg); }
-  .theme-tree-mobile-children { display: none; padding: 0 16px 12px; }
-  .theme-tree-mobile-root.open .theme-tree-mobile-children { display: block; }
-  .theme-tree-mobile-child {
-    display: flex; align-items: center; gap: 8px;
-    padding: 6px 0; border-bottom: 1px solid var(--bd);
-    font-size: 12px; color: var(--tx2);
-  }
-  .theme-tree-mobile-child:last-child { border-bottom: none; }
-  .theme-tree-mobile-child .m-child-bar {
-    height: 4px; border-radius: 2px; flex: 1;
-    background: var(--bd); overflow: hidden;
-  }
-  .theme-tree-mobile-child .m-child-bar-fill {
-    height: 100%; border-radius: 2px;
-  }
-  .theme-tree-mobile-child .m-amt {
-    font-size: 10px; color: var(--dm); min-width: 50px; text-align: right;
-  }
+  .theme-tree-bar { max-width: 80px !important; }
+  .theme-tree-name { font-size: 12px; }
+  .theme-tree-amt { font-size: 10px; }
+  .theme-tree-pct { font-size: 10px; }
 }
 
 /* ───── 테마 거래대금 트렌드 ───── */
@@ -906,13 +890,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   <div class="theme-tree" id="theme-tree">
     <div class="theme-tree-header">
       <div class="theme-tree-title">테마 트리</div>
-      <div class="theme-tree-sub">테마 간 인과 관계 · 버블 크기 = 거래대금</div>
+      <div class="theme-tree-sub">테마 간 인과 관계 · 바 길이 = 거래대금 · 클릭하여 펼치기</div>
     </div>
-    <div class="theme-tree-wrap">
-      <svg class="theme-tree-svg" id="theme-tree-svg"></svg>
-      <div class="theme-tree-tooltip" id="theme-tree-tooltip"></div>
-    </div>
-    <div class="theme-tree-mobile" id="theme-tree-mobile"></div>
+    <div class="theme-tree-container" id="theme-tree-container"></div>
   </div>
 </main>
 
@@ -1868,7 +1848,7 @@ async function initThemeMap() {
 }
 initThemeMap();
 
-// ───── 테마 트리 마인드맵 ─────
+// ───── 테마 트리 (Indented Tree + Inline Bar) ─────
 async function initThemeTree() {
   try {
     const res = await fetch('/data/themes/theme-tree.json');
@@ -1876,33 +1856,56 @@ async function initThemeTree() {
     const data = await res.json();
     if (!data.nodes || data.nodes.length === 0) return;
 
+    const ROOT_COLORS = ['#C9A962','#7C8CBA','#E07C5A','#6BA37E','#B47CC7','#5CABB5','#D4A05A','#8B7EC8','#C75C7C'];
     const nodes = data.nodes;
     const nodeMap = {};
-    nodes.forEach(n => { nodeMap[n.id] = { ...n, children: [], _expanded: false }; });
+    nodes.forEach(n => { nodeMap[n.id] = { ...n, children: [] }; });
     const roots = [];
     nodes.forEach(n => {
       if (n.parent_id && nodeMap[n.parent_id]) {
         nodeMap[n.parent_id].children.push(nodeMap[n.id]);
-      } else {
+      } else if (!n.parent_id) {
         roots.push(nodeMap[n.id]);
       }
     });
-    // 거래대금 기준 정렬
-    roots.sort((a, b) => b.trade_amount - a.trade_amount);
-    roots.forEach(r => r.children.sort((a, b) => b.trade_amount - a.trade_amount));
 
-    // 루트별 색상 팔레트 (골드 기반 + 보조색)
-    const palette = [
-      '#C49930','#5B8DEF','#E8735A','#48B88C','#9B72CF',
-      '#E6A040','#4AAFCF','#CF6B8E','#7BBF5C','#D4A76A',
-      '#7A8FC7','#C75D5D','#5CAA8E','#B8864F','#8E6BBF'
-    ];
+    // 자식 거래대금 합산 (재귀, 상향식)
+    function sumTradeAmount(node) {
+      let childSum = 0;
+      node.children.forEach(c => { childSum += sumTradeAmount(c); });
+      node._totalAmt = node.trade_amount + childSum;
+      // avg_change_pct도 자식 가중 평균 계산
+      if (node.trade_amount === 0 && node.children.length > 0) {
+        let wSum = 0, wDiv = 0;
+        node.children.forEach(c => {
+          if (c._totalAmt > 0) { wSum += c._avgPct * c._totalAmt; wDiv += c._totalAmt; }
+        });
+        node._avgPct = wDiv > 0 ? wSum / wDiv : 0;
+      } else {
+        node._avgPct = node.avg_change_pct;
+      }
+      return node._totalAmt;
+    }
+    roots.forEach(r => sumTradeAmount(r));
 
-    const maxAmt = Math.max(...nodes.map(n => n.trade_amount), 1);
-    const MIN_R = 12, MAX_R = 40;
+    // 거래대금 내림차순 정렬 (재귀)
+    function sortByAmt(arr) {
+      arr.sort((a, b) => b._totalAmt - a._totalAmt);
+      arr.forEach(n => sortByAmt(n.children));
+    }
+    sortByAmt(roots);
 
-    function radius(amt) {
-      return MIN_R + Math.sqrt(amt / maxAmt) * (MAX_R - MIN_R);
+    // _totalAmt > 0인 루트만 표시 (거래대금 0 자식만 있는 루트도 제외)
+    const visRoots = roots.filter(r => r._totalAmt > 0);
+
+    // 글로벌 최대 거래대금
+    const globalMax = Math.max(...visRoots.map(r => r._totalAmt), 1);
+
+    function fmtAmt(v) {
+      if (v >= 1e12) return (v / 1e12).toFixed(1) + '조';
+      if (v >= 1e8) return Math.round(v / 1e8).toLocaleString() + '억';
+      if (v >= 1e4) return Math.round(v / 1e4).toLocaleString() + '만';
+      return v.toString();
     }
 
     function lighten(hex, pct) {
@@ -1914,182 +1917,104 @@ async function initThemeTree() {
       return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
 
-    function fmtAmt(v) {
-      if (v >= 1e12) return (v / 1e12).toFixed(1) + '조';
-      if (v >= 1e8) return (v / 1e8).toFixed(0) + '억';
-      if (v >= 1e4) return (v / 1e4).toFixed(0) + '만';
-      return v.toString();
-    }
+    const container = document.getElementById('theme-tree-container');
+    if (!container) return;
 
-    // ── SVG 렌더 (데스크탑) ──
-    const svg = document.getElementById('theme-tree-svg');
-    const tooltip = document.getElementById('theme-tree-tooltip');
-    if (!svg) return;
+    function renderNode(node, depth, rootColor) {
+      const hasChildren = node.children.length > 0 && node.children.some(c => c._totalAmt > 0 || c.trade_amount > 0);
+      const amt = node._totalAmt;
+      const pct = node._avgPct;
+      const isZero = amt === 0;
+      const barW = isZero ? 0 : Math.max(4, (amt / globalMax) * 120);
+      const barColor = depth === 0 ? rootColor : lighten(rootColor, depth * 0.2);
+      const pctColor = pct >= 0 ? '#EF4444' : '#3B82F6';
+      const indent = depth * 24;
 
-    const DEPTH_GAP = 160, LEAF_GAP = 50, PAD = { top: 30, left: 60, right: 60, bottom: 30 };
+      const row = document.createElement('div');
+      row.className = 'theme-tree-row';
+      row.style.paddingLeft = indent + 'px';
 
-    function layoutAndRender() {
-      // 가시 노드만: 루트 항상 보임, expanded 루트의 자식만 보임
-      const visibleRoots = roots.filter(r => r.trade_amount > 0 || r.children.some(c => c.trade_amount > 0));
+      const arrow = document.createElement('span');
+      arrow.className = 'theme-tree-arrow' + (hasChildren ? '' : ' leaf');
+      arrow.textContent = '\u25B6';
+      row.appendChild(arrow);
 
-      // 모든 leaf 위치 계산
-      let leafY = PAD.top;
-      const positions = new Map();
+      const bar = document.createElement('span');
+      bar.className = 'theme-tree-bar';
+      bar.style.width = barW + 'px';
+      bar.style.maxWidth = '120px';
+      bar.style.background = barColor;
+      if (isZero) bar.style.display = 'none';
+      row.appendChild(bar);
 
-      visibleRoots.forEach((root, ri) => {
-        const color = palette[ri % palette.length];
-        root._color = color;
-        const rr = radius(root.trade_amount);
+      const name = document.createElement('span');
+      name.className = 'theme-tree-name' + (isZero ? ' zero' : '');
+      name.textContent = node.name;
+      row.appendChild(name);
 
-        if (root._expanded && root.children.length > 0) {
-          const visChildren = root.children.filter(c => c.trade_amount > 0);
-          if (visChildren.length > 0) {
-            const childYs = [];
-            visChildren.forEach((child, ci) => {
-              child._color = lighten(color, 0.25);
-              const cr = radius(child.trade_amount);
-              const cy = leafY + cr;
-              positions.set(child.id, { x: PAD.left + DEPTH_GAP, y: cy, r: cr, node: child, depth: 1 });
+      if (!isZero) {
+        const amtEl = document.createElement('span');
+        amtEl.className = 'theme-tree-amt';
+        amtEl.textContent = fmtAmt(amt);
+        row.appendChild(amtEl);
 
-              // depth 2 children
-              if (child._expanded && child.children.length > 0) {
-                const visGrand = child.children.filter(g => g.trade_amount > 0);
-                const grandYs = [];
-                visGrand.forEach(gc => {
-                  gc._color = lighten(color, 0.45);
-                  const gr = radius(gc.trade_amount);
-                  const gy = leafY + gr;
-                  positions.set(gc.id, { x: PAD.left + DEPTH_GAP * 2, y: gy, r: gr, node: gc, depth: 2 });
-                  grandYs.push(gy);
-                  leafY = gy + gr + LEAF_GAP * 0.6;
-                });
-                // recenter child
-                if (grandYs.length > 0) {
-                  const mid = (grandYs[0] + grandYs[grandYs.length - 1]) / 2;
-                  positions.get(child.id).y = mid;
-                  childYs.push(mid);
-                } else {
-                  childYs.push(cy);
-                  leafY = cy + cr + LEAF_GAP * 0.8;
-                }
-              } else {
-                childYs.push(cy);
-                leafY = cy + cr + LEAF_GAP * 0.8;
-              }
-            });
-            // 루트 = 자식 중앙
-            const rootY = (childYs[0] + childYs[childYs.length - 1]) / 2;
-            positions.set(root.id, { x: PAD.left, y: rootY, r: rr, node: root, depth: 0 });
+        const pctEl = document.createElement('span');
+        pctEl.className = 'theme-tree-pct';
+        pctEl.style.color = pctColor;
+        pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
+        row.appendChild(pctEl);
+      } else {
+        const uncEl = document.createElement('span');
+        uncEl.className = 'theme-tree-uncollected';
+        uncEl.textContent = '(미집계)';
+        row.appendChild(uncEl);
+      }
+
+      const wrapper = document.createElement('div');
+      wrapper.appendChild(row);
+
+      if (hasChildren) {
+        const childContainer = document.createElement('div');
+        childContainer.className = 'theme-tree-children collapsed';
+        node.children.forEach(c => {
+          // 거래대금 0인 자식도 표시 (연한 회색)
+          childContainer.appendChild(renderNode(c, depth + 1, rootColor));
+        });
+        wrapper.appendChild(childContainer);
+
+        row.addEventListener('click', () => {
+          const isCollapsed = childContainer.classList.contains('collapsed');
+          if (isCollapsed) {
+            childContainer.classList.remove('collapsed');
+            childContainer.style.maxHeight = childContainer.scrollHeight + 'px';
+            arrow.classList.add('expanded');
           } else {
-            positions.set(root.id, { x: PAD.left, y: leafY + rr, r: rr, node: root, depth: 0 });
-            leafY += rr * 2 + LEAF_GAP;
-          }
-        } else {
-          positions.set(root.id, { x: PAD.left, y: leafY + rr, r: rr, node: root, depth: 0 });
-          leafY += rr * 2 + LEAF_GAP;
-        }
-      });
-
-      const totalH = leafY + PAD.bottom;
-      const maxDepth = Math.max(...Array.from(positions.values()).map(p => p.depth));
-      const totalW = PAD.left + DEPTH_GAP * maxDepth + MAX_R * 2 + PAD.right + 60;
-      svg.setAttribute('viewBox', `0 0 ${totalW} ${totalH}`);
-      svg.style.minHeight = Math.min(totalH, 600) + 'px';
-
-      let paths = '', circles = '', labels = '';
-
-      positions.forEach((pos, id) => {
-        const n = pos.node;
-        // 연결선 to parent
-        if (n.parent_id && positions.has(n.parent_id)) {
-          const pp = positions.get(n.parent_id);
-          const x1 = pp.x + pp.r + 4, y1 = pp.y;
-          const x2 = pos.x - pos.r - 4, y2 = pos.y;
-          const cx1 = x1 + (x2 - x1) * 0.4, cx2 = x2 - (x2 - x1) * 0.4;
-          paths += `<path d="M${x1},${y1} C${cx1},${y1} ${cx2},${y2} ${x2},${y2}" fill="none" stroke="${n._color}" stroke-width="1.5" opacity="0.4"/>`;
-        }
-
-        // 버블
-        circles += `<circle cx="${pos.x}" cy="${pos.y}" r="${pos.r}" fill="${n._color}" opacity="0.85" data-id="${id}" style="cursor:pointer;transition:r 0.2s,opacity 0.15s"/>`;
-
-        // 라벨 (반지름 충분하면 내부, 아니면 오른쪽)
-        const nameLen = n.name.length;
-        const fSize = pos.r > 20 ? Math.min(11, pos.r * 0.55) : 9;
-        const truncName = nameLen > 6 && pos.r < 25 ? n.name.slice(0, 5) + '..' : n.name;
-        if (pos.r >= 18) {
-          labels += `<text x="${pos.x}" y="${pos.y + 1}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="${fSize}" font-weight="700" pointer-events="none">${escapeHtml(truncName)}</text>`;
-        } else {
-          labels += `<text x="${pos.x + pos.r + 5}" y="${pos.y + 1}" dominant-baseline="central" fill="${n._color}" font-size="9" font-weight="600" pointer-events="none">${escapeHtml(n.name)}</text>`;
-        }
-      });
-
-      svg.innerHTML = paths + circles + labels;
-
-      // 인터랙션
-      svg.querySelectorAll('circle').forEach(el => {
-        const id = parseInt(el.dataset.id);
-        const pos = positions.get(id);
-        if (!pos) return;
-        const n = pos.node;
-
-        el.addEventListener('mouseenter', (e) => {
-          el.setAttribute('opacity', '1');
-          const pctColor = n.avg_change_pct >= 0 ? '#EF4444' : '#3B82F6';
-          tooltip.innerHTML = `<div class="tt-name">${escapeHtml(n.name)}</div>` +
-            `<div class="tt-row">거래대금 ${fmtAmt(n.trade_amount)}</div>` +
-            `<div class="tt-row">종목 ${n.stock_count}개</div>` +
-            `<div class="tt-row" style="color:${pctColor}">등락 ${n.avg_change_pct >= 0 ? '+' : ''}${n.avg_change_pct}%</div>`;
-          tooltip.classList.add('show');
-        });
-        el.addEventListener('mousemove', (e) => {
-          const rect = svg.closest('.theme-tree-wrap').getBoundingClientRect();
-          tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
-          tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
-        });
-        el.addEventListener('mouseleave', () => {
-          el.setAttribute('opacity', '0.85');
-          tooltip.classList.remove('show');
-        });
-        el.addEventListener('click', () => {
-          if (n.children && n.children.length > 0) {
-            n._expanded = !n._expanded;
-            layoutAndRender();
+            childContainer.style.maxHeight = '0px';
+            childContainer.classList.add('collapsed');
+            arrow.classList.remove('expanded');
           }
         });
-      });
+
+        // max-height transition 후 auto로 전환 (중첩 펼침 대응)
+        childContainer.addEventListener('transitionend', () => {
+          if (!childContainer.classList.contains('collapsed')) {
+            childContainer.style.maxHeight = 'none';
+          }
+        });
+      }
+
+      return wrapper;
     }
 
-    // 초기 상태: 루트만 (depth 1 펼침 없음)
-    layoutAndRender();
-
-    // ── 모바일 아코디언 ──
-    const mobileEl = document.getElementById('theme-tree-mobile');
-    if (mobileEl) {
-      const visRoots = roots.filter(r => r.trade_amount > 0 || r.children.some(c => c.trade_amount > 0));
-      const mobileMaxAmt = Math.max(...visRoots.map(r => r.trade_amount), 1);
-      mobileEl.innerHTML = visRoots.map((root, ri) => {
-        const color = palette[ri % palette.length];
-        const barPct = Math.max(5, (root.trade_amount / mobileMaxAmt) * 100);
-        const childrenHtml = root.children.filter(c => c.trade_amount > 0).map(c => {
-          const cPct = Math.max(5, (c.trade_amount / mobileMaxAmt) * 100);
-          return `<div class="theme-tree-mobile-child">
-            <span>${escapeHtml(c.name)}</span>
-            <div class="m-child-bar"><div class="m-child-bar-fill" style="width:${cPct}%;background:${lighten(color, 0.25)}"></div></div>
-            <span class="m-amt">${fmtAmt(c.trade_amount)}</span>
-          </div>`;
-        }).join('');
-
-        return `<div class="theme-tree-mobile-root">
-          <div class="theme-tree-mobile-root-header" onclick="this.parentElement.classList.toggle('open')">
-            <span>${escapeHtml(root.name)}</span>
-            <div class="m-bar"><div class="m-bar-fill" style="width:${barPct}%;background:${color}"></div></div>
-            <span class="m-amt" style="min-width:50px;text-align:right;font-size:10px;color:var(--dm)">${fmtAmt(root.trade_amount)}</span>
-            <span class="m-arrow">&#9654;</span>
-          </div>
-          <div class="theme-tree-mobile-children">${childrenHtml}</div>
-        </div>`;
-      }).join('');
-    }
+    const frag = document.createDocumentFragment();
+    visRoots.forEach((root, i) => {
+      frag.appendChild(renderNode(root, 0, ROOT_COLORS[i % ROOT_COLORS.length]));
+    });
+    // 거래대금 0 루트 (접혀서 안 보이지만 존재 표시)
+    roots.filter(r => r._totalAmt === 0).forEach((root, i) => {
+      frag.appendChild(renderNode(root, 0, '#666'));
+    });
+    container.appendChild(frag);
 
   } catch (e) { console.warn('theme-tree:', e); }
 }
