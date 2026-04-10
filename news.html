@@ -2050,10 +2050,13 @@ async function initThemeTree() {
         pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
         row.appendChild(pctEl);
 
-        if (hasChildren && node.descendant_stock_count > 0) {
+        const stockCount = hasChildren
+          ? (node.descendant_stock_count || 0)
+          : (node.total_stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0));
+        if (stockCount > 0) {
           const cntEl = document.createElement('span');
           cntEl.className = 'theme-tree-stock-count';
-          cntEl.textContent = node.descendant_stock_count + '\uC885\uBAA9';
+          cntEl.textContent = stockCount + '\uC885\uBAA9';
           row.appendChild(cntEl);
         }
       } else {
