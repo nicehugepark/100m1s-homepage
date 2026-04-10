@@ -1103,9 +1103,12 @@ async function loadCalDayData(date) {
         // 기존 해석이 없는 종목만 추가 (카페/kiwoom 해석 우선)
         if (!interpretedByName.has(st.name)) {
           // stock-*.json 형식 → 기존 렌더러 호환 변환
-          const newsItems = (st.news || []).filter(n => !(n.newzy_verdict || '').startsWith('반대'));
+          // 가비지 뉴스 필터: VI발동, 신고가, 단순 등락률 로봇 기사 제거
+          const garbageRe = /[+-]?\d[\d.]*%\s*(VI\s*발동|\d+주\s*신[고저]가|상한가|하한가)|거래량\s*(폭발|급증|돌파)/;
+          const newsItems = (st.news || [])
+            .filter(n => !(n.newzy_verdict || '').startsWith('반대'))
+            .filter(n => !garbageRe.test(n.title || ''));
           const topNews = newsItems[0];
-          // 전일 정보는 부수적 메타로만 (causal_chain에 넣지 않음)
           const pp = st.prev_pick;
           const industryLabel = st.industry ? `업종: ${st.industry}` : '';
           const sectorLabel = st.sector ? st.sector.split(',')[0] : '';
@@ -1115,10 +1118,17 @@ async function loadCalDayData(date) {
             !causalText && industryLabel ? industryLabel : '',
             !causalText && sectorLabel ? `주요제품: ${sectorLabel}` : '',
           ].filter(Boolean);
+          // 테마 자동 생성: themes 없으면 industry/sector에서 추출
+          const trimIndustry = (s) => s.replace(/\s*(제조업|업)$/, '').replace(/기타\s*/, '');
+          let themes = (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t);
+          if (themes.length === 0 && st.industry) {
+            themes.push({ name: trimIndustry(st.industry) });
+            if (sectorLabel && sectorLabel !== st.industry) themes.push({ name: sectorLabel });
+          }
 
           interpretedByName.set(st.name, {
             name: st.name,
-            themes: (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t),
+            themes,
             causal_chain: causalText ? [causalText] : [],
             differentiator: diffParts.join(' · '),
             macro_event: topNews?.macro_event || null,
