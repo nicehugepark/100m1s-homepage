@@ -550,7 +550,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-top: 2px;
 }
 .cal-feature-link {
-  font-size: 11px; color: var(--c3); text-decoration: none;
+  font-size: 12px; color: var(--c3); text-decoration: none;
   padding: 3px 8px; border: 1px solid var(--bd); border-radius: 999px;
   background: var(--sf);
 }
@@ -589,7 +589,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
 }
 .cal-causal {
-  font-size: 11px; color: var(--dm); line-height: 1.5;
+  font-size: 12.5px; color: var(--dm); line-height: 1.6;
 }
 .cal-causal .arrow { color: #C49930; margin: 0 4px; font-weight: 700; }
 .cal-factors {
@@ -1129,8 +1129,8 @@ async function loadCalDayData(date) {
           interpretedByName.set(st.name, {
             name: st.name,
             themes,
-            causal_chain: causalText ? [causalText] : [],
-            differentiator: diffParts.join(' · '),
+            causal_chain: causalText ? [causalText] : (st.causal_chain ? [st.causal_chain] : []),
+            differentiator: diffParts.join(' · ') || st.causal_chain || '',
             macro_event: topNews?.macro_event || null,
             news_digest: newsItems.map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
             industry: st.industry,
