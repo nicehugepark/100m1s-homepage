@@ -522,13 +522,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   transition: background 0.12s, color 0.12s;
 }
 .toss-cal-cell.empty { color: var(--tx2); }
+.toss-cal-cell.no-data.sunday { color: #E84142; }
+.toss-cal-cell.no-data.saturday { color: #2D6AE0; }
+.toss-cal-cell.no-data.holiday { color: #E84142; }
 .toss-cal-cell.future { color: var(--bd); cursor: not-allowed; pointer-events: none; }
 .toss-cal-cell.outside { visibility: hidden; }
-.toss-cal-cell.lv1 { background: rgba(232,192,99,0.18); }
-.toss-cal-cell.lv2 { background: rgba(232,192,99,0.34); }
-.toss-cal-cell.lv3 { background: rgba(196,153,48,0.55); color: #3a2a05; }
-.toss-cal-cell.lv4 { background: linear-gradient(135deg, #E8C063 0%, #C49930 100%); color: #fff; }
-.toss-cal-cell.weekend:not(.lv3):not(.lv4) { opacity: 0.7; }
+.toss-cal-cell.no-data { opacity: 0.35; pointer-events: none; }
+.toss-cal-cell.weekend { opacity: 0.7; }
 .toss-cal-cell.sunday { color: #E84142; }
 .toss-cal-cell.saturday { color: #2D6AE0; }
 .toss-cal-cell.holiday { color: #E84142; }
@@ -567,16 +567,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   background: currentColor; opacity: 0.5;
 }
 .toss-cal-cell.selected .toss-cal-dot { background: #fff; opacity: 0.85; }
-.toss-cal-legend {
-  display: flex; align-items: center; gap: 6px;
-  margin-top: 12px; padding: 10px 4px 2px;
-  border-top: 1px dashed var(--bd);
-  font-size: 9px; color: var(--dm);
-  font-family: 'SF Mono', monospace;
-}
-.toss-cal-legend-swatch {
-  width: 10px; height: 10px; border-radius: 3px;
-}
 
 /* ───── 캘린더 콘텐츠 영역 ───── */
 .cal-content {
@@ -909,13 +899,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
         </div>
         <div class="toss-cal-sub" id="toss-cal-sub">수집 0일 · 종목 0</div>
         <div class="toss-cal-grid" id="toss-cal-grid"></div>
-        <div class="toss-cal-legend">
-          <span class="toss-cal-legend-swatch" style="background:rgba(232,192,99,0.18)"></span>
-          <span class="toss-cal-legend-swatch" style="background:rgba(232,192,99,0.34)"></span>
-          <span class="toss-cal-legend-swatch" style="background:rgba(196,153,48,0.55)"></span>
-          <span class="toss-cal-legend-swatch" style="background:linear-gradient(135deg,#E8C063,#C49930)"></span>
-          <span>활성도</span>
-        </div>
       </section>
     </aside>
     <section class="cal-content" id="cal-content" aria-live="polite">
@@ -1145,19 +1128,11 @@ function getNextTradingDate(iso) {
   return null;
 }
 
-function calActivityLevel(date) {
-  if (!calIndex || !calIndex.days) return 0;
+function calHasData(date) {
+  if (!calIndex || !calIndex.days) return false;
   const entry = calIndex.days[date];
-  if (!entry) return 0;
-  // stock_count 없으면 구 스키마 — 표시 가능 데이터 없음
-  const stocks = entry.stock_count ?? 0;
-  if (stocks < 1) return 0;
-  const news = entry.news_count ?? 0;
-  if (news < 1) return 0;
-  if (news >= 20) return 4;
-  if (news >= 10) return 3;
-  if (news >= 3) return 2;
-  return 1;
+  if (!entry) return false;
+  return (entry.stock_count ?? 0) >= 1 && (entry.news_count ?? 0) >= 1;
 }
 
 function renderCalendar() {
@@ -1198,15 +1173,14 @@ function renderCalendar() {
     const isFuture = (calViewYear > todayY) ||
                      (calViewYear === todayY && calViewMonth > todayM) ||
                      (calViewYear === todayY && calViewMonth === todayM && d > todayD);
-    const lv = isFuture ? 0 : calActivityLevel(date);
+    const hasData = isFuture ? false : calHasData(date);
     const dow = new Date(calViewYear, calViewMonth - 1, d).getDay();
     const isWeekend = (dow === 0 || dow === 6);
     const isToday = (date === todayStr);
     const isHol = isHoliday(date);
     const classes = ['toss-cal-cell'];
     if (isFuture) classes.push('future');
-    else if (lv === 0) classes.push('empty');
-    else classes.push('lv' + lv);
+    else if (!hasData) classes.push('no-data');
     if (isWeekend) classes.push('weekend');
     if (dow === 0) classes.push('sunday');
     if (dow === 6) classes.push('saturday');
@@ -1214,8 +1188,8 @@ function renderCalendar() {
     if (isToday) classes.push('today');
     if (date === calSelectedDate) classes.push('selected');
     const holName = getHolidayName(date);
-    const aria = `${date} 활성도 ${lv}/4${isToday ? ' (오늘)' : ''}${holName ? ' ' + holName : ''}`;
-    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isFuture ? -1 : 0}" aria-label="${aria}">${d}</div>`;
+    const aria = `${date}${isToday ? ' (오늘)' : ''}${holName ? ' ' + holName : ''}`;
+    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isFuture || !hasData ? -1 : 0}" aria-label="${aria}">${d}</div>`;
   }
   grid.innerHTML = html;
 
@@ -1719,7 +1693,7 @@ async function initCalendar() {
   const hasUrlDate = urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate);
   let initialDate = hasUrlDate ? urlDate : todayStr;
   // URL 날짜가 없고, 오늘 데이터도 없으면 최근 수집일로 폴백
-  if (!hasUrlDate && calActivityLevel(todayStr) === 0 && calIndex && calIndex.days) {
+  if (!hasUrlDate && !calHasData(todayStr) && calIndex && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
       .filter(d => d <= todayStr)
       .sort();
