@@ -1324,7 +1324,7 @@ function renderCalExpandContent(date, data) {
 
   // ① 매크로 이벤트 (내러티브 폴백에도 사용)
   const macroEvents = (data.macroEvents || [])
-    .filter(m => m.summary && m.summary !== m.title && m.summary.length > m.title.length)
+    .filter(m => m.summary && m.summary !== m.title)
     .slice(0, 5);
   const macroHtml = macroEvents.length > 0
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
