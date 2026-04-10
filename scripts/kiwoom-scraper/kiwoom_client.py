@@ -96,6 +96,23 @@ class KiwoomClient:
         )
         return resp.json()
 
+    def get_daily_chart(self, stk_cd, count=240):
+        """일봉 데이터 조회 (ka10081) — MA/MACD/RSI 계산용
+
+        Returns:
+            list: [{"date","open","high","low","close","volume"}, ...] 최근 N일
+        """
+        url = f"{self.base_url}/api/dostk/chart"
+        resp = requests.post(
+            url,
+            json={"stk_cd": stk_cd, "period": "D", "count": str(count)},
+            headers=self._rest_headers("ka10081"),
+        )
+        data = resp.json()
+        if data.get("return_code") != 0:
+            return []
+        return data.get("data", [])
+
     def get_stock_list(self, mrkt_tp="0"):
         """종목정보 리스트 (ka10099) — 0:코스피, 10:코스닥"""
         url = f"{self.base_url}/api/dostk/stkinfo"

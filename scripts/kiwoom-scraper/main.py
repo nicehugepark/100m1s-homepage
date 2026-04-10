@@ -52,28 +52,93 @@ def parse_float(val) -> float:
         return 0.0
 
 
+def calc_ma(closes: list, period: int) -> float:
+    """단순이동평균 계산. closes는 최근→과거 순서."""
+    if len(closes) < period:
+        return 0.0
+    return sum(closes[:period]) / period
+
+
+def calc_rsi(closes: list, period: int = 14) -> float:
+    """RSI 계산. closes는 최근→과거 순서."""
+    if len(closes) < period + 1:
+        return 0.0
+    gains, losses = [], []
+    for i in range(period):
+        diff = closes[i] - closes[i + 1]
+        gains.append(max(diff, 0))
+        losses.append(max(-diff, 0))
+    avg_gain = sum(gains) / period
+    avg_loss = sum(losses) / period
+    if avg_loss == 0:
+        return 100.0
+    rs = avg_gain / avg_loss
+    return 100 - (100 / (1 + rs))
+
+
+def calc_macd(closes: list) -> dict:
+    """MACD(12,26,9) 계산. closes는 최근→과거 순서."""
+    if len(closes) < 26:
+        return {}
+
+    def ema(data, period):
+        k = 2 / (period + 1)
+        vals = list(reversed(data[: period * 2]))  # 과거→최근 순서로
+        result = sum(vals[:period]) / period
+        for v in vals[period:]:
+            result = v * k + result * (1 - k)
+        return result
+
+    ema12 = ema(closes, 12)
+    ema26 = ema(closes, 26)
+    macd_val = ema12 - ema26
+    return {"macd": round(macd_val, 2)}
+
+
+def fetch_indicators(client, ticker: str) -> dict:
+    """키움 일봉 조회 → MA/RSI/MACD 계산."""
+    chart = client.get_daily_chart(ticker, count=250)
+    if not chart:
+        return {}
+    # chart: [{"close":..., "open":..., ...}, ...] 최근→과거
+    closes = []
+    for c in chart:
+        close = parse_int(c.get("close") or c.get("4") or c.get("stck_clpr", ""))
+        if close > 0:
+            closes.append(close)
+    if len(closes) < 5:
+        return {}
+    result = {
+        "ma5": round(calc_ma(closes, 5)),
+        "ma10": round(calc_ma(closes, 10)),
+        "ma20": round(calc_ma(closes, 20)),
+        "ma60": round(calc_ma(closes, 60)),
+        "ma120": round(calc_ma(closes, 120)),
+        "ma240": round(calc_ma(closes, 240)),
+        "rsi": round(calc_rsi(closes, 14), 2),
+    }
+    macd = calc_macd(closes)
+    if macd:
+        result.update(macd)
+    return result
+
+
 def parse_kiwoom_stock(s: dict) -> dict:
     """키움 조건검색 응답 1건 → 표준 dict.
 
     키움 필드 코드 (조건검색 ka10172):
-      9001: 종목코드 (A 접두)
-      302: 종목명
-      10:  현재가
-      11:  전일대비
-      12:  등락률 (×1000 스케일 — 9590 = 9.59%)
-      13:  거래량
-      14:  거래대금 (백만원 단위, 미반환되는 경우 있음 → price×volume fallback)
-      16:  시가
-      17:  고가
-      18:  저가
+      9001: 종목코드 (A 접두)    302: 종목명
+      10: 현재가  11: 전일대비  12: 등락률 (×1000)
+      13: 거래량  14: 거래대금 (백만원)
+      16: 시가    17: 고가     18: 저가
+      311: MACD  312: MACD시그널  313: MACD오실레이터  314: RSI
     """
     code = str(s.get("9001", "")).lstrip("A")
     price = parse_int(s.get("10", ""))
     volume = parse_int(s.get("13", ""))
     raw_amount = parse_int(s.get("14", "")) * 1_000_000  # 백만원 → 원
-    # ka10172는 fid 14를 비워두는 경우가 많음 → price×volume으로 근사
     trade_amount = raw_amount if raw_amount > 0 else price * volume
-    return {
+    result = {
         "ticker": code,
         "name": str(s.get("302", "")).strip(),
         "price": price,
@@ -86,6 +151,17 @@ def parse_kiwoom_stock(s: dict) -> dict:
         "volume": volume,
         "trade_amount": trade_amount,
     }
+    # 기술적 지표 — 조건검색 응답에 있으면 저장 (없으면 0)
+    macd = parse_float(s.get("311", ""))
+    macd_signal = parse_float(s.get("312", ""))
+    macd_osc = parse_float(s.get("313", ""))
+    rsi = parse_float(s.get("314", ""))
+    if macd or macd_signal or rsi:
+        result["macd"] = macd
+        result["macd_signal"] = macd_signal
+        result["macd_osc"] = macd_osc
+        result["rsi"] = rsi
+    return result
 
 
 def merge_into_daily(daily: dict, snapshot: dict) -> None:
@@ -188,6 +264,20 @@ def run() -> int:
         now = datetime.now(KST)
         today = now.strftime("%Y-%m-%d")
         snap_iso = now.isoformat(timespec="seconds")
+
+        # MA/기술지표 계산 — 장 마감 후 1회만 (15:30 이후 첫 실행)
+        ma_flag = DATA_DIR / f".ma-done-{today}"
+        if now.hour >= 15 and now.minute >= 30 and not ma_flag.exists():
+            log("MA/기술지표 계산 시작 (상위 30종목)…")
+            for s in stocks[:30]:
+                try:
+                    indicators = fetch_indicators(client, s["ticker"])
+                    if indicators:
+                        s.update(indicators)
+                except Exception as e:
+                    log(f"  {s['ticker']} 지표 실패: {e}")
+            ma_flag.write_text(snap_iso)
+            log("MA/기술지표 완료")
 
         snapshot = {
             "fetched_at": snap_iso,
