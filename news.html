@@ -1637,11 +1637,16 @@ function renderCalExpandContent(date, data) {
       const linkSeen = new Set();
       const sourceMap = {'hankyung.com':'한경','mk.co.kr':'매경','edaily.co.kr':'이데일리','biz.chosun.com':'조선비즈','etoday.co.kr':'이투데이','news.naver.com':'네이버','n.news.naver.com':'네이버'};
       const allLinks = [...(st.news_digest || []).map(n => ({ url: n.url, title: n.inferred_title, source: n.source })), ...(it.links || []).map(l => ({ url: l.url, title: '', source: '' }))];
-      const linksHtml = allLinks.length > 0 ? `<div class="cal-feature-links">${allLinks.filter(l => { if (!l.url || linkSeen.has(l.url)) return false; linkSeen.add(l.url); return true; }).map(l => {
+      const uniqueLinks = allLinks.filter(l => { if (!l.url || linkSeen.has(l.url)) return false; linkSeen.add(l.url); return true; }).map(l => {
         const host = (() => { try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return ''; } })();
         const src = l.source || sourceMap[host] || host;
-        const label = src;
-        return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitize(label))}</a>`;
+        return { url: l.url, src };
+      });
+      // 소스명 중복 제거 — 같은 소스의 복수 기사는 첫 번째 URL로 대표
+      const srcSeen = new Set();
+      const dedupedLinks = uniqueLinks.filter(l => { if (srcSeen.has(l.src)) return false; srcSeen.add(l.src); return true; });
+      const linksHtml = dedupedLinks.length > 0 ? `<div class="cal-feature-links">${dedupedLinks.map(l => {
+        return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitize(l.src))}</a>`;
       }).join('')}</div>` : '';
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
@@ -1735,8 +1740,11 @@ async function initCalendar() {
   const urlCat = urlParams.get('cat');
   if (urlCat && ['stock', 'realestate', 'policy'].includes(urlCat)) calCategory = urlCat;
   const urlDate = urlParams.get('date');
-  const hasUrlDate = urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate);
-  let initialDate = hasUrlDate ? urlDate : todayStr;
+  // 해시 앵커(#2026-04-10) 지원 — news/YYYY-MM-DD.html에서 리다이렉트
+  const hashDate = window.location.hash.replace('#', '');
+  const hasUrlDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate))
+    || (hashDate && /^\d{4}-\d{2}-\d{2}$/.test(hashDate));
+  let initialDate = hasUrlDate ? (urlDate || hashDate) : todayStr;
   // URL 날짜가 없고, 오늘 데이터도 없으면 최근 수집일로 폴백
   if (!hasUrlDate && !calHasData(todayStr) && calIndex && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
@@ -1757,9 +1765,11 @@ async function initCalendar() {
   window.addEventListener('popstate', () => {
     const p = new URLSearchParams(window.location.search);
     const d = p.get('date');
+    const h = window.location.hash.replace('#', '');
+    const date = d || (h && /^\d{4}-\d{2}-\d{2}$/.test(h) ? h : null);
     const c = p.get('cat');
     if (c && ['stock', 'realestate', 'policy'].includes(c)) calCategory = c;
-    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) onCalCellClick(d, false);
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) onCalCellClick(date, false);
   });
 
   document.getElementById('toss-cal-prev').addEventListener('click', () => {
