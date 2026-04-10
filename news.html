@@ -1363,12 +1363,9 @@ function renderCalExpandContent(date, data) {
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
     : '';
 
-  // ② 내러티브: 카페 요약 우선, 없으면 매크로 이벤트 summary로 대체
-  const narrItems = data.narratives.length > 0
-    ? data.narratives.slice(0, 8)
-    : macroEvents.map(m => m.summary).slice(0, 5);
-  const narrPillsHtml = narrItems.length > 0
-    ? `<div class="cal-narr-stack">${narrItems.map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}</div>`
+  // ② 내러티브: 카페 요약이 있을 때만 표시 (매크로 폴백은 macroHtml 칩과 중복되므로 제거)
+  const narrPillsHtml = data.narratives.length > 0
+    ? `<div class="cal-narr-stack">${data.narratives.slice(0, 8).map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}</div>`
     : '';
 
   const renderFactors = (st) => {
