@@ -252,6 +252,36 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .theme-map-stock-name { font-weight: 700; min-width: 80px; }
 .theme-map-stock-industry { color: var(--dm); font-size: 11px; }
 
+/* ───── 테마 거래대금 트렌드 ───── */
+.theme-trend { margin-top: 40px; margin-bottom: 32px; }
+.theme-trend-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
+.theme-trend-title { font-size: 14px; font-weight: 800; color: var(--am); }
+.theme-trend-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
+.theme-trend-wrap {
+  background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
+  padding: 16px; overflow-x: auto;
+}
+.theme-trend-svg { display: block; width: 100%; height: auto; }
+.theme-trend-svg text { font-family: 'Inter', 'Pretendard', sans-serif; }
+.theme-trend-legend {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; padding-left: 4px;
+}
+.theme-trend-legend-item {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; color: var(--tx2); cursor: pointer;
+}
+.theme-trend-legend-item .swatch {
+  width: 10px; height: 3px; border-radius: 2px; flex-shrink: 0;
+}
+.theme-trend-tooltip {
+  position: absolute; pointer-events: none;
+  background: var(--tx); color: #fff; font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 6px; white-space: nowrap;
+  opacity: 0; transition: opacity 0.12s;
+  z-index: 10;
+}
+.theme-trend-tooltip.show { opacity: 1; }
+
 footer {
   background: var(--tx); color: var(--dm); text-align: center;
   padding: 32px 24px; font-size: 11px;
@@ -789,6 +819,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
       <div class="cal-empty"><div class="cal-empty-circle"></div><div>날짜를 선택하세요</div></div>
     </section>
   </div>
+
+  <div class="theme-trend" id="theme-trend"></div>
 
   <div class="theme-map" id="theme-map">
     <div class="theme-map-title">테마 지도</div>
@@ -1524,6 +1556,133 @@ async function initCalendar() {
 }
 
 initCalendar();
+
+// ───── 테마 거래대금 트렌드 ─────
+async function initThemeTrend() {
+  try {
+    const res = await fetch('/data/themes/theme-trend.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    const container = document.getElementById('theme-trend');
+    if (!container || !data.themes || !data.dates) return;
+
+    const dates = data.dates;
+    if (dates.length < 2) return;
+
+    // 날짜별 최대 거래대금 합산으로 상위 8개 테마 선정
+    const themes = data.themes
+      .map(t => ({ ...t, maxAmount: Math.max(...t.data.map(d => d.trade_amount)) }))
+      .sort((a, b) => b.maxAmount - a.maxAmount)
+      .slice(0, 8);
+
+    if (themes.length === 0) return;
+
+    // 색상: 테마칩 계열 + 구분 가능한 보조색
+    const COLORS = ['#C49930','#5B8DEF','#E06B6B','#4BC9A0','#A97BDB','#E8963E','#6BB5E0','#D46BAD'];
+
+    // SVG 치수
+    const W = 400, H = 120;
+    const PAD = { top: 8, right: 12, bottom: 22, left: 42 };
+    const plotW = W - PAD.left - PAD.right;
+    const plotH = H - PAD.top - PAD.bottom;
+
+    // 날짜 인덱스 맵
+    const dateIdx = {};
+    dates.forEach((d, i) => { dateIdx[d] = i; });
+
+    // Y축 최대값
+    let yMax = 0;
+    themes.forEach(t => t.data.forEach(d => { if (d.trade_amount > yMax) yMax = d.trade_amount; }));
+    yMax = yMax * 1.1; // 10% headroom
+
+    const xStep = plotW / Math.max(dates.length - 1, 1);
+
+    function toX(i) { return PAD.left + i * xStep; }
+    function toY(v) { return PAD.top + plotH - (v / yMax) * plotH; }
+    function fmtTril(v) { return (v / 1e12).toFixed(1) + '조'; }
+    function fmtDate(d) { return d.slice(5).replace('-', '/'); }
+
+    // SVG 빌드
+    let svg = '<svg class="theme-trend-svg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">';
+
+    // 가로 눈금선 (3개)
+    for (let i = 0; i <= 2; i++) {
+      const v = (yMax / 2) * i;
+      const y = toY(v);
+      svg += '<line x1="' + PAD.left + '" y1="' + y + '" x2="' + (W - PAD.right) + '" y2="' + y + '" stroke="#E8ECF2" stroke-width="0.5"/>';
+      svg += '<text x="' + (PAD.left - 4) + '" y="' + (y + 3) + '" text-anchor="end" fill="#8B95A8" font-size="8">' + fmtTril(v) + '</text>';
+    }
+
+    // X축 날짜 라벨
+    dates.forEach((d, i) => {
+      svg += '<text x="' + toX(i) + '" y="' + (H - 4) + '" text-anchor="middle" fill="#8B95A8" font-size="8">' + fmtDate(d) + '</text>';
+    });
+
+    // 각 테마 polyline + 투명 히트 서클
+    themes.forEach((theme, ti) => {
+      const color = COLORS[ti % COLORS.length];
+      // 날짜 배열 기준으로 포인트 — 데이터 없는 날짜는 건너뜀
+      const points = [];
+      const dataMap = {};
+      theme.data.forEach(d => { dataMap[d.date] = d; });
+
+      dates.forEach((d, i) => {
+        if (dataMap[d]) {
+          points.push({ x: toX(i), y: toY(dataMap[d].trade_amount), date: d, amount: dataMap[d].trade_amount });
+        }
+      });
+
+      if (points.length < 1) return;
+
+      if (points.length === 1) {
+        // 단일 점은 원으로
+        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="2.5" fill="' + color + '" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '"/>';
+      } else {
+        const polyPts = points.map(p => p.x + ',' + p.y).join(' ');
+        svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
+        // 히트 서클
+        points.forEach(p => {
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="6" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" class="tt-hit"/>';
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="2" fill="' + color + '"/>';
+        });
+      }
+    });
+
+    svg += '</svg>';
+
+    // 레전드
+    let legend = '<div class="theme-trend-legend">';
+    themes.forEach((t, i) => {
+      legend += '<span class="theme-trend-legend-item"><span class="swatch" style="background:' + COLORS[i % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
+    });
+    legend += '</div>';
+
+    const dateRange = fmtDate(dates[0]) + ' ~ ' + fmtDate(dates[dates.length - 1]);
+    container.innerHTML =
+      '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">' + dateRange + '</div></div>' +
+      '<div class="theme-trend-wrap">' + svg + legend + '</div>' +
+      '<div class="theme-trend-tooltip" id="tt-trend"></div>';
+
+    // 툴팁
+    const tooltip = document.getElementById('tt-trend');
+    const wrap = container.querySelector('.theme-trend-wrap');
+    wrap.addEventListener('mousemove', function(e) {
+      const hit = e.target.closest('.tt-hit');
+      if (!hit) { tooltip.classList.remove('show'); return; }
+      const name = hit.dataset.theme;
+      const amount = Number(hit.dataset.amount);
+      const date = hit.dataset.date || '';
+      tooltip.textContent = name + ' ' + fmtDate(date) + ' ' + fmtTril(amount);
+      tooltip.classList.add('show');
+      const rect = container.getBoundingClientRect();
+      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tooltip.style.top = (e.clientY - rect.top - 28) + 'px';
+    });
+    wrap.addEventListener('mouseleave', function() { tooltip.classList.remove('show'); });
+
+  } catch (e) { console.warn('theme-trend:', e); }
+}
+initThemeTrend();
 
 // ───── 테마 지도 ─────
 async function initThemeMap() {
