@@ -267,7 +267,9 @@ def run() -> int:
 
         # MA/기술지표 계산 — 장 마감 후 1회만 (15:30 이후 첫 실행)
         ma_flag = DATA_DIR / f".ma-done-{today}"
-        if now.hour >= 15 and now.minute >= 30 and not ma_flag.exists():
+        if (
+            now.hour > 15 or (now.hour == 15 and now.minute >= 30)
+        ) and not ma_flag.exists():
             log("MA/기술지표 계산 시작 (상위 30종목)…")
             for s in stocks[:30]:
                 try:
