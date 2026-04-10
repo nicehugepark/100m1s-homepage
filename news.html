@@ -563,7 +563,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   background: rgba(25,88,199,0.10); color: #1958C7;
 }
 .cal-theme-sep {
-  color: #C8CDD6; font-size: 11px; margin: 0 6px; vertical-align: middle;
+  color: #D0D5DD; font-size: 10px; font-weight: 300; margin: 0 5px; vertical-align: middle;
   border: 1px solid rgba(25,88,199,0.20);
 }
 
@@ -611,7 +611,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-top: 2px;
 }
 .cal-feature-link {
-  font-size: 12px; color: var(--c3); text-decoration: none;
+  font-size: 11px; color: var(--c3); text-decoration: none;
   padding: 3px 8px; border: 1px solid var(--bd); border-radius: 999px;
   background: var(--sf);
 }
@@ -1402,14 +1402,32 @@ function renderCalExpandContent(date, data) {
     const sign = (pct ?? 0) >= 0 ? '+' : '';
     const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
     const amountText = it.amount ? fmtTradeAmount(it.amount) : '';
-    // 테마칩: theme_paths가 있으면 경로 표시, 없으면 기존 칩
+    // 테마칩: 같은 루트 트리는 합쳐서 중복 노드 제거
     const tp = it.interp?.theme_paths || [];
-    const themesHtml = tp.length > 0
-      ? tp.map((p, pi) => {
-          const chips = p.path.map(s => `<span class="cal-ind-chip">${escapeHtml(s)}</span>`).join('');
-          return (pi > 0 ? '<span class="cal-theme-sep">│</span>' : '') + chips;
-        }).join('')
-      : it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('');
+    const themesHtml = (() => {
+      if (tp.length === 0) return it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('');
+      // 같은 루트끼리 그룹핑 → 노드 합집합 (순서 유지)
+      const groups = {};
+      const groupOrder = [];
+      tp.forEach(p => {
+        const root = p.path[0];
+        if (!groups[root]) { groups[root] = []; groupOrder.push(root); }
+        groups[root].push(p.path);
+      });
+      return groupOrder.map((root, gi) => {
+        const paths = groups[root];
+        // 모든 경로의 노드를 순서 유지하며 합집합
+        const seen = new Set();
+        const merged = [];
+        paths.forEach(path => {
+          path.forEach(node => {
+            if (!seen.has(node)) { seen.add(node); merged.push(node); }
+          });
+        });
+        const chips = merged.map(s => `<span class="cal-ind-chip">${escapeHtml(s)}</span>`).join('');
+        return (gi > 0 ? '<span class="cal-theme-sep">│</span>' : '') + chips;
+      }).join('');
+    })();
 
     // 해석 있으면 카드 확장, 없으면 compact 한 줄
     if (it.interp) {
@@ -1431,8 +1449,7 @@ function renderCalExpandContent(date, data) {
       const linksHtml = allLinks.length > 0 ? `<div class="cal-feature-links">${allLinks.filter(l => { if (!l.url || linkSeen.has(l.url)) return false; linkSeen.add(l.url); return true; }).map(l => {
         const host = (() => { try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return ''; } })();
         const src = l.source || sourceMap[host] || host;
-        const trimTitle = l.title ? (l.title.length > 30 ? l.title.slice(0, 30) + '…' : l.title) : '';
-        const label = trimTitle ? `[${src}] ${trimTitle}` : src;
+        const label = src;
         return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sanitize(label))}</a>`;
       }).join('')}</div>` : '';
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
