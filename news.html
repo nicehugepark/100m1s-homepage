@@ -2019,10 +2019,6 @@ async function initThemeTree() {
     visRoots.forEach((root, i) => {
       frag.appendChild(renderNode(root, 0, ROOT_COLORS[i % ROOT_COLORS.length]));
     });
-    // 거래대금 0 루트 (접혀서 안 보이지만 존재 표시)
-    roots.filter(r => r._totalAmt === 0).forEach((root, i) => {
-      frag.appendChild(renderNode(root, 0, '#666'));
-    });
     container.appendChild(frag);
 
   } catch (e) { console.warn('theme-tree:', e); }
