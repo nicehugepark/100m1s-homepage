@@ -295,6 +295,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   flex-shrink: 0;
 }
 .theme-tree-uncollected { font-size: 10px; color: var(--dm); margin-left: 6px; }
+.theme-tree-stock-count { font-size: 10px; color: #8B95A8; margin-left: 6px; flex-shrink: 0; white-space: nowrap; }
 .theme-tree-children {
   overflow: hidden; transition: max-height 0.2s ease;
 }
@@ -330,6 +331,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .theme-tree-stock-name { font-size: 10px; }
   .theme-tree-stock-pct { font-size: 10px; }
   .theme-tree-stock-amt { font-size: 9px; }
+  .theme-tree-stock-count { font-size: 9px; }
 }
 
 /* ───── 테마 거래대금 트렌드 ───── */
@@ -921,9 +923,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     </section>
   </div>
 
-  <div class="theme-trend" id="theme-trend"></div>
-
-  <div class="theme-map" id="theme-map">
+  <div class="theme-map" id="theme-map" style="display:none;">
     <div class="theme-map-title">테마 지도</div>
     <div class="theme-map-grid" id="theme-map-grid"></div>
     <div class="theme-map-expand" id="theme-map-expand"></div>
@@ -936,6 +936,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     </div>
     <div class="theme-tree-container" id="theme-tree-container"></div>
   </div>
+
+  <div class="theme-trend" id="theme-trend"></div>
 </main>
 
 <footer>
@@ -2072,6 +2074,13 @@ async function initThemeTree() {
         pctEl.style.color = pctColor;
         pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
         row.appendChild(pctEl);
+
+        if (hasChildren && node.descendant_stock_count > 0) {
+          const cntEl = document.createElement('span');
+          cntEl.className = 'theme-tree-stock-count';
+          cntEl.textContent = node.descendant_stock_count + '\uC885\uBAA9';
+          row.appendChild(cntEl);
+        }
       } else {
         const uncEl = document.createElement('span');
         uncEl.className = 'theme-tree-uncollected';
