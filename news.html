@@ -299,11 +299,37 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   overflow: hidden; transition: max-height 0.2s ease;
 }
 .theme-tree-children.collapsed { max-height: 0 !important; }
+.theme-tree-stock-row {
+  display: flex; align-items: center; height: 30px;
+  padding: 0 8px; border-radius: 4px; font-size: 0.85em;
+  cursor: default; user-select: none;
+}
+.theme-tree-stock-row:hover { background: rgba(255,255,255,0.03); }
+.theme-tree-stock-name {
+  font-size: 11px; font-weight: 600; color: var(--tx2); white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-tree-stock-pct {
+  font-size: 11px; font-weight: 700; margin-left: 8px; white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-tree-stock-amt {
+  font-size: 10px; color: var(--dm); margin-left: 8px; white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-tree-stock-more {
+  font-size: 10px; color: var(--dm); cursor: pointer; padding: 2px 0;
+  user-select: none;
+}
+.theme-tree-stock-more:hover { color: var(--am); text-decoration: underline; }
 @media (max-width: 720px) {
   .theme-tree-bar { max-width: 80px !important; }
   .theme-tree-name { font-size: 12px; }
   .theme-tree-amt { font-size: 10px; }
   .theme-tree-pct { font-size: 10px; }
+  .theme-tree-stock-name { font-size: 10px; }
+  .theme-tree-stock-pct { font-size: 10px; }
+  .theme-tree-stock-amt { font-size: 9px; }
 }
 
 /* ───── 테마 거래대금 트렌드 ───── */
@@ -1982,13 +2008,83 @@ async function initThemeTree() {
       const wrapper = document.createElement('div');
       wrapper.appendChild(row);
 
-      if (hasChildren) {
+      // --- 종목 행 렌더링 헬퍼 ---
+      function renderStockRows(stocks, stockIndent) {
+        const MAX_VISIBLE = 5;
+        const frag = document.createDocumentFragment();
+        const visible = stocks.slice(0, MAX_VISIBLE);
+        const rest = stocks.slice(MAX_VISIBLE);
+
+        visible.forEach(s => frag.appendChild(makeStockRow(s, stockIndent)));
+
+        if (rest.length > 0) {
+          const hiddenContainer = document.createElement('div');
+          hiddenContainer.style.display = 'none';
+          rest.forEach(s => hiddenContainer.appendChild(makeStockRow(s, stockIndent)));
+          frag.appendChild(hiddenContainer);
+
+          const moreRow = document.createElement('div');
+          moreRow.className = 'theme-tree-stock-row';
+          moreRow.style.paddingLeft = stockIndent + 'px';
+          const moreLabel = document.createElement('span');
+          moreLabel.className = 'theme-tree-stock-more';
+          moreLabel.textContent = '\u00B7\u00B7\u00B7 \uC678 ' + rest.length + '\uC885\uBAA9';
+          moreLabel.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hiddenContainer.style.display = '';
+            moreRow.style.display = 'none';
+          });
+          moreRow.appendChild(moreLabel);
+          frag.appendChild(moreRow);
+        }
+        return frag;
+      }
+
+      function makeStockRow(s, stockIndent) {
+        const sr = document.createElement('div');
+        sr.className = 'theme-tree-stock-row';
+        sr.style.paddingLeft = stockIndent + 'px';
+
+        const sName = document.createElement('span');
+        sName.className = 'theme-tree-stock-name';
+        sName.textContent = s.name || s.stock_name || '';
+        sr.appendChild(sName);
+
+        const sPct = s.change_pct != null ? s.change_pct : s.pct;
+        if (sPct != null) {
+          const sPctEl = document.createElement('span');
+          sPctEl.className = 'theme-tree-stock-pct';
+          sPctEl.style.color = sPct >= 0 ? '#EF4444' : '#3B82F6';
+          sPctEl.textContent = (sPct >= 0 ? '+' : '') + sPct.toFixed(2) + '%';
+          sr.appendChild(sPctEl);
+        }
+
+        const sAmt = s.trade_amount != null ? s.trade_amount : s.amount;
+        if (sAmt != null && sAmt > 0) {
+          const sAmtEl = document.createElement('span');
+          sAmtEl.className = 'theme-tree-stock-amt';
+          sAmtEl.textContent = fmtAmt(sAmt);
+          sr.appendChild(sAmtEl);
+        }
+        return sr;
+      }
+
+      const hasStocks = Array.isArray(node.stocks) && node.stocks.length > 0;
+      const hasExpandable = hasChildren || hasStocks;
+      const stockIndent = (depth + 1) * 24;
+
+      if (hasChildren || hasStocks) {
         const childContainer = document.createElement('div');
         childContainer.className = 'theme-tree-children collapsed';
-        node.children.forEach(c => {
-          // 거래대금 0인 자식도 표시 (연한 회색)
-          childContainer.appendChild(renderNode(c, depth + 1, rootColor));
-        });
+        if (hasChildren) {
+          node.children.forEach(c => {
+            // 거래대금 0인 자식도 표시 (연한 회색)
+            childContainer.appendChild(renderNode(c, depth + 1, rootColor));
+          });
+        }
+        if (hasStocks) {
+          childContainer.appendChild(renderStockRows(node.stocks, stockIndent));
+        }
         wrapper.appendChild(childContainer);
 
         row.addEventListener('click', () => {
@@ -2010,6 +2106,11 @@ async function initThemeTree() {
             childContainer.style.maxHeight = 'none';
           }
         });
+
+        // hasStocks만 있고 children이 없으면 arrow 표시
+        if (!hasChildren && hasStocks) {
+          arrow.classList.remove('leaf');
+        }
       }
 
       return wrapper;
