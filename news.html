@@ -972,16 +972,7 @@ function renderCalendar() {
   const todayStr = ymd(todayY, todayM, todayD);
 
   // 서브 텍스트 (해당 월 집계)
-  let collectedDays = 0, totalStocks = 0;
-  if (calIndex && calIndex.days) {
-    for (const [d, e] of Object.entries(calIndex.days)) {
-      if (d.startsWith(`${calViewYear}-${pad2(calViewMonth)}`)) {
-        collectedDays++;
-        totalStocks += (e.stock_count || 0);
-      }
-    }
-  }
-  subEl.textContent = `수집 ${collectedDays}일 · 종목 ${totalStocks}`;
+  subEl.textContent = '';
 
   // 네비게이션 제한
   nextBtn.disabled = (calViewYear > todayY) || (calViewYear === todayY && calViewMonth >= todayM);
@@ -1118,16 +1109,17 @@ async function loadCalDayData(date) {
           const pp = st.prev_pick;
           const industryLabel = st.industry ? `업종: ${st.industry}` : '';
           const sectorLabel = st.sector ? st.sector.split(',')[0] : '';
+          const causalText = topNews ? (topNews.causal_chain || topNews.title || '') : '';
           const diffParts = [
-            topNews ? topNews.causal_chain : '',
-            !topNews && industryLabel ? industryLabel : '',
-            !topNews && sectorLabel ? `주요제품: ${sectorLabel}` : '',
+            causalText,
+            !causalText && industryLabel ? industryLabel : '',
+            !causalText && sectorLabel ? `주요제품: ${sectorLabel}` : '',
           ].filter(Boolean);
 
           interpretedByName.set(st.name, {
             name: st.name,
             themes: (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t),
-            causal_chain: topNews ? [topNews.causal_chain].filter(Boolean) : [],
+            causal_chain: causalText ? [causalText] : [],
             differentiator: diffParts.join(' · '),
             macro_event: topNews?.macro_event || null,
             news_digest: newsItems.map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
@@ -1305,8 +1297,10 @@ function renderCalExpandContent(date, data) {
     </div>
   ` : '';
 
-  // 매크로 이벤트 칩 (오늘의 종목 섹션 상단, 최대 5개)
-  const macroEvents = (data.macroEvents || []).slice(0, 5);
+  // 매크로 이벤트 칩 — summary가 title과 다른 것만 (키워드 단독 제외), 최대 5개
+  const macroEvents = (data.macroEvents || [])
+    .filter(m => m.summary && m.summary !== m.title && m.summary.length > m.title.length)
+    .slice(0, 5);
   const macroHtml = macroEvents.length > 0
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.summary || ''))}">${escapeHtml(sanitize(m.title || ''))}</span>`).join('')}</div>`
     : '';
