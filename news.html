@@ -1834,12 +1834,16 @@ async function initThemeTrend() {
     const container = document.getElementById('theme-trend');
     if (!container || !data.themes || !data.dates) return;
 
-    const dates = data.dates;
-    if (dates.length < 1) return;
+    const TREND_DISPLAY_DAYS = 5; // 차트에 표시할 영업일 수 (데이터는 20일분 유지)
+    const allDates = data.dates;
+    if (allDates.length < 1) return;
+    const dates = allDates.slice(-TREND_DISPLAY_DAYS);
+    const dateSet = new Set(dates);
 
-    // 모든 테마 표시 (데이터 있는 것만)
+    // 모든 테마 표시 (데이터 있는 것만, 표시 기간 내 데이터 필터)
     const themes = data.themes
-      .filter(t => t.data && t.data.length >= 1)
+      .map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }))
+      .filter(t => t.data.length >= 1)
       .sort((a, b) => {
         const aLast = a.data[a.data.length - 1]?.trade_amount || 0;
         const bLast = b.data[b.data.length - 1]?.trade_amount || 0;
@@ -1936,28 +1940,28 @@ async function initThemeTrend() {
 
     const dateRange = fmtDate(dates[0]) + ' ~ ' + fmtDate(dates[dates.length - 1]);
     container.innerHTML =
-      '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 20영업일 · ' + dateRange + '</div></div>' +
+      '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + TREND_DISPLAY_DAYS + '영업일 · ' + dateRange + '</div></div>' +
       '<div class="theme-trend-wrap">' + svg + legend + '<div id="trend-detail" class="trend-detail"></div><div class="theme-trend-tooltip" id="tt-trend"></div></div>';
 
-    // ── 레전드 토글 (멀티 선택) ──
-    const selectedSet = new Set();
+    // ── 레전드 토글 (단일 선택) ──
+    let selectedIdx = -1; // -1 = 전체 표시
     const legendItems = container.querySelectorAll('.theme-trend-legend-item');
     const svgEl = container.querySelector('.theme-trend-svg');
 
     function applyLegendFilter() {
-      const none = selectedSet.size === 0;
+      const none = selectedIdx === -1;
       // SVG 요소 opacity
       svgEl.querySelectorAll('[data-theme-idx]').forEach(el => {
         if (el.classList.contains('tt-hit')) return;
         const idx = parseInt(el.dataset.themeIdx);
-        const active = none || selectedSet.has(idx);
+        const active = none || idx === selectedIdx;
         el.style.opacity = active ? '' : '0.1';
       });
       // 레전드 스타일
       legendItems.forEach(li => {
         const idx = parseInt(li.dataset.legendIdx);
-        const active = none || selectedSet.has(idx);
-        li.classList.toggle('selected', selectedSet.has(idx));
+        const active = none || idx === selectedIdx;
+        li.classList.toggle('selected', idx === selectedIdx);
         li.classList.toggle('dimmed', !none && !active);
       });
     }
@@ -1965,8 +1969,8 @@ async function initThemeTrend() {
     legendItems.forEach(li => {
       li.addEventListener('click', () => {
         const idx = parseInt(li.dataset.legendIdx);
-        if (selectedSet.has(idx)) selectedSet.delete(idx);
-        else selectedSet.add(idx);
+        // 이미 선택된 테마를 다시 클릭하면 전체 표시로 복귀
+        selectedIdx = (selectedIdx === idx) ? -1 : idx;
         applyLegendFilter();
       });
     });
@@ -2061,7 +2065,7 @@ async function initThemeTrend() {
       const dateStr = hit.dataset.date;
       const themeIdx = parseInt(hit.dataset.themeIdx);
       // 레전드 필터 활성 시, 비선택 테마 클릭 무시
-      if (selectedSet.size > 0 && !selectedSet.has(themeIdx)) return;
+      if (selectedIdx !== -1 && selectedIdx !== themeIdx) return;
       showStockDetail(themeName, dateStr, themeIdx);
     });
 
