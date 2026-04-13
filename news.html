@@ -1664,14 +1664,10 @@ function renderCalExpandContent(date, data) {
       const pickMeta = pp
         ? `<div class="cal-pick-meta">연속 ${pc || 2}회 등장 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
         : '';
-      // 종목명 우측 연속 배지: pick_count=1 → "신규", 2+ → "N연속", 없으면 비표시
-      const pickBadge = pc != null
-        ? (pc === 1
-          ? `<span class="cal-streak-badge" style="background:#E8F5EC;color:#1A6B2D;border-color:#A8D5BA;">신규</span>`
-          : pc >= 2
-            ? `<span class="cal-streak-badge">${pc}연속</span>`
-            : '')
-        : (pp ? `<span class="cal-streak-badge">${pc || 2}연속</span>` : '');
+      // 종목명 우측 연속 배지: 2+ → "N연속", 1이면 비표시
+      const pickBadge = pc != null && pc >= 2
+        ? `<span class="cal-streak-badge">${pc}연속</span>`
+        : '';
       // 테마 칩은 링크 아래 별도 줄
       return `
         <div class="cal-feature-card">
@@ -1700,14 +1696,10 @@ function renderCalExpandContent(date, data) {
       return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
     }).join('');
     const linksHtml = cafeLinks ? `<div class="cal-feature-links" style="margin-top:4px;">${cafeLinks}</div>` : '';
-    // compact에도 연속 배지
+    // compact에도 연속 배지: 2+ → "N연속", 1이면 비표시
     const compactPC = it.interp?.pick_count;
-    const compactBadge = compactPC != null
-      ? (compactPC === 1
-        ? `<span class="cal-streak-badge" style="background:#E8F5EC;color:#1A6B2D;border-color:#A8D5BA;">신규</span>`
-        : compactPC >= 2
-          ? `<span class="cal-streak-badge">${compactPC}연속</span>`
-          : '')
+    const compactBadge = compactPC != null && compactPC >= 2
+      ? `<span class="cal-streak-badge">${compactPC}연속</span>`
       : '';
     return `
       <div class="cal-trade-row">
@@ -2000,8 +1992,10 @@ async function initThemeTrend() {
     let activePoint = null; // "theme|date" key
 
     function fmtAmount(v) {
+      if (v == null) return '-';
       if (v >= 1e12) return (v / 1e12).toFixed(1) + '조';
       if (v >= 1e8) return (v / 1e8).toFixed(0) + '억';
+      if (v >= 1e4) return Math.round(v / 1e4).toLocaleString() + '만';
       return v.toLocaleString();
     }
 
