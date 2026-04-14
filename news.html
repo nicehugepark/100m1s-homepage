@@ -214,7 +214,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 
 /* ───── 테마 지도 ───── */
-.theme-map { margin-top: 40px; }
+.theme-map { margin-top: 28px; margin-bottom: 28px; }
 .theme-map-title {
   font-size: 14px; font-weight: 800; color: var(--am);
   margin-bottom: 12px; padding-left: 8px;
@@ -261,7 +261,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-top: 28px;
+  margin-bottom: 28px;
 }
 @media (max-width: 720px) {
   .below-fold-grid { grid-template-columns: 1fr; }
@@ -932,6 +932,24 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     <div class="page-meta" id="meta">로딩 중…</div>
   </div>
 
+  <div class="below-fold-grid">
+    <div class="theme-trend" id="theme-trend"></div>
+
+    <div class="theme-tree" id="theme-tree">
+      <div class="theme-tree-header">
+        <div class="theme-tree-title">테마 트리</div>
+        <div class="theme-tree-sub">테마 간 인과 관계 · 바 길이 = 거래대금 · 클릭하여 펼치기</div>
+      </div>
+      <div class="theme-tree-container" id="theme-tree-container"></div>
+    </div>
+  </div>
+
+  <div class="theme-map" id="theme-map" style="display:none;">
+    <div class="theme-map-title">테마 지도</div>
+    <div class="theme-map-grid" id="theme-map-grid"></div>
+    <div class="theme-map-expand" id="theme-map-expand"></div>
+  </div>
+
   <div class="cal-layout">
     <aside class="cal-side">
       <section class="toss-cal" id="toss-cal" aria-label="수집 캘린더">
@@ -949,24 +967,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     <section class="cal-content" id="cal-content" aria-live="polite">
       <div class="cal-empty"><div class="cal-empty-circle"></div><div>날짜를 선택하세요</div></div>
     </section>
-  </div>
-
-  <div class="theme-map" id="theme-map" style="display:none;">
-    <div class="theme-map-title">테마 지도</div>
-    <div class="theme-map-grid" id="theme-map-grid"></div>
-    <div class="theme-map-expand" id="theme-map-expand"></div>
-  </div>
-
-  <div class="below-fold-grid">
-    <div class="theme-tree" id="theme-tree">
-      <div class="theme-tree-header">
-        <div class="theme-tree-title">테마 트리</div>
-        <div class="theme-tree-sub">테마 간 인과 관계 · 바 길이 = 거래대금 · 클릭하여 펼치기</div>
-      </div>
-      <div class="theme-tree-container" id="theme-tree-container"></div>
-    </div>
-
-    <div class="theme-trend" id="theme-trend"></div>
   </div>
 </main>
 
