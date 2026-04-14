@@ -1456,11 +1456,20 @@ function renderCalExpandContent(date, data) {
           <div style="font-size:12px;color:var(--dm);">${escapeHtml(reason)}${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}</div>
         </div>`;
     } else {
-      emptyMsg = `
-        <div class="cal-empty">
-          <div class="cal-empty-circle"></div>
-          <div>수집된 데이터가 없습니다</div>
-        </div>`;
+      const now = new Date();
+      const todayIso = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      const isToday = (date === todayIso);
+      const hour = now.getHours();
+      const isMarketHours = isToday && (hour < 16);
+      emptyMsg = isMarketHours
+        ? `<div class="cal-empty">
+            <div style="font-size:15px;font-weight:700;color:var(--am);margin-bottom:6px;">장중</div>
+            <div style="font-size:12px;color:var(--dm);">종목 데이터는 장 마감 후 업데이트됩니다</div>
+          </div>`
+        : `<div class="cal-empty">
+            <div class="cal-empty-circle"></div>
+            <div>수집된 데이터가 없습니다</div>
+          </div>`;
     }
     // 휴장일이라도 매크로 이벤트가 있으면 표시
     const closedMacro = (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10).slice(0, 5);
@@ -2292,6 +2301,7 @@ async function initThemeTree(dateOverride) {
 
     const container = document.getElementById('theme-tree-container');
     if (!container) return;
+    container.innerHTML = '';  // 날짜 변경 시 기존 트리 제거 (누적 방지)
 
     function renderNode(node, depth, rootColor) {
       const hasChildren = node.children.length > 0 && node.children.some(c => c._totalAmt > 0 || c.trade_amount > 0);
