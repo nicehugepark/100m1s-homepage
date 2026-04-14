@@ -1706,11 +1706,8 @@ function renderCalExpandContent(date, data) {
       const causalHtml = causal.length > 0
         ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c)).replace(/→/g, styledArrow)}${i < causal.length - 1 ? styledArrow : ''}`).join('')}</div>`
         : '';
-      // 뉴스 제목 헤드라인 (causal_chain과 별도 표시)
-      const firstTitle = (st.news_digest || [])[0]?.inferred_title || '';
-      const headlineHtml = firstTitle && causal.length > 0
-        ? `<div class="cal-headline">${escapeHtml(sanitize(firstTitle))}</div>`
-        : '';
+      // 뉴스 제목은 미표시 (대표 지시: 로봇 제목은 무가치. 인과사슬만 표시)
+      const headlineHtml = '';
       // differentiator가 causal_chain과 동일하면 중복 제거
       const causalText = (causal[0] || '').trim();
       const diffRaw = (st.differentiator || st.outlook || '').trim();
@@ -2483,11 +2480,7 @@ async function initThemeTree(dateOverride) {
         amtEl.textContent = fmtAmt(amt);
         row.appendChild(amtEl);
 
-        const pctEl = document.createElement('span');
-        pctEl.className = 'theme-tree-pct';
-        pctEl.style.color = pctColor;
-        pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
-        row.appendChild(pctEl);
+        // 등락률 제거 (대표 지시 4/14 — 테마트리에 불필요)
 
         const ownCount = node.stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0);
         const descCount = node.descendant_stock_count || ownCount;
