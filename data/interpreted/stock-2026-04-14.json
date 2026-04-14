@@ -1,26 +1,22 @@
 {
   "date": "2026-04-14",
-  "generated_at": "2026-04-14T09:33:48.981113",
+  "generated_at": "2026-04-14T10:06:23.724745",
   "macro_events": [
     {
+      "title": "반도체강세",
+      "summary": "반도체 수급 개선 + 지정학 리스크 완화 → 외국인 투자자 매수 자극 → SK하이닉스 등 반도체 섹터 실적 가속 국면"
+    },
+    {
       "title": "에너지인프라",
-      "summary": "유럽 재생에너지 전환 가속화 → 글로벌 전력망 인프라 투자 급증 → 건설·에너지 섹터 재평가 및 수혜 기대"
+      "summary": "글로벌 에너지 전환 가속화 → 스마트그리드·전력망 구축 수요 증가 → 건설·설비 섹터 실적 상향 재평가"
+    },
+    {
+      "title": "철강상승",
+      "summary": "글로벌 인프라 투자 확대 + 중동 재건 수요 → 철강 수요 증가 → 철강 가격 상승으로 철강사 수익성 개선 기대"
     },
     {
       "title": "이란협상",
-      "summary": "미-이란 휴전 협상 재개 → 중동 지정학 리스크 완화 → 해운·에너지·방위산업 강세"
-    },
-    {
-      "title": "AI반도체",
-      "summary": "AI 데이터센터 폭증적 수요 + HBM 가격협상 진전 → 메모리반도체 섹터 실적 가속 및 외국인 매수 확대"
-    },
-    {
-      "title": "엔터IP",
-      "summary": "글로벌 게임·IP 콘텐츠 수요 증대 → 한국 대형 엔터·유통사 IP 투자 및 M&A 활발화"
-    },
-    {
-      "title": "철강강세",
-      "summary": "중동 인프라 재건 및 글로벌 에너지 투자 증가 → 철강 가격 상승 → 철강주 실적 개선 기대"
+      "summary": "미-이란 휴전 협상 재개 기대 → 중동 지정학적 리스크 프리미엄 축소 → 에너지·건설·방위산업 모멘텀 회복"
     }
   ],
   "narratives": [],
@@ -121,10 +117,16 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알미늄샷시 제조/환경사업",
       "themes": [
-        "1차 비철금속",
-        "알루미늄 수급불안"
+        "알루미늄 수급불안",
+        "1차 비철금속"
       ],
       "theme_paths": [
+        {
+          "name": "알루미늄 수급불안",
+          "path": [
+            "알루미늄 수급불안"
+          ]
+        },
         {
           "name": "1차 비철금속",
           "path": [
@@ -132,12 +134,6 @@
             "전쟁악화",
             "비철금속",
             "1차 비철금속"
-          ]
-        },
-        {
-          "name": "알루미늄 수급불안",
-          "path": [
-            "알루미늄 수급불안"
           ]
         }
       ],
@@ -584,7 +580,8 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알루미늄판 제조,도매",
       "themes": [
-        "1차 비철금속"
+        "1차 비철금속",
+        "비철금속"
       ],
       "theme_paths": [
         {
@@ -610,8 +607,8 @@
           "url": "https://www.etoday.co.kr/news/view/2575466",
           "source": "이투데이",
           "published_at": "2026-04-14T00:29:00",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "알루미늄 수급 불안 지속 → 알루미늄 가격 상승 기대 → 1차 비철금속 생산업체인 조일알미늄에 매수 자금 유입",
+          "macro_event": "알루미늄 수급 불안 지속",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -625,8 +622,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/14/MFQWGOBZHAZDGYRTMVRDKNBUGA/",
           "source": "조선비즈",
           "published_at": "2026-04-14T00:15:49",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "알루미늄 수급 불안 지속 → 알루미늄 가격 상승 기대 → 1차 비철금속 생산업체인 조일알미늄에 매수 자금 유입",
+          "macro_event": "알루미늄 수급 불안 지속",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -636,9 +633,7 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false,
-      "causal_chain": "",
-      "parent_theme": ""
+      "fallback": false
     },
     {
       "code": "010820",
