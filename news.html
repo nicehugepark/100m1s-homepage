@@ -2394,8 +2394,8 @@ async function initThemeTree(dateOverride) {
     function sumTradeAmount(node) {
       // 자식 먼저 재귀 처리 (avg_change_pct 가중평균에 필요)
       node.children.forEach(c => sumTradeAmount(c));
-      // 거래대금: unique_trade_amount가 있으면 사용 (형제 간 중복 제거됨)
-      if (node.unique_trade_amount != null) {
+      // 거래대금: unique_trade_amount가 양수면 사용, 0이면 자식 합산으로 대체
+      if (node.unique_trade_amount != null && node.unique_trade_amount > 0) {
         node._totalAmt = node.unique_trade_amount;
       } else {
         let childSum = 0;
