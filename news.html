@@ -257,7 +257,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .theme-map-stock-industry { color: var(--dm); font-size: 11px; }
 
 /* ───── Below-Fold 2-Column Grid ───── */
-.theme-trend { margin-bottom: 32px; }
+.theme-trend { margin-bottom: 48px; }
 
 /* ───── 테마 트리 (Indented Tree + Inline Bar) ───── */
 .theme-tree { margin-top: 0; }
@@ -1945,8 +1945,8 @@ async function initThemeTrend() {
 
     // SVG 치수 — 반응형 (모바일 vs 데스크탑)
     const isMobile = window.innerWidth < 640;
-    const W = isMobile ? 360 : 480;
-    const H = isMobile ? 180 : 200;
+    const W = isMobile ? 360 : 720;
+    const H = isMobile ? 180 : 160;
     const PAD = isMobile
       ? { top: 10, right: 12, bottom: 26, left: 40 }
       : { top: 12, right: 16, bottom: 28, left: 48 };
