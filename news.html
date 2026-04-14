@@ -1430,13 +1430,16 @@ async function loadCalDayData(date) {
       }
     }
   } catch (e) { console.warn('prev-day propagation:', e); }
+  // data_source: stock JSON에 포함된 소스 태그 (kiwoom / kiwoom_ranking)
+  const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
   const result = {
     kiwoom,
     cafePosts: postsOfDay,
     narratives: Array.from(narrSet),
     interpretedByName,
     macroEvents,
-    joojuGroupReview
+    joojuGroupReview,
+    dataSource
   };
   calDayCache[date] = result;
   return result;
@@ -1445,7 +1448,8 @@ async function loadCalDayData(date) {
 function renderCalExpandContent(date, data) {
   const inner = document.getElementById('cal-content');
   const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
-  const hasAny = (data.narratives.length > 0) || kiwoomStocks.length > 0 || data.cafePosts.length > 0;
+  const hasInterpretedStocks = data.interpretedByName && data.interpretedByName.size > 0;
+  const hasAny = (data.narratives.length > 0) || kiwoomStocks.length > 0 || data.cafePosts.length > 0 || hasInterpretedStocks;
 
   if (!hasAny) {
     const closed = isMarketClosed(date);
@@ -1465,12 +1469,7 @@ function renderCalExpandContent(date, data) {
       const isToday = (date === todayIso);
       const hour = now.getHours();
       const isMarketHours = isToday && (hour < 16);
-      emptyMsg = isMarketHours
-        ? `<div class="cal-empty">
-            <div style="font-size:15px;font-weight:700;color:var(--am);margin-bottom:6px;">장중</div>
-            <div style="font-size:12px;color:var(--dm);">종목 데이터는 장 마감 후 업데이트됩니다</div>
-          </div>`
-        : `<div class="cal-empty">
+      emptyMsg = `<div class="cal-empty">
             <div class="cal-empty-circle"></div>
             <div>수집된 데이터가 없습니다</div>
           </div>`;
@@ -1483,7 +1482,7 @@ function renderCalExpandContent(date, data) {
     inner.innerHTML = `
       <div class="cal-content-head">
         <div class="cal-content-date">${formatKoDate(date)}</div>
-        <div class="cal-content-meta">${closed ? '휴장' : (isMarketHours ? '장중' : '데이터 없음')}</div>
+        <div class="cal-content-meta">${closed ? '휴장' : '데이터 없음'}</div>
       </div>
       ${closedMacroHtml}
       ${emptyMsg}
@@ -1511,6 +1510,9 @@ function renderCalExpandContent(date, data) {
   for (const s of kiwoomStocks) {
     if (s && s.name) kiwoomByName.set(s.name, s);
   }
+
+  // interpretedByName을 특징주/종목 구성에서 사용하기 위해 먼저 참조
+  const interpByName = data.interpretedByName || new Map();
 
   // 특징주 결정: 부각 종목 우선, 비면 거래대금 TOP fallback
   let featureSource = 'primary';
@@ -1547,40 +1549,88 @@ function renderCalExpandContent(date, data) {
       const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
       return { name: s.name, pct, themes, links: [], ticker: s.ticker, reason: '' };
     });
+  } else if (interpByName.size > 0) {
+    // kiwoom JSON 없음, 카페 없음 → stock-*.json 기반 특징주
+    featureSource = 'fallback';
+    featureItems = [];
+    for (const [name, interp] of interpByName) {
+      if (featureItems.length >= 6) break;
+      const themes = (interp.themes || []).slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
+      featureItems.push({ name, pct: interp.change_pct ?? null, themes, links: [], ticker: interp.code || '', reason: '', interp });
+    }
   }
 
   // 오늘의 종목: 거래대금 TOP을 base로, 카페·해석 정보 join
-  const interpByName = data.interpretedByName || new Map();
-  const todayStocks = (kiwoomStocks || []).map((s, i) => {
-    const pct = s.max_change_pct ?? s.change_pct ?? null;
-    const interp = interpByName.get(s.name);
-    // 테마 우선순위: interp.themes (뉴스 기반 자동 추출) > themesData 정적 > []
-    let themes;
-    if (interp && Array.isArray(interp.themes) && interp.themes.length > 0) {
-      themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
-    } else {
-      themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
-    }
-    const cafe = cafeStockMap.get(s.name);
-    const links = [];
-    const seen = new Set();
-    if (cafe) {
-      for (const nc of (cafe.newsCards || [])) {
-        if (!nc.url || seen.has(nc.url)) continue;
-        seen.add(nc.url);
-        links.push({ url: nc.url, source: nc.source || '' });
+  let todayStocks;
+  if (kiwoomStocks.length > 0) {
+    todayStocks = kiwoomStocks.map((s, i) => {
+      const pct = s.max_change_pct ?? s.change_pct ?? null;
+      const interp = interpByName.get(s.name);
+      let themes;
+      if (interp && Array.isArray(interp.themes) && interp.themes.length > 0) {
+        themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
+      } else {
+        themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
+      const cafe = cafeStockMap.get(s.name);
+      const links = [];
+      const seen = new Set();
+      if (cafe) {
+        for (const nc of (cafe.newsCards || [])) {
+          if (!nc.url || seen.has(nc.url)) continue;
+          seen.add(nc.url);
+          links.push({ url: nc.url, source: nc.source || '' });
+        }
+      }
+      return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links };
+    });
+  } else if (interpByName.size > 0) {
+    // kiwoom JSON 없음 → stock-*.json (interpretedByName)에서 종목 구성
+    todayStocks = [];
+    let idx = 0;
+    for (const [name, interp] of interpByName) {
+      idx++;
+      const cafe = cafeStockMap.get(name);
+      const links = [];
+      const seen = new Set();
+      if (cafe) {
+        for (const nc of (cafe.newsCards || [])) {
+          if (!nc.url || seen.has(nc.url)) continue;
+          seen.add(nc.url);
+          links.push({ url: nc.url, source: nc.source || '' });
+        }
+      }
+      let themes = [];
+      if (Array.isArray(interp.themes) && interp.themes.length > 0) {
+        themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
+      }
+      todayStocks.push({
+        rank: interp.rank || idx,
+        name,
+        ticker: interp.code || interp.ticker || '',
+        pct: interp.change_pct ?? null,
+        amount: interp.trade_amount ?? null,
+        themes,
+        interp,
+        links
+      });
     }
-    return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links };
-  });
+    // 거래대금 순 정렬
+    todayStocks.sort((a, b) => (b.amount || 0) - (a.amount || 0));
+    todayStocks.forEach((s, i) => { s.rank = i + 1; });
+  } else {
+    todayStocks = [];
+  }
 
   // 메타
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
   const streakCount = todayStocks.filter(i => i.interp?.prev_pick).length;
   const streakSuffix = streakCount > 0 ? ` · 연속등장 ${streakCount}종` : '';
+  const isRankingSource = data.dataSource === 'kiwoom_ranking';
+  const sourceSuffix = isRankingSource ? ' · 거래대금 상위 기준' : '';
   const metaText = todayStocks.length > 0
-    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}`
+    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}`
     : '—';
 
   // ① 매크로 이벤트 (내러티브 폴백에도 사용)
@@ -1731,17 +1781,21 @@ function renderCalExpandContent(date, data) {
       </div>`;
   };
 
+  const rankingBanner = isRankingSource && todayStocks.length > 0
+    ? `<div style="padding:8px 12px;margin-bottom:8px;background:var(--am4);border-radius:8px;font-size:11px;color:var(--tx2);">거래대금 상위 기준 · 조건검색 결과는 장 마감 후 업데이트됩니다</div>`
+    : '';
   const todayHtml = `
     <div class="cal-section">
       <div class="cal-section-title">오늘의 뉴스요약</div>
       ${narrPillsHtml}
       ${macroHtml}
+      ${rankingBanner}
       ${todayStocks.length > 0 ? `
         <div class="cal-trade-list" style="margin-top:10px;">
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
       ` : `
-        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (() => { const r = getHolidayName(date) || '주말'; const nd = getNextTradingDate(date); return '오늘은 장이 쉽니다 (' + r + ')' + (nd ? ' · 다음 거래일: ' + formatKoDate(nd) : ''); })() : (() => { const _n = new Date(); const _t = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`; return (date === _t && _n.getHours() < 16) ? '장중 — 종목 데이터는 마감 후 업데이트됩니다' : '종목 데이터가 없습니다'; })()}</div>
+        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (() => { const r = getHolidayName(date) || '주말'; const nd = getNextTradingDate(date); return '오늘은 장이 쉽니다 (' + r + ')' + (nd ? ' · 다음 거래일: ' + formatKoDate(nd) : ''); })() : '종목 데이터가 없습니다'}</div>
       `}
     </div>
   `;
@@ -2201,7 +2255,7 @@ async function initThemeTree(dateOverride) {
         const _n2 = new Date();
         const _t2 = `${_n2.getFullYear()}-${String(_n2.getMonth()+1).padStart(2,'0')}-${String(_n2.getDate()).padStart(2,'0')}`;
         const isLive = (dateOverride === _t2 || !dateOverride) && _n2.getHours() < 16 && !isMarketClosed(_t2);
-        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '장중 — 마감 후 테마 분석 결과가 표시됩니다' : '테마 데이터가 없습니다'}</div>`;
+        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '테마 데이터가 없습니다' : '테마 데이터가 없습니다'}</div>`;
       }
       return;
     }
@@ -2266,7 +2320,7 @@ async function initThemeTree(dateOverride) {
         const _n3 = new Date();
         const _t3 = `${_n3.getFullYear()}-${String(_n3.getMonth()+1).padStart(2,'0')}-${String(_n3.getDate()).padStart(2,'0')}`;
         const isLive = (dateOverride === _t3) && _n3.getHours() < 16 && !isMarketClosed(_t3);
-        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '장중 — 마감 후 테마 분석 결과가 표시됩니다' : '해당 날짜의 테마 데이터가 없습니다'}</div>`;
+        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '테마 데이터가 없습니다' : '해당 날짜의 테마 데이터가 없습니다'}</div>`;
       }
       return;
     }

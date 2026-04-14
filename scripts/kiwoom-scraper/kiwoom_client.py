@@ -123,6 +123,41 @@ class KiwoomClient:
         )
         return resp.json()
 
+    def get_trade_amount_ranking(self, mrkt_tp="000", pages=2):
+        """거래대금상위 (ka10032) — 전 시장, 관리종목 제외
+
+        Args:
+            mrkt_tp: "000"=전체, "001"=코스피, "101"=코스닥
+            pages: 페이지 수 (1페이지=100건)
+
+        Returns:
+            list: [{"stk_cd", "stk_nm", "cur_prc", "flu_rt", "trde_prica", ...}, ...]
+        """
+        all_stocks = []
+        headers = self._rest_headers("ka10032")
+        body = {"mrkt_tp": mrkt_tp, "mang_stk_incls": "0", "stex_tp": "1"}
+
+        for page in range(pages):
+            resp = requests.post(
+                f"{self.base_url}/api/dostk/rkinfo",
+                json=body,
+                headers=headers,
+            )
+            data = resp.json()
+            stocks = data.get("trde_prica_upper", [])
+            all_stocks.extend(stocks)
+            # 연속조회
+            if resp.headers.get("cont-yn") == "Y" and resp.headers.get("next-key"):
+                headers["cont-yn"] = "Y"
+                headers["next-key"] = resp.headers["next-key"]
+            elif data.get("cont-yn") == "Y" and data.get("next-key"):
+                headers["cont-yn"] = "Y"
+                headers["next-key"] = data["next-key"]
+            else:
+                break
+
+        return all_stocks
+
     # ═══════════════════════════════════════════════════════
     # WebSocket API — 조건검색
     # ═══════════════════════════════════════════════════════
