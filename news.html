@@ -1382,9 +1382,7 @@ async function loadCalDayData(date) {
           const trimIndustry = (s) => s.replace(/\s*(제조업|업)$/, '').replace(/기타\s*/, '');
           let themes = (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t);
           const themePaths = st.theme_paths || [];
-          if (themes.length === 0 && st.industry) {
-            themes.push({ name: trimIndustry(st.industry) });
-          }
+          // industry 폴백 제거 (산업분류 ≠ 테마, 대표 결정)
 
           interpretedByName.set(st.name, {
             name: st.name,
@@ -2295,10 +2293,10 @@ async function initThemeTree(dateOverride) {
             if (activeThemes.has(n.name)) {
               activeIds.add(n.id);
               // 종목 정보 교체
-              n.stocks = (themeStocks[n.name] || []).slice(0, 5);
-              n.stock_count = (themeStocks[n.name] || []).length;
+              n.stocks = (themeStocks[n.name] || []);
+              n.stock_count = n.stocks.length;
               n.total_stock_count = n.stock_count;
-              n.trade_amount = (themeStocks[n.name] || []).reduce((s, x) => s + (x.trade_amount || 0), 0);
+              n.trade_amount = n.stocks.reduce((s, x) => s + (x.trade_amount || 0), 0);
             }
           });
           // 조상 노드도 유지 (트리 연결용)
@@ -2314,10 +2312,10 @@ async function initThemeTree(dateOverride) {
           // 조상-전용 노드의 stocks도 해당 날짜 데이터로 교체
           data.nodes.forEach(n => {
             if (activeIds.has(n.id) && !activeThemes.has(n.name)) {
-              n.stocks = (themeStocks[n.name] || []).slice(0, 5);
-              n.stock_count = (themeStocks[n.name] || []).length;
+              n.stocks = (themeStocks[n.name] || []);
+              n.stock_count = n.stocks.length;
               n.total_stock_count = n.stock_count;
-              n.trade_amount = (themeStocks[n.name] || []).reduce((s, x) => s + (x.trade_amount || 0), 0);
+              n.trade_amount = n.stocks.reduce((s, x) => s + (x.trade_amount || 0), 0);
             }
           });
           // 활성 노드만 필터
