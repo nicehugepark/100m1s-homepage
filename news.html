@@ -2325,18 +2325,33 @@ async function initThemeTree(dateOverride) {
           });
           // 활성 노드만 필터
           data.nodes = data.nodes.filter(n => activeIds.has(n.id));
-          // 부모-자식 종목 중복 제거: 자식에 있는 종목은 부모에서 제외
-          const childStocksByParent = {};
+          // 부모-자식 종목 중복 제거: 모든 자손에 있는 종목은 부모에서 제외
+          const nodeByIdD = {};
+          const childrenMapD = {};
+          data.nodes.forEach(n => { nodeByIdD[n.id] = n; });
           data.nodes.forEach(n => {
-            if (n.parent_id && n.stocks) {
-              if (!childStocksByParent[n.parent_id]) childStocksByParent[n.parent_id] = new Set();
-              n.stocks.forEach(s => childStocksByParent[n.parent_id].add(s.code));
+            if (n.parent_id) {
+              if (!childrenMapD[n.parent_id]) childrenMapD[n.parent_id] = [];
+              childrenMapD[n.parent_id].push(n.id);
             }
           });
+          function collectDescendantCodes(nid) {
+            const codes = new Set();
+            (childrenMapD[nid] || []).forEach(cid => {
+              const child = nodeByIdD[cid];
+              if (child && child.stocks) child.stocks.forEach(s => codes.add(s.code));
+              collectDescendantCodes(cid).forEach(c => codes.add(c));
+            });
+            return codes;
+          }
           data.nodes.forEach(n => {
-            const childCodes = childStocksByParent[n.id];
-            if (childCodes && n.stocks) {
-              n.stocks = n.stocks.filter(s => !childCodes.has(s.code));
+            const descCodes = collectDescendantCodes(n.id);
+            // descendant_stock_count: 자신 + 모든 자손의 고유 종목 수
+            const ownCodes = new Set((n.stocks || []).map(s => s.code));
+            const allCodes = new Set([...ownCodes, ...descCodes]);
+            n.descendant_stock_count = allCodes.size;
+            if (descCodes.size > 0 && n.stocks) {
+              n.stocks = n.stocks.filter(s => !descCodes.has(s.code));
               n.stock_count = n.stocks.length;
               n.trade_amount = n.stocks.reduce((sum, s) => sum + (s.trade_amount || 0), 0);
             }
@@ -2474,11 +2489,12 @@ async function initThemeTree(dateOverride) {
         pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
         row.appendChild(pctEl);
 
-        const stockCount = node.stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0);
-        if (stockCount > 0) {
+        const ownCount = node.stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0);
+        const descCount = node.descendant_stock_count || ownCount;
+        if (descCount > 0) {
           const cntEl = document.createElement('span');
           cntEl.className = 'theme-tree-stock-count';
-          cntEl.textContent = stockCount + '\uC885\uBAA9';
+          cntEl.textContent = descCount + '\uC885\uBAA9';
           row.appendChild(cntEl);
         }
       } else {
