@@ -346,8 +346,26 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
   padding: 20px; overflow: visible;
 }
-.theme-trend-svg { display: block; width: 100%; min-height: 180px; height: auto; }
+.theme-trend-svg { display: block; min-height: 180px; height: auto; }
 .theme-trend-svg text { font-family: 'Inter', 'Pretendard', sans-serif; }
+.trend-y-axis {
+  position: absolute; top: 20px; left: 20px; width: 48px; height: calc(100% - 40px);
+  z-index: 2; pointer-events: none; background: var(--sf);
+}
+.trend-scroll-area {
+  margin-left: 48px; overflow-x: auto; overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+  scrollbar-color: rgba(196,153,48,0.4) transparent;
+}
+.trend-scroll-area::-webkit-scrollbar { height: 4px; }
+.trend-scroll-area::-webkit-scrollbar-track { background: transparent; }
+.trend-scroll-area::-webkit-scrollbar-thumb { background: rgba(196,153,48,0.35); border-radius: 2px; }
+.trend-scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(196,153,48,0.6); }
+.trend-fade-left {
+  position: absolute; top: 20px; left: 68px; width: 32px; height: calc(100% - 44px);
+  background: linear-gradient(to right, var(--sf), transparent);
+  pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.25s;
+}
 .theme-trend-legend {
   display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px; padding-left: 4px;
 }
@@ -363,6 +381,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .theme-trend-legend-item .swatch { width: 14px; height: 4px; }
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
   .theme-trend-wrap { padding: 14px; }
+  .trend-y-axis { top: 14px; left: 14px; width: 40px; height: calc(100% - 28px); }
+  .trend-scroll-area { margin-left: 40px; }
+  .trend-fade-left { top: 14px; left: 54px; height: calc(100% - 32px); }
 }
 .theme-trend-tooltip {
   position: absolute; pointer-events: none;
@@ -1914,11 +1935,12 @@ async function initThemeTrend() {
     const container = document.getElementById('theme-trend');
     if (!container || !data.themes || !data.dates) return;
 
-    const TREND_DISPLAY_DAYS = 7; // 차트에 표시할 영업일 수 (데이터는 20일분 유지)
+    const VISIBLE_DAYS = 7; // 화면에 보이는 영업일 수
     const allDates = data.dates;
     if (allDates.length < 1) return;
-    const dates = allDates.slice(-TREND_DISPLAY_DAYS);
+    const dates = allDates.slice(-20); // 최대 20영업일
     const dateSet = new Set(dates);
+    const needsScroll = dates.length > VISIBLE_DAYS;
 
     // 모든 테마 표시 (데이터 있는 것만, 표시 기간 내 데이터 필터)
     const themes = data.themes
@@ -1945,13 +1967,17 @@ async function initThemeTrend() {
 
     // SVG 치수 — 반응형 (모바일 vs 데스크탑)
     const isMobile = window.innerWidth < 640;
-    const W = isMobile ? 360 : 720;
+    const yAxisW = isMobile ? 40 : 48;
     const H = isMobile ? 180 : 160;
     const PAD = isMobile
-      ? { top: 10, right: 12, bottom: 26, left: 40 }
-      : { top: 12, right: 16, bottom: 28, left: 48 };
-    const plotW = W - PAD.left - PAD.right;
+      ? { top: 10, right: 12, bottom: 26 }
+      : { top: 12, right: 16, bottom: 28 };
     const plotH = H - PAD.top - PAD.bottom;
+
+    // 차트 SVG 폭: 7일 기준 가용폭을 날짜 수에 비례 확장
+    const baseW = isMobile ? 320 : 672; // yAxisW 제외 가용폭
+    const chartW = needsScroll ? Math.round(baseW * (dates.length / VISIBLE_DAYS)) : baseW;
+    const plotW = chartW - PAD.right;
 
     // 날짜 인덱스 맵
     const dateIdx = {};
@@ -1964,21 +1990,29 @@ async function initThemeTrend() {
 
     const xStep = plotW / Math.max(dates.length - 1, 1);
 
-    function toX(i) { return PAD.left + i * xStep; }
+    function toX(i) { return 8 + i * xStep; } // 차트 SVG 내부 좌측 약간 여백
     function toY(v) { return PAD.top + plotH - (v / yMax) * plotH; }
     function fmtTril(v) { return (v / 1e12).toFixed(1) + '조'; }
     function fmtDate(d) { return d.slice(5).replace('-', '/'); }
 
-    // SVG 빌드
-    let svg = '<svg class="theme-trend-svg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">';
+    // Y축 별도 SVG (고정)
+    let yAxisSvg = '<svg class="theme-trend-svg" viewBox="0 0 ' + yAxisW + ' ' + H + '" width="' + yAxisW + '" xmlns="http://www.w3.org/2000/svg">';
+    const axisFontSize = isMobile ? 9 : 7;
+    for (let i = 0; i <= 2; i++) {
+      const v = (yMax / 2) * i;
+      const y = toY(v);
+      yAxisSvg += '<text x="' + (yAxisW - 4) + '" y="' + (y + 3) + '" text-anchor="end" fill="#8B95A8" font-size="' + axisFontSize + '">' + fmtTril(v) + '</text>';
+    }
+    yAxisSvg += '</svg>';
+
+    // 차트 SVG 빌드
+    let svg = '<svg class="theme-trend-svg" viewBox="0 0 ' + chartW + ' ' + H + '" width="' + chartW + '" xmlns="http://www.w3.org/2000/svg">';
 
     // 가로 눈금선 (3개)
     for (let i = 0; i <= 2; i++) {
       const v = (yMax / 2) * i;
       const y = toY(v);
-      svg += '<line x1="' + PAD.left + '" y1="' + y + '" x2="' + (W - PAD.right) + '" y2="' + y + '" stroke="#E8ECF2" stroke-width="0.5"/>';
-      const axisFontSize = isMobile ? 9 : 7;
-      svg += '<text x="' + (PAD.left - 4) + '" y="' + (y + 3) + '" text-anchor="end" fill="#8B95A8" font-size="' + axisFontSize + '">' + fmtTril(v) + '</text>';
+      svg += '<line x1="0" y1="' + y + '" x2="' + chartW + '" y2="' + y + '" stroke="#E8ECF2" stroke-width="0.5"/>';
     }
 
     // X축 날짜 라벨
@@ -2028,13 +2062,35 @@ async function initThemeTrend() {
 
     const dateRange = fmtDate(dates[0]) + ' ~ ' + fmtDate(dates[dates.length - 1]);
     container.innerHTML =
-      '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + TREND_DISPLAY_DAYS + '영업일 · ' + dateRange + '</div></div>' +
-      '<div class="theme-trend-wrap">' + svg + legend + '<div id="trend-detail" class="trend-detail"></div><div class="theme-trend-tooltip" id="tt-trend"></div></div>';
+      '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + dates.length + '영업일 · ' + dateRange + '</div></div>' +
+      '<div class="theme-trend-wrap">' +
+        '<div class="trend-y-axis">' + yAxisSvg + '</div>' +
+        (needsScroll ? '<div class="trend-fade-left"></div>' : '') +
+        '<div class="trend-scroll-area">' + svg + '</div>' +
+        legend +
+        '<div id="trend-detail" class="trend-detail"></div>' +
+        '<div class="theme-trend-tooltip" id="tt-trend"></div>' +
+      '</div>';
+
+    // ── 횡스크롤 초기화 ──
+    const scrollArea = container.querySelector('.trend-scroll-area');
+    const fadeLeft = container.querySelector('.trend-fade-left');
+    if (scrollArea && needsScroll) {
+      requestAnimationFrame(() => {
+        scrollArea.scrollLeft = scrollArea.scrollWidth;
+        if (fadeLeft) fadeLeft.style.opacity = scrollArea.scrollLeft > 8 ? '1' : '0';
+      });
+      if (fadeLeft) {
+        scrollArea.addEventListener('scroll', () => {
+          fadeLeft.style.opacity = scrollArea.scrollLeft > 8 ? '1' : '0';
+        }, { passive: true });
+      }
+    }
 
     // ── 레전드 토글 (단일 선택) ──
     let selectedIdx = -1; // -1 = 전체 표시
     const legendItems = container.querySelectorAll('.theme-trend-legend-item');
-    const svgEl = container.querySelector('.theme-trend-svg');
+    const svgEl = scrollArea.querySelector('.theme-trend-svg');
 
     function applyLegendFilter() {
       const none = selectedIdx === -1;
@@ -2153,12 +2209,12 @@ async function initThemeTrend() {
         const amount = Number(hit.dataset.amount);
         tooltip.textContent = name + ' ' + fmtTril(amount);
         tooltip.classList.add('show');
-        const rect = wrap.getBoundingClientRect();
-        let left = e.clientX - rect.left + 12;
+        const wrapRect = wrap.getBoundingClientRect();
+        let left = e.clientX - wrapRect.left + 12;
         const ttWidth = tooltip.offsetWidth || 120;
-        if (left + ttWidth > rect.width) left = e.clientX - rect.left - ttWidth - 12;
+        if (left + ttWidth > wrapRect.width) left = e.clientX - wrapRect.left - ttWidth - 12;
         tooltip.style.left = left + 'px';
-        tooltip.style.top = (e.clientY - rect.top - 28) + 'px';
+        tooltip.style.top = (e.clientY - wrapRect.top - 28) + 'px';
       });
       wrap.addEventListener('mouseleave', function() { tooltip.classList.remove('show'); });
     }
