@@ -780,6 +780,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-newzy-line {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
 }
+.cal-headline {
+  font-size: 13px; font-weight: 500; color: var(--tx); line-height: 1.5; margin-bottom: 2px;
+}
 .cal-causal {
   font-size: 12.5px; color: var(--dm); line-height: 1.6;
 }
@@ -1367,10 +1370,12 @@ async function loadCalDayData(date) {
             }
             return cutIdx >= 0 ? st.sector.slice(0, cutIdx).trim() : st.sector.trim();
           })() : '';
-          const causalText = topNews ? (topNews.causal_chain || topNews.title || '') : '';
+          // causal_chain이 있는 뉴스를 우선 탐색 (첫 번째 뉴스에 없을 수 있음)
+          const chainNews = newsItems.find(n => n.causal_chain) || null;
+          const causalText = chainNews ? chainNews.causal_chain : '';
           const diffParts = [
             causalText,
-            !causalText && industryLabel ? industryLabel : '',
+            !causalText && industryLabel ? `업종: ${industryLabel}` : '',
             !causalText && sectorLabel ? `주요제품: ${sectorLabel}` : '',
           ].filter(Boolean);
           // 테마: theme_paths 우선, 없으면 themes, 없으면 industry 폴백
@@ -1701,6 +1706,11 @@ function renderCalExpandContent(date, data) {
       const causalHtml = causal.length > 0
         ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c)).replace(/→/g, styledArrow)}${i < causal.length - 1 ? styledArrow : ''}`).join('')}</div>`
         : '';
+      // 뉴스 제목 헤드라인 (causal_chain과 별도 표시)
+      const firstTitle = (st.news_digest || [])[0]?.inferred_title || '';
+      const headlineHtml = firstTitle && causal.length > 0
+        ? `<div class="cal-headline">${escapeHtml(sanitize(firstTitle))}</div>`
+        : '';
       // differentiator가 causal_chain과 동일하면 중복 제거
       const causalText = (causal[0] || '').trim();
       const diffRaw = (st.differentiator || st.outlook || '').trim();
@@ -1747,8 +1757,8 @@ function renderCalExpandContent(date, data) {
             <div class="cal-feature-pct ${dir}">${pctText}</div>
           </div>
           <div class="cal-feature-body">
-            ${newzyHtml || causalHtml || linksHtml || disclosureHtml || themesHtml || pickMeta
-              ? `${newzyHtml}${disclosureHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}`
+            ${headlineHtml || newzyHtml || causalHtml || linksHtml || disclosureHtml || themesHtml || pickMeta
+              ? `${headlineHtml}${newzyHtml}${disclosureHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
