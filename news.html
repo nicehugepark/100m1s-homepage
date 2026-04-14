@@ -2304,6 +2304,15 @@ async function initThemeTree(dateOverride) {
               }
             }
           });
+          // 조상-전용 노드의 stocks도 해당 날짜 데이터로 교체
+          data.nodes.forEach(n => {
+            if (activeIds.has(n.id) && !activeThemes.has(n.name)) {
+              n.stocks = (themeStocks[n.name] || []).slice(0, 5);
+              n.stock_count = (themeStocks[n.name] || []).length;
+              n.total_stock_count = n.stock_count;
+              n.trade_amount = (themeStocks[n.name] || []).reduce((s, x) => s + (x.trade_amount || 0), 0);
+            }
+          });
           // 활성 노드만 필터
           data.nodes = data.nodes.filter(n => activeIds.has(n.id));
           // 부모-자식 종목 중복 제거: 자식에 있는 종목은 부모에서 제외
@@ -2352,10 +2361,18 @@ async function initThemeTree(dateOverride) {
     });
 
     // 자식 거래대금 합산 (재귀, 상향식)
+    // unique_trade_amount: 형제 테마 간 종목 중복을 제거한 정확한 합산값 (Python에서 계산)
     function sumTradeAmount(node) {
-      let childSum = 0;
-      node.children.forEach(c => { childSum += sumTradeAmount(c); });
-      node._totalAmt = node.trade_amount + childSum;
+      // 자식 먼저 재귀 처리 (avg_change_pct 가중평균에 필요)
+      node.children.forEach(c => sumTradeAmount(c));
+      // 거래대금: unique_trade_amount가 있으면 사용 (형제 간 중복 제거됨)
+      if (node.unique_trade_amount != null) {
+        node._totalAmt = node.unique_trade_amount;
+      } else {
+        let childSum = 0;
+        node.children.forEach(c => { childSum += c._totalAmt; });
+        node._totalAmt = node.trade_amount + childSum;
+      }
       // avg_change_pct도 자식 가중 평균 계산
       if (node.trade_amount === 0 && node.children.length > 0) {
         let wSum = 0, wDiv = 0;
