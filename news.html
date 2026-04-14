@@ -2306,6 +2306,22 @@ async function initThemeTree(dateOverride) {
           });
           // 활성 노드만 필터
           data.nodes = data.nodes.filter(n => activeIds.has(n.id));
+          // 부모-자식 종목 중복 제거: 자식에 있는 종목은 부모에서 제외
+          const childStocksByParent = {};
+          data.nodes.forEach(n => {
+            if (n.parent_id && n.stocks) {
+              if (!childStocksByParent[n.parent_id]) childStocksByParent[n.parent_id] = new Set();
+              n.stocks.forEach(s => childStocksByParent[n.parent_id].add(s.code));
+            }
+          });
+          data.nodes.forEach(n => {
+            const childCodes = childStocksByParent[n.id];
+            if (childCodes && n.stocks) {
+              n.stocks = n.stocks.filter(s => !childCodes.has(s.code));
+              n.stock_count = n.stocks.length;
+              n.trade_amount = n.stocks.reduce((sum, s) => sum + (s.trade_amount || 0), 0);
+            }
+          });
         }
       } catch (e) { /* stock JSON 없으면 기본 트리 사용 */ }
     }
@@ -2431,9 +2447,7 @@ async function initThemeTree(dateOverride) {
         pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
         row.appendChild(pctEl);
 
-        const stockCount = hasChildren
-          ? (node.descendant_stock_count || 0)
-          : (node.total_stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0));
+        const stockCount = node.stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0);
         if (stockCount > 0) {
           const cntEl = document.createElement('span');
           cntEl.className = 'theme-tree-stock-count';
