@@ -1275,6 +1275,10 @@ async function onCalCellClick(date, pushState) {
   `;
   const data = await loadCalDayData(date);
   renderCalExpandContent(date, data);
+  // 테마트리도 해당 날짜 기준으로 재렌더링
+  if (!isMarketClosed(date)) {
+    initThemeTree(date);
+  }
 }
 
 async function loadCalDayData(date) {
@@ -1845,7 +1849,7 @@ async function initThemeTrend() {
     // 모든 테마 표시 (데이터 있는 것만, 표시 기간 내 데이터 필터)
     const themes = data.themes
       .map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }))
-      .filter(t => t.data.length >= 1)
+      .filter(t => t.data.length >= 1 && t.data.some(d => d.stock_count > 0))
       .sort((a, b) => {
         const aLast = a.data[a.data.length - 1]?.trade_amount || 0;
         const bLast = b.data[b.data.length - 1]?.trade_amount || 0;
@@ -1956,14 +1960,16 @@ async function initThemeTrend() {
       svgEl.querySelectorAll('[data-theme-idx]').forEach(el => {
         const idx = parseInt(el.dataset.themeIdx);
         const active = none || idx === selectedIdx;
-        if (el.classList.contains('tt-hit')) {
-          // 히트 서클: 비활성이면 이벤트 차단
-          el.style.pointerEvents = active ? '' : 'none';
-          return;
-        }
-        if (el.classList.contains('tt-dot')) {
-          // 시각 dot: 비활성이면 완전 숨김
+        const isDot = el.classList.contains('tt-dot');
+        const isHit = el.classList.contains('tt-hit');
+        if (isDot) {
+          // 시각 dot (단일 포인트는 tt-hit+tt-dot 동시): 비활성이면 완전 숨김
           el.style.opacity = active ? '' : '0';
+          el.style.pointerEvents = active ? '' : 'none';
+          if (!isHit) return; // tt-dot 전용이면 여기서 끝
+        }
+        if (isHit) {
+          // 히트 서클: 비활성이면 이벤트 차단
           el.style.pointerEvents = active ? '' : 'none';
           return;
         }
@@ -2157,12 +2163,71 @@ async function initThemeMap() {
 initThemeMap();
 
 // ───── 테마 트리 (Indented Tree + Inline Bar) ─────
-async function initThemeTree() {
+// 글로벌 캐시: theme-tree.json (계층 구조 참조용)
+let _themeTreeCache = null;
+async function initThemeTree(dateOverride) {
   try {
-    const res = await fetch('/data/themes/theme-tree.json');
-    if (!res.ok) return;
-    const data = await res.json();
+    // theme-tree.json 캐시 (최초 1회만 fetch)
+    if (!_themeTreeCache) {
+      const res = await fetch('/data/themes/theme-tree.json');
+      if (!res.ok) return;
+      _themeTreeCache = await res.json();
+    }
+    const data = JSON.parse(JSON.stringify(_themeTreeCache)); // deep copy
     if (!data.nodes || data.nodes.length === 0) return;
+
+    // 날짜 지정 시: 해당 날짜의 stock JSON에서 테마 필터링
+    const targetDate = dateOverride || data.date;
+    if (dateOverride) {
+      try {
+        const stockRes = await fetch(`/data/interpreted/stock-${dateOverride}.json`);
+        if (stockRes.ok) {
+          const stockData = await stockRes.json();
+          // 해당 날짜 종목들의 테마 이름 수집
+          const activeThemes = new Set();
+          const themeStocks = {}; // theme_name -> [{code, name, change_pct, trade_amount}]
+          for (const s of (stockData.stocks || [])) {
+            for (const t of (s.themes || [])) {
+              const tName = typeof t === 'string' ? t : t.name;
+              activeThemes.add(tName);
+              if (!themeStocks[tName]) themeStocks[tName] = [];
+              themeStocks[tName].push({
+                code: s.code, name: s.name,
+                change_pct: s.change_pct || 0,
+                trade_amount: s.trade_amount || 0
+              });
+            }
+          }
+          // 해당 날짜 테마가 있는 노드만 유지 + 종목 교체
+          const nodeById = {};
+          data.nodes.forEach(n => { nodeById[n.id] = n; });
+          // 활성 노드 ID 수집 (이름 매칭)
+          const activeIds = new Set();
+          data.nodes.forEach(n => {
+            if (activeThemes.has(n.name)) {
+              activeIds.add(n.id);
+              // 종목 정보 교체
+              n.stocks = (themeStocks[n.name] || []).slice(0, 5);
+              n.stock_count = (themeStocks[n.name] || []).length;
+              n.total_stock_count = n.stock_count;
+              n.trade_amount = (themeStocks[n.name] || []).reduce((s, x) => s + (x.trade_amount || 0), 0);
+            }
+          });
+          // 조상 노드도 유지 (트리 연결용)
+          data.nodes.forEach(n => {
+            if (activeIds.has(n.id)) {
+              let pid = n.parent_id;
+              while (pid && nodeById[pid] && !activeIds.has(pid)) {
+                activeIds.add(pid);
+                pid = nodeById[pid].parent_id;
+              }
+            }
+          });
+          // 활성 노드만 필터
+          data.nodes = data.nodes.filter(n => activeIds.has(n.id));
+        }
+      } catch (e) { /* stock JSON 없으면 기본 트리 사용 */ }
+    }
 
     const ROOT_COLORS = ['#C9A962','#7C8CBA','#E07C5A','#6BA37E','#B47CC7','#5CABB5','#D4A05A','#8B7EC8','#C75C7C'];
     const nodes = data.nodes;
