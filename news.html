@@ -1349,8 +1349,19 @@ async function loadCalDayData(date) {
       const stockDaily = stockDailyData;
       for (const st of (stockDaily.stocks || [])) {
         if (!st.name) continue;
-        // 기존 해석이 없는 종목만 추가 (카페/kiwoom 해석 우선)
-        if (!interpretedByName.has(st.name)) {
+        // 기존 해석이 있으면 themes/theme_paths만 병합 (cafe에 테마 없을 수 있음)
+        if (interpretedByName.has(st.name)) {
+          const existing = interpretedByName.get(st.name);
+          const stThemes = (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t);
+          if (stThemes.length > 0 && (!existing.themes || existing.themes.length === 0)) {
+            existing.themes = stThemes;
+          }
+          if ((st.theme_paths || []).length > 0 && (!existing.theme_paths || existing.theme_paths.length === 0)) {
+            existing.theme_paths = st.theme_paths;
+          }
+          continue;
+        }
+        {
           // stock-*.json 형식 → 기존 렌더러 호환 변환
           // 가비지 뉴스 필터: VI발동, 신고가, 단순 등락률 로봇 기사 제거
           const garbageRe = /[+-]?\d[\d.]*%\s*(VI\s*발동|\d+주\s*신[고저]가|상한가|하한가)|거래량\s*(폭발|급증|돌파)/;
