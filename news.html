@@ -1253,13 +1253,10 @@ function renderCalendar() {
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
   toggleThemeSections(date);
-  // Static URL — 날짜 공유 가능
+  // Static URL — 날짜 공유 시 OG 이미지 매칭을 위해 /news/{date}.html 사용
   if (pushState !== false) {
-    const url = new URL(window.location);
-    url.searchParams.set('date', date);
-    if (calCategory !== 'stock') url.searchParams.set('cat', calCategory);
-    else url.searchParams.delete('cat'); // stock은 기본값이므로 URL에 안 넣음
-    history.pushState(null, '', url);
+    const shareUrl = '/news/' + date + '.html';
+    history.pushState(null, '', shareUrl);
   }
   renderCalendar();
   const inner = document.getElementById('cal-content');
@@ -1855,7 +1852,10 @@ async function initCalendar() {
     const p = new URLSearchParams(window.location.search);
     const d = p.get('date');
     const h = window.location.hash.replace('#', '');
-    const date = d || (h && /^\d{4}-\d{2}-\d{2}$/.test(h) ? h : null);
+    // /news/YYYY-MM-DD.html 경로에서 날짜 추출
+    const pathMatch = window.location.pathname.match(/\/news\/(\d{4}-\d{2}-\d{2})\.html$/);
+    const pathDate = pathMatch ? pathMatch[1] : null;
+    const date = d || pathDate || (h && /^\d{4}-\d{2}-\d{2}$/.test(h) ? h : null);
     const c = p.get('cat');
     if (c && ['stock', 'realestate', 'policy'].includes(c)) calCategory = c;
     if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) onCalCellClick(date, false);
