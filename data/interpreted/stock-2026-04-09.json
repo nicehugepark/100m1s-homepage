@@ -1,6 +1,7 @@
 {
   "date": "2026-04-09",
-  "generated_at": "2026-04-11T02:18:15.727002",
+  "generated_at": "2026-04-14T16:22:07.631984",
+  "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
   "stocks": [
@@ -13,10 +14,18 @@
       "industry": "건물 건설업",
       "sector": "아파트건설,토목공사,건축공사,포장공사,전기공사,무역/중장비 대여",
       "themes": [
+        "AI데이터센터",
         "전쟁재건",
         "건설"
       ],
       "theme_paths": [
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
         {
           "name": "건설",
           "path": [
@@ -27,7 +36,7 @@
           ]
         }
       ],
-      "pick_count": 241,
+      "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-08",
         "rank": 1,
@@ -61,33 +70,29 @@
       "change_pct": 30.0,
       "industry": "반도체 제조업",
       "sector": "트랜지스터,SMD TR,발광소자,리모콘모듈,발광다이오드(L.E.D),다이오드용웨이퍼팹(Fab) 제조,판매",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
+      "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-08",
         "rank": 5,
         "change_pct": 7.98,
         "trade_amount": 284893029900
       },
-      "news": [
-        {
-          "title": "[급등락주 짚어보기] 광전자, 태영건설우, 부국철강 등 상한가",
-          "url": "https://www.etoday.co.kr/news/view/2574431",
-          "source": "이투데이",
-          "published_at": "2026-04-09T07:05:00",
-          "causal_chain": "제목에서 확인 가능한 사실은 광전자의 상한가 기록뿐, 구체적 원인은 명시되지 않음. 반도체 제조업 종목이 여러 이종 산업(건설, 철강) 종목과 동시 상한가를 기록한 점으로 보아 공통 매크로 이벤트가 작용했을 가능성이 있으나 제목에는 근거 부재.",
-          "macro_event": "광전자 포함 다중 종목 동시 상한가 - 공통 이벤트 존재 신호이나 구체 내용 미상",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "278470",
@@ -108,13 +113,8 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 132067226500
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "신한證 “에이피알, 유럽 시장 실적·신제품 출시 기대…목표가 42%↑”",
@@ -142,17 +142,23 @@
       "change_pct": 15.76,
       "industry": "기초 화학물질 제조업",
       "sector": "불소화물 제조,도매",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 42842025050
-      },
+      "themes": [
+        "기초 화학물질"
+      ],
+      "theme_paths": [
+        {
+          "name": "기초 화학물질",
+          "path": [
+            "기초 화학물질"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "065440",
@@ -162,23 +168,57 @@
       "change_pct": 18.03,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "이동통신 핵심망 및 서비스망 솔루션 개발 공급",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 27889885330
-      },
+      "themes": [
+        "소프트웨어 개발 및 공급"
+      ],
+      "theme_paths": [
+        {
+          "name": "소프트웨어 개발 및 공급",
+          "path": [
+            "소프트웨어 개발 및 공급"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
+    },
+    {
+      "code": "069540",
+      "name": "빛과전자",
+      "rank": 6,
+      "trade_amount": 253345529775,
+      "change_pct": 30.0,
+      "industry": "통신 및 방송 장비 제조업",
+      "sector": "기타무선통신장비제조업",
+      "themes": [
+        "AI",
+        "AI데이터센터",
+        "광통신"
+      ],
+      "theme_paths": [
+        {
+          "name": "광통신",
+          "path": [
+            "AI",
+            "AI데이터센터",
+            "광통신"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
-          "title": "이루온, -10.28% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MI4DCODFMJSTMNRUGQ3DSYJVG4/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:04:10",
-          "causal_chain": "VI 발동 원인이 제목에 명시되지 않음. 단순 등락률 수치만으로는 매크로 이벤트 → 인과 경로 구성 불가.",
-          "macro_event": "불명 (제목에 매크로 이벤트 정보 없음)",
+          "title": "[특징주] 광통신주, AI 기대감에 일제히 급등…빛과전자 24%↑",
+          "url": "https://www.etoday.co.kr/news/view/2575473",
+          "source": "이투데이",
+          "published_at": "2026-04-14T00:35:00",
+          "causal_chain": "AI 데이터센터 확산 → 대역폭 수요 급증 → 광통신 인프라 투자 확대 → 광통신 장비 제조사 수혜",
+          "macro_event": "AI 기대감에 따른 광통신 인프라 투자 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -191,26 +231,6 @@
       "fallback": true
     },
     {
-      "code": "069540",
-      "name": "빛과전자",
-      "rank": 6,
-      "trade_amount": 253345529775,
-      "change_pct": 30.0,
-      "industry": "통신 및 방송 장비 제조업",
-      "sector": "기타무선통신장비제조업",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 37974849250
-      },
-      "news": [],
-      "fallback": true
-    },
-    {
       "code": "092790",
       "name": "넥스틸",
       "rank": 7,
@@ -218,17 +238,23 @@
       "change_pct": 16.71,
       "industry": "1차 철강 제조업",
       "sector": "OCTG Pipe, Line Pipe, Standard Pipe, 일반관",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 47195421780
-      },
+      "themes": [
+        "1차 철강"
+      ],
+      "theme_paths": [
+        {
+          "name": "1차 철강",
+          "path": [
+            "1차 철강"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "100590",
@@ -252,13 +278,8 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 39517219490
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "38조 시장 열린다…'광통신주' 머큐리, 26% 급등[특징주]",
@@ -331,91 +352,12 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 14761414080
-      },
-      "news": [
-        {
-          "title": "퍼스텍, +18.83% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GM2DAMRQGY4TQZBWMU4TOYJZMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:40:39",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 생체인식 테마, 퍼스텍 +15.05%, 해성옵틱스 +6.71%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GNRWENBXMJSGKOBQHBQWCNBYGE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:06:52",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 드론·플라잉카 테마, 기산텔레콤 +29.93%, 퍼스텍 +16.79%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HEZTONZVG4ZWMMZUGM2TINZUME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:12:50",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 우크라 재건 테마, 이노인스트루먼트 +28.25%, 퍼스텍 +13.10%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G43TGZBTGVSWIOJXG42TMYLDGM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:03:56",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "퍼스텍, +7.98% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GU2WIYJQG5RTEZRYHE2DKMLCMI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:00:37",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "095340",
@@ -439,13 +381,8 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 119612940000
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "09일 코스닥 시장 공매도 금액 상위 종목. ISC, 에코프로비엠 등",
@@ -473,17 +410,23 @@
       "change_pct": 11.85,
       "industry": "특수 목적용 기계 제조업",
       "sector": "유압브레이커,트럭크레인,플라즈마 파암장비,특장차,산업기계,건설기계 제조,도매",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 48599543700
-      },
+      "themes": [
+        "특수 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "특수 목적용 기계",
+          "path": [
+            "특수 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "037440",
@@ -493,33 +436,27 @@
       "change_pct": 13.97,
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "설계 및 감리용역",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 28158190720
-      },
-      "news": [
+      "themes": [
+        "건축기술, 엔지니어링 및 관련 기술 서비스"
+      ],
+      "theme_paths": [
         {
-          "title": "희림, -1.13% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MM4WCMLDGM3WMMRTMNSDCNRQGM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:33:50",
-          "causal_chain": "제목에 원인 정보 없음. VI 발동만 기술된 로봇 기사로 자금 유입 경로 불명.",
-          "macro_event": "불명 (본문 필요)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
+          "name": "건축기술, 엔지니어링 및 관련 기술 서비스",
+          "path": [
+            "전쟁",
+            "전쟁완화",
+            "전쟁재건",
+            "건설",
+            "건축기술, 엔지니어링 및 관련 기술 서비스"
+          ]
         }
       ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "101490",
@@ -529,17 +466,23 @@
       "change_pct": 12.68,
       "industry": "전자부품 제조업",
       "sector": "블랭크마스크",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 41946210400
-      },
+      "themes": [
+        "전자부품"
+      ],
+      "theme_paths": [
+        {
+          "name": "전자부품",
+          "path": [
+            "전자부품"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "483650",
@@ -567,13 +510,8 @@
           ]
         }
       ],
-      "pick_count": 217,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 15688524800
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "달바글로벌, 해외 성과 대비 저평가…7%↑[특징주]",
@@ -601,33 +539,23 @@
       "change_pct": 16.99,
       "industry": "1차 철강 제조업",
       "sector": "강관 제조,도매",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 5767082550
-      },
-      "news": [
+      "themes": [
+        "1차 철강"
+      ],
+      "theme_paths": [
         {
-          "title": "하이스틸, +3.93% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MQ2WKZJVMQ4WKNLEHA4GCY3FGA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:32:40",
-          "causal_chain": "제목에서 상승 원인이 명시되지 않아 매크로 이벤트 → 수혜 경로 특정 불가.",
-          "macro_event": "명시되지 않음",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
+          "name": "1차 철강",
+          "path": [
+            "1차 철강"
+          ]
         }
       ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "008970",
@@ -637,9 +565,18 @@
       "change_pct": 16.68,
       "industry": "1차 철강 제조업",
       "sector": "수도용 도복장 강관,주물(강관말뚝),가스관 제조/아파트건설",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
+      "themes": [
+        "1차 철강"
+      ],
+      "theme_paths": [
+        {
+          "name": "1차 철강",
+          "path": [
+            "1차 철강"
+          ]
+        }
+      ],
+      "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-08",
         "rank": 18,
@@ -647,7 +584,9 @@
         "trade_amount": 61340057621
       },
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "039610",
@@ -657,33 +596,28 @@
       "change_pct": 7.32,
       "industry": "일반 목적용 기계 제조업",
       "sector": "가스밸브, 매몰용접용 볼밸브, 온수분배기",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
+      "themes": [
+        "일반 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "일반 목적용 기계",
+          "path": [
+            "일반 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-08",
         "rank": 20,
         "change_pct": 26.76,
         "trade_amount": 54880684500
       },
-      "news": [
-        {
-          "title": "화성밸브, +4.13% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GYZWCNJVHBTDMYRVGY4WCYRVMI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:39:50",
-          "causal_chain": "",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "006110",
@@ -695,8 +629,7 @@
       "sector": "알루미늄박지,은박지,은박가공품,알페이스트 제조,도매,수출",
       "themes": [
         "호르무즈해협",
-        "전쟁재건",
-        "비철금속"
+        "전쟁재건"
       ],
       "theme_paths": [
         {
@@ -712,17 +645,9 @@
             "전쟁완화",
             "전쟁재건"
           ]
-        },
-        {
-          "name": "비철금속",
-          "path": [
-            "전쟁",
-            "전쟁악화",
-            "비철금속"
-          ]
         }
       ],
-      "pick_count": 241,
+      "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-08",
         "rank": 13,
@@ -756,17 +681,26 @@
       "change_pct": 15.06,
       "industry": "건물 건설업",
       "sector": "건설업, 고급빌라 건축 및 일반 건축, 주택공급 등",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 17516574390
-      },
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "전쟁",
+            "전쟁완화",
+            "전쟁재건",
+            "건설"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "004380",
@@ -776,17 +710,23 @@
       "change_pct": -0.77,
       "industry": "일반 목적용 기계 제조업",
       "sector": "직선운동시스템,메카트로시스템,기타정밀 자동화기기 제조,판매/전자상거래,인터넷 관련 s/w,h/w 개발,판매,유지보수",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": null
-      },
+      "themes": [
+        "일반 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "일반 목적용 기계",
+          "path": [
+            "일반 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "024740",
@@ -796,17 +736,24 @@
       "change_pct": 14.98,
       "industry": "자동차 신품 부품 제조업",
       "sector": "단조품",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 4540225200
-      },
+      "themes": [
+        "자동차 신품 부품"
+      ],
+      "theme_paths": [
+        {
+          "name": "자동차 신품 부품",
+          "path": [
+            "전기차",
+            "자동차 신품 부품"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "259630",
@@ -830,13 +777,8 @@
           ]
         }
       ],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 1847602260
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "엠플러스 \"전고체 배터리 양산 핵심 기술 개발…파일럿 장비 수주\"",
@@ -864,15 +806,19 @@
       "change_pct": 9.0,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "Neurophet AQUA, Neurophet Scale PET, Neurophet AQUA AD",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 173,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 3158653240
-      },
+      "themes": [
+        "소프트웨어 개발 및 공급"
+      ],
+      "theme_paths": [
+        {
+          "name": "소프트웨어 개발 및 공급",
+          "path": [
+            "소프트웨어 개발 및 공급"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "뉴로핏, 160억 원 규모 전환사채 발행",
@@ -957,13 +903,8 @@
           ]
         }
       ],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 77511838000
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "현대무벡스, 북미 최대 공급망 전시회 참가…글로벌 사업 확장 기대에 5% 강세[특징주]",
@@ -991,17 +932,84 @@
       "change_pct": 10.84,
       "industry": "전자부품 제조업",
       "sector": "SSD Module / DRAM Module PCB",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 29039045400
-      },
-      "news": [],
-      "fallback": true
+      "themes": [
+        "전자부품"
+      ],
+      "theme_paths": [
+        {
+          "name": "전자부품",
+          "path": [
+            "전자부품"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [
+        {
+          "title": "주가 4배 뛴 티엘비, 1200억 유증…“성장 투자vs주주 부담”",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/14/UWVJOZJ6ZVEXVHERJ3ZZORBAEI/",
+          "source": "조선비즈",
+          "published_at": "2026-04-13T21:00:01",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "티엘비, AI·DDR5 물 들어왔다…1200억 증자로 베트남에 승부수",
+          "url": "https://www.etoday.co.kr/news/view/2575203",
+          "source": "이투데이",
+          "published_at": "2026-04-13T04:51:00",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "유증 카드 꺼낸 티엘비…증권가 “다음 성장 구간 위한 선택”",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02135286645415792",
+          "source": "이데일리",
+          "published_at": "2026-04-12T23:33:09",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "DB證, 티엘비 유·무상증자에 “합리적인 의사결정”",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/13/AS2ZPMLQTBHI3LX36ICXIMI44U/",
+          "source": "조선비즈",
+          "published_at": "2026-04-12T23:23:02",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "095610",
@@ -1025,49 +1033,14 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 30154065300
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "[MK 골든크로스 돌파종목 : 테스(095610) & 동일금속(109860)]",
           "url": "https://www.mk.co.kr/news/stock/12013452",
           "source": "매경",
           "published_at": "2026-04-10T01:24:59",
-          "causal_chain": "반도체 HBM(고대역폭메모리) 테마 강세 → 테스가 동 테마 구성 종목으로 편입 → 주가 상승 (VI 발동).",
-          "macro_event": "반도체 HBM(고대역폭메모리) 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "테스, +15.39% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GU2GGYRXGM3DIY3CHBSGCOJTGI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:12:31",
-          "causal_chain": "반도체 HBM(고대역폭메모리) 테마 강세 → 테스가 동 테마 구성 종목으로 편입 → 주가 상승 (VI 발동).",
-          "macro_event": "반도체 HBM(고대역폭메모리) 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 반도체 - HBM (고대역폭메모리) 테마, 테스 +7.76%, SK하이닉스 +3.91%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HA2TQMBTMEZDCMBUGUZTGNDFMU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:03:57",
           "causal_chain": "반도체 HBM(고대역폭메모리) 테마 강세 → 테스가 동 테마 구성 종목으로 편입 → 주가 상승 (VI 발동).",
           "macro_event": "반도체 HBM(고대역폭메모리) 테마 강세",
           "newzy_freshness": null,
@@ -1089,17 +1062,24 @@
       "change_pct": 9.44,
       "industry": "일차전지 및 이차전지 제조업",
       "sector": "이차전지용 분리막",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 28639483840
-      },
+      "themes": [
+        "일차전지 및 이차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "일차전지 및 이차전지",
+          "path": [
+            "전기차",
+            "일차전지 및 이차전지"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "036090",
@@ -1109,17 +1089,23 @@
       "change_pct": 23.08,
       "industry": "특수 목적용 기계 제조업",
       "sector": "LCD 반도체",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-08",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 1046686368
-      },
+      "themes": [
+        "특수 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "특수 목적용 기계",
+          "path": [
+            "특수 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     }
   ]
 }

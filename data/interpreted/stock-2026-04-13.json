@@ -1,6 +1,7 @@
 {
   "date": "2026-04-13",
-  "generated_at": "2026-04-14T00:29:36.842505",
+  "generated_at": "2026-04-14T16:22:07.900494",
+  "data_source": "kiwoom",
   "macro_events": [
     {
       "title": "이란봉쇄",
@@ -61,12 +62,12 @@
       },
       "news": [
         {
-          "title": "대한광통신, +10.97% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MMYDCOBUGAZWGYZQMMZWENJWME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:05:39",
-          "causal_chain": "",
-          "macro_event": null,
+          "title": "K증시 반도체·전력설비·방산에 주목…대한광통신, 삼성전기 신고가 터치 [매경 자이앤트]",
+          "url": "https://www.mk.co.kr/news/stock/12013982",
+          "source": "매경",
+          "published_at": "2026-04-10T09:30:57",
+          "causal_chain": "K증시에서 전력설비 섹터 주목 → 절연선·케이블 제조사 대한광통신 자금 유입 → 신고가 터치",
+          "macro_event": "K증시 전력설비 섹터 주목",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -76,9 +77,7 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false,
-      "causal_chain": "",
-      "parent_theme": ""
+      "fallback": true
     },
     {
       "code": "008350",
@@ -89,25 +88,39 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알미늄샷시 제조/환경사업",
       "themes": [
-        "1차 비철금속"
+        "알루미늄 수급불안"
       ],
       "theme_paths": [
         {
-          "name": "1차 비철금속",
+          "name": "알루미늄 수급불안",
           "path": [
             "전쟁",
             "전쟁악화",
             "비철금속",
-            "1차 비철금속"
+            "알루미늄 수급불안"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [],
-      "fallback": true,
-      "causal_chain": "",
-      "parent_theme": ""
+      "news": [
+        {
+          "title": "[특징주] 알루미늄 수급 불안 지속⋯남선알미늄ㆍ조일알미늄 ↑",
+          "url": "https://www.etoday.co.kr/news/view/2575466",
+          "source": "이투데이",
+          "published_at": "2026-04-14T00:29:00",
+          "causal_chain": "알루미늄 수급 불안 지속으로 인한 공급 수혜 기대 → 알루미늄 제조사의 실적 개선 전망 → 남선알미늄에 대한 매수 자금 유입.",
+          "macro_event": "알루미늄 수급 불안 지속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true
     },
     {
       "code": "490470",
@@ -134,24 +147,10 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "세미파이브, +15.02% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/HA2DINJXGMZWCN3DHAYGKMBVMU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T01:28:08",
-          "causal_chain": "제공된 뉴스 제목에서 상승 원인이 명시되지 않아 인과관계를 파악할 수 없습니다. 상승폭 수치(+15.02%)만 확인 가능합니다.",
-          "macro_event": "알 수 없음 - 뉴스 본문 내용 필요",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "050890",
@@ -198,119 +197,12 @@
       },
       "news": [
         {
-          "title": "쏠리드, +22.43% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GQ4DIMRUGA4GCNRVMU3TIMTBMU/",
+          "title": "13일 코스닥 시장 공매도 수량 상위 종목. 쏠리드, 우리기술 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/14/GRSWIMTGMMYTCYZTGIYWINRXMU/",
           "source": "조선비즈",
-          "published_at": "2026-04-10T01:34:01",
-          "causal_chain": "6G 국책과제 주관기관 선정 → 기술력 공인 → 양자 기술 테마 동반 → 주가 22.43% 상승",
-          "macro_event": "6G 국책과제 'AI 기반 무선 인터페이스' 주관기관 선정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "쏠리드, 6G 국책과제 ‘AI 기반 무선 인터페이스’ 주관기관 선정",
-          "url": "https://www.etoday.co.kr/news/view/2574617",
-          "source": "이투데이",
-          "published_at": "2026-04-10T01:34:00",
-          "causal_chain": "6G 국책과제 주관기관 선정 → 기술력 공인 → 양자 기술 테마 동반 → 주가 22.43% 상승",
-          "macro_event": "6G 국책과제 'AI 기반 무선 인터페이스' 주관기관 선정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 양자 기술 테마, 파이버프로 +8.91%, 쏠리드 +8.44%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GEZTQZBRHEYTAZBSMZRDCZBZMY/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:09:50",
-          "causal_chain": "6G 국책과제 주관기관 선정 → 기술력 공인 → 양자 기술 테마 동반 → 주가 22.43% 상승",
-          "macro_event": "6G 국책과제 'AI 기반 무선 인터페이스' 주관기관 선정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
-    },
-    {
-      "code": "025860",
-      "name": "남해화학",
-      "rank": 5,
-      "trade_amount": 303571206780,
-      "change_pct": 22.8,
-      "industry": "비료, 농약 및 살균, 살충제 제조업",
-      "sector": "비료(요소,복합비료),공업제품원료 제조,도매",
-      "themes": [
-        "스마트팜",
-        "농업 - 종자·비료·농약"
-      ],
-      "theme_paths": [
-        {
-          "name": "스마트팜",
-          "path": [
-            "스마트팜"
-          ]
-        },
-        {
-          "name": "농업 - 종자·비료·농약",
-          "path": [
-            "농업 - 종자·비료·농약"
-          ]
-        }
-      ],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [
-        {
-          "title": "[강세 토픽] 스마트팜 테마, 남해화학 +15.87%, 효성오앤비 +7.85%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GRRTIMBZMZSGCYJUGUYDMMTBMY/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T02:39:49",
-          "causal_chain": "스마트팜 및 농업(종자·비료·농약) 관련 테마가 강세를 보이면서, 이 분야 사업을 영위하는 남해화학에 자금이 집중되어 주가 상승으로 이어졌다.",
-          "macro_event": "스마트팜 및 농업 테마 강세 (구체적 발동 사유는 뉴스에 미명시)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 농업 - 종자·비료·농약 테마, 조비 +16.30%, 남해화학 +14.23%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GRSDQODGGNRGKMZXMQ3TAMRTMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T02:27:45",
-          "causal_chain": "스마트팜 및 농업(종자·비료·농약) 관련 테마가 강세를 보이면서, 이 분야 사업을 영위하는 남해화학에 자금이 집중되어 주가 상승으로 이어졌다.",
-          "macro_event": "스마트팜 및 농업 테마 강세 (구체적 발동 사유는 뉴스에 미명시)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "남해화학, +4.41% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GVTGGZBRHAZTMMRYGE2WGNBWHA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T02:21:42",
-          "causal_chain": "스마트팜 및 농업(종자·비료·농약) 관련 테마가 강세를 보이면서, 이 분야 사업을 영위하는 남해화학에 자금이 집중되어 주가 상승으로 이어졌다.",
-          "macro_event": "스마트팜 및 농업 테마 강세 (구체적 발동 사유는 뉴스에 미명시)",
+          "published_at": "2026-04-13T23:01:15",
+          "causal_chain": "13일 코스닥 공매도 수량이 증가 → 기관/세력의 매도 포지셔닝 강화 → 단기 매도 압박.",
+          "macro_event": "코스닥 공매도 수량 증가 (매도 신호)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -321,6 +213,32 @@
         }
       ],
       "fallback": false
+    },
+    {
+      "code": "025860",
+      "name": "남해화학",
+      "rank": 5,
+      "trade_amount": 303571206780,
+      "change_pct": 22.8,
+      "industry": "비료, 농약 및 살균, 살충제 제조업",
+      "sector": "비료(요소,복합비료),공업제품원료 제조,도매",
+      "themes": [
+        "스마트팜"
+      ],
+      "theme_paths": [
+        {
+          "name": "스마트팜",
+          "path": [
+            "스마트팜"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "011930",
@@ -351,39 +269,10 @@
         "change_pct": 22.94,
         "trade_amount": 521794751795
       },
-      "news": [
-        {
-          "title": "신성이엔지, +23.89% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/ME3GGMJYGE4DINRWGM3TQZTFGA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:29:44",
-          "causal_chain": "태양광 테마 강세 → 신성이엔지가 해당 테마 수혜 종목 → 52주 신고가 기록.",
-          "macro_event": "태양광 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 태양광 테마, 신성이엔지 +19.46%, 대주전자재료 +7.38%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MFTGCYRTGA2TEYJUMFSDSZLGGQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:12:46",
-          "causal_chain": "태양광 테마 강세 → 신성이엔지가 해당 테마 수혜 종목 → 52주 신고가 기록.",
-          "macro_event": "태양광 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "005880",
@@ -415,70 +304,12 @@
       },
       "news": [
         {
-          "title": "대한해운, +10.50% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MRTDQOLFHFRTMYJYHFSDQZJVMY/",
+          "title": "13일 코스피 시장 공매도 수량 상위 종목. 삼성전자, 대한해운 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/14/MI4TEYRWG5RWIYZWMIZTQZBWHE/",
           "source": "조선비즈",
-          "published_at": "2026-04-10T01:31:36",
-          "causal_chain": "제목에서 매크로 이벤트나 인과 경로 파악 불가. 주가 상승과 VI 발동만 확인.",
-          "macro_event": "특정 불가 (제목에 명시 없음)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "대한해운, +6.09% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GYYWMZDFGA4DINLEGYYTONLDHE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:15:24",
-          "causal_chain": "제목에서 매크로 이벤트나 인과 경로 파악 불가. 주가 상승과 VI 발동만 확인.",
-          "macro_event": "특정 불가 (제목에 명시 없음)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
-    },
-    {
-      "code": "018470",
-      "name": "조일알미늄",
-      "rank": 8,
-      "trade_amount": 280961292087,
-      "change_pct": 26.62,
-      "industry": "1차 비철금속 제조업",
-      "sector": "알루미늄판 제조,도매",
-      "themes": [
-        "1차 비철금속"
-      ],
-      "theme_paths": [
-        {
-          "name": "1차 비철금속",
-          "path": [
-            "전쟁",
-            "전쟁악화",
-            "비철금속",
-            "1차 비철금속"
-          ]
-        }
-      ],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [
-        {
-          "title": "조일알미늄, +15.98% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GVRDCMZUG5QTQZLGGJRGEYZXMU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T01:00:51",
-          "causal_chain": "제공된 뉴스 제목에는 상승 원인에 대한 구체적 정보가 없음. 단순 가격 상승 팩트만 존재.",
-          "macro_event": null,
+          "published_at": "2026-04-13T23:01:14",
+          "causal_chain": "제공된 뉴스는 공매도 수량 순위만 언급하며, 대한해운에 자금이 유입되는 경제적 이유를 제시하지 않습니다. 투자 논리(causal chain)를 추출할 근거 부족.",
+          "macro_event": "없음. 공매도 순위는 기술적 지표일 뿐 매크로 이벤트 아님.",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -489,6 +320,49 @@
         }
       ],
       "fallback": false
+    },
+    {
+      "code": "018470",
+      "name": "조일알미늄",
+      "rank": 8,
+      "trade_amount": 280961292087,
+      "change_pct": 26.62,
+      "industry": "1차 비철금속 제조업",
+      "sector": "알루미늄판 제조,도매",
+      "themes": [
+        "알루미늄 수급불안"
+      ],
+      "theme_paths": [
+        {
+          "name": "알루미늄 수급불안",
+          "path": [
+            "전쟁",
+            "전쟁악화",
+            "비철금속",
+            "알루미늄 수급불안"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [
+        {
+          "title": "[특징주] 알루미늄 수급 불안 지속⋯남선알미늄ㆍ조일알미늄 ↑",
+          "url": "https://www.etoday.co.kr/news/view/2575466",
+          "source": "이투데이",
+          "published_at": "2026-04-14T00:29:00",
+          "causal_chain": "알루미늄 수급 불안 지속 → 알루미늄 가격 상승 기대 → 1차 비철금속 생산업체인 조일알미늄에 매수 자금 유입",
+          "macro_event": "알루미늄 수급 불안 지속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true
     },
     {
       "code": "010820",
@@ -535,84 +409,10 @@
         "change_pct": 16.58,
         "trade_amount": 351803362820
       },
-      "news": [
-        {
-          "title": "퍼스텍, +18.83% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GM2DAMRQGY4TQZBWMU4TOYJZMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:40:39",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 생체인식 테마, 퍼스텍 +15.05%, 해성옵틱스 +6.71%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GNRWENBXMJSGKOBQHBQWCNBYGE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:06:52",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 드론·플라잉카 테마, 기산텔레콤 +29.93%, 퍼스텍 +16.79%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HEZTONZVG4ZWMMZUGM2TINZUME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:12:50",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] 우크라 재건 테마, 이노인스트루먼트 +28.25%, 퍼스텍 +13.10%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G43TGZBTGVSWIOJXG42TMYLDGM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:03:56",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "퍼스텍, +7.98% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GU2WIYJQG5RTEZRYHE2DKMLCMI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:00:37",
-          "causal_chain": "우크라이나 재건 수요, 드론·플라잉카 산업 확대 → 방위·무기 산업 수혜 → 퍼스텍(무기·총포탄 제조) 상승",
-          "macro_event": "우크라이나 재건 및 드론·플라잉카 기술 산업화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "115440",
@@ -640,12 +440,12 @@
       "prev_pick": null,
       "news": [
         {
-          "title": "우리넷, +17.08% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MRSTMZBXME2GCMZRGUZDIMLCG4/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:04:56",
-          "causal_chain": "제목에 상승 이유가 기재되지 않았으므로 인과관계 파악 불가.",
-          "macro_event": "불명",
+          "title": "Today's Pick : \"3개월 새 122% 오른 우리넷, 더 간다...주가 상승기 진입\" [마켓PRO]",
+          "url": "https://www.hankyung.com/article/202604148559i",
+          "source": "한경",
+          "published_at": "2026-04-13T23:32:19",
+          "causal_chain": "데이터 증가 → 통신망 투자 필요성 대두 → 전송장비 수요 확대 → 시장점유율 압도적인 우리넷 선발주 상승",
+          "macro_event": "데이터센터·AI 수요 증가에 따른 통신망 투자 사이클 본격 진입",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -690,54 +490,10 @@
         "change_pct": 30.0,
         "trade_amount": 66489969910
       },
-      "news": [
-        {
-          "title": "에이스테크, +30.00% 상한가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GFSGKYRYMU2TCYZZMMYGCMRWGE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:43:10",
-          "causal_chain": "제목에 인과 관계 명시 없음. 기술적 지표만 기재.",
-          "macro_event": "미기재",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "에이스테크, +13.26% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G5RGMZJRGEZDSZBTGVQTCYJYGQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:28:06",
-          "causal_chain": "제목에 인과 관계 명시 없음. 기술적 지표만 기재.",
-          "macro_event": "미기재",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "에이스테크, +9.30% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GZQWKNZWHEYGMN3FGNQTOMDCMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:27:11",
-          "causal_chain": "제목에 인과 관계 명시 없음. 기술적 지표만 기재.",
-          "macro_event": "미기재",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "100590",
@@ -769,36 +525,6 @@
         "trade_amount": 145253757840
       },
       "news": [
-        {
-          "title": "머큐리, +9.09% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HFSDQMBTHA2DCOBYGZTGCMZZME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:33:25",
-          "causal_chain": "LG유플러스와 150억 규모 계약 체결 → 매출 확대 기대 → 주가 상승 및 52주 신고가 달성",
-          "macro_event": "통신사의 통신 인프라 대규모 투자 확대",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "머큐리, +8.75% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GYYGCZJXGIYTIZJVMVTDKNLCGM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:00:29",
-          "causal_chain": "LG유플러스와 150억 규모 계약 체결 → 매출 확대 기대 → 주가 상승 및 52주 신고가 달성",
-          "macro_event": "통신사의 통신 인프라 대규모 투자 확대",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
         {
           "title": "머큐리, LG유플러스와 150억 규모 계약  체결",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04418166645414480",
@@ -873,24 +599,10 @@
         "change_pct": 10.73,
         "trade_amount": 154593550800
       },
-      "news": [
-        {
-          "title": "[강세 토픽] 우크라 재건 테마, 이노인스트루먼트 +28.25%, 퍼스텍 +13.10%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G43TGZBTGVSWIOJXG42TMYLDGM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:03:56",
-          "causal_chain": "우크라 재건 테마로 인해 이노인스트루먼트(통신·방송 장비 제조) 주가 +28.25% 상승.",
-          "macro_event": "우크라 재건",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "043260",
@@ -913,28 +625,14 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "성호전자, +9.49% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G4ZGKZJWGJQTEYJUGZRWINZRMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T05:19:09",
-          "causal_chain": "제목에서 상승 이유가 명시되지 않아 인과 경로를 파악할 수 없습니다.",
-          "macro_event": "정보 부족",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
+      "news": [],
       "fallback": true,
       "disclosure": {
         "text": "[CB] [기재정정]주요사항보고서(전환사채권발",
         "url": "https://dart.fss.or.kr/dsaf001/main.do?rcept_no=20260413003092"
-      }
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "001780",
@@ -945,16 +643,16 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알루미늄제품,샷시 제조",
       "themes": [
-        "1차 비철금속"
+        "알루미늄 수급불안"
       ],
       "theme_paths": [
         {
-          "name": "1차 비철금속",
+          "name": "알루미늄 수급불안",
           "path": [
             "전쟁",
             "전쟁악화",
             "비철금속",
-            "1차 비철금속"
+            "알루미늄 수급불안"
           ]
         }
       ],
@@ -1033,24 +731,10 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "티엠씨, +3.19% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HBSGMMJTHAZTGYTBGBSTQYJWGE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:34:25",
-          "causal_chain": "제목에 상승 원인이 명시되지 않음. +3.19% 상승폭만 기록됨.",
-          "macro_event": "정보 불충분",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "257720",
@@ -1061,20 +745,13 @@
       "industry": "상품 종합 도매업",
       "sector": "화장품 유통",
       "themes": [
-        "K-뷰티",
-        "K뷰티 수출"
+        "K-뷰티"
       ],
       "theme_paths": [
         {
           "name": "K-뷰티",
           "path": [
             "K-뷰티"
-          ]
-        },
-        {
-          "name": "K뷰티 수출",
-          "path": [
-            "K뷰티 수출"
           ]
         }
       ],
@@ -1120,54 +797,10 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "코위버, +19.30% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HA4TENBZGQ4DKMBXMYZWEYZYMM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T03:44:31",
-          "causal_chain": "CCTV 테마 강세 → 보안 장비 제조업체 수혜 → 통신·방송 장비 제조사인 코위버 매수 집중 → VI 발동.",
-          "macro_event": "CCTV 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] CCTV 테마, 코위버 +15.80%, 아이디스홀딩스 +7.17%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MM4DENRYMI3DOMBVMVRTIYJRG4/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T03:33:49",
-          "causal_chain": "CCTV 테마 강세 → 보안 장비 제조업체 수혜 → 통신·방송 장비 제조사인 코위버 매수 집중 → VI 발동.",
-          "macro_event": "CCTV 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "코위버, +9.44% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GQ3GGYRRHA3DSM3FGMZTCZRQGQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T03:25:10",
-          "causal_chain": "CCTV 테마 강세 → 보안 장비 제조업체 수혜 → 통신·방송 장비 제조사인 코위버 매수 집중 → VI 발동.",
-          "macro_event": "CCTV 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "332570",
@@ -1190,24 +823,10 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "PS일렉트로닉스, +13.14% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MZRTSNJSMM2WCMLCGE4GMYLCG4/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T04:16:58",
-          "causal_chain": "제공된 뉴스 제목에 매크로 이벤트나 구체적 수혜 경로가 명시되지 않음. 13.14% 상승폭만 기재되어 있음. 인과관계 파악 불가.",
-          "macro_event": "불명확 - 뉴스 본문 미제공",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "039030",
@@ -1218,38 +837,22 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "레이저 마커 및 레이저 응용기기",
       "themes": [
-        "반도체 - 후공정 장비"
+        "특수 목적용 기계"
       ],
       "theme_paths": [
         {
-          "name": "반도체 - 후공정 장비",
+          "name": "특수 목적용 기계",
           "path": [
-            "AI",
-            "반도체",
-            "반도체 - 후공정 장비"
+            "특수 목적용 기계"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "[강세 토픽] 반도체 - 후공정 장비 테마, 이오테크닉스 +10.49%, GST +7.88%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/HA3DMNLFGFQTAZTBMQ3TIZLBGI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:33:48",
-          "causal_chain": "반도체 후공정 장비 테마가 시장에서 강세를 보이면서, 해당 영역의 장비 제조사인 이오테크닉스로 수혜 자금이 유입되어 +10.49% 상승하였다.",
-          "macro_event": "반도체 후공정 장비 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "321260",
@@ -1260,51 +863,23 @@
       "industry": "반도체 제조업",
       "sector": "반도체검사장치 Probe Card",
       "themes": [
-        "OLED 장비"
+        "반도체"
       ],
       "theme_paths": [
         {
-          "name": "OLED 장비",
+          "name": "반도체",
           "path": [
-            "OLED 장비"
+            "AI",
+            "반도체"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "[강세 토픽] OLED - 장비 테마, 프로이천 +22.42%, 코세스 +21.77%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GY4WIZRVHEYDEMJWMQ3WCNRYMU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T04:57:47",
-          "causal_chain": "OLED 장비 테마의 시장 강세 → 반도체·디스플레이 장비 제조업체에 대한 매수 심화 → 프로이천에 자금 유입 (+22.42%)",
-          "macro_event": "OLED 장비 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "프로이천, +2.71% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MU2DINBUGQZDSNBZGM4DGNJVMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T03:54:47",
-          "causal_chain": "OLED 장비 테마의 시장 강세 → 반도체·디스플레이 장비 제조업체에 대한 매수 심화 → 프로이천에 자금 유입 (+22.42%)",
-          "macro_event": "OLED 장비 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "017900",
@@ -1315,13 +890,14 @@
       "industry": "반도체 제조업",
       "sector": "트랜지스터,SMD TR,발광소자,리모콘모듈,발광다이오드(L.E.D),다이오드용웨이퍼팹(Fab) 제조,판매",
       "themes": [
-        "LED"
+        "반도체"
       ],
       "theme_paths": [
         {
-          "name": "LED",
+          "name": "반도체",
           "path": [
-            "LED"
+            "AI",
+            "반도체"
           ]
         }
       ],
@@ -1332,24 +908,10 @@
         "change_pct": 30.0,
         "trade_amount": 405976589460
       },
-      "news": [
-        {
-          "title": "[강세 토픽] LED 테마, 빛샘전자 +29.94%, 광전자 +29.91%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GEYGCMRTGRSWGZDFMJTGINBYHA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:48:49",
-          "causal_chain": "LED 테마의 시장 강세 → LED 관련 종목들의 동반 상승 → 반도체 제조업인 광전자가 LED 테마 수혜로 주가 상승",
-          "macro_event": "LED 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "017960",
@@ -1362,8 +924,7 @@
       "themes": [
         "MASGA/미국 제조업 쇼어링",
         "우주항공",
-        "LNG선 기자재",
-        "우주·항공 산업"
+        "LNG선 기자재"
       ],
       "theme_paths": [
         {
@@ -1386,12 +947,6 @@
             "중동전쟁",
             "해운",
             "LNG선 기자재"
-          ]
-        },
-        {
-          "name": "우주·항공 산업",
-          "path": [
-            "우주·항공 산업"
           ]
         }
       ],
@@ -1442,21 +997,6 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null
-        },
-        {
-          "title": "[강세 토픽] LNG선 - 기자재 테마, 태광 +7.18%, 한국카본 +6.34%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MZSWENJXMFSTAMJUGRTDIMJQME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:54:48",
-          "causal_chain": "미국의 MASGA 정책(제조업 미국 내 근처 쇼어링) + 글로벌 우주·항공 산업 성장 → 한국카본이 미국 생산시설 확보(2000만달러 투자) → 미국 시장 진출 교두보 마련 및 LNG선 기자재 테마 수혜.",
-          "macro_event": "미국 제조업 쇼어링(MASGA) 정책 및 글로벌 우주·항공 산업 성장",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
         }
       ],
       "fallback": false
@@ -1484,24 +1024,10 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "[강세 토픽] 방위산업 테마, 웨이브일렉트로 +29.96%, 아이쓰리시스템 +12.29%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GE2TGNLDGVRTQMTBG5SWCOJVGY/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T05:27:48",
-          "causal_chain": "방위산업 테마 강세 → 방산 관련 정밀기기 제조 종목 매수 수요 증가 → 웨이브일렉트로(측정·제어 정밀기기 제조) 주가 +29.96% 상승.",
-          "macro_event": "방위산업 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "024740",
@@ -1530,24 +1056,10 @@
         "change_pct": 14.98,
         "trade_amount": 79515054300
       },
-      "news": [
-        {
-          "title": "한일단조, +5.31% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GM3TGOLDMFRGIMRZHBTGEMJTME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T02:53:28",
-          "causal_chain": "제목에 상승 원인이 명시되지 않아 분석 불가. 본문 내용 필요.",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "037030",
@@ -1585,24 +1097,8 @@
         "change_pct": 8.46,
         "trade_amount": 88854018450
       },
-      "news": [
-        {
-          "title": "파워넷, +10.15% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GMZTAZDDMMYTKOBZG4ZTQMBQMQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T01:06:51",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false,
+      "news": [],
+      "fallback": true,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -1615,17 +1111,10 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알루미늄박지,은박지,은박가공품,알페이스트 제조,도매,수출",
       "themes": [
-        "호르무즈해협",
         "전쟁재건",
-        "비철금속"
+        "호르무즈해협"
       ],
       "theme_paths": [
-        {
-          "name": "호르무즈해협",
-          "path": [
-            "호르무즈해협"
-          ]
-        },
         {
           "name": "전쟁재건",
           "path": [
@@ -1635,11 +1124,9 @@
           ]
         },
         {
-          "name": "비철금속",
+          "name": "호르무즈해협",
           "path": [
-            "전쟁",
-            "전쟁악화",
-            "비철금속"
+            "호르무즈해협"
           ]
         }
       ],
@@ -1651,21 +1138,6 @@
         "trade_amount": 79051533600
       },
       "news": [
-        {
-          "title": "삼아알미늄, +7.55% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/ME3TGNTEGJQTAMJSGE2DEMLDHE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T04:59:07",
-          "causal_chain": "SK증권의 실적 반등 전망(이달부터 시작, 하반기 풀캐파 가동) → 시장의 긍정적 평가 → 주가 상승 +7.55%",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
         {
           "title": "SK증권 “삼아알미늄, 하반기 풀캐파 가동 예상⋯이달부터 실적 반등”",
           "url": "https://www.etoday.co.kr/news/view/2574520",
@@ -1762,24 +1234,8 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "RF시스템즈, +15.75% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MZSTAMBQMYZDCN3BGVQTSYZVGQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:37:26",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false,
+      "news": [],
+      "fallback": true,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -1818,22 +1274,24 @@
       },
       "news": [
         {
-          "title": "달바글로벌, 해외 성과 대비 저평가…7%↑[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02978246645414480",
+          "title": "달바글로벌, 실적 안정 속 밸류 매력 부각-한국",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02532166645416120",
           "source": "이데일리",
-          "published_at": "2026-04-09T00:22:15",
-          "causal_chain": "해외 사업 성과 실현 인식 → K-뷰티 관련 실적 개선으로 기존 저평가 해소 → 가치 재평가 매매 심화",
-          "macro_event": "달바글로벌 해외 성과 대비 저평가 지적 및 재평가",
-          "newzy_freshness": 1.0,
-          "newzy_persistence": 0.7,
-          "newzy_magnitude": 0.3,
-          "newzy_virality": 0.5,
-          "newzy_tradability": 0.9,
-          "newzy_score": 0.68,
-          "newzy_verdict": "동의: title 기반 추론 타당"
+          "published_at": "2026-04-13T23:01:24",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": false,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "035460",
@@ -1844,98 +1302,22 @@
       "industry": "통신 및 방송 장비 제조업",
       "sector": "광모듈, 에코 켄슬러, 중계기, VoIP Server등",
       "themes": [
-        "통신 및 방송 장비"
+        "공중 기동 로봇"
       ],
       "theme_paths": [
         {
-          "name": "통신 및 방송 장비",
+          "name": "공중 기동 로봇",
           "path": [
-            "AI",
-            "AI 인프라",
-            "통신장비",
-            "통신 및 방송 장비"
+            "전쟁",
+            "전쟁악화",
+            "방산",
+            "공중 기동 로봇"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "[강세 토픽] 드론·플라잉카 테마, 기산텔레콤 +29.93%, 퍼스텍 +16.79%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/HEZTONZVG4ZWMMZUGM2TINZUME/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:12:50",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "기산텔레콤, +29.93% 상한가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MM2DMNLBMMYGKN3BGU3DENBZGU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:10:34",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "기산텔레콤, +17.34% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/ME2GMM3DGM2WMOBXGRQWIZBVMI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:05:09",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "기산텔레콤, +14.97% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MRRTMMZZMU2DAZRTGUZDOZDCMU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:04:47",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "기산텔레콤, +12.45% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MZQTQZBVGQYTONTCGI2TQM3FGU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:04:26",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
+      "news": [],
       "fallback": true,
       "causal_chain": "",
       "parent_theme": ""
@@ -1969,21 +1351,6 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04365686645415792",
           "source": "이데일리",
           "published_at": "2026-04-13T08:48:50",
-          "causal_chain": "아이즈비전이 18억2천만원 규모 전환사채의 전환권을 행사해 110만주(4.07%) 신규 상장 → 자본조달 완료 신호로 시장이 긍정 평가 → 주가 상승(+4.46%)",
-          "macro_event": "아이즈비전 전환사채 전환청구권 행사 (110만9078주, 28일 상장 예정)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "아이즈비전, +4.46% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/MQYGIN3EGNQWIZTDMYYTCM3CGI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T00:05:32",
           "causal_chain": "아이즈비전이 18억2천만원 규모 전환사채의 전환권을 행사해 110만주(4.07%) 신규 상장 → 자본조달 완료 신호로 시장이 긍정 평가 → 주가 상승(+4.46%)",
           "macro_event": "아이즈비전 전환사채 전환청구권 행사 (110만9078주, 28일 상장 예정)",
           "newzy_freshness": null,

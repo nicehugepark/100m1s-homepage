@@ -1,6 +1,7 @@
 {
   "date": "2026-04-08",
-  "generated_at": "2026-04-11T02:19:44.959986",
+  "generated_at": "2026-04-14T16:22:07.502134",
+  "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
   "stocks": [
@@ -13,10 +14,18 @@
       "industry": "건물 건설업",
       "sector": "아파트건설,토목공사,건축공사,포장공사,전기공사,무역/중장비 대여",
       "themes": [
+        "AI데이터센터",
         "전쟁재건",
         "건설"
       ],
       "theme_paths": [
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
         {
           "name": "건설",
           "path": [
@@ -27,14 +36,69 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 609530935100
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
+        {
+          "title": "AI 시대 돈 되는 '데이터센터'…대우건설, 전담팀 꾸렸다",
+          "url": "https://www.hankyung.com/article/2026041375206",
+          "source": "한경",
+          "published_at": "2026-04-13T07:20:53",
+          "causal_chain": "생성형 AI·클라우드 서비스 수요 급증 → 국내외 데이터센터 시장 확대 → 대우건설이 데이터센터 TFT 신설 및 초대형 프로젝트(200~300MW) 참여로 신성장 동력 확보",
+          "macro_event": "생성형 AI 및 클라우드 서비스 수요 급증으로 데이터센터 시장 급속 확대 전망",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "대우건설, 흑석 11구역 재개발 '써밋 더힐' 5월 공급",
+          "url": "https://www.hankyung.com/article/202604136635i",
+          "source": "한경",
+          "published_at": "2026-04-13T04:50:27",
+          "causal_chain": "생성형 AI·클라우드 서비스 수요 급증 → 국내외 데이터센터 시장 확대 → 대우건설이 데이터센터 TFT 신설 및 초대형 프로젝트(200~300MW) 참여로 신성장 동력 확보",
+          "macro_event": "생성형 AI 및 클라우드 서비스 수요 급증으로 데이터센터 시장 급속 확대 전망",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "“AI 시대 핵심 인프라 시장 공략”…대우건설 ‘데이터센터 TFT’ 신설",
+          "url": "https://www.mk.co.kr/news/realestate/12015218",
+          "source": "매경",
+          "published_at": "2026-04-13T02:24:48",
+          "causal_chain": "생성형 AI·클라우드 서비스 수요 급증 → 국내외 데이터센터 시장 확대 → 대우건설이 데이터센터 TFT 신설 및 초대형 프로젝트(200~300MW) 참여로 신성장 동력 확보",
+          "macro_event": "생성형 AI 및 클라우드 서비스 수요 급증으로 데이터센터 시장 급속 확대 전망",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "대우건설, 데이터센터 전담 조직 신설… AI 인프라 시장 공략",
+          "url": "https://biz.chosun.com/real_estate/real_estate_general/2026/04/13/TFO6LNYSX5GRZKNKYRXEEZCF34/",
+          "source": "조선비즈",
+          "published_at": "2026-04-13T02:03:51",
+          "causal_chain": "생성형 AI·클라우드 서비스 수요 급증 → 국내외 데이터센터 시장 확대 → 대우건설이 데이터센터 TFT 신설 및 초대형 프로젝트(200~300MW) 참여로 신성장 동력 확보",
+          "macro_event": "생성형 AI 및 클라우드 서비스 수요 급증으로 데이터센터 시장 급속 확대 전망",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "대우건설, ‘부천 대장신도시~홍대입구’ 광역철도사업 손뗀다",
           "url": "https://biz.chosun.com/real_estate/real_estate_general/2026/04/10/47CPMFJDHVGUJEKTI2K22PP4NM/",
@@ -42,66 +106,6 @@
           "published_at": "2026-04-10T08:26:24",
           "causal_chain": "광역철도사업 탈락 → 건설 수주 감소 → 대우건설의 매출·실적 악화 우려. 자금 유입 동인 부재.",
           "macro_event": "대우건설, 부천 대장신도시~홍대입구 광역철도사업 포기",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "대우건설 \"임직원 스마트폰으로 ESG 점수 쌓아 기부까지\"",
-          "url": "https://www.hankyung.com/article/202604101579i",
-          "source": "한경",
-          "published_at": "2026-04-10T01:05:43",
-          "causal_chain": "ESG 강화 트렌드 → 대우건설 임직원 참여형 '으쓱 포인트제' 도입 및 탄소감축·기부 프로그램 추진. 동시에 시장 공매도 상위권 진입으로 단기 매도 압력 병행.",
-          "macro_event": "ESG 경영 강화 추진",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "대우건설, '으쓱(ESG) 포인트제' 도입해 탄소 줄이고 기부까지",
-          "url": "https://www.hankyung.com/article/2026041012236",
-          "source": "한경",
-          "published_at": "2026-04-10T00:03:00",
-          "causal_chain": "ESG 강화 트렌드 → 대우건설 임직원 참여형 '으쓱 포인트제' 도입 및 탄소감축·기부 프로그램 추진. 동시에 시장 공매도 상위권 진입으로 단기 매도 압력 병행.",
-          "macro_event": "ESG 경영 강화 추진",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "대우건설, 임직원 참여형 ESG 프로그램 ‘으쓱 포인트제’ 실시",
-          "url": "https://www.mk.co.kr/news/realestate/12013314",
-          "source": "매경",
-          "published_at": "2026-04-10T00:02:17",
-          "causal_chain": "ESG 강화 트렌드 → 대우건설 임직원 참여형 '으쓱 포인트제' 도입 및 탄소감축·기부 프로그램 추진. 동시에 시장 공매도 상위권 진입으로 단기 매도 압력 병행.",
-          "macro_event": "ESG 경영 강화 추진",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "09일 코스피 시장 공매도 수량 상위 종목. 삼성전자, 대우건설 등",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/ME2TOYZTGMZTQMBUMRTGKMZSGU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-09T23:01:16",
-          "causal_chain": "제목에서는 공매도 수량 상위라는 사실만 보도되며, 구체적인 원인이나 영향 경로를 파악할 수 없음. 본문 없이 추론 불가.",
-          "macro_event": "불명 — 제목에 매크로 이벤트 언급 없음",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -144,13 +148,8 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 424526319520
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "K증시 반도체·전력설비·방산에 주목…대한광통신, 삼성전기 신고가 터치 [매경 자이앤트]",
@@ -159,21 +158,6 @@
           "published_at": "2026-04-10T09:30:57",
           "causal_chain": "K증시에서 전력설비 섹터 주목 → 절연선·케이블 제조사 대한광통신 자금 유입 → 신고가 터치",
           "macro_event": "K증시 전력설비 섹터 주목",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "대한광통신, +12.27% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G5TGENLEGNQTAYLEGAYGMOLBGI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:22:11",
-          "causal_chain": "제목에 원인 명시 없음. VI 발동(+12.27% 상승률) 사실만 존재하며 매크로 배경 불명확.",
-          "macro_event": "불명확 - 제목에서 도출 불가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -218,14 +202,69 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 77004028800
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
+        {
+          "title": "\"공기 단축·비용 절감\"…GS건설, 모듈러 교량 기술 실증 완료",
+          "url": "https://www.hankyung.com/article/2026041401466",
+          "source": "한경",
+          "published_at": "2026-04-14T06:37:31",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "GS건설, 신소재로 모듈러 교량 난제 해결...부식 없고 공기 50% 단축",
+          "url": "https://www.mk.co.kr/news/realestate/12016388",
+          "source": "매경",
+          "published_at": "2026-04-14T04:35:06",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "GS건설, '부식 없고 더 강한' 모듈러 교량 시대 연다",
+          "url": "https://www.hankyung.com/article/202604149061i",
+          "source": "한경",
+          "published_at": "2026-04-14T00:59:13",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "10일 코스피 시장 공매도 수량 상위 종목. 한온시스템, GS건설 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GQZDCZTFMIZGKMRZMUZDCMBVG4/",
+          "source": "조선비즈",
+          "published_at": "2026-04-12T23:01:17",
+          "causal_chain": "공매도 세력의 집중 매도. 구체적 하락 원인은 제목에 미기재.",
+          "macro_event": "공시 가능한 매크로 이벤트 없음",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "GS건설·美아모지, 암모니아 분산발전사업 추진",
           "url": "https://biz.chosun.com/real_estate/real_estate_general/2026/04/10/4NVEQTP2MVCVDNLKUMJOFSFJKY/",
@@ -233,66 +272,6 @@
           "published_at": "2026-04-10T08:13:57",
           "causal_chain": "미국 에너지 인프라 수요 → GS건설의 암모니아 분산발전 사업 수주 → 건설 매출 확대",
           "macro_event": "GS건설·美아모지, 암모니아 분산발전사업 추진",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "“화석연료 대체 에너지원 발굴 앞장”…GS건설, 아모지와 합작투자 계약체결",
-          "url": "https://www.mk.co.kr/news/realestate/12013702",
-          "source": "매경",
-          "published_at": "2026-04-10T06:19:56",
-          "causal_chain": "신재생에너지 전환 시대에 GS건설이 에너지 사업 진출(아모지 합작)과 대형 건설 프로젝트(대전 도안자이)를 통해 사업 다각화 → 시장이 회사의 성장성을 재평가해 목표가 상향.",
-          "macro_event": "탄소중립·에너지 전환과 국내 부동산 경기 회복에 따른 건설 기업의 사업 확장 평가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "GS건설-美아모지, '무탄소 발전' 시장 진출",
-          "url": "https://www.hankyung.com/article/2026041021206",
-          "source": "한경",
-          "published_at": "2026-04-10T05:36:38",
-          "causal_chain": "원전 및 무탄소 발전 시장 확대 → GS건설의 원전 수주 및 무탄소 발전 프로젝트 진출, 전후 재건 사업 기대 → 이익성 개선 및 목표가 상향.",
-          "macro_event": "원전·무탄소 발전 시장 확대 및 전후 재건 수혜 관심 증대",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "GS건설 '도안자이 센텀리체' 견본주택 10일 개관",
-          "url": "https://www.hankyung.com/article/202604101565i",
-          "source": "한경",
-          "published_at": "2026-04-10T05:18:59",
-          "causal_chain": "신재생에너지 전환 시대에 GS건설이 에너지 사업 진출(아모지 합작)과 대형 건설 프로젝트(대전 도안자이)를 통해 사업 다각화 → 시장이 회사의 성장성을 재평가해 목표가 상향.",
-          "macro_event": "탄소중립·에너지 전환과 국내 부동산 경기 회복에 따른 건설 기업의 사업 확장 평가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "GS건설, 대전 ‘도안자이 센텀리체’ 견본주택 개관…21일 1순위 청약",
-          "url": "https://biz.chosun.com/real_estate/real_estate_general/2026/04/10/HMCYXIWDDFGG3HT7KWMUQU45R4/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:33:45",
-          "causal_chain": "신재생에너지 전환 시대에 GS건설이 에너지 사업 진출(아모지 합작)과 대형 건설 프로젝트(대전 도안자이)를 통해 사업 다각화 → 시장이 회사의 성장성을 재평가해 목표가 상향.",
-          "macro_event": "탄소중립·에너지 전환과 국내 부동산 경기 회복에 따른 건설 기업의 사업 확장 평가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -319,18 +298,62 @@
         {
           "name": "부동산 재개발",
           "path": [
+            "전쟁",
+            "전쟁완화",
+            "전쟁재건",
+            "건설",
             "부동산 재개발"
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 112058856000
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
+        {
+          "title": "속도 내는 '노량진 뉴타운'…8구역 '아크로 리버스카이' 5월 분양",
+          "url": "https://www.hankyung.com/article/2026041488066",
+          "source": "한경",
+          "published_at": "2026-04-14T00:28:11",
+          "causal_chain": "노량진 뉴타운 재정비촉진구역 사업 진행 → DL이앤씨의 8구역 주택재개발 정비사업 수주·분양 확대 → 부동산 재개발 테마주 재평가",
+          "macro_event": "노량진 뉴타운 8구역 아크로 리버스카이 5월 분양 및 서부선 도시철도 개통 예정",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "KB證 “건설주, 글로벌 에너지 인프라 위 재평가…현대건설·삼성E&A·DL이앤씨 주목”",
+          "url": "https://www.etoday.co.kr/news/view/2575398",
+          "source": "이투데이",
+          "published_at": "2026-04-13T23:09:00",
+          "causal_chain": "노량진 뉴타운 재정비촉진구역 사업 진행 → DL이앤씨의 8구역 주택재개발 정비사업 수주·분양 확대 → 부동산 재개발 테마주 재평가",
+          "macro_event": "노량진 뉴타운 8구역 아크로 리버스카이 5월 분양 및 서부선 도시철도 개통 예정",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "DL이앤씨 “상대원2구역 재개발 조합, 수주 해지 통보… 법적 대응”",
+          "url": "https://biz.chosun.com/real_estate/real_estate_general/2026/04/13/VNJX4CRX5BE3FLL6BVH2ZNCBQY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-13T12:07:30",
+          "causal_chain": "상대원2구역 재개발 조합의 수주 해지 통보 → DL이앤씨의 프로젝트 손실 및 매출 기여도 감소 → 실적 악화 및 주가 하락 압력",
+          "macro_event": "상대원2구역 재개발 수주 해지",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "현대건설 vs DL이앤씨 맞대결 성사...‘압구정 5구역’ 시공사 입찰 마감",
           "url": "https://www.mk.co.kr/news/realestate/12013891",
@@ -357,33 +380,24 @@
       "change_pct": 7.98,
       "industry": "반도체 제조업",
       "sector": "트랜지스터,SMD TR,발광소자,리모콘모듈,발광다이오드(L.E.D),다이오드용웨이퍼팹(Fab) 제조,판매",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 160066787040
-      },
-      "news": [
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
         {
-          "title": "[급등락주 짚어보기] 광전자, 태영건설우, 부국철강 등 상한가",
-          "url": "https://www.etoday.co.kr/news/view/2574431",
-          "source": "이투데이",
-          "published_at": "2026-04-09T07:05:00",
-          "causal_chain": "제목에 명시된 원인 없음. 상한가 이동 사실만 확인됨.",
-          "macro_event": "알 수 없음 (제목에 미명시)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
         }
       ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "079900",
@@ -393,17 +407,23 @@
       "change_pct": 26.38,
       "industry": "특수 목적용 기계 제조업",
       "sector": "콘크리트 펌프카",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 11521642000
-      },
+      "themes": [
+        "특수 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "특수 목적용 기계",
+          "path": [
+            "특수 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "062970",
@@ -413,36 +433,28 @@
       "change_pct": 1.59,
       "industry": "통신 및 방송 장비 제조업",
       "sector": "데이터센터용 AWG, 통신용 AWG, 스플리터, 계측기 등",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": null
-      },
+      "themes": [
+        "통신 및 방송 장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "통신 및 방송 장비",
+          "path": [
+            "AI",
+            "AI 인프라",
+            "통신장비",
+            "통신 및 방송 장비"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
         {
           "title": "한국첨단소재, 500원→1500원 주식병합 결정",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04408326645414808",
           "source": "이데일리",
           "published_at": "2026-04-10T08:31:01",
-          "causal_chain": "주식병합(500원→1500원)은 저가주 심리 개선 기술적 조치이나, 제목에서 명확한 자금 유입 경로 및 매크로 동인 미명시. 상승률 관찰되나 원인 불명확.",
-          "macro_event": "제목에 명확한 매크로 이벤트 없음",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한국첨단소재, +5.77% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MY2DQMBXMM2GCNZRGRTGEZDEGE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:37:18",
           "causal_chain": "주식병합(500원→1500원)은 저가주 심리 개선 기술적 조치이나, 제목에서 명확한 자금 유입 경로 및 매크로 동인 미명시. 상승률 관찰되나 원인 불명확.",
           "macro_event": "제목에 명확한 매크로 이벤트 없음",
           "newzy_freshness": null,
@@ -465,8 +477,8 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "전력선,통신케이블,적산계기,스텐레스압연제품,광케이블,초고압선,알루미늄 제조,도매/전기공사",
       "themes": [
-        "전력설비",
-        "케이블"
+        "케이블",
+        "전력설비"
       ],
       "theme_paths": [
         {
@@ -479,13 +491,8 @@
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 46206789350
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
       "fallback": true,
       "causal_chain": "",
@@ -499,17 +506,23 @@
       "change_pct": 17.44,
       "industry": "전자부품 제조업",
       "sector": "반도체용 인쇄회로기판",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 45600071400
-      },
+      "themes": [
+        "전자부품"
+      ],
+      "theme_paths": [
+        {
+          "name": "전자부품",
+          "path": [
+            "전자부품"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "267270",
@@ -519,17 +532,23 @@
       "change_pct": 9.13,
       "industry": "특수 목적용 기계 제조업",
       "sector": "굴삭기, 지게차, 휠로더 등",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 60014337800
-      },
+      "themes": [
+        "특수 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "특수 목적용 기계",
+          "path": [
+            "특수 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "247540",
@@ -539,16 +558,66 @@
       "change_pct": 3.47,
       "industry": "일차전지 및 이차전지 제조업",
       "sector": "양극활물질",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 109245240000
-      },
+      "themes": [
+        "일차전지 및 이차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "일차전지 및 이차전지",
+          "path": [
+            "전기차",
+            "일차전지 및 이차전지"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
+        {
+          "title": "‘장중 6000피 터치’ 코스피, 5967.75 상승 마감…코스닥도 올라",
+          "url": "https://www.mk.co.kr/news/stock/12016519",
+          "source": "매경",
+          "published_at": "2026-04-14T06:57:47",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "미·이란 후속 협상 기대에 코스피 2.46% 급등…6000선 재진입 시도",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02876566645416120",
+          "source": "이데일리",
+          "published_at": "2026-04-14T00:14:24",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "삼성증권 “에코프로비엠, 가동률 회복 지켜봐야⋯판가 상승은 긍정적”",
+          "url": "https://www.etoday.co.kr/news/view/2575025",
+          "source": "이투데이",
+          "published_at": "2026-04-12T23:25:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "09일 코스닥 시장 공매도 금액 상위 종목. ISC, 에코프로비엠 등",
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MUZDQMDBGYZTEMJYME2GMYTGG4/",
@@ -576,71 +645,22 @@
       "industry": "기타 금융업",
       "sector": "벤처투자조합 등 조합 결성 및 운영",
       "themes": [
-        "벤처캐피탈(VC)"
+        "금융"
       ],
       "theme_paths": [
         {
-          "name": "벤처캐피탈(VC)",
+          "name": "금융",
           "path": [
-            "벤처캐피탈(VC)"
+            "금융"
           ]
         }
       ],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 64712574635
-      },
-      "news": [
-        {
-          "title": "[강세 토픽] 벤처캐피탈(VC) 테마, 캡스톤파트너스 +12.99%, 나우IB +7.02%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MNTDCMTFMZRTKZJUGEYWMZRQGA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T03:30:57",
-          "causal_chain": "VC(벤처캐피탈) 테마 강세장 → 벤처캐피탈 관련 금융사 수혜 → 캡스톤파트너스 자금 유입 가속.",
-          "macro_event": "벤처캐피탈(VC) 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "캡스톤파트너스, +10.57% VI 발동",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/G44GGZRQGU2GKOLBGVTGIZRXMI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:49:55",
-          "causal_chain": "VC(벤처캐피탈) 테마 강세장 → 벤처캐피탈 관련 금융사 수혜 → 캡스톤파트너스 자금 유입 가속.",
-          "macro_event": "벤처캐피탈(VC) 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "캡스톤파트너스, +1.03% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GI2DON3EGM2DQZTBMFRWGYRRGI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:40:40",
-          "causal_chain": "VC(벤처캐피탈) 테마 강세장 → 벤처캐피탈 관련 금융사 수혜 → 캡스톤파트너스 자금 유입 가속.",
-          "macro_event": "벤처캐피탈(VC) 테마 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "006110",
@@ -651,17 +671,10 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알루미늄박지,은박지,은박가공품,알페이스트 제조,도매,수출",
       "themes": [
-        "호르무즈해협",
         "전쟁재건",
-        "비철금속"
+        "호르무즈해협"
       ],
       "theme_paths": [
-        {
-          "name": "호르무즈해협",
-          "path": [
-            "호르무즈해협"
-          ]
-        },
         {
           "name": "전쟁재건",
           "path": [
@@ -671,37 +684,15 @@
           ]
         },
         {
-          "name": "비철금속",
+          "name": "호르무즈해협",
           "path": [
-            "전쟁",
-            "전쟁악화",
-            "비철금속"
+            "호르무즈해협"
           ]
         }
       ],
-      "pick_count": 241,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 26005659300
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
-        {
-          "title": "삼아알미늄, +7.55% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/ME3TGNTEGJQTAMJSGE2DEMLDHE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T04:59:07",
-          "causal_chain": "SK증권의 실적 반등 전망(이달부터 시작, 하반기 풀캐파 가동) → 시장의 긍정적 평가 → 주가 상승 +7.55%",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
         {
           "title": "SK증권 “삼아알미늄, 하반기 풀캐파 가동 예상⋯이달부터 실적 반등”",
           "url": "https://www.etoday.co.kr/news/view/2574520",
@@ -728,17 +719,23 @@
       "change_pct": 9.3,
       "industry": "상품 종합 도매업",
       "sector": "수출입업(시멘트,철강금속,전기전자,섬유,기계화학),상품중개,광업,채석업/하수처리 서비스/부동산 임대",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 24719898480
-      },
+      "themes": [
+        "상품 종합 도매"
+      ],
+      "theme_paths": [
+        {
+          "name": "상품 종합 도매",
+          "path": [
+            "상품 종합 도매"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "053690",
@@ -762,14 +759,69 @@
           ]
         }
       ],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 17137489950
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
+        {
+          "title": "\"이 와중에 누가 명품 사요?\"…직격탄 맞은 루이비통 '초비상'",
+          "url": "https://www.hankyung.com/article/202604140006i",
+          "source": "한경",
+          "published_at": "2026-04-14T06:15:39",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한미글로벌 자회사 오택, 6000억원 규모 미국 국립공원 인프라 사업 수주",
+          "url": "https://www.mk.co.kr/news/realestate/12016387",
+          "source": "매경",
+          "published_at": "2026-04-14T04:34:14",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한미글로벌 자회사 오택, 美국립공원 유지보수 프로젝트 수주",
+          "url": "https://www.hankyung.com/article/202604149256i",
+          "source": "한경",
+          "published_at": "2026-04-14T01:46:45",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한미글로벌 美 자회사 오택, 국립공원관리청(NPS)과 4억 달러 규모 계약",
+          "url": "https://biz.chosun.com/real_estate/real_estate_general/2026/04/14/KR2LGC2W4JGXRBR6GD6UJLGMDI/",
+          "source": "조선비즈",
+          "published_at": "2026-04-13T23:31:31",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "한미글로벌, 신한울 3·4호기 수주로 신규원전사업 첫 발…'매수'-한화",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02368166645414808",
@@ -796,33 +848,23 @@
       "change_pct": 26.77,
       "industry": "전자부품 제조업",
       "sector": "반도체용세금선",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 11772605000
-      },
-      "news": [
+      "themes": [
+        "전자부품"
+      ],
+      "theme_paths": [
         {
-          "title": "엠케이전자, +7.42% 52주 신고가",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GNRTSNTBGNRWIMTGMUZDQZLFHA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T00:31:39",
-          "causal_chain": "제목에 신고가 도달이라는 결과만 있고, 원인·배경·이벤트 정보가 명시되지 않음. 본문 없이 추론 불가.",
-          "macro_event": "불명(제목에 구체 이벤트 없음)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
+          "name": "전자부품",
+          "path": [
+            "전자부품"
+          ]
         }
       ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "065770",
@@ -833,46 +875,32 @@
       "industry": "통신 및 방송 장비 제조업",
       "sector": "이동통신중계기, 위성방송(DMB)중계기(Gap-Filler)",
       "themes": [
-        "풍력에너지",
-        "스마트그리드"
+        "스마트그리드",
+        "풍력에너지"
       ],
       "theme_paths": [
         {
-          "name": "풍력에너지",
+          "name": "스마트그리드",
           "path": [
-            "풍력에너지"
+            "AI",
+            "AI 인프라",
+            "전력설비",
+            "스마트그리드"
           ]
         },
         {
-          "name": "스마트그리드",
+          "name": "풍력에너지",
           "path": [
-            "스마트그리드"
+            "AI",
+            "AI 인프라",
+            "전력설비",
+            "풍력에너지"
           ]
         }
       ],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 5973440580
-      },
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [
-        {
-          "title": "[강세 토픽] 스마트그리드 테마, CS +10.43%, 비츠로셀 +10.11%",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MFQTQMDCGA4DCNBRMY4GKNJTGA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T01:06:52",
-          "causal_chain": "글로벌 에너지 전환 정책 및 신재생에너지(스마트그리드, 풍력) 수요 증가 → 관련 인프라 및 장비 솔루션 필요성 확대 → 통신·방송 장비 제조업인 CS가 스마트그리드 테마 수혜로 +10.43% 상승, 동시에 애널리스트 풍력 부문 목표주가 25% 상향으로 재평가.",
-          "macro_event": "스마트그리드·풍력에너지 테마 강세 및 애널리스트 긍정 평가 확산",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
         {
           "title": "NH投資証券 CS Wind目標株価を25％上方修正",
           "url": "https://biz.chosun.com/jp/jp-finance/2026/04/10/DTM3CUYOVBHRJPTF7UNDOUAYTA/",
@@ -899,17 +927,23 @@
       "change_pct": 9.07,
       "industry": "1차 철강 제조업",
       "sector": "수도용 도복장 강관,주물(강관말뚝),가스관 제조/아파트건설",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 1628940240
-      },
+      "themes": [
+        "1차 철강"
+      ],
+      "theme_paths": [
+        {
+          "name": "1차 철강",
+          "path": [
+            "1차 철강"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "317850",
@@ -919,17 +953,23 @@
       "change_pct": 14.07,
       "industry": "특수 목적용 기계 제조업",
       "sector": "유압브레이커, 특수장비/부품, 퀵커플러 등",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 1087908600
-      },
+      "themes": [
+        "특수 목적용 기계"
+      ],
+      "theme_paths": [
+        {
+          "name": "특수 목적용 기계",
+          "path": [
+            "특수 목적용 기계"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "039610",
@@ -939,33 +979,23 @@
       "change_pct": 26.76,
       "industry": "일반 목적용 기계 제조업",
       "sector": "가스밸브, 매몰용접용 볼밸브, 온수분배기",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 240,
-      "prev_pick": {
-        "date": "2026-04-07",
-        "rank": null,
-        "change_pct": null,
-        "trade_amount": 266345860
-      },
-      "news": [
+      "themes": [
+        "일반 목적용 기계"
+      ],
+      "theme_paths": [
         {
-          "title": "화성밸브, +4.13% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/GYZWCNJVHBTDMYRVGY4WCYRVMI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-10T02:39:50",
-          "causal_chain": "",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
+          "name": "일반 목적용 기계",
+          "path": [
+            "일반 목적용 기계"
+          ]
         }
       ],
-      "fallback": true
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "causal_chain": "",
+      "parent_theme": ""
     }
   ]
 }
