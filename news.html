@@ -1880,18 +1880,19 @@ initCalendar();
 
 function miniCandle(open, high, low, close, changePct) {
   if (!close) return '';
-  // OHLC 없으면 종가+등락률로 역산 (심지 없는 봉)
-  if (!open && close && changePct !== undefined) {
-    open = close / (1 + (changePct || 0) / 100);
-  }
-  if (!open) return '';
-  if (!high || !low) {
-    // high/low 없으면 등락률 크기에 비례한 심지 생성
-    const spread = Math.abs(changePct || 0) / 100 * close * 0.5;
-    high = Math.max(open, close) + spread;
-    low = Math.min(open, close) - spread;
-  }
   const W = 12, H = 24;
+  const hasOHLC = open && high && low;
+  // OHLC 없으면 pct 기반 단순 바 (심지 없음, 높이=pct 비례)
+  if (!hasOHLC) {
+    if (changePct == null) return '';
+    const isUp = changePct >= 0;
+    const color = isUp ? '#E03131' : '#1971C2';
+    // 등락률 절대값에 비례: 1%=2px, 30%=24px (최대), 최소 3px
+    const bodyH = Math.max(3, Math.min(H, Math.abs(changePct) * 0.8));
+    const bodyTop = isUp ? (H - bodyH) : 0;
+    return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
+      '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/></svg>';
+  }
   const isUp = close >= open;
   const color = isUp ? '#E03131' : '#1971C2';
   const range = high - low;
