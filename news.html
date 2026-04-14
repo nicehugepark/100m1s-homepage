@@ -1880,13 +1880,8 @@ initCalendar();
 
 function miniCandle(open, high, low, close, changePct) {
   if (!close) return '';
-  // Fallback: OHLC가 없으면 종가+등락률로 역산
-  if (!open && close && changePct !== undefined) {
-    open = close / (1 + (changePct || 0) / 100);
-  }
-  if (!open) return '';
-  if (!high) high = Math.max(open, close);
-  if (!low) low = Math.min(open, close);
+  // OHLC 전부 있어야 캔들 표시 (없으면 빈 문자열)
+  if (!open || !high || !low) return '';
   const W = 12, H = 24;
   const isUp = close >= open;
   const color = isUp ? '#E03131' : '#1971C2';
