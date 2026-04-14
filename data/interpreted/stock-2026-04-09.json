@@ -1,6 +1,6 @@
 {
   "date": "2026-04-09",
-  "generated_at": "2026-04-14T16:22:07.631984",
+  "generated_at": "2026-04-14T17:15:12.143835",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -14,25 +14,19 @@
       "industry": "건물 건설업",
       "sector": "아파트건설,토목공사,건축공사,포장공사,전기공사,무역/중장비 대여",
       "themes": [
-        "AI데이터센터",
         "전쟁재건",
-        "건설"
+        "건설",
+        "부동산 재개발"
       ],
       "theme_paths": [
         {
-          "name": "AI데이터센터",
-          "path": [
-            "AI",
-            "AI데이터센터"
-          ]
-        },
-        {
-          "name": "건설",
+          "name": "부동산 재개발",
           "path": [
             "전쟁",
             "전쟁완화",
             "전쟁재건",
-            "건설"
+            "건설",
+            "부동산 재개발"
           ]
         }
       ],
@@ -49,8 +43,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/ME2TOYZTGMZTQMBUMRTGKMZSGU/",
           "source": "조선비즈",
           "published_at": "2026-04-09T23:01:16",
-          "causal_chain": "제목에서는 공매도 수량 상위라는 사실만 보도되며, 구체적인 원인이나 영향 경로를 파악할 수 없음. 본문 없이 추론 불가.",
-          "macro_event": "불명 — 제목에 매크로 이벤트 언급 없음",
+          "causal_chain": "제목이 공매도 수량 순위만 기재하여 원인·거시경제 연결 정보 부재",
+          "macro_event": "정보 부족",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -60,7 +54,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "017900",
@@ -91,6 +87,8 @@
       },
       "news": [],
       "fallback": true,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -121,8 +119,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/10/3JTLSSG3JJCNNE7TYJARZLFASI/",
           "source": "조선비즈",
           "published_at": "2026-04-09T23:26:43",
-          "causal_chain": "신한증권이 유럽 시장 실적 개선과 신제품 출시를 긍정 평가 → K-뷰티 제품의 글로벌 확장성 재평가 → 에이피알 수익성 상향 기대 → 목표가 42% 상향",
-          "macro_event": "신한증권 에이피알 목표가 42% 상향 (유럽 시장·신제품 출시 기대 반영)",
+          "causal_chain": "에이피알의 유럽 시장 성장 기대 및 신제품 출시 → K-뷰티 사업 실적 확대 전망 → 신한증권 목표가 42% 상향",
+          "macro_event": "K-뷰티 브랜드의 유럽 시장 수요 증가 및 신제품 출시",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -132,7 +130,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "093370",
@@ -157,6 +157,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -183,6 +185,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -217,8 +221,8 @@
           "url": "https://www.etoday.co.kr/news/view/2575473",
           "source": "이투데이",
           "published_at": "2026-04-14T00:35:00",
-          "causal_chain": "AI 데이터센터 확산 → 대역폭 수요 급증 → 광통신 인프라 투자 확대 → 광통신 장비 제조사 수혜",
-          "macro_event": "AI 기대감에 따른 광통신 인프라 투자 확대",
+          "causal_chain": "AI 산업 확대 → 데이터센터 고속 통신 인프라 수요 증가 → 광통신 장비 제조사 빛과전자 수혜",
+          "macro_event": "AI 기대감에 따른 데이터센터 인프라 투자 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -228,7 +232,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": true,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "092790",
@@ -253,6 +259,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -286,8 +294,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03024166645414480",
           "source": "이데일리",
           "published_at": "2026-04-09T00:28:56",
-          "causal_chain": "광통신 시장 확대(38조 규모 예상) → 통신사 대규모 수주 활발화 → 머큐리의 광통신 장비 수요 증가 및 실적 개선 전망",
-          "macro_event": "광통신 시장 성장 및 데이터센터 인프라 확충 수요",
+          "causal_chain": "LG유플러스와의 150억 규모 광통신 장비 계약 체결 및 '38조 시장' 규모 광통신 시장 확대 신호 → 머큐리의 광통신 사업 성장성 재평가 → 매수세 집중으로 주가 26% 급등.",
+          "macro_event": "광통신 시장 규모 확대 및 LG유플러스 고객사 확보",
           "newzy_freshness": 1.0,
           "newzy_persistence": 0.5,
           "newzy_magnitude": 0.9,
@@ -301,8 +309,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04418166645414480",
           "source": "이데일리",
           "published_at": "2026-04-09T07:11:36",
-          "causal_chain": "광통신 시장 확대(38조 규모 예상) → 통신사 대규모 수주 활발화 → 머큐리의 광통신 장비 수요 증가 및 실적 개선 전망",
-          "macro_event": "광통신 시장 성장 및 데이터센터 인프라 확충 수요",
+          "causal_chain": "LG유플러스와의 150억 규모 광통신 장비 계약 체결 및 '38조 시장' 규모 광통신 시장 확대 신호 → 머큐리의 광통신 사업 성장성 재평가 → 매수세 집중으로 주가 26% 급등.",
+          "macro_event": "광통신 시장 규모 확대 및 LG유플러스 고객사 확보",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -312,7 +320,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "weak_bull",
+      "theme_leader": false
     },
     {
       "code": "010820",
@@ -356,6 +366,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -389,8 +401,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/10/MUZDQMDBGYZTEMJYME2GMYTGG4/",
           "source": "조선비즈",
           "published_at": "2026-04-09T23:01:17",
-          "causal_chain": "코스닥 공매도 세력이 ISC를 약세 대상으로 지목 → 공매도 금액 상위로 올랐음 → 단기 약세 압력 상승 (매수 동인 아님).",
-          "macro_event": "코스닥 시장 공매도 금액 상위 종목",
+          "causal_chain": "공매도 금액 상위 종목 언급 → 시장 약세 신호. 구체적 근본 원인(매크로 이벤트)은 뉴스에 명시되지 않음.",
+          "macro_event": "코스닥 시장 공매도 금액 순위 공시",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -400,7 +412,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "neutral",
+      "theme_leader": true
     },
     {
       "code": "017550",
@@ -425,6 +439,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -455,6 +471,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -481,6 +499,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -518,8 +538,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02978246645414480",
           "source": "이데일리",
           "published_at": "2026-04-09T00:22:15",
-          "causal_chain": "해외 사업 성과 실현 인식 → K-뷰티 관련 실적 개선으로 기존 저평가 해소 → 가치 재평가 매매 심화",
-          "macro_event": "달바글로벌 해외 성과 대비 저평가 지적 및 재평가",
+          "causal_chain": "달바글로벌의 해외 사업 성과 개선 → 저평가된 국내 주가의 재평가 → 주가 상승(7%↑)",
+          "macro_event": "달바글로벌의 해외 실적 개선 및 저평가 재평가",
           "newzy_freshness": 1.0,
           "newzy_persistence": 0.7,
           "newzy_magnitude": 0.3,
@@ -529,7 +549,9 @@
           "newzy_verdict": "동의: title 기반 추론 타당"
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "071090",
@@ -554,6 +576,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -585,6 +609,8 @@
       },
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -616,6 +642,8 @@
       },
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -660,8 +688,8 @@
           "url": "https://www.etoday.co.kr/news/view/2574520",
           "source": "이투데이",
           "published_at": "2026-04-09T23:04:00",
-          "causal_chain": "중동 지정학적 긴장(호르무즈 해협) 및 분쟁 지역 재건 수요 → 비철금속 수급 긴장 + 산업용 금속 수요 증가 → 삼아알미늄 가동률 상승으로 이달부터 실적 반등.",
-          "macro_event": "호르무즈 해협 등 중동 지정학적 리스크 및 지역 재건 수요 지속",
+          "causal_chain": "전쟁 재건 수요(우크라, 중동 등) 증가 → 건설·인프라 자재 수요 증가 → 알루미늄 수요 및 가격 강세 → 삼아알미늄의 생산 능력 확대, 하반기 풀캐파 가동 및 실적 반등",
+          "macro_event": "전쟁 재건에 따른 알루미늄 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -671,7 +699,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "neutral",
+      "theme_leader": true
     },
     {
       "code": "042940",
@@ -699,6 +729,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -725,6 +757,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -752,6 +786,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -785,8 +821,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03368566645414480",
           "source": "이데일리",
           "published_at": "2026-04-09T01:48:04",
-          "causal_chain": "엠플러스, 전고체 배터리 양산 핵심 기술 개발 및 파일럿 장비 수주 → 전고체 조립설비 선점 → 차세대 2차전지 수혜",
-          "macro_event": "전고체 배터리 양산 투자",
+          "causal_chain": "전고체 배터리 상용화 추진 → 양산 장비 수요 증가 → 엠플러스의 파일럿 장비 수주 및 핵심 기술 개발로 시장 선점. 2차전지 장비 업체의 사업 기회 확대.",
+          "macro_event": "전고체 배터리 양산 기술 개발 및 상용화 가속화",
           "newzy_freshness": 1.0,
           "newzy_persistence": 0.7,
           "newzy_magnitude": 0.6,
@@ -796,7 +832,9 @@
           "newzy_verdict": "동의: title 기반 추론 타당"
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "380550",
@@ -825,8 +863,8 @@
           "url": "https://www.mk.co.kr/news/stock/12013956",
           "source": "매경",
           "published_at": "2026-04-10T08:53:15",
-          "causal_chain": "기술 소프트웨어 기업이 160억원 규모 자금 조달(전환사채·유상증자)을 결정하고 320억원 투자 유치로 자금 충실화. 이를 토대로 미국·일본 해외 사업 확장을 추진 중.",
-          "macro_event": "기술 기업의 국제 사업 확장을 위한 자금 조달",
+          "causal_chain": "뉴로핏이 320억 원 투자 유치 및 160억 원 규모 자금 조달 → 미국·일본 사업 확장을 위한 자본력 확보 → 글로벌 시장 진출 가속화.",
+          "macro_event": "뉴로핏 320억 원 투자 유치 및 160억 원 규모 전환사채·유상증자 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -840,8 +878,8 @@
           "url": "https://biz.chosun.com/science-chosun/bio/2026/04/10/NVFTPQ3QNZE7TOCIXILZV7JGQU/",
           "source": "조선비즈",
           "published_at": "2026-04-10T07:24:57",
-          "causal_chain": "기술 소프트웨어 기업이 160억원 규모 자금 조달(전환사채·유상증자)을 결정하고 320억원 투자 유치로 자금 충실화. 이를 토대로 미국·일본 해외 사업 확장을 추진 중.",
-          "macro_event": "기술 기업의 국제 사업 확장을 위한 자금 조달",
+          "causal_chain": "뉴로핏이 320억 원 투자 유치 및 160억 원 규모 자금 조달 → 미국·일본 사업 확장을 위한 자본력 확보 → 글로벌 시장 진출 가속화.",
+          "macro_event": "뉴로핏 320억 원 투자 유치 및 160억 원 규모 전환사채·유상증자 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -855,8 +893,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04008166645414808",
           "source": "이데일리",
           "published_at": "2026-04-10T07:14:44",
-          "causal_chain": "기술 소프트웨어 기업이 160억원 규모 자금 조달(전환사채·유상증자)을 결정하고 320억원 투자 유치로 자금 충실화. 이를 토대로 미국·일본 해외 사업 확장을 추진 중.",
-          "macro_event": "기술 기업의 국제 사업 확장을 위한 자금 조달",
+          "causal_chain": "뉴로핏이 320억 원 투자 유치 및 160억 원 규모 자금 조달 → 미국·일본 사업 확장을 위한 자본력 확보 → 글로벌 시장 진출 가속화.",
+          "macro_event": "뉴로핏 320억 원 투자 유치 및 160억 원 규모 전환사채·유상증자 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -870,8 +908,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03968806645414808",
           "source": "이데일리",
           "published_at": "2026-04-10T07:05:58",
-          "causal_chain": "기술 소프트웨어 기업이 160억원 규모 자금 조달(전환사채·유상증자)을 결정하고 320억원 투자 유치로 자금 충실화. 이를 토대로 미국·일본 해외 사업 확장을 추진 중.",
-          "macro_event": "기술 기업의 국제 사업 확장을 위한 자금 조달",
+          "causal_chain": "뉴로핏이 320억 원 투자 유치 및 160억 원 규모 자금 조달 → 미국·일본 사업 확장을 위한 자본력 확보 → 글로벌 시장 진출 가속화.",
+          "macro_event": "뉴로핏 320억 원 투자 유치 및 160억 원 규모 전환사채·유상증자 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -881,7 +919,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false
     },
     {
       "code": "319400",
@@ -911,8 +951,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02961846645414480",
           "source": "이데일리",
           "published_at": "2026-04-09T00:18:48",
-          "causal_chain": "현대무벡스 북미 최대 공급망 전시회 참가 → 글로벌 물류자동화 수주 기대에 +5% 강세",
-          "macro_event": "글로벌 물류자동화 수요",
+          "causal_chain": "현대무벡스가 북미 최대 공급망 전시회 참가 → 글로벌 물류자동화 시장에서의 인지도 및 수주 기회 확대 → 국제 비즈니스 확장 전망 강화 → 투자자 기대감으로 주가 5% 강세",
+          "macro_event": "현대무벡스의 북미 공급망 물류자동화 시장 진출 강화",
           "newzy_freshness": 1.0,
           "newzy_persistence": 0.7,
           "newzy_magnitude": 0.3,
@@ -922,7 +962,9 @@
           "newzy_verdict": "동의: title 기반 추론 타당"
         }
       ],
-      "fallback": false
+      "fallback": false,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "356860",
@@ -1008,6 +1050,8 @@
         }
       ],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -1041,8 +1085,8 @@
           "url": "https://www.mk.co.kr/news/stock/12013452",
           "source": "매경",
           "published_at": "2026-04-10T01:24:59",
-          "causal_chain": "반도체 HBM(고대역폭메모리) 테마 강세 → 테스가 동 테마 구성 종목으로 편입 → 주가 상승 (VI 발동).",
-          "macro_event": "반도체 HBM(고대역폭메모리) 테마 강세",
+          "causal_chain": "기술적 골든크로스 신호(4월 9일 5일 이평선이 20일 이평선 돌파) → 단기 기술분석 기반 투자 관심 증가 → 주가 상승(현재 84,700원, 전일 대비 13.39%).",
+          "macro_event": "테스, 4월 9일 기술적 골든크로스 발생",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1052,7 +1096,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": true,
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true
     },
     {
       "code": "393890",
@@ -1078,6 +1124,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -1104,6 +1152,8 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
       "causal_chain": "",
       "parent_theme": ""
     }
