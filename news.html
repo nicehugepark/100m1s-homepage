@@ -1253,12 +1253,9 @@ function renderCalendar() {
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
   toggleThemeSections(date);
-  // Static URL — 날짜 공유 가능
+  // Static URL — /news/{date}.html로 공유 시 날짜별 OG 이미지 매칭
   if (pushState !== false) {
-    const url = new URL(window.location.origin + '/news.html');
-    url.searchParams.set('date', date);
-    if (calCategory !== 'stock') url.searchParams.set('cat', calCategory);
-    history.pushState(null, '', url);
+    history.pushState(null, '', '/news/' + date + '.html');
   }
   renderCalendar();
   const inner = document.getElementById('cal-content');
