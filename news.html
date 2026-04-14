@@ -1255,7 +1255,7 @@ async function onCalCellClick(date, pushState) {
   toggleThemeSections(date);
   // Static URL — /news/{date}.html로 공유 시 날짜별 OG 이미지 매칭
   if (pushState !== false) {
-    history.pushState(null, '', '/news/' + date + '.html');
+    history.pushState(null, '', '/news/stock/' + date + '.html');
   }
   renderCalendar();
   const inner = document.getElementById('cal-content');
