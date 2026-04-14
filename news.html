@@ -2491,9 +2491,11 @@ async function initThemeTree(dateOverride) {
           row.appendChild(cntEl);
         }
       } else {
+        // trade_amount=0인 노드는 숨김 (미집계 대신 비표시)
+        wrapper.style.display = 'none';
         const uncEl = document.createElement('span');
         uncEl.className = 'theme-tree-uncollected';
-        uncEl.textContent = '(미집계)';
+        uncEl.textContent = '';
         row.appendChild(uncEl);
       }
 
