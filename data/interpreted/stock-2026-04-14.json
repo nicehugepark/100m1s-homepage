@@ -1,26 +1,26 @@
 {
   "date": "2026-04-14",
-  "generated_at": "2026-04-14T09:01:15.588438",
+  "generated_at": "2026-04-14T09:33:48.981113",
   "macro_events": [
     {
-      "title": "중동안정화",
-      "summary": "미-이란 휴전 협상 신호 + 호르무즈 해협 봉쇄 우려 해소 기대 → 중동 에너지·인프라 재건 수요 복구 → 건설(삼성물산, 현대건설, DL이앤씨), 방위산업(LIG넥스원), 항공(대한항공), 물류 섹터 수혜"
+      "title": "에너지인프라",
+      "summary": "유럽 재생에너지 전환 가속화 → 글로벌 전력망 인프라 투자 급증 → 건설·에너지 섹터 재평가 및 수혜 기대"
     },
     {
-      "title": "반도체경기회복",
-      "summary": "메모리 반도체 가격 상승 + SK하이닉스 1분기 영업익 40조 전망 → AI 데이터센터 수요 지속으로 칩셋 공급부족 심화 + 외국인 순매수 재개 → 반도체 섹터 이익 재평가"
+      "title": "이란협상",
+      "summary": "미-이란 휴전 협상 재개 → 중동 지정학 리스크 완화 → 해운·에너지·방위산업 강세"
     },
     {
-      "title": "항공사마진",
-      "summary": "중동노선 여객수요 회복 + 유가 상승에도 불구하고 수입 구조 안정화 기대 → 대한항공 영업이익률 개선 본격화 → 항공사 섹터 마진 개선 국면 진입"
+      "title": "AI반도체",
+      "summary": "AI 데이터센터 폭증적 수요 + HBM 가격협상 진전 → 메모리반도체 섹터 실적 가속 및 외국인 매수 확대"
     },
     {
-      "title": "유럽전력망",
-      "summary": "삼성물산-히타치 에너지 협력 MOU 체결 → 유럽의 재정력 있는 에너지 전환 사업 진출 기회 본격화 → 건설·인프라 섹터 신규 수주 모멘텀"
+      "title": "엔터IP",
+      "summary": "글로벌 게임·IP 콘텐츠 수요 증대 → 한국 대형 엔터·유통사 IP 투자 및 M&A 활발화"
     },
     {
-      "title": "관광객수혜",
-      "summary": "외국인 관광객 증가 추세 + 중동 사태 완화로 중동 관광객 회복 기대 → 백화점·소비재 고객층 확대 + 매출 확대 사이클 진입 → 유통·소비재(신세계, LF) 섹터 수혜"
+      "title": "철강강세",
+      "summary": "중동 인프라 재건 및 글로벌 에너지 투자 증가 → 철강 가격 상승 → 철강주 실적 개선 기대"
     }
   ],
   "narratives": [],
@@ -121,7 +121,8 @@
       "industry": "1차 비철금속 제조업",
       "sector": "알미늄샷시 제조/환경사업",
       "themes": [
-        "1차 비철금속"
+        "1차 비철금속",
+        "알루미늄 수급불안"
       ],
       "theme_paths": [
         {
@@ -132,6 +133,12 @@
             "비철금속",
             "1차 비철금속"
           ]
+        },
+        {
+          "name": "알루미늄 수급불안",
+          "path": [
+            "알루미늄 수급불안"
+          ]
         }
       ],
       "pick_count": 2,
@@ -141,10 +148,39 @@
         "change_pct": 29.93,
         "trade_amount": 563923883415
       },
-      "news": [],
-      "fallback": true,
-      "causal_chain": "",
-      "parent_theme": ""
+      "news": [
+        {
+          "title": "[특징주] 알루미늄 수급 불안 지속⋯남선알미늄ㆍ조일알미늄 ↑",
+          "url": "https://www.etoday.co.kr/news/view/2575466",
+          "source": "이투데이",
+          "published_at": "2026-04-14T00:29:00",
+          "causal_chain": "알루미늄 수급 불안 지속으로 인한 공급 수혜 기대 → 알루미늄 제조사의 실적 개선 전망 → 남선알미늄에 대한 매수 자금 유입.",
+          "macro_event": "알루미늄 수급 불안 지속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[강세 토픽] 비철금속 - 알루미늄 테마, 남선알미늄 +18.32%, 조일알미늄 +9.81%",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/14/MFQWGOBZHAZDGYRTMVRDKNBUGA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-14T00:15:49",
+          "causal_chain": "알루미늄 수급 불안 지속으로 인한 공급 수혜 기대 → 알루미늄 제조사의 실적 개선 전망 → 남선알미늄에 대한 매수 자금 유입.",
+          "macro_event": "알루미늄 수급 불안 지속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false
     },
     {
       "code": "490470",
@@ -570,11 +606,26 @@
       },
       "news": [
         {
-          "title": "조일알미늄, +15.98% 상승폭 확대",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GVRDCMZUG5QTQZLGGJRGEYZXMU/",
+          "title": "[특징주] 알루미늄 수급 불안 지속⋯남선알미늄ㆍ조일알미늄 ↑",
+          "url": "https://www.etoday.co.kr/news/view/2575466",
+          "source": "이투데이",
+          "published_at": "2026-04-14T00:29:00",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[강세 토픽] 비철금속 - 알루미늄 테마, 남선알미늄 +18.32%, 조일알미늄 +9.81%",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/14/MFQWGOBZHAZDGYRTMVRDKNBUGA/",
           "source": "조선비즈",
-          "published_at": "2026-04-13T01:00:51",
-          "causal_chain": "제공된 뉴스 제목에는 상승 원인에 대한 구체적 정보가 없음. 단순 가격 상승 팩트만 존재.",
+          "published_at": "2026-04-14T00:15:49",
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -585,7 +636,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": false,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "010820",
@@ -720,10 +773,16 @@
       "industry": "통신 및 방송 장비 제조업",
       "sector": "광전송장비(MSPP), 교환장비(AGW)",
       "themes": [
-        "통신 및 방송 장비",
-        "데이터센터·AI 수요에 따른 망 투자"
+        "데이터센터·AI 수요에 따른 망 투자",
+        "통신 및 방송 장비"
       ],
       "theme_paths": [
+        {
+          "name": "데이터센터·AI 수요에 따른 망 투자",
+          "path": [
+            "데이터센터·AI 수요에 따른 망 투자"
+          ]
+        },
         {
           "name": "통신 및 방송 장비",
           "path": [
@@ -731,12 +790,6 @@
             "AI 인프라",
             "통신장비",
             "통신 및 방송 장비"
-          ]
-        },
-        {
-          "name": "데이터센터·AI 수요에 따른 망 투자",
-          "path": [
-            "데이터센터·AI 수요에 따른 망 투자"
           ]
         }
       ],
