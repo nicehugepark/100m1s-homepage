@@ -2491,12 +2491,12 @@ async function initThemeTree(dateOverride) {
           row.appendChild(cntEl);
         }
       } else {
-        // trade_amount=0인 노드는 숨김 (미집계 대신 비표시)
-        wrapper.style.display = 'none';
-        const uncEl = document.createElement('span');
-        uncEl.className = 'theme-tree-uncollected';
-        uncEl.textContent = '';
-        row.appendChild(uncEl);
+        // trade_amount=0: dateOverride 후 종목이 채워질 수 있으므로 일단 표시
+        // descendant_stock_count로 판단 — 자손 포함 종목이 0이면 숨김
+        const descAny = node.descendant_stock_count || 0;
+        if (descAny === 0) {
+          wrapper.style.display = 'none';
+        }
       }
 
       const wrapper = document.createElement('div');
