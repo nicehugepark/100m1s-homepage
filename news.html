@@ -367,20 +367,23 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.25s;
 }
 .theme-trend-legend {
-  display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px; padding-left: 4px;
+  display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
+  position: relative; z-index: 4; max-width: 100%;
 }
 .theme-trend-legend-item {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 10px; font-weight: 600; color: var(--tx); cursor: pointer;
+  white-space: nowrap;
 }
 .theme-trend-legend-item .swatch {
   width: 10px; height: 3px; border-radius: 2px; flex-shrink: 0;
 }
 @media (max-width: 640px) {
-  .theme-trend-legend-item { font-size: 12px; }
-  .theme-trend-legend-item .swatch { width: 14px; height: 4px; }
+  .theme-trend-legend { gap: 4px 8px; }
+  .theme-trend-legend-item { font-size: 11px; padding: 4px 4px; }
+  .theme-trend-legend-item .swatch { width: 12px; height: 4px; }
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
-  .theme-trend-wrap { padding: 14px; }
+  .theme-trend-wrap { padding: 14px; overflow: hidden; }
   .trend-y-axis { top: 14px; left: 14px; width: 40px; height: calc(100% - 28px); }
   .trend-scroll-area { margin-left: 40px; }
   .trend-fade-left { top: 14px; left: 54px; height: calc(100% - 32px); }
@@ -400,7 +403,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
   height: 2px; background: #C49930; border-radius: 1px;
 }
-.trend-detail { margin-top: 12px; overflow: hidden; transition: max-height 0.2s ease-out; max-height: 0; }
+.trend-detail { margin-top: 12px; overflow: hidden; transition: max-height 0.2s ease-out; max-height: 0; position: relative; z-index: 4; }
 .trend-detail.open { max-height: 400px; }
 .trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 8px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
