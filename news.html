@@ -870,16 +870,22 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .cal-content-date { font-size: 20px; }
 }
 @media (max-width: 640px) {
-  .stock-main { grid-template-columns: 28px 1fr auto; }
+  .stock-main { grid-template-columns: 16px 1fr auto; padding: 8px 6px; gap: 6px; }
   .stock-price { display: none; }
-  .stock-news { padding: 10px 14px 12px 24px; }
-  .kiwoom-row { grid-template-columns: 24px 1fr auto auto; gap: 8px; }
+  .stock-news { padding: 6px 6px 8px 10px; }
+  .news-card { padding: 6px 6px; gap: 6px; }
+  .stock-theme { padding: 0 6px 6px; }
+  .cal-feature-head { grid-template-columns: 20px 1fr auto auto 14px; gap: 6px; padding: 8px 6px; }
+  .cal-feature-namecell { flex-wrap: nowrap; overflow: hidden; gap: 4px; }
+  .cal-feature-namecell .cal-streak-badge { flex-shrink: 0; }
+  .cal-feature-body { padding: 0 6px 8px 26px; }
+  .kiwoom-row { grid-template-columns: 18px 1fr auto auto; gap: 6px; }
   .kiwoom-amount { font-size: 10px; }
   .kiwoom-pct { font-size: 10px; min-width: 48px; }
-  .cal-trade-row { grid-template-columns: 24px 1fr auto auto 14px; gap: 8px; padding: 9px 10px; }
+  .cal-trade-row { grid-template-columns: 18px 1fr auto auto 14px; gap: 6px; padding: 8px 6px; }
   .cal-trade-amount { font-size: 10px; }
   .cal-trade-pct { font-size: 11px; min-width: 48px; }
-  .cal-feature-news { padding-left: 18px; }
+  .cal-feature-news { padding-left: 10px; }
 }
 </style>
 </head>
