@@ -569,6 +569,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-cell.future { color: var(--bd); cursor: not-allowed; pointer-events: none; }
 .toss-cal-cell.outside { visibility: hidden; }
 .toss-cal-cell.no-data { opacity: 0.35; pointer-events: none; }
+.toss-cal-cell.market-hours { opacity: 0.7; cursor: pointer; }
 .toss-cal-cell.weekend { opacity: 0.7; }
 .toss-cal-cell.sunday { color: #E84142; }
 .toss-cal-cell.saturday { color: #2D6AE0; }
@@ -1233,8 +1234,10 @@ function renderCalendar() {
     const isToday = (date === todayStr);
     const isHol = isHoliday(date);
     const classes = ['toss-cal-cell'];
+    const isTodayMarketHours = isToday && !isMarketClosed(date) && (new Date().getHours() < 16);
     if (isFuture) classes.push('future');
-    else if (!hasData) classes.push('no-data');
+    else if (!hasData && !isTodayMarketHours) classes.push('no-data');
+    else if (!hasData && isTodayMarketHours) classes.push('market-hours');
     if (isWeekend) classes.push('weekend');
     if (dow === 0) classes.push('sunday');
     if (dow === 6) classes.push('saturday');
@@ -1242,8 +1245,9 @@ function renderCalendar() {
     if (isToday) classes.push('today');
     if (date === calSelectedDate) classes.push('selected');
     const holName = getHolidayName(date);
-    const aria = `${date}${isToday ? ' (오늘)' : ''}${holName ? ' ' + holName : ''}`;
-    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isFuture || !hasData ? -1 : 0}" aria-label="${aria}">${d}</div>`;
+    const aria = `${date}${isToday ? ' (오늘)' : ''}${isTodayMarketHours ? ' (장중)' : ''}${holName ? ' ' + holName : ''}`;
+    const isClickable = !isFuture && (hasData || isTodayMarketHours);
+    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isClickable ? 0 : -1}" aria-label="${aria}">${d}</div>`;
   }
   grid.innerHTML = html;
 
@@ -1479,7 +1483,7 @@ function renderCalExpandContent(date, data) {
     inner.innerHTML = `
       <div class="cal-content-head">
         <div class="cal-content-date">${formatKoDate(date)}</div>
-        <div class="cal-content-meta">${closed ? '휴장' : '데이터 없음'}</div>
+        <div class="cal-content-meta">${closed ? '휴장' : (isMarketHours ? '장중' : '데이터 없음')}</div>
       </div>
       ${closedMacroHtml}
       ${emptyMsg}
@@ -1737,7 +1741,7 @@ function renderCalExpandContent(date, data) {
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
       ` : `
-        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (() => { const r = getHolidayName(date) || '주말'; const nd = getNextTradingDate(date); return '오늘은 장이 쉽니다 (' + r + ')' + (nd ? ' · 다음 거래일: ' + formatKoDate(nd) : ''); })() : '데이터 없음'}</div>
+        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (() => { const r = getHolidayName(date) || '주말'; const nd = getNextTradingDate(date); return '오늘은 장이 쉽니다 (' + r + ')' + (nd ? ' · 다음 거래일: ' + formatKoDate(nd) : ''); })() : (() => { const _n = new Date(); const _t = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`; return (date === _t && _n.getHours() < 16) ? '장중 — 종목 데이터는 마감 후 업데이트됩니다' : '종목 데이터가 없습니다'; })()}</div>
       `}
     </div>
   `;
@@ -1866,7 +1870,15 @@ async function initThemeTrend() {
       })
       .slice(0, 12);
 
-    if (themes.length === 0) return;
+    if (themes.length === 0) {
+      container.innerHTML = `
+        <div class="theme-trend-header">
+          <div class="theme-trend-title">테마 트렌드</div>
+          <div class="theme-trend-sub">최근 거래대금 흐름</div>
+        </div>
+        <div class="cal-empty" style="padding:24px 0;">테마 트렌드 데이터가 없습니다</div>`;
+      return;
+    }
 
     const COLORS = ['#C49930','#5B8DEF','#E06B6B','#4BC9A0','#A97BDB','#E8963E','#6BB5E0','#D46BAD','#7B9E3D','#E0886B','#6B8FD4','#B86BD4'];
 
@@ -2183,7 +2195,16 @@ async function initThemeTree(dateOverride) {
       _themeTreeCache = await res.json();
     }
     const data = JSON.parse(JSON.stringify(_themeTreeCache)); // deep copy
-    if (!data.nodes || data.nodes.length === 0) return;
+    if (!data.nodes || data.nodes.length === 0) {
+      const tc = document.getElementById('theme-tree-container');
+      if (tc) {
+        const _n2 = new Date();
+        const _t2 = `${_n2.getFullYear()}-${String(_n2.getMonth()+1).padStart(2,'0')}-${String(_n2.getDate()).padStart(2,'0')}`;
+        const isLive = (dateOverride === _t2 || !dateOverride) && _n2.getHours() < 16 && !isMarketClosed(_t2);
+        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '장중 — 마감 후 테마 분석 결과가 표시됩니다' : '테마 데이터가 없습니다'}</div>`;
+      }
+      return;
+    }
 
     // 날짜 지정 시: 해당 날짜의 stock JSON에서 테마 필터링
     const targetDate = dateOverride || data.date;
@@ -2236,6 +2257,18 @@ async function initThemeTree(dateOverride) {
           data.nodes = data.nodes.filter(n => activeIds.has(n.id));
         }
       } catch (e) { /* stock JSON 없으면 기본 트리 사용 */ }
+    }
+
+    // 필터링 후 노드가 없으면 빈 상태 표시
+    if (!data.nodes || data.nodes.length === 0) {
+      const tc = document.getElementById('theme-tree-container');
+      if (tc) {
+        const _n3 = new Date();
+        const _t3 = `${_n3.getFullYear()}-${String(_n3.getMonth()+1).padStart(2,'0')}-${String(_n3.getDate()).padStart(2,'0')}`;
+        const isLive = (dateOverride === _t3) && _n3.getHours() < 16 && !isMarketClosed(_t3);
+        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '장중 — 마감 후 테마 분석 결과가 표시됩니다' : '해당 날짜의 테마 데이터가 없습니다'}</div>`;
+      }
+      return;
     }
 
     const ROOT_COLORS = ['#C9A962','#7C8CBA','#E07C5A','#6BA37E','#B47CC7','#5CABB5','#D4A05A','#8B7EC8','#C75C7C'];
