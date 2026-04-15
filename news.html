@@ -190,13 +190,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .news-judgment.호재 { background: var(--pos-bg); color: var(--pos); }
 .news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
 .news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
-.cal-disc-section { display:none; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
-.cal-disc-section[data-expanded="true"] { display:flex; }
-.cal-disc-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; line-height:1.4; cursor:pointer; vertical-align:middle; user-select:none; }
-.cal-disc-badge:hover { opacity:0.85; }
-.cal-disc-badge[data-health="positive"] { background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; }
-.cal-disc-badge[data-health="neutral"] { background:#F0F0F0; color:#666; border:1px solid #D8D8D8; }
-.cal-disc-badge[data-health="negative"] { background:#E3ECFA; color:#1958C7; border:1px solid #A9C5F0; }
+.cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
+.cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--am3); color:var(--am); border:1px solid var(--am2); margin-left:6px; vertical-align:middle; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
@@ -1742,8 +1737,8 @@ function renderCalExpandContent(date, data) {
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
         const sectionId = `disc-${escapeHtml(codeId)}`;
-        discBadgeHtml = `<span class="cal-disc-badge" data-health="${health}" role="button" tabindex="0" aria-controls="${sectionId}" onclick="const s=document.getElementById('${sectionId}');if(s){s.dataset.expanded=s.dataset.expanded==='true'?'false':'true';}event.stopPropagation();">공시</span>${cbWarn}`;
-        discListHtml = `<div class="cal-disc-section" id="${sectionId}" data-expanded="false">${itemsHtml}${moreHtml}</div>`;
+        discBadgeHtml = `<span class="cal-disc-badge">공시</span>${cbWarn}`;
+        discListHtml = `<div class="cal-disc-section" id="${sectionId}">${itemsHtml}${moreHtml}</div>`;
       }
       // 뉴스 제목 + 링크 (제목 표시)
       const linkSeen = new Set();
