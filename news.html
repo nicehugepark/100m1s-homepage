@@ -1727,7 +1727,7 @@ function renderCalExpandContent(date, data) {
       const ishikawaLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
       const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
       // 공시 확장 섹션 (DART)
-      const discs = it.disclosures || [];
+      const discs = st.disclosures || [];
       let disclosureHtml = '';
       if (discs.length > 0) {
         const sentSum = discs.reduce((s, d) => s + (d.sentiment || 0), 0);
