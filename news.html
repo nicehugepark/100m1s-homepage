@@ -747,12 +747,15 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 13px;
 }
 .cal-feature-nums {
-  display: flex; align-items: center; justify-content: flex-end;
+  display: flex; align-items: center; justify-content: flex-start;
   gap: 12px;
   padding: 2px 12px 8px 44px;
   font-size: 12px;
 }
-.cal-feature-nums > * { flex-shrink: 0; }
+.cal-feature-nums > * { flex-shrink: 0; font-size: 12px; font-weight: 700; font-family: 'SF Mono', monospace; }
+.cal-feature-nums .cal-close-price { min-width: 0; }
+.cal-feature-nums .cal-feature-pct { min-width: 0; text-align: left; }
+.cal-feature-nums .cal-trade-amount { font-size: 12px; color: var(--am); }
 @media (max-width: 640px) {
   .cal-feature-nums { padding: 2px 6px 6px 26px; gap: 8px; }
 }
@@ -1831,8 +1834,8 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="cal-feature-nums">
             <div class="cal-trade-candle">${candleHtml}</div>
-            <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
             <div class="cal-feature-pct ${dir}">${pctText}</div>
+            <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
             <div class="cal-trade-amount">${amountText}</div>
           </div>
           ${badgesRowHtml}
