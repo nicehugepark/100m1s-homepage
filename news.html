@@ -191,7 +191,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
 .news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
-.cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--am3); color:var(--am); border:1px solid var(--am2); margin-left:6px; vertical-align:middle; }
+.cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--am3); color:var(--am); border:1px solid var(--am2); vertical-align:middle; }
+.cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 44px; align-items:center; }
+.cal-credit-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E3ECFA; color:#1958C7; border:1px solid #A9C5F0; vertical-align:middle; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
@@ -848,7 +850,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   display: inline-block; font-size: 9px; font-weight: 800;
   padding: 2px 7px; border-radius: 999px;
   background: var(--am3); color: var(--am); border: 1px solid var(--am2);
-  margin-left: 6px; vertical-align: middle;
+  vertical-align: middle;
 }
 .cal-theme-row {
   display: flex; flex-wrap: wrap; gap: 4px;
@@ -884,6 +886,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .cal-feature-head { grid-template-columns: 20px 1fr auto auto 14px; gap: 6px; padding: 8px 6px; }
   .cal-feature-namecell { flex-wrap: nowrap; overflow: hidden; gap: 4px; }
   .cal-feature-namecell .cal-streak-badge { flex-shrink: 0; }
+  .cal-feature-badges { padding: 4px 6px 0 26px; }
   .cal-feature-body { padding: 0 6px 8px 26px; }
   .kiwoom-row { grid-template-columns: 18px 1fr auto auto; gap: 6px; }
   .kiwoom-amount { font-size: 10px; }
@@ -1765,6 +1768,11 @@ function renderCalExpandContent(date, data) {
       const pickBadge = pc != null && pc >= 2
         ? `<span class="cal-streak-badge">${pc}연속</span>`
         : '';
+      const creditBadgeHtml = it.interp?.credit_risk
+        ? '<span class="cal-credit-badge">신용불가</span>' : '';
+      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml)
+        ? `<div class="cal-feature-badges">${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
+        : '';
       // 테마 칩은 링크 아래 별도 줄
       return `
         <div class="cal-feature-card">
@@ -1772,13 +1780,12 @@ function renderCalExpandContent(date, data) {
             <div class="cal-trade-rank">#${it.rank}</div>
             <div class="cal-feature-namecell">
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
-              ${pickBadge}
-              ${discBadgeHtml}
             </div>
             <div class="cal-trade-amount">${amountText}</div>
             <div class="cal-feature-pct ${dir}">${pctText}</div>
             <div class="cal-trade-candle">${candleHtml}</div>
           </div>
+          ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
               ? `${headlineHtml}${ishikawaHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}${discListHtml}`
