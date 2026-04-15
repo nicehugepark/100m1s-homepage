@@ -869,11 +869,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 1px solid #E5A4AB;
 }
 .cal-feature-card.no-interp { opacity: 0.55; }
-.cal-pick-meta {
-  font-size: 10.5px; color: var(--dm); font-style: italic;
-  padding: 2px 0; margin-top: 2px;
-  opacity: 0.75;
-}
+.cal-pick-meta { margin-top: 6px; }
+.cal-disc-cat.streak { background: var(--am3); color: var(--am); border: 1px solid var(--am2); }
 .cal-streak-badge {
   display: inline-block; font-size: 9px; font-weight: 800;
   padding: 2px 7px; border-radius: 999px;
@@ -1847,7 +1844,7 @@ function renderCalExpandContent(date, data) {
       const pp = st.prev_pick;
       const pc = st.pick_count;
       const pickMeta = (pp && pc >= 2)
-        ? `<div class="cal-pick-meta">연속 ${pc}회 등장 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
+        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">${pc}연속</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
         : '';
       // 종목명 우측 연속 배지: 2+ → "N연속", 1이면 비표시
       const pickBadge = pc != null && pc >= 2
