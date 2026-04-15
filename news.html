@@ -190,18 +190,14 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .news-judgment.호재 { background: var(--pos-bg); color: var(--pos); }
 .news-judgment.악재 { background: var(--neg-bg); color: var(--neg); }
 .news-judgment.중립 { background: var(--neu-bg); color: var(--neu); }
-.cal-disc-section { margin-top: 2px; }
-.cal-disc-toggle { display:flex; align-items:center; gap:6px; width:100%; padding:4px 0; border:none; background:none; cursor:pointer; font-size:11.5px; color:var(--tx2); font-family:inherit; text-align:left; }
-.cal-disc-toggle:hover { opacity:0.8; }
-.cal-disc-badge { display:inline-flex; align-items:center; gap:3px; padding:1px 6px; border-radius:3px; font-size:10.5px; font-weight:600; line-height:1.4; }
-.cal-disc-badge[data-health="positive"] { background:#E8F5E9; color:#2E7D32; }
-.cal-disc-badge[data-health="neutral"] { background:#F0F0F0; color:#888; }
-.cal-disc-badge[data-health="negative"] { background:#E3ECFA; color:#1958C7; }
-.cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; }
-.cal-disc-arrow { transition:transform 0.15s ease; color:var(--dm); flex-shrink:0; margin-left:auto; }
-.cal-disc-section[data-expanded="true"] .cal-disc-arrow { transform:rotate(180deg); }
-.cal-disc-list { display:none; flex-direction:column; gap:3px; padding:4px 0 0 0; }
-.cal-disc-section[data-expanded="true"] .cal-disc-list { display:flex; }
+.cal-disc-section { display:none; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
+.cal-disc-section[data-expanded="true"] { display:flex; }
+.cal-disc-badge { display:inline-flex; align-items:center; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; line-height:1.4; cursor:pointer; vertical-align:middle; user-select:none; }
+.cal-disc-badge:hover { opacity:0.85; }
+.cal-disc-badge[data-health="positive"] { background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; }
+.cal-disc-badge[data-health="neutral"] { background:#F0F0F0; color:#666; border:1px solid #D8D8D8; }
+.cal-disc-badge[data-health="negative"] { background:#E3ECFA; color:#1958C7; border:1px solid #A9C5F0; }
+.cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
 .cal-disc-cat { flex-shrink:0; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
@@ -1726,9 +1722,10 @@ function renderCalExpandContent(date, data) {
       const diffRaw = (st.differentiator || st.outlook || '').trim();
       const ishikawaLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
       const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
-      // 공시 확장 섹션 (DART)
+      // 공시 (DART) — 뱃지는 namecell, 목록은 카드 최하단
       const discs = st.disclosures || [];
-      let disclosureHtml = '';
+      let discBadgeHtml = '';
+      let discListHtml = '';
       if (discs.length > 0) {
         const sentSum = discs.reduce((s, d) => s + (d.sentiment || 0), 0);
         const health = sentSum > 0 ? 'positive' : sentSum < 0 ? 'negative' : 'neutral';
@@ -1744,7 +1741,9 @@ function renderCalExpandContent(date, data) {
         }).join('');
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
-        disclosureHtml = `<div class="cal-disc-section" data-expanded="false"><button class="cal-disc-toggle" aria-expanded="false" aria-controls="disc-${escapeHtml(codeId)}" onclick="this.parentElement.dataset.expanded=this.parentElement.dataset.expanded==='true'?'false':'true';this.setAttribute('aria-expanded',this.parentElement.dataset.expanded)"><span class="cal-disc-badge" data-health="${health}">공시 <strong>${discs.length}</strong>건</span>${cbWarn}<svg class="cal-disc-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></button><div class="cal-disc-list" id="disc-${escapeHtml(codeId)}">${itemsHtml}${moreHtml}</div></div>`;
+        const sectionId = `disc-${escapeHtml(codeId)}`;
+        discBadgeHtml = `<span class="cal-disc-badge" data-health="${health}" role="button" tabindex="0" aria-controls="${sectionId}" onclick="const s=document.getElementById('${sectionId}');if(s){s.dataset.expanded=s.dataset.expanded==='true'?'false':'true';}event.stopPropagation();">공시</span>${cbWarn}`;
+        discListHtml = `<div class="cal-disc-section" id="${sectionId}" data-expanded="false">${itemsHtml}${moreHtml}</div>`;
       }
       // 뉴스 제목 + 링크 (제목 표시)
       const linkSeen = new Set();
@@ -1779,14 +1778,15 @@ function renderCalExpandContent(date, data) {
             <div class="cal-feature-namecell">
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
               ${pickBadge}
+              ${discBadgeHtml}
             </div>
             <div class="cal-trade-amount">${amountText}</div>
             <div class="cal-feature-pct ${dir}">${pctText}</div>
             <div class="cal-trade-candle">${candleHtml}</div>
           </div>
           <div class="cal-feature-body">
-            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || disclosureHtml || themesHtml || pickMeta
-              ? `${headlineHtml}${ishikawaHtml}${disclosureHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}`
+            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
+              ? `${headlineHtml}${ishikawaHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}${discListHtml}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
