@@ -202,8 +202,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-disc-summary { flex:1; min-width:0; white-space:normal; word-break:break-word; line-height:1.4; }
 .cal-disc-ext { flex-shrink:0; color:var(--dm); }
 .cal-disc-more { font-size:10.5px; color:var(--dm); padding:2px 0; font-style:italic; }
-.cal-disc-period { flex-shrink:0; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:600; background:#F0F0F0; color:#666; }
-.cal-disc-condition { display:block; font-size:10px; color:var(--dm); margin-top:2px; font-style:italic; }
+.cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:#444; white-space:normal; word-break:keep-all; line-height:1.45; }
+.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:#EEE; color:#555; vertical-align:1px; }
+.cal-disc-condition { display:block; font-size:10.5px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
 .cal-credit-reason { margin-top:8px; padding:6px 10px; border-radius:6px; background:#FDE8E8; color:#C53939; font-size:11px; font-weight:600; }
 .judgment-strength {
   font-weight: 700;
@@ -1743,21 +1744,33 @@ function renderCalExpandContent(date, data) {
         const maxShow = 3;
         const shown = discs.slice(0, maxShow);
         const moreCount = discs.length - maxShow;
-        const fmtMD = (s) => {
+        const _DOW = ['일','월','화','수','목','금','토'];
+        const formatDateWithDow = (s) => {
           if (!s) return '';
           const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);
-          return m ? `${parseInt(m[2],10)}/${parseInt(m[3],10)}` : '';
+          if (!m) return '';
+          const dt = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+          return `${m[1]}-${m[2]}-${m[3]}(${_DOW[dt.getUTCDay()]})`;
+        };
+        const formatPeriodText = (ps, pe) => {
+          const a = formatDateWithDow(ps), b = formatDateWithDow(pe);
+          if (a && b && a !== b) return `${a} ~ ${b}`;
+          if (a && b) return a;
+          if (a) return `${a} 부터`;
+          if (b) return `~ ${b}`;
+          return '';
         };
         const itemsHtml = shown.map(d => {
           const catCls = d.is_cb ? 'cal-disc-cat cb' : 'cal-disc-cat';
           const catLabel = d.category || '기타';
-          const ps = fmtMD(d.period_start), pe = fmtMD(d.period_end);
-          const periodHtml = (ps && pe) ? `<span class="cal-disc-period">${ps}~${pe}</span>`
-                            : (ps || pe) ? `<span class="cal-disc-period">${ps || pe}</span>` : '';
+          const periodText = formatPeriodText(d.period_start, d.period_end);
+          const periodHtml = periodText
+            ? `<span class="cal-disc-period"><span class="cal-disc-period-label">기간</span>${escapeHtml(periodText)}</span>`
+            : '';
           const conditionHtml = d.condition
             ? `<span class="cal-disc-condition">조건: ${escapeHtml(sanitize(d.condition))}${d.regulation_period ? ' — ' + escapeHtml(sanitize(d.regulation_period)) : ''}</span>`
             : '';
-          return `<a class="cal-disc-item" href="${escapeHtml(d.url || '#')}" target="_blank" rel="noopener noreferrer"><span class="${catCls}">${escapeHtml(catLabel)}</span>${periodHtml}<span class="cal-disc-summary">${escapeHtml(d.title)}${conditionHtml}</span><svg class="cal-disc-ext" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`;
+          return `<a class="cal-disc-item" href="${escapeHtml(d.url || '#')}" target="_blank" rel="noopener noreferrer"><span class="${catCls}">${escapeHtml(catLabel)}</span><span class="cal-disc-summary">${escapeHtml(d.title)}${periodHtml}${conditionHtml}</span><svg class="cal-disc-ext" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`;
         }).join('');
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
