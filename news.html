@@ -202,15 +202,18 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
-.cal-disc-cat { flex-shrink:0; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
+.cal-disc-cat { flex-shrink:0; min-width:42px; text-align:center; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
 .cal-disc-cat.cb { background:#FFF3E0; color:#E65100; }
+.cal-disc-cat.credit { background:#FDE8E8; color:#C53939; }
 .cal-disc-summary { flex:1; min-width:0; white-space:normal; word-break:break-word; line-height:1.4; }
 .cal-disc-ext { flex-shrink:0; color:var(--dm); }
 .cal-disc-more { font-size:10.5px; color:var(--dm); padding:2px 0; font-style:italic; }
 .cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:#444; white-space:normal; word-break:keep-all; line-height:1.45; }
 .cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:#EEE; color:#555; vertical-align:1px; }
 .cal-disc-condition { display:block; font-size:10.5px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
-.cal-credit-reason { margin-top:8px; padding:6px 10px; border-radius:6px; background:#FDE8E8; color:#C53939; font-size:11px; font-weight:600; }
+.cal-credit-reason { margin-top:6px; }
+.cal-credit-reason .cal-disc-item { color:#C53939; }
+.cal-credit-reason .cal-disc-item:hover { color:#A02828; }
 .judgment-strength {
   font-weight: 700;
   font-size: 9px;
@@ -1853,7 +1856,7 @@ function renderCalExpandContent(date, data) {
       const creditBadgeHtml = it.interp?.credit_risk
         ? '<span class="cal-credit-badge">신용불가</span>' : '';
       const creditReasonHtml = (st.credit_risk && st.credit_reason)
-        ? `<div class="cal-credit-reason">⚠ 신용불가 사유: ${escapeHtml(sanitize(st.credit_reason))}</div>`
+        ? `<div class="cal-credit-reason"><div class="cal-disc-item"><span class="cal-disc-cat credit">신용불가</span><span class="cal-disc-summary">${escapeHtml(sanitize(st.credit_reason))}</span></div></div>`
         : '';
       const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml)
         ? `<div class="cal-feature-badges">${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
