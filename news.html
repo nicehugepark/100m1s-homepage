@@ -1985,12 +1985,16 @@ async function initThemeTrend() {
     const yAxisW = isMobile ? 40 : 48;
     const H = isMobile ? 180 : 160;
     const PAD = isMobile
-      ? { top: 10, right: 24, bottom: 26 }
-      : { top: 12, right: 16, bottom: 28 };
+      ? { top: 10, right: 36, bottom: 26 }
+      : { top: 12, right: 32, bottom: 28 };
     const plotH = H - PAD.top - PAD.bottom;
 
     // 차트 SVG 폭: 7일 기준 가용폭을 날짜 수에 비례 확장
-    const baseW = isMobile ? 320 : 672; // yAxisW 제외 가용폭
+    // 데스크탑은 컨테이너 실측 폭 기반 (좌측 쏠림 방지)
+    const wrapPadding = isMobile ? 28 : 40; // .theme-trend-wrap 좌우 padding 합
+    const measuredW = container.clientWidth || 720;
+    const availableW = Math.max(280, measuredW - wrapPadding - yAxisW);
+    const baseW = isMobile ? 320 : availableW;
     const chartW = needsScroll ? Math.round(baseW * (dates.length / VISIBLE_DAYS)) : baseW;
     const plotW = chartW - PAD.right;
 
