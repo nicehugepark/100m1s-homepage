@@ -782,7 +782,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 11px; color: var(--dm); padding: 4px 0;
 }
 
-/* 해석 (뉴지 + 주주) */
+/* 해석 (이시카와 + 토구사) */
 .cal-macro-strip {
   display: flex; flex-wrap: wrap; gap: 6px 8px;
   padding: 8px 0 4px 0;
@@ -808,7 +808,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-grade-badge.grade-관심 { background: #FFF4D1; color: #6B4A0A; border: 1px solid #C49930; }
 .cal-grade-badge.grade-대기 { background: #F1F2F5; color: #6B7280; border: 1px solid #C9CCD2; }
 .cal-grade-badge.grade-회피 { background: #FCE7E9; color: #A01528; border: 1px solid #E5A4AB; }
-.cal-newzy-line {
+.cal-ishikawa-line {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
 }
 .cal-headline {
@@ -1346,7 +1346,7 @@ async function loadCalDayData(date) {
   // 종목명 → 해석 stock 객체 병합 맵
   const interpretedByName = new Map();
   let macroEvents = [];
-  // Phase 1 뉴스 파이프라인 산출물 (stock-YYYY-MM-DD.json) — DB 종목 마스터 + 뉴지/주주 해석
+  // Phase 1 뉴스 파이프라인 산출물 (stock-YYYY-MM-DD.json) — DB 종목 마스터 + 이시카와/토구사 해석
   try {
     if (stockDailyData) {
       const stockDaily = stockDailyData;
@@ -1724,8 +1724,8 @@ function renderCalExpandContent(date, data) {
       // differentiator가 causal_chain과 동일하면 중복 제거
       const causalText = (causal[0] || '').trim();
       const diffRaw = (st.differentiator || st.outlook || '').trim();
-      const newzyLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
-      const newzyHtml = newzyLine ? `<div class="cal-newzy-line">${escapeHtml(sanitize(newzyLine))}</div>` : '';
+      const ishikawaLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
+      const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
       // 공시 확장 섹션 (DART)
       const discs = it.disclosures || [];
       let disclosureHtml = '';
@@ -1785,8 +1785,8 @@ function renderCalExpandContent(date, data) {
             <div class="cal-trade-candle">${candleHtml}</div>
           </div>
           <div class="cal-feature-body">
-            ${headlineHtml || newzyHtml || causalHtml || linksHtml || disclosureHtml || themesHtml || pickMeta
-              ? `${headlineHtml}${newzyHtml}${disclosureHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}`
+            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || disclosureHtml || themesHtml || pickMeta
+              ? `${headlineHtml}${ishikawaHtml}${disclosureHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
