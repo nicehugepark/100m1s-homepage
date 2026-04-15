@@ -740,12 +740,21 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .cal-feature-card:hover { background: var(--am4); }
 .cal-feature-head {
-  display: grid;
-  grid-template-columns: 28px 1fr auto auto auto 16px;
-  gap: 12px;
+  display: flex;
   align-items: center;
-  padding: 10px 12px;
+  gap: 8px;
+  padding: 10px 12px 4px;
   font-size: 13px;
+}
+.cal-feature-nums {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 12px;
+  padding: 2px 12px 8px 44px;
+  font-size: 12px;
+}
+.cal-feature-nums > * { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .cal-feature-nums { padding: 2px 6px 6px 26px; gap: 8px; }
 }
 .cal-feature-name {
   font-weight: 800; color: var(--tx); letter-spacing: -0.2px;
@@ -891,7 +900,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .stock-news { padding: 6px 6px 8px 10px; }
   .news-card { padding: 6px 6px; gap: 6px; }
   .stock-theme { padding: 0 6px 6px; }
-  .cal-feature-head { grid-template-columns: 20px 1fr auto auto auto 14px; gap: 6px; padding: 8px 6px; }
+  .cal-feature-head { gap: 6px; padding: 8px 6px 4px; }
   .cal-feature-namecell { flex-wrap: nowrap; overflow: hidden; gap: 4px; }
   .cal-feature-namecell .cal-streak-badge { flex-shrink: 0; }
   .cal-feature-badges { padding: 4px 6px 0 26px; }
@@ -1819,10 +1828,12 @@ function renderCalExpandContent(date, data) {
             <div class="cal-feature-namecell">
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
             </div>
-            <div class="cal-trade-amount">${amountText}</div>
+          </div>
+          <div class="cal-feature-nums">
+            <div class="cal-trade-candle">${candleHtml}</div>
             <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
             <div class="cal-feature-pct ${dir}">${pctText}</div>
-            <div class="cal-trade-candle">${candleHtml}</div>
+            <div class="cal-trade-amount">${amountText}</div>
           </div>
           ${badgesRowHtml}
           <div class="cal-feature-body">
