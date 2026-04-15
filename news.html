@@ -2558,6 +2558,7 @@ async function initThemeTree(dateOverride) {
       const pctColor = pct >= 0 ? '#EF4444' : '#3B82F6';
       const indent = depth * 24;
 
+      const wrapper = document.createElement('div');
       const row = document.createElement('div');
       row.className = 'theme-tree-row';
       row.style.paddingLeft = indent + 'px';
@@ -2605,7 +2606,6 @@ async function initThemeTree(dateOverride) {
         }
       }
 
-      const wrapper = document.createElement('div');
       wrapper.appendChild(row);
 
       // --- 종목 행 렌더링 헬퍼 ---
