@@ -685,7 +685,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
 .cal-trade-row {
   display: grid;
-  grid-template-columns: 28px 1fr auto auto 16px;
+  grid-template-columns: 28px 1fr auto auto auto 16px;
   gap: 12px;
   align-items: center;
   padding: 10px 12px;
@@ -705,6 +705,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-trade-amount {
   font-size: 11px; color: var(--am); font-weight: 800;
   font-family: 'SF Mono', monospace;
+}
+.cal-close-price {
+  font-size: 11px; color: var(--tx); font-weight: 700;
+  font-family: 'SF Mono', monospace; text-align: right; min-width: 60px;
 }
 .cal-trade-pct {
   font-size: 12px; font-weight: 800;
@@ -733,7 +737,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-card:hover { background: var(--am4); }
 .cal-feature-head {
   display: grid;
-  grid-template-columns: 28px 1fr auto auto 16px;
+  grid-template-columns: 28px 1fr auto auto auto 16px;
   gap: 12px;
   align-items: center;
   padding: 10px 12px;
@@ -891,7 +895,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .kiwoom-row { grid-template-columns: 18px 1fr auto auto; gap: 6px; }
   .kiwoom-amount { font-size: 10px; }
   .kiwoom-pct { font-size: 10px; min-width: 48px; }
-  .cal-trade-row { grid-template-columns: 18px 1fr auto auto 14px; gap: 6px; padding: 8px 6px; }
+  .cal-trade-row { grid-template-columns: 18px 1fr auto auto auto 14px; gap: 6px; padding: 8px 6px; }
   .cal-trade-amount { font-size: 10px; }
   .cal-trade-pct { font-size: 11px; min-width: 48px; }
   .cal-feature-news { padding-left: 10px; }
@@ -1408,6 +1412,7 @@ async function loadCalDayData(date) {
             prev_pick: pp,
             disclosures: st.disclosures || [],
             credit_risk: !!st.credit_risk,
+            close_price: st.close_price || null,
           });
         }
       }
@@ -1622,6 +1627,7 @@ function renderCalExpandContent(date, data) {
         ticker: interp.code || interp.ticker || '',
         pct: interp.change_pct ?? null,
         amount: interp.trade_amount ?? null,
+        price: interp.close_price ?? null,
         themes,
         interp,
         links
@@ -1783,6 +1789,7 @@ function renderCalExpandContent(date, data) {
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
             </div>
             <div class="cal-trade-amount">${amountText}</div>
+            <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
             <div class="cal-feature-pct ${dir}">${pctText}</div>
             <div class="cal-trade-candle">${candleHtml}</div>
           </div>
@@ -1817,6 +1824,7 @@ function renderCalExpandContent(date, data) {
           ${linksHtml}
         </div>
         <div class="cal-trade-amount">${amountText}</div>
+        <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
         <div class="cal-trade-pct ${dir}">${pctText}</div>
         <div class="cal-trade-candle">${candleHtml}</div>
       </div>`;
