@@ -1488,9 +1488,13 @@ async function loadCalDayData(date) {
         const curr = interpretedByName.get(name);
         if ((curr.causal_chain || []).length > 0) continue;
         if ((prevInterp.causal_chain || []).length > 0) {
-          const merged = Object.assign({}, prevInterp);
-          if (curr.pick_count) merged.pick_count = curr.pick_count;
-          if (curr.prev_pick) merged.prev_pick = curr.prev_pick;
+          // curr를 base로 두고, prev에서 분석성 필드만 보충 (당일 가격/공시/분봉/신용 등 보존)
+          const merged = Object.assign({}, curr, {
+            causal_chain: prevInterp.causal_chain,
+            differentiator: prevInterp.differentiator || curr.differentiator,
+            macro_event: prevInterp.macro_event || curr.macro_event,
+            news_digest: prevInterp.news_digest || curr.news_digest,
+          });
           interpretedByName.set(name, merged);
         }
       }
