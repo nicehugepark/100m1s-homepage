@@ -1856,7 +1856,7 @@ function renderCalExpandContent(date, data) {
         : '';
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
-        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.open, dir)}</div>`
+        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, dir)}</div>`
         : '';
       return `
         <div class="cal-feature-card">
@@ -2014,7 +2014,8 @@ function miniCandle(open, high, low, close, changePct) {
     return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
       '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/></svg>';
   }
-  const isUp = close >= open;
+  // 색상은 등락률(전일대비) 기준으로 통일. 스파크라인·등락률 숫자와 일관.
+  const isUp = (changePct != null) ? (changePct >= 0) : (close >= open);
   const color = isUp ? '#E03131' : '#1971C2';
   const range = high - low;
   if (range === 0) return '<svg width="'+W+'" height="'+H+'"><line x1="6" y1="0" x2="6" y2="'+H+'" stroke="#8B95A8" stroke-width="1"/></svg>';
