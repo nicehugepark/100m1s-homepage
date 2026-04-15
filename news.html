@@ -1763,8 +1763,8 @@ function renderCalExpandContent(date, data) {
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
       const pc = st.pick_count;
-      const pickMeta = pp
-        ? `<div class="cal-pick-meta">연속 ${pc || 2}회 등장 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
+      const pickMeta = (pp && pc >= 2)
+        ? `<div class="cal-pick-meta">연속 ${pc}회 등장 — 전일 순위 #${pp.rank}, ${fmtTradeAmount(pp.trade_amount)}, ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</div>`
         : '';
       // 종목명 우측 연속 배지: 2+ → "N연속", 1이면 비표시
       const pickBadge = pc != null && pc >= 2
