@@ -113,7 +113,7 @@ function renderCalExpandContent(date, data) {
     featureSource = 'fallback';
     featureItems = kiwoomStocks.slice(0, 6).map(s => {
       const interp = interpByName.get(s.name);
-      const pct = interp?.change_pct ?? s.change_pct ?? null;
+      const pct = interp?.change_pct ?? s.change_pct ?? s.max_change_pct ?? null;
       const themes = (interp?.themes || themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
       return { name: s.name, pct, themes, links: [], ticker: s.ticker, reason: '', interp };
     });
@@ -134,14 +134,14 @@ function renderCalExpandContent(date, data) {
     todayStocks = kiwoomStocks.map((s, i) => {
       const interp = interpByName.get(s.name);
       // 등락률: stock JSON의 종가 기준 우선 (키움 max_change_pct는 장중 최대라 부정확)
-      const pct = interp?.change_pct ?? s.change_pct ?? null;
+      const pct = interp?.change_pct ?? s.change_pct ?? s.max_change_pct ?? null;
       let themes;
       if (interp && Array.isArray(interp.themes) && interp.themes.length > 0) {
         themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
       } else {
         themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
-      return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open, high: s.high, low: s.low, price: s.last_price ?? s.price };
+      return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price: s.last_price ?? s.price ?? interp?.close_price };
     });
   } else if (interpByName.size > 0) {
     // kiwoom JSON 없음 → stock-*.json (interpretedByName)에서 종목 구성
