@@ -1,6 +1,6 @@
 {
   "date": "2026-04-16",
-  "generated_at": "2026-04-16T13:26:51.617037",
+  "generated_at": "2026-04-16T13:41:11.123964",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -42,9 +42,9 @@
       "code": "011930",
       "name": "신성이엔지",
       "rank": 1,
-      "trade_amount": 484366897000,
+      "trade_amount": 486376101300,
       "change_pct": 19.17,
-      "close_price": 4385,
+      "close_price": 4350,
       "industry": "반도체 제조업",
       "sector": "태양전지, 태양광모듈 제조 및 판매, 태양광 발전설치공사, 클린룸, 자동화장비",
       "themes": [
@@ -82,8 +82,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/15/MJRWCMJXME3WMOBYG42TKYRYMU/",
           "source": "조선비즈",
           "published_at": "2026-04-14T23:01:18",
-          "causal_chain": "공매도 수량 상위 신호. 단기 약세를 나타내나 구체적 매크로 이벤트나 배경은 제목에서 미상.",
-          "macro_event": "신성이엔지 공매도 수량 상위 신호 (4월 14일)",
+          "causal_chain": "JP모건이 신성이엔지 주요주주로 등극 → 클린룸 사업 회복 및 신사업 기대감 반영 → 글로벌 기관 자금 유입 신호.",
+          "macro_event": "JP모건 신성이엔지 주요주주 등극, 클린룸 회복·신사업 기대 반영",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -97,8 +97,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04218086645416120",
           "source": "이데일리",
           "published_at": "2026-04-14T07:12:42",
-          "causal_chain": "글로벌 대형 투자자(JP모건)의 주요주주 진입 → 반도체 제조 시설(클린룸) 회복 및 신사업 추진 신뢰도 상승 → 회사 성장성 재평가 및 자금 유입",
-          "macro_event": "JP모건, 신성이엔지 주요주주 등극",
+          "causal_chain": "JP모건이 신성이엔지 주요주주로 등극 → 클린룸 사업 회복 및 신사업 기대감 반영 → 글로벌 기관 자금 유입 신호.",
+          "macro_event": "JP모건 신성이엔지 주요주주 등극, 클린룸 회복·신사업 기대 반영",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -112,7 +112,7 @@
       "intraday": {
         "step_min": 10,
         "open": 4200,
-        "base": 3680,
+        "base": 3650,
         "prices": [
           4200,
           4805,
@@ -138,7 +138,10 @@
           4420,
           4405,
           4405,
-          4430
+          4405,
+          4385,
+          4350,
+          4305
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -149,9 +152,9 @@
       "code": "017900",
       "name": "광전자",
       "rank": 2,
-      "trade_amount": 393742313690,
+      "trade_amount": 429011567600,
       "change_pct": 13.05,
-      "close_price": 16330,
+      "close_price": 15400,
       "industry": "반도체 제조업",
       "sector": "트랜지스터,SMD TR,발광소자,리모콘모듈,발광다이오드(L.E.D),다이오드용웨이퍼팹(Fab) 제조,판매",
       "themes": [
@@ -178,7 +181,7 @@
       "intraday": {
         "step_min": 10,
         "open": 22000,
-        "base": 14445,
+        "base": 13622,
         "prices": [
           22000,
           20600,
@@ -204,88 +207,10 @@
           18170,
           18480,
           18230,
-          17420
-        ]
-      },
-      "credit_risk": true,
-      "credit_reason": "회사한도초과 (2026-04-16(목) 적용 — 다음 영업일 재평가)",
-      "togusa_verdict": "weak_bull",
-      "theme_leader": false,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
-    },
-    {
-      "code": "456010",
-      "name": "아이씨티케이",
-      "rank": 3,
-      "trade_amount": 270465869250,
-      "change_pct": 21.35,
-      "close_price": 27250,
-      "industry": "반도체 제조업",
-      "sector": "PUF반도체,보안솔루션(보안반도체,정보통신모듈기기,정보통신용반도체) 제조,개발",
-      "themes": [
-        "반도체"
-      ],
-      "theme_paths": [
-        {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        }
-      ],
-      "pick_count": 3,
-      "prev_pick": {
-        "date": "2026-04-15",
-        "rank": 43,
-        "change_pct": 29.95,
-        "trade_amount": 67101898500
-      },
-      "news": [],
-      "fallback": true,
-      "status_badges": [
-        {
-          "label": "투자주의예고",
-          "severity": "caution",
-          "start": "2026-04-16",
-          "end": "2026-04-29",
-          "summary": "아이씨티케이가 2026-04-16부터 1일간 투자주의종목으로 지정되고, 04-16부터 04-29일 내 3가지 조건(① 5일 전일 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
-          "condition": "3가지 모두 충족: (1) 판단일 종가가 5일 전일 종가보다 60% 이상 상승 (2) 판단일 종가가 최근 15일 중 최고가 (3) 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상",
-          "regulation": "투자주의 1거래일(2026-04-16), 투자경고 지정 시 2거래일 단일가 매매 (KRX 규정 기준)"
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 28950,
-        "base": 22456,
-        "prices": [
-          28950,
-          27250,
-          27800,
-          27100,
-          26750,
-          26500,
-          25950,
-          26100,
-          26200,
-          26900,
-          26350,
-          25750,
-          25950,
-          25800,
-          25600,
-          25550,
-          25700,
-          26100,
-          25750,
-          25750,
-          27125,
-          26900,
-          27000,
-          26850,
-          27600
+          16720,
+          16210,
+          15550,
+          15290
         ]
       },
       "credit_risk": true,
@@ -299,10 +224,10 @@
     {
       "code": "158430",
       "name": "아톤",
-      "rank": 4,
-      "trade_amount": 269125700350,
+      "rank": 3,
+      "trade_amount": 286885180830,
       "change_pct": 27.89,
-      "close_price": 11050,
+      "close_price": 11010,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "모바일금융솔루션, mOTP 개발",
       "themes": [],
@@ -319,7 +244,7 @@
       "intraday": {
         "step_min": 10,
         "open": 10380,
-        "base": 8640,
+        "base": 8609,
         "prices": [
           10380,
           11090,
@@ -345,7 +270,10 @@
           11270,
           11160,
           11290,
-          11320
+          11080,
+          11150,
+          10820,
+          11020
         ]
       },
       "togusa_verdict": "neutral",
@@ -355,10 +283,10 @@
     {
       "code": "069540",
       "name": "빛과전자",
-      "rank": 5,
-      "trade_amount": 260851182060,
+      "rank": 4,
+      "trade_amount": 280525890530,
       "change_pct": 19.41,
-      "close_price": 6510,
+      "close_price": 5930,
       "industry": "통신 및 방송 장비 제조업",
       "sector": "기타무선통신장비제조업",
       "themes": [
@@ -404,7 +332,7 @@
       "intraday": {
         "step_min": 10,
         "open": 7200,
-        "base": 5452,
+        "base": 4966,
         "prices": [
           7200,
           7740,
@@ -430,7 +358,10 @@
           7300,
           7460,
           7350,
-          7360
+          7030,
+          6460,
+          6140,
+          5660
         ]
       },
       "credit_risk": true,
@@ -440,12 +371,112 @@
       "hugepark_grade": "관찰"
     },
     {
+      "code": "456010",
+      "name": "아이씨티케이",
+      "rank": 5,
+      "trade_amount": 273911291400,
+      "change_pct": 21.35,
+      "close_price": 26300,
+      "industry": "반도체 제조업",
+      "sector": "PUF반도체,보안솔루션(보안반도체,정보통신모듈기기,정보통신용반도체) 제조,개발",
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
+      "pick_count": 3,
+      "prev_pick": {
+        "date": "2026-04-15",
+        "rank": 43,
+        "change_pct": 29.95,
+        "trade_amount": 67101898500
+      },
+      "news": [],
+      "fallback": true,
+      "status_badges": [
+        {
+          "label": "투자주의예고",
+          "severity": "caution",
+          "start": "2026-04-16",
+          "end": "2026-04-29",
+          "summary": "아이씨티케이가 2026-04-16부터 2026-04-16 당일 투자주의종목으로 지정되고, 04-16부터 04-29일 내 3가지 조건(① 5일 전일 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "condition": "3가지 모두 충족: (1) 판단일 종가가 5일 전일 종가보다 60% 이상 상승 (2) 판단일 종가가 최근 15일 중 최고가 (3) 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상",
+          "regulation": "투자주의 1거래일(2026-04-16), 투자경고 지정 시 2거래일 단일가 매매 (KRX 규정 기준)",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-09) 대비 60%↑",
+              "base_price": 14200,
+              "threshold": 22720,
+              "current": 26300,
+              "triggered": true
+            },
+            {
+              "desc": "전일(2026-04-15) 대비 60%↑",
+              "base_price": 22950,
+              "threshold": 36720,
+              "current": 26300,
+              "triggered": false
+            }
+          ]
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 28950,
+        "base": 21673,
+        "prices": [
+          28950,
+          27250,
+          27800,
+          27100,
+          26750,
+          26500,
+          25950,
+          26100,
+          26200,
+          26900,
+          26350,
+          25750,
+          25950,
+          25800,
+          25600,
+          25550,
+          25700,
+          26100,
+          25750,
+          25750,
+          27125,
+          26900,
+          27000,
+          26850,
+          27300,
+          27400,
+          25850,
+          26200
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과 (2026-04-16(목) 적용 — 다음 영업일 재평가)",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": false,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
+    },
+    {
       "code": "388050",
       "name": "지투파워",
       "rank": 6,
-      "trade_amount": 228260266140,
+      "trade_amount": 233033595200,
       "change_pct": 15.95,
-      "close_price": 15270,
+      "close_price": 15040,
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "수·배전반, 태양광발전시스템, 인버터(PCS)",
       "themes": [],
@@ -462,7 +493,7 @@
       "intraday": {
         "step_min": 10,
         "open": 14040,
-        "base": 13169,
+        "base": 12971,
         "prices": [
           14040,
           14690,
@@ -488,7 +519,10 @@
           15380,
           15330,
           15250,
-          15120
+          15090,
+          15160,
+          15230,
+          15180
         ]
       },
       "togusa_verdict": "neutral",
@@ -499,14 +533,15 @@
       "code": "010060",
       "name": "OCI홀딩스",
       "rank": 7,
-      "trade_amount": 157494220000,
+      "trade_amount": 160450110000,
       "change_pct": 14.04,
-      "close_price": 268000,
+      "close_price": 262000,
       "industry": "기타 금융업",
       "sector": "타르제품,카본블랙,무수프탈산,농약원제,석탄화학제품,정밀화학제품,플라스틱창호재 제조,판매",
       "themes": [
         "태양광",
-        "MASGA/미국 제조업 쇼어링"
+        "MASGA/미국 제조업 쇼어링",
+        "스페이스X"
       ],
       "theme_paths": [
         {
@@ -524,6 +559,13 @@
             "트럼프",
             "MASGA/미국 제조업 쇼어링"
           ]
+        },
+        {
+          "name": "스페이스X",
+          "path": [
+            "우주항공",
+            "스페이스X"
+          ]
         }
       ],
       "pick_count": 2,
@@ -539,8 +581,8 @@
           "url": "https://www.sedaily.com/article/20032803",
           "source": "서울경제",
           "published_at": "2026-04-15T04:25:02",
-          "causal_chain": "스페이스X의 비중국 폴리실리콘 공급 계약 추진은 미국의 비중국 공급망 강화 기조(IRA 정책)를 재확인시키며, OCI테라서스의 장기 공급 계약(약 1조원, 3~5년) 기대로 이어져 중장기 실적 성장과 가동률 안정화를 기대할 수 있게 함.",
-          "macro_event": "스페이스X의 비중국산 폴리실리콘 공급 계약 협상 시작(약 1조원 규모, 계약기간 3~5년)",
+          "causal_chain": "OCI홀딩스와 스페이스X 간 폴리실리콘 공급 계약 체결 기대 소식 → 증권가 호평과 함께 29% 급등.",
+          "macro_event": "OCI홀딩스-스페이스X 간 폴리실리콘 공급 계약 추진 소식",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -554,8 +596,8 @@
           "url": "https://www.mk.co.kr/news/stock/12017369",
           "source": "매경",
           "published_at": "2026-04-15T01:02:48",
-          "causal_chain": "스페이스X의 비중국 폴리실리콘 공급 계약 추진은 미국의 비중국 공급망 강화 기조(IRA 정책)를 재확인시키며, OCI테라서스의 장기 공급 계약(약 1조원, 3~5년) 기대로 이어져 중장기 실적 성장과 가동률 안정화를 기대할 수 있게 함.",
-          "macro_event": "스페이스X의 비중국산 폴리실리콘 공급 계약 협상 시작(약 1조원 규모, 계약기간 3~5년)",
+          "causal_chain": "OCI홀딩스와 스페이스X 간 폴리실리콘 공급 계약 체결 기대 소식 → 증권가 호평과 함께 29% 급등.",
+          "macro_event": "OCI홀딩스-스페이스X 간 폴리실리콘 공급 계약 추진 소식",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -569,8 +611,8 @@
           "url": "https://www.etoday.co.kr/news/view/2575865",
           "source": "이투데이",
           "published_at": "2026-04-15T00:48:00",
-          "causal_chain": "스페이스X의 비중국 폴리실리콘 공급 계약 추진은 미국의 비중국 공급망 강화 기조(IRA 정책)를 재확인시키며, OCI테라서스의 장기 공급 계약(약 1조원, 3~5년) 기대로 이어져 중장기 실적 성장과 가동률 안정화를 기대할 수 있게 함.",
-          "macro_event": "스페이스X의 비중국산 폴리실리콘 공급 계약 협상 시작(약 1조원 규모, 계약기간 3~5년)",
+          "causal_chain": "OCI홀딩스와 스페이스X 간 폴리실리콘 공급 계약 체결 기대 소식 → 증권가 호평과 함께 29% 급등.",
+          "macro_event": "OCI홀딩스-스페이스X 간 폴리실리콘 공급 계약 추진 소식",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -584,8 +626,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/15/6GMIMDLGIVCOPLO3QWY6AK6LTA/",
           "source": "조선비즈",
           "published_at": "2026-04-15T00:23:35",
-          "causal_chain": "스페이스X의 비중국 폴리실리콘 공급 계약 추진은 미국의 비중국 공급망 강화 기조(IRA 정책)를 재확인시키며, OCI테라서스의 장기 공급 계약(약 1조원, 3~5년) 기대로 이어져 중장기 실적 성장과 가동률 안정화를 기대할 수 있게 함.",
-          "macro_event": "스페이스X의 비중국산 폴리실리콘 공급 계약 협상 시작(약 1조원 규모, 계약기간 3~5년)",
+          "causal_chain": "OCI홀딩스와 스페이스X 간 폴리실리콘 공급 계약 체결 기대 소식 → 증권가 호평과 함께 29% 급등.",
+          "macro_event": "OCI홀딩스-스페이스X 간 폴리실리콘 공급 계약 추진 소식",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -599,8 +641,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02856886645416448",
           "source": "이데일리",
           "published_at": "2026-04-15T00:22:08",
-          "causal_chain": "스페이스X의 비중국 폴리실리콘 공급 계약 추진은 미국의 비중국 공급망 강화 기조(IRA 정책)를 재확인시키며, OCI테라서스의 장기 공급 계약(약 1조원, 3~5년) 기대로 이어져 중장기 실적 성장과 가동률 안정화를 기대할 수 있게 함.",
-          "macro_event": "스페이스X의 비중국산 폴리실리콘 공급 계약 협상 시작(약 1조원 규모, 계약기간 3~5년)",
+          "causal_chain": "OCI홀딩스와 스페이스X 간 폴리실리콘 공급 계약 체결 기대 소식 → 증권가 호평과 함께 29% 급등.",
+          "macro_event": "OCI홀딩스-스페이스X 간 폴리실리콘 공급 계약 추진 소식",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -614,7 +656,7 @@
       "intraday": {
         "step_min": 10,
         "open": 262500,
-        "base": 235005,
+        "base": 229744,
         "prices": [
           262500,
           246500,
@@ -640,7 +682,10 @@
           263500,
           265000,
           263000,
-          263500
+          262000,
+          269000,
+          265000,
+          262000
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -651,9 +696,9 @@
       "code": "187660",
       "name": "페니트리움바이오",
       "rank": 8,
-      "trade_amount": 157068544100,
+      "trade_amount": 159573045870,
       "change_pct": 6.23,
-      "close_price": 16100,
+      "close_price": 16110,
       "industry": "자연과학 및 공학 연구개발업",
       "sector": "임상 CRO 서비스",
       "themes": [
@@ -679,7 +724,7 @@
       "intraday": {
         "step_min": 10,
         "open": 17400,
-        "base": 15156,
+        "base": 15165,
         "prices": [
           17400,
           16990,
@@ -705,7 +750,10 @@
           16720,
           16750,
           16610,
-          16590
+          16410,
+          16170,
+          16220,
+          16300
         ]
       },
       "credit_risk": true,
@@ -720,7 +768,7 @@
       "code": "452190",
       "name": "한빛레이저",
       "rank": 9,
-      "trade_amount": 134435104440,
+      "trade_amount": 134528551360,
       "change_pct": 29.92,
       "close_price": 6860,
       "industry": "특수 목적용 기계 제조업",
@@ -765,6 +813,9 @@
           6860,
           6860,
           6860,
+          6860,
+          6860,
+          6860,
           6860
         ]
       },
@@ -776,7 +827,7 @@
       "code": "077360",
       "name": "덕산하이메탈",
       "rank": 10,
-      "trade_amount": 131683538310,
+      "trade_amount": 131781588060,
       "change_pct": 29.93,
       "close_price": 16410,
       "industry": "반도체 제조업",
@@ -816,6 +867,9 @@
           16410,
           16410,
           16410,
+          16410,
+          16410,
+          16410,
           16410
         ]
       },
@@ -827,9 +881,9 @@
       "code": "072950",
       "name": "빛샘전자",
       "rank": 11,
-      "trade_amount": 122651456620,
+      "trade_amount": 127738084950,
       "change_pct": -6.13,
-      "close_price": 18370,
+      "close_price": 17990,
       "industry": "전자부품 제조업",
       "sector": "전광판용 LED 모듈, LED 전광판, 광접속함체",
       "themes": [],
@@ -846,7 +900,7 @@
       "intraday": {
         "step_min": 10,
         "open": 24250,
-        "base": 19570,
+        "base": 19165,
         "prices": [
           24250,
           21750,
@@ -872,7 +926,10 @@
           19780,
           19960,
           19800,
-          19250
+          18900,
+          18100,
+          17960,
+          17890
         ]
       },
       "credit_risk": true,
@@ -885,9 +942,9 @@
       "code": "430690",
       "name": "한싹",
       "rank": 12,
-      "trade_amount": 102956437460,
+      "trade_amount": 105483160320,
       "change_pct": 24.63,
-      "close_price": 7260,
+      "close_price": 7220,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "망간자료전송",
       "themes": [],
@@ -899,7 +956,7 @@
       "intraday": {
         "step_min": 10,
         "open": 7250,
-        "base": 5825,
+        "base": 5793,
         "prices": [
           7250,
           6730,
@@ -925,7 +982,10 @@
           7320,
           7510,
           7680,
-          7560
+          7500,
+          7400,
+          7150,
+          7370
         ]
       },
       "credit_risk": true,
@@ -938,9 +998,9 @@
       "code": "052690",
       "name": "한전기술",
       "rank": 13,
-      "trade_amount": 101277280000,
+      "trade_amount": 102382652800,
       "change_pct": 8.18,
-      "close_price": 188500,
+      "close_price": 188800,
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "원자력발전소 설계 등",
       "themes": [],
@@ -957,7 +1017,7 @@
       "intraday": {
         "step_min": 10,
         "open": 184600,
-        "base": 174247,
+        "base": 174524,
         "prices": [
           184600,
           188000,
@@ -983,6 +1043,9 @@
           190300,
           190200,
           189900,
+          188300,
+          188600,
+          188400,
           188700
         ]
       },
@@ -994,9 +1057,9 @@
       "code": "490470",
       "name": "세미파이브",
       "rank": 14,
-      "trade_amount": 97675737600,
+      "trade_amount": 99180780050,
       "change_pct": 3.4,
-      "close_price": 36800,
+      "close_price": 36850,
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "반도체 설계 서비스",
       "themes": [],
@@ -1013,7 +1076,7 @@
       "intraday": {
         "step_min": 10,
         "open": 36800,
-        "base": 35590,
+        "base": 35638,
         "prices": [
           36800,
           36800,
@@ -1039,7 +1102,10 @@
           36700,
           36800,
           36900,
-          37000
+          36650,
+          36700,
+          36600,
+          36750
         ]
       },
       "credit_risk": true,
@@ -1049,12 +1115,97 @@
       "hugepark_grade": "주의"
     },
     {
+      "code": "090460",
+      "name": "비에이치",
+      "rank": 15,
+      "trade_amount": 95361267150,
+      "change_pct": 22.96,
+      "close_price": 28650,
+      "industry": "전자부품 제조업",
+      "sector": "FPCB (연성인쇄회로기판)",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [
+        {
+          "title": "[특징주] 비에이치, 애플 스마트폰 증산 수혜 기대감에 강세",
+          "url": "https://www.etoday.co.kr/news/view/2576315",
+          "source": "이투데이",
+          "published_at": "2026-04-16T01:53:00",
+          "causal_chain": "애플 스마트폰 증산 추진 → 비에이치 등 부품 납품업체의 수주 증가 → 호실적 전망으로 주가 상승.",
+          "macro_event": "애플 스마트폰 증산",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[특징주] 비에이치, 북미 스마트폰 증산 수혜에 따른 호실적 전망에…15% 급등",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/16/F53T6G355ZAMTKBVHKVC3T7GDE/",
+          "source": "조선비즈",
+          "published_at": "2026-04-16T00:45:29",
+          "causal_chain": "애플 스마트폰 증산 추진 → 비에이치 등 부품 납품업체의 수주 증가 → 호실적 전망으로 주가 상승.",
+          "macro_event": "애플 스마트폰 증산",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "intraday": {
+        "step_min": 10,
+        "open": 25050,
+        "base": 23300,
+        "prices": [
+          25050,
+          25350,
+          25900,
+          27150,
+          28100,
+          28100,
+          27950,
+          27800,
+          28100,
+          27850,
+          28050,
+          28450,
+          28800,
+          28750,
+          28350,
+          28900,
+          28850,
+          28950,
+          29200,
+          28950,
+          28500,
+          29300,
+          29250,
+          29200,
+          29050,
+          29200,
+          28800,
+          28550
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
       "code": "347850",
       "name": "디앤디파마텍",
-      "rank": 15,
-      "trade_amount": 94171737700,
+      "rank": 16,
+      "trade_amount": 95030548500,
       "change_pct": 4.64,
-      "close_price": 82100,
+      "close_price": 81500,
       "industry": "자연과학 및 공학 연구개발업",
       "sector": "대사성질환 치료제 등",
       "themes": [],
@@ -1112,7 +1263,7 @@
       "intraday": {
         "step_min": 10,
         "open": 82200,
-        "base": 78459,
+        "base": 77886,
         "prices": [
           82200,
           82700,
@@ -1138,7 +1289,10 @@
           82300,
           82000,
           82000,
-          81350
+          81400,
+          82200,
+          81300,
+          81800
         ]
       },
       "credit_risk": true,
@@ -1148,150 +1302,12 @@
       "hugepark_grade": "주의"
     },
     {
-      "code": "090460",
-      "name": "비에이치",
-      "rank": 16,
-      "trade_amount": 92514762300,
-      "change_pct": 22.96,
-      "close_price": 28950,
-      "industry": "전자부품 제조업",
-      "sector": "FPCB (연성인쇄회로기판)",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [
-        {
-          "title": "[특징주] 비에이치, 애플 스마트폰 증산 수혜 기대감에 강세",
-          "url": "https://www.etoday.co.kr/news/view/2576315",
-          "source": "이투데이",
-          "published_at": "2026-04-16T01:53:00",
-          "causal_chain": "애플 스마트폰 증산 추진 → 비에이치 등 부품 납품업체의 수주 증가 → 호실적 전망으로 주가 상승.",
-          "macro_event": "애플 스마트폰 증산",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 비에이치, 북미 스마트폰 증산 수혜에 따른 호실적 전망에…15% 급등",
-          "url": "https://biz.chosun.com/stock/stock_general/2026/04/16/F53T6G355ZAMTKBVHKVC3T7GDE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-16T00:45:29",
-          "causal_chain": "애플 스마트폰 증산 추진 → 비에이치 등 부품 납품업체의 수주 증가 → 호실적 전망으로 주가 상승.",
-          "macro_event": "애플 스마트폰 증산",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": false,
-      "intraday": {
-        "step_min": 10,
-        "open": 25050,
-        "base": 23544,
-        "prices": [
-          25050,
-          25350,
-          25900,
-          27150,
-          28100,
-          28100,
-          27950,
-          27800,
-          28100,
-          27850,
-          28050,
-          28450,
-          28800,
-          28750,
-          28350,
-          28900,
-          28850,
-          28950,
-          29200,
-          28950,
-          28500,
-          29300,
-          29250,
-          29200,
-          29100
-        ]
-      },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
-      "code": "417840",
-      "name": "저스템",
-      "rank": 17,
-      "trade_amount": 90426522400,
-      "change_pct": 16.77,
-      "close_price": 10400,
-      "industry": "특수 목적용 기계 제조업",
-      "sector": "반도체 습도제어 System",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 2,
-      "prev_pick": {
-        "date": "2026-04-15",
-        "rank": 30,
-        "change_pct": 28.82,
-        "trade_amount": 106292160000
-      },
-      "news": [],
-      "fallback": true,
-      "intraday": {
-        "step_min": 10,
-        "open": 9900,
-        "base": 8906,
-        "prices": [
-          9900,
-          10090,
-          10430,
-          10290,
-          10320,
-          10620,
-          10550,
-          10470,
-          10520,
-          10570,
-          10630,
-          10680,
-          10570,
-          10480,
-          10450,
-          10390,
-          10400,
-          10290,
-          10390,
-          10530,
-          10490,
-          10500,
-          10500,
-          10410,
-          10370
-        ]
-      },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
       "code": "042370",
       "name": "비츠로테크",
-      "rank": 18,
-      "trade_amount": 90332219040,
+      "rank": 17,
+      "trade_amount": 91981665160,
       "change_pct": 11.57,
-      "close_price": 18060,
+      "close_price": 17780,
       "industry": "기타 금융업",
       "sector": "차단기, 개폐기",
       "themes": [],
@@ -1308,7 +1324,7 @@
       "intraday": {
         "step_min": 10,
         "open": 17460,
-        "base": 16187,
+        "base": 15936,
         "prices": [
           17460,
           17590,
@@ -1334,7 +1350,69 @@
           18190,
           17880,
           17900,
-          18070
+          17880,
+          18040,
+          17850,
+          17850
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
+      "code": "417840",
+      "name": "저스템",
+      "rank": 18,
+      "trade_amount": 90734943120,
+      "change_pct": 16.77,
+      "close_price": 10380,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "반도체 습도제어 System",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-04-15",
+        "rank": 30,
+        "change_pct": 28.82,
+        "trade_amount": 106292160000
+      },
+      "news": [],
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 9900,
+        "base": 8889,
+        "prices": [
+          9900,
+          10090,
+          10430,
+          10290,
+          10320,
+          10620,
+          10550,
+          10470,
+          10520,
+          10570,
+          10630,
+          10680,
+          10570,
+          10480,
+          10450,
+          10390,
+          10400,
+          10290,
+          10390,
+          10530,
+          10490,
+          10500,
+          10500,
+          10410,
+          10350,
+          10380,
+          10330,
+          10370
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1345,9 +1423,9 @@
       "code": "307950",
       "name": "현대오토에버",
       "rank": 19,
-      "trade_amount": 84532933500,
+      "trade_amount": 85251941500,
       "change_pct": 7.93,
-      "close_price": 433500,
+      "close_price": 434500,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "차량SW, 내비게이션, 스마트팩토리, AI·클라우드 기반 솔루션, 디지털 전환 컨설팅 및 IT서비스",
       "themes": [
@@ -1385,7 +1463,7 @@
       "intraday": {
         "step_min": 10,
         "open": 440000,
-        "base": 401649,
+        "base": 402576,
         "prices": [
           440000,
           450500,
@@ -1411,7 +1489,10 @@
           435000,
           433500,
           434000,
-          433000
+          433000,
+          434000,
+          434000,
+          433500
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -1422,9 +1503,9 @@
       "code": "294630",
       "name": "서남",
       "rank": 20,
-      "trade_amount": 83451048660,
+      "trade_amount": 84043091750,
       "change_pct": 18.99,
-      "close_price": 5670,
+      "close_price": 5630,
       "industry": "기타 전기장비 제조업",
       "sector": "고온초전도선재",
       "themes": [],
@@ -1436,7 +1517,7 @@
       "intraday": {
         "step_min": 10,
         "open": 5800,
-        "base": 4765,
+        "base": 4731,
         "prices": [
           5800,
           7090,
@@ -1462,7 +1543,10 @@
           5700,
           5800,
           5670,
-          5690
+          5600,
+          5670,
+          5570,
+          5620
         ]
       },
       "credit_risk": true,
@@ -1475,9 +1559,9 @@
       "code": "054920",
       "name": "한컴위드",
       "rank": 21,
-      "trade_amount": 79939704350,
+      "trade_amount": 82094352760,
       "change_pct": 17.32,
-      "close_price": 7220,
+      "close_price": 7240,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "전자상거래 보안 솔루션",
       "themes": [],
@@ -1494,7 +1578,7 @@
       "intraday": {
         "step_min": 10,
         "open": 7280,
-        "base": 6154,
+        "base": 6171,
         "prices": [
           7280,
           7390,
@@ -1520,7 +1604,10 @@
           7450,
           7560,
           7380,
-          7460
+          7365,
+          7230,
+          7160,
+          7220
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1531,9 +1618,9 @@
       "code": "215790",
       "name": "이노인스트루먼트",
       "rank": 22,
-      "trade_amount": 76574390375,
+      "trade_amount": 80905223315,
       "change_pct": 4.72,
-      "close_price": 3875,
+      "close_price": 3605,
       "industry": "통신 및 방송 장비 제조업",
       "sector": "기업 인수 합병",
       "themes": [
@@ -1570,7 +1657,7 @@
       "intraday": {
         "step_min": 10,
         "open": 4330,
-        "base": 3700,
+        "base": 3443,
         "prices": [
           4330,
           4660,
@@ -1596,7 +1683,10 @@
           4570,
           4395,
           4445,
-          4440
+          4250,
+          3790,
+          3560,
+          3415
         ]
       },
       "credit_risk": true,
@@ -1608,63 +1698,12 @@
       "parent_theme": ""
     },
     {
-      "code": "411080",
-      "name": "샌즈랩",
-      "rank": 23,
-      "trade_amount": 72974242050,
-      "change_pct": 15.95,
-      "close_price": 9150,
-      "industry": "소프트웨어 개발 및 공급업",
-      "sector": "사이버 위협 인텔리전스(CTI)",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [],
-      "fallback": true,
-      "intraday": {
-        "step_min": 10,
-        "open": 8930,
-        "base": 7891,
-        "prices": [
-          8930,
-          8840,
-          8720,
-          8940,
-          8830,
-          8800,
-          9200,
-          9310,
-          9140,
-          9120,
-          9070,
-          8990,
-          9070,
-          9040,
-          9050,
-          9090,
-          9060,
-          9050,
-          8990,
-          8850,
-          8960,
-          9030,
-          9580,
-          9500,
-          9220
-        ]
-      },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
       "code": "222800",
       "name": "심텍",
-      "rank": 24,
-      "trade_amount": 70990097100,
+      "rank": 23,
+      "trade_amount": 75407286000,
       "change_pct": 7.17,
-      "close_price": 74100,
+      "close_price": 75500,
       "industry": "전자부품 제조업",
       "sector": "반도체용 인쇄회로기판",
       "themes": [
@@ -1692,7 +1731,7 @@
       "intraday": {
         "step_min": 10,
         "open": 69900,
-        "base": 69142,
+        "base": 70449,
         "prices": [
           69900,
           71300,
@@ -1718,7 +1757,10 @@
           74800,
           75100,
           74500,
-          74200
+          74200,
+          74500,
+          74600,
+          75800
         ]
       },
       "credit_risk": true,
@@ -1730,12 +1772,66 @@
       "parent_theme": ""
     },
     {
+      "code": "411080",
+      "name": "샌즈랩",
+      "rank": 24,
+      "trade_amount": 74312937230,
+      "change_pct": 15.95,
+      "close_price": 9170,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "사이버 위협 인텔리전스(CTI)",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 8930,
+        "base": 7909,
+        "prices": [
+          8930,
+          8840,
+          8720,
+          8940,
+          8830,
+          8800,
+          9200,
+          9310,
+          9140,
+          9120,
+          9070,
+          8990,
+          9070,
+          9040,
+          9050,
+          9090,
+          9060,
+          9050,
+          8990,
+          8850,
+          8960,
+          9030,
+          9580,
+          9500,
+          9260,
+          9200,
+          9100,
+          9290
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
       "code": "027040",
       "name": "서울전자통신",
       "rank": 25,
-      "trade_amount": 69259444938,
+      "trade_amount": 72733969240,
       "change_pct": 29.87,
-      "close_price": 1150,
+      "close_price": 1214,
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "전자변성기, 무역업(트랜스포머자재)",
       "themes": [],
@@ -1762,7 +1858,7 @@
       "intraday": {
         "step_min": 10,
         "open": 1050,
-        "base": 886,
+        "base": 935,
         "prices": [
           1050,
           1275,
@@ -1788,7 +1884,10 @@
           1265,
           1255,
           1254,
-          1233
+          1229,
+          1233,
+          1198,
+          1213
         ]
       },
       "credit_risk": true,
@@ -1801,7 +1900,7 @@
       "code": "066310",
       "name": "큐에스아이",
       "rank": 26,
-      "trade_amount": 65783354000,
+      "trade_amount": 65900744000,
       "change_pct": 29.93,
       "close_price": 22750,
       "industry": "반도체 제조업",
@@ -1846,6 +1945,9 @@
           22750,
           22750,
           22750,
+          22750,
+          22750,
+          22750,
           22750
         ]
       },
@@ -1857,7 +1959,7 @@
       "code": "192250",
       "name": "케이사인",
       "rank": 27,
-      "trade_amount": 61996757690,
+      "trade_amount": 63382890060,
       "change_pct": 29.93,
       "close_price": 15890,
       "industry": "소프트웨어 개발 및 공급업",
@@ -1897,7 +1999,10 @@
           14590,
           15890,
           15860,
-          15680
+          15870,
+          15890,
+          15890,
+          15870
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1908,7 +2013,7 @@
       "code": "033160",
       "name": "엠케이전자",
       "rank": 28,
-      "trade_amount": 59077848200,
+      "trade_amount": 59415438600,
       "change_pct": 10.42,
       "close_price": 23800,
       "industry": "전자부품 제조업",
@@ -1979,7 +2084,10 @@
           24375,
           24300,
           23950,
-          23900
+          23750,
+          23900,
+          23650,
+          23850
         ]
       },
       "credit_risk": true,
@@ -1991,12 +2099,66 @@
       "parent_theme": ""
     },
     {
+      "code": "005690",
+      "name": "파미셀",
+      "rank": 29,
+      "trade_amount": 59326237360,
+      "change_pct": 8.94,
+      "close_price": 19280,
+      "industry": "기초 의약물질 제조업",
+      "sector": "줄기세포치료제,화장품",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 18040,
+        "base": 17698,
+        "prices": [
+          18040,
+          18140,
+          18080,
+          18650,
+          18910,
+          18940,
+          19280,
+          19530,
+          19410,
+          19190,
+          19260,
+          19350,
+          19210,
+          19260,
+          19400,
+          19470,
+          19470,
+          19450,
+          19430,
+          19380,
+          19380,
+          19370,
+          19450,
+          19500,
+          19420,
+          19340,
+          19290,
+          19330
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
       "code": "041020",
       "name": "폴라리스오피스",
-      "rank": 29,
-      "trade_amount": 58355173500,
+      "rank": 30,
+      "trade_amount": 59192579040,
       "change_pct": 13.01,
-      "close_price": 4875,
+      "close_price": 4920,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "시스템 소프트웨어",
       "themes": [
@@ -2013,6 +2175,21 @@
       "pick_count": 1,
       "prev_pick": null,
       "news": [
+        {
+          "title": "폴라리스오피스, 'AI 보안 위협' 선제 대응...솔루션 확대 적용",
+          "url": "https://www.fnnews.com/news/202604161109267690",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-04-16T13:37:24.674884",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "폴라리스오피스, 'AI 보안 위협' 선제 대응...솔루션 확대 적용",
           "url": "https://www.fnnews.com/news/202604161109267690",
@@ -2072,28 +2249,13 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null
-        },
-        {
-          "title": "폴라리스오피스, AI 보안 위협 대응 강화…글로벌 솔루션 도입 확대",
-          "url": "https://www.etoday.co.kr/news/view/2576250",
-          "source": "이투데이",
-          "published_at": "2026-04-16T00:26:00",
-          "causal_chain": "AI 보안 위협 확산 → 폴라리스오피스가 자체 AI 플랫폼 '미토스' 기반 보안 솔루션을 글로벌 전면 배치하며 선제 대응 → AI 보안 솔루션 사업 확대 기대.",
-          "macro_event": "AI 보안 위협 증가에 따른 글로벌 보안 솔루션 수요 확대",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
         }
       ],
       "fallback": false,
       "intraday": {
         "step_min": 10,
         "open": 4700,
-        "base": 4314,
+        "base": 4354,
         "prices": [
           4700,
           5180,
@@ -2119,6 +2281,9 @@
           4930,
           4890,
           4900,
+          4880,
+          4875,
+          4900,
           4910
         ]
       },
@@ -2127,63 +2292,12 @@
       "hugepark_grade": "관찰"
     },
     {
-      "code": "005690",
-      "name": "파미셀",
-      "rank": 30,
-      "trade_amount": 58173430500,
-      "change_pct": 8.94,
-      "close_price": 19380,
-      "industry": "기초 의약물질 제조업",
-      "sector": "줄기세포치료제,화장품",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [],
-      "fallback": true,
-      "intraday": {
-        "step_min": 10,
-        "open": 18040,
-        "base": 17790,
-        "prices": [
-          18040,
-          18140,
-          18080,
-          18650,
-          18910,
-          18940,
-          19280,
-          19530,
-          19410,
-          19190,
-          19260,
-          19350,
-          19210,
-          19260,
-          19400,
-          19470,
-          19470,
-          19450,
-          19430,
-          19380,
-          19380,
-          19370,
-          19450,
-          19500,
-          19500
-        ]
-      },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
       "code": "006910",
       "name": "보성파워텍",
       "rank": 31,
-      "trade_amount": 56149820370,
+      "trade_amount": 57481734900,
       "change_pct": 5.38,
-      "close_price": 10710,
+      "close_price": 10650,
       "industry": "구조용 금속제품, 탱크 및 증기발생기 제조업",
       "sector": "송배전용자재",
       "themes": [],
@@ -2195,7 +2309,7 @@
       "intraday": {
         "step_min": 10,
         "open": 10710,
-        "base": 10163,
+        "base": 10106,
         "prices": [
           10710,
           11000,
@@ -2221,7 +2335,95 @@
           10825,
           10820,
           10790,
-          10730
+          10720,
+          10730,
+          10680,
+          10650
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
+      "code": "008770",
+      "name": "호텔신라",
+      "rank": 32,
+      "trade_amount": 56040824000,
+      "change_pct": 10.33,
+      "close_price": 54500,
+      "industry": "기타 상품 전문 소매업",
+      "sector": "면세판매,관광숙박,외식사업,예식업",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [
+        {
+          "title": "보릿고개 진짜 끝?…호텔신라, 여행 성수기 기대감[클릭 e종목]",
+          "url": "https://www.asiae.co.kr/article/2026041516143556821",
+          "source": "아시아경제",
+          "published_at": "2026-04-15T21:00:00",
+          "causal_chain": "여행 성수기 도래 기대감 → 호텔·면세 실적 회복 전망 → 호텔신라 수혜 기대. 서울신라호텔에 프랑스 하이주얼리 브랜드 입점으로 럭셔리 라인업 확장.",
+          "macro_event": "여행 성수기 진입에 따른 호텔·면세 업황 회복 기대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "프랑스 하이주얼리 '루브나·베베르', 서울신라호텔서 국내 첫 진출",
+          "url": "https://www.hankyung.com/article/202604148595g",
+          "source": "한경",
+          "published_at": "2026-04-13T23:46:13",
+          "causal_chain": "여행 성수기 도래 기대감 → 호텔·면세 실적 회복 전망 → 호텔신라 수혜 기대. 서울신라호텔에 프랑스 하이주얼리 브랜드 입점으로 럭셔리 라인업 확장.",
+          "macro_event": "여행 성수기 진입에 따른 호텔·면세 업황 회복 기대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 50200,
+        "base": 49397,
+        "prices": [
+          50200,
+          51700,
+          52800,
+          52800,
+          53000,
+          53200,
+          52900,
+          53300,
+          53600,
+          54100,
+          54100,
+          54100,
+          54200,
+          54200,
+          54300,
+          54300,
+          54300,
+          54300,
+          54400,
+          54600,
+          54500,
+          54500,
+          54650,
+          54800,
+          54900,
+          54900,
+          54500,
+          54300
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -2231,10 +2433,10 @@
     {
       "code": "452450",
       "name": "피아이이",
-      "rank": 32,
-      "trade_amount": 55817232270,
+      "rank": 33,
+      "trade_amount": 56030406840,
       "change_pct": 16.0,
-      "close_price": 6690,
+      "close_price": 6660,
       "industry": "특수 목적용 기계 제조업",
       "sector": "AI 비전 솔루션 및 스마트팩토리 솔루션",
       "themes": [],
@@ -2246,7 +2448,7 @@
       "intraday": {
         "step_min": 10,
         "open": 6120,
-        "base": 5767,
+        "base": 5741,
         "prices": [
           6120,
           6060,
@@ -2272,159 +2474,10 @@
           6750,
           6750,
           6680,
-          6650
-        ]
-      },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
-      "code": "008770",
-      "name": "호텔신라",
-      "rank": 33,
-      "trade_amount": 54969112800,
-      "change_pct": 10.33,
-      "close_price": 54800,
-      "industry": "기타 상품 전문 소매업",
-      "sector": "면세판매,관광숙박,외식사업,예식업",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [
-        {
-          "title": "보릿고개 진짜 끝?…호텔신라, 여행 성수기 기대감[클릭 e종목]",
-          "url": "https://www.asiae.co.kr/article/2026041516143556821",
-          "source": "아시아경제",
-          "published_at": "2026-04-15T21:00:00",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "프랑스 하이주얼리 '루브나·베베르', 서울신라호텔서 국내 첫 진출",
-          "url": "https://www.hankyung.com/article/202604148595g",
-          "source": "한경",
-          "published_at": "2026-04-13T23:46:13",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
-      "code": "009200",
-      "name": "무림페이퍼",
-      "rank": 34,
-      "trade_amount": 53672232090,
-      "change_pct": 21.99,
-      "close_price": 2570,
-      "industry": "펄프, 종이 및 판지 제조업",
-      "sector": "지류,아트지,백상지 제조",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [],
-      "fallback": true,
-      "intraday": {
-        "step_min": 10,
-        "open": 2125,
-        "base": 2107,
-        "prices": [
-          2125,
-          2115,
-          2105,
-          2105,
-          2110,
-          2110,
-          2105,
-          2110,
-          2115,
-          2105,
-          2115,
-          2115,
-          2125,
-          2145,
-          2145,
-          2145,
-          2220,
-          2630,
-          2565,
-          2640,
-          2580,
-          2595,
-          2575,
-          2595,
-          2585
-        ]
-      },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
-    },
-    {
-      "code": "241520",
-      "name": "DSC인베스트먼트",
-      "rank": 35,
-      "trade_amount": 53592389600,
-      "change_pct": 7.75,
-      "close_price": 15700,
-      "industry": "신탁업 및 집합투자업",
-      "sector": "투자조합 결성 및 투자",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 1,
-      "prev_pick": null,
-      "news": [],
-      "fallback": true,
-      "intraday": {
-        "step_min": 10,
-        "open": 14900,
-        "base": 14571,
-        "prices": [
-          14900,
-          14840,
-          14750,
-          14740,
-          14810,
-          15190,
-          15010,
-          14870,
-          14850,
-          14920,
-          14970,
-          14950,
-          15010,
-          15310,
-          15310,
-          15300,
-          15310,
-          15560,
-          16850,
-          15950,
-          15930,
-          15895,
-          15770,
-          15720,
-          15710
+          6660,
+          6690,
+          6650,
+          6700
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -2434,10 +2487,10 @@
     {
       "code": "161580",
       "name": "필옵틱스",
-      "rank": 36,
-      "trade_amount": 51775671700,
-      "change_pct": 12.53,
-      "close_price": 44900,
+      "rank": 34,
+      "trade_amount": 54753339900,
+      "change_pct": 13.53,
+      "close_price": 45300,
       "industry": "특수 목적용 기계 제조업",
       "sector": "디스플레이 및 반도체 제조공정용 제작",
       "themes": [],
@@ -2449,7 +2502,7 @@
       "intraday": {
         "step_min": 10,
         "open": 40600,
-        "base": 39900,
+        "base": 39901,
         "prices": [
           40600,
           40650,
@@ -2475,7 +2528,10 @@
           44800,
           44950,
           44650,
-          44500
+          44650,
+          44850,
+          45100,
+          45250
         ]
       },
       "credit_risk": true,
@@ -2483,6 +2539,186 @@
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
+    },
+    {
+      "code": "241520",
+      "name": "DSC인베스트먼트",
+      "rank": 35,
+      "trade_amount": 54557487960,
+      "change_pct": 7.75,
+      "close_price": 15780,
+      "industry": "신탁업 및 집합투자업",
+      "sector": "투자조합 결성 및 투자",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 14900,
+        "base": 14645,
+        "prices": [
+          14900,
+          14840,
+          14750,
+          14740,
+          14810,
+          15190,
+          15010,
+          14870,
+          14850,
+          14920,
+          14970,
+          14950,
+          15010,
+          15310,
+          15310,
+          15300,
+          15310,
+          15560,
+          16850,
+          15950,
+          15930,
+          15895,
+          15770,
+          15720,
+          15710,
+          15690,
+          15870,
+          15830
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
+      "code": "009200",
+      "name": "무림페이퍼",
+      "rank": 36,
+      "trade_amount": 54507344385,
+      "change_pct": 21.99,
+      "close_price": 2535,
+      "industry": "펄프, 종이 및 판지 제조업",
+      "sector": "지류,아트지,백상지 제조",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [],
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 2125,
+        "base": 2078,
+        "prices": [
+          2125,
+          2115,
+          2105,
+          2105,
+          2110,
+          2110,
+          2105,
+          2110,
+          2115,
+          2105,
+          2115,
+          2115,
+          2125,
+          2145,
+          2145,
+          2145,
+          2220,
+          2630,
+          2565,
+          2640,
+          2580,
+          2595,
+          2575,
+          2595,
+          2575,
+          2565,
+          2565,
+          2555
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
+      "code": "082920",
+      "name": "비츠로셀",
+      "rank": 37,
+      "trade_amount": 53122630000,
+      "change_pct": 9.13,
+      "close_price": 55000,
+      "industry": "일차전지 및 이차전지 제조업",
+      "sector": "리튬1차전지",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-04-15",
+        "rank": 41,
+        "change_pct": 14.25,
+        "trade_amount": 83416384800
+      },
+      "news": [],
+      "fallback": true,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+    },
+    {
+      "code": "319400",
+      "name": "현대무벡스",
+      "rank": 38,
+      "trade_amount": 49769064000,
+      "change_pct": -0.16,
+      "close_price": 30600,
+      "industry": "일반 목적용 기계 제조업",
+      "sector": "물류자동화, IT서비스",
+      "themes": [
+        "물류자동화"
+      ],
+      "theme_paths": [
+        {
+          "name": "물류자동화",
+          "path": [
+            "로봇",
+            "물류자동화"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-10",
+        "rank": 24,
+        "change_pct": 3.08,
+        "trade_amount": 71498396200
+      },
+      "news": [
+        {
+          "title": "현대무벡스, 북미 최대 공급망 전시회 참가…글로벌 사업 확장 기대에 5% 강세[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02961846645414480",
+          "source": "이데일리",
+          "published_at": "2026-04-09T00:18:48",
+          "causal_chain": "현대무벡스가 북미 최대 공급망 전시회 참가 → 글로벌 물류자동화 시장에서의 인지도 및 수주 기회 확대 → 국제 비즈니스 확장 전망 강화 → 투자자 기대감으로 주가 5% 강세",
+          "macro_event": "현대무벡스의 북미 공급망 물류자동화 시장 진출 강화",
+          "newzy_freshness": 1.0,
+          "newzy_persistence": 0.7,
+          "newzy_magnitude": 0.3,
+          "newzy_virality": 0.5,
+          "newzy_tradability": 0.9,
+          "newzy_score": 0.68,
+          "newzy_verdict": "동의: title 기반 추론 타당"
+        }
+      ],
+      "fallback": true,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
     }
   ]
 }
