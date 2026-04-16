@@ -1,6 +1,6 @@
 {
   "date": "2026-04-16",
-  "generated_at": "2026-04-16T13:41:11.123964",
+  "generated_at": "2026-04-16T13:41:26.413111",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -464,7 +464,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과 (2026-04-16(목) 적용 — 다음 영업일 재평가)",
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "neutral",
       "theme_leader": false,
       "hugepark_grade": "관찰",
       "causal_chain": "",
@@ -539,11 +539,18 @@
       "industry": "기타 금융업",
       "sector": "타르제품,카본블랙,무수프탈산,농약원제,석탄화학제품,정밀화학제품,플라스틱창호재 제조,판매",
       "themes": [
+        "스페이스X",
         "태양광",
-        "MASGA/미국 제조업 쇼어링",
-        "스페이스X"
+        "MASGA/미국 제조업 쇼어링"
       ],
       "theme_paths": [
+        {
+          "name": "스페이스X",
+          "path": [
+            "우주항공",
+            "스페이스X"
+          ]
+        },
         {
           "name": "태양광",
           "path": [
@@ -558,13 +565,6 @@
           "path": [
             "트럼프",
             "MASGA/미국 제조업 쇼어링"
-          ]
-        },
-        {
-          "name": "스페이스X",
-          "path": [
-            "우주항공",
-            "스페이스X"
           ]
         }
       ],
@@ -934,9 +934,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과 (2026-04-16(목) 적용 — 다음 영업일 재평가)",
-      "togusa_verdict": "weak_bear",
+      "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "관찰"
     },
     {
       "code": "430690",
@@ -2669,7 +2669,10 @@
       "news": [],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "319400",
@@ -2718,7 +2721,10 @@
       ],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     }
   ]
 }
