@@ -278,7 +278,8 @@ async function _refreshDataAsync(initialDate) {
     // 달력 재렌더 (인덱스 업데이트 반영)
     renderCalendar();
 
-    // 당일 데이터 로드 + 카드 렌더
+    // 당일 데이터 강제 재로드 (캐시 무시) + 카드 렌더
+    delete calDayCache[initialDate];
     const data = await loadCalDayData(initialDate);
     renderCalExpandContent(initialDate, data);
 
