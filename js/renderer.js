@@ -158,6 +158,9 @@ function renderCalExpandContent(date, data) {
         pct: interp.change_pct ?? null,
         amount: interp.trade_amount ?? null,
         price: interp.close_price ?? null,
+        open: interp.open_price ?? null,
+        high: interp.high_price ?? null,
+        low: interp.low_price ?? null,
         themes,
         interp,
         links

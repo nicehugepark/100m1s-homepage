@@ -161,6 +161,13 @@ async function loadCalDayData(date) {
             credit_risk: !!st.credit_risk,
             credit_reason: st.credit_reason || null,
             close_price: st.close_price || null,
+            open_price: st.open_price || null,
+            high_price: st.high_price || null,
+            low_price: st.low_price || null,
+            change_pct: st.change_pct ?? null,
+            trade_amount: st.trade_amount ?? null,
+            rank: st.rank ?? null,
+            code: st.code || null,
             intraday: st.intraday || null,
             status_badges: st.status_badges || [],
           });
