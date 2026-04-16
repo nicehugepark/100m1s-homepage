@@ -11,21 +11,6 @@ async function loadThemes() {
   } catch (e) { return null; }
 }
 
-async function loadIndex() {
-  try {
-    const res = await fetch('/data/cafe/index.json');
-    if (!res.ok) throw new Error('index.json HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-async function loadPost(postId) {
-  try {
-    const res = await fetch(`/data/cafe/posts/${postId}.json`);
-    if (!res.ok) throw new Error(postId + ' HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
-}
 
 async function loadKiwoomIndex() {
   try {
@@ -75,7 +60,7 @@ async function loadHolidayData() {
 
 async function loadCalDayData(date) {
   if (calDayCache[date]) return calDayCache[date];
-  // kiwoom + stock-daily를 병렬 fetch (카페 인덱스는 stock-daily 없을 때만)
+  // kiwoom + stock-daily를 병렬 fetch
   const dateHash = date.replace(/-/g, '');
   const [kiwoom, stockDailyDirect] = await Promise.all([
     loadKiwoomDate(date),
@@ -101,32 +86,6 @@ async function loadCalDayData(date) {
     if (results.length > 0) {
       stockDailyData = results[0].data;
       stockDailyData._fallback_date = results[0].date;
-    }
-  }
-  // 카페 포스트: stock-daily 있으면 스킵 (뉴스 파이프라인이 대체)
-  let postsOfDay = [];
-  if (!stockDailyData) {
-    const cafeIndex = await loadIndex();
-    if (cafeIndex && cafeIndex.posts) {
-      const idsOfDay = cafeIndex.posts
-        .filter(p => {
-          const d = p.post_date || (p.fetched_at || '').slice(0, 10);
-          return d === date;
-        })
-        .map(p => p.post_id)
-        .slice(0, 3);
-      postsOfDay = (await Promise.all(idsOfDay.map(id => loadPost(id)))).filter(Boolean);
-    }
-  }
-  // 내러티브 dedupe
-  const narrSet = new Set();
-  for (const p of postsOfDay) {
-    for (const sec of (p.sections || [])) {
-      for (const st of (sec.stocks || [])) {
-        for (const nc of (st.news_cards || [])) {
-          if (nc.summary) narrSet.add(nc.summary.trim());
-        }
-      }
     }
   }
   // 종목명 → 해석 stock 객체 병합 맵
@@ -226,8 +185,8 @@ async function loadCalDayData(date) {
   const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
   const result = {
     kiwoom,
-    cafePosts: postsOfDay,
-    narratives: Array.from(narrSet),
+    cafePosts: [],
+    narratives: [],
     interpretedByName,
     macroEvents,
     dataSource

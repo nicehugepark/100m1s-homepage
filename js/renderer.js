@@ -56,7 +56,7 @@ function renderCalExpandContent(date, data) {
   const inner = document.getElementById('cal-content');
   const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
   const hasInterpretedStocks = data.interpretedByName && data.interpretedByName.size > 0;
-  const hasAny = (data.narratives.length > 0) || kiwoomStocks.length > 0 || data.cafePosts.length > 0 || hasInterpretedStocks;
+  const hasAny = kiwoomStocks.length > 0 || hasInterpretedStocks;
 
   if (!hasAny) {
     const closed = isMarketClosed(date);
@@ -97,21 +97,6 @@ function renderCalExpandContent(date, data) {
     return;
   }
 
-  // 특징주 수집 (종목명 → 뉴스카드 매핑 포함)
-  const cafeStockMap = new Map(); // name → { stock, newsCards[] }
-  for (const p of data.cafePosts) {
-    for (const sec of (p.sections || [])) {
-      for (const st of (sec.stocks || [])) {
-        if (!st.name) continue;
-        if (!cafeStockMap.has(st.name)) {
-          cafeStockMap.set(st.name, { stock: st, newsCards: [] });
-        }
-        const entry = cafeStockMap.get(st.name);
-        for (const nc of (st.news_cards || [])) entry.newsCards.push(nc);
-      }
-    }
-  }
-
   // 키움 name → {ticker, change_pct} 맵 (특징주 join용)
   const kiwoomByName = new Map();
   for (const s of kiwoomStocks) {
@@ -121,35 +106,10 @@ function renderCalExpandContent(date, data) {
   // interpretedByName을 특징주/종목 구성에서 사용하기 위해 먼저 참조
   const interpByName = data.interpretedByName || new Map();
 
-  // 특징주 결정: 부각 종목 우선, 비면 거래대금 TOP fallback
+  // 특징주 결정: 거래대금 TOP 또는 stock-*.json 기반
   let featureSource = 'primary';
-  let featureItems = []; // { name, pct, themes, newsCards, ticker, reason }
-  if (cafeStockMap.size > 0) {
-    for (const [name, e] of cafeStockMap.entries()) {
-      const kw = kiwoomByName.get(name);
-      const ticker = e.stock.ticker || kw?.ticker;
-      const pct = e.stock.change_pct ?? kw?.max_change_pct ?? kw?.change_pct ?? null;
-      const themes = (themesData?.stocks?.[ticker]?.themes || []).slice(0, 3);
-      // 사유: theme_label 우선, 없으면 news_cards[0].theme_hint
-      let reason = (e.stock.theme_label || '').trim();
-      if (!reason && e.newsCards.length > 0) {
-        reason = (e.newsCards[0].theme_hint || '').trim();
-      }
-      // URL 중복 제거
-      const seenUrl = new Set();
-      const links = [];
-      for (const nc of e.newsCards) {
-        if (!nc.url || seenUrl.has(nc.url)) continue;
-        seenUrl.add(nc.url);
-        links.push({ url: nc.url, source: nc.source || '' });
-      }
-      const interp = data.interpretedByName ? data.interpretedByName.get(name) : null;
-      featureItems.push({ name, pct, themes, links, ticker, reason, interp });
-    }
-    // 해석 있는 것 우선 정렬
-    featureItems.sort((a, b) => (b.interp ? 1 : 0) - (a.interp ? 1 : 0));
-    featureItems = featureItems.slice(0, 14);
-  } else if (kiwoomStocks.length > 0) {
+  let featureItems = []; // { name, pct, themes, ticker, reason }
+  if (kiwoomStocks.length > 0) {
     featureSource = 'fallback';
     featureItems = kiwoomStocks.slice(0, 6).map(s => {
       const pct = s.max_change_pct ?? s.change_pct ?? null;
@@ -179,17 +139,7 @@ function renderCalExpandContent(date, data) {
       } else {
         themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
-      const cafe = cafeStockMap.get(s.name);
-      const links = [];
-      const seen = new Set();
-      if (cafe) {
-        for (const nc of (cafe.newsCards || [])) {
-          if (!nc.url || seen.has(nc.url)) continue;
-          seen.add(nc.url);
-          links.push({ url: nc.url, source: nc.source || '' });
-        }
-      }
-      return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links, open: s.open, high: s.high, low: s.low, price: s.last_price ?? s.price };
+      return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open, high: s.high, low: s.low, price: s.last_price ?? s.price };
     });
   } else if (interpByName.size > 0) {
     // kiwoom JSON 없음 → stock-*.json (interpretedByName)에서 종목 구성
@@ -197,16 +147,6 @@ function renderCalExpandContent(date, data) {
     let idx = 0;
     for (const [name, interp] of interpByName) {
       idx++;
-      const cafe = cafeStockMap.get(name);
-      const links = [];
-      const seen = new Set();
-      if (cafe) {
-        for (const nc of (cafe.newsCards || [])) {
-          if (!nc.url || seen.has(nc.url)) continue;
-          seen.add(nc.url);
-          links.push({ url: nc.url, source: nc.source || '' });
-        }
-      }
       let themes = [];
       if (Array.isArray(interp.themes) && interp.themes.length > 0) {
         themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
@@ -248,10 +188,8 @@ function renderCalExpandContent(date, data) {
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
     : '';
 
-  // (2) 내러티브: 카페 요약이 있을 때만 표시 (매크로 폴백은 macroHtml 칩과 중복되므로 제거)
-  const narrPillsHtml = data.narratives.length > 0
-    ? `<div class="cal-narr-stack">${data.narratives.slice(0, 8).map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}</div>`
-    : '';
+  // 내러티브: 카페 제거로 빈 값 (하위 호환용 유지)
+  const narrPillsHtml = '';
 
   const renderFactors = (st) => {
     const ff = st.five_factors || {};
@@ -455,13 +393,6 @@ function renderCalExpandContent(date, data) {
     }
 
     // compact row (해석 없음)
-    const cafeLinks = (it.links || []).slice(0, 3).map(l => {
-      const label = (() => {
-        try { return new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) { return '링크'; }
-      })();
-      return `<a class="cal-feature-link" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
-    }).join('');
-    const linksHtml = cafeLinks ? `<div class="cal-feature-links" style="margin-top:4px;">${cafeLinks}</div>` : '';
     // compact에도 연속 배지: 2+ → "N연속", 1이면 비표시
     const compactPC = it.interp?.pick_count;
     const compactBadge = compactPC != null && compactPC >= 2
@@ -473,7 +404,6 @@ function renderCalExpandContent(date, data) {
         <div class="cal-trade-name-cell">
           <span class="cal-trade-name">${escapeHtml(it.name)}</span>
           ${compactBadge}
-          ${linksHtml}
         </div>
         <div class="cal-trade-amount">${amountText}</div>
         <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
