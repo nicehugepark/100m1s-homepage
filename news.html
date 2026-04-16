@@ -1392,7 +1392,23 @@ async function loadCalDayData(date) {
   }
   // 해석 파일 로드 (stock-daily)
   const dateHash = date.replace(/-/g, '');
-  const stockDailyData = await fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
+  let stockDailyData = await fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
+  // 당일 데이터 없으면 최근 7일 이내 이전 날짜 fallback
+  if (!stockDailyData) {
+    const d = new Date(date + 'T00:00:00');
+    for (let i = 1; i <= 7; i++) {
+      const prev = new Date(d);
+      prev.setDate(prev.getDate() - i);
+      const prevStr = prev.toISOString().slice(0, 10);
+      const prevHash = prevStr.replace(/-/g, '');
+      const prevData = await fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
+      if (prevData) {
+        stockDailyData = prevData;
+        stockDailyData._fallback_date = prevStr;
+        break;
+      }
+    }
+  }
   // 종목명 → 해석 stock 객체 병합 맵
   const interpretedByName = new Map();
   let macroEvents = [];
@@ -1467,12 +1483,21 @@ async function loadCalDayData(date) {
             credit_reason: st.credit_reason || null,
             close_price: st.close_price || null,
             intraday: st.intraday || null,
+            status_badges: st.status_badges || [],
           });
         }
       }
       // 매크로 이벤트 보충
       if (Array.isArray(stockDaily.macro_events) && macroEvents.length === 0) {
         macroEvents = stockDaily.macro_events;
+      }
+      // fallback 날짜 표시를 위해 안내 이벤트 삽입
+      if (stockDailyData._fallback_date) {
+        macroEvents.unshift({
+          keyword: '데이터 안내',
+          summary: `최신 분석 데이터 준비 중 — ${stockDailyData._fallback_date} 기준 데이터를 표시합니다.`,
+          source_count: 0
+        });
       }
     }
   } catch (e) { console.warn('stock-daily merge:', e); }
