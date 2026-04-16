@@ -1,4 +1,4 @@
-const CACHE_NAME = 'news-v1';
+const CACHE_NAME = 'news-v2';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
@@ -51,10 +51,17 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // 정적 자산 — cache-first
+  // 정적 자산 — stale-while-revalidate (배포 시 즉시 갱신)
   if (STATIC_ASSETS.some(a => url.pathname === a || url.pathname.endsWith(a))) {
     e.respondWith(
-      caches.match(e.request).then(cached => cached || fetch(e.request))
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(e.request);
+        const fetchPromise = fetch(e.request).then(response => {
+          if (response.ok) cache.put(e.request, response.clone());
+          return response;
+        }).catch(() => cached);
+        return cached || fetchPromise;
+      })
     );
     return;
   }
