@@ -204,13 +204,16 @@ async function initCalendar() {
   const hasUrlDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate))
     || (hashDate && /^\d{4}-\d{2}-\d{2}$/.test(hashDate));
   let initialDate = hasUrlDate ? (urlDate || hashDate) : todayStr;
-  // URL 날짜가 없고, 오늘 데이터도 없으면 최근 수집일로 폴백
-  if (!hasUrlDate && calIndex && !calHasData(todayStr) && calIndex.days) {
-    const collectedDays = Object.keys(calIndex.days)
-      .filter(d => d <= todayStr)
-      .sort();
-    if (collectedDays.length > 0) {
-      initialDate = collectedDays[collectedDays.length - 1];
+  // URL 날짜가 없고, 오늘이 주말/휴장이면 최근 거래일로 폴백
+  // 오늘이 평일이면 calIndex에 없어도 항상 오늘 선택 (데이터 비동기 로드)
+  if (!hasUrlDate && (isWeekendDate(todayStr) || isHoliday(todayStr))) {
+    if (calIndex && calIndex.days) {
+      const collectedDays = Object.keys(calIndex.days)
+        .filter(d => d <= todayStr)
+        .sort();
+      if (collectedDays.length > 0) {
+        initialDate = collectedDays[collectedDays.length - 1];
+      }
     }
   }
   const [iy, im] = initialDate.split('-').map(Number);
