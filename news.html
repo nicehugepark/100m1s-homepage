@@ -199,6 +199,12 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
 .cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 44px; align-items:center; }
 .cal-credit-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#FDE8E8; color:#C53939; border:1px solid #F5C2C2; vertical-align:middle; }
+.cal-status-badge { display:inline-block; font-size:10px; font-weight:600; padding:1px 5px; border-radius:3px; margin-right:3px; vertical-align:middle; }
+.cal-status-badge.caution { background:#fff3cd; color:#856404; }
+.cal-status-badge.warning { background:#ffe0b2; color:#e65100; }
+.cal-status-badge.danger { background:#ffcdd2; color:#c62828; }
+.cal-status-badge.hot { background:#fce4ec; color:#c2185b; }
+.cal-spark-empty { width:80px; height:32px; background:repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(128,128,128,0.08) 4px, rgba(128,128,128,0.08) 5px); border-radius:4px; flex-shrink:0; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
@@ -1855,13 +1861,21 @@ function renderCalExpandContent(date, data) {
       const creditReasonHtml = (st.credit_risk && st.credit_reason)
         ? `<div class="cal-credit-reason"><div class="cal-disc-item"><span class="cal-disc-cat credit">신용불가</span><span class="cal-disc-summary">${escapeHtml(sanitize(st.credit_reason))}</span></div></div>`
         : '';
-      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml)
-        ? `<div class="cal-feature-badges">${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
+      // 종목 상태 뱃지 (투자주의/경고/위험/단기과열)
+      const statusBadges = (st.status_badges || []).map(b => {
+        const cls = b.severity === 'danger' ? 'cal-status-badge danger'
+          : b.severity === 'warning' ? 'cal-status-badge warning'
+          : b.severity === 'hot' ? 'cal-status-badge hot'
+          : 'cal-status-badge caution';
+        return `<span class="${cls}">${escapeHtml(b.label)}</span>`;
+      }).join('');
+      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges)
+        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
         ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, dir)}</div>`
-        : '';
+        : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       return `
         <div class="cal-feature-card">
           <div class="cal-feature-head">
