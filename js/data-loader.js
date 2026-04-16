@@ -254,5 +254,6 @@ async function loadCalDayData(date) {
     dataSource
   };
   calDayCache[date] = result;
+  _persistCache();
   return result;
 }

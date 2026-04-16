@@ -5,7 +5,21 @@ let holidayData = null;        // data/holidays.json (공휴일 + KRX 휴장일)
 let calViewYear, calViewMonth; // 현재 보기 연·월 (month: 1~12)
 let calSelectedDate = null;    // 'YYYY-MM-DD'
 let calCategory = 'stock';     // 'stock' | 'realestate' | 'policy' (Phase 2/3 확장용)
-const calDayCache = {};        // date → { kiwoom, cafePosts, narratives }
+const calDayCache = (() => {
+  try {
+    return JSON.parse(localStorage.getItem('calDayCache') || '{}');
+  } catch { return {}; }
+})();
+
+function _persistCache() {
+  try {
+    // 최근 7일만 유지 (용량 관리)
+    const keys = Object.keys(calDayCache).sort().reverse().slice(0, 7);
+    const trimmed = {};
+    for (const k of keys) trimmed[k] = calDayCache[k];
+    localStorage.setItem('calDayCache', JSON.stringify(trimmed));
+  } catch {}
+}
 
 function isHoliday(iso) {
   return holidayData && holidayData.holidays && (iso in holidayData.holidays);
