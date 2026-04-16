@@ -75,21 +75,48 @@ async function loadHolidayData() {
 
 async function loadCalDayData(date) {
   if (calDayCache[date]) return calDayCache[date];
-  const [kiwoom, cafeIndex] = await Promise.all([
+  // kiwoom + stock-daily를 병렬 fetch (카페 인덱스는 stock-daily 없을 때만)
+  const dateHash = date.replace(/-/g, '');
+  const [kiwoom, stockDailyDirect] = await Promise.all([
     loadKiwoomDate(date),
-    loadIndex()
+    fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
-  // 해당 날짜 소스 포스트 수집 (병렬 로드)
+  let stockDailyData = stockDailyDirect;
+  // 당일 데이터 없으면 최근 7일 이내 이전 날짜 fallback (병렬)
+  if (!stockDailyData) {
+    const d = new Date(date + 'T00:00:00');
+    const fallbackFetches = [];
+    for (let i = 1; i <= 7; i++) {
+      const prev = new Date(d);
+      prev.setDate(prev.getDate() - i);
+      const prevStr = prev.toISOString().slice(0, 10);
+      const prevHash = prevStr.replace(/-/g, '');
+      fallbackFetches.push(
+        fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`)
+          .then(r => r.ok ? r.json().then(j => ({ date: prevStr, data: j })) : null)
+          .catch(() => null)
+      );
+    }
+    const results = (await Promise.all(fallbackFetches)).filter(Boolean);
+    if (results.length > 0) {
+      stockDailyData = results[0].data;
+      stockDailyData._fallback_date = results[0].date;
+    }
+  }
+  // 카페 포스트: stock-daily 있으면 스킵 (뉴스 파이프라인이 대체)
   let postsOfDay = [];
-  if (cafeIndex && cafeIndex.posts) {
-    const idsOfDay = cafeIndex.posts
-      .filter(p => {
-        const d = p.post_date || (p.fetched_at || '').slice(0, 10);
-        return d === date;
-      })
-      .map(p => p.post_id)
-      .slice(0, 10);
-    postsOfDay = (await Promise.all(idsOfDay.map(id => loadPost(id)))).filter(Boolean);
+  if (!stockDailyData) {
+    const cafeIndex = await loadIndex();
+    if (cafeIndex && cafeIndex.posts) {
+      const idsOfDay = cafeIndex.posts
+        .filter(p => {
+          const d = p.post_date || (p.fetched_at || '').slice(0, 10);
+          return d === date;
+        })
+        .map(p => p.post_id)
+        .slice(0, 3);
+      postsOfDay = (await Promise.all(idsOfDay.map(id => loadPost(id)))).filter(Boolean);
+    }
   }
   // 내러티브 dedupe
   const narrSet = new Set();
@@ -99,25 +126,6 @@ async function loadCalDayData(date) {
         for (const nc of (st.news_cards || [])) {
           if (nc.summary) narrSet.add(nc.summary.trim());
         }
-      }
-    }
-  }
-  // 해석 파일 로드 (stock-daily)
-  const dateHash = date.replace(/-/g, '');
-  let stockDailyData = await fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
-  // 당일 데이터 없으면 최근 7일 이내 이전 날짜 fallback
-  if (!stockDailyData) {
-    const d = new Date(date + 'T00:00:00');
-    for (let i = 1; i <= 7; i++) {
-      const prev = new Date(d);
-      prev.setDate(prev.getDate() - i);
-      const prevStr = prev.toISOString().slice(0, 10);
-      const prevHash = prevStr.replace(/-/g, '');
-      const prevData = await fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
-      if (prevData) {
-        stockDailyData = prevData;
-        stockDailyData._fallback_date = prevStr;
-        break;
       }
     }
   }
@@ -224,8 +232,27 @@ async function loadCalDayData(date) {
       }
     }
     for (const prevDate of prevPickDates) {
-      const prevData = await loadCalDayData(prevDate);
-      if (!prevData.interpretedByName) continue;
+      // 전일 해석 전파: 캐시 우선, 없으면 stock JSON만 직접 fetch (재귀 방지)
+      let prevData = calDayCache[prevDate];
+      if (!prevData) {
+        const prevHash = prevDate.replace(/-/g, '');
+        const prevStock = await fetch(`/data/interpreted/${calCategory}-${prevDate}.json?v=${prevHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
+        if (prevStock) {
+          const prevMap = new Map();
+          for (const st of (prevStock.stocks || [])) {
+            if (!st.name) continue;
+            const chainNews = (st.news || []).find(n => n.causal_chain) || null;
+            prevMap.set(st.name, {
+              causal_chain: chainNews ? [chainNews.causal_chain] : [],
+              differentiator: chainNews ? chainNews.causal_chain : '',
+              macro_event: (st.news || [])[0]?.macro_event || null,
+              news_digest: (st.news || []).map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
+            });
+          }
+          prevData = { interpretedByName: prevMap };
+        }
+      }
+      if (!prevData || !prevData.interpretedByName) continue;
       for (const [name, prevInterp] of prevData.interpretedByName) {
         if (!interpretedByName.has(name)) continue;
         const curr = interpretedByName.get(name);
