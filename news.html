@@ -204,6 +204,11 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-badge.warning { background:#ffe0b2; color:#e65100; }
 .cal-status-badge.danger { background:#ffcdd2; color:#c62828; }
 .cal-status-badge.hot { background:#fce4ec; color:#c2185b; }
+.cal-status-detail { padding:4px 8px; margin:4px 0; background:rgba(255,152,0,0.06); border-left:2px solid #ff9800; border-radius:0 4px 4px 0; font-size:11px; line-height:1.5; color:#555; }
+.cal-status-detail .cal-badge-period { display:inline-block; font-weight:600; color:#e65100; margin-right:6px; }
+.cal-status-detail .cal-badge-summary { display:block; margin-top:2px; color:#333; }
+.cal-status-detail .cal-badge-condition { display:block; margin-top:2px; color:#c62828; font-weight:500; }
+.cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:#1565c0; font-size:10px; }
 .cal-spark-empty { width:80px; height:32px; background:repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(128,128,128,0.08) 4px, rgba(128,128,128,0.08) 5px); border-radius:4px; flex-shrink:0; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
@@ -1894,6 +1899,20 @@ function renderCalExpandContent(date, data) {
           : 'cal-status-badge caution';
         return `<span class="${cls}">${escapeHtml(b.label)}</span>`;
       }).join('');
+
+      // 상태 뱃지 상세 사유 (뱃지 아래에 표시)
+      const statusDetailHtml = (st.status_badges || []).filter(b => b.summary || b.condition).map(b => {
+        const parts = [];
+        if (b.start && b.end && b.start !== b.end) {
+          parts.push(`<span class="cal-badge-period">${b.start} ~ ${b.end}</span>`);
+        } else if (b.start) {
+          parts.push(`<span class="cal-badge-period">${b.start}부터</span>`);
+        }
+        if (b.summary) parts.push(`<span class="cal-badge-summary">${escapeHtml(b.summary)}</span>`);
+        if (b.condition) parts.push(`<span class="cal-badge-condition">조건: ${escapeHtml(b.condition)}</span>`);
+        if (b.regulation) parts.push(`<span class="cal-badge-regulation">${escapeHtml(b.regulation)}</span>`);
+        return `<div class="cal-status-detail">${parts.join('')}</div>`;
+      }).join('');
       const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges)
         ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
         : '';
@@ -1919,7 +1938,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `${headlineHtml}${ishikawaHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}${discListHtml}${creditReasonHtml}`
+              ? `${headlineHtml}${ishikawaHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${pickMeta}${statusDetailHtml}${discListHtml}${creditReasonHtml}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
