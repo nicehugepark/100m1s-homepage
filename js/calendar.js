@@ -7,16 +7,32 @@ let calSelectedDate = null;    // 'YYYY-MM-DD'
 let calCategory = 'stock';     // 'stock' | 'realestate' | 'policy' (Phase 2/3 확장용)
 const calDayCache = (() => {
   try {
-    return JSON.parse(localStorage.getItem('calDayCache') || '{}');
+    const raw = JSON.parse(localStorage.getItem('calDayCache') || '{}');
+    // Map 복원: interpretedByName이 배열이면 Map으로 재구성
+    for (const [date, entry] of Object.entries(raw)) {
+      if (entry && Array.isArray(entry.interpretedByName)) {
+        entry.interpretedByName = new Map(entry.interpretedByName);
+      }
+    }
+    return raw;
   } catch { return {}; }
 })();
 
 function _persistCache() {
   try {
-    // 최근 7일만 유지 (용량 관리)
     const keys = Object.keys(calDayCache).sort().reverse().slice(0, 7);
     const trimmed = {};
-    for (const k of keys) trimmed[k] = calDayCache[k];
+    for (const k of keys) {
+      const entry = calDayCache[k];
+      if (!entry) continue;
+      // Map→Array 직렬화 (JSON.stringify는 Map을 빈 객체로 변환하므로)
+      trimmed[k] = {
+        ...entry,
+        interpretedByName: entry.interpretedByName instanceof Map
+          ? Array.from(entry.interpretedByName.entries())
+          : entry.interpretedByName
+      };
+    }
     localStorage.setItem('calDayCache', JSON.stringify(trimmed));
   } catch {}
 }
