@@ -779,6 +779,39 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border-top: 1px dashed rgba(0,0,0,0.06);
   margin-top: 2px;
 }
+.cal-feature-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-out;
+}
+.cal-feature-card.expanded .cal-feature-details {
+  max-height: 500px;
+}
+.cal-detail-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  margin-left: auto;
+  min-height: 32px;
+  padding: 0 8px;
+}
+.cal-toggle-summary {
+  font-size: 11px;
+  color: #a08040;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cal-chevron {
+  font-size: 10px;
+  transition: transform 0.25s;
+  color: #a08040;
+}
+.cal-feature-card.expanded .cal-chevron {
+  transform: rotate(180deg);
+}
 .cal-feature-reason {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
   white-space: pre-wrap;
