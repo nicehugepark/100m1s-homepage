@@ -371,15 +371,9 @@ function renderCalExpandContent(date, data) {
         ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
-      let sparkHtml;
-      if (it.interp?.intraday) {
-        sparkHtml = `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`;
-      } else if (it.open && it.high && it.low && it.price) {
-        // 분봉 없을 때 OHLC 4점 간이 sparkline
-        sparkHtml = `<div class="cal-feature-sparkline">${buildSparkline([it.open, it.high, it.low, it.price], it.open, candleDir)}</div>`;
-      } else {
-        sparkHtml = '<div class="cal-feature-sparkline cal-spark-empty"></div>';
-      }
+      const sparkHtml = it.interp?.intraday
+        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
+        : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       return `
         <div class="cal-feature-card">
           <div class="cal-feature-head">
