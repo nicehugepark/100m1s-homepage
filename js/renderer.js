@@ -112,9 +112,10 @@ function renderCalExpandContent(date, data) {
   if (kiwoomStocks.length > 0) {
     featureSource = 'fallback';
     featureItems = kiwoomStocks.slice(0, 6).map(s => {
-      const pct = s.max_change_pct ?? s.change_pct ?? null;
-      const themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
-      return { name: s.name, pct, themes, links: [], ticker: s.ticker, reason: '' };
+      const interp = interpByName.get(s.name);
+      const pct = interp?.change_pct ?? s.change_pct ?? null;
+      const themes = (interp?.themes || themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
+      return { name: s.name, pct, themes, links: [], ticker: s.ticker, reason: '', interp };
     });
   } else if (interpByName.size > 0) {
     // kiwoom JSON 없음, 카페 없음 → stock-*.json 기반 특징주
@@ -131,8 +132,9 @@ function renderCalExpandContent(date, data) {
   let todayStocks;
   if (kiwoomStocks.length > 0) {
     todayStocks = kiwoomStocks.map((s, i) => {
-      const pct = s.max_change_pct ?? s.change_pct ?? null;
       const interp = interpByName.get(s.name);
+      // 등락률: stock JSON의 종가 기준 우선 (키움 max_change_pct는 장중 최대라 부정확)
+      const pct = interp?.change_pct ?? s.change_pct ?? null;
       let themes;
       if (interp && Array.isArray(interp.themes) && interp.themes.length > 0) {
         themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
