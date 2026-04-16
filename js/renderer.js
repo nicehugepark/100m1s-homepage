@@ -1,78 +1,4 @@
-let themesData = null;
-
-async function loadThemes() {
-  try {
-    const res = await fetch('/data/themes/themes.json');
-    if (!res.ok) throw new Error('themes.json HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-async function loadIndex() {
-  try {
-    const res = await fetch('/data/cafe/index.json');
-    if (!res.ok) throw new Error('index.json HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-async function loadPost(postId) {
-  try {
-    const res = await fetch(`/data/cafe/posts/${postId}.json`);
-    if (!res.ok) throw new Error(postId + ' HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-async function loadKiwoomIndex() {
-  try {
-    const res = await fetch('/data/kiwoom/index.json');
-    if (!res.ok) throw new Error('kiwoom/index.json HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-async function loadKiwoomDate(date) {
-  const dateHash = date.replace(/-/g, '');
-  try {
-    const res = await fetch(`/data/kiwoom/${date}.json?v=${dateHash}`);
-    if (res.ok) return await res.json();
-  } catch (e) { /* fall through */ }
-  // 폴백: stock-*.json에서 종목 리스트 추출 (kiwoom 파일 미생성 시)
-  try {
-    const fb = await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
-    if (fb.ok) {
-      const d = await fb.json();
-      if (d.stocks && d.stocks.length > 0) {
-        return { daily_top: d.stocks.map(s => ({
-          ticker: s.code, name: s.name, rank: s.rank,
-          max_trade_amount: s.trade_amount, max_change_pct: s.change_pct
-        })) };
-      }
-    }
-  } catch (e) { /* ignore */ }
-  return null;
-}
-
-function fmtTradeAmount(won) {
-  if (won == null) return '—';
-  if (won >= 1_000_000_000_000) return (won / 1_000_000_000_000).toFixed(1) + '조';
-  if (won >= 100_000_000) return Math.round(won / 100_000_000).toLocaleString() + '억';
-  if (won >= 10_000) return Math.round(won / 10_000).toLocaleString() + '만';
-  return won.toLocaleString();
-}
-
-function fmtNum(n) {
-  if (n === null || n === undefined) return '—';
-  return n.toLocaleString('ko-KR');
-}
-
-function escapeHtml(s) {
-  if (s == null) return '';
-  return String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-}
+/* ───── renderer.js — 카드/차트/테마 렌더링 + 초기화 ───── */
 
 // 당일 분봉 sparkline SVG (open 기준선 + 라인 + 하단 그라데이션)
 function buildSparkline(prices, base, dir) {
@@ -97,26 +23,6 @@ function buildSparkline(prices, base, dir) {
     <line x1="${PAD}" y1="${baseY}" x2="${W-PAD}" y2="${baseY}" stroke="#888" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.5"/>
     <path d="${d}" fill="none" stroke="${color}" stroke-width="1.3"/>
   </svg>`;
-}
-
-// 내부 에이전트 이름·고유명을 사용자 화면에서 제거 (상품 톤 유지)
-function sanitize(s) {
-  if (s == null) return '';
-  return String(s)
-    .replace(/박성진\s*매매\s*가치관(?:상)?/g, '내부 거래 기준')
-    .replace(/박성진\s*(?:스타일|매매스타일)/g, '내부 거래 스타일')
-    .replace(/박성진/g, '내부 기준')
-    .replace(/주주\s*이견[:：]?/g, '추가 관점:')
-    .replace(/주주\s*Top\s*Pick/gi, '엄선 종목')
-    .replace(/주주\s*검증/g, '재검증')
-    .replace(/주주가\s*/g, '')
-    .replace(/주주\s*/g, '')
-    .replace(/뉴지\s*미처리/g, '분석 대기')
-    .replace(/뉴지\s*선별/g, '선별')
-    .replace(/뉴지가\s*/g, '')
-    .replace(/뉴지\s*/g, '')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
 }
 
 function deriveDate(post) {
@@ -144,360 +50,6 @@ function renderNewsCard(card) {
       </div>
     </div>
   `;
-}
-
-/* ───── 토스 캘린더 로직 ───── */
-let calIndex = null;           // data/calendar/index.json (없으면 null)
-let holidayData = null;        // data/holidays.json (공휴일 + KRX 휴장일)
-let calViewYear, calViewMonth; // 현재 보기 연·월 (month: 1~12)
-let calSelectedDate = null;    // 'YYYY-MM-DD'
-let calCategory = 'stock';     // 'stock' | 'realestate' | 'policy' (Phase 2/3 확장용)
-const calDayCache = {};        // date → { kiwoom, cafePosts, narratives }
-
-async function loadCalendarIndex() {
-  try {
-    const res = await fetch('/data/calendar/index.json');
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-async function loadHolidayData() {
-  try {
-    const res = await fetch('/data/holidays.json');
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (e) { return null; }
-}
-
-function isHoliday(iso) {
-  return holidayData && holidayData.holidays && (iso in holidayData.holidays);
-}
-
-function getHolidayName(iso) {
-  if (!holidayData || !holidayData.holidays) return null;
-  return holidayData.holidays[iso] || null;
-}
-
-function isMarketClosed(iso) {
-  if (!holidayData || !holidayData.market_closed) return isWeekendDate(iso);
-  return iso in holidayData.market_closed;
-}
-
-// 비거래일이면 테마트리·거래대금 추이 숨김
-function toggleThemeSections(iso) {
-  const closed = isMarketClosed(iso);
-  const tree = document.getElementById('theme-tree');
-  const trend = document.getElementById('theme-trend');
-  if (tree) tree.style.display = closed ? 'none' : '';
-  if (trend) trend.style.display = closed ? 'none' : '';
-}
-
-function pad2(n) { return String(n).padStart(2, '0'); }
-function ymd(y, m, d) { return `${y}-${pad2(m)}-${pad2(d)}`; }
-function formatKoDate(iso) {
-  const [y, m, d] = iso.split('-').map(Number);
-  const dow = ['일','월','화','수','목','금','토'][new Date(y, m - 1, d).getDay()];
-  return `${m}월 ${d}일 (${dow})`;
-}
-function isWeekendDate(iso) {
-  const [y, m, d] = iso.split('-').map(Number);
-  const dow = new Date(y, m - 1, d).getDay();
-  return dow === 0 || dow === 6;
-}
-
-// 다음 거래일 계산 (최대 10일 탐색)
-function getNextTradingDate(iso) {
-  const [y, m, d] = iso.split('-').map(Number);
-  const dt = new Date(y, m - 1, d);
-  for (let i = 0; i < 10; i++) {
-    dt.setDate(dt.getDate() + 1);
-    const next = ymd(dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
-    if (!isMarketClosed(next)) return next;
-  }
-  return null;
-}
-
-function calHasData(date) {
-  if (!calIndex || !calIndex.days) return false;
-  const entry = calIndex.days[date];
-  if (!entry) return false;
-  return (entry.stock_count ?? 0) >= 1 && (entry.news_count ?? 0) >= 1;
-}
-
-function renderCalendar() {
-  const grid = document.getElementById('toss-cal-grid');
-  const ymEl = document.getElementById('toss-cal-ym');
-  const subEl = document.getElementById('toss-cal-sub');
-  const prevBtn = document.getElementById('toss-cal-prev');
-  const nextBtn = document.getElementById('toss-cal-next');
-
-  ymEl.textContent = `${calViewYear}년 ${calViewMonth}월`;
-
-  const today = new Date();
-  const todayY = today.getFullYear();
-  const todayM = today.getMonth() + 1;
-  const todayD = today.getDate();
-  const todayStr = ymd(todayY, todayM, todayD);
-
-  // 서브 텍스트 (해당 월 집계)
-  subEl.textContent = '';
-
-  // 네비게이션 제한
-  nextBtn.disabled = (calViewYear > todayY) || (calViewYear === todayY && calViewMonth >= todayM);
-
-  // 그리드 렌더
-  const firstDow = new Date(calViewYear, calViewMonth - 1, 1).getDay();
-  const daysInMonth = new Date(calViewYear, calViewMonth, 0).getDate();
-  const dows = ['일','월','화','수','목','금','토'];
-  let html = '';
-  dows.forEach((d, i) => {
-    const cls = i === 0 ? 'sun' : (i === 6 ? 'sat' : '');
-    html += `<div class="toss-cal-dow ${cls}">${d}</div>`;
-  });
-  for (let i = 0; i < firstDow; i++) {
-    html += `<div class="toss-cal-cell outside"></div>`;
-  }
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = ymd(calViewYear, calViewMonth, d);
-    const isFuture = (calViewYear > todayY) ||
-                     (calViewYear === todayY && calViewMonth > todayM) ||
-                     (calViewYear === todayY && calViewMonth === todayM && d > todayD);
-    const hasData = isFuture ? false : calHasData(date);
-    const dow = new Date(calViewYear, calViewMonth - 1, d).getDay();
-    const isWeekend = (dow === 0 || dow === 6);
-    const isToday = (date === todayStr);
-    const isHol = isHoliday(date);
-    const classes = ['toss-cal-cell'];
-    const isTodayMarketHours = isToday && !isMarketClosed(date) && (new Date().getHours() < 16);
-    if (isFuture) classes.push('future');
-    else if (!hasData && !isTodayMarketHours) classes.push('no-data');
-    else if (!hasData && isTodayMarketHours) classes.push('market-hours');
-    if (isWeekend) classes.push('weekend');
-    if (dow === 0) classes.push('sunday');
-    if (dow === 6) classes.push('saturday');
-    if (isHol) classes.push('holiday');
-    if (isToday) classes.push('today');
-    if (date === calSelectedDate) classes.push('selected');
-    const holName = getHolidayName(date);
-    const aria = `${date}${isToday ? ' (오늘)' : ''}${isTodayMarketHours ? ' (장중)' : ''}${holName ? ' ' + holName : ''}`;
-    const isClickable = !isFuture && (hasData || isTodayMarketHours);
-    html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isClickable ? 0 : -1}" aria-label="${aria}">${d}</div>`;
-  }
-  grid.innerHTML = html;
-
-  grid.querySelectorAll('.toss-cal-cell[data-date]').forEach(el => {
-    if (el.classList.contains('future')) return;
-    el.addEventListener('click', () => onCalCellClick(el.dataset.date));
-  });
-}
-
-async function onCalCellClick(date, pushState) {
-  calSelectedDate = date;
-  toggleThemeSections(date);
-  // Static URL — /news/{date}.html로 공유 시 날짜별 OG 이미지 매칭
-  if (pushState !== false) {
-    history.pushState(null, '', '/news/stock/' + date + '.html');
-  }
-  renderCalendar();
-  const inner = document.getElementById('cal-content');
-  inner.innerHTML = `
-    <div class="cal-content-head">
-      <div class="cal-content-date">${formatKoDate(date)}</div>
-      <div class="cal-content-meta">불러오는 중…</div>
-    </div>
-    <div class="cal-empty"><div>데이터 로드 중</div></div>
-  `;
-  const data = await loadCalDayData(date);
-  renderCalExpandContent(date, data);
-  // 테마트리도 해당 날짜 기준으로 재렌더링
-  if (!isMarketClosed(date)) {
-    initThemeTree(date);
-  }
-}
-
-async function loadCalDayData(date) {
-  if (calDayCache[date]) return calDayCache[date];
-  const [kiwoom, cafeIndex] = await Promise.all([
-    loadKiwoomDate(date),
-    loadIndex()
-  ]);
-  // 해당 날짜 소스 포스트 수집 (병렬 로드)
-  let postsOfDay = [];
-  if (cafeIndex && cafeIndex.posts) {
-    const idsOfDay = cafeIndex.posts
-      .filter(p => {
-        const d = p.post_date || (p.fetched_at || '').slice(0, 10);
-        return d === date;
-      })
-      .map(p => p.post_id)
-      .slice(0, 10);
-    postsOfDay = (await Promise.all(idsOfDay.map(id => loadPost(id)))).filter(Boolean);
-  }
-  // 내러티브 dedupe
-  const narrSet = new Set();
-  for (const p of postsOfDay) {
-    for (const sec of (p.sections || [])) {
-      for (const st of (sec.stocks || [])) {
-        for (const nc of (st.news_cards || [])) {
-          if (nc.summary) narrSet.add(nc.summary.trim());
-        }
-      }
-    }
-  }
-  // 해석 파일 로드 (stock-daily)
-  const dateHash = date.replace(/-/g, '');
-  let stockDailyData = await fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
-  // 당일 데이터 없으면 최근 7일 이내 이전 날짜 fallback
-  if (!stockDailyData) {
-    const d = new Date(date + 'T00:00:00');
-    for (let i = 1; i <= 7; i++) {
-      const prev = new Date(d);
-      prev.setDate(prev.getDate() - i);
-      const prevStr = prev.toISOString().slice(0, 10);
-      const prevHash = prevStr.replace(/-/g, '');
-      const prevData = await fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
-      if (prevData) {
-        stockDailyData = prevData;
-        stockDailyData._fallback_date = prevStr;
-        break;
-      }
-    }
-  }
-  // 종목명 → 해석 stock 객체 병합 맵
-  const interpretedByName = new Map();
-  let macroEvents = [];
-  // Phase 1 뉴스 파이프라인 산출물 (stock-YYYY-MM-DD.json) — DB 종목 마스터 + 이시카와/토구사 해석
-  try {
-    if (stockDailyData) {
-      const stockDaily = stockDailyData;
-      for (const st of (stockDaily.stocks || [])) {
-        if (!st.name) continue;
-        // 기존 해석이 있으면 themes/theme_paths만 병합 (cafe에 테마 없을 수 있음)
-        if (interpretedByName.has(st.name)) {
-          const existing = interpretedByName.get(st.name);
-          const stThemes = (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t);
-          if (stThemes.length > 0 && (!existing.themes || existing.themes.length === 0)) {
-            existing.themes = stThemes;
-          }
-          if ((st.theme_paths || []).length > 0 && (!existing.theme_paths || existing.theme_paths.length === 0)) {
-            existing.theme_paths = st.theme_paths;
-          }
-          continue;
-        }
-        {
-          // stock-*.json 형식 → 기존 렌더러 호환 변환
-          // 가비지 뉴스 필터: VI발동, 신고가, 단순 등락률 로봇 기사 제거
-          const garbageRe = /[+-]?\d[\d.]*%\s*(VI\s*발동|\d+주\s*신[고저]가|상한가|하한가)|거래량\s*(폭발|급증|돌파)/;
-          const newsItems = (st.news || [])
-            .filter(n => !(n.newzy_verdict || '').startsWith('반대'))
-            .filter(n => !garbageRe.test(n.title || ''));
-          const topNews = newsItems[0];
-          const pp = st.prev_pick;
-          const industryLabel = st.industry ? `업종: ${st.industry}` : '';
-          const sectorLabel = st.sector ? (() => {
-            // 괄호 밖의 첫 콤마에서만 자르기 (괄호 안 콤마는 무시)
-            let depth = 0, cutIdx = -1;
-            for (let i = 0; i < st.sector.length; i++) {
-              if (st.sector[i] === '(') depth++;
-              else if (st.sector[i] === ')') depth--;
-              else if (st.sector[i] === ',' && depth === 0) { cutIdx = i; break; }
-            }
-            return cutIdx >= 0 ? st.sector.slice(0, cutIdx).trim() : st.sector.trim();
-          })() : '';
-          // causal_chain이 있는 뉴스를 우선 탐색 (첫 번째 뉴스에 없을 수 있음)
-          const chainNews = newsItems.find(n => n.causal_chain) || null;
-          const causalText = chainNews ? chainNews.causal_chain : '';
-          const diffParts = [
-            causalText,
-            !causalText && industryLabel ? `업종: ${industryLabel}` : '',
-            !causalText && sectorLabel ? `주요제품: ${sectorLabel}` : '',
-          ].filter(Boolean);
-          // 테마: theme_paths 우선, 없으면 themes, 없으면 industry 폴백
-          const trimIndustry = (s) => s.replace(/\s*(제조업|업)$/, '').replace(/기타\s*/, '');
-          let themes = (st.themes || []).map(t => typeof t === 'string' ? { name: t } : t);
-          const themePaths = st.theme_paths || [];
-          // industry 폴백 제거 (산업분류 ≠ 테마, 대표 결정)
-
-          interpretedByName.set(st.name, {
-            name: st.name,
-            themes,
-            theme_paths: themePaths,
-            causal_chain: causalText ? [causalText] : (st.causal_chain ? [st.causal_chain] : []),
-            differentiator: diffParts.join(' · ') || st.causal_chain || '',
-            macro_event: topNews?.macro_event || null,
-            news_digest: newsItems.map(n => ({ url: n.url, inferred_title: n.title, source: n.source })),
-            industry: st.industry,
-            sector: st.sector,
-            fallback: st.fallback,
-            fallback_date: st.fallback_date,
-            pick_count: st.pick_count,
-            prev_pick: pp,
-            disclosures: st.disclosures || [],
-            credit_risk: !!st.credit_risk,
-            credit_reason: st.credit_reason || null,
-            close_price: st.close_price || null,
-            intraday: st.intraday || null,
-            status_badges: st.status_badges || [],
-          });
-        }
-      }
-      // 매크로 이벤트 보충
-      if (Array.isArray(stockDaily.macro_events) && macroEvents.length === 0) {
-        macroEvents = stockDaily.macro_events;
-      }
-      // fallback 날짜 표시를 위해 안내 이벤트 삽입
-      if (stockDailyData._fallback_date) {
-        macroEvents.unshift({
-          keyword: '데이터 안내',
-          summary: `최신 분석 데이터 준비 중 — ${stockDailyData._fallback_date} 기준 데이터를 표시합니다.`,
-          source_count: 0
-        });
-      }
-    }
-  } catch (e) { console.warn('stock-daily merge:', e); }
-
-  // 전일 해석 전파 (stock-*.json try-catch 밖 — 에러 삼킴 방지)
-  try {
-    const prevPickDates = new Set();
-    for (const [name, curr] of interpretedByName) {
-      if (curr.prev_pick && curr.prev_pick.date) {
-        const chain = curr.causal_chain || [];
-        if (chain.length === 0) prevPickDates.add(curr.prev_pick.date);
-      }
-    }
-    for (const prevDate of prevPickDates) {
-      const prevData = await loadCalDayData(prevDate);
-      if (!prevData.interpretedByName) continue;
-      for (const [name, prevInterp] of prevData.interpretedByName) {
-        if (!interpretedByName.has(name)) continue;
-        const curr = interpretedByName.get(name);
-        if ((curr.causal_chain || []).length > 0) continue;
-        if ((prevInterp.causal_chain || []).length > 0) {
-          // curr를 base로 두고, prev에서 분석성 필드만 보충 (당일 가격/공시/분봉/신용 등 보존)
-          const merged = Object.assign({}, curr, {
-            causal_chain: prevInterp.causal_chain,
-            differentiator: prevInterp.differentiator || curr.differentiator,
-            macro_event: prevInterp.macro_event || curr.macro_event,
-            news_digest: prevInterp.news_digest || curr.news_digest,
-          });
-          interpretedByName.set(name, merged);
-        }
-      }
-    }
-  } catch (e) { console.warn('prev-day propagation:', e); }
-  // data_source: stock JSON에 포함된 소스 태그 (kiwoom / kiwoom_ranking)
-  const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
-  const result = {
-    kiwoom,
-    cafePosts: postsOfDay,
-    narratives: Array.from(narrSet),
-    interpretedByName,
-    macroEvents,
-    dataSource
-  };
-  calDayCache[date] = result;
-  return result;
 }
 
 function renderCalExpandContent(date, data) {
@@ -688,7 +240,7 @@ function renderCalExpandContent(date, data) {
     ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}`
     : '—';
 
-  // ① 매크로 이벤트 (내러티브 폴백에도 사용)
+  // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
   const macroEvents = (data.macroEvents || [])
     .filter(m => m.summary && m.summary.length >= 10)
     .slice(0, 5);
@@ -696,7 +248,7 @@ function renderCalExpandContent(date, data) {
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
     : '';
 
-  // ② 내러티브: 카페 요약이 있을 때만 표시 (매크로 폴백은 macroHtml 칩과 중복되므로 제거)
+  // (2) 내러티브: 카페 요약이 있을 때만 표시 (매크로 폴백은 macroHtml 칩과 중복되므로 제거)
   const narrPillsHtml = data.narratives.length > 0
     ? `<div class="cal-narr-stack">${data.narratives.slice(0, 8).map(n => `<span class="cal-narr-pill">${escapeHtml(sanitize(n))}</span>`).join('')}</div>`
     : '';
@@ -956,101 +508,6 @@ function renderCalExpandContent(date, data) {
   `;
 }
 
-async function initCalendar() {
-  const meta = document.getElementById('meta');
-  if (meta) meta.textContent = '';
-  const [calIdx, themes, holidays] = await Promise.all([loadCalendarIndex(), loadThemes(), loadHolidayData()]);
-  calIndex = calIdx;
-  themesData = themes;
-  holidayData = holidays;
-  const now = new Date();
-  const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
-  // URL ?cat= / ?date= 파라미터. cat 기본값 stock.
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlCat = urlParams.get('cat');
-  if (urlCat && ['stock', 'realestate', 'policy'].includes(urlCat)) calCategory = urlCat;
-  const urlDate = urlParams.get('date');
-  // 해시 앵커(#2026-04-10) 지원 — news/YYYY-MM-DD.html에서 리다이렉트
-  const hashDate = window.location.hash.replace('#', '');
-  const hasUrlDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate))
-    || (hashDate && /^\d{4}-\d{2}-\d{2}$/.test(hashDate));
-  let initialDate = hasUrlDate ? (urlDate || hashDate) : todayStr;
-  // URL 날짜가 없고, 오늘 데이터도 없으면 최근 수집일로 폴백
-  if (!hasUrlDate && !calHasData(todayStr) && calIndex && calIndex.days) {
-    const collectedDays = Object.keys(calIndex.days)
-      .filter(d => d <= todayStr)
-      .sort();
-    if (collectedDays.length > 0) {
-      initialDate = collectedDays[collectedDays.length - 1];
-    }
-  }
-  const [iy, im] = initialDate.split('-').map(Number);
-  calViewYear = iy;
-  calViewMonth = im;
-  calSelectedDate = initialDate;
-  renderCalendar();
-  onCalCellClick(initialDate, false); // 초기 로드 시 pushState 안 함
-
-  // 브라우저 뒤로/앞으로 지원
-  window.addEventListener('popstate', () => {
-    const p = new URLSearchParams(window.location.search);
-    const d = p.get('date');
-    const h = window.location.hash.replace('#', '');
-    const date = d || (h && /^\d{4}-\d{2}-\d{2}$/.test(h) ? h : null);
-    const c = p.get('cat');
-    if (c && ['stock', 'realestate', 'policy'].includes(c)) calCategory = c;
-    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) onCalCellClick(date, false);
-  });
-
-  document.getElementById('toss-cal-prev').addEventListener('click', () => {
-    calViewMonth--;
-    if (calViewMonth < 1) { calViewMonth = 12; calViewYear--; }
-    renderCalendar();
-  });
-  document.getElementById('toss-cal-next').addEventListener('click', () => {
-    const now2 = new Date();
-    if (calViewYear > now2.getFullYear() ||
-        (calViewYear === now2.getFullYear() && calViewMonth >= now2.getMonth() + 1)) return;
-    calViewMonth++;
-    if (calViewMonth > 12) { calViewMonth = 1; calViewYear++; }
-    renderCalendar();
-  });
-}
-
-initCalendar();
-
-function miniCandle(open, high, low, close, changePct) {
-  if (!close) return '';
-  const W = 12, H = 24;
-  const hasOHLC = open && high && low;
-  // OHLC 없으면 pct 기반 단순 바 (심지 없음, 높이=pct 비례)
-  if (!hasOHLC) {
-    if (changePct == null) return '';
-    const isUp = changePct >= 0;
-    const color = isUp ? '#E03131' : '#1971C2';
-    // 등락률 절대값에 비례: 1%=2px, 30%=24px (최대), 최소 3px
-    const bodyH = Math.max(3, Math.min(H, Math.abs(changePct) * 0.8));
-    const bodyTop = isUp ? (H - bodyH) : 0;
-    return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
-      '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/></svg>';
-  }
-  // 색상은 등락률(전일대비) 기준으로 통일. 스파크라인·등락률 숫자와 일관.
-  const isUp = (changePct != null) ? (changePct >= 0) : (close >= open);
-  const color = isUp ? '#E03131' : '#1971C2';
-  const range = high - low;
-  if (range === 0) return '<svg width="'+W+'" height="'+H+'"><line x1="6" y1="0" x2="6" y2="'+H+'" stroke="#8B95A8" stroke-width="1"/></svg>';
-  const scale = H / range;
-  const wickTop = 0;
-  const wickBot = H;
-  const bodyTop = (high - Math.max(open, close)) * scale;
-  const bodyBot = (high - Math.min(open, close)) * scale;
-  const bodyH = Math.max(bodyBot - bodyTop, 1);
-  return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
-    '<line x1="6" y1="'+wickTop+'" x2="6" y2="'+wickBot+'" stroke="'+color+'" stroke-width="1"/>' +
-    '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/>' +
-    '</svg>';
-}
-
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
   try {
@@ -1201,7 +658,7 @@ async function initThemeTrend() {
         '<div class="theme-trend-tooltip" id="tt-trend"></div>' +
       '</div>';
 
-    // ── 횡스크롤 초기화 ──
+    // -- 횡스크롤 초기화 --
     const scrollArea = container.querySelector('.trend-scroll-area');
     const fadeLeft = container.querySelector('.trend-fade-left');
     if (scrollArea && needsScroll) {
@@ -1216,7 +673,7 @@ async function initThemeTrend() {
       }
     }
 
-    // ── 레전드 토글 (단일 선택) ──
+    // -- 레전드 토글 (단일 선택) --
     let selectedIdx = -1; // -1 = 전체 표시
     const legendItems = container.querySelectorAll('.theme-trend-legend-item');
     const svgEl = scrollArea.querySelector('.theme-trend-svg');
@@ -1260,7 +717,7 @@ async function initThemeTrend() {
       });
     });
 
-    // ── 포인트 클릭 → 종목 테이블 ──
+    // -- 포인트 클릭 → 종목 테이블 --
     const detailDiv = document.getElementById('trend-detail');
     let activePoint = null; // "theme|date" key
 
@@ -1323,7 +780,7 @@ async function initThemeTrend() {
       requestAnimationFrame(() => { detailDiv.classList.add('open'); });
     }
 
-    // ── 툴팁 + 클릭 ──
+    // -- 툴팁 + 클릭 --
     const tooltip = document.getElementById('tt-trend');
     const wrap = container.querySelector('.theme-trend-wrap');
 
@@ -1369,7 +826,6 @@ async function initThemeTrend() {
 
   } catch (e) { console.warn('theme-trend:', e); }
 }
-initThemeTrend();
 
 // ───── 테마 지도 ─────
 async function initThemeMap() {
@@ -1427,11 +883,8 @@ async function initThemeMap() {
     });
   } catch (e) { console.warn('theme-map:', e); }
 }
-initThemeMap();
 
 // ───── 테마 트리 (Indented Tree + Inline Bar) ─────
-// 글로벌 캐시: theme-tree.json (계층 구조 참조용)
-let _themeTreeCache = null;
 async function initThemeTree(dateOverride) {
   try {
     // theme-tree.json 캐시 (최초 1회만 fetch)
@@ -1815,4 +1268,9 @@ async function initThemeTree(dateOverride) {
 
   } catch (e) { console.warn('theme-tree:', e); }
 }
+
+/* ───── 초기화 호출 ───── */
+initCalendar();
+initThemeTrend();
+initThemeMap();
 initThemeTree();
