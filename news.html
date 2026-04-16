@@ -209,6 +209,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail .cal-badge-summary { display:block; margin-top:2px; color:#333; }
 .cal-status-detail .cal-badge-condition { display:block; margin-top:2px; color:#c62828; font-weight:500; }
 .cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:#1565c0; font-size:10px; }
+.cal-threshold { font-size:11px; padding:1px 0; color:#555; }
+.cal-threshold.triggered { color:#c62828; font-weight:600; }
+.cal-threshold.safe { color:#2e7d32; }
 .cal-spark-empty { width:80px; height:32px; background:repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(128,128,128,0.08) 4px, rgba(128,128,128,0.08) 5px); border-radius:4px; flex-shrink:0; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
@@ -1910,6 +1913,14 @@ function renderCalExpandContent(date, data) {
         }
         if (b.summary) parts.push(`<span class="cal-badge-summary">${escapeHtml(b.summary)}</span>`);
         if (b.condition) parts.push(`<span class="cal-badge-condition">조건: ${escapeHtml(b.condition)}</span>`);
+        if (b.thresholds && b.thresholds.length > 0) {
+          const thHtml = b.thresholds.map(t => {
+            const icon = t.triggered ? '⚠️' : '✓';
+            const cls = t.triggered ? 'cal-threshold triggered' : 'cal-threshold safe';
+            return `<div class="${cls}">${icon} ${escapeHtml(t.desc)}: 기준가 ${t.base_price.toLocaleString()}원 → 임계가 ${t.threshold.toLocaleString()}원 (현재 ${t.current.toLocaleString()}원)</div>`;
+          }).join('');
+          parts.push(thHtml);
+        }
         if (b.regulation) parts.push(`<span class="cal-badge-regulation">${escapeHtml(b.regulation)}</span>`);
         return `<div class="cal-status-detail">${parts.join('')}</div>`;
       }).join('');
