@@ -27,6 +27,7 @@ function sanitize(s) {
     .replace(/박성진\s*매매\s*가치관(?:상)?/g, '내부 거래 기준')
     .replace(/박성진\s*(?:스타일|매매스타일)/g, '내부 거래 스타일')
     .replace(/박성진/g, '내부 기준')
+    // legacy: DB에 남은 과거 텍스트 방어 — 토구사(legacy: 주주), 이시카와(legacy: 뉴지) 잔재 제거
     .replace(/주주\s*이견[:：]?/g, '추가 관점:')
     .replace(/주주\s*Top\s*Pick/gi, '엄선 종목')
     .replace(/주주\s*검증/g, '재검증')

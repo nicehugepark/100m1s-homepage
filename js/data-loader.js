@@ -155,7 +155,7 @@ async function loadCalDayData(date) {
           // 가비지 뉴스 필터: VI발동, 신고가, 단순 등락률 로봇 기사 제거
           const garbageRe = /[+-]?\d[\d.]*%\s*(VI\s*발동|\d+주\s*신[고저]가|상한가|하한가)|거래량\s*(폭발|급증|돌파)/;
           const newsItems = (st.news || [])
-            .filter(n => !(n.newzy_verdict || '').startsWith('반대'))
+            .filter(n => !(n.newzy_verdict || '').startsWith('반대'))  // 이시카와 판정 컬럼 (legacy: newzy_verdict)
             .filter(n => !garbageRe.test(n.title || ''));
           const topNews = newsItems[0];
           const pp = st.prev_pick;
