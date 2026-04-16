@@ -222,8 +222,29 @@ async function loadCalDayData(date) {
     }
   } catch (e) { console.warn('stock-daily merge:', e); }
 
-  // 전일 해석 전파 (stock-*.json try-catch 밖 — 에러 삼킴 방지)
+  // data_source: stock JSON에 포함된 소스 태그 (kiwoom / kiwoom_ranking)
+  const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
+  const result = {
+    kiwoom,
+    cafePosts: postsOfDay,
+    narratives: Array.from(narrSet),
+    interpretedByName,
+    macroEvents,
+    dataSource
+  };
+  calDayCache[date] = result;
+  _persistCache();
+
+  // 전일 전파는 비동기 (초기 렌더 차단 안 함)
+  setTimeout(() => _propagatePrevDay(date, result), 50);
+
+  return result;
+}
+
+// 전일 해석 전파 — 별도 비동기 함수 (렌더 이후 백그라운드)
+async function _propagatePrevDay(date, result) {
   try {
+    const interpretedByName = result.interpretedByName;
     const prevPickDates = new Set();
     for (const [name, curr] of interpretedByName) {
       if (curr.prev_pick && curr.prev_pick.date) {
@@ -269,18 +290,7 @@ async function loadCalDayData(date) {
         }
       }
     }
+    // 전파 완료 후 캐시 업데이트
+    _persistCache();
   } catch (e) { console.warn('prev-day propagation:', e); }
-  // data_source: stock JSON에 포함된 소스 태그 (kiwoom / kiwoom_ranking)
-  const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
-  const result = {
-    kiwoom,
-    cafePosts: postsOfDay,
-    narratives: Array.from(narrSet),
-    interpretedByName,
-    macroEvents,
-    dataSource
-  };
-  calDayCache[date] = result;
-  _persistCache();
-  return result;
 }

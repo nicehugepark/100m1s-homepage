@@ -1270,7 +1270,5 @@ async function initThemeTree(dateOverride) {
 }
 
 /* ───── 초기화 호출 ───── */
+// initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
 initCalendar();
-initThemeTrend();
-initThemeMap();
-initThemeTree();

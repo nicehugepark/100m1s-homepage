@@ -185,10 +185,13 @@ async function onCalCellClick(date, pushState) {
 async function initCalendar() {
   const meta = document.getElementById('meta');
   if (meta) meta.textContent = '';
-  const [calIdx, themes, holidays] = await Promise.all([loadCalendarIndex(), loadThemes(), loadHolidayData()]);
-  calIndex = calIdx;
-  themesData = themes;
-  holidayData = holidays;
+
+  // 1단계: localStorage 캐시에서 즉시 복원 (fetch 0건, ~10ms)
+  const cachedCalIndex = (() => { try { return JSON.parse(localStorage.getItem('calIndex') || 'null'); } catch { return null; } })();
+  calIndex = cachedCalIndex;
+  holidayData = (() => { try { return JSON.parse(localStorage.getItem('holidayData') || 'null'); } catch { return null; } })();
+  themesData = (() => { try { return JSON.parse(localStorage.getItem('themesData') || 'null'); } catch { return null; } })();
+
   const now = new Date();
   const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
   // URL ?cat= / ?date= 파라미터. cat 기본값 stock.
@@ -202,7 +205,7 @@ async function initCalendar() {
     || (hashDate && /^\d{4}-\d{2}-\d{2}$/.test(hashDate));
   let initialDate = hasUrlDate ? (urlDate || hashDate) : todayStr;
   // URL 날짜가 없고, 오늘 데이터도 없으면 최근 수집일로 폴백
-  if (!hasUrlDate && !calHasData(todayStr) && calIndex && calIndex.days) {
+  if (!hasUrlDate && calIndex && !calHasData(todayStr) && calIndex.days) {
     const collectedDays = Object.keys(calIndex.days)
       .filter(d => d <= todayStr)
       .sort();
@@ -214,10 +217,25 @@ async function initCalendar() {
   calViewYear = iy;
   calViewMonth = im;
   calSelectedDate = initialDate;
-  renderCalendar();
-  onCalCellClick(initialDate, false); // 초기 로드 시 pushState 안 함
 
-  // 브라우저 뒤로/앞으로 지원
+  // 2단계: 달력 UI 즉시 렌더 (캐시 기반, fetch 안 기다림)
+  renderCalendar();
+
+  // 3단계: 캐시된 당일 데이터로 즉시 카드 렌더 (있으면)
+  if (calDayCache[initialDate]) {
+    toggleThemeSections(initialDate);
+    renderCalExpandContent(initialDate, calDayCache[initialDate]);
+  } else {
+    // 캐시 없음 — 로딩 표시
+    toggleThemeSections(initialDate);
+    const inner = document.getElementById('cal-content');
+    if (inner) inner.innerHTML = '<div class="cal-content-head"><div class="cal-content-date">' + formatKoDate(initialDate) + '</div><div class="cal-content-meta">불러오는 중\u2026</div></div><div class="cal-empty"><div>데이터 로드 중</div></div>';
+  }
+
+  // 4단계: 비동기 네트워크 갱신 (사용자가 기다리지 않음)
+  _refreshDataAsync(initialDate);
+
+  // 이벤트 리스너 (동기, 즉시)
   window.addEventListener('popstate', () => {
     const p = new URLSearchParams(window.location.search);
     const d = p.get('date');
@@ -241,4 +259,33 @@ async function initCalendar() {
     if (calViewMonth > 12) { calViewMonth = 1; calViewYear++; }
     renderCalendar();
   });
+}
+
+// 비동기 데이터 갱신 — 초기 렌더 후 백그라운드
+async function _refreshDataAsync(initialDate) {
+  try {
+    // 네트워크에서 최신 메타 데이터 fetch (병렬)
+    const [calIdx, themes, holidays] = await Promise.all([
+      loadCalendarIndex(), loadThemes(), loadHolidayData()
+    ]);
+    if (calIdx) { calIndex = calIdx; try { localStorage.setItem('calIndex', JSON.stringify(calIdx)); } catch {} }
+    if (themes) { themesData = themes; try { localStorage.setItem('themesData', JSON.stringify(themes)); } catch {} }
+    if (holidays) { holidayData = holidays; try { localStorage.setItem('holidayData', JSON.stringify(holidays)); } catch {} }
+
+    // 달력 재렌더 (인덱스 업데이트 반영)
+    renderCalendar();
+
+    // 당일 데이터 로드 + 카드 렌더
+    const data = await loadCalDayData(initialDate);
+    renderCalExpandContent(initialDate, data);
+
+    // 테마 트리/트렌드 초기화 (화면 하단이므로 지연 OK)
+    if (!isMarketClosed(initialDate)) {
+      initThemeTree(initialDate);
+    }
+    initThemeTrend();
+    initThemeMap();
+  } catch (e) {
+    console.warn('_refreshDataAsync:', e);
+  }
 }
