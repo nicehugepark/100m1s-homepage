@@ -733,7 +733,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 /* 특징주 카드 — cal-trade-row와 동일 배경·색상 통일 */
-.cal-feature-list { display: flex; flex-direction: column; gap: 6px; }
+.cal-feature-list { display: flex; flex-direction: column; gap: 4px; }
 .cal-feature-card {
   border-radius: 10px;
   overflow: hidden;
@@ -745,13 +745,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px 4px;
+  padding: 8px 12px 2px;
   font-size: 13px;
 }
 .cal-feature-nums {
   display: flex; align-items: center; justify-content: flex-start;
   gap: 12px;
-  padding: 2px 12px 8px 44px;
+  padding: 2px 12px 4px 44px;
   font-size: 12px;
 }
 .cal-feature-nums > * { flex-shrink: 0; font-size: 12px; font-weight: 700; font-family: 'SF Mono', monospace; }
@@ -774,18 +774,19 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-pct.up { color: #C53939; }
 .cal-feature-pct.down { color: #1958C7; }
 .cal-feature-body {
-  padding: 4px 12px 12px 44px;
-  display: flex; flex-direction: column; gap: 6px;
+  padding: 0 12px 8px 44px;
+  display: flex; flex-direction: column; gap: 3px;
   border-top: 1px dashed rgba(0,0,0,0.06);
   margin-top: 2px;
 }
+.cal-feature-summary:empty { display: none; }
 .cal-feature-details {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.25s ease-out;
+  transition: max-height 0.3s ease-out;
 }
 .cal-feature-card.expanded .cal-feature-details {
-  max-height: 500px;
+  max-height: 200px;
 }
 .cal-detail-toggle {
   display: inline-flex;
@@ -793,12 +794,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   gap: 4px;
   cursor: pointer;
   margin-left: auto;
-  min-height: 32px;
-  padding: 0 8px;
+  min-height: 44px;
+  padding: 0 10px;
 }
 .cal-toggle-summary {
   font-size: 11px;
-  color: #a08040;
+  color: var(--dm);
   max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -807,7 +808,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-chevron {
   font-size: 10px;
   transition: transform 0.25s;
-  color: #a08040;
+  color: var(--dm);
 }
 .cal-feature-card.expanded .cal-chevron {
   transform: rotate(180deg);
@@ -939,7 +940,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .cal-feature-namecell { flex-wrap: nowrap; overflow: hidden; gap: 4px; }
   .cal-feature-namecell .cal-streak-badge { flex-shrink: 0; }
   .cal-feature-badges { padding: 4px 6px 0 26px; }
-  .cal-feature-body { padding: 0 6px 8px 26px; }
+  .cal-feature-body { padding: 0 6px 4px 26px; }
   .kiwoom-row { grid-template-columns: 18px 1fr auto auto; gap: 6px; }
   .kiwoom-amount { font-size: 10px; }
   .kiwoom-pct { font-size: 10px; min-width: 48px; }

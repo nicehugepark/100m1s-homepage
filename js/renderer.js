@@ -367,8 +367,9 @@ function renderCalExpandContent(date, data) {
         if (b.regulation) parts.push(`<span class="cal-badge-regulation">${escapeHtml(b.regulation)}</span>`);
         return `<div class="cal-status-detail">${parts.join('')}</div>`;
       }).join('');
-      const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml);
-      const summarySnippet = (st.status_badges || []).find(b => b.summary)?.summary || '';
+      const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || ishikawaHtml || causalHtml);
+      const causalFirst = (it.interp?.causal_chain || [])[0] || '';
+      const summarySnippet = causalFirst || (st.status_badges || []).find(b => b.summary)?.summary || '';
       const truncatedSummary = summarySnippet.length > 40 ? summarySnippet.slice(0, 40) + '…' : summarySnippet;
       const chevronHtml = hasDetails
         ? `<span class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></span>`
@@ -398,7 +399,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${headlineHtml}${ishikawaHtml}${causalHtml}${linksHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${pickMeta}${statusDetailHtml}${discListHtml}${creditReasonHtml}</div>` : ''}`
+              ? `<div class="cal-feature-summary">${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}</div>${(hasDetails || ishikawaHtml || causalHtml) ? `<div class="cal-feature-details">${ishikawaHtml}${causalHtml}${linksHtml}${pickMeta}${statusDetailHtml}${discListHtml}${creditReasonHtml}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
