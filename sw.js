@@ -34,18 +34,18 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
-  // JSON 데이터 — stale-while-revalidate
+  // JSON 데이터 — network-first (최신 데이터 우선, 오프라인 시에만 캐시)
   if (DATA_PATTERNS.some(p => p.test(url.pathname))) {
     e.respondWith(
       caches.open(CACHE_NAME).then(async cache => {
-        const cached = await cache.match(e.request);
-        const fetchPromise = fetch(e.request).then(response => {
-          if (response.ok) {
-            cache.put(e.request, response.clone());
-          }
+        try {
+          const response = await fetch(e.request);
+          if (response.ok) cache.put(e.request, response.clone());
           return response;
-        }).catch(() => cached);
-        return cached || fetchPromise;
+        } catch {
+          const cached = await cache.match(e.request);
+          return cached || new Response('{}', { status: 503 });
+        }
       })
     );
     return;
