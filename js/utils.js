@@ -59,8 +59,8 @@ function miniCandle(open, high, low, close, changePct) {
     return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
       '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/></svg>';
   }
-  // 색상은 등락률(전일대비) 기준으로 통일. 스파크라인·등락률 숫자와 일관.
-  var isUp = (changePct != null) ? (changePct >= 0) : (close >= open);
+  // 캔들 색상: 시가 vs 종가 기준 (당일 봉 방향)
+  var isUp = (close >= open);
   var color = isUp ? '#E03131' : '#1971C2';
   var range = high - low;
   if (range === 0) return '<svg width="'+W+'" height="'+H+'"><line x1="6" y1="0" x2="6" y2="'+H+'" stroke="#8B95A8" stroke-width="1"/></svg>';

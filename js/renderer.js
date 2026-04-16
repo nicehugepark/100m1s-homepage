@@ -208,7 +208,8 @@ function renderCalExpandContent(date, data) {
 
   const renderTodayCard = (it) => {
     const pct = it.pct;
-    const dir = (pct ?? 0) >= 0 ? 'up' : 'down';
+    const dir = (pct ?? 0) >= 0 ? 'up' : 'down';           // 등락률 텍스트 색상용 (전일 대비)
+    const candleDir = (it.open && it.price) ? (it.price >= it.open ? 'up' : 'down') : dir;  // 캔들/sparkline용 (시가 대비)
     const sign = (pct ?? 0) >= 0 ? '+' : '';
     const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
     const amountText = it.amount ? fmtTradeAmount(it.amount) : '';
@@ -366,7 +367,7 @@ function renderCalExpandContent(date, data) {
         : '';
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
-        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, dir)}</div>`
+        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       return `
         <div class="cal-feature-card">
