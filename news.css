@@ -779,6 +779,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border-top: 1px dashed rgba(0,0,0,0.06);
   margin-top: 2px;
 }
+.cal-feature-summary { text-align: left; }
 .cal-feature-summary:empty { display: none; }
 .cal-feature-details {
   max-height: 0;
@@ -859,12 +860,14 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-grade-badge.grade-회피 { background: #FCE7E9; color: #A01528; border: 1px solid #E5A4AB; }
 .cal-ishikawa-line {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
+  text-align: left;
 }
 .cal-headline {
   font-size: 13px; font-weight: 500; color: var(--tx); line-height: 1.5; margin-bottom: 2px;
 }
 .cal-causal {
   font-size: 12.5px; color: var(--dm); line-height: 1.6;
+  text-align: left; white-space: normal; overflow: visible; text-overflow: unset;
 }
 .cal-causal .arrow { color: #C49930; margin: 0 4px; font-weight: 700; }
 .cal-factors {

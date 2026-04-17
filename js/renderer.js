@@ -375,7 +375,7 @@ function renderCalExpandContent(date, data) {
         return `<div class="cal-status-detail">${parts.join('')}</div>`;
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
-      const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta || linksHtml);
+      const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
       const summarySnippet = (st.status_badges || []).find(b => b.summary)?.summary || ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
       const truncatedSummary = summarySnippet.length > 40 ? summarySnippet.slice(0, 40) + '…' : summarySnippet;
       const chevronHtml = hasDetails
@@ -406,7 +406,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${linksHtml}${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}</div>` : ''}`
+              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
