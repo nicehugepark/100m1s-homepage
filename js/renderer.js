@@ -381,8 +381,8 @@ function renderCalExpandContent(date, data) {
       const chevronHtml = hasDetails
         ? `<span class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></span>`
         : '';
-      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges || chevronHtml)
-        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}${chevronHtml}</div>`
+      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges)
+        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
@@ -406,7 +406,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${linksHtml}${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}</div>` : ''}`
+              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${linksHtml}${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
