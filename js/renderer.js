@@ -259,7 +259,14 @@ function renderCalExpandContent(date, data) {
       // differentiator가 causal_chain과 동일하면 중복 제거
       const causalText = (causal[0] || '').trim();
       const diffRaw = (st.differentiator || st.outlook || '').trim();
-      const ishikawaLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
+      let ishikawaLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
+      // 뉴스 없는 종목: industry/sector로 fallback
+      if (!ishikawaLine && !causalText) {
+        const parts = [];
+        if (st.industry) parts.push('업종: ' + st.industry);
+        if (st.sector) parts.push('주요제품: ' + st.sector);
+        ishikawaLine = parts.join(' · ');
+      }
       const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
       // 공시 (DART) — 뱃지는 namecell, 목록은 카드 최하단
       const discs = st.disclosures || [];
