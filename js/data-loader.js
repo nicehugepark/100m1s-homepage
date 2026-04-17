@@ -134,7 +134,7 @@ async function loadCalDayData(date) {
           const causalText = chainNews ? chainNews.causal_chain : '';
           const diffParts = [
             causalText,
-            !causalText && industryLabel ? `업종: ${industryLabel}` : '',
+            !causalText && industryLabel ? industryLabel : '',
             !causalText && sectorLabel ? `주요제품: ${sectorLabel}` : '',
           ].filter(Boolean);
           // 테마: theme_paths 우선, 없으면 themes, 없으면 industry 폴백
