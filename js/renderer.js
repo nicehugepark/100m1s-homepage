@@ -263,8 +263,8 @@ function renderCalExpandContent(date, data) {
       // 뉴스 없는 종목: industry/sector로 fallback
       if (!ishikawaLine && !causalText) {
         const parts = [];
-        if (st.industry) parts.push('업종: ' + st.industry);
-        if (st.sector) parts.push('주요제품: ' + st.sector);
+        if (st.industry) parts.push(st.industry);
+        if (st.sector) parts.push(st.sector);
         ishikawaLine = parts.join(' · ');
       }
       const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
