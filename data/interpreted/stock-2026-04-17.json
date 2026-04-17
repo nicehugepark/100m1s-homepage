@@ -1,6 +1,6 @@
 {
   "date": "2026-04-17",
-  "generated_at": "2026-04-17T11:59:46.379904",
+  "generated_at": "2026-04-17T12:13:54.849135",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -162,8 +162,38 @@
           "regulation": "정지: 2026-04-16(1일) → 재개: 2026-04-17(투자위험종목 신규 지정) → 해제 판단: 2026-04-30(예정)"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 12000,
+        "base": 14711,
+        "prices": [
+          12000,
+          11040,
+          10835,
+          10840,
+          11180,
+          11400,
+          11820,
+          12290,
+          12350,
+          13110,
+          15110,
+          14010,
+          14300,
+          13680,
+          13850,
+          13320,
+          13160,
+          13340,
+          13320,
+          13250
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자위험 지정으로 신용불가 (2026-04-16(목) ~ 2026-04-30(목))"
+      "credit_reason": "회사한도초과 (2026-04-17(금) 적용 — 다음 영업일 재평가)",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "027360",
@@ -220,7 +250,10 @@
           12280,
           12710,
           12500,
-          12490
+          12430,
+          12460,
+          12560,
+          12440
         ]
       },
       "credit_risk": true,
@@ -379,7 +412,10 @@
           14130,
           13740,
           13740,
-          13670
+          13790,
+          13790,
+          13830,
+          13910
         ]
       },
       "credit_risk": true,
@@ -653,7 +689,10 @@
           3640,
           3610,
           3565,
-          3565
+          3570,
+          3545,
+          3565,
+          3580
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -839,7 +878,10 @@
           197800,
           197500,
           196600,
-          196600
+          197100,
+          196800,
+          196200,
+          196300
         ]
       },
       "togusa_verdict": "neutral",
@@ -868,8 +910,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/16/GQ2TSZRUHEYGGYZTHA3TAMBXHA/",
           "source": "조선비즈",
           "published_at": "2026-04-15T23:01:20",
-          "causal_chain": "한온시스템 관련 뉴스는 공매도 수량 상위 종목 나열 및 증시일정(실적 발표 등) 안내에 그치며, 특정 매크로 이벤트나 자금 유입 테마를 식별할 수 없음.",
-          "macro_event": "해당 없음 (공매도 상위 종목 나열 및 증시일정 보도)",
+          "causal_chain": "한온시스템 관련 뉴스는 공매도 수량 상위 종목 나열 및 증시일정 안내에 불과하며, 특정 매크로 이벤트나 자금 유입 사유를 식별할 수 없음.",
+          "macro_event": "해당 없음 (공매도 상위 종목 나열 및 증시일정 보도만 존재)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -883,8 +925,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GQZDCZTFMIZGKMRZMUZDCMBVG4/",
           "source": "조선비즈",
           "published_at": "2026-04-12T23:01:17",
-          "causal_chain": "한온시스템 관련 뉴스는 공매도 수량 상위 종목 나열 및 증시일정(실적 발표 등) 안내에 그치며, 특정 매크로 이벤트나 자금 유입 테마를 식별할 수 없음.",
-          "macro_event": "해당 없음 (공매도 상위 종목 나열 및 증시일정 보도)",
+          "causal_chain": "한온시스템 관련 뉴스는 공매도 수량 상위 종목 나열 및 증시일정 안내에 불과하며, 특정 매크로 이벤트나 자금 유입 사유를 식별할 수 없음.",
+          "macro_event": "해당 없음 (공매도 상위 종목 나열 및 증시일정 보도만 존재)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -898,8 +940,8 @@
           "url": "https://www.etoday.co.kr/news/view/2574504",
           "source": "이투데이",
           "published_at": "2026-04-09T23:07:00",
-          "causal_chain": "한온시스템 관련 뉴스는 공매도 수량 상위 종목 나열 및 증시일정(실적 발표 등) 안내에 그치며, 특정 매크로 이벤트나 자금 유입 테마를 식별할 수 없음.",
-          "macro_event": "해당 없음 (공매도 상위 종목 나열 및 증시일정 보도)",
+          "causal_chain": "한온시스템 관련 뉴스는 공매도 수량 상위 종목 나열 및 증시일정 안내에 불과하며, 특정 매크로 이벤트나 자금 유입 사유를 식별할 수 없음.",
+          "macro_event": "해당 없음 (공매도 상위 종목 나열 및 증시일정 보도만 존재)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -931,7 +973,10 @@
           4185,
           4165,
           4150,
-          4155
+          4145,
+          4150,
+          4135,
+          4130
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -982,7 +1027,10 @@
           16360,
           16440,
           16330,
-          16400
+          16430,
+          16340,
+          16280,
+          16230
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1028,7 +1076,10 @@
           7460,
           7460,
           7570,
-          7570
+          7620,
+          7630,
+          7620,
+          7590
         ]
       },
       "credit_risk": true,
@@ -1059,8 +1110,8 @@
           "url": "https://www.etoday.co.kr/news/view/2576646",
           "source": "이투데이",
           "published_at": "2026-04-17T00:43:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "코로나19 변이 확산 조짐 → 코로나19 관련주 부각 → 수젠텍 주가 상승.",
+          "macro_event": "코로나19 변이 확산 조짐",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1302,7 +1353,10 @@
           6410,
           6280,
           6320,
-          6320
+          6230,
+          6280,
+          6270,
+          6280
         ]
       },
       "credit_risk": true,
@@ -1350,7 +1404,10 @@
           1786,
           1780,
           1785,
-          1786
+          1816,
+          1816,
+          1809,
+          1801
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1437,8 +1494,36 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "intraday": {
+        "step_min": 10,
+        "open": 34600,
+        "base": 34651,
+        "prices": [
+          34600,
+          35050,
+          35100,
+          35400,
+          35300,
+          34900,
+          35350,
+          34950,
+          35150,
+          35100,
+          35150,
+          35050,
+          35200,
+          35200,
+          35450,
+          35600,
+          35850,
+          36450,
+          36250,
+          36150
+        ]
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "019170",
@@ -1474,8 +1559,38 @@
         }
       ],
       "fallback": false,
+      "intraday": {
+        "step_min": 10,
+        "open": 13100,
+        "base": 11140,
+        "prices": [
+          13100,
+          13900,
+          13760,
+          13600,
+          13750,
+          13520,
+          13120,
+          13180,
+          13350,
+          13390,
+          13130,
+          13170,
+          13240,
+          12940,
+          12960,
+          13090,
+          13230,
+          13210,
+          13320,
+          13280
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "회사한도초과 (2026-04-17(금) 적용 — 다음 영업일 재평가)",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     }
   ]
 }
