@@ -367,7 +367,7 @@ function renderCalExpandContent(date, data) {
         if (b.regulation) parts.push(`<span class="cal-badge-regulation">${escapeHtml(b.regulation)}</span>`);
         return `<div class="cal-status-detail">${parts.join('')}</div>`;
       }).join('');
-      const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || ishikawaHtml || pickMeta);
+      const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || ishikawaHtml || pickMeta || linksHtml);
       const summarySnippet = (st.status_badges || []).find(b => b.summary)?.summary || ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
       const truncatedSummary = summarySnippet.length > 40 ? summarySnippet.slice(0, 40) + '…' : summarySnippet;
       const chevronHtml = hasDetails
@@ -398,7 +398,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}</div>${(statusDetailHtml || discListHtml || creditReasonHtml || ishikawaHtml || pickMeta) ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${ishikawaHtml}${pickMeta}</div>` : ''}`
+              ? `<div class="cal-feature-summary">${causalHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${linksHtml}${statusDetailHtml}${discListHtml}${creditReasonHtml}${ishikawaHtml}${pickMeta}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
