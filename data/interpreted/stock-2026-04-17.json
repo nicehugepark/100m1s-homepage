@@ -1,6 +1,6 @@
 {
   "date": "2026-04-17",
-  "generated_at": "2026-04-17T09:15:52.970742",
+  "generated_at": "2026-04-17T09:26:29.104619",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -47,12 +47,80 @@
   "narratives": [],
   "stocks": [
     {
+      "code": "100790",
+      "name": "미래에셋벤처투자",
+      "rank": 1,
+      "trade_amount": 222124984050,
+      "change_pct": 16.29,
+      "close_price": 46050,
+      "open_price": 39900,
+      "high_price": 46100,
+      "low_price": 38000,
+      "industry": "기타 금융업",
+      "sector": "중소기업 창업투자 관련 고유계정/투자조합 관련 수익",
+      "themes": [
+        "스페이스X",
+        "우주항공"
+      ],
+      "theme_paths": [
+        {
+          "name": "스페이스X",
+          "path": [
+            "우주항공",
+            "스페이스X"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-15",
+        "rank": 4,
+        "change_pct": 6.94,
+        "trade_amount": 425284952400
+      },
+      "news": [
+        {
+          "title": "[인기검색TOP5] 미래에셋벤처투자, 엑스게이트, 티엠씨, SK하이닉스, LS ELECTRIC",
+          "url": "https://www.mk.co.kr/news/stock/12016814",
+          "source": "매경",
+          "published_at": "2026-04-14T09:36:48",
+          "causal_chain": "제공된 기사는 인기검색 순위 보도일 뿐 매크로 이벤트나 구체적 사업 관련 정보 없음. 단순 주가 상승(+29.88%)을 보도한 로봇기사로, 미래에셋벤처투자의 비즈니스 실질 변화와 무관함.",
+          "macro_event": "없음 - 매크로 이벤트 정보 부재",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[특징주] 스페이스X 상장 초읽기에 관련주 강세…미래에셋벤처투자 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2575476",
+          "source": "이투데이",
+          "published_at": "2026-04-14T00:39:00",
+          "causal_chain": "스페이스X 상장 초읽기 → 우주항공 분야 벤처캐피탈 포트폴리오 가치 평가 상승 기대 → 미래에셋벤처투자 주가 상승.",
+          "macro_event": "스페이스X 상장 초읽기",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+    },
+    {
       "code": "319400",
       "name": "현대무벡스",
-      "rank": 1,
-      "trade_amount": 102069645600,
-      "change_pct": 9.53,
-      "close_price": 33900,
+      "rank": 2,
+      "trade_amount": 129017461250,
+      "change_pct": 4.52,
+      "close_price": 32350,
       "open_price": 32500,
       "high_price": 34450,
       "low_price": 32000,
@@ -96,15 +164,18 @@
       ],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "115500",
       "name": "케이씨에스",
-      "rank": 2,
-      "trade_amount": 52583085800,
-      "change_pct": -3.94,
-      "close_price": 17080,
+      "rank": 3,
+      "trade_amount": 64064326080,
+      "change_pct": 0.56,
+      "close_price": 17880,
       "open_price": 18470,
       "high_price": 20300,
       "low_price": 16010,
@@ -117,18 +188,86 @@
       "news": [],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
+      "code": "018880",
+      "name": "한온시스템",
+      "rank": 4,
+      "trade_amount": 58354462795,
+      "change_pct": 2.94,
+      "close_price": 4205,
+      "open_price": 4105,
+      "high_price": 4370,
+      "low_price": 4100,
+      "industry": "일반 목적용 기계 제조업",
+      "sector": "자동차용부품(라디에이터,히터,에어콘,압축기,콘덴서,컴퓨레사) 제조,도매",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [
+        {
+          "title": "15일 코스피 시장 공매도 수량 상위 종목. 대우건설, 한온시스템 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/16/GQ2TSZRUHEYGGYZTHA3TAMBXHA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-15T23:01:20",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "10일 코스피 시장 공매도 수량 상위 종목. 한온시스템, GS건설 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/13/GQZDCZTFMIZGKMRZMUZDCMBVG4/",
+          "source": "조선비즈",
+          "published_at": "2026-04-12T23:01:17",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[오늘의 증시일정] 센서뷰ㆍ한온시스템 등",
+          "url": "https://www.etoday.co.kr/news/view/2574504",
+          "source": "이투데이",
+          "published_at": "2026-04-09T23:07:00",
+          "causal_chain": "제목에 구체적인 이벤트나 영향 경로 정보 없음",
+          "macro_event": "불명 (일정 공시 외 세부 사항 미상)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true
     },
     {
       "code": "077360",
       "name": "덕산하이메탈",
-      "rank": 3,
-      "trade_amount": 51138121250,
-      "change_pct": 2.44,
-      "close_price": 16810,
+      "rank": 5,
+      "trade_amount": 56856087000,
+      "change_pct": 0.37,
+      "close_price": 16470,
       "open_price": 16900,
       "high_price": 17650,
-      "low_price": 16420,
+      "low_price": 16410,
       "industry": "반도체 제조업",
       "sector": "솔더볼(Solderball)",
       "themes": [],
@@ -143,7 +282,10 @@
       "news": [],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     }
   ]
 }
