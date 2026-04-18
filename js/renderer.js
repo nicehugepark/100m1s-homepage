@@ -353,21 +353,20 @@ function renderCalExpandContent(date, data) {
         return `<span class="${cls}">${escapeHtml(b.label)}</span>`;
       }).join('');
 
-      // 상태 뱃지 상세 사유 (뱃지 아래에 표시)
-      const statusDetailHtml = (st.status_badges || []).filter(b => b.summary || b.condition).map(b => {
+      // 상태 뱃지 상세 — 간결 단문 (뱃지가 상태 표현, 여기는 조건+임계+기간만)
+      const statusDetailHtml = (st.status_badges || []).filter(b => b.condition || b.thresholds || b.regulation).map(b => {
         const parts = [];
         if (b.start && b.end && b.start !== b.end) {
           parts.push(`<span class="cal-badge-period">${b.start} ~ ${b.end}</span>`);
         } else if (b.start) {
-          parts.push(`<span class="cal-badge-period">${b.start}부터</span>`);
+          parts.push(`<span class="cal-badge-period">${b.start}</span>`);
         }
-        if (b.summary) parts.push(`<span class="cal-badge-summary">${escapeHtml(b.summary)}</span>`);
-        if (b.condition) parts.push(`<span class="cal-badge-condition">조건: ${escapeHtml(b.condition)}</span>`);
+        if (b.condition) parts.push(`<span class="cal-badge-condition">${escapeHtml(b.condition)}</span>`);
         if (b.thresholds && b.thresholds.length > 0) {
           const thHtml = b.thresholds.map(t => {
             const icon = t.triggered ? '⚠️' : '✓';
             const cls = t.triggered ? 'cal-threshold triggered' : 'cal-threshold safe';
-            return `<div class="${cls}">${icon} ${escapeHtml(t.desc)}: 기준가 ${t.base_price.toLocaleString()}원 → 임계가 ${t.threshold.toLocaleString()}원 (현재 ${t.current.toLocaleString()}원)</div>`;
+            return `<div class="${cls}">${icon} ${escapeHtml(t.desc)}: ${t.base_price.toLocaleString()}→${t.threshold.toLocaleString()}원 (현재 ${t.current.toLocaleString()})</div>`;
           }).join('');
           parts.push(thHtml);
         }
@@ -376,7 +375,9 @@ function renderCalExpandContent(date, data) {
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
-      const summarySnippet = (st.status_badges || []).find(b => b.summary)?.summary || ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
+      // toggle 요약: 기간 + 핵심조건 1줄 (풀 문장 아님)
+      const badgePeriod = (st.status_badges || []).find(b => b.start);
+      const summarySnippet = badgePeriod ? `${badgePeriod.start}${badgePeriod.end ? '~' + badgePeriod.end : ''} ${badgePeriod.label || ''}` : ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
       const truncatedSummary = summarySnippet.length > 40 ? summarySnippet.slice(0, 40) + '…' : summarySnippet;
       const chevronHtml = hasDetails
         ? `<span class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></span>`
