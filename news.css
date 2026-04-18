@@ -790,21 +790,20 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   max-height: 400px;
 }
 .cal-detail-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
   cursor: pointer;
-  margin-left: auto;
-  min-height: 44px;
-  padding: 0 10px;
+  min-height: 28px;
+  padding: 4px 0;
+  text-align: left;
 }
 .cal-toggle-summary {
   font-size: 11px;
   color: var(--dm);
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.5;
+  white-space: normal;
+  overflow: visible;
 }
 .cal-chevron {
   font-size: 10px;
