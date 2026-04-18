@@ -7,7 +7,7 @@ const DATA_PATTERNS = [
 ];
 const STATIC_ASSETS = [
   '/news.html',
-  '/news2.css',
+  '/news.css?v=20260418b',
   '/menu.js',
   '/js/utils.js',
   '/js/data-loader.js',
