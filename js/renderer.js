@@ -366,7 +366,8 @@ function renderCalExpandContent(date, data) {
           const thHtml = b.thresholds.map(t => {
             const icon = t.triggered ? '⚠️' : '✓';
             const cls = t.triggered ? 'cal-threshold triggered' : 'cal-threshold safe';
-            return `<div class="${cls}">${icon} ${escapeHtml(t.desc)}: ${t.base_price.toLocaleString()}→${t.threshold.toLocaleString()}원 (현재 ${t.current.toLocaleString()})</div>`;
+            const status = t.triggered ? `현재 ${t.current.toLocaleString()}원 — 초과` : `현재 ${t.current.toLocaleString()}원`;
+            return `<div class="${cls}">${icon} 경고선 ${t.threshold.toLocaleString()}원 (${status})</div>`;
           }).join('');
           parts.push(thHtml);
         }
