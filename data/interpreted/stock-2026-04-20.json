@@ -1,6 +1,6 @@
 {
   "date": "2026-04-20",
-  "generated_at": "2026-04-20T09:37:56.984366",
+  "generated_at": "2026-04-20T09:48:48.657372",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -50,9 +50,9 @@
       "code": "001440",
       "name": "대한전선",
       "rank": 1,
-      "trade_amount": 408514279450,
-      "change_pct": -0.54,
-      "close_price": 41150,
+      "trade_amount": 429078854600,
+      "change_pct": -1.63,
+      "close_price": 40700,
       "open_price": 39300,
       "high_price": 42775,
       "low_price": 39250,
@@ -113,6 +113,18 @@
         }
       ],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 39300,
+        "base": 41374,
+        "prices": [
+          39300,
+          41350,
+          40950,
+          41100,
+          40850
+        ]
+      },
       "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰",
@@ -123,11 +135,11 @@
       "code": "356680",
       "name": "엑스게이트",
       "rank": 2,
-      "trade_amount": 144397639600,
-      "change_pct": 71.87,
-      "close_price": 17170,
+      "trade_amount": 223757759610,
+      "change_pct": 88.29,
+      "close_price": 18810,
       "open_price": 14950,
-      "high_price": 17900,
+      "high_price": 19120,
       "low_price": 14300,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "통합 네트워크 보안 솔루션",
@@ -188,8 +200,20 @@
         }
       ],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 14950,
+        "base": 9990,
+        "prices": [
+          14950,
+          16520,
+          16910,
+          18230,
+          18860
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "credit_reason": "회사한도초과 (2026-04-20(월) 적용 — 다음 영업일 재평가)",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -198,9 +222,9 @@
       "code": "007660",
       "name": "이수페타시스",
       "rank": 3,
-      "trade_amount": 128112695800,
+      "trade_amount": 141691665000,
       "change_pct": 9.23,
-      "close_price": 128200,
+      "close_price": 129000,
       "open_price": 122000,
       "high_price": 131700,
       "low_price": 121800,
@@ -228,17 +252,125 @@
         }
       ],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 122000,
+        "base": 118099,
+        "prices": [
+          122000,
+          130100,
+          130600,
+          128600,
+          129100
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과 (2026-04-20(월) 적용 — 다음 영업일 재평가)",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
     },
     {
+      "code": "456010",
+      "name": "아이씨티케이",
+      "rank": 4,
+      "trade_amount": 133896724800,
+      "change_pct": 38.64,
+      "close_price": 29600,
+      "open_price": 26950,
+      "high_price": 29600,
+      "low_price": 24700,
+      "industry": "반도체 제조업",
+      "sector": "PUF반도체,보안솔루션(보안반도체,정보통신모듈기기,정보통신용반도체) 제조,개발",
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-16",
+        "rank": 5,
+        "change_pct": 21.35,
+        "trade_amount": 309532129200
+      },
+      "news": [
+        {
+          "title": "아이씨티케이, 양자산업 수혜 기대감에 28% 급등",
+          "url": "https://www.hankyung.com/article/2026041772956",
+          "source": "한경",
+          "published_at": "2026-04-17T00:44:05",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "아이씨티케이, 美 양자산업 지원 수혜 기대…\"첫 수출기업 예상\"-하나",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02394406645417104",
+          "source": "이데일리",
+          "published_at": "2026-04-16T22:46:32",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "status_badges": [
+        {
+          "label": "투자주의예고",
+          "severity": "caution",
+          "start": "2026-04-16",
+          "end": "2026-04-29",
+          "summary": "아이씨티케이가 2026-04-16부터 2026-04-16 당일 투자주의종목으로 지정되고, 04-16부터 04-29일 내 3가지 조건(① 5일 전일 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "condition": "3가지 모두 충족: (1) 판단일 종가가 5일 전일 종가보다 60% 이상 상승 (2) 판단일 종가가 최근 15일 중 최고가 (3) 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상",
+          "regulation": "투자주의 1거래일(2026-04-16), 투자경고 지정 시 2거래일 단일가 매매 (KRX 규정 기준)",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-10) 대비 60%↑",
+              "base_price": 14970,
+              "threshold": 23952,
+              "current": 29600,
+              "triggered": true
+            },
+            {
+              "desc": "전일(2026-04-16) 대비 60%↑",
+              "base_price": 21350,
+              "threshold": 34160,
+              "current": 29600,
+              "triggered": false
+            }
+          ]
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자경고 지정으로 신용불가 (2026-04-16(목) ~ 2026-04-29(수))"
+    },
+    {
       "code": "010820",
       "name": "퍼스텍",
-      "rank": 4,
-      "trade_amount": 103870626280,
-      "change_pct": 8.54,
-      "close_price": 14620,
+      "rank": 5,
+      "trade_amount": 111020086320,
+      "change_pct": 9.06,
+      "close_price": 14690,
       "open_price": 13970,
       "high_price": 15300,
       "low_price": 13580,
@@ -297,19 +429,33 @@
               "desc": "T-5(2026-04-10) 대비 60%↑",
               "base_price": 11390,
               "threshold": 18224,
-              "current": 14620,
+              "current": 14690,
               "triggered": false
             },
             {
               "desc": "전일(2026-04-17) 대비 60%↑",
               "base_price": 13470,
               "threshold": 21552,
-              "current": 14620,
+              "current": 14690,
               "triggered": false
             }
           ]
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 13970,
+        "base": 13470,
+        "prices": [
+          13970,
+          14340,
+          14900,
+          14430,
+          14730
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과 (2026-04-20(월) 적용 — 다음 영업일 재평가)",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰",
@@ -317,94 +463,35 @@
       "parent_theme": ""
     },
     {
-      "code": "489790",
-      "name": "한화비전",
-      "rank": 5,
-      "trade_amount": 63849224600,
-      "change_pct": 6.05,
-      "close_price": 84100,
-      "open_price": 80900,
-      "high_price": 88400,
-      "low_price": 80800,
-      "industry": "통신 및 방송 장비 제조업",
-      "sector": "비금융지주회사",
+      "code": "036930",
+      "name": "주성엔지니어링",
+      "rank": 6,
+      "trade_amount": 97622670000,
+      "change_pct": 12.22,
+      "close_price": 79000,
+      "open_price": 71900,
+      "high_price": 79000,
+      "low_price": 70300,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "LP CVD",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [
-        {
-          "title": "키움證 “한화비전, 1분기 실적 서프라이즈 전망…2분기 TC본더 발주 시작될 것”",
-          "url": "https://biz.chosun.com/stock/stock_general/2026/04/20/IH4SUQRJQVA7HIS6TBPCQXCPOU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-19T23:59:26",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "\"한화비전, 1분기 실적 기대치 웃돌 듯\"-키움",
-          "url": "https://www.hankyung.com/article/2026042016836",
-          "source": "한경",
-          "published_at": "2026-04-19T23:22:02",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "키움증권 \"한화비전, 1분기 어닝 서프라이즈 전망…목표가 12만원\"",
-          "url": "https://www.etoday.co.kr/news/view/2577056",
-          "source": "이투데이",
-          "published_at": "2026-04-19T22:52:00",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한화비전, 시큐리티 부문 호조로 1분기 깜짝 실적 기대-키움",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01941766645418088",
-          "source": "이데일리",
-          "published_at": "2026-04-19T22:44:55",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true
+      "news": [],
+      "fallback": true,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
     },
     {
       "code": "203650",
       "name": "드림시큐리티",
-      "rank": 6,
-      "trade_amount": 63753419630,
-      "change_pct": 4.8,
-      "close_price": 3715,
+      "rank": 7,
+      "trade_amount": 85403102920,
+      "change_pct": 9.45,
+      "close_price": 3880,
       "open_price": 3175,
-      "high_price": 3870,
+      "high_price": 3880,
       "low_price": 3000,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "정보보안솔루션",
@@ -419,19 +506,132 @@
       },
       "news": [],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 3175,
+        "base": 3545,
+        "prices": [
+          3175,
+          3695,
+          3670,
+          3775,
+          3880
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고 지정으로 신용불가 (2026-04-17(금)부터)",
+      "credit_reason": "회사한도초과 (2026-04-20(월) 적용 — 다음 영업일 재평가)",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
     },
     {
+      "code": "489790",
+      "name": "한화비전",
+      "rank": 8,
+      "trade_amount": 70024164000,
+      "change_pct": 6.05,
+      "close_price": 84000,
+      "open_price": 80900,
+      "high_price": 88400,
+      "low_price": 80800,
+      "industry": "통신 및 방송 장비 제조업",
+      "sector": "비금융지주회사",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "news": [
+        {
+          "title": "[특징주] 한화비전, 1분기 ‘어닝 서프라이즈’ 기대에 6% 급등",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/20/IPP2OQFIO5G5HNDSCYBXWCAGDU/",
+          "source": "조선비즈",
+          "published_at": "2026-04-20T00:40:10",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한화비전, 1분기 ‘깜짝 실적’ 전망에 10%대 강세[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02450166645418088",
+          "source": "이데일리",
+          "published_at": "2026-04-20T00:26:08",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "intraday": {
+        "step_min": 10,
+        "open": 80900,
+        "base": 79208,
+        "prices": [
+          80900,
+          85300,
+          84300,
+          84600,
+          84100
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과 (2026-04-20(월) 적용 — 다음 영업일 재평가)"
+    },
+    {
+      "code": "452190",
+      "name": "한빛레이저",
+      "rank": 9,
+      "trade_amount": 60986550650,
+      "change_pct": 4.81,
+      "close_price": 7190,
+      "open_price": 6320,
+      "high_price": 7290,
+      "low_price": 6220,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "산업용 레이저 가공장비",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-16",
+        "rank": 10,
+        "change_pct": 29.92,
+        "trade_amount": 172163121900
+      },
+      "news": [],
+      "fallback": true,
+      "status_badges": [
+        {
+          "label": "투자주의예고",
+          "severity": "caution",
+          "start": "2026-04-17",
+          "end": "2026-04-30",
+          "summary": "한빛레이저가 2026-04-16 종가 기준 5일 전 대비 60% 이상 상승하여 2026-04-17부터 2026-04-17 당일 투자주의종목으로 지정되고, 04-17~04-30 내 3가지 조건(① 5일 전 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "condition": "판단일 종가가 5일 전 종가 대비 60%↑ + 최근 15일 최고가 + 주가상승률이 종합주가지수 상승률의 5배 이상, 모두 충족 시 익일 투자경고 지정",
+          "regulation": "투자주의 1일(04-17), 투자경고 판단기간 04-17~04-30"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자경고 지정으로 신용불가 (2026-04-17(금) ~ 2026-04-30(목))"
+    },
+    {
       "code": "209640",
       "name": "와이제이링크",
-      "rank": 7,
-      "trade_amount": 58439420610,
-      "change_pct": 0.17,
-      "close_price": 5930,
+      "rank": 10,
+      "trade_amount": 60458393520,
+      "change_pct": -1.01,
+      "close_price": 5860,
       "open_price": 6230,
       "high_price": 6440,
       "low_price": 5720,
@@ -448,11 +648,45 @@
       },
       "news": [],
       "fallback": true,
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "intraday": {
+        "step_min": 10,
+        "open": 6230,
+        "base": 5920,
+        "prices": [
+          6230,
+          5820,
+          5910,
+          5850,
+          5820
+        ]
+      },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
+    },
+    {
+      "code": "077970",
+      "name": "STX엔진",
+      "rank": 11,
+      "trade_amount": 49540510800,
+      "change_pct": 2.73,
+      "close_price": 45200,
+      "open_price": 47200,
+      "high_price": 47300,
+      "low_price": 44300,
+      "industry": "일반 목적용 기계 제조업",
+      "sector": "엔진,터빈,내연기관 제조,도매",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-04-17",
+        "rank": 10,
+        "change_pct": 29.99,
+        "trade_amount": 158794196000
+      },
+      "news": [],
+      "fallback": true
     }
   ]
 }
