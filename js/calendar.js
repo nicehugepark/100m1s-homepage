@@ -176,10 +176,8 @@ async function onCalCellClick(date, pushState) {
   `;
   const data = await loadCalDayData(date);
   renderCalExpandContent(date, data);
-  // 테마트리도 해당 날짜 기준으로 재렌더링
-  if (!isMarketClosed(date)) {
-    initThemeTree(date);
-  }
+  // 테마트리도 해당 날짜 기준으로 재렌더링 (휴장일은 안내 메시지)
+  initThemeTree(date);
 }
 
 async function initCalendar() {
@@ -283,10 +281,8 @@ async function _refreshDataAsync(initialDate) {
     const data = await loadCalDayData(initialDate);
     renderCalExpandContent(initialDate, data);
 
-    // 테마 트리/트렌드 초기화 (화면 하단이므로 지연 OK)
-    if (!isMarketClosed(initialDate)) {
-      initThemeTree(initialDate);
-    }
+    // 테마 트리/트렌드 초기화 (휴장일은 함수 내부에서 안내 메시지 표시)
+    initThemeTree(initialDate);
     initThemeTrend();
     initThemeMap();
   } catch (e) {

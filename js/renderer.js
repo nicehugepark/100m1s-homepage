@@ -499,12 +499,21 @@ async function initThemeTrend() {
       .slice(0, 12);
 
     if (themes.length === 0) {
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      const closedToday = isMarketClosed(todayStr);
+      const reason = closedToday ? (getHolidayName(todayStr) || '주말') : '';
+      const nextDate = closedToday ? getNextTradingDate(todayStr) : null;
+      const nextLabel = nextDate ? formatKoDate(nextDate) : '';
+      const emptyMsg = closedToday
+        ? `오늘은 장이 쉽니다 (${escapeHtml(reason)})${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}`
+        : '테마 트렌드 데이터가 없습니다';
       container.innerHTML = `
         <div class="theme-trend-header">
           <div class="theme-trend-title">테마 트렌드</div>
           <div class="theme-trend-sub">최근 거래대금 흐름</div>
         </div>
-        <div class="cal-empty" style="padding:24px 0;">테마 트렌드 데이터가 없습니다</div>`;
+        <div class="cal-empty" style="padding:24px 0;">${emptyMsg}</div>`;
       return;
     }
 
@@ -850,6 +859,17 @@ async function initThemeMap() {
 // ───── 테마 트리 (Indented Tree + Inline Bar) ─────
 async function initThemeTree(dateOverride) {
   try {
+    // 휴장일이면 안내 메시지 표시 후 종료 (테마 트리는 거래일 데이터 기반)
+    if (dateOverride && isMarketClosed(dateOverride)) {
+      const tc = document.getElementById('theme-tree-container');
+      if (tc) {
+        const reason = getHolidayName(dateOverride) || '주말';
+        const nextDate = getNextTradingDate(dateOverride);
+        const nextLabel = nextDate ? formatKoDate(nextDate) : '';
+        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">오늘은 장이 쉽니다 (${escapeHtml(reason)})${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}</div>`;
+      }
+      return;
+    }
     // theme-tree.json 캐시 (최초 1회만 fetch)
     if (!_themeTreeCache) {
       const res = await fetch('/data/themes/theme-tree.json');
