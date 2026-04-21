@@ -171,6 +171,7 @@ async function loadCalDayData(date) {
             code: st.code || null,
             intraday: stockDailyData._fallback_date ? null : (st.intraday || null),
             status_badges: st.status_badges || [],
+            range_240d: st.range_240d || null,
           });
         }
       }
