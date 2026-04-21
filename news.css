@@ -206,6 +206,15 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail.v3 .cal-status-label.sev-danger  { background: #FFCDD2; color: #C62828; }
 .cal-status-detail.v3 .cal-status-label.sev-hot     { background: #FCE4EC; color: #C2185B; }
 .cal-status-detail.v3 .cal-status-period { font-size: 11px; color: #555; font-weight: 500; }
+/* v4: KRX 단계 진행 표시 — "현재 X → 익일 Y 진입" (대표 v4 지시) */
+.cal-status-detail.v3 .cal-status-progress {
+  font-size: 11px; color: #C53939; font-weight: 600;
+  background: #FFF7F7; padding: 4px 8px; border-radius: 4px;
+  border-left: 2px solid #C53939; margin: 2px 0; line-height: 1.5;
+}
+@media (max-width: 640px) {
+  .cal-status-detail.v3 .cal-status-progress { font-size: 10.5px; padding: 4px 6px; }
+}
 .cal-status-detail.v3 .cal-status-table-wrap { overflow-x: auto; }
 .cal-status-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
 .cal-status-table th, .cal-status-table td { padding: 4px 6px; text-align: right; border-bottom: 1px solid #F0E5D2; white-space: nowrap; }
@@ -854,8 +863,16 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   overflow: hidden;
   transition: max-height 0.3s ease-out;
 }
+/* v4: 사유/공시 영역이 모바일에서 잘리던 문제 해결.
+   400px 고정 → 1600px (사실상 무한). 데스크탑에서도 표 길어지면 잘렸음. */
 .cal-feature-card.expanded .cal-feature-details {
-  max-height: 400px;
+  max-height: 1600px;
+  overflow: visible;
+}
+@media (max-width: 640px) {
+  .cal-feature-card.expanded .cal-feature-details {
+    max-height: 2400px;
+  }
 }
 .cal-detail-toggle {
   display: flex;

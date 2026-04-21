@@ -368,6 +368,7 @@ function renderCalExpandContent(date, data) {
       }).join('');
 
       // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
+      // v4: "현재→다음" 직관 표현 추가 (대표 지시)
       const _insights = {
         '투자주의': '단일가 매매 발동 — 이 기간 내 모든 조건 충족 시 익일 투자경고 지정.',
         '투자경고': '단일가 매매 + 매수 시 위탁증거금 100% — 모든 조건 충족 시 익일 투자위험 지정.',
@@ -382,8 +383,58 @@ function renderCalExpandContent(date, data) {
         for (const k in _insights) if (label.includes(k)) return _insights[k];
         return '';
       };
+      // v4: KRX 단계 진행 표 — "현재 X → 익일 Y 진입"
+      // 라벨이 "X 예고"면 현재=X 직전 단계, 다음=X.
+      // 라벨이 "X" (예고 없음)면 현재=X, 다음=X 다음 단계.
+      const _stageNext = {
+        '투자주의': '투자경고',
+        '투자경고': '투자위험',
+        '투자위험': '매매거래 정지',
+        '단기과열': '단기과열 (1회 연장)',
+      };
+      const _stagePrev = {
+        '투자경고': '투자주의',
+        '투자위험': '투자경고',
+        '단기과열': '단기과열 예고',
+      };
+      // 라벨에서 핵심 단계명 추출 (예: "투자경고 예고" → "투자경고", "[예고]" 제거 등)
+      const _extractStage = (label) => {
+        const cleaned = (label || '').replace(/[\[\]\(\)]/g, ' ').trim();
+        const stages = ['투자주의', '투자경고', '투자위험', '단기과열', '관리종목', '상장폐지', '거래정지'];
+        for (const s of stages) if (cleaned.includes(s)) return s;
+        return '';
+      };
+      const _resolveProgress = (b) => {
+        const label = b.label || '';
+        const stage = _extractStage(label);
+        if (!stage) return '';
+        const isNotice = label.includes('예고');
+        // 날짜: end가 있으면 다음 단계 진입은 end+1, 아니면 start+1 또는 today+1
+        const refDate = b.end || b.start || '';
+        let nextDate = '';
+        if (refDate) {
+          try {
+            const d = new Date(refDate + 'T00:00:00');
+            d.setDate(d.getDate() + 1);
+            nextDate = d.toISOString().slice(0, 10);
+          } catch (e) {}
+        }
+        if (isNotice) {
+          // 예고 단계: 현재 = 직전 단계 (또는 "예고 상태"), 다음 = stage 본체
+          const prev = _stagePrev[stage] || `${stage} 예고`;
+          const dateText = nextDate ? `익일(${nextDate})` : '익일';
+          return `현재: ${prev} (${refDate || '진행 중'}) → ${dateText} 조건 충족 시 ${stage} 진입`;
+        }
+        const next = _stageNext[stage];
+        if (!next) return '';
+        const dateText = nextDate ? `익일(${nextDate})` : '익일';
+        return `현재: ${stage} (${refDate || '진행 중'}) → ${dateText} 조건 충족 시 ${next} 진입`;
+      };
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start).map(b => {
         const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span></div>`];
+        // v4: 진행 표 — "현재 → 다음" 1줄 (라벨 바로 아래)
+        const progress = _resolveProgress(b);
+        if (progress) parts.push(`<div class="cal-status-progress">→ ${escapeHtml(progress)}</div>`);
         // 기간 행
         if (b.start) {
           let periodText = b.start;
