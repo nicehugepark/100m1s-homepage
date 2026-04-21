@@ -362,11 +362,20 @@ function renderCalExpandContent(date, data) {
         }
         if (b.condition) parts.push(`<span class="cal-badge-condition">${escapeHtml(b.condition)}</span>`);
         if (b.thresholds && b.thresholds.length > 0) {
+          // 대표 가격: triggered된 것 중 가장 가까운 임계가, 없으면 가장 낮은 임계가
+          const triggeredTh = b.thresholds.filter(t => t.triggered);
+          const repTh = triggeredTh.length > 0
+            ? triggeredTh.reduce((a, b) => Math.abs(a.threshold - a.current) < Math.abs(b.threshold - b.current) ? a : b)
+            : b.thresholds.reduce((a, b) => a.threshold < b.threshold ? a : b);
           const thHtml = b.thresholds.map(t => {
             const icon = t.triggered ? '⚠️' : '✓';
             const cls = t.triggered ? 'cal-threshold triggered' : 'cal-threshold safe';
-            const status = t.triggered ? `현재 ${t.current.toLocaleString()}원 — 초과` : `현재 ${t.current.toLocaleString()}원`;
-            return `<div class="${cls}">${icon} 경고선 ${t.threshold.toLocaleString()}원 (${status})</div>`;
+            // "5일 전" → "T-5", "전일" → "T-1", "T-3" 그대로
+            const label = t.desc.replace(/(\d+)일 전\([^)]*\) 대비 (\d+)%↑/, 'T-$1 +$2%')
+              .replace(/전일\([^)]*\) 대비 (\d+)%↑/, 'T-1 +$1%')
+              .replace(/T-(\d+)\([^)]*\) 대비 (\d+)%↑/, 'T-$1 +$2%');
+            const isRep = (t === repTh);
+            return `<div class="${cls}${isRep ? ' rep' : ''}">${icon} ${label} ${t.threshold.toLocaleString()}원${isRep ? ' ◀ 현재 ' + t.current.toLocaleString() + '원' : ''}</div>`;
           }).join('');
           parts.push(thHtml);
         }
