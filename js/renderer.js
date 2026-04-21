@@ -350,57 +350,82 @@ function renderCalExpandContent(date, data) {
         return `<span class="${cls}">${escapeHtml(b.label)}</span>`;
       }).join('');
 
-      // 상태 뱃지 상세 — 간결 단문 (대표 정정 v2.5: condition 박스 제거 — 빨간 뱃지가 이미 같은 정보)
-      const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation).map(b => {
-        const parts = [];
-        if (b.start && b.end && b.start !== b.end) {
-          parts.push(`<span class="cal-badge-period">${b.start} ~ ${b.end}</span>`);
-        } else if (b.start) {
-          parts.push(`<span class="cal-badge-period">${b.start}</span>`);
+      // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
+      const _insights = {
+        '투자주의': '단일가 매매 발동 — 이 기간 내 모든 조건 충족 시 익일 투자경고 지정.',
+        '투자경고': '단일가 매매 + 매수 시 위탁증거금 100% — 모든 조건 충족 시 익일 투자위험 지정.',
+        '투자위험': '매매거래 1일 정지 + 단일가 매매 — 1주일 내 추가 충족 시 매매거래 정지.',
+        '단기과열': '3거래일간 30분 단위 단일가 매매 — 종료일 종가 +20%↑ 시 3거래일 1회 연장.',
+        '거래정지': '거래 정지 기간 — 정지 사유 해소 후 재개.',
+        '관리종목': '관리종목 지정 — 신용거래·대용증권 불가, 미공시법인 추가 제재 가능.',
+        '상장폐지': '상장폐지 절차 진행 — 정리매매 후 거래 종료.',
+        '단기과열예고': '예고일부터 10거래일 이내 모든 조건 충족 시 단기과열 지정.',
+      };
+      const _resolveInsight = (label) => {
+        for (const k in _insights) if (label.includes(k)) return _insights[k];
+        return '';
+      };
+      const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start).map(b => {
+        const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span></div>`];
+        // 기간 행
+        if (b.start) {
+          let periodText = b.start;
+          if (b.end && b.end !== b.start) periodText += ` ~ ${b.end}`;
+          // 거래일 수 추정
+          let extra = '';
+          if (b.start && b.end) {
+            try {
+              const days = Math.round((new Date(b.end) - new Date(b.start)) / 86400000);
+              if (days > 0) extra = ` (${days}일)`;
+            } catch (e) {}
+          }
+          parts.push(`<div class="cal-status-period">📅 ${periodText}${extra}</div>`);
         }
-        // condition 박스 제거 (대표 정정 16:57 KST) — 본문 또는 뱃지 라벨에 이미 노출
+        // 조건 표 (thresholds[])
         if (b.thresholds && b.thresholds.length > 0) {
-          // 대표 가격: triggered된 것 중 가장 가까운 임계가, 없으면 가장 낮은 임계가
-          const triggeredTh = b.thresholds.filter(t => t.triggered);
-          const repTh = triggeredTh.length > 0
-            ? triggeredTh.reduce((a, b) => Math.abs(a.threshold - a.current) < Math.abs(b.threshold - b.current) ? a : b)
-            : b.thresholds.reduce((a, b) => a.threshold < b.threshold ? a : b);
-          const thHtml = b.thresholds.map(t => {
+          const rows = b.thresholds.map(t => {
             const icon = t.triggered ? '⚠️' : '✓';
-            const cls = t.triggered ? 'cal-threshold triggered' : 'cal-threshold safe';
-            // "5일 전" → "T-5", "전일" → "T-1", "T-3" 그대로
-            const label = t.desc.replace(/(\d+)일 전\([^)]*\) 대비 (\d+)%↑/, 'T-$1 +$2%')
-              .replace(/전일\([^)]*\) 대비 (\d+)%↑/, 'T-1 +$1%')
-              .replace(/T-(\d+)\([^)]*\) 대비 (\d+)%↑/, 'T-$1 +$2%');
-            const isRep = (t === repTh);
-            return `<div class="${cls}${isRep ? ' rep' : ''}">${icon} ${label} ${t.threshold.toLocaleString()}원${isRep ? ' ◀ 현재 ' + t.current.toLocaleString() + '원' : ''}</div>`;
+            const diff = t.current - t.threshold;
+            const diffPct = t.threshold > 0 ? (diff / t.threshold * 100).toFixed(1) : '0.0';
+            const sign = diff >= 0 ? '+' : '';
+            const cls = t.triggered ? 'th-row triggered' : 'th-row safe';
+            return `<tr class="${cls}">
+              <td class="th-cond">${escapeHtml(t.desc)}</td>
+              <td class="th-base">${t.base_price ? t.base_price.toLocaleString() + '원' : '-'}</td>
+              <td class="th-thresh">${t.threshold.toLocaleString()}원</td>
+              <td class="th-cur">${t.current.toLocaleString()}원</td>
+              <td class="th-diff ${diff >= 0 ? 'pos' : 'neg'}">${sign}${diffPct}%</td>
+              <td class="th-trig">${icon}</td>
+            </tr>`;
           }).join('');
-          parts.push(thHtml);
+          parts.push(`<div class="cal-status-table-wrap"><table class="cal-status-table">
+            <thead><tr><th>조건</th><th>기준가</th><th>임계가</th><th>현재가</th><th>차이</th><th>발동</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>`);
         }
-        if (b.regulation) parts.push(`<span class="cal-badge-regulation">${escapeHtml(b.regulation)}</span>`);
-        return `<div class="cal-status-detail">${parts.join('')}</div>`;
+        // 인사이트
+        const insight = _resolveInsight(b.label || '');
+        if (insight) parts.push(`<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>`);
+        if (b.regulation) parts.push(`<div class="cal-status-regulation">${escapeHtml(b.regulation)}</div>`);
+        return `<div class="cal-status-detail v3">${parts.join('')}</div>`;
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
-      // toggle 요약: thresholds rep 우선 — 임계가/현재가/% 1줄 (펼치기 없이도 핵심 정보)
-      const allThresholds = (st.status_badges || []).flatMap(b => b.thresholds || []);
+      // toggle 요약 v3: period + label 만 (대표 정정 18:52 KST — 임계 정보는 표로 이동)
+      const _badgeForSummary = (st.status_badges || []).find(b => b.start) || (st.status_badges || [])[0];
       let summarySnippet;
-      if (allThresholds.length > 0) {
-        // triggered 우선, 없으면 현재가 가장 가까운 임계
-        const trig = allThresholds.filter(t => t.triggered);
-        const rep = trig.length > 0
-          ? trig.reduce((a, b) => Math.abs(a.threshold - a.current) < Math.abs(b.threshold - b.current) ? a : b)
-          : allThresholds.reduce((a, b) => Math.abs(a.threshold - a.current) < Math.abs(b.threshold - b.current) ? a : b);
-        const diff = rep.current - rep.threshold;
-        const diffPct = (diff / rep.threshold * 100).toFixed(1);
-        const arrow = rep.triggered ? '⚠️' : '✓';
-        const sign = diff >= 0 ? '+' : '';
-        summarySnippet = `${arrow} 임계 ${rep.threshold.toLocaleString()}원 · 현재 ${rep.current.toLocaleString()}원 (${sign}${diffPct}%)`;
+      if (_badgeForSummary) {
+        const ps = _badgeForSummary.start || '';
+        const pe = _badgeForSummary.end || '';
+        const dateText = ps && pe && ps !== pe ? `${ps}~${pe}` : (ps || pe || '');
+        const lbl = _badgeForSummary.label || '';
+        summarySnippet = dateText ? `${dateText} ${lbl}`.trim() : lbl;
+      } else if ((st.disclosures || []).length > 0) {
+        summarySnippet = `공시 ${st.disclosures.length}건`;
       } else {
-        const badgePeriod = (st.status_badges || []).find(b => b.start);
-        summarySnippet = badgePeriod ? `${badgePeriod.start}${badgePeriod.end ? '~' + badgePeriod.end : ''} ${badgePeriod.label || ''}` : ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
+        summarySnippet = '';
       }
-      const truncatedSummary = summarySnippet.length > 60 ? summarySnippet.slice(0, 60) + '…' : summarySnippet;
+      const truncatedSummary = summarySnippet.length > 40 ? summarySnippet.slice(0, 40) + '…' : summarySnippet;
       const chevronHtml = hasDetails
         ? `<span class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></span>`
         : '';
