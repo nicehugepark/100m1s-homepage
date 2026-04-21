@@ -62,13 +62,12 @@ function renderCalExpandContent(date, data) {
     const closed = isMarketClosed(date);
     let emptyMsg;
     if (closed) {
-      const reason = getHolidayName(date) || '주말';
       const nextDate = getNextTradingDate(date);
       const nextLabel = nextDate ? formatKoDate(nextDate) : '';
       emptyMsg = `
         <div style="text-align:center;padding:32px 0;">
           <div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div>
-          <div style="font-size:12px;color:var(--dm);">${escapeHtml(reason)}${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}</div>
+          <div style="font-size:12px;color:var(--dm);">${nextLabel ? '다음 거래일 ' + escapeHtml(nextLabel) : ''}</div>
         </div>`;
     } else {
       const now = new Date();
@@ -446,7 +445,7 @@ function renderCalExpandContent(date, data) {
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
       ` : `
-        <div class="cal-empty" style="padding:24px 0;">${isMarketClosed(date) ? (() => { const r = getHolidayName(date) || '주말'; const nd = getNextTradingDate(date); return '오늘은 장이 쉽니다 (' + r + ')' + (nd ? ' · 다음 거래일: ' + formatKoDate(nd) : ''); })() : '조건검색 데이터 없음 — 장 마감 후 또는 파이프라인 실행 후 업데이트'}</div>
+        ${isMarketClosed(date) ? (() => { const nd = getNextTradingDate(date); const nl = nd ? formatKoDate(nd) : ''; return `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nl ? '다음 거래일 ' + escapeHtml(nl) : ''}</div></div>`; })() : '<div class="cal-empty" style="padding:24px 0;">조건검색 데이터 없음 — 장 마감 후 또는 파이프라인 실행 후 업데이트</div>'}
       `}
     </div>
   `;
@@ -502,18 +501,17 @@ async function initThemeTrend() {
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       const closedToday = isMarketClosed(todayStr);
-      const reason = closedToday ? (getHolidayName(todayStr) || '주말') : '';
       const nextDate = closedToday ? getNextTradingDate(todayStr) : null;
       const nextLabel = nextDate ? formatKoDate(nextDate) : '';
       const emptyMsg = closedToday
-        ? `오늘은 장이 쉽니다 (${escapeHtml(reason)})${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}`
-        : '테마 트렌드 데이터가 없습니다';
+        ? `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nextLabel ? '다음 거래일 ' + escapeHtml(nextLabel) : ''}</div></div>`
+        : '<div class="cal-empty" style="padding:24px 0;">테마 트렌드 데이터가 없습니다</div>';
       container.innerHTML = `
         <div class="theme-trend-header">
           <div class="theme-trend-title">테마 트렌드</div>
           <div class="theme-trend-sub">최근 거래대금 흐름</div>
         </div>
-        <div class="cal-empty" style="padding:24px 0;">${emptyMsg}</div>`;
+        ${emptyMsg}`;
       return;
     }
 
@@ -863,10 +861,9 @@ async function initThemeTree(dateOverride) {
     if (dateOverride && isMarketClosed(dateOverride)) {
       const tc = document.getElementById('theme-tree-container');
       if (tc) {
-        const reason = getHolidayName(dateOverride) || '주말';
         const nextDate = getNextTradingDate(dateOverride);
         const nextLabel = nextDate ? formatKoDate(nextDate) : '';
-        tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">오늘은 장이 쉽니다 (${escapeHtml(reason)})${nextLabel ? ' · 다음 거래일: ' + escapeHtml(nextLabel) : ''}</div>`;
+        tc.innerHTML = `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nextLabel ? '다음 거래일 ' + escapeHtml(nextLabel) : ''}</div></div>`;
       }
       return;
     }
