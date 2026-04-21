@@ -68,7 +68,8 @@ async function loadCalDayData(date) {
   ]);
   let stockDailyData = stockDailyDirect;
   // 당일 데이터 없으면 최근 7일 이내 이전 날짜 fallback (병렬)
-  if (!stockDailyData) {
+  // 단, 휴장일/주말은 fallback 자체를 비활성화 (옵션 A: 휴장 안내만 표시)
+  if (!stockDailyData && !isMarketClosed(date)) {
     const d = new Date(date + 'T00:00:00');
     const fallbackFetches = [];
     for (let i = 1; i <= 7; i++) {
