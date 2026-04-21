@@ -1,6 +1,6 @@
 {
   "date": "2026-04-21",
-  "generated_at": "2026-04-21T20:06:45.758894",
+  "generated_at": "2026-04-21T20:43:46.890512",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1341,6 +1341,15 @@
           "is_cb": false,
           "source": "DART",
           "raw_title": "[기재정정]단일판매ㆍ공급계약체결              "
+        },
+        {
+          "title": "[투자경고] [투자주의]투자경고종목 지정예고",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000570",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고"
         }
       ],
       "range_240d": {
@@ -1352,6 +1361,13 @@
         "low_pct": 889.46,
         "current": 32850
       },
+      "status_badges": [
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "summary": "[투자경고] [투자주의]투자경고종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 28950,
@@ -1398,6 +1414,8 @@
           32850
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
       "hugepark_grade": "적극"
@@ -1471,6 +1489,17 @@
         }
       ],
       "fallback": false,
+      "disclosures": [
+        {
+          "title": "[투자경고] [투자주의]투자경고종목 지정예고",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000739",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고"
+        }
+      ],
       "range_240d": {
         "high": 118900,
         "high_date": "2026-04-21",
@@ -1480,6 +1509,13 @@
         "low_pct": 356.43,
         "current": 118900
       },
+      "status_badges": [
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "summary": "[투자경고] [투자주의]투자경고종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 95900,
@@ -1526,6 +1562,8 @@
           118900
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "strong_bull",
       "theme_leader": false,
       "hugepark_grade": "관찰"
@@ -2656,6 +2694,38 @@
         "low_pct": 171.43,
         "current": 3800
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-14) 대비 +60%↑",
+              "base_price": 2100,
+              "threshold": 3360,
+              "current": 3800,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-31) 대비 +100%↑",
+              "base_price": 1578,
+              "threshold": 3156,
+              "current": 3800,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 4170,
@@ -2731,6 +2801,17 @@
       },
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "[단기과열] 단기과열종목(3거래일 단일가매매) 지",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000607",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "단기과열종목(3거래일 단일가매매) 지정"
+        }
+      ],
       "range_240d": {
         "high": 55000,
         "high_date": "2026-04-21",
@@ -2740,6 +2821,13 @@
         "low_pct": 153.64,
         "current": 50500
       },
+      "status_badges": [
+        {
+          "label": "단기과열",
+          "severity": "hot",
+          "summary": "[단기과열] 단기과열종목(3거래일 단일가매매) 지"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 45350,
@@ -3474,6 +3562,15 @@
           "is_cb": false,
           "source": "KIND",
           "raw_title": "조회공시요구(현저한시황변동)"
+        },
+        {
+          "title": "[투자경고] 매매거래 정지 및 재개(투자경고종목 ",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000728",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "매매거래 정지 및 재개(투자경고종목 지정중)"
         }
       ],
       "range_240d": {
@@ -3485,6 +3582,13 @@
         "low_pct": 266.91,
         "current": 2040
       },
+      "status_badges": [
+        {
+          "label": "투자경고",
+          "severity": "warning",
+          "summary": "[투자경고] 매매거래 정지 및 재개(투자경고종목 "
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 2040,
@@ -3818,6 +3922,60 @@
         "low_pct": 178.92,
         "current": 21700
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-14) 대비 +60%↑",
+              "base_price": 10530,
+              "threshold": 16848,
+              "current": 21700,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-31) 대비 +100%↑",
+              "base_price": 8510,
+              "threshold": 17020,
+              "current": 21700,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 16574,
+              "threshold": 21546,
+              "current": 21700,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-17) 대비 +75%↑",
+              "base_price": 8960,
+              "threshold": 15680,
+              "current": 21700,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 27400,
@@ -4105,6 +4263,26 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "[단기과열] (예고)단기과열종목 지정예고",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000767",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고"
+        },
+        {
+          "title": "[투자경고] [투자주의]투자경고종목 지정예고",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000736",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고"
+        }
+      ],
       "range_240d": {
         "high": 15150,
         "high_date": "2026-04-21",
@@ -4114,6 +4292,18 @@
         "low_pct": 123.26,
         "current": 14400
       },
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "summary": "[단기과열] (예고)단기과열종목 지정예고"
+        },
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "summary": "[투자경고] [투자주의]투자경고종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 11860,
@@ -4160,6 +4350,8 @@
           14400
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -4681,6 +4873,15 @@
           "is_cb": false,
           "source": "DART",
           "raw_title": "[기재정정]주식병합결정              "
+        },
+        {
+          "title": "[거래정지] 매매거래정지 예고",
+          "category": "거래정지",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000730",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "매매거래정지 예고"
         }
       ],
       "range_240d": {
@@ -4692,6 +4893,60 @@
         "low_pct": 170.37,
         "current": 1168
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-14) 대비 +60%↑",
+              "base_price": 541,
+              "threshold": 865,
+              "current": 1168,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-31) 대비 +100%↑",
+              "base_price": 525,
+              "threshold": 1050,
+              "current": 1168,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 801,
+              "threshold": 1042,
+              "current": 1168,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-17) 대비 +75%↑",
+              "base_price": 560,
+              "threshold": 980,
+              "current": 1168,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 1255,
@@ -5043,6 +5298,17 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "[투자주의] [투자주의]15일간 상승종목의 당일 ",
+          "category": "투자주의",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000746",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목"
+        }
+      ],
       "range_240d": {
         "high": 31550,
         "high_date": "2026-04-21",
@@ -5052,6 +5318,13 @@
         "low_pct": 348.18,
         "current": 30700
       },
+      "status_badges": [
+        {
+          "label": "투자주의",
+          "severity": "caution",
+          "summary": "[투자주의] [투자주의]15일간 상승종목의 당일 "
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 27800,
@@ -5098,6 +5371,8 @@
           30700
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -5467,6 +5742,17 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "[단기과열] (예고)단기과열종목 지정예고",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000769",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고"
+        }
+      ],
       "range_240d": {
         "high": 7630,
         "high_date": "2026-04-21",
@@ -5476,6 +5762,13 @@
         "low_pct": 72.04,
         "current": 6400
       },
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "summary": "[단기과열] (예고)단기과열종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 6280,

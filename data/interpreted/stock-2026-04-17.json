@@ -1,6 +1,6 @@
 {
   "date": "2026-04-17",
-  "generated_at": "2026-04-21T20:06:45.467469",
+  "generated_at": "2026-04-21T20:43:46.585346",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -114,12 +114,12 @@
         }
       ],
       "range_240d": {
-        "high": 50700,
-        "high_date": "2026-04-21",
-        "high_pct": -6.61,
+        "high": 48550,
+        "high_date": "2026-04-17",
+        "high_pct": -4.63,
         "low": 4665,
         "low_date": "2025-05-27",
-        "low_pct": 915.01,
+        "low_pct": 892.5,
         "current": 46300
       },
       "status_badges": [
@@ -227,10 +227,10 @@
       "range_240d": {
         "high": 16200,
         "high_date": "2026-04-17",
-        "high_pct": -34.44,
-        "low": 1206,
-        "low_date": "2025-11-05",
-        "low_pct": 780.6,
+        "high_pct": -19.94,
+        "low": 1195,
+        "low_date": "2025-04-23",
+        "low_pct": 985.36,
         "current": 12970
       },
       "status_badges": [
@@ -322,10 +322,10 @@
       "range_240d": {
         "high": 13080,
         "high_date": "2026-04-17",
-        "high_pct": -7.34,
+        "high_pct": -8.79,
         "low": 1913,
         "low_date": "2025-11-25",
-        "low_pct": 533.56,
+        "low_pct": 523.63,
         "current": 11930
       },
       "status_badges": [
@@ -421,10 +421,10 @@
       "range_240d": {
         "high": 37450,
         "high_date": "2026-02-05",
-        "high_pct": -14.55,
+        "high_pct": -11.88,
         "low": 12840,
         "low_date": "2025-04-28",
-        "low_pct": 149.22,
+        "low_pct": 157.01,
         "current": 33000
       },
       "intraday": {
@@ -518,10 +518,10 @@
       "range_240d": {
         "high": 14430,
         "high_date": "2026-04-17",
-        "high_pct": -5.06,
+        "high_pct": -4.23,
         "low": 3875,
         "low_date": "2025-05-26",
-        "low_pct": 253.55,
+        "low_pct": 256.65,
         "current": 13820
       },
       "status_badges": [
@@ -662,12 +662,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 16480,
-        "high_date": "2026-04-20",
-        "high_pct": -12.56,
+        "high": 14330,
+        "high_date": "2026-04-17",
+        "high_pct": -5.93,
         "low": 3525,
         "low_date": "2025-04-30",
-        "low_pct": 308.79,
+        "low_pct": 282.41,
         "current": 13480
       },
       "status_badges": [
@@ -779,12 +779,12 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 60900,
-        "high_date": "2026-04-21",
-        "high_pct": -0.49,
+        "high": 59900,
+        "high_date": "2026-04-17",
+        "high_pct": -6.34,
         "low": 24650,
         "low_date": "2025-07-07",
-        "low_pct": 145.84,
+        "low_pct": 127.59,
         "current": 56100
       },
       "intraday": {
@@ -903,10 +903,10 @@
       "range_240d": {
         "high": 50400,
         "high_date": "2026-01-23",
-        "high_pct": -40.28,
+        "high_pct": -35.71,
         "low": 3730,
         "low_date": "2025-05-29",
-        "low_pct": 706.97,
+        "low_pct": 768.63,
         "current": 32400
       },
       "status_badges": [
@@ -990,14 +990,53 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 27500,
-        "high_date": "2026-04-21",
-        "high_pct": -21.09,
+        "high": 20300,
+        "high_date": "2026-04-17",
+        "high_pct": -12.41,
         "low": 7780,
         "low_date": "2026-03-04",
-        "low_pct": 178.92,
+        "low_pct": 128.53,
         "current": 17780
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-10) 대비 +60%↑",
+              "base_price": 9470,
+              "threshold": 15152,
+              "current": 17780,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 12270,
+              "threshold": 15951,
+              "current": 17780,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-13) 대비 +75%↑",
+              "base_price": 9030,
+              "threshold": 15802,
+              "current": 17780,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 18470,
@@ -1069,12 +1108,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 55000,
-        "high_date": "2026-04-21",
-        "high_pct": -8.18,
+        "high": 49800,
+        "high_date": "2025-09-05",
+        "high_pct": -11.65,
         "low": 19910,
         "low_date": "2025-07-07",
-        "low_pct": 153.64,
+        "low_pct": 120.99,
         "current": 44000
       },
       "intraday": {
@@ -1151,12 +1190,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 128000,
-        "high_date": "2026-04-21",
-        "high_pct": -0.78,
+        "high": 124500,
+        "high_date": "2026-02-04",
+        "high_pct": -10.44,
         "low": 37950,
         "low_date": "2025-05-20",
-        "low_pct": 234.65,
+        "low_pct": 193.81,
         "current": 111500
       },
       "intraday": {
@@ -1322,12 +1361,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 209500,
-        "high_date": "2026-04-20",
-        "high_pct": -2.15,
+        "high": 202500,
+        "high_date": "2026-04-17",
+        "high_pct": -2.17,
         "low": 48850,
         "low_date": "2025-04-28",
-        "low_pct": 319.65,
+        "low_pct": 305.53,
         "current": 198100
       },
       "intraday": {
@@ -1399,12 +1438,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 4420,
-        "high_date": "2026-04-21",
-        "high_pct": -15.16,
+        "high": 4400,
+        "high_date": "2026-04-17",
+        "high_pct": -17.5,
         "low": 2340,
         "low_date": "2026-01-22",
-        "low_pct": 60.26,
+        "low_pct": 55.13,
         "current": 3630
       },
       "intraday": {
@@ -1524,10 +1563,10 @@
       "range_240d": {
         "high": 106600,
         "high_date": "2025-11-03",
-        "high_pct": -9.85,
-        "low": 35050,
-        "low_date": "2025-04-25",
-        "low_pct": 174.18,
+        "high_pct": -14.45,
+        "low": 33000,
+        "low_date": "2025-04-23",
+        "low_pct": 176.36,
         "current": 91200
       },
       "intraday": {
@@ -1647,10 +1686,10 @@
       "range_240d": {
         "high": 5700,
         "high_date": "2026-02-19",
-        "high_pct": -25.44,
+        "high_pct": -27.02,
         "low": 2733,
         "low_date": "2025-06-02",
-        "low_pct": 55.51,
+        "low_pct": 52.21,
         "current": 4160
       },
       "intraday": {
@@ -1736,12 +1775,12 @@
         }
       ],
       "range_240d": {
-        "high": 2040,
-        "high_date": "2026-04-21",
-        "high_pct": 0.0,
+        "high": 1400,
+        "high_date": "2026-04-17",
+        "high_pct": -13.57,
         "low": 556,
         "low_date": "2026-02-20",
-        "low_pct": 266.91,
+        "low_pct": 117.63,
         "current": 1210
       },
       "status_badges": [
@@ -1856,12 +1895,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 6840,
-        "high_date": "2026-04-20",
-        "high_pct": -16.23,
+        "high": 5930,
+        "high_date": "2026-02-11",
+        "high_pct": -0.17,
         "low": 2390,
         "low_date": "2025-11-25",
-        "low_pct": 139.75,
+        "low_pct": 147.7,
         "current": 5920
       },
       "intraday": {
@@ -1933,12 +1972,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 40700,
-        "high_date": "2026-04-20",
-        "high_pct": -6.51,
+        "high": 39500,
+        "high_date": "2026-01-30",
+        "high_pct": -8.73,
         "low": 10030,
         "low_date": "2025-05-26",
-        "low_pct": 279.36,
+        "low_pct": 259.42,
         "current": 36050
       },
       "intraday": {
@@ -2017,10 +2056,10 @@
       "range_240d": {
         "high": 17650,
         "high_date": "2026-04-17",
-        "high_pct": -8.78,
+        "high_pct": -6.35,
         "low": 3750,
         "low_date": "2025-05-16",
-        "low_pct": 329.33,
+        "low_pct": 340.8,
         "current": 16530
       },
       "intraday": {
@@ -2107,12 +2146,12 @@
         }
       ],
       "range_240d": {
-        "high": 8300,
-        "high_date": "2026-04-21",
-        "high_pct": -5.06,
+        "high": 8170,
+        "high_date": "2026-04-17",
+        "high_pct": -5.75,
         "low": 801,
         "low_date": "2025-11-05",
-        "low_pct": 883.77,
+        "low_pct": 861.3,
         "current": 7700
       },
       "status_badges": [
@@ -2214,10 +2253,10 @@
       "range_240d": {
         "high": 3670,
         "high_date": "2026-04-17",
-        "high_pct": -26.98,
+        "high_pct": -17.44,
         "low": 1455,
         "low_date": "2026-03-09",
-        "low_pct": 84.19,
+        "low_pct": 108.25,
         "current": 3030
       },
       "intraday": {
@@ -2295,10 +2334,10 @@
       "range_240d": {
         "high": 34350,
         "high_date": "2025-09-10",
-        "high_pct": -18.49,
+        "high_pct": -16.89,
         "low": 6950,
         "low_date": "2025-07-04",
-        "low_pct": 302.88,
+        "low_pct": 310.79,
         "current": 28550
       },
       "intraday": {
@@ -2374,10 +2413,10 @@
       "range_240d": {
         "high": 3285,
         "high_date": "2025-05-22",
-        "high_pct": -53.64,
+        "high_pct": -45.11,
         "low": 1209,
         "low_date": "2026-04-09",
-        "low_pct": 25.97,
+        "low_pct": 49.13,
         "current": 1803
       },
       "intraday": {
@@ -2451,10 +2490,10 @@
       "range_240d": {
         "high": 7050,
         "high_date": "2026-03-04",
-        "high_pct": -18.87,
+        "high_pct": -12.77,
         "low": 3495,
         "low_date": "2025-12-18",
-        "low_pct": 63.66,
+        "low_pct": 75.97,
         "current": 6150
       },
       "intraday": {
@@ -2535,10 +2574,10 @@
       "range_240d": {
         "high": 2920,
         "high_date": "2026-04-17",
-        "high_pct": -19.01,
+        "high_pct": -13.87,
         "low": 1092,
         "low_date": "2025-11-05",
-        "low_pct": 116.58,
+        "low_pct": 130.31,
         "current": 2515
       },
       "intraday": {
@@ -2628,10 +2667,10 @@
       "range_240d": {
         "high": 9390,
         "high_date": "2025-05-29",
-        "high_pct": -30.99,
+        "high_pct": -28.01,
         "low": 4310,
         "low_date": "2026-04-03",
-        "low_pct": 50.35,
+        "low_pct": 56.84,
         "current": 6760
       },
       "intraday": {
@@ -2784,12 +2823,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 34500,
-        "high_date": "2026-04-20",
-        "high_pct": -1.88,
+        "high": 32150,
+        "high_date": "2026-04-17",
+        "high_pct": -2.33,
         "low": 11910,
         "low_date": "2025-06-02",
-        "low_pct": 184.21,
+        "low_pct": 163.64,
         "current": 31400
       },
       "intraday": {
@@ -2896,10 +2935,10 @@
       "range_240d": {
         "high": 20500,
         "high_date": "2025-06-19",
-        "high_pct": -42.05,
+        "high_pct": -31.27,
         "low": 7210,
         "low_date": "2025-05-12",
-        "low_pct": 64.77,
+        "low_pct": 95.42,
         "current": 14090
       },
       "status_badges": [
@@ -3001,10 +3040,10 @@
       "range_240d": {
         "high": 117500,
         "high_date": "2026-03-23",
-        "high_pct": -8.09,
+        "high_pct": -4.85,
         "low": 22050,
         "low_date": "2025-05-23",
-        "low_pct": 389.8,
+        "low_pct": 407.03,
         "current": 111800
       },
       "status_badges": [
@@ -3151,10 +3190,10 @@
       "range_240d": {
         "high": 9300,
         "high_date": "2026-01-12",
-        "high_pct": -10.65,
+        "high_pct": -21.61,
         "low": 2630,
         "low_date": "2025-05-20",
-        "low_pct": 215.97,
+        "low_pct": 177.19,
         "current": 7290
       },
       "intraday": {
@@ -3230,12 +3269,66 @@
       "range_240d": {
         "high": 2100,
         "high_date": "2026-04-17",
-        "high_pct": -27.38,
+        "high_pct": -27.1,
         "low": 581,
         "low_date": "2026-02-19",
-        "low_pct": 162.48,
+        "low_pct": 163.51,
         "current": 1531
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-10) 대비 +60%↑",
+              "base_price": 752,
+              "threshold": 1203,
+              "current": 1531,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-27) 대비 +100%↑",
+              "base_price": 730,
+              "threshold": 1460,
+              "current": 1531,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 1078,
+              "threshold": 1401,
+              "current": 1531,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-13) 대비 +75%↑",
+              "base_price": 724,
+              "threshold": 1267,
+              "current": 1531,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 1647,
@@ -3385,10 +3478,10 @@
       "range_240d": {
         "high": 36650,
         "high_date": "2025-05-22",
-        "high_pct": -32.06,
+        "high_pct": -25.38,
         "low": 21700,
         "low_date": "2026-03-09",
-        "low_pct": 14.75,
+        "low_pct": 26.04,
         "current": 27350
       },
       "intraday": {
@@ -3465,12 +3558,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 3820,
-        "high_date": "2026-04-21",
-        "high_pct": -8.64,
+        "high": 3570,
+        "high_date": "2026-04-17",
+        "high_pct": -8.12,
         "low": 1630,
         "low_date": "2026-01-09",
-        "low_pct": 114.11,
+        "low_pct": 101.23,
         "current": 3280
       },
       "intraday": {
@@ -3620,10 +3713,10 @@
       "range_240d": {
         "high": 74800,
         "high_date": "2026-03-10",
-        "high_pct": -18.72,
+        "high_pct": -21.12,
         "low": 10020,
         "low_date": "2025-05-09",
-        "low_pct": 506.79,
+        "low_pct": 488.82,
         "current": 59000
       },
       "intraday": {
@@ -3715,10 +3808,10 @@
       "range_240d": {
         "high": 170300,
         "high_date": "2026-02-25",
-        "high_pct": -11.57,
+        "high_pct": -4.58,
         "low": 71500,
         "low_date": "2025-12-15",
-        "low_pct": 110.63,
+        "low_pct": 127.27,
         "current": 162500
       },
       "intraday": {
@@ -3790,12 +3883,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 56800,
-        "high_date": "2026-04-20",
-        "high_pct": -3.87,
+        "high": 56100,
+        "high_date": "2026-04-17",
+        "high_pct": -1.78,
         "low": 10300,
         "low_date": "2025-07-23",
-        "low_pct": 430.1,
+        "low_pct": 434.95,
         "current": 55100
       },
       "intraday": {
@@ -3900,10 +3993,10 @@
       "range_240d": {
         "high": 6220,
         "high_date": "2026-04-17",
-        "high_pct": -21.38,
+        "high_pct": -18.65,
         "low": 3260,
         "low_date": "2026-03-09",
-        "low_pct": 50.0,
+        "low_pct": 55.21,
         "current": 5060
       },
       "status_badges": [
@@ -4023,10 +4116,10 @@
       "range_240d": {
         "high": 26300,
         "high_date": "2026-04-17",
-        "high_pct": -14.26,
-        "low": 4800,
-        "low_date": "2025-04-28",
-        "low_pct": 369.79,
+        "high_pct": -4.56,
+        "low": 4740,
+        "low_date": "2025-04-23",
+        "low_pct": 429.54,
         "current": 25100
       },
       "status_badges": [
@@ -4112,10 +4205,10 @@
       "range_240d": {
         "high": 116600,
         "high_date": "2026-03-17",
-        "high_pct": -22.21,
-        "low": 20450,
-        "low_date": "2025-04-29",
-        "low_pct": 343.52,
+        "high_pct": -14.67,
+        "low": 20350,
+        "low_date": "2025-04-23",
+        "low_pct": 388.94,
         "current": 99500
       },
       "intraday": {
@@ -4187,12 +4280,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 57200,
-        "high_date": "2026-04-21",
-        "high_pct": -0.87,
+        "high": 54500,
+        "high_date": "2026-04-17",
+        "high_pct": -2.94,
         "low": 19460,
         "low_date": "2025-05-22",
-        "low_pct": 191.37,
+        "low_pct": 171.84,
         "current": 52900
       },
       "intraday": {
@@ -4266,10 +4359,10 @@
       "range_240d": {
         "high": 15250,
         "high_date": "2026-02-09",
-        "high_pct": -21.7,
+        "high_pct": -21.11,
         "low": 4230,
         "low_date": "2025-11-25",
-        "low_pct": 182.27,
+        "low_pct": 184.4,
         "current": 12030
       },
       "intraday": {
@@ -4343,10 +4436,10 @@
       "range_240d": {
         "high": 224000,
         "high_date": "2026-02-03",
-        "high_pct": -20.13,
+        "high_pct": -16.29,
         "low": 43000,
         "low_date": "2025-04-28",
-        "low_pct": 316.05,
+        "low_pct": 336.05,
         "current": 187500
       },
       "intraday": {
@@ -4457,10 +4550,10 @@
       "range_240d": {
         "high": 247500,
         "high_date": "2025-08-08",
-        "high_pct": -19.72,
+        "high_pct": -20.08,
         "low": 104600,
         "low_date": "2025-05-22",
-        "low_pct": 89.96,
+        "low_pct": 89.1,
         "current": 197800
       },
       "intraday": {
@@ -4536,12 +4629,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 3825,
-        "high_date": "2026-04-20",
-        "high_pct": -13.99,
+        "high": 3520,
+        "high_date": "2026-04-17",
+        "high_pct": -11.22,
         "low": 1926,
         "low_date": "2026-03-04",
-        "low_pct": 70.82,
+        "low_pct": 62.25,
         "current": 3125
       },
       "intraday": {
@@ -4634,12 +4727,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 116900,
-        "high_date": "2026-04-20",
-        "high_pct": -8.21,
+        "high": 109500,
+        "high_date": "2026-04-17",
+        "high_pct": -7.85,
         "low": 5150,
         "low_date": "2025-05-26",
-        "low_pct": 1983.5,
+        "low_pct": 1859.22,
         "current": 100900
       },
       "intraday": {
@@ -4715,10 +4808,10 @@
       "range_240d": {
         "high": 22800,
         "high_date": "2025-10-23",
-        "high_pct": -42.59,
+        "high_pct": -43.64,
         "low": 4950,
         "low_date": "2025-06-04",
-        "low_pct": 164.44,
+        "low_pct": 159.6,
         "current": 12850
       },
       "credit_risk": true,

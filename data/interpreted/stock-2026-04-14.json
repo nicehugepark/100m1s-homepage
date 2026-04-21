@@ -1,6 +1,6 @@
 {
   "date": "2026-04-14",
-  "generated_at": "2026-04-21T20:06:44.972377",
+  "generated_at": "2026-04-21T20:43:46.019481",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -103,12 +103,29 @@
       "range_240d": {
         "high": 22000,
         "high_date": "2026-04-14",
-        "high_pct": -28.64,
-        "low": 551,
-        "low_date": "2025-05-07",
-        "low_pct": 2749.36,
+        "high_pct": -8.41,
+        "low": 541,
+        "low_date": "2025-04-22",
+        "low_pct": 3624.58,
         "current": 20150
       },
+      "status_badges": [
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-24) 대비 +100%↑",
+              "base_price": 8250,
+              "threshold": 16500,
+              "current": 20150,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 21650,
@@ -178,14 +195,68 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 16200,
-        "high_date": "2026-04-17",
-        "high_pct": -34.44,
-        "low": 1206,
-        "low_date": "2025-11-05",
-        "low_pct": 780.6,
+        "high": 12850,
+        "high_date": "2026-04-14",
+        "high_pct": -7.7,
+        "low": 1180,
+        "low_date": "2025-04-22",
+        "low_pct": 905.08,
         "current": 11860
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 7070,
+              "threshold": 11312,
+              "current": 11860,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-24) 대비 +100%↑",
+              "base_price": 4575,
+              "threshold": 9150,
+              "current": 11860,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 7832,
+              "threshold": 10181,
+              "current": 11860,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 1355,
+              "threshold": 2371,
+              "current": 11860,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 11070,
@@ -305,12 +376,51 @@
       "range_240d": {
         "high": 3485,
         "high_date": "2026-04-14",
-        "high_pct": -30.85,
+        "high_pct": -11.62,
         "low": 1000,
         "low_date": "2025-12-26",
-        "low_pct": 141.0,
+        "low_pct": 208.0,
         "current": 3080
       },
+      "status_badges": [
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-24) 대비 +100%↑",
+              "base_price": 1373,
+              "threshold": 2746,
+              "current": 3080,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 2295,
+              "threshold": 2983,
+              "current": 3080,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 1329,
+              "threshold": 2325,
+              "current": 3080,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 2865,
@@ -380,14 +490,38 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 13080,
-        "high_date": "2026-04-17",
-        "high_pct": -7.34,
+        "high": 11330,
+        "high_date": "2026-04-14",
+        "high_pct": 0.0,
         "low": 1913,
         "low_date": "2025-11-25",
-        "low_pct": 533.56,
+        "low_pct": 492.26,
         "current": 11330
       },
+      "status_badges": [
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 8702,
+              "threshold": 11312,
+              "current": 11330,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 5140,
+              "threshold": 8995,
+              "current": 11330,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 9010,
@@ -537,12 +671,12 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 106600,
-        "high_date": "2026-04-15",
-        "high_pct": -5.63,
+        "high": 104700,
+        "high_date": "2026-04-14",
+        "high_pct": -5.44,
         "low": 38450,
         "low_date": "2025-11-21",
-        "low_pct": 161.64,
+        "low_pct": 157.48,
         "current": 99000
       },
       "intraday": {
@@ -621,12 +755,29 @@
       "range_240d": {
         "high": 42200,
         "high_date": "2025-12-29",
-        "high_pct": -10.9,
+        "high_pct": -11.85,
         "low": 20400,
         "low_date": "2026-03-04",
-        "low_pct": 84.31,
+        "low_pct": 82.35,
         "current": 37200
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 23050,
+              "threshold": 36880,
+              "current": 37200,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 37150,
@@ -730,14 +881,68 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 8100,
-        "high_date": "2026-04-16",
-        "high_pct": -23.95,
+        "high": 6390,
+        "high_date": "2026-04-14",
+        "high_pct": 0.0,
         "low": 592,
         "low_date": "2026-01-02",
-        "low_pct": 940.54,
+        "low_pct": 979.39,
         "current": 6390
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 3165,
+              "threshold": 5064,
+              "current": 6390,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-24) 대비 +100%↑",
+              "base_price": 2620,
+              "threshold": 5240,
+              "current": 6390,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 4096,
+              "threshold": 5324,
+              "current": 6390,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 1059,
+              "threshold": 1853,
+              "current": 6390,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 6300,
@@ -849,14 +1054,38 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 50700,
-        "high_date": "2026-04-21",
-        "high_pct": -6.61,
+        "high": 38900,
+        "high_date": "2026-04-14",
+        "high_pct": 0.0,
         "low": 4665,
         "low_date": "2025-05-27",
-        "low_pct": 915.01,
+        "low_pct": 733.87,
         "current": 38900
       },
+      "status_badges": [
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 28560,
+              "threshold": 37128,
+              "current": 38900,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 21900,
+              "threshold": 38325,
+              "current": 38900,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 30400,
@@ -952,12 +1181,36 @@
       "range_240d": {
         "high": 9100,
         "high_date": "2026-04-14",
-        "high_pct": -29.23,
-        "low": 2135,
-        "low_date": "2025-05-08",
-        "low_pct": 201.64,
+        "high_pct": -6.92,
+        "low": 2120,
+        "low_date": "2025-04-18",
+        "low_pct": 299.53,
         "current": 8470
       },
+      "status_badges": [
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 6292,
+              "threshold": 8179,
+              "current": 8470,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 2785,
+              "threshold": 4873,
+              "current": 8470,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 7100,
@@ -1055,12 +1308,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 22400,
-        "high_date": "2026-04-15",
-        "high_pct": -12.86,
+        "high": 20550,
+        "high_date": "2026-04-14",
+        "high_pct": 0.0,
         "low": 10190,
         "low_date": "2026-03-04",
-        "low_pct": 91.56,
+        "low_pct": 101.67,
         "current": 20550
       },
       "intraday": {
@@ -1178,12 +1431,12 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 209500,
-        "high_date": "2026-04-20",
-        "high_pct": -2.15,
-        "low": 48850,
-        "low_date": "2025-04-28",
-        "low_pct": 319.65,
+        "high": 189300,
+        "high_date": "2026-04-14",
+        "high_pct": -3.01,
+        "low": 48400,
+        "low_date": "2025-04-22",
+        "low_pct": 279.34,
         "current": 183600
       },
       "intraday": {
@@ -1298,12 +1551,51 @@
       "range_240d": {
         "high": 21350,
         "high_date": "2026-04-14",
-        "high_pct": -28.81,
+        "high_pct": -13.54,
         "low": 6130,
         "low_date": "2025-07-29",
-        "low_pct": 147.96,
+        "low_pct": 201.14,
         "current": 18460
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 10640,
+              "threshold": 17024,
+              "current": 18460,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 12730,
+              "threshold": 16549,
+              "current": 18460,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 6950,
+              "threshold": 12162,
+              "current": 18460,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 19680,
@@ -1420,10 +1712,10 @@
       "range_240d": {
         "high": 29950,
         "high_date": "2026-04-14",
-        "high_pct": -13.86,
+        "high_pct": -19.87,
         "low": 5280,
         "low_date": "2025-11-12",
-        "low_pct": 388.64,
+        "low_pct": 354.55,
         "current": 24000
       },
       "intraday": {
@@ -1514,10 +1806,10 @@
       "range_240d": {
         "high": 10990,
         "high_date": "2026-03-13",
-        "high_pct": -21.57,
+        "high_pct": -12.56,
         "low": 6200,
         "low_date": "2025-11-14",
-        "low_pct": 39.03,
+        "low_pct": 55.0,
         "current": 9610
       },
       "intraday": {
@@ -1649,10 +1941,10 @@
       "range_240d": {
         "high": 59600,
         "high_date": "2026-03-11",
-        "high_pct": -11.41,
+        "high_pct": -10.74,
         "low": 1021,
         "low_date": "2025-09-01",
-        "low_pct": 5071.4,
+        "low_pct": 5110.58,
         "current": 53200
       },
       "intraday": {
@@ -1759,10 +2051,10 @@
       "range_240d": {
         "high": 2235,
         "high_date": "2026-04-14",
-        "high_pct": -25.32,
+        "high_pct": -12.71,
         "low": 1095,
         "low_date": "2026-03-04",
-        "low_pct": 52.42,
+        "low_pct": 78.17,
         "current": 1951
       },
       "intraday": {
@@ -1836,10 +2128,10 @@
       "range_240d": {
         "high": 48000,
         "high_date": "2026-03-20",
-        "high_pct": -9.69,
-        "low": 14510,
-        "low_date": "2025-05-02",
-        "low_pct": 198.76,
+        "high_pct": -9.38,
+        "low": 14110,
+        "low_date": "2025-04-21",
+        "low_pct": 208.29,
         "current": 43500
       },
       "intraday": {
@@ -1946,12 +2238,51 @@
       "range_240d": {
         "high": 38700,
         "high_date": "2026-04-14",
-        "high_pct": -24.16,
+        "high_pct": -10.47,
         "low": 11600,
         "low_date": "2026-03-04",
-        "low_pct": 153.02,
+        "low_pct": 198.71,
         "current": 34650
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 20450,
+              "threshold": 32720,
+              "current": 34650,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 23640,
+              "threshold": 30732,
+              "current": 34650,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 12890,
+              "threshold": 22557,
+              "current": 34650,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 35250,
@@ -2077,12 +2408,12 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 4970,
-        "high_date": "2026-04-16",
-        "high_pct": -20.82,
-        "low": 1326,
-        "low_date": "2025-05-02",
-        "low_pct": 196.76,
+        "high": 4180,
+        "high_date": "2026-04-14",
+        "high_pct": -10.53,
+        "low": 1296,
+        "low_date": "2025-04-18",
+        "low_pct": 188.58,
         "current": 3740
       },
       "intraday": {
@@ -2269,10 +2600,10 @@
       "range_240d": {
         "high": 517000,
         "high_date": "2026-02-19",
-        "high_pct": -12.67,
-        "low": 126500,
-        "low_date": "2025-04-25",
-        "low_pct": 256.92,
+        "high_pct": -7.16,
+        "low": 116300,
+        "low_date": "2025-04-18",
+        "low_pct": 312.73,
         "current": 480000
       },
       "intraday": {
@@ -2440,10 +2771,10 @@
       "range_240d": {
         "high": 69200,
         "high_date": "2026-01-28",
-        "high_pct": -9.83,
+        "high_pct": -9.39,
         "low": 36150,
         "low_date": "2025-10-13",
-        "low_pct": 72.61,
+        "low_pct": 73.44,
         "current": 62700
       },
       "intraday": {
@@ -2556,14 +2887,31 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 7980,
-        "high_date": "2026-04-20",
-        "high_pct": -6.77,
-        "low": 4363,
-        "low_date": "2025-04-25",
-        "low_pct": 70.52,
+        "high": 7950,
+        "high_date": "2026-04-14",
+        "high_pct": -6.92,
+        "low": 4222,
+        "low_date": "2025-04-18",
+        "low_pct": 75.27,
         "current": 7400
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 4620,
+              "threshold": 7392,
+              "current": 7400,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 7000,
@@ -2664,12 +3012,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 27900,
-        "high_date": "2026-04-20",
-        "high_pct": -4.12,
-        "low": 7400,
-        "low_date": "2025-05-07",
-        "low_pct": 261.49,
+        "high": 25000,
+        "high_date": "2026-04-14",
+        "high_pct": -3.6,
+        "low": 6970,
+        "low_date": "2025-04-18",
+        "low_pct": 245.77,
         "current": 24100
       },
       "intraday": {
@@ -2753,12 +3101,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 24850,
-        "high_date": "2026-04-21",
-        "high_pct": -3.02,
+        "high": 17620,
+        "high_date": "2026-04-14",
+        "high_pct": -1.82,
         "low": 6484,
         "low_date": "2025-05-26",
-        "low_pct": 271.68,
+        "low_pct": 166.81,
         "current": 17300
       },
       "intraday": {
@@ -2834,10 +3182,10 @@
       "range_240d": {
         "high": 2890,
         "high_date": "2026-04-14",
-        "high_pct": -25.95,
+        "high_pct": -14.19,
         "low": 1100,
         "low_date": "2026-03-04",
-        "low_pct": 94.55,
+        "low_pct": 125.45,
         "current": 2480
       },
       "intraday": {
@@ -2950,12 +3298,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 30550,
-        "high_date": "2026-04-20",
-        "high_pct": -17.51,
+        "high": 22200,
+        "high_date": "2025-05-21",
+        "high_pct": -20.45,
         "low": 10460,
         "low_date": "2025-08-20",
-        "low_pct": 140.92,
+        "low_pct": 68.83,
         "current": 17660
       },
       "intraday": {
@@ -3029,12 +3377,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 93200,
-        "high_date": "2026-04-17",
-        "high_pct": -3.86,
+        "high": 92400,
+        "high_date": "2026-04-14",
+        "high_pct": -3.57,
         "low": 9280,
         "low_date": "2025-05-22",
-        "low_pct": 865.52,
+        "low_pct": 860.13,
         "current": 89100
       },
       "intraday": {
@@ -3108,10 +3456,10 @@
       "range_240d": {
         "high": 3265,
         "high_date": "2026-04-14",
-        "high_pct": -14.55,
+        "high_pct": -9.8,
         "low": 1801,
         "low_date": "2026-03-04",
-        "low_pct": 54.91,
+        "low_pct": 63.52,
         "current": 2945
       },
       "intraday": {
@@ -3183,14 +3531,68 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 25700,
-        "high_date": "2026-04-16",
-        "high_pct": -45.53,
-        "low": 4365,
-        "low_date": "2025-05-16",
-        "low_pct": 220.73,
+        "high": 18220,
+        "high_date": "2026-04-14",
+        "high_pct": 0.0,
+        "low": 4345,
+        "low_date": "2025-04-18",
+        "low_pct": 319.33,
         "current": 18220
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 7080,
+              "threshold": 11328,
+              "current": 18220,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-24) 대비 +100%↑",
+              "base_price": 8250,
+              "threshold": 16500,
+              "current": 18220,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 9776,
+              "threshold": 12708,
+              "current": 18220,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 6810,
+              "threshold": 11917,
+              "current": 18220,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 18220,
@@ -3272,10 +3674,10 @@
       "range_240d": {
         "high": 64900,
         "high_date": "2026-04-14",
-        "high_pct": -14.48,
+        "high_pct": -6.16,
         "low": 30300,
         "low_date": "2025-11-24",
-        "low_pct": 83.17,
+        "low_pct": 100.99,
         "current": 60900
       },
       "intraday": {
@@ -3367,12 +3769,51 @@
       "range_240d": {
         "high": 7890,
         "high_date": "2026-04-14",
-        "high_pct": -33.21,
+        "high_pct": -14.83,
         "low": 1906,
         "low_date": "2025-05-30",
-        "low_pct": 176.5,
+        "low_pct": 252.57,
         "current": 6720
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 3715,
+              "threshold": 5944,
+              "current": 6720,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 4895,
+              "threshold": 6363,
+              "current": 6720,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 2760,
+              "threshold": 4830,
+              "current": 6720,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 6940,
@@ -3458,12 +3899,12 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 19120,
-        "high_date": "2026-04-20",
-        "high_pct": -22.8,
+        "high": 10880,
+        "high_date": "2025-10-28",
+        "high_pct": -8.18,
         "low": 6100,
         "low_date": "2026-03-04",
-        "low_pct": 141.97,
+        "low_pct": 63.77,
         "current": 9990
       },
       "intraday": {
@@ -3554,12 +3995,66 @@
       "range_240d": {
         "high": 7230,
         "high_date": "2026-04-14",
-        "high_pct": -41.63,
+        "high_pct": -14.25,
         "low": 1683,
         "low_date": "2025-11-07",
-        "low_pct": 150.74,
+        "low_pct": 268.39,
         "current": 6200
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 2700,
+              "threshold": 4320,
+              "current": 6200,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "투자경고 예상",
+          "severity": "warning",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-24) 대비 +100%↑",
+              "base_price": 2785,
+              "threshold": 5570,
+              "current": 6200,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        },
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 4092,
+              "threshold": 5319,
+              "current": 6200,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 2025,
+              "threshold": 3543,
+              "current": 6200,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 6800,
@@ -3633,12 +4128,36 @@
       "range_240d": {
         "high": 9330,
         "high_date": "2026-04-14",
-        "high_pct": -32.48,
+        "high_pct": -12.86,
         "low": 2110,
         "low_date": "2025-10-13",
-        "low_pct": 198.58,
+        "low_pct": 285.31,
         "current": 8130
       },
+      "status_badges": [
+        {
+          "label": "단기과열 예상",
+          "severity": "hot",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "직전 5일 평균 대비 +30%↑",
+              "base_price": 5689,
+              "threshold": 7395,
+              "current": 8130,
+              "triggered": true
+            },
+            {
+              "desc": "25일 전(2026-03-10) 대비 +75%↑",
+              "base_price": 3825,
+              "threshold": 6693,
+              "current": 8130,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 9000,
@@ -3781,10 +4300,10 @@
       "range_240d": {
         "high": 74800,
         "high_date": "2026-03-10",
-        "high_pct": -18.72,
-        "low": 10020,
-        "low_date": "2025-05-09",
-        "low_pct": 506.79,
+        "high_pct": -24.06,
+        "low": 9850,
+        "low_date": "2025-04-18",
+        "low_pct": 476.65,
         "current": 56800
       },
       "intraday": {
@@ -3858,10 +4377,10 @@
       "range_240d": {
         "high": 160000,
         "high_date": "2026-03-11",
-        "high_pct": -16.12,
-        "low": 23467,
-        "low_date": "2025-05-07",
-        "low_pct": 471.87,
+        "high_pct": -16.69,
+        "low": 22786,
+        "low_date": "2025-04-18",
+        "low_pct": 485.01,
         "current": 133300
       },
       "intraday": {
@@ -3947,10 +4466,10 @@
       "range_240d": {
         "high": 33300,
         "high_date": "2026-04-14",
-        "high_pct": -12.16,
+        "high_pct": -9.46,
         "low": 16340,
         "low_date": "2025-11-05",
-        "low_pct": 79.01,
+        "low_pct": 84.52,
         "current": 30150
       },
       "intraday": {
@@ -4074,12 +4593,29 @@
       "range_240d": {
         "high": 12750,
         "high_date": "2026-04-14",
-        "high_pct": -44.0,
+        "high_pct": -13.73,
         "low": 3010,
         "low_date": "2026-01-02",
-        "low_pct": 137.21,
+        "low_pct": 265.45,
         "current": 11000
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 5690,
+              "threshold": 9104,
+              "current": 11000,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 12750,
@@ -4176,10 +4712,10 @@
       "range_240d": {
         "high": 21500,
         "high_date": "2026-03-13",
-        "high_pct": -42.56,
+        "high_pct": -29.21,
         "low": 1118,
         "low_date": "2025-07-02",
-        "low_pct": 1004.65,
+        "low_pct": 1261.36,
         "current": 15220
       },
       "intraday": {
@@ -4251,12 +4787,12 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 36450,
-        "high_date": "2026-04-17",
-        "high_pct": -11.25,
+        "high": 36000,
+        "high_date": "2026-04-14",
+        "high_pct": -6.94,
         "low": 9920,
         "low_date": "2025-05-27",
-        "low_pct": 226.11,
+        "low_pct": 237.7,
         "current": 33500
       },
       "intraday": {
@@ -4344,12 +4880,12 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 26300,
-        "high_date": "2026-04-17",
-        "high_pct": -14.26,
-        "low": 4800,
-        "low_date": "2025-04-28",
-        "low_pct": 369.79,
+        "high": 24250,
+        "high_date": "2026-04-14",
+        "high_pct": -4.12,
+        "low": 4650,
+        "low_date": "2025-04-22",
+        "low_pct": 400.0,
         "current": 23250
       },
       "intraday": {
@@ -4432,14 +4968,31 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 14550,
-        "high_date": "2026-04-16",
-        "high_pct": -29.83,
+        "high": 14500,
+        "high_date": "2026-04-14",
+        "high_pct": -14.07,
         "low": 4405,
         "low_date": "2026-03-04",
-        "low_pct": 131.78,
+        "low_pct": 182.86,
         "current": 12460
       },
+      "status_badges": [
+        {
+          "label": "투자주의 예상",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-07) 대비 +60%↑",
+              "base_price": 7000,
+              "threshold": 11200,
+              "current": 12460,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 12940,

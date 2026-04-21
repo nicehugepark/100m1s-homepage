@@ -364,7 +364,9 @@ function renderCalExpandContent(date, data) {
           : b.severity === 'warning' ? 'cal-status-badge warning'
           : b.severity === 'hot' ? 'cal-status-badge hot'
           : 'cal-status-badge caution';
-        return `<span class="${cls}">${escapeHtml(b.label)}</span>`;
+        // v4: predicted는 dashed border로 구분
+        const predCls = (b.source === 'predicted' || (b.label||'').includes('예상')) ? ' predicted' : '';
+        return `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
       }).join('');
 
       // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
@@ -408,6 +410,9 @@ function renderCalExpandContent(date, data) {
         const label = b.label || '';
         const stage = _extractStage(label);
         if (!stage) return '';
+        // v4: source='predicted'(자체 추정 라벨)는 "예상" 텍스트 — 단계 진행 표시 생략
+        // "예상"은 가격 조건만 충족, 거래량 미검증 → 진짜 KRX 단계 진입 보장 X
+        if ((b.source === 'predicted') || label.includes('예상')) return '';
         const isNotice = label.includes('예고');
         // 날짜: end가 있으면 다음 단계 진입은 end+1, 아니면 start+1 또는 today+1
         const refDate = b.end || b.start || '';
@@ -431,7 +436,10 @@ function renderCalExpandContent(date, data) {
         return `현재: ${stage} (${refDate || '진행 중'}) → ${dateText} 조건 충족 시 ${next} 진입`;
       };
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start).map(b => {
-        const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span></div>`];
+        // v4: predicted 라벨은 dashed border + "예상" 표기로 공시 기반과 시각 구분
+        const isPredicted = (b.source === 'predicted') || (b.label || '').includes('예상');
+        const labelExtra = isPredicted ? ' <span class="cal-status-predicted-tag">[예상]</span>' : '';
+        const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span>${labelExtra}</div>`];
         // v4: 진행 표 — "현재 → 다음" 1줄 (라벨 바로 아래)
         const progress = _resolveProgress(b);
         if (progress) parts.push(`<div class="cal-status-progress">→ ${escapeHtml(progress)}</div>`);
@@ -478,7 +486,7 @@ function renderCalExpandContent(date, data) {
         const insight = _resolveInsight(b.label || '');
         if (insight) parts.push(`<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>`);
         if (b.regulation) parts.push(`<div class="cal-status-regulation">${escapeHtml(b.regulation)}</div>`);
-        return `<div class="cal-status-detail v3">${parts.join('')}</div>`;
+        return `<div class="cal-status-detail v3${isPredicted ? ' predicted' : ''}">${parts.join('')}</div>`;
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);

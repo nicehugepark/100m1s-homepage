@@ -215,6 +215,22 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 @media (max-width: 640px) {
   .cal-status-detail.v3 .cal-status-progress { font-size: 10.5px; padding: 4px 6px; }
 }
+/* v4: predicted (자체 추정) 라벨 시각 구분 — dashed border + 톤 다운 */
+.cal-status-detail.v3.predicted {
+  border-left-style: dashed; opacity: 0.92;
+  background: rgba(255, 152, 0, 0.03);
+}
+.cal-status-detail.v3.predicted .cal-status-label {
+  border: 1px dashed currentColor; background: transparent !important;
+}
+.cal-status-predicted-tag {
+  display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.3px;
+  color: #555; background: #EEE; padding: 1px 6px; border-radius: 3px;
+  margin-left: 4px; vertical-align: middle;
+}
+.cal-status-badge.predicted {
+  border: 1px dashed currentColor; opacity: 0.85;
+}
 .cal-status-detail.v3 .cal-status-table-wrap { overflow-x: auto; }
 .cal-status-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
 .cal-status-table th, .cal-status-table td { padding: 4px 6px; text-align: right; border-bottom: 1px solid #F0E5D2; white-space: nowrap; }
