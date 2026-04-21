@@ -302,10 +302,8 @@ function renderCalExpandContent(date, data) {
           const periodHtml = periodText
             ? `<span class="cal-disc-period"><span class="cal-disc-period-label">기간</span>${escapeHtml(periodText)}</span>`
             : '';
-          const conditionHtml = d.condition
-            ? `<span class="cal-disc-condition">조건: ${escapeHtml(sanitize(d.condition))}${d.regulation_period ? ' — ' + escapeHtml(sanitize(d.regulation_period)) : ''}</span>`
-            : '';
-          return `<a class="cal-disc-item" href="${escapeHtml(d.url || '#')}" target="_blank" rel="noopener noreferrer"><span class="${catCls}">${escapeHtml(catLabel)}</span><span class="cal-disc-summary">${escapeHtml(d.title)}${periodHtml}${conditionHtml}</span><svg class="cal-disc-ext" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`;
+          // v2.5: 조건 박스 제거 (대표 정정 16:57 KST) — 빨간 뱃지가 같은 정보. title 1줄 클램프.
+          return `<a class="cal-disc-item" href="${escapeHtml(d.url || '#')}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(d.title)}"><span class="${catCls}">${escapeHtml(catLabel)}</span><span class="cal-disc-summary">${escapeHtml(d.title)}${periodHtml}</span><svg class="cal-disc-ext" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`;
         }).join('');
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
@@ -352,15 +350,15 @@ function renderCalExpandContent(date, data) {
         return `<span class="${cls}">${escapeHtml(b.label)}</span>`;
       }).join('');
 
-      // 상태 뱃지 상세 — 간결 단문 (뱃지가 상태 표현, 여기는 조건+임계+기간만)
-      const statusDetailHtml = (st.status_badges || []).filter(b => b.condition || b.thresholds || b.regulation).map(b => {
+      // 상태 뱃지 상세 — 간결 단문 (대표 정정 v2.5: condition 박스 제거 — 빨간 뱃지가 이미 같은 정보)
+      const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation).map(b => {
         const parts = [];
         if (b.start && b.end && b.start !== b.end) {
           parts.push(`<span class="cal-badge-period">${b.start} ~ ${b.end}</span>`);
         } else if (b.start) {
           parts.push(`<span class="cal-badge-period">${b.start}</span>`);
         }
-        if (b.condition) parts.push(`<span class="cal-badge-condition">${escapeHtml(b.condition)}</span>`);
+        // condition 박스 제거 (대표 정정 16:57 KST) — 본문 또는 뱃지 라벨에 이미 노출
         if (b.thresholds && b.thresholds.length > 0) {
           // 대표 가격: triggered된 것 중 가장 가까운 임계가, 없으면 가장 낮은 임계가
           const triggeredTh = b.thresholds.filter(t => t.triggered);

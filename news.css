@@ -199,12 +199,31 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-disc-cat { flex-shrink:0; min-width:42px; text-align:center; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
 .cal-disc-cat.cb { background:#FFF3E0; color:#E65100; }
 .cal-disc-cat.credit { background:#FDE8E8; color:#C53939; }
-.cal-disc-summary { flex:1; min-width:0; white-space:normal; word-break:break-word; line-height:1.4; }
+.cal-disc-summary {
+  flex:1; min-width:0; line-height:1.4;
+  /* v2.5: 1줄 클램프 + 모바일 잘림 방지 (대표 정정 16:57 KST) */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
 .cal-disc-ext { flex-shrink:0; color:var(--dm); }
 .cal-disc-more { font-size:10.5px; color:var(--dm); padding:2px 0; font-style:italic; }
 .cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:#444; white-space:normal; word-break:keep-all; line-height:1.45; }
 .cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:#EEE; color:#555; vertical-align:1px; }
+/* v2.5: cal-disc-condition 스타일 보존 (다른 영역에서 쓰일 수 있음). disc 영역에서는 더 이상 노출 안 함 */
 .cal-disc-condition { display:block; font-size:10.5px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
+/* v2.5: 모바일 disc 영역 word-break 강화 */
+@media (max-width: 640px) {
+  .cal-disc-item { padding:4px 0; }
+  .cal-disc-summary { -webkit-line-clamp: 3; word-break: break-all; overflow-wrap: anywhere; }
+  .cal-disc-period { white-space: normal; word-break: keep-all; }
+  .cal-status-detail { word-break: break-all; overflow-wrap: anywhere; }
+  .cal-badge-condition, .cal-badge-regulation { word-break: break-all; overflow-wrap: anywhere; }
+}
 .cal-credit-reason { margin-top:6px; }
 .cal-credit-reason .cal-disc-item { color:#C53939; }
 .cal-credit-reason .cal-disc-item:hover { color:#A02828; }
