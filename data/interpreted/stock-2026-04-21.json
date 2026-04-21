@@ -1,6 +1,6 @@
 {
   "date": "2026-04-21",
-  "generated_at": "2026-04-21T09:17:27.870202",
+  "generated_at": "2026-04-21T09:26:38.411231",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -156,6 +156,16 @@
         }
       ],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 28950,
+        "base": 28101,
+        "prices": [
+          28950,
+          33300,
+          32650
+        ]
+      },
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰",
@@ -201,8 +211,16 @@
         }
       ],
       "fallback": true,
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)",
+      "intraday": {
+        "step_min": 10,
+        "open": 95900,
+        "base": 91496,
+        "prices": [
+          95900,
+          108100,
+          110000
+        ]
+      },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -303,7 +321,17 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 40600,
+        "base": 40400,
+        "prices": [
+          40600,
+          41750,
+          42150
+        ]
+      }
     },
     {
       "code": "203650",
@@ -344,8 +372,18 @@
         }
       ],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 4170,
+        "base": 3880,
+        "prices": [
+          4170,
+          3500,
+          3700
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고 지정으로 신용불가 (2026-04-17(금)부터)"
+      "credit_reason": "회사한도초과 (2026-04-21(화) 적용 — 다음 영업일 재평가)"
     },
     {
       "code": "115500",
@@ -370,8 +408,18 @@
       },
       "news": [],
       "fallback": true,
+      "intraday": {
+        "step_min": 10,
+        "open": 27400,
+        "base": 23100,
+        "prices": [
+          27400,
+          21000,
+          21950
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목 (증권사 자체 기준)"
+      "credit_reason": "회사한도초과 (2026-04-21(화) 적용 — 다음 영업일 재평가)"
     }
   ]
 }
