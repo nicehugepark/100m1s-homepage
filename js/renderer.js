@@ -359,6 +359,7 @@ function renderCalExpandContent(date, data) {
           })()
         : '';
       // 종목 상태 뱃지 (투자주의/경고/위험/단기과열)
+      // REQ-008: single_price=true인 배지 뒤에 "단일가매매" 배지 병기
       const statusBadges = (st.status_badges || []).map(b => {
         const cls = b.severity === 'danger' ? 'cal-status-badge danger'
           : b.severity === 'warning' ? 'cal-status-badge warning'
@@ -366,7 +367,11 @@ function renderCalExpandContent(date, data) {
           : 'cal-status-badge caution';
         // v4: predicted는 dashed border로 구분
         const predCls = (b.source === 'predicted' || (b.label||'').includes('예상')) ? ' predicted' : '';
-        return `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
+        const mainBadge = `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
+        const singleBadge = b.single_price === true
+          ? `<span class="cal-status-badge sev-single">단일가매매</span>`
+          : '';
+        return mainBadge + singleBadge;
       }).join('');
 
       // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
@@ -444,7 +449,8 @@ function renderCalExpandContent(date, data) {
         if (!next) return '';
         return `현재: ${stage} (${curDate}) → ${dateText} 조건 충족 시 ${next} 진입`;
       };
-      const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start).map(b => {
+      // REQ-008: 단기과열 지정 + single_price 뱃지는 regulation/start 없어도 부기 라인 노출 위해 detail 영역 포함
+      const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
         // v4: predicted 라벨은 dashed border + "예상" 표기로 공시 기반과 시각 구분
         const isPredicted = (b.source === 'predicted') || (b.label || '').includes('예상');
         const labelExtra = isPredicted ? ' <span class="cal-status-predicted-tag">[예상]</span>' : '';
@@ -504,6 +510,10 @@ function renderCalExpandContent(date, data) {
         const insight = _resolveInsight(b.label || '');
         if (insight) parts.push(`<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>`);
         if (b.regulation) parts.push(`<div class="cal-status-regulation">${escapeHtml(b.regulation)}</div>`);
+        // REQ-008: 단기과열 '지정' 카드에만 단일가매매 부기 라인 (예고/predicted 제외)
+        if (b.single_price === true && (b.label || '').includes('단기과열')) {
+          parts.push(`<div class="cal-status-single-note"><strong>단일가매매 적용</strong> — 3거래일간 30분 단위 <span class="cal-status-single-src">(KRX 규정)</span></div>`);
+        }
         return `<div class="cal-status-detail v3${isPredicted ? ' predicted' : ''}">${parts.join('')}</div>`;
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
