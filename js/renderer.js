@@ -399,7 +399,7 @@ function renderCalExpandContent(date, data) {
         ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
 
-      // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B)
+      // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B / 레이아웃 v2 — 4행 분해)
       const r240 = it.interp?.range_240d;
       let rangeHtml = '';
       if (r240 && r240.high > 0 && r240.low > 0 && r240.current) {
@@ -407,42 +407,57 @@ function renderCalExpandContent(date, data) {
         const markerLeft = span > 0
           ? Math.max(0, Math.min(100, ((r240.current - r240.low) / span) * 100))
           : 50;
-        // fill: 저점→현재 (좌측 상승영역). 고점→현재 차이는 우측 영역
-        const lowPct = 0;
-        const highPct = markerLeft;
-        const fmtPct = (v, plus) => {
+        const lowFillPct = 0;
+        const highFillPct = markerLeft;
+        const fmtPct = (v) => {
           if (v == null) return '';
           const sign = v > 0 ? '+' : '';
-          return `${plus && v > 0 ? '+' : sign}${v.toFixed(1)}%`;
+          return `${sign}${v.toFixed(1)}%`;
         };
-        const upClass = (r240.low_pct ?? 0) >= 0 ? 'up' : 'down';
-        const downClass = (r240.high_pct ?? 0) <= 0 ? 'down' : 'up';
-        rangeHtml = `<div class="stock-range">
+        const lowCls = (r240.low_pct ?? 0) >= 0 ? 'up' : 'down';
+        const highCls = (r240.high_pct ?? 0) <= 0 ? 'down' : 'up';
+        rangeHtml = `<div class="stock-range v2">
           <div class="range-bar">
-            <div class="range-fill" style="--low-pct:${lowPct}%;--high-pct:${highPct}%"></div>
+            <div class="range-fill" style="--low-pct:${lowFillPct}%;--high-pct:${highFillPct}%"></div>
             <div class="range-marker" style="left:${markerLeft}%"></div>
           </div>
-          <div class="range-meta">
-            <span class="r-low">최저 <strong>${r240.low.toLocaleString('ko-KR')}원</strong> <em class="${upClass}">${fmtPct(r240.low_pct, true)}</em><span class="r-date">${escapeHtml(r240.low_date || '')}</span></span>
-            <span class="r-now">현재 <strong>${r240.current.toLocaleString('ko-KR')}원</strong></span>
-            <span class="r-high">최고 <strong>${r240.high.toLocaleString('ko-KR')}원</strong> <em class="${downClass}">${fmtPct(r240.high_pct, false)}</em><span class="r-date">${escapeHtml(r240.high_date || '')}</span></span>
+          <div class="range-row range-prices">
+            <span class="r-low">${r240.low.toLocaleString('ko-KR')}원</span>
+            <span class="r-now">${r240.current.toLocaleString('ko-KR')}원</span>
+            <span class="r-high">${r240.high.toLocaleString('ko-KR')}원</span>
+          </div>
+          <div class="range-row range-pcts">
+            <span class="r-low ${lowCls}">${fmtPct(r240.low_pct)}</span>
+            <span class="r-now"></span>
+            <span class="r-high ${highCls}">${fmtPct(r240.high_pct)}</span>
+          </div>
+          <div class="range-row range-dates">
+            <span class="r-low">${escapeHtml(r240.low_date || '')}</span>
+            <span class="r-now"></span>
+            <span class="r-high">${escapeHtml(r240.high_date || '')}</span>
           </div>
         </div>`;
       }
+      // 메타 줄 (등락률·현재가·거래대금) — 작은 폰트, 이름 아래 배치
+      const metaRow = `<div class="cal-feature-meta">
+        <span class="cal-feature-pct ${dir}">${pctText}</span>
+        <span class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') + '원' : ''}</span>
+        <span class="cal-trade-amount">${amountText}</span>
+      </div>`;
       return `
-        <div class="cal-feature-card">
-          <div class="cal-feature-head">
-            <div class="cal-trade-rank">#${it.rank}</div>
-            <div class="cal-trade-candle">${candleHtml}</div>
-            ${sparkHtml}
-            <div class="cal-feature-namecell">
-              <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+        <div class="cal-feature-card v2">
+          <div class="cal-feature-head v2">
+            <div class="cal-feature-head-left">
+              <div class="cal-trade-rank">#${it.rank}</div>
+              <div class="cal-trade-candle">${candleHtml}</div>
+              ${sparkHtml}
             </div>
-          </div>
-          <div class="cal-feature-nums">
-            <div class="cal-feature-pct ${dir}">${pctText}</div>
-            <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
-            <div class="cal-trade-amount">${amountText}</div>
+            <div class="cal-feature-head-right">
+              <div class="cal-feature-namecell">
+                <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+              </div>
+              ${metaRow}
+            </div>
           </div>
           ${badgesRowHtml}
           ${rangeHtml}

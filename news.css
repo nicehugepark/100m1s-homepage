@@ -1009,3 +1009,95 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .stock-range .range-meta { font-size: 10px; }
   .stock-range .range-meta .r-date { font-size: 9px; }
 }
+
+/* === 레이아웃 v2 (REQ-001 Phase 2 — 4행 분해 + 좌우 head) === */
+/* 첫 줄: 좌(차트) | 우(이름+메타 작은 폰트) */
+.cal-feature-card.v2 { padding-bottom: 4px; }
+.cal-feature-head.v2 {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  padding: 10px 12px 6px;
+  align-items: center;
+}
+.cal-feature-head.v2 .cal-feature-head-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.cal-feature-head.v2 .cal-feature-head-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cal-feature-head.v2 .cal-feature-namecell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cal-feature-head.v2 .cal-feature-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+.cal-feature-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  color: #666;
+}
+.cal-feature-meta .cal-feature-pct {
+  font-size: 12px;
+  font-weight: 600;
+}
+.cal-feature-meta .cal-feature-pct.up { color: #C53939; }
+.cal-feature-meta .cal-feature-pct.down { color: #1958C7; }
+.cal-feature-meta .cal-close-price { color: #333; font-weight: 500; }
+.cal-feature-meta .cal-trade-amount { color: #999; }
+
+/* 240일 레인지 v2 — 4행 (bar / 가격 / 등락률 / 날짜) */
+.stock-range.v2 {
+  padding: 6px 12px 10px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.stock-range.v2 .range-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  align-items: baseline;
+}
+.stock-range.v2 .range-row .r-now { text-align: center; }
+.stock-range.v2 .range-row .r-high { text-align: right; }
+.stock-range.v2 .range-prices {
+  font-size: 12px;
+  color: #111;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.stock-range.v2 .range-pcts {
+  font-size: 11px;
+  font-weight: 600;
+}
+.stock-range.v2 .range-pcts .up { color: #1958C7; }   /* 저점 대비 상승 */
+.stock-range.v2 .range-pcts .down { color: #C53939; } /* 고점 대비 하락 */
+.stock-range.v2 .range-dates {
+  font-size: 10px;
+  color: #999;
+}
+
+@media (max-width: 640px) {
+  .cal-feature-head.v2 { padding: 8px 6px 4px; gap: 6px; }
+  .cal-feature-head.v2 .cal-feature-name { font-size: 14px; }
+  .cal-feature-meta { font-size: 10px; gap: 6px; }
+  .cal-feature-meta .cal-feature-pct { font-size: 11px; }
+  .stock-range.v2 { padding: 4px 6px 8px 26px; }
+  .stock-range.v2 .range-prices { font-size: 11px; }
+  .stock-range.v2 .range-pcts { font-size: 10px; }
+  .stock-range.v2 .range-dates { font-size: 9px; }
+}
