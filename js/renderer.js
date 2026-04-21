@@ -414,26 +414,35 @@ function renderCalExpandContent(date, data) {
         // "예상"은 가격 조건만 충족, 거래량 미검증 → 진짜 KRX 단계 진입 보장 X
         if ((b.source === 'predicted') || label.includes('예상')) return '';
         const isNotice = label.includes('예고');
-        // 날짜: end가 있으면 다음 단계 진입은 end+1, 아니면 start+1 또는 today+1
-        const refDate = b.end || b.start || '';
-        let nextDate = '';
-        if (refDate) {
+        // FLR-011 v6: "현재" = view_date(t, 페이지 날짜). "익일" = t+1 거래일.
+        // b.end/b.start는 공시 효력 기간 — "현재" 시점이 아님 (별도 기간 행에 표시).
+        // view_date가 없고 b.start가 페이지 날짜보다 미래면 "현재"로 표기 금지 (예고 구간 오노출 차단).
+        let curDate = b.view_date || '';
+        if (!curDate) {
+          if (b.start && (!date || b.start <= date)) {
+            curDate = b.start;
+          } else {
+            // view_date 미주입 + start가 미래/없음 → "현재→다음" 표시 생략
+            return '';
+          }
+        }
+        let nextDate = b.next_trading_day || '';
+        if (!nextDate) {
           try {
-            const d = new Date(refDate + 'T00:00:00');
+            const d = new Date(curDate + 'T00:00:00');
             d.setDate(d.getDate() + 1);
             nextDate = d.toISOString().slice(0, 10);
           } catch (e) {}
         }
+        const dateText = nextDate ? `익일(${nextDate})` : '익일';
         if (isNotice) {
           // 예고 단계: 현재 = 직전 단계 (또는 "예고 상태"), 다음 = stage 본체
           const prev = _stagePrev[stage] || `${stage} 예고`;
-          const dateText = nextDate ? `익일(${nextDate})` : '익일';
-          return `현재: ${prev} (${refDate || '진행 중'}) → ${dateText} 조건 충족 시 ${stage} 진입`;
+          return `현재: ${prev} (${curDate}) → ${dateText} 조건 충족 시 ${stage} 진입`;
         }
         const next = _stageNext[stage];
         if (!next) return '';
-        const dateText = nextDate ? `익일(${nextDate})` : '익일';
-        return `현재: ${stage} (${refDate || '진행 중'}) → ${dateText} 조건 충족 시 ${next} 진입`;
+        return `현재: ${stage} (${curDate}) → ${dateText} 조건 충족 시 ${next} 진입`;
       };
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start).map(b => {
         // v4: predicted 라벨은 dashed border + "예상" 표기로 공시 기반과 시각 구분
@@ -455,7 +464,16 @@ function renderCalExpandContent(date, data) {
               if (days > 0) extra = ` (${days}일)`;
             } catch (e) {}
           }
-          parts.push(`<div class="cal-status-period">📅 ${periodText}${extra}</div>`);
+          // FLR-011 v5: view_date 기준 상태 마커 — "예정/진행중/종료".
+          // 4/17 페이지에서 4/20~5/4 효력 표시 시 "예정"이 명확히 드러나야 함.
+          let statusMark = '';
+          const vd = b.view_date;
+          if (vd) {
+            if (vd < b.start) statusMark = ' <span class="cal-period-mark upcoming">예정</span>';
+            else if (b.end && vd > b.end) statusMark = ' <span class="cal-period-mark ended">종료</span>';
+            else statusMark = ' <span class="cal-period-mark active">진행중</span>';
+          }
+          parts.push(`<div class="cal-status-period">📅 ${periodText}${extra}${statusMark}</div>`);
         }
         // 조건 표 (thresholds[]) — v3.3: 발동 컬럼 제거 + 차이 색상·기호 강조 (대표 19:53 KST)
         if (b.thresholds && b.thresholds.length > 0) {
