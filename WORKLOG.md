@@ -167,3 +167,9 @@ if (!stockDailyData && !isMarketClosed(date)) {
 
 3 파일, S등급 한도 ≤ 3 충족.
 
+---
+
+## 후속 patch (3939cdc, 2026-04-21 11:05 KST)
+
+`fix(ui): 캐시 버스터 갱신 (휴장 안내 즉시 반영)` — `news.html`의 JS 3개(`data-loader.js`/`calendar.js`/`renderer.js`) 캐시 버스터를 `20260421a`로 갱신. 기존 방문자도 다음 페이지 로드 시 즉시 신규 코드 적용. utils.js·news.css는 변경 없어 보존.
+
