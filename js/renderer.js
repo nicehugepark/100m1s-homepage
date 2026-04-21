@@ -382,10 +382,25 @@ function renderCalExpandContent(date, data) {
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
-      // toggle 요약: 기간 + 핵심조건 1줄 (풀 문장 아님)
-      const badgePeriod = (st.status_badges || []).find(b => b.start);
-      const summarySnippet = badgePeriod ? `${badgePeriod.start}${badgePeriod.end ? '~' + badgePeriod.end : ''} ${badgePeriod.label || ''}` : ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
-      const truncatedSummary = summarySnippet.length > 40 ? summarySnippet.slice(0, 40) + '…' : summarySnippet;
+      // toggle 요약: thresholds rep 우선 — 임계가/현재가/% 1줄 (펼치기 없이도 핵심 정보)
+      const allThresholds = (st.status_badges || []).flatMap(b => b.thresholds || []);
+      let summarySnippet;
+      if (allThresholds.length > 0) {
+        // triggered 우선, 없으면 현재가 가장 가까운 임계
+        const trig = allThresholds.filter(t => t.triggered);
+        const rep = trig.length > 0
+          ? trig.reduce((a, b) => Math.abs(a.threshold - a.current) < Math.abs(b.threshold - b.current) ? a : b)
+          : allThresholds.reduce((a, b) => Math.abs(a.threshold - a.current) < Math.abs(b.threshold - b.current) ? a : b);
+        const diff = rep.current - rep.threshold;
+        const diffPct = (diff / rep.threshold * 100).toFixed(1);
+        const arrow = rep.triggered ? '⚠️' : '✓';
+        const sign = diff >= 0 ? '+' : '';
+        summarySnippet = `${arrow} 임계 ${rep.threshold.toLocaleString()}원 · 현재 ${rep.current.toLocaleString()}원 (${sign}${diffPct}%)`;
+      } else {
+        const badgePeriod = (st.status_badges || []).find(b => b.start);
+        summarySnippet = badgePeriod ? `${badgePeriod.start}${badgePeriod.end ? '~' + badgePeriod.end : ''} ${badgePeriod.label || ''}` : ((st.disclosures || []).length > 0 ? '공시 ' + (st.disclosures || []).length + '건' : '');
+      }
+      const truncatedSummary = summarySnippet.length > 60 ? summarySnippet.slice(0, 60) + '…' : summarySnippet;
       const chevronHtml = hasDetails
         ? `<span class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></span>`
         : '';
