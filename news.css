@@ -1035,10 +1035,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-head.v2 .cal-feature-namecell {
   display: flex;
   align-items: center;
-  justify-content: flex-end;  /* v2.1: 1라인 우측 정렬 */
+  justify-content: flex-start;  /* v2.2: 좌측 정렬 복귀 */
   gap: 6px;
   flex-wrap: wrap;
-  text-align: right;
+  text-align: left;
 }
 .cal-feature-head.v2 .cal-feature-name {
   font-size: 15px;
@@ -1059,8 +1059,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .cal-feature-meta .cal-feature-pct.up { color: #C53939; }
 .cal-feature-meta .cal-feature-pct.down { color: #1958C7; }
-.cal-feature-meta .cal-close-price { color: #333; font-weight: 500; font-size: 12px; }
-.cal-feature-meta .cal-trade-amount { color: #333; font-weight: 500; font-size: 12px; }
+/* v2.2: 거래대금 골드 #C49930 (브랜드 --am, font-weight 700) 복원 */
+.cal-feature-meta .cal-trade-amount { color: var(--am); font-weight: 700; font-size: 12px; }
 .cal-feature-meta .cal-meta-sep { color: #BBB; font-weight: 400; }
 
 /* 240일 레인지 v2 — 4행 (bar / 가격 / 등락률 / 날짜) */
@@ -1090,6 +1090,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .stock-range.v2 .range-pcts .up { color: #1958C7; }   /* 저점 대비 상승 */
 .stock-range.v2 .range-pcts .down { color: #C53939; } /* 고점 대비 하락 */
+/* v2.2: 가운데 "현재가" 라벨 (값 X, 텍스트만) */
+.stock-range.v2 .range-pcts .r-now-label { color: #999; font-weight: 500; font-size: 11px; }
 .stock-range.v2 .range-dates {
   font-size: 10px;
   color: #999;
