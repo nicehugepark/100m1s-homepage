@@ -428,7 +428,7 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="range-row range-pcts">
             <span class="r-low ${lowCls}">${fmtPct(r240.low_pct)}</span>
-            <span class="r-now"></span>
+            <span class="r-now r-now-label">현재가</span>
             <span class="r-high ${highCls}">${fmtPct(r240.high_pct)}</span>
           </div>
           <div class="range-row range-dates">
@@ -438,12 +438,9 @@ function renderCalExpandContent(date, data) {
           </div>
         </div>`;
       }
-      // 메타 줄 (등락률 | 현재가 | 거래대금) — 동일 폰트·좌측 정렬·파이프 구분 (대표 정정 v2.1)
-      const priceText = it.price ? it.price.toLocaleString('ko-KR') + '원' : '';
+      // 메타 줄 (등락률 | 거래대금) — 좌측 정렬·파이프 구분·거래대금 골드 (대표 정정 v2.2)
       const metaRow = `<div class="cal-feature-meta">
         <span class="cal-feature-pct ${dir}">${pctText}</span>
-        <span class="cal-meta-sep">|</span>
-        <span class="cal-close-price">${priceText}</span>
         <span class="cal-meta-sep">|</span>
         <span class="cal-trade-amount">${amountText}</span>
       </div>`;
