@@ -1035,8 +1035,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-head.v2 .cal-feature-namecell {
   display: flex;
   align-items: center;
+  justify-content: flex-end;  /* v2.1: 1라인 우측 정렬 */
   gap: 6px;
   flex-wrap: wrap;
+  text-align: right;
 }
 .cal-feature-head.v2 .cal-feature-name {
   font-size: 15px;
@@ -1046,18 +1048,20 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-meta {
   display: flex;
   align-items: baseline;
-  gap: 8px;
-  font-size: 11px;
-  color: #666;
+  justify-content: flex-start;  /* v2.1: 2라인 좌측 정렬 */
+  gap: 6px;
+  font-size: 12px;              /* v2.1: 통일 폰트 */
+  color: #333;                   /* v2.1: 거래대금 색 원복 (#999 → #333) */
 }
 .cal-feature-meta .cal-feature-pct {
-  font-size: 12px;
+  font-size: 12px;               /* v2.1: 통일 (12px) */
   font-weight: 600;
 }
 .cal-feature-meta .cal-feature-pct.up { color: #C53939; }
 .cal-feature-meta .cal-feature-pct.down { color: #1958C7; }
-.cal-feature-meta .cal-close-price { color: #333; font-weight: 500; }
-.cal-feature-meta .cal-trade-amount { color: #999; }
+.cal-feature-meta .cal-close-price { color: #333; font-weight: 500; font-size: 12px; }
+.cal-feature-meta .cal-trade-amount { color: #333; font-weight: 500; font-size: 12px; }
+.cal-feature-meta .cal-meta-sep { color: #BBB; font-weight: 400; }
 
 /* 240일 레인지 v2 — 4행 (bar / 가격 / 등락률 / 날짜) */
 .stock-range.v2 {
@@ -1094,8 +1098,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 @media (max-width: 640px) {
   .cal-feature-head.v2 { padding: 8px 6px 4px; gap: 6px; }
   .cal-feature-head.v2 .cal-feature-name { font-size: 14px; }
-  .cal-feature-meta { font-size: 10px; gap: 6px; }
-  .cal-feature-meta .cal-feature-pct { font-size: 11px; }
+  .cal-feature-meta { font-size: 11px; gap: 5px; }
+  .cal-feature-meta .cal-feature-pct,
+  .cal-feature-meta .cal-close-price,
+  .cal-feature-meta .cal-trade-amount { font-size: 11px; }
   .stock-range.v2 { padding: 4px 6px 8px 26px; }
   .stock-range.v2 .range-prices { font-size: 11px; }
   .stock-range.v2 .range-pcts { font-size: 10px; }

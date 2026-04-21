@@ -438,10 +438,13 @@ function renderCalExpandContent(date, data) {
           </div>
         </div>`;
       }
-      // 메타 줄 (등락률·현재가·거래대금) — 작은 폰트, 이름 아래 배치
+      // 메타 줄 (등락률 | 현재가 | 거래대금) — 동일 폰트·좌측 정렬·파이프 구분 (대표 정정 v2.1)
+      const priceText = it.price ? it.price.toLocaleString('ko-KR') + '원' : '';
       const metaRow = `<div class="cal-feature-meta">
         <span class="cal-feature-pct ${dir}">${pctText}</span>
-        <span class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') + '원' : ''}</span>
+        <span class="cal-meta-sep">|</span>
+        <span class="cal-close-price">${priceText}</span>
+        <span class="cal-meta-sep">|</span>
         <span class="cal-trade-amount">${amountText}</span>
       </div>`;
       return `
@@ -459,8 +462,8 @@ function renderCalExpandContent(date, data) {
               ${metaRow}
             </div>
           </div>
-          ${badgesRowHtml}
           ${rangeHtml}
+          ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
               ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-summary">${escapeHtml(truncatedSummary)}</span><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}</div>` : ''}`
