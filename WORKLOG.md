@@ -99,3 +99,71 @@ S등급 한도 ≤ 3 충족.
 - 모바일 viewport (≤640px)에서 동일 정보 표시 확인
 
 머지·push는 미실행. 보고 후 결정 대기.
+
+---
+
+## 후속 커밋 (옵션 A 적용, 61032dd)
+
+### QA 발견 핵심 버그: 휴장일 fallback 카드 표출
+
+원래 1차 커밋(706d739)은 트리 영역만 차단했음. 그러나 `data-loader.js:71-90`의 7일 fallback이 휴장일에도 동작 → `stockDailyData`가 이전 거래일 데이터로 채워지고 → `interpretedByName`도 채워지고 → `renderCalExpandContent`의 `hasAny=true` 분기로 빠져 fallback 카드가 그려짐. 휴장 안내 분기를 우회.
+
+### 수정 (옵션 A: 휴장일은 휴장 안내만, fallback 숨김)
+
+**`js/data-loader.js:71`** — fallback 진입 가드 한 줄:
+```js
+if (!stockDailyData && !isMarketClosed(date)) {
+```
+휴장일이면 fallback fetch 자체 skip → `stockDailyData=null` → `interpretedByName` 비어있음 → `hasAny=false` → 휴장 분기 자연 진입. macroEvent 안내(`최신 분석 데이터 준비 중 — ...`)도 함께 차단 (depends on `_fallback_date`).
+
+### 디자인 통일 (디자인팀 권고 채택)
+
+휴장 안내 4곳 모두 동일 2단 div 구조로 교체:
+- `renderCalExpandContent` 빈 분기(line 64): 이미 2단이었음, 사유 표기 제거
+- `renderCalExpandContent` todayHtml 빈 분기(line 447): 평문 → 2단 div
+- `initThemeTree` 휴장 분기(line 862): 평문 → 2단 div
+- `initThemeTrend` 휴장 분기(line 501): 평문 → 2단 div
+
+문구: `오늘은 장이 쉽니다` (15px/700/var(--tx2)) + `다음 거래일 4월 21일(월)` (12px/var(--dm))
+
+- (a) `(주말)` 괄호 제거 ✓
+- (b) 시각 위계 통일 ✓
+- (c) `getHolidayName`/`isWeekendDate` 호출 자체 제거 → KRX 임시휴장도 동일 문구 (사유 미표시이므로 분기 불필요) ✓
+
+### 변경 파일 (후속 커밋)
+
+```
+ js/data-loader.js |  3 ++-
+ js/renderer.js    | 15 ++++++---------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
+```
+
+### 시뮬레이션 (정적 트레이싱)
+
+휴장(`2026-04-19` 토):
+- `loadCalDayData` → 직접 fetch 실패 → `!isMarketClosed` false → fallback skip → `stockDailyData=null`
+- `renderCalExpandContent` → `hasAny=false` → 휴장 2단 div 안내
+- `initThemeTree('2026-04-19')` → 휴장 분기 → 동일 2단 div
+- `initThemeTrend()` → 누적 데이터 있으면 차트 유지, 없으면 동일 2단 div
+
+평일(`2026-04-20` 월):
+- `!stockDailyData && !isMarketClosed` → fallback 정상 동작 (회귀 없음)
+- `initThemeTree(2026-04-20)` → 휴장 분기 미통과 → 정상 트리
+
+평일↔휴장 토글: 정상
+
+### 헬퍼 접근성
+
+`isMarketClosed`는 `js/calendar.js:49`에서 전역. data-loader.js에서 `loadCalDayData`는 런타임(이벤트/_refreshDataAsync)에 호출되므로 calendar.js 로드 완료 후. 접근 가능.
+
+### 누적 변경
+
+```
+ WORKLOG.md       | (보강)
+ js/calendar.js   | 12 ++++--------
+ js/data-loader.js |  3 ++-
+ js/renderer.js   | 28 ++++++++++++----------------
+```
+
+3 파일, S등급 한도 ≤ 3 충족.
+
