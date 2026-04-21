@@ -338,8 +338,25 @@ function renderCalExpandContent(date, data) {
         : '';
       const creditBadgeHtml = it.interp?.credit_risk
         ? '<span class="cal-credit-badge">신용불가</span>' : '';
+      // v3.2: 신용 사유도 v3 패턴 (라벨 박스 + 인사이트). 대표 정정 19:43 KST 옵션 나
       const creditReasonHtml = (st.credit_risk && st.credit_reason)
-        ? `<div class="cal-credit-reason"><div class="cal-disc-item"><span class="cal-disc-cat credit">신용불가</span><span class="cal-disc-summary">${escapeHtml(sanitize(st.credit_reason))}</span></div></div>`
+        ? (() => {
+            const _credInsights = {
+              '회사한도초과': '증권사 회사 단위 신용한도 초과 — 다음 영업일 재평가 후 회복 가능.',
+              '신용융자 불가': '단건 조회 결과 신용융자 불가 — kt20017 기준.',
+              'ETF/ETN': 'ETF/ETN은 신용거래 대상 외.',
+              '스팩(SPAC)': 'SPAC은 신용거래 대상 외 (합병 전 거래 제한).',
+              '우선주': '우선주는 보통주 대비 신용거래 제한 (일부 증권사 가능).',
+              '신용거래 제한 종목': '증권사 자체 기준으로 신용거래 제한.',
+            };
+            const reason = sanitize(st.credit_reason);
+            const insight = _credInsights[reason] || '';
+            const insightHtml = insight ? `<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>` : '';
+            return `<div class="cal-status-detail v3 credit">
+              <div class="cal-status-head"><span class="cal-status-label sev-credit">${escapeHtml(reason)}</span></div>
+              ${insightHtml}
+            </div>`;
+          })()
         : '';
       // 종목 상태 뱃지 (투자주의/경고/위험/단기과열)
       const statusBadges = (st.status_badges || []).map(b => {
