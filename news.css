@@ -1056,6 +1056,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-meta .cal-feature-pct {
   font-size: 12px;               /* v2.1: 통일 (12px) */
   font-weight: 600;
+  /* v2.3: 글로벌 .cal-feature-pct의 text-align:right + min-width:56px 무력화 — 이름과 좌측 시작 정렬 */
+  text-align: left;
+  min-width: 0;
+  font-family: inherit;
 }
 .cal-feature-meta .cal-feature-pct.up { color: #C53939; }
 .cal-feature-meta .cal-feature-pct.down { color: #1958C7; }
