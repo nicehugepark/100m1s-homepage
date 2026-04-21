@@ -398,25 +398,28 @@ function renderCalExpandContent(date, data) {
           }
           parts.push(`<div class="cal-status-period">📅 ${periodText}${extra}</div>`);
         }
-        // 조건 표 (thresholds[])
+        // 조건 표 (thresholds[]) — v3.3: 발동 컬럼 제거 + 차이 색상·기호 강조 (대표 19:53 KST)
         if (b.thresholds && b.thresholds.length > 0) {
           const rows = b.thresholds.map(t => {
-            const icon = t.triggered ? '⚠️' : '✓';
             const diff = t.current - t.threshold;
-            const diffPct = t.threshold > 0 ? (diff / t.threshold * 100).toFixed(1) : '0.0';
+            const diffPct = t.threshold > 0 ? (diff / t.threshold * 100) : 0;
             const sign = diff >= 0 ? '+' : '';
-            const cls = t.triggered ? 'th-row triggered' : 'th-row safe';
-            return `<tr class="${cls}">
+            // 색상·기호 분류: 양수(발동)=▲ 빨강 굵게, -5~0 근접=· 주황, 음수(미발동)=▼ 파랑
+            let arrow, diffCls;
+            if (diff > 0) { arrow = '▲'; diffCls = 'th-diff trig'; }
+            else if (diffPct >= -5) { arrow = '·'; diffCls = 'th-diff near'; }
+            else { arrow = '▼'; diffCls = 'th-diff safe'; }
+            const rowCls = t.triggered ? 'th-row triggered' : 'th-row safe';
+            return `<tr class="${rowCls}">
               <td class="th-cond">${escapeHtml(t.desc)}</td>
               <td class="th-base">${t.base_price ? t.base_price.toLocaleString() + '원' : '-'}</td>
               <td class="th-thresh">${t.threshold.toLocaleString()}원</td>
               <td class="th-cur">${t.current.toLocaleString()}원</td>
-              <td class="th-diff ${diff >= 0 ? 'pos' : 'neg'}">${sign}${diffPct}%</td>
-              <td class="th-trig">${icon}</td>
+              <td class="${diffCls}">${arrow}${sign}${diffPct.toFixed(1)}%</td>
             </tr>`;
           }).join('');
-          parts.push(`<div class="cal-status-table-wrap"><table class="cal-status-table">
-            <thead><tr><th>조건</th><th>기준가</th><th>임계가</th><th>현재가</th><th>차이</th><th>발동</th></tr></thead>
+          parts.push(`<div class="cal-status-table-wrap"><table class="cal-status-table v33">
+            <thead><tr><th>조건</th><th>기준가</th><th>임계가</th><th>현재가</th><th>차이</th></tr></thead>
             <tbody>${rows}</tbody>
           </table></div>`);
         }

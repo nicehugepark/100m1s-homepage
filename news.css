@@ -218,6 +218,11 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-table td.th-diff.neg { color: #1958C7; font-weight: 600; }
 .cal-status-table td.th-trig { text-align: center; }
 .cal-status-table tr.triggered { background: rgba(197, 57, 57, 0.04); }
+/* v3.3: 차이 컬럼 색상·기호 강조 (대표 19:53 KST), 발동 컬럼 폐기 */
+.cal-status-table.v33 td.th-diff { font-weight: 700; font-variant-numeric: tabular-nums; }
+.cal-status-table.v33 td.th-diff.trig { color: #C53939; font-weight: 800; }
+.cal-status-table.v33 td.th-diff.near { color: #E65100; }
+.cal-status-table.v33 td.th-diff.safe { color: #1958C7; }
 .cal-status-detail.v3 .cal-status-insight {
   font-size: 11px; color: #444; background: #FFF6E5; padding: 6px 8px;
   border-radius: 4px; line-height: 1.5;
