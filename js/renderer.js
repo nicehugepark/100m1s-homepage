@@ -484,7 +484,7 @@ function renderCalExpandContent(date, data) {
           let statusMark = '';
           const vd = b.view_date;
           if (vd) {
-            if (vd < b.start) statusMark = ` <span class="cal-period-mark upcoming">지정 예정 (${escapeHtml(b.start)})</span>`;
+            if (vd < b.start) statusMark = ` <span class="cal-period-mark upcoming">지정 예정</span>`;
             else if (b.end && vd > b.end) statusMark = ' <span class="cal-period-mark ended">종료</span>';
             else statusMark = ' <span class="cal-period-mark active">진행중</span>';
           }
