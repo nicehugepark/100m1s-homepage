@@ -806,7 +806,12 @@ function _scrollToHashStockIfAny() {
   const tryScroll = () => {
     const el = document.getElementById('stock-' + code);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // sticky header 높이 반영 + 여유 16px. 카드 상단이 헤더 바로 아래 오도록.
+      const headerEl = document.querySelector('header');
+      const headerH = headerEl ? headerEl.offsetHeight : 72;
+      const rect = el.getBoundingClientRect();
+      const y = window.scrollY + rect.top - headerH - 16;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
       el.classList.add('card-highlight');
       setTimeout(() => el.classList.remove('card-highlight'), 2000);
       return;
