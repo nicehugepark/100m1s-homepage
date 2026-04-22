@@ -375,20 +375,21 @@ function renderCalExpandContent(date, data) {
         const predCls = (b.source === 'predicted' || (b.label||'').includes('예상') || (b.label||'').includes('근접')) ? ' predicted' : '';
         const mainBadge = `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
         const singleBadge = b.single_price === true
-          ? `<span class="cal-status-badge sev-single" title="단기과열종목 지정 — 1일 매매거래정지 후 3거래일간 30분 단위 단일가매매 적용 (KRX 시장감시규정). 시간외단일가 체결주기도 30분으로 변경.">단일가매매</span>`
+          ? `<span class="cal-status-badge sev-single" title="단기과열종목 지정에 따른 3거래일간 30분 단위 단일가매매 적용 중. 시장경보(투자주의/경고/위험)와 무관한 별도 제도입니다.">단일가매매</span>`
           : '';
         return mainBadge + singleBadge;
       }).join('');
 
       // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
-      // v4: "현재→다음" 직관 표현 추가 (대표 지시)
-      // FLR-20260423-002 대응: togusa 원안 기반 KRX 정식 규정 문구로 교체 (단일가매매 오염 제거).
-      // 상장폐지/단기과열예고는 togusa 원안 범위 밖이나 UX 회귀 방지를 위해 기존 문구 유지.
+      // FLR-20260423-001/002 대응: togusa 공급(krx-stage-conditions.json 매트릭스 기반) KRX 정식 규정.
+      // 존댓말 + "단일가매매"는 단기과열 유일 정당 출처 명시 (시장경보 3단계와 분리).
+      // 상장폐지/관리종목/거래정지/단기과열예고는 togusa 원안 범위 밖이나 UX 회귀 방지 위해 기존 문구 유지.
       const _insights = {
-        '투자주의': '투자자 경각심 환기 단계 — 거래 제한 없음. 조건 유지 시 투자경고 예고 진입 가능.',
-        '투자경고': '신용거래 금지 + 매수 시 위탁증거금 100% 현금 + 대용증권 불인정. 2일간 40% 이상 추가 상승 시 1일 거래정지.',
-        '투자위험': '지정과 동시에 1일 매매거래정지. 재개 후 투자경고 규제(신용·증거금·대용) 유지. 3일 연속 상승 시 1일 추가 정지.',
-        '단기과열': '1일 매매거래정지 후 3거래일간 30분 단위 단일가매매 적용. 종료일 종가 +20%↑ 시 3거래일 1회 연장.',
+        '투자주의': '이상 급등·거래량 급증 등 주의 신호가 포착된 종목입니다. 자동 규제는 없으며, 조건 지속 시 익일 투자경고 예고로 승급될 수 있습니다.',
+        '투자경고': '신용거래 금지·위탁증거금 100% 현금·대용증권 불인정이 자동 적용됩니다. 지정 후 10거래일 경과 시 재심사로 해제 또는 투자위험 승급을 결정합니다.',
+        '투자위험': '투자경고 효과(신용 금지·현금 증거금·대용 불인정)가 유지되며, 지정 직전 1거래일 매매거래정지가 적용됩니다. 승급 후 10거래일 경과 시 재심사.',
+        '단기과열': '단기과열완화제도에 따라 D+2 1거래일 매매거래정지 후 D+3~D+5 3거래일간 30분 단위 단일가매매가 적용됩니다. D+5 자동 해제.',
+        '단일가매매': '단기과열종목 지정에 따른 30분 단위 단일가매매 적용 기간입니다. 시장경보 3단계와 무관합니다.',
         '거래정지': '거래 정지 기간 — 정지 사유 해소 후 재개.',
         '관리종목': '관리종목 지정 — 신용거래·대용증권 불가, 미공시법인 추가 제재 가능.',
         '상장폐지': '상장폐지 절차 진행 — 정리매매 후 거래 종료.',
@@ -663,8 +664,11 @@ function renderCalExpandContent(date, data) {
         }
 
         // === § 3. KRX 규정 (비-투자경고용 v5.1 유지) ====================
+        // FLR-20260423-002 §3: 투자주의 predicted는 auto_effects=[]라 §3에 쓸 내용 없음 → 생성 스킵
+        // (krx-stage-conditions.json stages[0] 근거, v6 renderer의 단일가/신용금지 오염 재발 방지)
+        const skipRegForAdvisoryNoticePredicted = (stage === '투자주의' && isPredicted);
         const sectionReg = [];
-        if (!isAdvisoryWarning) {
+        if (!isAdvisoryWarning && !skipRegForAdvisoryNoticePredicted) {
           // 현재 단계 규정 (predicted/notice/upcoming은 현재 지정 아님 → 예정 규정만)
           if (stage && !isPredicted && !isNotice && tempo !== 'upcoming') {
             const curInsight = _resolveInsight(label);
@@ -769,7 +773,8 @@ function renderCalExpandContent(date, data) {
             sections.push(`<section class="cal-status-section regulation"><h3>KRX 규정</h3>${sectionReg.join('')}</section>`);
           }
           // 타 배지 §3 "준비 중" 폴백 (v6 FLR-001 방침)
-          if (!sectionReg.length && stage && !isShortTermHot) {
+          // FLR-20260423-002: 투자주의 predicted는 auto_effects=[]라 §3 미생성 (폴백도 스킵)
+          if (!sectionReg.length && stage && !isShortTermHot && !skipRegForAdvisoryNoticePredicted) {
             sections.push(`<section class="cal-status-section regulation v6-pending"><h3>지정 시 적용되는 제한</h3><div class="cal-v6-rule-pending">준비 중 — 상세는 KRX 공시 참조${dartLinkHtml ? `<div class="cal-v6-rule-dart">${dartLinkHtml}</div>` : ''}</div></section>`);
           }
         }
