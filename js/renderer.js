@@ -270,7 +270,9 @@ function renderCalExpandContent(date, data) {
       }
       const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
       // 공시 (DART) — 뱃지는 namecell, 목록은 카드 최하단
-      const discs = st.disclosures || [];
+      // 2026-04-22 대표 정정: status_badges에 이미 표시되는 공시(투자경고 등)는 공시 섹션에서 제외 (중복 방지)
+      const STATUS_DISC_CATS = ['투자주의', '투자경고', '투자위험', '단기과열', '단기과열예고', '관리종목', '매매거래정지', '상장폐지'];
+      const discs = (st.disclosures || []).filter(d => !STATUS_DISC_CATS.includes(d.category));
       let discBadgeHtml = '';
       let discListHtml = '';
       if (discs.length > 0) {
