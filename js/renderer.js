@@ -368,7 +368,7 @@ function renderCalExpandContent(date, data) {
           : b.severity === 'hot' ? 'cal-status-badge hot'
           : 'cal-status-badge caution';
         // v4: predicted는 dashed border로 구분
-        const predCls = (b.source === 'predicted' || (b.label||'').includes('예상')) ? ' predicted' : '';
+        const predCls = (b.source === 'predicted' || (b.label||'').includes('예상') || (b.label||'').includes('근접')) ? ' predicted' : '';
         const mainBadge = `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
         const singleBadge = b.single_price === true
           ? `<span class="cal-status-badge sev-single">단일가매매</span>`
@@ -417,9 +417,9 @@ function renderCalExpandContent(date, data) {
         const label = b.label || '';
         const stage = _extractStage(label);
         if (!stage) return '';
-        // v4: source='predicted'(자체 추정 라벨)는 "예상" 텍스트 — 단계 진행 표시 생략
-        // "예상"은 가격 조건만 충족, 거래량 미검증 → 진짜 KRX 단계 진입 보장 X
-        if ((b.source === 'predicted') || label.includes('예상')) return '';
+        // v4: source='predicted'(자체 추정 라벨)는 "예상/근접" 텍스트 — 단계 진행 표시 생략
+        // "예상/근접"은 가격 조건만 충족, 거래량 미검증 → 진짜 KRX 단계 진입 보장 X
+        if ((b.source === 'predicted') || label.includes('예상') || label.includes('근접')) return '';
         const isNotice = label.includes('예고');
         // FLR-011 v6: "현재" = view_date(t, 페이지 날짜). "익일" = t+1 거래일.
         // b.end/b.start는 공시 효력 기간 — "현재" 시점이 아님 (별도 기간 행에 표시).
@@ -453,10 +453,10 @@ function renderCalExpandContent(date, data) {
       };
       // REQ-008: 단기과열 지정 + single_price 뱃지는 regulation/start 없어도 부기 라인 노출 위해 detail 영역 포함
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
-        // v4: predicted 라벨은 dashed border로 공시 기반과 시각 구분 (2026-04-22: 라벨 자체에 "예상" 포함 시 [예상] 중복 제거)
-        const isPredicted = (b.source === 'predicted') || (b.label || '').includes('예상');
-        const labelHasPredictedText = (b.label || '').includes('예상');
-        const labelExtra = (isPredicted && !labelHasPredictedText) ? ' <span class="cal-status-predicted-tag">[예상]</span>' : '';
+        // v4: predicted 라벨은 dashed border로 공시 기반과 시각 구분 (2026-04-22: 라벨 자체에 "예상/근접" 포함 시 [근접] 중복 제거)
+        const isPredicted = (b.source === 'predicted') || (b.label || '').includes('예상') || (b.label || '').includes('근접');
+        const labelHasPredictedText = (b.label || '').includes('예상') || (b.label || '').includes('근접');
+        const labelExtra = (isPredicted && !labelHasPredictedText) ? ' <span class="cal-status-predicted-tag">[근접]</span>' : '';
         const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span>${labelExtra}</div>`];
         // v4: 진행 표 — "현재 → 다음" 1줄 (라벨 바로 아래)
         const progress = _resolveProgress(b);
