@@ -7,6 +7,22 @@
   --pos: #1A6B2D; --pos-bg: #E8F5EC;
   --neg: #B8302E; --neg-bg: #FFF0F0;
   --neu: #6B7A99; --neu-bg: #F2F4F8;
+
+  /* 카드 내부 좌측 인덴트 변수 (외형 불변 리팩토링, 2026-04-22) */
+  --card-indent-header: 12px;  /* cal-feature-head (shorthand 3-value의 좌우 값) */
+  --card-indent-nums: 44px;    /* cal-feature-nums (차트 영역 정렬) */
+  --card-indent-badges: 36px;  /* cal-feature-badges (뉴스 정렬) */
+  --card-indent-body: 12px;    /* cal-feature-body (desktop은 padding-left=12) */
+  --card-indent-news: 36px;    /* stock-news 기준값 */
+}
+@media (max-width: 640px) {
+  :root {
+    --card-indent-header: 6px;
+    --card-indent-nums: 26px;
+    --card-indent-badges: 10px;
+    --card-indent-body: 26px;
+    --card-indent-news: 10px;
+  }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { font-family: 'Inter', 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: var(--tx); -webkit-font-smoothing: antialiased; }
@@ -152,7 +168,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .stock-news {
   background: var(--bg2);
   border-top: 1px dashed var(--bd);
-  padding: 12px 18px 14px 36px;
+  padding: 12px 18px 14px var(--card-indent-news);
   display: flex; flex-direction: column; gap: 8px;
 }
 .news-card {
@@ -177,7 +193,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
-.cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 36px; align-items:center; }
+.cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 var(--card-indent-badges); align-items:center; }
 .cal-credit-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#FDE8E8; color:#C53939; border:1px solid #F5C2C2; vertical-align:middle; }
 .cal-status-badge { display:inline-block; font-size:10px; font-weight:600; padding:1px 5px; border-radius:3px; margin-right:3px; vertical-align:middle; }
 .cal-status-badge.caution { background:#fff3cd; color:#856404; }
@@ -853,13 +869,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px 2px;
+  padding: 8px var(--card-indent-header) 2px;
   font-size: 13px;
 }
 .cal-feature-nums {
   display: flex; align-items: center; justify-content: flex-start;
   gap: 12px;
-  padding: 2px 12px 4px 44px;
+  padding: 2px 12px 4px var(--card-indent-nums);
   font-size: 12px;
 }
 .cal-feature-nums > * { flex-shrink: 0; font-size: 12px; font-weight: 700; font-family: 'SF Mono', monospace; }
@@ -867,7 +883,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-nums .cal-feature-pct { min-width: 0; text-align: left; }
 .cal-feature-nums .cal-trade-amount { font-size: 12px; color: var(--am); }
 @media (max-width: 640px) {
-  .cal-feature-nums { padding: 2px 6px 6px 26px; gap: 8px; }
+  .cal-feature-nums { padding: 2px 6px 6px var(--card-indent-nums); gap: 8px; }
 }
 .cal-feature-name {
   font-weight: 800; color: var(--tx); letter-spacing: -0.2px;
@@ -882,7 +898,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-pct.up { color: #C53939; }
 .cal-feature-pct.down { color: #1958C7; }
 .cal-feature-body {
-  padding: 0 12px 8px 12px;
+  padding: 0 12px 8px var(--card-indent-body);
   display: flex; flex-direction: column; gap: 3px;
   border-top: 1px dashed rgba(0,0,0,0.06);
   margin-top: 2px;
@@ -1051,14 +1067,14 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 @media (max-width: 640px) {
   .stock-main { grid-template-columns: 16px 1fr auto; padding: 8px 6px; gap: 6px; }
   .stock-price { display: none; }
-  .stock-news { padding: 6px 6px 8px 10px; }
+  .stock-news { padding: 6px 6px 8px var(--card-indent-news); }
   .news-card { padding: 6px 6px; gap: 6px; }
   .stock-theme { padding: 0 6px 6px; }
-  .cal-feature-head { gap: 6px; padding: 8px 6px 4px; }
+  .cal-feature-head { gap: 6px; padding: 8px var(--card-indent-header) 4px; }
   .cal-feature-namecell { flex-wrap: nowrap; overflow: hidden; gap: 4px; }
   .cal-feature-namecell .cal-streak-badge { flex-shrink: 0; }
-  .cal-feature-badges { padding: 4px 6px 0 10px; }
-  .cal-feature-body { padding: 0 6px 4px 26px; }
+  .cal-feature-badges { padding: 4px 6px 0 var(--card-indent-badges); }
+  .cal-feature-body { padding: 0 6px 4px var(--card-indent-body); }
   .kiwoom-row { grid-template-columns: 18px 1fr auto auto; gap: 6px; }
   .kiwoom-amount { font-size: 10px; }
   .kiwoom-pct { font-size: 10px; min-width: 48px; }
