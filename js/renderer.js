@@ -813,6 +813,15 @@ function _scrollToHashStockIfAny() {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       el.classList.add('card-highlight');
       setTimeout(() => el.classList.remove('card-highlight'), 2000);
+      // 다른 렌더/스크롤 코드가 override할 수 있어 1.5초 뒤 강제 재정렬
+      setTimeout(() => {
+        const el2 = document.getElementById('stock-' + code);
+        if (!el2) return;
+        const top = el2.getBoundingClientRect().top;
+        if (Math.abs(top - 88) > 30) {
+          el2.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+      }, 1500);
       return;
     }
     if (++tries < 5) setTimeout(tryScroll, 400);
