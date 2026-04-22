@@ -245,7 +245,8 @@ function renderCalExpandContent(date, data) {
       }).join('');
     })();
 
-    // 해석 있으면 카드 확장, 없으면 compact 한 줄
+    // 해석 있으면 full 카드 확장 (아래 if 블록), 없으면 같은 full 구조 + "뉴스 없음" placeholder (else 블록 하단)
+    // 대표 지시 2026-04-22: compact 한 줄 분기 제거 — 카드 간 레이아웃 일관성 유지
     if (it.interp) {
       const st = it.interp;
       const causal = (st.causal_chain || []).slice(0, 3);
@@ -617,23 +618,49 @@ function renderCalExpandContent(date, data) {
         </div>`;
     }
 
-    // compact row (해석 없음)
-    // compact에도 연속 배지: 2+ → "N연속", 1이면 비표시
+    // ===== interp 없음: full 카드 구조 유지 + "뉴스 없음" placeholder =====
+    // 대표 지시 (B안, 2026-04-22 16:07 KST): 레이아웃 일관성 유지. compact 한 줄 폐지.
+    // kiwoom JSON 기반 데이터만 사용 (range_240d/intraday/news 없음 → 해당 영역은 생략 또는 placeholder)
     const compactPC = it.interp?.pick_count;
     const compactBadge = compactPC != null && compactPC >= 2
       ? `<span class="cal-streak-badge">${compactPC}연속</span>`
       : '';
+    // 테마 칩: interp 없어도 it.themes는 kiwoom merge 단계에서 있을 수 있음
+    const simpleThemesHtml = (it.themes && it.themes.length > 0)
+      ? `<div class="cal-theme-row">${it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}</div>`
+      : '';
+    // sparkline: intraday 없음 → 빈 영역(full 카드와 정렬 맞춤)
+    const emptySparkHtml = '<div class="cal-feature-sparkline cal-spark-empty"></div>';
+    // range bar: 데이터 부재 → 생략 (대표 지시: 빈 공간 두지 말 것)
+    // 메타 줄 (등락률 | 거래대금)
+    const metaRow = `<div class="cal-feature-meta">
+      <span class="cal-feature-pct ${dir}">${pctText}</span>
+      <span class="cal-meta-sep">|</span>
+      <span class="cal-trade-amount">${amountText}</span>
+    </div>`;
+    // 본문: "관련 뉴스 없음" placeholder — 기존 .cal-feature-news-empty 스타일 재사용
+    const emptyBodyHtml = simpleThemesHtml
+      ? `${simpleThemesHtml}<div class="cal-feature-news-empty">관련 뉴스 없음</div>`
+      : `<div class="cal-feature-news-empty">관련 뉴스 없음</div>`;
     return `
-      <div class="cal-trade-row">
-        <div class="cal-trade-rank">#${it.rank}</div>
-        <div class="cal-trade-name-cell">
-          <span class="cal-trade-name">${escapeHtml(it.name)}</span>
-          ${compactBadge}
+      <div class="cal-feature-card v2 no-interp">
+        <div class="cal-feature-head v2">
+          <div class="cal-feature-head-left">
+            <div class="cal-trade-rank">#${it.rank}</div>
+            <div class="cal-trade-candle">${candleHtml}</div>
+            ${emptySparkHtml}
+          </div>
+          <div class="cal-feature-head-right">
+            <div class="cal-feature-namecell">
+              <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+              ${compactBadge}
+            </div>
+            ${metaRow}
+          </div>
         </div>
-        <div class="cal-trade-amount">${amountText}</div>
-        <div class="cal-close-price">${it.price ? it.price.toLocaleString('ko-KR') : ''}</div>
-        <div class="cal-trade-pct ${dir}">${pctText}</div>
-        <div class="cal-trade-candle">${candleHtml}</div>
+        <div class="cal-feature-body">
+          ${emptyBodyHtml}
+        </div>
       </div>`;
   };
 

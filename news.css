@@ -1035,7 +1035,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   background: #FCE7E9; color: #A01528;
   border: 1px solid #E5A4AB;
 }
-.cal-feature-card.no-interp { opacity: 0.55; }
+/* 해석 미완료 카드 — full 레이아웃 유지(대표 B안 2026-04-22). opacity만 약간 완화해 구분 */
+.cal-feature-card.no-interp { opacity: 0.78; }
 .cal-pick-meta { margin-top: 6px; }
 .cal-disc-cat.streak { background: var(--am3); color: var(--am); border: 1px solid var(--am2); }
 .cal-streak-badge {
