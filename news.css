@@ -11,7 +11,7 @@
   /* 카드 내부 좌측 인덴트 변수 (외형 불변 리팩토링, 2026-04-22) */
   --card-indent-header: 12px;  /* cal-feature-head (shorthand 3-value의 좌우 값) */
   --card-indent-nums: 44px;    /* cal-feature-nums (차트 영역 정렬) */
-  --card-indent-badges: 12px;  /* cal-feature-badges (header 좌측 기준 정렬, 2026-04-22 대표 재피드백) */
+  --card-indent-badges: var(--card-indent-news);  /* news 텍스트·소스 pill과 x좌표 일치 (2026-04-22 대표 재정정) */
   --card-indent-body: 12px;    /* cal-feature-body (desktop은 padding-left=12) */
   --card-indent-news: 36px;    /* stock-news 기준값 */
 }
@@ -19,7 +19,7 @@
   :root {
     --card-indent-header: 6px;
     --card-indent-nums: 26px;
-    --card-indent-badges: 6px;
+    --card-indent-badges: var(--card-indent-news);  /* 모바일도 news와 일치 */
     --card-indent-body: 26px;
     --card-indent-news: 10px;
   }
