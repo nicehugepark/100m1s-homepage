@@ -593,8 +593,10 @@ function renderCalExpandContent(date, data) {
         <span class="cal-meta-sep">|</span>
         <span class="cal-trade-amount">${amountText}</span>
       </div>`;
+      const _idAttr_full = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
       return `
-        <div class="cal-feature-card v2">
+        <div class="cal-feature-card v2"${_idAttr_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+          ${renderShareButton(it)}
           <div class="cal-feature-head v2">
             <div class="cal-feature-head-left">
               <div class="cal-trade-rank">#${it.rank}</div>
@@ -642,8 +644,10 @@ function renderCalExpandContent(date, data) {
     const emptyBodyHtml = simpleThemesHtml
       ? `${simpleThemesHtml}<div class="cal-feature-news-empty">관련 뉴스 없음</div>`
       : `<div class="cal-feature-news-empty">관련 뉴스 없음</div>`;
+    const _idAttr_nointerp = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
     return `
-      <div class="cal-feature-card v2 no-interp">
+      <div class="cal-feature-card v2 no-interp"${_idAttr_nointerp} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+        ${renderShareButton(it)}
         <div class="cal-feature-head v2">
           <div class="cal-feature-head-left">
             <div class="cal-trade-rank">#${it.rank}</div>
@@ -699,6 +703,115 @@ function renderCalExpandContent(date, data) {
     });
     window._cardCollapseInit = true;
   }
+
+  // 공유 버튼 이벤트 위임 (1회만 등록)
+  if (!window._cardShareInit) {
+    document.addEventListener('click', async e => {
+      const btn = e.target.closest('.cal-share-btn');
+      if (!btn) return;
+      e.stopPropagation();
+      e.preventDefault();
+      const card = btn.closest('.cal-feature-card');
+      if (!card) return;
+      const code = card.getAttribute('data-stock-code') || '';
+      const name = card.getAttribute('data-stock-name') || '';
+      const urlParams = new URLSearchParams(window.location.search);
+      const dateParam = urlParams.get('date');
+      // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
+      const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
+      const base = `${window.location.origin}${window.location.pathname}`;
+      const shareUrl = dateStr
+        ? `${base}?date=${dateStr}#stock-${code}`
+        : `${base}#stock-${code}`;
+      const shareTitle = `${name} - 100M1S 뉴스`;
+      const shareText = `${name} (${code})`;
+      try {
+        if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+          return;
+        }
+      } catch (err) {
+        // 사용자 취소(AbortError)는 무시, 그 외엔 폴백
+        if (err && err.name === 'AbortError') return;
+      }
+      // 폴백: 클립보드 복사
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showShareToast('링크가 복사되었습니다');
+      } catch (err) {
+        // 최후 폴백: execCommand
+        const ta = document.createElement('textarea');
+        ta.value = shareUrl;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'absolute';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showShareToast('링크가 복사되었습니다'); }
+        catch { showShareToast('복사 실패 — URL: ' + shareUrl); }
+        document.body.removeChild(ta);
+      }
+    });
+    window._cardShareInit = true;
+  }
+
+  // 해시 앵커로 진입 시 해당 카드로 스크롤 + 강조
+  _scrollToHashStockIfAny();
+}
+
+// 공유 버튼 HTML 생성 (SVG 아이콘 + 접근성 속성)
+function renderShareButton(it) {
+  const label = `${it.name || ''} 카드 공유하기`;
+  return `<button type="button" class="cal-share-btn" aria-label="${escapeHtml(label)}" title="이 카드 공유하기">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="18" cy="5" r="3"/>
+      <circle cx="6" cy="12" r="3"/>
+      <circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    </svg>
+  </button>`;
+}
+
+// 토스트 알림 (aria-live)
+function showShareToast(msg) {
+  let toast = document.getElementById('share-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'share-toast';
+    toast.className = 'share-toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.remove('show');
+  // 리플로우 강제하여 재애니메이션
+  void toast.offsetWidth;
+  toast.classList.add('show');
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// 해시에 #stock-{code} 있으면 해당 카드로 스크롤 + 강조
+function _scrollToHashStockIfAny() {
+  const hash = window.location.hash || '';
+  const m = hash.match(/^#stock-([A-Za-z0-9]+)$/);
+  if (!m) return;
+  const code = m[1];
+  // 렌더가 비동기이므로 약간의 지연 후 시도 (최대 5회)
+  let tries = 0;
+  const tryScroll = () => {
+    const el = document.getElementById('stock-' + code);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('card-highlight');
+      setTimeout(() => el.classList.remove('card-highlight'), 2000);
+      return;
+    }
+    if (++tries < 5) setTimeout(tryScroll, 400);
+  };
+  tryScroll();
 }
 
 // ───── 테마 거래대금 트렌드 ─────
