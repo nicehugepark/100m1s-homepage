@@ -761,6 +761,7 @@ function renderCalExpandContent(date, data) {
 
 // 공유 버튼 HTML 생성 (SVG 아이콘 + 접근성 속성)
 function renderShareButton(it) {
+  if (!it || !it.code) return ''; // code 없으면 딥링크 불가 → 버튼 자체 미노출
   const label = `${it.name || ''} 카드 공유하기`;
   return `<button type="button" class="cal-share-btn" aria-label="${escapeHtml(label)}" title="이 카드 공유하기">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
