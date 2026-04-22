@@ -522,8 +522,10 @@ function renderCalExpandContent(date, data) {
         // 공시 원문 링크는 배지 본인의 공시만(predicted 제외) 1개 매칭하여 DART 버튼으로 제공.
         if (!isPredicted) {
           const stage = _extractStage(b.label || '');
-          if (stage && discs.length > 0) {
-            const matched = discs.find(d => (d.category || '').includes(stage));
+          // DART 링크 매칭은 원본 disclosures 사용 (공시 섹션 filter에 영향 안 받도록)
+          const allDiscs = st.disclosures || [];
+          if (stage && allDiscs.length > 0) {
+            const matched = allDiscs.find(d => (d.category || '').includes(stage));
             const dartUrl = matched && matched.url;
             if (dartUrl) {
               parts.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
