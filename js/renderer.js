@@ -482,9 +482,29 @@ function renderCalExpandContent(date, data) {
         // predicted/notice는 §1 생략(가이드 5.5, 5.6).
         const isCurrentlyDesignated = !isPredicted && !isNotice;
 
+        // DART 공시 매칭 — §1 upcoming / §2 폴백 / §3 모두에서 공유
+        const allDiscs = st.disclosures || [];
+        const matchedDisc = (stage && allDiscs.length > 0)
+          ? allDiscs.find(d => (d.category || '').includes(stage))
+          : null;
+        const dartUrl = matchedDisc && matchedDisc.url;
+        const disclosureDate = (matchedDisc && matchedDisc.date) || vd || '';
+        const dartLinkHtml = dartUrl
+          ? `<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`
+          : '';
+
         // === § 1. 현재 상태 ============================================
         const sectionCurrent = [];
-        if (isCurrentlyDesignated) {
+        // v5.1: upcoming + (notice or predicted) — 3행 블록 (인지 공백 방지)
+        if (tempo === 'upcoming' && (isNotice || isPredicted)) {
+          const prevStageText = b.prev_stage || '투자주의 이하 (정상매매)';
+          const discDateText = disclosureDate || (vd || '');
+          sectionCurrent.push(`<div class="cal-status-current-item">● ${escapeHtml(stage || label)} 지정 예고${discDateText ? ` (예고일: ${escapeHtml(discDateText)})` : ''}</div>`);
+          sectionCurrent.push(`<div class="cal-status-current-item">● 현재 KRX 단계: ${escapeHtml(prevStageText)}</div>`);
+          if (b.start) {
+            sectionCurrent.push(`<div class="cal-status-current-item">● 예정 조치: ${escapeHtml(b.start)}부터 ${escapeHtml(stage || label)} 지정 (→ § 2 참조)</div>`);
+          }
+        } else if (isCurrentlyDesignated) {
           // tempo 판정:
           // - ended: b.end 지남 → "해제 완료"
           // - upcoming: b.start가 view_date보다 미래 → §1 아님 (§2에서 다룸)
@@ -610,6 +630,22 @@ function renderCalExpandContent(date, data) {
           sectionNext.push(`<div class="cal-status-next-header">▶ 지정 예정일: <span class="cal-badge-date-range">${periodText}</span> (${escapeHtml(nextStageLabel)})</div>`);
         }
 
+        // v5.1: 공시 예고 §2 폴백 — thresholds 없는 notice는 reason_text + DART로 대체
+        // 지정 중 배지(§5.1/§5.2)는 §3 DART 유지 — notice 한정
+        const dartMovedToNext = !!(isNotice && !hasThresholds);
+        if (dartMovedToNext) {
+          // 지정 예정 기간 기본 행 (§2 본문에 다른 행 없으면 최소 1줄 보장)
+          if (!sectionNext.length && b.start) {
+            nextStageLabel = stage || label;
+            let periodText = escapeHtml(b.start);
+            if (b.end && b.end !== b.start) periodText += ` ~ ${escapeHtml(b.end)}`;
+            sectionNext.push(`<div class="cal-status-next-header">▶ 지정 예정 기간: <span class="cal-badge-date-range">${periodText}</span> (${escapeHtml(nextStageLabel)})</div>`);
+          }
+          const reasonText = b.reason_text || '공시 원문 참조';
+          sectionNext.push(`<div class="cal-status-next-header">📋 지정 사유: ${escapeHtml(reasonText)}</div>`);
+          if (dartLinkHtml) sectionNext.push(dartLinkHtml);
+        }
+
         // === § 3. KRX 규정 =============================================
         const sectionReg = [];
         // 현재 단계 규정 (predicted/notice/upcoming은 현재 지정 아님 → 예정 규정만)
@@ -629,16 +665,9 @@ function renderCalExpandContent(date, data) {
           const ins = _resolveInsight(stage);
           if (ins) sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(stage)}(${isPredicted ? '지정 시' : '예정'}): ${escapeHtml(ins)}</div>`);
         }
-        // DART 버튼 (공시 기반만)
-        if (!isPredicted && stage) {
-          const allDiscs = st.disclosures || [];
-          if (allDiscs.length > 0) {
-            const matched = allDiscs.find(d => (d.category || '').includes(stage));
-            const dartUrl = matched && matched.url;
-            if (dartUrl) {
-              sectionReg.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
-            }
-          }
+        // DART 버튼 (공시 기반만) — v5.1: notice 공시 예고는 §2로 이동 (중복 금지)
+        if (!isPredicted && stage && !dartMovedToNext && dartLinkHtml) {
+          sectionReg.push(dartLinkHtml);
         }
 
         // === 합치기 ====================================================
