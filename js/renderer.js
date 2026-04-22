@@ -725,11 +725,10 @@ function renderCalExpandContent(date, data) {
       const nameSlug = encodeURIComponent(name || '');
       const hashPart = nameSlug ? `#stock-${code}-${nameSlug}` : `#stock-${code}`;
       const shareUrl = dateStr ? `${base}?date=${dateStr}${hashPart}` : `${base}${hashPart}`;
-      const shareTitle = `${name} - 100M1S 뉴스`;
-      const shareText = `${name} (${code})`;
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+          // URL만 공유 — 메신저가 title+text+url을 모두 붙여 중복 생기는 이슈 회피
+          await navigator.share({ url: shareUrl });
           return;
         }
       } catch (err) {
