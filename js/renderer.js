@@ -482,6 +482,10 @@ function renderCalExpandContent(date, data) {
         // predicted/notice는 §1 생략(가이드 5.5, 5.6).
         const isCurrentlyDesignated = !isPredicted && !isNotice;
 
+        // v5 후속: '현재 → 다음' 1줄 요약 복원
+        const progressLine = _resolveProgress(b);
+        if (progressLine) parts.push(`<div class="cal-status-progress">→ ${escapeHtml(progressLine)}</div>`);
+
         // === § 1. 현재 상태 ============================================
         const sectionCurrent = [];
         if (isCurrentlyDesignated) {
