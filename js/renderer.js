@@ -720,7 +720,7 @@ function renderCalExpandContent(date, data) {
       const dateParam = urlParams.get('date');
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
-      const base = `${window.location.origin}${window.location.pathname}`;
+      const base = `${window.location.origin}/news.html`;
       const shareUrl = dateStr
         ? `${base}?date=${dateStr}#stock-${code}`
         : `${base}#stock-${code}`;
