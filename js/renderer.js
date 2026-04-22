@@ -720,12 +720,13 @@ function renderCalExpandContent(date, data) {
       const dateParam = urlParams.get('date');
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
-      const base = `${window.location.origin}/news.html`;
-      // 하이브리드: #stock-{code}-{이름} (한글 raw 유지 — 카톡 등에서 디코드 없이 읽히도록)
+      // OG 메타 HTML 경로로 공유 — 카톡/트위터 크롤러가 종목별 OG 이미지 수집
       // URL fragment는 현대 브라우저가 한글 raw 허용. 공백/특수문자만 제거.
       const nameSlug = (name || '').replace(/[\s\/?#%&]/g, '');
-      const hashPart = nameSlug ? `#stock-${code}-${nameSlug}` : `#stock-${code}`;
-      const shareUrl = dateStr ? `${base}?date=${dateStr}${hashPart}` : `${base}${hashPart}`;
+      const hashPart = nameSlug ? `#${nameSlug}` : '';  // fragment는 이름만 (식별 용도)
+      const shareUrl = dateStr
+        ? `${window.location.origin}/news/stock/${dateStr}/${code}.html${hashPart}`
+        : `${window.location.origin}/news.html${hashPart}`;
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
           // URL만 공유 — 메신저가 title+text+url을 모두 붙여 중복 생기는 이슈 회피
