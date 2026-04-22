@@ -455,88 +455,208 @@ function renderCalExpandContent(date, data) {
         if (!next) return '';
         return `현재: ${stage} (${curDate}) → ${dateText} 조건 충족 시 ${next} 진입`;
       };
+      // v5 (DOC-20260422-DSN-001): 3섹션 구조 — ① 현재 상태 / ② 다음 단계 / ③ KRX 규정
+      // 핵심 변경: b.start~b.end를 "다음 단계 지정 예정 기간"으로 해석(§2), 시제 태그 일괄 적용.
       // REQ-008: 단기과열 지정 + single_price 뱃지는 regulation/start 없어도 부기 라인 노출 위해 detail 영역 포함
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
-        // v4: predicted 라벨은 dashed border로 공시 기반과 시각 구분 (2026-04-22: 라벨 자체에 "예상/근접" 포함 시 [근접] 중복 제거)
-        const isPredicted = (b.source === 'predicted') || (b.label || '').includes('예상') || (b.label || '').includes('근접');
-        const labelHasPredictedText = (b.label || '').includes('예상') || (b.label || '').includes('근접');
+        const label = b.label || '';
+        const stage = _extractStage(label);
+        const isPredicted = (b.source === 'predicted') || label.includes('예상') || label.includes('근접');
+        const isNotice = label.includes('예고');
+        const labelHasPredictedText = label.includes('예상') || label.includes('근접');
         const labelExtra = (isPredicted && !labelHasPredictedText) ? ' <span class="cal-status-predicted-tag">[근접]</span>' : '';
-        const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span>${labelExtra}</div>`];
-        // v4: 진행 표 — "현재 → 다음" 1줄 (라벨 바로 아래)
-        const progress = _resolveProgress(b);
-        if (progress) parts.push(`<div class="cal-status-progress">→ ${escapeHtml(progress)}</div>`);
-        // 기간 행 — 2026-04-22: 날짜 범위 강조 (`.cal-badge-date-range` span), 모든 status 배지 공통
-        if (b.start) {
-          let periodText = b.start;
-          if (b.end && b.end !== b.start) periodText += ` ~ ${b.end}`;
-          // 달력일 수 (거래일 아님 — 배지 라벨의 '3거래일'은 KRX 거래일 기준이므로 별개)
-          let extra = '';
-          if (b.start && b.end) {
-            try {
-              const days = Math.round((new Date(b.end) - new Date(b.start)) / 86400000);
-              if (days > 0) extra = ` (${days}일)`;
-            } catch (e) {}
-          }
-          const periodHtml = `<span class="cal-badge-date-range">${escapeHtml(periodText)}</span>${extra}`;
-          // FLR-011 v5: view_date 기준 상태 마커 — "예정/진행중/종료".
-          // 4/17 페이지에서 4/20~5/4 효력 표시 시 "예정"이 명확히 드러나야 함.
-          // 2026-04-22 핫픽스: "[예정]" 라벨이 오늘/내일 상태 혼동 유발 — "지정 예정 (YYYY-MM-DD)" 형태로 명시.
-          let statusMark = '';
-          const vd = b.view_date;
-          if (vd) {
-            if (vd < b.start) statusMark = ` <span class="cal-period-mark upcoming">지정 예정</span>`;
-            else if (b.end && vd > b.end) statusMark = ' <span class="cal-period-mark ended">종료</span>';
-            else statusMark = ' <span class="cal-period-mark active">진행중</span>';
-          }
-          parts.push(`<div class="cal-status-period">📅 ${periodHtml}${statusMark}</div>`);
+        const hasThresholds = !!(b.thresholds && b.thresholds.length > 0);
+        const nextStage = _stageNext[stage] || '';
+        const isShortTermHot = stage === '단기과열';
+
+        // 시제 판정 (view_date 대비 b.start/b.end)
+        const vd = b.view_date || '';
+        let tempo = 'unknown'; // 'upcoming' | 'active' | 'ended' | 'unknown'
+        if (vd && b.start) {
+          if (vd < b.start) tempo = 'upcoming';
+          else if (b.end && vd > b.end) tempo = 'ended';
+          else tempo = 'active';
         }
-        // 조건 표 (thresholds[]) — v3.3: 발동 컬럼 제거 + 차이 색상·기호 강조 (대표 19:53 KST)
-        if (b.thresholds && b.thresholds.length > 0) {
-          const rows = b.thresholds.map(t => {
-            const diff = t.current - t.threshold;
-            const diffPct = t.threshold > 0 ? (diff / t.threshold * 100) : 0;
-            const sign = diff >= 0 ? '+' : '';
-            // 색상·기호 분류: 양수(발동)=▲ 빨강 굵게, -5~0 근접=· 주황, 음수(미발동)=▼ 파랑
-            let arrow, diffCls;
-            if (diff > 0) { arrow = '▲'; diffCls = 'th-diff trig'; }
-            else if (diffPct >= -5) { arrow = '·'; diffCls = 'th-diff near'; }
-            else { arrow = '▼'; diffCls = 'th-diff safe'; }
-            const rowCls = t.triggered ? 'th-row triggered' : 'th-row safe';
-            return `<tr class="${rowCls}">
-              <td class="th-cond">${escapeHtml(t.desc)}</td>
-              <td class="th-base">${t.base_price ? t.base_price.toLocaleString() + '원' : '-'}</td>
-              <td class="th-thresh">${t.threshold.toLocaleString()}원</td>
-              <td class="th-cur">${t.current.toLocaleString()}원</td>
-              <td class="${diffCls}">${arrow}${sign}${diffPct.toFixed(1)}%</td>
-            </tr>`;
-          }).join('');
-          parts.push(`<div class="cal-status-table-wrap"><table class="cal-status-table v33">
-            <thead><tr><th>조건</th><th>기준가</th><th>임계가</th><th>현재가</th><th>차이</th></tr></thead>
-            <tbody>${rows}</tbody>
-          </table></div>`);
-        }
-        // 인사이트 — KRX 규정 요약 1줄 (해석은 여기 한 군데만; long-text는 공시 섹션에 위임)
-        const insight = _resolveInsight(b.label || '');
-        if (insight) parts.push(`<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>`);
-        // 2026-04-22 핫픽스 (정정): b.regulation 블록 제거 — 판단기간 long-text는 period 행 + 공시 섹션 요약과 중복.
-        // 공시 원문 링크는 배지 본인의 공시만(predicted 제외) 1개 매칭하여 DART 버튼으로 제공.
-        if (!isPredicted) {
-          const stage = _extractStage(b.label || '');
-          // DART 링크 매칭은 원본 disclosures 사용 (공시 섹션 filter에 영향 안 받도록)
-          const allDiscs = st.disclosures || [];
-          if (stage && allDiscs.length > 0) {
-            const matched = allDiscs.find(d => (d.category || '').includes(stage));
-            const dartUrl = matched && matched.url;
-            if (dartUrl) {
-              parts.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
+
+        // 현재 지정 여부: predicted 아니고 예고 아니면 "지정 중"으로 간주 (§1 렌더).
+        // predicted/notice는 §1 생략(가이드 5.5, 5.6).
+        const isCurrentlyDesignated = !isPredicted && !isNotice;
+
+        // === § 1. 현재 상태 ============================================
+        const sectionCurrent = [];
+        if (isCurrentlyDesignated) {
+          // tempo 판정:
+          // - ended: b.end 지남 → "해제 완료"
+          // - upcoming: b.start가 view_date보다 미래 → §1 아님 (§2에서 다룸)
+          // - active/unknown: 지정 중
+          if (tempo === 'ended') {
+            sectionCurrent.push(`<div class="cal-status-current-item ended">● ${escapeHtml(stage || label)} 해제 완료${b.end ? ` (해제일: ${escapeHtml(b.end)})` : ''}</div>`);
+          } else if (tempo === 'upcoming') {
+            // 지정 예정 — 아직 지정 전 → §1 생략 (§2 or 단독 "지정 예정" 행에서 다룸)
+            // hasThresholds 유무와 무관
+          } else {
+            // 지정일 기준 — hasThresholds가 있으면 b.start는 "다음 단계 예정일"이므로 지정일로 사용 금지
+            // hasThresholds 없으면 b.start가 현재 배지 자체의 지정일이지만, tempo=upcoming이면 미래이므로 view_date 선호
+            let designatedDate = '';
+            if (!hasThresholds && b.start && tempo !== 'upcoming') {
+              designatedDate = b.start;
+            } else if (b.view_date) {
+              designatedDate = b.view_date;
+            }
+            const dateSuffix = designatedDate ? ` (지정일: ${escapeHtml(designatedDate)})` : '';
+            sectionCurrent.push(`<div class="cal-status-current-item">● ${escapeHtml(stage || label)} 지정 중${dateSuffix}</div>`);
+            // 단기과열 예외: §1에 지정 기간(b.start~b.end)을 기간으로 표시 (다음 단계 예정 기간 아님)
+            if (isShortTermHot && b.start && b.end) {
+              sectionCurrent.push(`<div class="cal-status-current-item">● 지정 기간: <span class="cal-badge-date-range">${escapeHtml(b.start)} ~ ${escapeHtml(b.end)}</span></div>`);
+            }
+            // 단일가매매 적용 중 — 투자경고/투자위험/단기과열/투자주의(해당 시)
+            if (b.single_price === true) {
+              const spDetail = isShortTermHot
+                ? '3거래일간 30분 단위 (KRX 규정)'
+                : '매수 시 위탁증거금 100%';
+              sectionCurrent.push(`<div class="cal-status-current-item">● 단일가매매 적용 중 — ${escapeHtml(spDetail)}</div>`);
             }
           }
         }
-        // REQ-008: 단기과열 '지정' 카드에만 단일가매매 부기 라인 (예고/predicted 제외)
-        if (b.single_price === true && (b.label || '').includes('단기과열')) {
-          parts.push(`<div class="cal-status-single-note"><strong>단일가매매 적용</strong> — 3거래일간 30분 단위 <span class="cal-status-single-src">(KRX 규정)</span></div>`);
+
+        // === § 2. 다음 단계 ============================================
+        // 단기과열은 조건 판정이 아닌 즉석 판정(종가 +20%↑)이므로 조건표 없음 → §2 생략.
+        // predicted는 공시 전 추정 — §2를 "예고" 성격으로 단독 렌더.
+        const sectionNext = [];
+        let nextStageLabel = '';
+        if (hasThresholds && !isShortTermHot) {
+          nextStageLabel = isPredicted
+            ? (stage || '')                   // predicted: 배지 자체가 예고 → 해당 stage 자체 지정 조건
+            : (isNotice ? stage : nextStage); // 공시 예고: stage 자체 / 일반: 다음 stage
+
+          if (nextStageLabel) {
+            // 전환 시점 행
+            let transitionText;
+            if (isPredicted) {
+              transitionText = `▶ 지정 시점: 공시 전 (자체 추정) ─ 아래 조건 전부 충족 시`;
+            } else {
+              // 다음 거래일 추정 — b.view_date 기준 +1일 (간이). next_trading_day가 있으면 우선.
+              let nextDate = b.next_trading_day || '';
+              if (!nextDate && vd) {
+                try {
+                  const d = new Date(vd + 'T00:00:00');
+                  d.setDate(d.getDate() + 1);
+                  nextDate = d.toISOString().slice(0, 10);
+                } catch (e) {}
+              }
+              const dateText = nextDate ? `익일 (${nextDate})` : '익일';
+              transitionText = `▶ 전환 시점: ${dateText} ─ 아래 조건 전부 충족 시`;
+            }
+            sectionNext.push(`<div class="cal-status-next-header">${escapeHtml(transitionText)}</div>`);
+
+            // 지정 예정 기간 행 — b.start~b.end가 "다음 단계 예정 기간"
+            if (b.start) {
+              let periodText = escapeHtml(b.start);
+              let daysExtra = '';
+              if (b.end && b.end !== b.start) {
+                periodText += ` ~ ${escapeHtml(b.end)}`;
+                try {
+                  const days = Math.round((new Date(b.end) - new Date(b.start)) / 86400000);
+                  if (days > 0) daysExtra = ` (${days}거래일간 ${escapeHtml(nextStageLabel)})`;
+                } catch (e) {}
+              }
+              const periodHtml = `<span class="cal-badge-date-range">${periodText}</span>${daysExtra}`;
+              sectionNext.push(`<div class="cal-status-next-header">▶ 지정 예정 기간: ${periodHtml}</div>`);
+            }
+
+            // 조건 표 표제
+            const tableTitleTime = isPredicted ? '미확정' : '익일 00시 기준';
+            sectionNext.push(`<h4 class="cal-status-table-title">🎯 ${escapeHtml(nextStageLabel)} 지정 조건 (${escapeHtml(tableTitleTime)})</h4>`);
+
+            // 조건 표 (thresholds[]) — v3.3 유지
+            const rows = b.thresholds.map(t => {
+              const diff = t.current - t.threshold;
+              const diffPct = t.threshold > 0 ? (diff / t.threshold * 100) : 0;
+              const sign = diff >= 0 ? '+' : '';
+              let arrow, diffCls;
+              if (diff > 0) { arrow = '▲'; diffCls = 'th-diff trig'; }
+              else if (diffPct >= -5) { arrow = '·'; diffCls = 'th-diff near'; }
+              else { arrow = '▼'; diffCls = 'th-diff safe'; }
+              const rowCls = t.triggered ? 'th-row triggered' : 'th-row safe';
+              return `<tr class="${rowCls}">
+                <td class="th-cond">${escapeHtml(t.desc)}</td>
+                <td class="th-base">${t.base_price ? t.base_price.toLocaleString() + '원' : '-'}</td>
+                <td class="th-thresh">${t.threshold.toLocaleString()}원</td>
+                <td class="th-cur">${t.current.toLocaleString()}원</td>
+                <td class="${diffCls}">${arrow}${sign}${diffPct.toFixed(1)}%</td>
+              </tr>`;
+            }).join('');
+            sectionNext.push(`<div class="cal-status-table-wrap"><table class="cal-status-table v33">
+              <thead><tr><th>조건</th><th>기준가</th><th>임계가</th><th>현재가</th><th>차이</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table></div>`);
+
+            if (isPredicted) {
+              sectionNext.push(`<div class="cal-status-next-note">공시 전이므로 KRX 확정 조건과 다를 수 있음</div>`);
+            }
+          }
         }
-        return `<div class="cal-status-detail v3${isPredicted ? ' predicted' : ''}">${parts.join('')}</div>`;
+
+        // 단기과열 §2: 조건표는 없지만 연장 규정 안내
+        if (isShortTermHot && !isPredicted) {
+          sectionNext.push(`<div class="cal-status-next-header">▶ 해제 종가 +20%↑ 시 3거래일 1회 연장 (즉석 판정)</div>`);
+        }
+
+        // upcoming + thresholds 없음: "지정 예정" 단독 안내 (§1도 비어있음)
+        if (tempo === 'upcoming' && !hasThresholds && !isPredicted && !isNotice && b.start) {
+          nextStageLabel = stage || label;
+          let periodText = escapeHtml(b.start);
+          if (b.end && b.end !== b.start) periodText += ` ~ ${escapeHtml(b.end)}`;
+          sectionNext.push(`<div class="cal-status-next-header">▶ 지정 예정일: <span class="cal-badge-date-range">${periodText}</span> (${escapeHtml(nextStageLabel)})</div>`);
+        }
+
+        // === § 3. KRX 규정 =============================================
+        const sectionReg = [];
+        // 현재 단계 규정 (predicted/notice/upcoming은 현재 지정 아님 → 예정 규정만)
+        if (stage && !isPredicted && !isNotice && tempo !== 'upcoming') {
+          const curInsight = _resolveInsight(label);
+          if (curInsight) sectionReg.push(`<div class="cal-status-insight">💡 ${escapeHtml(stage)}(현재): ${escapeHtml(curInsight)}</div>`);
+        }
+        // 예정 단계 규정
+        if (nextStageLabel) {
+          const nextInsight = _resolveInsight(nextStageLabel);
+          if (nextInsight) {
+            const tag = isPredicted ? '지정 시' : '예정';
+            sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(nextStageLabel)}(${tag}): ${escapeHtml(nextInsight)}</div>`);
+          }
+        } else if ((isNotice || isPredicted) && stage) {
+          // 예고/predicted이지만 nextStageLabel 미설정인 경우 — 해당 stage 자체 규정 표시
+          const ins = _resolveInsight(stage);
+          if (ins) sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(stage)}(${isPredicted ? '지정 시' : '예정'}): ${escapeHtml(ins)}</div>`);
+        }
+        // DART 버튼 (공시 기반만)
+        if (!isPredicted && stage) {
+          const allDiscs = st.disclosures || [];
+          if (allDiscs.length > 0) {
+            const matched = allDiscs.find(d => (d.category || '').includes(stage));
+            const dartUrl = matched && matched.url;
+            if (dartUrl) {
+              sectionReg.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
+            }
+          }
+        }
+
+        // === 합치기 ====================================================
+        const nextSectionTitle = nextStageLabel
+          ? `다음 단계 (${escapeHtml(nextStageLabel)} 예고)`
+          : (isShortTermHot ? '다음 단계 (연장 규정)' : '다음 단계');
+        const sections = [];
+        sections.push(`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(label)}</span>${labelExtra}</div>`);
+        if (sectionCurrent.length) {
+          sections.push(`<section class="cal-status-section current"><h3>현재 상태</h3>${sectionCurrent.join('')}</section>`);
+        }
+        if (sectionNext.length) {
+          sections.push(`<section class="cal-status-section next"><h3>${nextSectionTitle}</h3>${sectionNext.join('')}</section>`);
+        }
+        if (sectionReg.length) {
+          sections.push(`<section class="cal-status-section regulation"><h3>KRX 규정</h3>${sectionReg.join('')}</section>`);
+        }
+        return `<div class="cal-status-detail v3 v5${isPredicted ? ' predicted' : ''}">${sections.join('')}</div>`;
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
