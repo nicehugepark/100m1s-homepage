@@ -381,10 +381,11 @@ function renderCalExpandContent(date, data) {
       }).join('');
 
       // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
-      // FLR-20260423-001/002 대응: togusa 공급(krx-stage-conditions.json 매트릭스 기반) KRX 정식 규정.
-      // 존댓말 + "단일가매매"는 단기과열 유일 정당 출처 명시 (시장경보 3단계와 분리).
-      // 상장폐지/관리종목/거래정지/단기과열예고는 togusa 원안 범위 밖이나 UX 회귀 방지 위해 기존 문구 유지.
-      const _insights = {
+      // FLR-20260423-002 (P0-1, DSN-001 §15.5 / §17.4): 하드코딩 금지 원칙 단계 적용.
+      // SSOT = rules/krx-stage-conditions.json → build_daily.py가 badge.auto_effects[]에 복제.
+      // renderer는 badge.auto_effects[] 있으면 그것만 사용. 없으면 아래 _insightsFallback 사용.
+      // 데이터 주입(data-dev) 완료 후 후속 PR에서 _insightsFallback 완전 삭제 예정.
+      const _insightsFallback = {
         '투자주의': '이상 급등·거래량 급증 등 주의 신호가 포착된 종목입니다. 자동 규제는 없으며, 조건 지속 시 익일 투자경고 예고로 승급될 수 있습니다.',
         '투자경고': '신용거래 금지·위탁증거금 100% 현금·대용증권 불인정이 자동 적용됩니다. 지정 후 10거래일 경과 시 재심사로 해제 또는 투자위험 승급을 결정합니다.',
         '투자위험': '투자경고 효과(신용 금지·현금 증거금·대용 불인정)가 유지되며, 지정 직전 1거래일 매매거래정지가 적용됩니다. 승급 후 10거래일 경과 시 재심사.',
@@ -395,9 +396,26 @@ function renderCalExpandContent(date, data) {
         '상장폐지': '상장폐지 절차 진행 — 정리매매 후 거래 종료.',
         '단기과열예고': '예고일부터 10거래일 이내 모든 조건 충족 시 단기과열 지정.',
       };
-      const _resolveInsight = (label) => {
-        for (const k in _insights) if (label.includes(k)) return _insights[k];
+      // auto_effects 우선, 없으면 _insightsFallback 맵에서 label 기반 탐색.
+      // auto_effects[]는 togusa JSON 직렬화 배열. 각 item: {id, label, quote, source_article}.
+      const _resolveAutoEffects = (b) => {
+        if (b && Array.isArray(b.auto_effects) && b.auto_effects.length > 0) {
+          return b.auto_effects.map(e => (e && (e.quote || e.label)) || '').filter(Boolean);
+        }
+        return null; // null = 폴백 경로로 이동 신호
+      };
+      const _resolveInsightFallback = (label) => {
+        for (const k in _insightsFallback) if (label.includes(k)) return _insightsFallback[k];
         return '';
+      };
+      // legacy API 유지 (v6 블록 호출부 호환). auto_effects 있으면 ul, 없으면 legacy 문구 폴백
+      const _resolveInsight = (labelOrBadge) => {
+        if (typeof labelOrBadge === 'object' && labelOrBadge !== null) {
+          const ae = _resolveAutoEffects(labelOrBadge);
+          if (ae) return ae.join(' · ');
+          return _resolveInsightFallback(labelOrBadge.label || '');
+        }
+        return _resolveInsightFallback(labelOrBadge || '');
       };
       // v4: KRX 단계 진행 표 — "현재 X → 익일 Y 진입"
       // 라벨이 "X 예고"면 현재=X 직전 단계, 다음=X.
@@ -664,26 +682,40 @@ function renderCalExpandContent(date, data) {
         }
 
         // === § 3. KRX 규정 (비-투자경고용 v5.1 유지) ====================
-        // FLR-20260423-002 §3: 투자주의 predicted는 auto_effects=[]라 §3에 쓸 내용 없음 → 생성 스킵
-        // (krx-stage-conditions.json stages[0] 근거, v6 renderer의 단일가/신용금지 오염 재발 방지)
-        const skipRegForAdvisoryNoticePredicted = (stage === '투자주의' && isPredicted);
+        // FLR-20260423-002 §3 + DSN-001 §16.2.1: 투자주의 predicted는 auto_effects=[]
+        // (krx-stage-conditions.json stages[0]), §3에 쓸 내용 없음 → DOM 자체 미생성.
+        // v7.2 state enum 도입 시 b.state.startsWith('predicted')도 동일 트리거로 수용.
+        const _stateIsPredicted = !!(b.state && typeof b.state === 'string' && b.state.startsWith('predicted'));
+        const skipRegForAdvisoryNoticePredicted = (stage === '투자주의' && (isPredicted || _stateIsPredicted));
         const sectionReg = [];
         if (!isAdvisoryWarning && !skipRegForAdvisoryNoticePredicted) {
+          // auto_effects[] 우선 렌더링. 배열이면 각 항목을 별도 행으로. 폴백은 단일 문구 1행.
+          const _renderInsightRows = (stageName, tagLabel, cls) => {
+            const ae = _resolveAutoEffects(b);
+            if (ae && ae.length > 0) {
+              ae.forEach(line => {
+                sectionReg.push(`<div class="cal-status-insight ${cls}"><span class="cal-status-insight-stage">💡 ${escapeHtml(stageName)}(${escapeHtml(tagLabel)}):</span> ${escapeHtml(line)}</div>`);
+              });
+              return true;
+            }
+            // 폴백: label 기반 문구
+            const fallback = _resolveInsightFallback(stageName);
+            if (fallback) {
+              sectionReg.push(`<div class="cal-status-insight ${cls}">💡 ${escapeHtml(stageName)}(${escapeHtml(tagLabel)}): ${escapeHtml(fallback)}</div>`);
+              return true;
+            }
+            return false;
+          };
           // 현재 단계 규정 (predicted/notice/upcoming은 현재 지정 아님 → 예정 규정만)
           if (stage && !isPredicted && !isNotice && tempo !== 'upcoming') {
-            const curInsight = _resolveInsight(label);
-            if (curInsight) sectionReg.push(`<div class="cal-status-insight">💡 ${escapeHtml(stage)}(현재): ${escapeHtml(curInsight)}</div>`);
+            _renderInsightRows(stage, '현재', '');
           }
           // 예정 단계 규정
           if (nextStageLabel) {
-            const nextInsight = _resolveInsight(nextStageLabel);
-            if (nextInsight) {
-              const tag = isPredicted ? '지정 시' : '예정';
-              sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(nextStageLabel)}(${tag}): ${escapeHtml(nextInsight)}</div>`);
-            }
+            const tag = isPredicted ? '지정 시' : '예정';
+            _renderInsightRows(nextStageLabel, tag, 'predicted');
           } else if ((isNotice || isPredicted) && stage) {
-            const ins = _resolveInsight(stage);
-            if (ins) sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(stage)}(${isPredicted ? '지정 시' : '예정'}): ${escapeHtml(ins)}</div>`);
+            _renderInsightRows(stage, (isPredicted ? '지정 시' : '예정'), 'predicted');
           }
           // DART 버튼 (공시 기반만)
           if (!isPredicted && stage && !dartMovedToNext && dartLinkHtml) {
@@ -733,15 +765,19 @@ function renderCalExpandContent(date, data) {
             ? `<section class="cal-status-section v6 schedule"><h3>이 종목의 일정</h3>${s2Items.join('')}</section>`
             : '';
 
-          // --- §3. 지정 시 적용되는 제한 (토구사 확정 리스트 4줄) ---
-          // 예상 재심사일 동적 계산: b.end(10거래일 후 자동 해제 심사일) 재사용
+          // --- §3. 지정 시 적용되는 제한 ---
+          // DSN-001 §15.5: badge.auto_effects[] JSON 우선. 없으면 기존 토구사 확정 4줄 폴백.
+          // data-dev 필드 주입(§16.6) 완료 후 후속 PR에서 폴백 삭제 예정.
           const reexamDate = b.end || '';
-          const s3Items = [
-            '매수 시 위탁증거금 100% (현금)',
-            '신용융자 매수 불가',
-            '대용증권 불인정',
-            '추가 급등(2일 40%↑) 시 익일 매매거래정지 가능',
-          ];
+          const s3AutoEffects = _resolveAutoEffects(b);
+          const s3Items = (s3AutoEffects && s3AutoEffects.length > 0)
+            ? s3AutoEffects
+            : [
+                '매수 시 위탁증거금 100% (현금)',
+                '신용융자 매수 불가',
+                '대용증권 불인정',
+                '추가 급등(2일 40%↑) 시 익일 매매거래정지 가능',
+              ];
           const s3ItemsHtml = s3Items.map(t => `<li class="cal-v6-rule-item">${escapeHtml(t)}</li>`).join('');
           const s3ReexamHtml = reexamDate
             ? `<div class="cal-v6-rule-footnote">예상 재심사: <span class="cal-v6-schedule-date">${escapeHtml(reexamDate)}</span></div>`
