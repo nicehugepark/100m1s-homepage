@@ -375,7 +375,7 @@ function renderCalExpandContent(date, data) {
         const predCls = (b.source === 'predicted' || (b.label||'').includes('예상') || (b.label||'').includes('근접')) ? ' predicted' : '';
         const mainBadge = `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
         const singleBadge = b.single_price === true
-          ? `<span class="cal-status-badge sev-single">단일가매매</span>`
+          ? `<span class="cal-status-badge sev-single" title="투자경고/투자위험 지정 시 자동 단일가 매매 (30분 단위, 매수 시 위탁증거금 100%). 상세는 투자경고 배지 상세 참조.">단일가매매</span>`
           : '';
         return mainBadge + singleBadge;
       }).join('');
