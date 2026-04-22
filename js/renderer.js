@@ -721,9 +721,10 @@ function renderCalExpandContent(date, data) {
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
       const base = `${window.location.origin}/news.html`;
-      const shareUrl = dateStr
-        ? `${base}?date=${dateStr}#stock-${code}`
-        : `${base}#stock-${code}`;
+      // 하이브리드: #stock-{code}-{인코딩된 이름} (코드로만 파싱, 이름은 육안 식별용)
+      const nameSlug = encodeURIComponent(name || '');
+      const hashPart = nameSlug ? `#stock-${code}-${nameSlug}` : `#stock-${code}`;
+      const shareUrl = dateStr ? `${base}?date=${dateStr}${hashPart}` : `${base}${hashPart}`;
       const shareTitle = `${name} - 100M1S 뉴스`;
       const shareText = `${name} (${code})`;
       try {
@@ -798,7 +799,8 @@ function showShareToast(msg) {
 // 해시에 #stock-{code} 있으면 해당 카드로 스크롤 + 강조
 function _scrollToHashStockIfAny() {
   const hash = window.location.hash || '';
-  const m = hash.match(/^#stock-([A-Za-z0-9]+)$/);
+  // 하이브리드 형식 #stock-{code}-{name} 또는 기존 #stock-{code} 둘 다 수용 (code만 추출)
+  const m = hash.match(/^#stock-([A-Za-z0-9]+)(?:-.+)?$/);
   if (!m) return;
   // 1회만 실행 — 재렌더 시 중간 스크롤 위치로 override되지 않도록
   if (window._scrolledToStockHash === hash) return;
