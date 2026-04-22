@@ -8,18 +8,24 @@
   --neg: #B8302E; --neg-bg: #FFF0F0;
   --neu: #6B7A99; --neu-bg: #F2F4F8;
 
-  /* 카드 내부 좌측 인덴트 변수 (외형 불변 리팩토링, 2026-04-22) */
+  /* 카드 내부 좌측 인덴트 변수 (외형 불변 리팩토링, 2026-04-22)
+     [레이아웃 가이드라인 — 배지 정렬 원칙]
+     `.cal-feature-badges`는 `.cal-feature-card` 직속 자식이므로 카드 왼쪽 기준 절대 padding을 가진다.
+     뉴스 텍스트·테마칩·소스 pill은 `.cal-feature-body > .cal-feature-summary` 하위이므로
+     실제 x좌표는 `--card-indent-body`로 결정된다.
+     배지를 뉴스 텍스트와 같은 x에 맞추려면 `--card-indent-badges`는 반드시 `--card-indent-body`와 동일해야 한다.
+     (`--card-indent-news`는 `.stock-news` 박스 전용이며 `.cal-feature-card`와 무관) */
   --card-indent-header: 12px;  /* cal-feature-head (shorthand 3-value의 좌우 값) */
   --card-indent-nums: 44px;    /* cal-feature-nums (차트 영역 정렬) */
-  --card-indent-badges: var(--card-indent-news);  /* news 텍스트·소스 pill과 x좌표 일치 (2026-04-22 대표 재정정) */
+  --card-indent-badges: var(--card-indent-body);  /* cal-feature-body 하위 요소(뉴스·테마·소스 pill)와 x좌표 일치 (2026-04-22 원인 확정 수정) */
   --card-indent-body: 12px;    /* cal-feature-body (desktop은 padding-left=12) */
-  --card-indent-news: 36px;    /* stock-news 기준값 */
+  --card-indent-news: 36px;    /* stock-news 기준값 (cal-feature-card와 무관한 별도 박스) */
 }
 @media (max-width: 640px) {
   :root {
     --card-indent-header: 6px;
     --card-indent-nums: 26px;
-    --card-indent-badges: var(--card-indent-news);  /* 모바일도 news와 일치 */
+    --card-indent-badges: var(--card-indent-body);  /* 모바일도 body와 일치 */
     --card-indent-body: 26px;
     --card-indent-news: 10px;
   }
