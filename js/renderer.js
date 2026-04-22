@@ -310,7 +310,9 @@ function renderCalExpandContent(date, data) {
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
         const sectionId = `disc-${escapeHtml(codeId)}`;
-        discBadgeHtml = `<span class="cal-disc-badge">공시</span>${cbWarn}`;
+        // 2026-04-22 핫픽스: "공시" 배지 전면 생략 — status 배지(투자주의/경고/위험/단기과열)와 의미 중복.
+        // CB 경고 배지는 별개 정보이므로 유지.
+        discBadgeHtml = cbWarn;
         discListHtml = `<div class="cal-disc-section" id="${sectionId}">${itemsHtml}${moreHtml}</div>`;
       }
       // 뉴스 제목 + 링크 (제목 표시)
@@ -476,10 +478,11 @@ function renderCalExpandContent(date, data) {
           const periodHtml = `<span class="cal-badge-date-range">${escapeHtml(periodText)}</span>${extra}`;
           // FLR-011 v5: view_date 기준 상태 마커 — "예정/진행중/종료".
           // 4/17 페이지에서 4/20~5/4 효력 표시 시 "예정"이 명확히 드러나야 함.
+          // 2026-04-22 핫픽스: "[예정]" 라벨이 오늘/내일 상태 혼동 유발 — "지정 예정 (YYYY-MM-DD)" 형태로 명시.
           let statusMark = '';
           const vd = b.view_date;
           if (vd) {
-            if (vd < b.start) statusMark = ' <span class="cal-period-mark upcoming">예정</span>';
+            if (vd < b.start) statusMark = ` <span class="cal-period-mark upcoming">지정 예정 (${escapeHtml(b.start)})</span>`;
             else if (b.end && vd > b.end) statusMark = ' <span class="cal-period-mark ended">종료</span>';
             else statusMark = ' <span class="cal-period-mark active">진행중</span>';
           }
@@ -514,6 +517,18 @@ function renderCalExpandContent(date, data) {
         const insight = _resolveInsight(b.label || '');
         if (insight) parts.push(`<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>`);
         if (b.regulation) parts.push(`<div class="cal-status-regulation">${escapeHtml(b.regulation)}</div>`);
+        // 2026-04-22 핫픽스: 공시 기반 배지(predicted 제외)에 DART 원문 링크 버튼 추가.
+        // disclosures 중 category가 stage 키워드(투자주의/경고/위험/단기과열/관리종목)를 포함하는 첫 항목 url 사용.
+        if (!isPredicted) {
+          const stage = _extractStage(b.label || '');
+          if (stage && discs.length > 0) {
+            const matched = discs.find(d => (d.category || '').includes(stage));
+            const dartUrl = matched && matched.url;
+            if (dartUrl) {
+              parts.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">DART에서 공시 원문 보기 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
+            }
+          }
+        }
         // REQ-008: 단기과열 '지정' 카드에만 단일가매매 부기 라인 (예고/predicted 제외)
         if (b.single_price === true && (b.label || '').includes('단기과열')) {
           parts.push(`<div class="cal-status-single-note"><strong>단일가매매 적용</strong> — 3거래일간 30분 단위 <span class="cal-status-single-src">(KRX 규정)</span></div>`);
