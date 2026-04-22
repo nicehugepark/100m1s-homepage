@@ -721,8 +721,9 @@ function renderCalExpandContent(date, data) {
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
       const base = `${window.location.origin}/news.html`;
-      // 하이브리드: #stock-{code}-{인코딩된 이름} (코드로만 파싱, 이름은 육안 식별용)
-      const nameSlug = encodeURIComponent(name || '');
+      // 하이브리드: #stock-{code}-{이름} (한글 raw 유지 — 카톡 등에서 디코드 없이 읽히도록)
+      // URL fragment는 현대 브라우저가 한글 raw 허용. 공백/특수문자만 제거.
+      const nameSlug = (name || '').replace(/[\s\/?#%&]/g, '');
       const hashPart = nameSlug ? `#stock-${code}-${nameSlug}` : `#stock-${code}`;
       const shareUrl = dateStr ? `${base}?date=${dateStr}${hashPart}` : `${base}${hashPart}`;
       try {
