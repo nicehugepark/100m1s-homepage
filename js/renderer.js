@@ -140,7 +140,7 @@ function renderCalExpandContent(date, data) {
       } else {
         themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
-      return { rank: i + 1, name: s.name, ticker: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price: s.last_price ?? s.price ?? interp?.close_price };
+      return { rank: i + 1, name: s.name, ticker: s.ticker, code: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price: s.last_price ?? s.price ?? interp?.close_price };
     });
   } else if (interpByName.size > 0) {
     // kiwoom JSON 없음 → stock-*.json (interpretedByName)에서 종목 구성
