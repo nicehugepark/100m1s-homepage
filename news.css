@@ -875,7 +875,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   background: var(--bg2);
   transition: background 0.12s, box-shadow 0.3s;
   position: relative; /* 공유 버튼 absolute 배치용 */
-  scroll-margin-top: 88px; /* sticky header 72 + 16 여유 */
+  scroll-margin-top: calc(88px + env(safe-area-inset-top, 0px));
+}
+@media (max-width: 640px) {
+  .cal-feature-card { scroll-margin-top: calc(100px + env(safe-area-inset-top, 0px)); }
 }
 .cal-feature-card:hover { background: var(--am4); }
 
