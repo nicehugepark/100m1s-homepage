@@ -1,6 +1,6 @@
 {
   "date": "2026-04-22",
-  "generated_at": "2026-04-22T18:19:07.360736",
+  "generated_at": "2026-04-22T18:30:52.159366",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3027,7 +3027,7 @@
       },
       "status_badges": [
         {
-          "label": "투자주의 예상",
+          "label": "투자주의 근접",
           "severity": "caution",
           "source": "predicted",
           "thresholds": [
@@ -3049,7 +3049,7 @@
           "single_price": false
         },
         {
-          "label": "단기과열 예상",
+          "label": "단기과열 근접",
           "severity": "hot",
           "source": "predicted",
           "thresholds": [
@@ -3602,27 +3602,6 @@
               "triggered": false
             }
           ]
-        },
-        {
-          "label": "투자경고 예고",
-          "severity": "warning",
-          "start": "2026-04-16",
-          "end": "2026-04-29",
-          "summary": "퍼스텍이 4월 16일부터 투자주의종목으로 지정(2026-04-16 당일). 지정예고사유는 4월 15일 종가가 5일 전 종가 대비 60% 이상 상승. 4월 16~29일 내 3가지 조건 모두 충족 시 익일 투자경고종목으로 지정될 수 있음.",
-          "condition": "판단일(T) 종가가 T-5 대비 60% 이상 상승 AND 판단일 종가가 최근 15일 중 최고가 AND T-5 기준 주가상승률이 동기간 업종지수 상승률의 5배 이상",
-          "regulation": "투자주의: 2026-04-16(1일간) / 투자경고 지정 판단기간: 2026-04-16 ~ 2026-04-29",
-          "view_date": "2026-04-22",
-          "next_trading_day": "2026-04-23",
-          "single_price": false,
-          "thresholds": [
-            {
-              "desc": "T-5(2026-04-13) 대비 60%↑",
-              "base_price": 12000,
-              "threshold": 19200,
-              "current": 16360,
-              "triggered": false
-            }
-          ]
         }
       ],
       "intraday": {
@@ -3949,7 +3928,7 @@
       },
       "status_badges": [
         {
-          "label": "단기과열 예상",
+          "label": "단기과열 근접",
           "severity": "hot",
           "source": "predicted",
           "thresholds": [
@@ -4609,7 +4588,7 @@
       },
       "status_badges": [
         {
-          "label": "투자경고 예상",
+          "label": "투자경고 근접",
           "severity": "warning",
           "source": "predicted",
           "thresholds": [
@@ -4631,7 +4610,7 @@
           "single_price": false
         },
         {
-          "label": "단기과열 예상",
+          "label": "단기과열 근접",
           "severity": "hot",
           "source": "predicted",
           "thresholds": [
@@ -5897,7 +5876,7 @@
       },
       "status_badges": [
         {
-          "label": "단기과열 예상",
+          "label": "단기과열 근접",
           "severity": "hot",
           "source": "predicted",
           "thresholds": [
