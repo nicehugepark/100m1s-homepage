@@ -123,7 +123,7 @@ function renderCalExpandContent(date, data) {
     for (const [name, interp] of interpByName) {
       if (featureItems.length >= 6) break;
       const themes = (interp.themes || []).slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
-      featureItems.push({ name, pct: interp.change_pct ?? null, themes, links: [], ticker: interp.code || '', reason: '', interp });
+      featureItems.push({ name, pct: interp.change_pct ?? null, themes, links: [], code: interp.code || '', ticker: interp.code || '', reason: '', interp });
     }
   }
 
@@ -155,6 +155,7 @@ function renderCalExpandContent(date, data) {
       todayStocks.push({
         rank: interp.rank || idx,
         name,
+        code: interp.code || interp.ticker || '',
         ticker: interp.code || interp.ticker || '',
         pct: interp.change_pct ?? null,
         amount: interp.trade_amount ?? null,
