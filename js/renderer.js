@@ -451,18 +451,19 @@ function renderCalExpandContent(date, data) {
       };
       // REQ-008: 단기과열 지정 + single_price 뱃지는 regulation/start 없어도 부기 라인 노출 위해 detail 영역 포함
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
-        // v4: predicted 라벨은 dashed border + "예상" 표기로 공시 기반과 시각 구분
+        // v4: predicted 라벨은 dashed border로 공시 기반과 시각 구분 (2026-04-22: 라벨 자체에 "예상" 포함 시 [예상] 중복 제거)
         const isPredicted = (b.source === 'predicted') || (b.label || '').includes('예상');
-        const labelExtra = isPredicted ? ' <span class="cal-status-predicted-tag">[예상]</span>' : '';
+        const labelHasPredictedText = (b.label || '').includes('예상');
+        const labelExtra = (isPredicted && !labelHasPredictedText) ? ' <span class="cal-status-predicted-tag">[예상]</span>' : '';
         const parts = [`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(b.label || '')}</span>${labelExtra}</div>`];
         // v4: 진행 표 — "현재 → 다음" 1줄 (라벨 바로 아래)
         const progress = _resolveProgress(b);
         if (progress) parts.push(`<div class="cal-status-progress">→ ${escapeHtml(progress)}</div>`);
-        // 기간 행
+        // 기간 행 — 2026-04-22: 날짜 범위 강조 (`.cal-badge-date-range` span), 모든 status 배지 공통
         if (b.start) {
           let periodText = b.start;
           if (b.end && b.end !== b.start) periodText += ` ~ ${b.end}`;
-          // 거래일 수 추정
+          // 달력일 수 (거래일 아님 — 배지 라벨의 '3거래일'은 KRX 거래일 기준이므로 별개)
           let extra = '';
           if (b.start && b.end) {
             try {
@@ -470,6 +471,7 @@ function renderCalExpandContent(date, data) {
               if (days > 0) extra = ` (${days}일)`;
             } catch (e) {}
           }
+          const periodHtml = `<span class="cal-badge-date-range">${escapeHtml(periodText)}</span>${extra}`;
           // FLR-011 v5: view_date 기준 상태 마커 — "예정/진행중/종료".
           // 4/17 페이지에서 4/20~5/4 효력 표시 시 "예정"이 명확히 드러나야 함.
           let statusMark = '';
@@ -479,7 +481,7 @@ function renderCalExpandContent(date, data) {
             else if (b.end && vd > b.end) statusMark = ' <span class="cal-period-mark ended">종료</span>';
             else statusMark = ' <span class="cal-period-mark active">진행중</span>';
           }
-          parts.push(`<div class="cal-status-period">📅 ${periodText}${extra}${statusMark}</div>`);
+          parts.push(`<div class="cal-status-period">📅 ${periodHtml}${statusMark}</div>`);
         }
         // 조건 표 (thresholds[]) — v3.3: 발동 컬럼 제거 + 차이 색상·기호 강조 (대표 19:53 KST)
         if (b.thresholds && b.thresholds.length > 0) {
