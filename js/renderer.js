@@ -52,6 +52,35 @@ function renderNewsCard(card) {
   `;
 }
 
+// DSN-001 §16.1.4 (v7.2): rules_version 배너 — localStorage에 최종 확인 버전 저장, 불일치 시 1회 안내.
+// data.rules_version이 없으면 배너 자체 미생성 (graceful degradation).
+function _buildRulesVersionBanner(rulesVersion) {
+  if (!rulesVersion || typeof rulesVersion !== 'string') return '';
+  const LS_KEY = 'lastSeenRulesVersion';
+  let lastSeen = '';
+  try { lastSeen = localStorage.getItem(LS_KEY) || ''; } catch (e) { return ''; }
+  if (lastSeen === rulesVersion) return ''; // 최신 확인 완료
+  // 배너 1회 표시. 사용자 X 클릭 시 해당 버전을 최신으로 저장.
+  const safeVer = String(rulesVersion).replace(/[^0-9a-zA-Z]/g, '').slice(0, 16);
+  return `<div class="cal-rules-version-banner" role="status" aria-live="polite" data-version="${safeVer}">
+    <span class="cal-rules-version-icon" aria-hidden="true">ℹ️</span>
+    <span class="cal-rules-version-msg">규정 데이터가 갱신되었습니다. 최신 기준으로 보시려면 새로고침을 권장합니다.</span>
+    <button type="button" class="cal-rules-version-close" aria-label="배너 닫기" data-rules-ver="${safeVer}">&times;</button>
+  </div>`;
+}
+// 배너 X 클릭 핸들러 — event delegation (document-level)
+if (typeof document !== 'undefined' && !window.__rulesVerBannerBound) {
+  document.addEventListener('click', (e) => {
+    const btn = e.target && e.target.closest && e.target.closest('.cal-rules-version-close');
+    if (!btn) return;
+    const v = btn.getAttribute('data-rules-ver') || '';
+    try { localStorage.setItem('lastSeenRulesVersion', v); } catch (err) {}
+    const banner = btn.closest('.cal-rules-version-banner');
+    if (banner) banner.remove();
+  });
+  window.__rulesVerBannerBound = true;
+}
+
 function renderCalExpandContent(date, data) {
   const inner = document.getElementById('cal-content');
   const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
@@ -85,7 +114,9 @@ function renderCalExpandContent(date, data) {
     const closedMacroHtml = closedMacro.length > 0
       ? `<div class="cal-macro-strip">${closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
       : '';
+    const _emptyVerBanner = _buildRulesVersionBanner(data && data.rules_version);
     inner.innerHTML = `
+      ${_emptyVerBanner}
       <div class="cal-content-head">
         <div class="cal-content-date">${formatKoDate(date)}</div>
         <div class="cal-content-meta">${closed ? '휴장' : '데이터 없음'}</div>
@@ -579,6 +610,61 @@ function renderCalExpandContent(date, data) {
         // predicted는 공시 전 추정 — §2를 "예고" 성격으로 단독 렌더.
         const sectionNext = [];
         let nextStageLabel = '';
+
+        // DSN-001 §16.1.1 (v7.2): §2 최상단 "기준 시각" 라인 (basis_time/basis_type 있을 때만).
+        // basis_type: 'closing' | 'intraday' | 'previous_closing'. graceful degradation: 필드 없으면 생략.
+        if (b.basis_time && typeof b.basis_time === 'string') {
+          const bt = b.basis_type || '';
+          let basisLabel;
+          // basis_time은 ISO datetime으로 가정. "YYYY-MM-DD HH:MM KST" 형식 변환.
+          let dispTime = b.basis_time;
+          try {
+            const d = new Date(b.basis_time);
+            if (!isNaN(d.getTime())) {
+              const yyyy = d.getFullYear();
+              const mm = String(d.getMonth() + 1).padStart(2, '0');
+              const dd = String(d.getDate()).padStart(2, '0');
+              const hh = String(d.getHours()).padStart(2, '0');
+              const min = String(d.getMinutes()).padStart(2, '0');
+              dispTime = `${yyyy}-${mm}-${dd} ${hh}:${min} KST`;
+            }
+          } catch (e) {}
+          if (bt === 'intraday') basisLabel = `${dispTime} (장중 — 종가 시점에 재계산)`;
+          else if (bt === 'previous_closing') basisLabel = `${dispTime} (직전 영업일 종가 기준)`;
+          else basisLabel = `${dispTime} (종가 기준)`;
+          sectionNext.push(`<div class="cal-status-next-header cal-next-basis">● 기준 시각: <span class="cal-next-basis-time">${escapeHtml(basisLabel)}</span></div>`);
+        }
+
+        // DSN-001 §16.1.3 + §19.6 (v7.3.1): predicted 배지 §2에 "예상 진입" + 면책 `↳` 서브텍스트.
+        // b.predicted_entry 있으면 렌더. 내부: {date, stage, target_price_tick_rounded, target_price_limit_up, remaining_pct}.
+        if (isPredicted && b.predicted_entry && typeof b.predicted_entry === 'object') {
+          const pe = b.predicted_entry;
+          const peDate = pe.date || '';
+          const peStage = pe.stage || stage || '';
+          const entryDateLabel = peDate ? `${escapeHtml(peDate)} (익영업일)` : '';
+          const stageQuoted = peStage ? `'${escapeHtml(peStage)}' 단계` : '';
+          const entryLine = [entryDateLabel, stageQuoted].filter(Boolean).join(', ');
+          sectionNext.push(`<div class="cal-status-next-header cal-next-entry">
+            <div>● 예상 진입   ${entryLine}</div>
+            <div class="cal-predicted-disclaimer">↳ 예측은 공개 종가와 KRX 규정 임계값의 산술 결과 — 실제 지정 여부는 KRX 재량</div>
+          </div>`);
+          // 진입 시나리오 — target_price_tick_rounded + 상한가 경고 (§19.4)
+          if (pe.target_price_tick_rounded != null) {
+            const tpt = Number(pe.target_price_tick_rounded).toLocaleString();
+            const curPrice = (b.current_price != null) ? Number(b.current_price).toLocaleString() : '';
+            const remPct = (pe.remaining_pct != null) ? `+${(Number(pe.remaining_pct) * 100).toFixed(1)}% 필요` : '';
+            const scenarioParts = [`주가 ${tpt}원 이상 마감 시`];
+            if (curPrice || remPct) {
+              const inner = [curPrice ? `현재 ${curPrice}원` : '', remPct].filter(Boolean).join(', ');
+              if (inner) scenarioParts.push(`(${inner})`);
+            }
+            let scenarioHtml = `<div>● 진입 시나리오</div><div class="cal-next-scenario-line">${escapeHtml(scenarioParts.join(' '))}</div>`;
+            if (pe.target_price_limit_up === true) {
+              scenarioHtml += `<div class="cal-next-limit-up-warn">⚠ 전일 대비 상한가(+30%) 근접 — 정확 진입은 KRX 재량</div>`;
+            }
+            sectionNext.push(`<div class="cal-status-next-header cal-next-scenario">${scenarioHtml}</div>`);
+          }
+        }
         if (hasThresholds && !isShortTermHot) {
           nextStageLabel = isPredicted
             ? (stage || '')                   // predicted: 배지 자체가 예고 → 해당 stage 자체 지정 조건
@@ -770,17 +856,19 @@ function renderCalExpandContent(date, data) {
             : '';
 
           // --- §3. 지정 시 적용되는 제한 ---
-          // DSN-001 §15.5: badge.auto_effects[] JSON 우선. 없으면 기존 토구사 확정 4줄 폴백.
-          // data-dev 필드 주입(§16.6) 완료 후 후속 PR에서 폴백 삭제 예정.
+          // DSN-001 §15.5: badge.auto_effects[] JSON 우선.
+          // task #61 (FLR-002 패턴 재연 방지): 기존 폴백 4번째 줄 "추가 급등(2일 40%↑) 시 익일 매매거래정지 가능"은
+          // v1.2 JSON auto_effects[]에 없는 출처 불명 창작 문구로 확인 → 제거.
+          // 폴백은 v1.2 JSON investment_warning.auto_effects[] 3건 label과 실질 동치 문구만 유지.
+          // data-dev 필드 주입(§16.6) 완료 후 후속 PR에서 폴백 완전 삭제 예정.
           const reexamDate = b.end || '';
           const s3AutoEffects = _resolveAutoEffects(b);
           const s3Items = (s3AutoEffects && s3AutoEffects.length > 0)
             ? s3AutoEffects
             : [
-                '매수 시 위탁증거금 100% (현금)',
-                '신용융자 매수 불가',
-                '대용증권 불인정',
-                '추가 급등(2일 40%↑) 시 익일 매매거래정지 가능',
+                '매수 시 위탁증거금 100% 현금 납부',
+                '신용거래 금지',
+                '대용증권 불인정 (KONEX 예외)',
               ];
           const s3ItemsHtml = s3Items.map(t => `<li class="cal-v6-rule-item">${escapeHtml(t)}</li>`).join('');
           const s3ReexamHtml = reexamDate
@@ -793,9 +881,34 @@ function renderCalExpandContent(date, data) {
         }
 
         // === 합치기 (비-투자경고: v5.1 구조 유지, 투자경고: v6 블록) ========
-        const nextSectionTitle = nextStageLabel
-          ? `다음 단계 (${escapeHtml(nextStageLabel)} 예고)`
-          : (isShortTermHot ? '다음 단계 (연장 규정)' : '다음 단계');
+        // DSN-001 §18.3 (v7.3): confidence 기반 §2 헤더 문구 분기. predicted 배지만 적용.
+        // high → "진입 임박 (D+N 예상)", medium → "진입 조건 근접" (날짜 생략), low → 배지 미노출(데이터 단)
+        // predicted가 아니거나 confidence 필드 없으면 기본 "다음 단계 (...)" 문구 유지.
+        let nextSectionTitle;
+        if (isPredicted && b.confidence === 'high' && b.predicted_entry && b.predicted_entry.date) {
+          const peDateShort = b.predicted_entry.date;
+          // D+N 계산: view_date 기준 상대일
+          let dN = '';
+          try {
+            if (vd) {
+              const d0 = new Date(vd + 'T00:00:00');
+              const d1 = new Date(peDateShort + 'T00:00:00');
+              const diff = Math.round((d1 - d0) / 86400000);
+              if (diff > 0) dN = `D+${diff}`;
+            }
+          } catch (e) {}
+          nextSectionTitle = dN ? `진입 임박 (${dN} 예상)` : `진입 임박 (${escapeHtml(peDateShort)} 예상)`;
+        } else if (isPredicted && b.confidence === 'high') {
+          nextSectionTitle = '진입 임박';
+        } else if (isPredicted && b.confidence === 'medium') {
+          nextSectionTitle = '진입 조건 근접';
+        } else if (nextStageLabel) {
+          nextSectionTitle = `다음 단계 (${escapeHtml(nextStageLabel)} 예고)`;
+        } else if (isShortTermHot) {
+          nextSectionTitle = '다음 단계 (연장 규정)';
+        } else {
+          nextSectionTitle = '다음 단계';
+        }
         const sections = [];
         sections.push(`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(label)}</span>${labelExtra}</div>`);
         if (isAdvisoryWarning) {
@@ -987,7 +1100,9 @@ function renderCalExpandContent(date, data) {
     </div>
   `;
 
+  const _rulesVersionBanner = _buildRulesVersionBanner(data && data.rules_version);
   inner.innerHTML = `
+    ${_rulesVersionBanner}
     <div class="cal-content-head">
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">${metaText}</div>

@@ -1464,3 +1464,69 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .stock-range.v2 .range-pcts { font-size: 10px; }
   .stock-range.v2 .range-dates { font-size: 9px; }
 }
+
+/* ───── DSN-001 v7.2/v7.3.1 — P1 신규 스타일 ───── */
+
+/* §16.1.4 rules_version 배너 — 회색 톤, 최상단, X로 닫기 */
+.cal-rules-version-banner {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; margin: 6px 0 10px;
+  background: #F4F6F8; border: 1px solid #D5DBE0; border-radius: 6px;
+  font-size: 12px; color: #555; line-height: 1.4;
+}
+.cal-rules-version-icon { font-size: 13px; flex-shrink: 0; }
+.cal-rules-version-msg { flex: 1; }
+.cal-rules-version-close {
+  background: transparent; border: 0; cursor: pointer;
+  color: #888; font-size: 16px; font-weight: 600;
+  padding: 0 4px; line-height: 1; flex-shrink: 0;
+}
+.cal-rules-version-close:hover { color: #333; }
+
+/* §16.1.1 기준 시각 라인 — §2 최상단, 회색 보조정보 */
+.cal-next-basis {
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+}
+.cal-next-basis-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #444;
+}
+
+/* §16.1.3 면책 서브텍스트 — "예상 진입" 직후, 들여쓰기 + 0.75rem 회색 */
+.cal-next-entry > div:first-child { font-weight: 500; }
+.cal-predicted-disclaimer {
+  display: block;
+  margin-top: 2px;
+  padding-left: 1em;
+  font-size: 0.75rem;
+  color: #8a8a8a;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+/* §19.4 진입 시나리오 + 상한가 경고 */
+.cal-next-scenario > div:first-child { font-weight: 500; }
+.cal-next-scenario-line {
+  padding-left: 1em;
+  font-size: 11.5px;
+  color: #444;
+  font-variant-numeric: tabular-nums;
+}
+.cal-next-limit-up-warn {
+  margin-top: 4px;
+  padding: 3px 8px 3px 1em;
+  font-size: 11px;
+  color: #c53939;
+  background: #FFF0F0;
+  border-left: 2px solid #c53939;
+  border-radius: 0 3px 3px 0;
+}
+
+@media (max-width: 640px) {
+  .cal-rules-version-banner { font-size: 11px; padding: 6px 10px; }
+  .cal-next-basis { font-size: 11px; }
+  .cal-predicted-disclaimer { font-size: 0.7rem; }
+  .cal-next-scenario-line { font-size: 10.5px; }
+}
