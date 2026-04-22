@@ -424,7 +424,7 @@ function renderCalExpandContent(date, data) {
         // v4: source='predicted'(자체 추정 라벨)는 "예상/근접" 텍스트 — 단계 진행 표시 생략
         // "예상/근접"은 가격 조건만 충족, 거래량 미검증 → 진짜 KRX 단계 진입 보장 X
         if ((b.source === 'predicted') || label.includes('예상') || label.includes('근접')) return '';
-        const isNotice = label.includes('예고');
+        const isNotice = label.includes('예고') || (b.view_date && b.start && b.view_date < b.start && !((b.source === 'predicted') || label.includes('예상') || label.includes('근접')));
         // FLR-011 v6: "현재" = view_date(t, 페이지 날짜). "익일" = t+1 거래일.
         // b.end/b.start는 공시 효력 기간 — "현재" 시점이 아님 (별도 기간 행에 표시).
         // view_date가 없고 b.start가 페이지 날짜보다 미래면 "현재"로 표기 금지 (예고 구간 오노출 차단).
@@ -462,7 +462,7 @@ function renderCalExpandContent(date, data) {
         const label = b.label || '';
         const stage = _extractStage(label);
         const isPredicted = (b.source === 'predicted') || label.includes('예상') || label.includes('근접');
-        const isNotice = label.includes('예고');
+        const isNotice = label.includes('예고') || (b.view_date && b.start && b.view_date < b.start && !((b.source === 'predicted') || label.includes('예상') || label.includes('근접')));
         const labelHasPredictedText = label.includes('예상') || label.includes('근접');
         const labelExtra = (isPredicted && !labelHasPredictedText) ? ' <span class="cal-status-predicted-tag">[근접]</span>' : '';
         const hasThresholds = !!(b.thresholds && b.thresholds.length > 0);
