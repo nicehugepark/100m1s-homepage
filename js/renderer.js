@@ -800,6 +800,9 @@ function _scrollToHashStockIfAny() {
   const hash = window.location.hash || '';
   const m = hash.match(/^#stock-([A-Za-z0-9]+)$/);
   if (!m) return;
+  // 1회만 실행 — 재렌더 시 중간 스크롤 위치로 override되지 않도록
+  if (window._scrolledToStockHash === hash) return;
+  window._scrolledToStockHash = hash;
   const code = m[1];
   // 렌더가 비동기이므로 약간의 지연 후 시도 (최대 5회)
   let tries = 0;
