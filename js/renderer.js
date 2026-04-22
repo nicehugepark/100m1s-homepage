@@ -676,8 +676,12 @@ function renderCalExpandContent(date, data) {
             if (b.end && b.end !== b.start) periodText += ` ~ ${escapeHtml(b.end)}`;
             sectionNext.push(`<div class="cal-status-next-header">▶ 지정 예정 기간: <span class="cal-badge-date-range">${periodText}</span> (${escapeHtml(nextStageLabel)})</div>`);
           }
-          const reasonText = b.reason_text || '공시 원문 참조';
-          sectionNext.push(`<div class="cal-status-next-header">📋 지정 사유: ${escapeHtml(reasonText)}</div>`);
+          // 이시카와 임무 3: reason_text 부재/placeholder면 사유 행 자체 미렌더 (placeholder 노출 금지).
+          // _isPlaceholderReason은 v6 §2에서도 쓰이는 유틸, 배지 루프 상단(524행)에서 선언됨.
+          const reasonTextRaw = b.reason_text;
+          if (!_isPlaceholderReason(reasonTextRaw)) {
+            sectionNext.push(`<div class="cal-status-next-header">📋 지정 사유: ${escapeHtml(String(reasonTextRaw).trim())}</div>`);
+          }
           if (dartLinkHtml) sectionNext.push(dartLinkHtml);
         }
 
