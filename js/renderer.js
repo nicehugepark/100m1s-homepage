@@ -310,9 +310,9 @@ function renderCalExpandContent(date, data) {
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
         const sectionId = `disc-${escapeHtml(codeId)}`;
-        // 2026-04-22 핫픽스: "공시" 배지 전면 생략 — status 배지(투자주의/경고/위험/단기과열)와 의미 중복.
-        // CB 경고 배지는 별개 정보이므로 유지.
-        discBadgeHtml = cbWarn;
+        // 2026-04-22 핫픽스 (정정): "공시" 배지는 유지 — 여러 공시 접근 포털 역할.
+        // 투자경고 관련 공시도 이 리스트에 포함되어 DART 링크·요약 접근 가능.
+        discBadgeHtml = `<span class="cal-disc-badge">공시</span>${cbWarn}`;
         discListHtml = `<div class="cal-disc-section" id="${sectionId}">${itemsHtml}${moreHtml}</div>`;
       }
       // 뉴스 제목 + 링크 (제목 표시)
@@ -513,19 +513,18 @@ function renderCalExpandContent(date, data) {
             <tbody>${rows}</tbody>
           </table></div>`);
         }
-        // 인사이트
+        // 인사이트 — KRX 규정 요약 1줄 (해석은 여기 한 군데만; long-text는 공시 섹션에 위임)
         const insight = _resolveInsight(b.label || '');
         if (insight) parts.push(`<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>`);
-        if (b.regulation) parts.push(`<div class="cal-status-regulation">${escapeHtml(b.regulation)}</div>`);
-        // 2026-04-22 핫픽스: 공시 기반 배지(predicted 제외)에 DART 원문 링크 버튼 추가.
-        // disclosures 중 category가 stage 키워드(투자주의/경고/위험/단기과열/관리종목)를 포함하는 첫 항목 url 사용.
+        // 2026-04-22 핫픽스 (정정): b.regulation 블록 제거 — 판단기간 long-text는 period 행 + 공시 섹션 요약과 중복.
+        // 공시 원문 링크는 배지 본인의 공시만(predicted 제외) 1개 매칭하여 DART 버튼으로 제공.
         if (!isPredicted) {
           const stage = _extractStage(b.label || '');
           if (stage && discs.length > 0) {
             const matched = discs.find(d => (d.category || '').includes(stage));
             const dartUrl = matched && matched.url;
             if (dartUrl) {
-              parts.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">DART에서 공시 원문 보기 <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
+              parts.push(`<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`);
             }
           }
         }
