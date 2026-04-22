@@ -455,8 +455,12 @@ function renderCalExpandContent(date, data) {
         if (!next) return '';
         return `현재: ${stage} (${curDate}) → ${dateText} 조건 충족 시 ${next} 진입`;
       };
-      // v5 (DOC-20260422-DSN-001): 3섹션 구조 — ① 현재 상태 / ② 다음 단계 / ③ KRX 규정
-      // 핵심 변경: b.start~b.end를 "다음 단계 지정 예정 기간"으로 해석(§2), 시제 태그 일괄 적용.
+      // v6 (DOC-20260422-DSN-001 v6, FLR-20260423-001): 3섹션 재설계
+      //   §1 "{stage} 예고란" (details 기본 접힘, 제도 공통 설명)
+      //   §2 "이 종목의 일정" (기본 펼침): 예고일 / 지정 예정일 / 사유(placeholder면 미노출)
+      //   §3 "지정 시 적용되는 제한" (리스트 4줄 고정 — 토구사 확정 문구)
+      // 폐기: "(→ § 2 참조)" 문구, "현재 KRX 단계: ..." 라인
+      // 투자경고/투자경고 예고 케이스만 v6 풀 구현. 타 배지는 §1 제목만 적용 + 공통설명 "준비 중" 폴백.
       // REQ-008: 단기과열 지정 + single_price 뱃지는 regulation/start 없어도 부기 라인 노출 위해 detail 영역 포함
       const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
         const label = b.label || '';
@@ -493,18 +497,29 @@ function renderCalExpandContent(date, data) {
           ? `<a class="cal-status-dart-link" href="${escapeHtml(dartUrl)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></a>`
           : '';
 
-        // === § 1. 현재 상태 ============================================
+        // === § 1. {stage} 예고란 (details 접힘, 제도 공통 설명) ==========
+        // v6: §1은 제도 개론을 간단히 설명하는 details. 종목별 데이터 아님.
+        // placeholder reason_text 판정 유틸 (재사용) — §2에서도 사용.
+        const _isPlaceholderReason = (t) => {
+          if (!t) return true;
+          const s = String(t).trim();
+          if (!s) return true;
+          const placeholders = ['공시 원문 참조', '-', '–', '—', 'null', 'N/A', 'n/a', '없음'];
+          return placeholders.includes(s);
+        };
         const sectionCurrent = [];
         // v5.1: upcoming + (notice or predicted) — 3행 블록 (인지 공백 방지)
-        if (tempo === 'upcoming' && (isNotice || isPredicted)) {
-          const prevStageText = b.prev_stage || '투자주의 이하 (정상매매)';
+        // v6에서 §1은 제도 개론 details로 재구성하므로 이 블록은 §1 details 내부 종목 context가 아닌 §2로 이관.
+        // 단 v6는 "투자경고/투자경고 예고 풀 구현, 타 배지 §1 제목만" 방침이라, 기타 배지는 기존 §1 유지.
+        const isAdvisoryWarning = (stage === '투자경고');
+        if (!isAdvisoryWarning && tempo === 'upcoming' && (isNotice || isPredicted)) {
+          // 비-투자경고 배지는 v5.1 구조 유지 — §1 upcoming 3행 (단, v6 FLR: "현재 KRX 단계" 라인, "(→ §2 참조)" 제거)
           const discDateText = disclosureDate || (vd || '');
           sectionCurrent.push(`<div class="cal-status-current-item">● ${escapeHtml(stage || label)} 지정 예고${discDateText ? ` (예고일: ${escapeHtml(discDateText)})` : ''}</div>`);
-          sectionCurrent.push(`<div class="cal-status-current-item">● 현재 KRX 단계: ${escapeHtml(prevStageText)}</div>`);
           if (b.start) {
-            sectionCurrent.push(`<div class="cal-status-current-item">● 예정 조치: ${escapeHtml(b.start)}부터 ${escapeHtml(stage || label)} 지정 (→ § 2 참조)</div>`);
+            sectionCurrent.push(`<div class="cal-status-current-item">● 예정 조치: ${escapeHtml(b.start)}부터 ${escapeHtml(stage || label)} 지정</div>`);
           }
-        } else if (isCurrentlyDesignated) {
+        } else if (!isAdvisoryWarning && isCurrentlyDesignated) {
           // tempo 판정:
           // - ended: b.end 지남 → "해제 완료"
           // - upcoming: b.start가 view_date보다 미래 → §1 아님 (§2에서 다룸)
@@ -646,46 +661,119 @@ function renderCalExpandContent(date, data) {
           if (dartLinkHtml) sectionNext.push(dartLinkHtml);
         }
 
-        // === § 3. KRX 규정 =============================================
+        // === § 3. KRX 규정 (비-투자경고용 v5.1 유지) ====================
         const sectionReg = [];
-        // 현재 단계 규정 (predicted/notice/upcoming은 현재 지정 아님 → 예정 규정만)
-        if (stage && !isPredicted && !isNotice && tempo !== 'upcoming') {
-          const curInsight = _resolveInsight(label);
-          if (curInsight) sectionReg.push(`<div class="cal-status-insight">💡 ${escapeHtml(stage)}(현재): ${escapeHtml(curInsight)}</div>`);
-        }
-        // 예정 단계 규정
-        if (nextStageLabel) {
-          const nextInsight = _resolveInsight(nextStageLabel);
-          if (nextInsight) {
-            const tag = isPredicted ? '지정 시' : '예정';
-            sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(nextStageLabel)}(${tag}): ${escapeHtml(nextInsight)}</div>`);
+        if (!isAdvisoryWarning) {
+          // 현재 단계 규정 (predicted/notice/upcoming은 현재 지정 아님 → 예정 규정만)
+          if (stage && !isPredicted && !isNotice && tempo !== 'upcoming') {
+            const curInsight = _resolveInsight(label);
+            if (curInsight) sectionReg.push(`<div class="cal-status-insight">💡 ${escapeHtml(stage)}(현재): ${escapeHtml(curInsight)}</div>`);
           }
-        } else if ((isNotice || isPredicted) && stage) {
-          // 예고/predicted이지만 nextStageLabel 미설정인 경우 — 해당 stage 자체 규정 표시
-          const ins = _resolveInsight(stage);
-          if (ins) sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(stage)}(${isPredicted ? '지정 시' : '예정'}): ${escapeHtml(ins)}</div>`);
-        }
-        // DART 버튼 (공시 기반만) — v5.1: notice 공시 예고는 §2로 이동 (중복 금지)
-        if (!isPredicted && stage && !dartMovedToNext && dartLinkHtml) {
-          sectionReg.push(dartLinkHtml);
+          // 예정 단계 규정
+          if (nextStageLabel) {
+            const nextInsight = _resolveInsight(nextStageLabel);
+            if (nextInsight) {
+              const tag = isPredicted ? '지정 시' : '예정';
+              sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(nextStageLabel)}(${tag}): ${escapeHtml(nextInsight)}</div>`);
+            }
+          } else if ((isNotice || isPredicted) && stage) {
+            const ins = _resolveInsight(stage);
+            if (ins) sectionReg.push(`<div class="cal-status-insight predicted">💡 ${escapeHtml(stage)}(${isPredicted ? '지정 시' : '예정'}): ${escapeHtml(ins)}</div>`);
+          }
+          // DART 버튼 (공시 기반만)
+          if (!isPredicted && stage && !dartMovedToNext && dartLinkHtml) {
+            sectionReg.push(dartLinkHtml);
+          }
         }
 
-        // === 합치기 ====================================================
+        // === v6 블록 (투자경고·투자경고 예고 전용 풀 구현, FLR-20260423-001) ===
+        // 투자경고(isAdvisoryWarning) + upcoming(notice/predicted) = 투자경고 예고 케이스
+        // 투자경고(isAdvisoryWarning) + active = 투자경고 지정 중 케이스
+        let v6SectionsHtml = '';
+        if (isAdvisoryWarning) {
+          // --- §1. 투자경고 예고란 (details 접힘, 제도 공통 설명) ---
+          // label "투자경고" vs "투자경고 예고" 구분 없이 동일 §1 문구 사용 (배지가 이미 구분)
+          const s1Title = (isNotice || (tempo === 'upcoming' && !isPredicted))
+            ? '투자경고 예고란'
+            : '투자경고란';
+          const s1Body = (isNotice || (tempo === 'upcoming' && !isPredicted))
+            ? 'KRX가 투자주의 단계 종목 중 이상 급등 패턴이 지속되면 지정 예고를 발표하고, 예고일 익일 요건 충족 시 정식 지정됩니다.'
+            : 'KRX 시장경보 2단계. 단일가매매 없음 — 증거금 100% 현금·신용매수 불가·대용 불인정이 자동 적용됩니다.';
+          const s1Html = `<details class="cal-status-section v6 intro"><summary><h3>${escapeHtml(s1Title)}</h3></summary><div class="cal-status-intro-body">${escapeHtml(s1Body)}</div></details>`;
+
+          // --- §2. 이 종목의 일정 (기본 펼침) ---
+          const s2Items = [];
+          const noticeDate = disclosureDate || vd || '';
+          const designationDate = b.start || '';
+          // "예고일" vs "지정일" 구분
+          if (isNotice || (tempo === 'upcoming' && !isPredicted)) {
+            if (noticeDate) s2Items.push(`<div class="cal-v6-schedule-item">● 예고일  <span class="cal-v6-schedule-date">${escapeHtml(noticeDate)}</span></div>`);
+            if (designationDate) s2Items.push(`<div class="cal-v6-schedule-item">● 지정 예정  <span class="cal-v6-schedule-date">${escapeHtml(designationDate)}</span> <span class="cal-v6-schedule-hint">(발효 시 배지 전환)</span></div>`);
+          } else if (isCurrentlyDesignated) {
+            if (designationDate) s2Items.push(`<div class="cal-v6-schedule-item">● 지정일  <span class="cal-v6-schedule-date">${escapeHtml(designationDate)}</span></div>`);
+            if (b.end) s2Items.push(`<div class="cal-v6-schedule-item">● 재심사  <span class="cal-v6-schedule-date">${escapeHtml(b.end)}</span> <span class="cal-v6-schedule-hint">(10거래일 후)</span></div>`);
+          }
+          // 사유 (placeholder면 블록 통째 미노출)
+          const reasonTextRaw = b.reason_text;
+          if (!_isPlaceholderReason(reasonTextRaw)) {
+            const reasonStr = String(reasonTextRaw).trim();
+            // 긴 사유는 줄단위로 split하여 5줄까지만 표시
+            const reasonLines = reasonStr.split(/\r?\n/).map(s => s.trim()).filter(Boolean).slice(0, 5);
+            const reasonBody = reasonLines.length > 0
+              ? reasonLines.map(ln => `<div class="cal-v6-reason-line">${escapeHtml(ln)}</div>`).join('')
+              : `<div class="cal-v6-reason-line">${escapeHtml(reasonStr)}</div>`;
+            s2Items.push(`<div class="cal-v6-schedule-item cal-v6-reason">● 사유<div class="cal-v6-reason-body">${reasonBody}</div></div>`);
+          }
+          const s2Html = s2Items.length
+            ? `<section class="cal-status-section v6 schedule"><h3>이 종목의 일정</h3>${s2Items.join('')}</section>`
+            : '';
+
+          // --- §3. 지정 시 적용되는 제한 (토구사 확정 리스트 4줄) ---
+          // 예상 재심사일 동적 계산: b.end(10거래일 후 자동 해제 심사일) 재사용
+          const reexamDate = b.end || '';
+          const s3Items = [
+            '매수 시 위탁증거금 100% (현금)',
+            '신용융자 매수 불가',
+            '대용증권 불인정',
+            '추가 급등(2일 40%↑) 시 익일 매매거래정지 가능',
+          ];
+          const s3ItemsHtml = s3Items.map(t => `<li class="cal-v6-rule-item">${escapeHtml(t)}</li>`).join('');
+          const s3ReexamHtml = reexamDate
+            ? `<div class="cal-v6-rule-footnote">예상 재심사: <span class="cal-v6-schedule-date">${escapeHtml(reexamDate)}</span></div>`
+            : '';
+          const s3DartHtml = dartLinkHtml ? `<div class="cal-v6-rule-dart">${dartLinkHtml}</div>` : '';
+          const s3Html = `<section class="cal-status-section v6 rules"><h3>지정 시 적용되는 제한</h3><ul class="cal-v6-rule-list">${s3ItemsHtml}</ul>${s3ReexamHtml}${s3DartHtml}</section>`;
+
+          v6SectionsHtml = s1Html + s2Html + s3Html;
+        }
+
+        // === 합치기 (비-투자경고: v5.1 구조 유지, 투자경고: v6 블록) ========
         const nextSectionTitle = nextStageLabel
           ? `다음 단계 (${escapeHtml(nextStageLabel)} 예고)`
           : (isShortTermHot ? '다음 단계 (연장 규정)' : '다음 단계');
         const sections = [];
         sections.push(`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(label)}</span>${labelExtra}</div>`);
-        if (sectionCurrent.length) {
-          sections.push(`<section class="cal-status-section current"><h3>현재 상태</h3>${sectionCurrent.join('')}</section>`);
+        if (isAdvisoryWarning) {
+          // v6: 투자경고/투자경고 예고 풀 구현
+          sections.push(v6SectionsHtml);
+        } else {
+          // v5.1 구조 유지 — 타 배지 (v6 FLR-001 후속 REQ에서 전수 리팩 예정)
+          if (sectionCurrent.length) {
+            sections.push(`<section class="cal-status-section current"><h3>현재 상태</h3>${sectionCurrent.join('')}</section>`);
+          }
+          if (sectionNext.length) {
+            sections.push(`<section class="cal-status-section next"><h3>${nextSectionTitle}</h3>${sectionNext.join('')}</section>`);
+          }
+          if (sectionReg.length) {
+            sections.push(`<section class="cal-status-section regulation"><h3>KRX 규정</h3>${sectionReg.join('')}</section>`);
+          }
+          // 타 배지 §3 "준비 중" 폴백 (v6 FLR-001 방침)
+          if (!sectionReg.length && stage && !isShortTermHot) {
+            sections.push(`<section class="cal-status-section regulation v6-pending"><h3>지정 시 적용되는 제한</h3><div class="cal-v6-rule-pending">준비 중 — 상세는 KRX 공시 참조${dartLinkHtml ? `<div class="cal-v6-rule-dart">${dartLinkHtml}</div>` : ''}</div></section>`);
+          }
         }
-        if (sectionNext.length) {
-          sections.push(`<section class="cal-status-section next"><h3>${nextSectionTitle}</h3>${sectionNext.join('')}</section>`);
-        }
-        if (sectionReg.length) {
-          sections.push(`<section class="cal-status-section regulation"><h3>KRX 규정</h3>${sectionReg.join('')}</section>`);
-        }
-        return `<div class="cal-status-detail v3 v5${isPredicted ? ' predicted' : ''}">${sections.join('')}</div>`;
+        const cls = isAdvisoryWarning ? 'v3 v5 v6' : 'v3 v5';
+        return `<div class="cal-status-detail ${cls}${isPredicted ? ' predicted' : ''}">${sections.join('')}</div>`;
       }).join('');
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);

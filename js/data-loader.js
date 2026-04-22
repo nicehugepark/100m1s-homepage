@@ -12,21 +12,42 @@ async function loadThemes() {
 }
 
 
+// v6 (묶음 3): kiwoom index 캐시 — 404 소음 제거
+let _kiwoomIndexCache = null;
+let _kiwoomIndexPromise = null;
+
 async function loadKiwoomIndex() {
-  try {
-    const res = await fetch('/data/kiwoom/index.json');
-    if (!res.ok) throw new Error('kiwoom/index.json HTTP ' + res.status);
-    return await res.json();
-  } catch (e) { return null; }
+  if (_kiwoomIndexCache) return _kiwoomIndexCache;
+  if (_kiwoomIndexPromise) return _kiwoomIndexPromise;
+  _kiwoomIndexPromise = (async () => {
+    try {
+      const res = await fetch('/data/kiwoom/index.json');
+      if (!res.ok) throw new Error('kiwoom/index.json HTTP ' + res.status);
+      const d = await res.json();
+      _kiwoomIndexCache = d;
+      return d;
+    } catch (e) {
+      return null;
+    } finally {
+      _kiwoomIndexPromise = null;
+    }
+  })();
+  return _kiwoomIndexPromise;
 }
 
 async function loadKiwoomDate(date) {
   const dateHash = date.replace(/-/g, '');
-  try {
-    const res = await fetch(`/data/kiwoom/${date}.json?v=${dateHash}`);
-    if (res.ok) return await res.json();
-  } catch (e) { /* fall through */ }
-  // 폴백: stock-*.json에서 종목 리스트 추출 (kiwoom 파일 미생성 시)
+  // v6: index 선행 조회하여 존재하지 않는 날짜는 fetch 자체를 건너뛴다 (404 소음 제거).
+  const idx = await loadKiwoomIndex();
+  const idxDates = idx && Array.isArray(idx.dates) ? idx.dates : null;
+  const dateExists = idxDates ? idxDates.includes(date) : true; // index 없으면 기존 동작 유지
+  if (dateExists) {
+    try {
+      const res = await fetch(`/data/kiwoom/${date}.json?v=${dateHash}`);
+      if (res.ok) return await res.json();
+    } catch (e) { /* fall through */ }
+  }
+  // 폴백 1: stock-*.json에서 종목 리스트 추출 (당일)
   try {
     const fb = await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
     if (fb.ok) {
@@ -39,6 +60,21 @@ async function loadKiwoomDate(date) {
       }
     }
   } catch (e) { /* ignore */ }
+  // 폴백 2: index의 가장 최근 날짜로 kiwoom 데이터 폴백 (오늘 파이프라인 수집 전)
+  if (!dateExists && idxDates && idxDates.length > 0) {
+    const latest = [...idxDates].sort().pop();
+    if (latest && latest !== date) {
+      try {
+        const latestHash = latest.replace(/-/g, '');
+        const res = await fetch(`/data/kiwoom/${latest}.json?v=${latestHash}`);
+        if (res.ok) {
+          const d = await res.json();
+          d._fallback_date = latest;
+          return d;
+        }
+      } catch (e) { /* ignore */ }
+    }
+  }
   return null;
 }
 
