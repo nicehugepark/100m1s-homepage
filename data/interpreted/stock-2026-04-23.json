@@ -1,6 +1,6 @@
 {
   "date": "2026-04-23",
-  "generated_at": "2026-04-23T09:34:48.634048",
+  "generated_at": "2026-04-23T09:45:50.812995",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -230,7 +230,9 @@
         "prices": [
           34250,
           35000,
-          33850
+          34400,
+          34100,
+          33800
         ]
       },
       "credit_risk": true,
@@ -278,7 +280,9 @@
         "prices": [
           6940,
           7820,
-          8070
+          8200,
+          8195,
+          8370
         ]
       },
       "credit_risk": true,
@@ -400,7 +404,9 @@
         "prices": [
           43500,
           41900,
-          42400
+          42300,
+          42700,
+          43050
         ]
       },
       "togusa_verdict": "neutral",
@@ -472,7 +478,9 @@
         "prices": [
           154500,
           158400,
-          158800
+          159700,
+          158450,
+          158900
         ]
       },
       "credit_risk": true,
@@ -520,7 +528,9 @@
         "prices": [
           10500,
           12090,
-          11870
+          11980,
+          12130,
+          11980
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -561,8 +571,29 @@
         }
       ],
       "fallback": true,
+      "range_240d": {
+        "high": 56800,
+        "high_date": "2026-04-23",
+        "high_pct": -3.17,
+        "low": 18410,
+        "low_date": "2025-08-20",
+        "low_pct": 198.75,
+        "current": 55000
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 55900,
+        "base": 53202,
+        "prices": [
+          55900,
+          56150,
+          54600,
+          54700,
+          54400
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "092220",
@@ -603,7 +634,9 @@
         "prices": [
           2020,
           1778,
-          1816
+          1756,
+          1711,
+          1691
         ]
       },
       "credit_risk": true,
@@ -705,7 +738,28 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": true,
+      "range_240d": {
+        "high": 31700,
+        "high_date": "2026-03-20",
+        "high_pct": -1.74,
+        "low": 7060,
+        "low_date": "2025-05-07",
+        "low_pct": 341.22,
+        "current": 31150
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 28050,
+        "base": 27450,
+        "prices": [
+          28050,
+          30700,
+          30750,
+          30000,
+          29600
+        ]
+      }
     },
     {
       "code": "058470",
@@ -801,8 +855,29 @@
         }
       ],
       "fallback": true,
+      "range_240d": {
+        "high": 129000,
+        "high_date": "2026-04-23",
+        "high_pct": -3.88,
+        "low": 35650,
+        "low_date": "2025-04-30",
+        "low_pct": 247.83,
+        "current": 124000
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 124200,
+        "base": 120202,
+        "prices": [
+          124200,
+          125600,
+          123600,
+          124900,
+          124800
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "417200",
@@ -836,8 +911,20 @@
         "low_pct": 172.93,
         "current": 25000
       },
+      "intraday": {
+        "step_min": 10,
+        "open": 26300,
+        "base": 25151,
+        "prices": [
+          26300,
+          24700,
+          24600,
+          24950,
+          25700
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "093370",
@@ -863,14 +950,28 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 14430,
-        "high_date": "2026-04-17",
-        "high_pct": -1.52,
+        "high": 15420,
+        "high_date": "2026-04-23",
+        "high_pct": -7.85,
         "low": 3875,
         "low_date": "2025-05-26",
         "low_pct": 266.71,
         "current": 14210
-      }
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 15420,
+        "base": 14100,
+        "prices": [
+          15420,
+          14510,
+          14170,
+          13860,
+          13940
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     }
   ]
 }
