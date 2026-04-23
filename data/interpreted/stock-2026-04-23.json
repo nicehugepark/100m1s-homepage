@@ -1,6 +1,6 @@
 {
   "date": "2026-04-23",
-  "generated_at": "2026-04-23T09:13:47.240539",
+  "generated_at": "2026-04-23T09:23:43.120872",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -215,14 +215,26 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 34650,
-        "high_date": "2026-04-21",
-        "high_pct": 1.01,
+        "high": 36200,
+        "high_date": "2026-04-23",
+        "high_pct": -3.31,
         "low": 3320,
         "low_date": "2025-11-07",
         "low_pct": 954.22,
         "current": 35000
-      }
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 34250,
+        "base": 32549,
+        "prices": [
+          34250,
+          35000,
+          33850
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "006340",
@@ -248,14 +260,26 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 7490,
-        "high_date": "2026-02-27",
-        "high_pct": 3.74,
+        "high": 8180,
+        "high_date": "2026-04-23",
+        "high_pct": -5.01,
         "low": 2730,
         "low_date": "2025-05-07",
         "low_pct": 184.62,
         "current": 7770
-      }
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 6940,
+        "base": 6440,
+        "prices": [
+          6940,
+          7820,
+          8070
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "001440",
@@ -369,7 +393,8 @@
         "base": 41050,
         "prices": [
           43500,
-          41900
+          41900,
+          42400
         ]
       },
       "togusa_verdict": "neutral",
@@ -424,7 +449,28 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true
+      "fallback": true,
+      "range_240d": {
+        "high": 159000,
+        "high_date": "2026-04-23",
+        "high_pct": -0.13,
+        "low": 44200,
+        "low_date": "2025-05-27",
+        "low_pct": 259.28,
+        "current": 158800
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 154500,
+        "base": 151296,
+        "prices": [
+          154500,
+          158400,
+          158800
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "006910",
@@ -458,8 +504,16 @@
         "low_pct": 330.91,
         "current": 11570
       },
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 10500,
+        "base": 10030,
+        "prices": [
+          10500,
+          12090,
+          11870
+        ]
+      }
     },
     {
       "code": "092220",
@@ -493,8 +547,18 @@
         "low_pct": 167.82,
         "current": 1781
       },
+      "intraday": {
+        "step_min": 10,
+        "open": 2020,
+        "base": 1843,
+        "prices": [
+          2020,
+          1778,
+          1816
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     }
   ]
 }
