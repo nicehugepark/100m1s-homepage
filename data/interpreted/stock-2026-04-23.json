@@ -1,6 +1,6 @@
 {
   "date": "2026-04-23",
-  "generated_at": "2026-04-23T09:03:15.489497",
+  "generated_at": "2026-04-23T09:12:22.010268",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -45,8 +45,42 @@
     }
   ],
   "narratives": [],
-  "themes_macro_summary": [],
-  "themes_tree": null,
+  "themes_macro_summary": [
+    {
+      "keyword": "유가강세",
+      "summary": "글로벌 유가 상승 → 석유화학·에너지 기업 영업이익 증대 (OCI 1분기 영업익 171% 증가)",
+      "source_count": 3,
+      "verified": true
+    },
+    {
+      "keyword": "OLED",
+      "summary": "LG디스플레이 1조1060억원 OLED 신기술 투자 → 디스플레이 공급 확대 → 파운드리 경합 심화",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "유가",
+      "summary": "이란 휴전 연장 → 호르무즈 해협 폐쇄 → 유가 급등 → 한국 화학·정유 섹터 수혜(OCI 1분기 영업이익 171% 증가)",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "AI칩",
+      "summary": "Google·Nvidia AI 칩 경합 심화 → 반도체 공급 긴장 고조 → SK하이닉스·삼성 신고가 주도",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "이란휴전",
+      "summary": "트럼프 미-이란 휴전 연장 → 중동 안정화 신호 → 건설·에너지 섹터 지정학 프리미엄 해소",
+      "source_count": 1,
+      "verified": false
+    }
+  ],
+  "themes_tree": {
+    "date": "2026-04-23",
+    "roots": []
+  },
   "stocks": [
     {
       "code": "001440",
@@ -146,13 +180,22 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 42850,
-        "high_date": "2026-04-21",
-        "high_pct": -2.57,
+        "high": 43500,
+        "high_date": "2026-04-23",
+        "high_pct": -4.02,
         "low": 11530,
         "low_date": "2025-04-30",
         "low_pct": 262.1,
         "current": 41750
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 43500,
+        "base": 41048,
+        "prices": [
+          43500,
+          41900
+        ]
       }
     }
   ]
