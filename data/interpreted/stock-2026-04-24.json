@@ -1,6 +1,6 @@
 {
   "date": "2026-04-24",
-  "generated_at": "2026-04-24T09:09:39.720916",
+  "generated_at": "2026-04-24T09:13:15.783617",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -184,8 +184,8 @@
           "url": "https://www.etoday.co.kr/news/view/2578748",
           "source": "이투데이",
           "published_at": "2026-04-23T23:36:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "신한투자증권이 고영의 AI서버·광 인프라 낙수효과 확인을 근거로 주가 리레이팅 지속 가능성을 제시→AI 투자 사이클 확산에 따른 검사장비 수요 기대감 유입→리레이팅 모멘텀 지속 전망.",
+          "macro_event": "AI서버·광 인프라 투자 낙수효과",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -197,16 +197,23 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 37450,
-        "high_date": "2026-02-05",
-        "high_pct": -1.6,
-        "low": 12840,
-        "low_date": "2025-04-28",
-        "low_pct": 186.99,
+        "high": 37600,
+        "high_date": "2026-04-24",
+        "high_pct": -1.99,
+        "low": 13550,
+        "low_date": "2025-08-21",
+        "low_pct": 171.96,
         "current": 36850
       },
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 34650,
+        "base": 32550,
+        "prices": [
+          34650,
+          37400
+        ]
+      }
     },
     {
       "code": "080220",
@@ -240,8 +247,17 @@
         "low_pct": 308.68,
         "current": 49900
       },
+      "intraday": {
+        "step_min": 10,
+        "open": 45800,
+        "base": 45700,
+        "prices": [
+          45800,
+          48800
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "010060",
@@ -299,7 +315,7 @@
           "url": "https://www.fnnews.com/news/202604240845338828",
           "source": "파이낸셜뉴스",
           "published_at": "2026-04-24T08:59:40.271671",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -312,14 +328,25 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 321500,
-        "high_date": "2026-04-22",
-        "high_pct": 3.42,
+        "high": 349000,
+        "high_date": "2026-04-24",
+        "high_pct": -4.73,
         "low": 63800,
         "low_date": "2025-05-07",
         "low_pct": 421.16,
         "current": 332500
-      }
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 322000,
+        "base": 322003,
+        "prices": [
+          322000,
+          331000
+        ]
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     }
   ]
 }
