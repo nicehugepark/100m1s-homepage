@@ -611,6 +611,17 @@ function renderCalExpandContent(date, data) {
         const sectionNext = [];
         let nextStageLabel = '';
 
+        // DSN-001 §20.3 (v7.4 P2): confidence=low 배너 — predicted_stage2_notice 또는
+        // regulation_source_confidence='low' 일 때 §2 최상단. pending은 축약 1줄.
+        const _regSrcConf = b.regulation_source_confidence || '';
+        if (_regSrcConf === 'low' || b.state === 'predicted_stage2_notice') {
+          sectionNext.push(`<div class="cal-reg-source-banner">
+            <span class="cal-reg-source-banner-title">⚠️ 규정 출처 확인 중</span>이 예측의 임계값은 키움·KB증권 2차 자료 기반 잠정 수치입니다. KRX 원문 재대조 후 수치가 달라질 수 있습니다.
+          </div>`);
+        } else if (_regSrcConf === 'pending') {
+          sectionNext.push(`<div class="cal-reg-source-banner pending">규정 원문 1차 대조 진행 중 (2차 자료 기반 잠정 수치).</div>`);
+        }
+
         // DSN-001 §16.1.1 (v7.2): §2 최상단 "기준 시각" 라인 (basis_time/basis_type 있을 때만).
         // basis_type: 'closing' | 'intraday' | 'previous_closing'. graceful degradation: 필드 없으면 생략.
         if (b.basis_time && typeof b.basis_time === 'string') {
@@ -708,6 +719,23 @@ function renderCalExpandContent(date, data) {
             // 조건 표 표제
             const tableTitleTime = isPredicted ? '미확정' : '익일 00시 기준';
             sectionNext.push(`<h4 class="cal-status-table-title">🎯 ${escapeHtml(nextStageLabel)} 지정 조건 (${escapeHtml(tableTitleTime)})</h4>`);
+
+            // DSN-001 §20.8 (v7.4 P2): path-level overall_progress_ratio 행
+            // b.paths[] 배열 있으면 경로별 진척 1행씩. easiest_path_flag=true는 녹색 강조.
+            if (Array.isArray(b.paths) && b.paths.length > 0) {
+              b.paths.forEach(p => {
+                const pLabel = p.label || p.id || '경로';
+                const ratio = (typeof p.overall_progress_ratio === 'number')
+                  ? Math.min(200, Math.round(p.overall_progress_ratio * 100))
+                  : null;
+                const ratioText = ratio != null ? ` — 전체 진척 ${ratio}%` : '';
+                const cls = p.easiest_path_flag === true ? 'cal-path-overall easiest' : 'cal-path-overall';
+                const tag = p.easiest_path_flag === true
+                  ? '<span class="cal-path-easiest-tag">최단 경로</span>'
+                  : '';
+                sectionNext.push(`<div class="${cls}"><span class="cal-path-overall-label">[${escapeHtml(pLabel)}]</span>${escapeHtml(ratioText)}${tag}</div>`);
+              });
+            }
 
             // 조건 표 (thresholds[]) — v3.3 유지
             const rows = b.thresholds.map(t => {
@@ -828,6 +856,21 @@ function renderCalExpandContent(date, data) {
             : 'KRX 시장경보 2단계. 단일가매매 없음 — 증거금 100% 현금·신용매수 불가·대용 불인정이 자동 적용됩니다.';
           const s1Html = `<details class="cal-status-section v6 intro"><summary><h3>${escapeHtml(s1Title)}</h3></summary><div class="cal-status-intro-body">${escapeHtml(s1Body)}</div></details>`;
 
+          // --- P3 §1 이력 요약 행 (DSN-001 §20.7): stock_alert_history 최근 1건 ---
+          // 필드 미주입 시 자동 스킵 (graceful degradation). 이시카와/data-dev 임무 D 완료 후 활성화.
+          let s1HistoryHtml = '';
+          const historyArr = Array.isArray(b.stock_alert_history) ? b.stock_alert_history : null;
+          if (historyArr && historyArr.length > 0) {
+            // 최신 2건만 시간 역순 (date 내림차순 가정. 없으면 원배열 순서 유지)
+            const recent = historyArr.slice(0, 2);
+            const chips = recent.map(h => {
+              const stg = h.stage || '';
+              const dt = h.date || '';
+              return `<span class="cal-status-history-chip">${escapeHtml(stg)}${dt ? ` ${escapeHtml(dt)}` : ''}</span>`;
+            }).join('');
+            s1HistoryHtml = `<div class="cal-status-history-row"><span class="cal-status-history-label">최근 이력:</span>${chips}</div>`;
+          }
+
           // --- §2. 이 종목의 일정 (기본 펼침) ---
           const s2Items = [];
           const noticeDate = disclosureDate || vd || '';
@@ -837,7 +880,11 @@ function renderCalExpandContent(date, data) {
             if (noticeDate) s2Items.push(`<div class="cal-v6-schedule-item">● 예고일  <span class="cal-v6-schedule-date">${escapeHtml(noticeDate)}</span></div>`);
             if (designationDate) s2Items.push(`<div class="cal-v6-schedule-item">● 지정 예정  <span class="cal-v6-schedule-date">${escapeHtml(designationDate)}</span> <span class="cal-v6-schedule-hint">(발효 시 배지 전환)</span></div>`);
           } else if (isCurrentlyDesignated) {
-            if (designationDate) s2Items.push(`<div class="cal-v6-schedule-item">● 지정일  <span class="cal-v6-schedule-date">${escapeHtml(designationDate)}</span></div>`);
+            // P3 §20.7 warn_after_attention: 투자주의 → 투자경고 전환 시 별도 강조 태그.
+            const warnAfterTag = b.warn_after_attention === true
+              ? ' <span class="cal-v7-warn-after-attention">투자주의 → 투자경고 전환</span>'
+              : '';
+            if (designationDate) s2Items.push(`<div class="cal-v6-schedule-item">● 지정일  <span class="cal-v6-schedule-date">${escapeHtml(designationDate)}</span>${warnAfterTag}</div>`);
             if (b.end) s2Items.push(`<div class="cal-v6-schedule-item">● 재심사  <span class="cal-v6-schedule-date">${escapeHtml(b.end)}</span> <span class="cal-v6-schedule-hint">(10거래일 후)</span></div>`);
           }
           // 사유 (placeholder면 블록 통째 미노출)
@@ -877,7 +924,66 @@ function renderCalExpandContent(date, data) {
           const s3DartHtml = dartLinkHtml ? `<div class="cal-v6-rule-dart">${dartLinkHtml}</div>` : '';
           const s3Html = `<section class="cal-status-section v6 rules"><h3>지정 시 적용되는 제한</h3><ul class="cal-v6-rule-list">${s3ItemsHtml}</ul>${s3ReexamHtml}${s3DartHtml}</section>`;
 
-          v6SectionsHtml = s1Html + s2Html + s3Html;
+          // --- P3 §20.7 이중 상태 — predicted_stage3_notice (투자경고 entered + 투자위험 predicted) ---
+          // 조건: b.state === 'predicted_stage3_notice' 또는 b.predicted_next_stage 객체 있음.
+          // §2 뒤에 "다음 단계 근접 (투자위험)" 추가 블록 + §3 뒤에 "예정 추가 제한" 블록.
+          // 데이터 미주입 시 빈 문자열 (graceful degradation).
+          let dualNextHtml = '';
+          let dualAddRulesHtml = '';
+          const pns = b.predicted_next_stage || null;
+          const isDualState = (b.state === 'predicted_stage3_notice') || !!(pns && pns.stage);
+          if (isAdvisoryWarning && isDualState && isCurrentlyDesignated) {
+            const nextStage = (pns && pns.stage) || '투자위험';
+            const nextDate = (pns && pns.date) || '';
+            const remainPct = (pns && pns.remaining_pct != null)
+              ? `+${(Number(pns.remaining_pct) * 100).toFixed(1)}%p 필요`
+              : '';
+            const transitionLine = nextDate
+              ? `예상 전환 <span class="cal-v6-schedule-date">${escapeHtml(nextDate)}</span> (${escapeHtml(nextStage)} 지정)`
+              : `예상 전환 (${escapeHtml(nextStage)} 지정)`;
+            const remainLine = remainPct ? `<div class="cal-v7-transition-note">진입 시나리오: ${escapeHtml(remainPct)}</div>` : '';
+            // path-level 보조 (predicted_next_stage.paths[] 있으면)
+            const pnsPaths = Array.isArray(pns && pns.paths) ? pns.paths : [];
+            const pathsHtml = pnsPaths.map(p => {
+              const pLabel = p.label || p.id || '경로';
+              const ratio = (typeof p.overall_progress_ratio === 'number')
+                ? Math.min(200, Math.round(p.overall_progress_ratio * 100))
+                : null;
+              const ratioText = ratio != null ? ` — 전체 진척 ${ratio}%` : '';
+              const cls = p.easiest_path_flag === true ? 'cal-path-overall easiest' : 'cal-path-overall';
+              const tag = p.easiest_path_flag === true ? '<span class="cal-path-easiest-tag">최단 경로</span>' : '';
+              return `<div class="${cls}"><span class="cal-path-overall-label">[${escapeHtml(pLabel)}]</span>${escapeHtml(ratioText)}${tag}</div>`;
+            }).join('');
+            // 면책 서브텍스트
+            const disclaimerHtml = `<div class="cal-predicted-disclaimer">↳ 예측은 공개 종가와 KRX 규정 산술 결과 — 실제 지정 여부는 KRX 재량</div>`;
+            dualNextHtml = `<section class="cal-status-section v6 next dual-next">
+              <h3>다음 단계 근접 (${escapeHtml(nextStage)})</h3>
+              <div class="cal-v6-schedule-item">● ${transitionLine}</div>
+              ${disclaimerHtml}
+              ${remainLine}
+              ${pathsHtml}
+            </section>`;
+            // §3 추가 블록 — 투자위험 지정 시 추가 제한 (pns.auto_effects[] 있으면 사용)
+            const pnsEffects = Array.isArray(pns && pns.auto_effects) ? pns.auto_effects : [];
+            const addItems = pnsEffects.length > 0
+              ? pnsEffects.map(e => (e && (e.quote || e.label)) || '').filter(Boolean)
+              : ['+ 지정 직전 1거래일 매매거래정지'];
+            const addItemsHtml = addItems.map(t => `<li class="cal-v6-rule-item">${escapeHtml(t)}</li>`).join('');
+            dualAddRulesHtml = `<section class="cal-status-section v6 rules future-add">
+              <h3>${escapeHtml(nextStage)} 지정 시 추가 제한</h3>
+              <ul class="cal-v6-rule-list">${addItemsHtml}</ul>
+            </section>`;
+          }
+
+          // v6 블록에서도 §20.3 reg-source-banner 렌더 (predicted_stage2_notice 또는 confidence=low)
+          let v6RegBannerHtml = '';
+          const _v6RegConf = b.regulation_source_confidence || '';
+          if (_v6RegConf === 'low' || b.state === 'predicted_stage2_notice') {
+            v6RegBannerHtml = `<div class="cal-reg-source-banner"><span class="cal-reg-source-banner-title">⚠️ 규정 출처 확인 중</span>이 예측의 임계값은 키움·KB증권 2차 자료 기반 잠정 수치입니다. KRX 원문 재대조 후 수치가 달라질 수 있습니다.</div>`;
+          } else if (_v6RegConf === 'pending') {
+            v6RegBannerHtml = `<div class="cal-reg-source-banner pending">규정 원문 1차 대조 진행 중 (2차 자료 기반 잠정 수치).</div>`;
+          }
+          v6SectionsHtml = s1Html + s1HistoryHtml + v6RegBannerHtml + s2Html + dualNextHtml + s3Html + dualAddRulesHtml;
         }
 
         // === 합치기 (비-투자경고: v5.1 구조 유지, 투자경고: v6 블록) ========
@@ -916,8 +1022,20 @@ function renderCalExpandContent(date, data) {
           sections.push(v6SectionsHtml);
         } else {
           // v5.1 구조 유지 — 타 배지 (v6 FLR-001 후속 REQ에서 전수 리팩 예정)
-          if (sectionCurrent.length) {
-            sections.push(`<section class="cal-status-section current"><h3>현재 상태</h3>${sectionCurrent.join('')}</section>`);
+          // P3 §1 이력 요약 행 (DSN-001 §20.7): stock_alert_history 있으면 현재 상태 섹션 상단에 삽입
+          const _historyArr = Array.isArray(b.stock_alert_history) ? b.stock_alert_history : null;
+          let _s1HistoryNonV6 = '';
+          if (_historyArr && _historyArr.length > 0) {
+            const recent = _historyArr.slice(0, 2);
+            const chips = recent.map(h => {
+              const stg = h.stage || '';
+              const dt = h.date || '';
+              return `<span class="cal-status-history-chip">${escapeHtml(stg)}${dt ? ` ${escapeHtml(dt)}` : ''}</span>`;
+            }).join('');
+            _s1HistoryNonV6 = `<div class="cal-status-history-row"><span class="cal-status-history-label">최근 이력:</span>${chips}</div>`;
+          }
+          if (sectionCurrent.length || _s1HistoryNonV6) {
+            sections.push(`<section class="cal-status-section current"><h3>현재 상태</h3>${_s1HistoryNonV6}${sectionCurrent.join('')}</section>`);
           }
           if (sectionNext.length) {
             sections.push(`<section class="cal-status-section next"><h3>${nextSectionTitle}</h3>${sectionNext.join('')}</section>`);

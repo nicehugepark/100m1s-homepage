@@ -1530,3 +1530,174 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .cal-predicted-disclaimer { font-size: 0.7rem; }
   .cal-next-scenario-line { font-size: 10.5px; }
 }
+
+/* ───── DSN-001 v7.4 (P2~P5) — 2026-04-24 ───── */
+
+/* §20.3 confidence=low 경고 배너 (predicted_stage2_notice 상단 회색) */
+.cal-reg-source-banner {
+  margin: 4px 0 8px;
+  padding: 6px 10px;
+  background: #FFF8E6;
+  border: 1px solid #FFD97A;
+  border-left: 3px solid #E6A23C;
+  border-radius: 4px;
+  font-size: 11.5px;
+  color: #7A5500;
+  line-height: 1.45;
+}
+.cal-reg-source-banner.pending {
+  background: #F5F5F0; border-color: #D0D0C8; border-left-color: #999;
+  color: #777; font-size: 10.5px; padding: 4px 8px;
+}
+.cal-reg-source-banner-title { font-weight: 700; margin-right: 4px; }
+
+/* §20.8 path-level overall_progress_ratio 행 */
+.cal-path-overall {
+  margin: 6px 0 4px;
+  padding: 4px 8px;
+  background: #F7F9FC;
+  border-left: 2px solid #6A8BAA;
+  border-radius: 0 3px 3px 0;
+  font-size: 11.5px; color: #333; line-height: 1.5;
+}
+.cal-path-overall.easiest {
+  background: #F0F8F0; border-left-color: #3C9A4A;
+}
+.cal-path-overall-label { font-weight: 700; color: #1e6fb8; margin-right: 4px; }
+.cal-path-overall.easiest .cal-path-overall-label { color: #2E7D32; }
+.cal-path-easiest-tag {
+  display: inline-block; margin-left: 5px;
+  padding: 1px 5px; font-size: 9.5px; font-weight: 600;
+  background: #E0F2E4; color: #2E7D32; border-radius: 3px;
+}
+
+/* §13.4.3 이중 상태 (predicted_stage3_notice) */
+.cal-status-section.next.dual-next {
+  border-left: 3px solid #C17000;
+  padding-left: 8px;
+  margin-left: -8px;
+}
+.cal-status-section.regulation.future-add h3,
+.cal-status-section.v6.rules.future-add h3 {
+  color: #C17000;
+  font-style: italic;
+}
+.cal-status-section.v6.rules.future-add {
+  border-top: 1px dashed #FFB74D;
+  padding-top: 4px;
+  margin-top: 6px;
+}
+.cal-v7-transition-note {
+  margin: 4px 0;
+  padding: 5px 8px;
+  background: #FFF7E8;
+  border-left: 2px solid #FFB74D;
+  border-radius: 0 3px 3px 0;
+  font-size: 11.5px; color: #5F4400; line-height: 1.5;
+}
+.cal-v7-warn-after-attention {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 5px;
+  font-size: 9.5px; font-weight: 700;
+  background: #FFE4E1; color: #C53939;
+  border-radius: 3px; letter-spacing: 0.3px;
+}
+
+/* §1 이력 요약 행 (stock_alert_history 최근 1건) */
+.cal-status-history-row {
+  margin: 3px 0;
+  padding: 3px 8px;
+  background: #F5F3EE;
+  border-left: 2px solid #B8A070;
+  border-radius: 0 3px 3px 0;
+  font-size: 11px; color: #5F4F3A; line-height: 1.5;
+}
+.cal-status-history-label { font-weight: 700; margin-right: 4px; }
+.cal-status-history-chip {
+  display: inline-block;
+  margin: 0 3px;
+  padding: 0 5px;
+  font-size: 10px; font-weight: 600;
+  background: #EDE5D0; color: #6A5530;
+  border-radius: 3px;
+}
+
+/* §20.4 모바일 ≤380px — 조건 라벨 2줄 재배치 */
+@media (max-width: 380px) {
+  .cal-status-detail.v3 .cal-status-table { display: block; }
+  .cal-status-detail.v3 .cal-status-table thead { display: none; }
+  .cal-status-detail.v3 .cal-status-table tbody,
+  .cal-status-detail.v3 .cal-status-table tr { display: block; }
+  .cal-status-detail.v3 .cal-status-table tr {
+    padding: 4px 0;
+    border-bottom: 1px dashed #e6e6e6;
+  }
+  .cal-status-detail.v3 .cal-status-table td {
+    display: inline-block;
+    padding: 1px 4px 1px 0;
+    font-size: 10.5px;
+  }
+  .cal-status-detail.v3 .cal-status-table td.th-cond {
+    display: block;
+    max-width: 100%;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: #333;
+  }
+}
+
+/* §20.4 카드 높이 상한 900px */
+.cal-feature-card.expanded .cal-feature-details {
+  max-height: 900px;
+  overflow-y: auto;
+}
+@media (max-width: 640px) {
+  .cal-feature-card.expanded .cal-feature-details {
+    max-height: 900px;
+  }
+}
+
+/* design-reviewer P2 — 뉴스 출처 칩 분리 */
+.cal-source-chip {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 1px 6px;
+  font-size: 9.5px; font-weight: 500;
+  background: rgba(107, 114, 128, 0.12);
+  color: #5a6070;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* design-reviewer P2 — 슬라이더 현재가 라벨 폭 축소 */
+.stock-range.v2 .range-pcts .r-now-label {
+  width: auto;
+  padding: 0 8px;
+}
+
+/* design-reviewer P1 — "투자경고" 3회 반복 제거
+   head의 cal-status-label 텍스트 숨김 (namecell 배지로 이미 노출)
+   단 상세박스 내부 head는 유지 (sev-* 색상 변별 필요 시 label 텍스트가 배경색 단서) */
+.cal-feature-details .cal-status-head .cal-status-label {
+  display: none;
+}
+.cal-feature-details .cal-status-head::before {
+  content: '지정 조건 상세';
+  font-size: 11px; font-weight: 600;
+  color: #8a8a8a; letter-spacing: 0.5px;
+}
+.cal-feature-details .cal-status-head {
+  border-top: 1px dashed #e0e0e0;
+  padding-top: 6px;
+  margin-top: 6px;
+}
+
+/* design-reviewer P1 — 배지 "📅 지정 예정" 중복 날짜 제거
+   namecell의 배지 내부 부기 날짜는 중복이므로 숨김.
+   배지 라벨에 이모지 📅가 포함된 경우 해당 span만 hide */
+.cal-feature-badges .cal-status-label-subdate,
+.cal-feature-badges .cal-badge-date-extra {
+  display: none;
+}
