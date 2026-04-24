@@ -1,6 +1,6 @@
 {
   "date": "2026-04-24",
-  "generated_at": "2026-04-24T14:34:38.185111",
+  "generated_at": "2026-04-24T14:48:47.693540",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -2236,6 +2236,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 13.37,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 37600,
         "high_date": "2026-04-24",
@@ -2313,6 +2316,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 7.91,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 54500,
         "high_date": "2026-02-26",
@@ -2408,6 +2414,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -340.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 8690,
         "high_date": "2026-04-24",
@@ -2559,6 +2568,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -147.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 44800,
         "high_date": "2026-04-24",
@@ -2636,6 +2648,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 12.73,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 18100,
         "high_date": "2026-04-24",
@@ -2667,7 +2682,52 @@
             }
           ],
           "reason_text": "아주IB투자가 최근 1년 초과 주가상승률 200% 이상으로 2026-04-16 투자주의종목 1일 지정. 향후 초과상승률 200%↑ & 15일 고점 & 상위 10개 계좌 매수관여율 4일↑를 모두 충족하면 04-29까지 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능(KRX 규정 기준).",
-          "prev_stage": null
+          "prev_stage": "투자위험 근접"
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_3d_45pct_after_warn"
+          ],
+          "path": "risk_surge_3d_45pct_after_warn",
+          "price_chg": 0.547,
+          "index_ratio": 29.96,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "3일 전(2026-04-21) 대비 +45%↑",
+              "base_price": 12120,
+              "threshold": 17574,
+              "current": 18750,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(3영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 29.96,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-23~2026-04-03)",
+              "base_price": 14590,
+              "threshold": 14590,
+              "current": 18750,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 3일 전 종가 대비 45%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-27",
+          "period_end": "2026-05-01",
+          "start": "2026-04-27",
+          "end": "2026-05-01",
+          "view_date": "2026-04-24",
+          "next_trading_day": "2026-04-27",
+          "single_price": false
         }
       ],
       "intraday": {
@@ -2751,6 +2811,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 7.14,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 26600,
         "high_date": "2026-01-23",
@@ -2935,6 +2998,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -634.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 349000,
         "high_date": "2026-04-24",
@@ -3100,6 +3166,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 4.34,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 133400,
         "high_date": "2026-04-24",
@@ -3118,6 +3187,51 @@
           "summary": "주성엔지니어링 보통주가 ①2026-04-22 종가가 5일전 종가 대비 60% 이상 상승, ②15일 종가 중 최고가, ③2026-04-23 ~ 2026-04-27 (5일간) 주가상승률이 종합주가지수 상승률의 5배 이상 충족으로 2026-04-23 투자경고종목 지정. 지정 후 2026-04-23 ~ 2026-04-24 (2일간) 40% 이상 추가 상승 시 1회 매매거래 정지 가능. 해제 최초 판단일은 2026-05-08 예정.",
           "condition": "5일전 종가 대비 60%↑ & 15일 종가 최고가 & 5일 상승률이 종합주가지수 상승률의 5배↑",
           "regulation": "지정일 이후 2일간 40% 이상 상승하고 지정전일 종가보다 높을 경우 1회 매매거래 정지 가능",
+          "view_date": "2026-04-24",
+          "next_trading_day": "2026-04-27",
+          "single_price": false
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_5d_60pct_after_warn"
+          ],
+          "path": "risk_surge_5d_60pct_after_warn",
+          "price_chg": 0.8111,
+          "index_ratio": 31.09,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-17) 대비 +60%↑",
+              "base_price": 70400,
+              "threshold": 112640,
+              "current": 127500,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(5영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 31.09,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-23~2026-04-03)",
+              "base_price": 120400,
+              "threshold": 120400,
+              "current": 127500,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 5일 전 종가 대비 60%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-27",
+          "period_end": "2026-05-01",
+          "start": "2026-04-27",
+          "end": "2026-05-01",
           "view_date": "2026-04-24",
           "next_trading_day": "2026-04-27",
           "single_price": false
@@ -3209,6 +3323,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 9.96,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9300,
         "high_date": "2026-04-24",
@@ -3375,6 +3492,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.25,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 67000,
         "high_date": "2026-04-24",
@@ -3413,7 +3533,52 @@
             }
           ],
           "reason_text": "미래에셋벤처투자가 5일 전 대비 60% 이상 급등하여 2026-04-20 투자주의종목 1일 지정. 04-20~05-04 내 3가지 조건(① 5일 전 대비 60%↑ ② 최근 15일 최고가 ③ 종합주가지수 대비 5배↑) 모두 충족 시 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
-          "prev_stage": null
+          "prev_stage": "투자위험 근접"
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_15d_100pct_after_warn"
+          ],
+          "path": "risk_surge_15d_100pct_after_warn",
+          "price_chg": 1.306,
+          "index_ratio": 10.15,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-04-03) 대비 +100%↑",
+              "base_price": 27450,
+              "threshold": 54900,
+              "current": 63300,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(15영업일) 상승률 대비 3배 이상",
+              "base_price": null,
+              "threshold": 3.0,
+              "current": 10.15,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-23~2026-04-03)",
+              "base_price": 59000,
+              "threshold": 59000,
+              "current": 63300,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 15일 전 종가 대비 100%↑ + 지수 3배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-27",
+          "period_end": "2026-05-01",
+          "start": "2026-04-27",
+          "end": "2026-05-01",
+          "view_date": "2026-04-24",
+          "next_trading_day": "2026-04-27",
+          "single_price": false
         }
       ],
       "intraday": {
@@ -3502,6 +3667,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 1.92,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 55400,
         "high_date": "2026-04-24",
@@ -3622,6 +3790,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 4.79,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 74000,
         "high_date": "2026-03-10",
@@ -3706,6 +3877,9 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -253.33,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 199500,
         "high_date": "2026-04-24",
@@ -3816,6 +3990,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 8.17,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 7460,
         "high_date": "2026-04-24",
@@ -3907,6 +4084,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -536.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 107800,
         "high_date": "2026-04-24",
@@ -3959,7 +4139,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰",
       "causal_chain": "",
@@ -4049,6 +4229,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -237.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 77300,
         "high_date": "2026-04-24",
@@ -4172,6 +4355,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -556.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 114200,
         "high_date": "2026-04-24",
@@ -4280,6 +4466,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 2.49,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 27000,
         "high_date": "2026-03-20",
@@ -4357,6 +4546,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 6.61,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 42200,
         "high_date": "2025-12-29",
@@ -4434,6 +4626,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 2.47,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 41800,
         "high_date": "2026-04-24",
@@ -4537,6 +4732,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -998.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 3795,
         "high_date": "2026-02-25",
@@ -4685,6 +4883,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -132.33,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 201500,
         "high_date": "2026-04-24",
@@ -4795,6 +4996,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 10.23,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 17360,
         "high_date": "2025-12-11",
@@ -4924,6 +5128,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -356.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 159200,
         "high_date": "2026-04-24",
@@ -5017,6 +5224,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -252.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 163200,
         "high_date": "2026-04-24",
@@ -5094,6 +5304,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -181.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 98900,
         "high_date": "2026-04-24",
@@ -5187,6 +5400,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.74,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9910,
         "high_date": "2026-04-24",
@@ -5370,6 +5586,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -189.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 229500,
         "high_date": "2026-04-24",
@@ -5475,6 +5694,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.93,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 23750,
         "high_date": "2026-02-10",
@@ -5547,6 +5769,9 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 7.09,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 49350,
         "high_date": "2026-04-24",
@@ -5624,6 +5849,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 8.59,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 41700,
         "high_date": "2026-04-24",
@@ -5712,6 +5940,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.12,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 15800,
         "high_date": "2026-04-24",
@@ -5841,6 +6072,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 5.59,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 183000,
         "high_date": "2026-04-24",
@@ -5890,7 +6124,10 @@
           179400,
           181200
         ]
-      }
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "030530",
@@ -5910,6 +6147,9 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.32,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 50600,
         "high_date": "2025-12-30",
@@ -6005,6 +6245,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.71,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 39150,
         "high_date": "2026-04-24",
@@ -6116,6 +6359,9 @@
           "period_end": "2026-04-28"
         }
       ],
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.63,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 22550,
         "high_date": "2026-02-02",
@@ -6293,6 +6539,9 @@
           "period_end": "2027-04-28"
         }
       ],
+      "index_change_pct": -0.03,
+      "index_multiple_current": -218.33,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 397000,
         "high_date": "2026-04-24",
@@ -6449,6 +6698,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 1.7,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 64400,
         "high_date": "2026-04-24",
@@ -6526,6 +6778,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -51.67,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 51400,
         "high_date": "2026-04-24",
@@ -6614,6 +6869,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 3.7,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 217000,
         "high_date": "2026-03-06",
@@ -6697,8 +6955,8 @@
           "url": "https://www.mk.co.kr/news/business/12022458",
           "source": "매경",
           "published_at": "2026-04-21T00:07:26",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "신라스테이 중국 옌청에 해외 1호점 개관 → 글로벌 확장 시동. 여행 성수기 기대감으로 실적 회복 관심.",
+          "macro_event": "신라스테이 첫 해외 진출(중국 옌청) + 여행 성수기 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6712,8 +6970,8 @@
           "url": "https://www.hankyung.com/article/202604214714g",
           "source": "한경",
           "published_at": "2026-04-21T00:02:41",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "신라스테이 중국 옌청에 해외 1호점 개관 → 글로벌 확장 시동. 여행 성수기 기대감으로 실적 회복 관심.",
+          "macro_event": "신라스테이 첫 해외 진출(중국 옌청) + 여행 성수기 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6727,8 +6985,8 @@
           "url": "https://biz.chosun.com/distribution/channel/2026/04/21/OUSZNQORJVEYBBR5NIC744BN6U/",
           "source": "조선비즈",
           "published_at": "2026-04-20T23:47:29",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "신라스테이 중국 옌청에 해외 1호점 개관 → 글로벌 확장 시동. 여행 성수기 기대감으로 실적 회복 관심.",
+          "macro_event": "신라스테이 첫 해외 진출(중국 옌청) + 여행 성수기 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6742,8 +7000,8 @@
           "url": "https://www.asiae.co.kr/article/2026041516143556821",
           "source": "아시아경제",
           "published_at": "2026-04-15T21:00:00",
-          "causal_chain": "여행 성수기 도래 기대감 → 면세·호텔 실적 회복 전망 → 호텔신라 주가 반등 기대.",
-          "macro_event": "여행 성수기 진입에 따른 호텔신라 실적 보릿고개 종료 기대감",
+          "causal_chain": "신라스테이 중국 옌청에 해외 1호점 개관 → 글로벌 확장 시동. 여행 성수기 기대감으로 실적 회복 관심.",
+          "macro_event": "신라스테이 첫 해외 진출(중국 옌청) + 여행 성수기 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6757,8 +7015,8 @@
           "url": "https://www.hankyung.com/article/202604148595g",
           "source": "한경",
           "published_at": "2026-04-13T23:46:13",
-          "causal_chain": "여행 성수기 도래 기대감 → 면세·호텔 실적 회복 전망 → 호텔신라 주가 반등 기대.",
-          "macro_event": "여행 성수기 진입에 따른 호텔신라 실적 보릿고개 종료 기대감",
+          "causal_chain": "신라스테이 중국 옌청에 해외 1호점 개관 → 글로벌 확장 시동. 여행 성수기 기대감으로 실적 회복 관심.",
+          "macro_event": "신라스테이 첫 해외 진출(중국 옌청) + 여행 성수기 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6789,6 +7047,9 @@
           "raw_title": "특수관계인에대한출자"
         }
       ],
+      "index_change_pct": -0.03,
+      "index_multiple_current": -440.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 61900,
         "high_date": "2026-04-24",
@@ -6838,7 +7099,10 @@
           61400,
           61600
         ]
-      }
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "033640",
@@ -6858,6 +7122,9 @@
       "prev_pick": null,
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 11.0,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 35700,
         "high_date": "2026-04-24",
@@ -6978,6 +7245,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 1.34,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 51300,
         "high_date": "2026-04-24",
@@ -7055,6 +7325,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 1.88,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 18230,
         "high_date": "2026-04-24",
@@ -7160,6 +7433,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 2.23,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 21300,
         "high_date": "2026-03-11",
@@ -7325,6 +7601,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -325.33,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 195000,
         "high_date": "2026-04-24",
@@ -7402,6 +7681,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 5.77,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 22800,
         "high_date": "2025-10-23",
@@ -7495,6 +7777,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -323.33,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 55700,
         "high_date": "2026-04-24",
@@ -7561,6 +7846,9 @@
       },
       "news": [],
       "fallback": true,
+      "index_change_pct": 2.24,
+      "index_multiple_current": 0.93,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 90400,
         "high_date": "2026-04-24",
@@ -7732,6 +8020,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -0.03,
+      "index_multiple_current": -167.0,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 247500,
         "high_date": "2025-08-08",
