@@ -1096,8 +1096,15 @@ function renderCalExpandContent(date, data) {
           const sign = v > 0 ? '+' : '';
           return `${sign}${v.toFixed(1)}%`;
         };
-        const lowCls = (r240.low_pct ?? 0) >= 0 ? 'up' : 'down';
-        const highCls = (r240.high_pct ?? 0) <= 0 ? 'down' : 'up';
+        // 대표 지시 (2026-04-25 09:31~09:32):
+        // - 신고가/신저가 양 끝 갱신 시 텍스트로 표시 ('신고가'/'신저가')
+        // - 좌측 신저가 → 파랑(.down), 우측 신고가 → 빨강(.up)
+        const isNewLow = r240.low === r240.current;
+        const isNewHigh = r240.high === r240.current;
+        const lowText = isNewLow ? '신저가' : fmtPct(r240.low_pct);
+        const highText = isNewHigh ? '신고가' : fmtPct(r240.high_pct);
+        const lowCls = isNewLow ? 'down' : ((r240.low_pct ?? 0) >= 0 ? 'up' : 'down');
+        const highCls = isNewHigh ? 'up' : ((r240.high_pct ?? 0) <= 0 ? 'down' : 'up');
         rangeHtml = `<div class="stock-range v2">
           <div class="range-bar">
             <div class="range-fill" style="--low-pct:${lowFillPct}%;--high-pct:${highFillPct}%"></div>
@@ -1109,9 +1116,9 @@ function renderCalExpandContent(date, data) {
             <span class="r-high">${r240.high.toLocaleString('ko-KR')}원</span>
           </div>
           <div class="range-row range-pcts">
-            <span class="r-low ${lowCls}">${fmtPct(r240.low_pct)}</span>
+            <span class="r-low ${lowCls}">${lowText}</span>
             <span class="r-now r-now-label">현재가</span>
-            <span class="r-high ${highCls}">${fmtPct(r240.high_pct)}</span>
+            <span class="r-high ${highCls}">${highText}</span>
           </div>
           <div class="range-row range-dates">
             <span class="r-low">${escapeHtml(r240.low_date || '')}</span>
