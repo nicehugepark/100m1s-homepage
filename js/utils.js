@@ -145,22 +145,20 @@ function dsnV8GetConfidenceLine(badge) {
   return String(conf);
 }
 
-function dsnV8FormatThresholds(thresholds, label) {
+function dsnV8FormatThresholds(thresholds, label, badgeContext) {
   // §6.2 formatThresholds + 0/0 fallback (§3 D3 표제 의무)
+  // v9 §B: badgeContext.thresholds 전달 시 base_price=null(지수 ratio) 항목은 raw 분자/분모 표기로 치환.
   const arr = Array.isArray(thresholds) ? thresholds : [];
   const total = arr.length;
   const triggered = arr.filter(t => t && t.triggered).length;
   const stripped = dsnV8StripStageLabel(label || '');
   const titleStage = stripped || (label || '진입');
   if (total === 0) {
-    // fallback: "(자동 평가 없음) — 지정 사유는 사유 박스 참조"
     return `<div class="dsn-v8-thresholds">
       <div class="dsn-v8-thresholds__title">🎯 ${escapeHtml(titleStage)}에 진입하는 조건 (0/0 충족)</div>
       <div class="dsn-v8-thresholds__empty">(자동 평가 없음) — 지정 사유는 사유 박스 참조</div>
     </div>`;
   }
-  // 단위 추론: base_price=null + desc에 "배"/"%"/"비율" 키워드 → 단위 없음 (ratio).
-  // base_price 있고 desc가 "최고가"/"종가"/"기준가"/"가격" 키워드 또는 default → "원" 부착.
   const _detectUnit = (t) => {
     const d = (t && t.desc) || '';
     if (/배\s*(이상|이하|↑|↓)?/.test(d) || /비율|ratio/i.test(d)) return '배';
@@ -170,6 +168,11 @@ function dsnV8FormatThresholds(thresholds, label) {
   const items = arr.map(t => {
     const cls = t.triggered ? 'dsn-v8-thresholds__item dsn-v8-thresholds__item--triggered'
       : 'dsn-v8-thresholds__item dsn-v8-thresholds__item--unmet';
+    // v9 §B: 지수 ratio raw 표기 우선
+    const v9Raw = (typeof getRawExplanation === 'function') ? getRawExplanation(t, badgeContext) : '';
+    if (v9Raw) {
+      return `<li class="${cls}">${escapeHtml(v9Raw)}</li>`;
+    }
     const desc = t.desc || '';
     const unit = _detectUnit(t);
     const fmt = (v) => unit === '배'
@@ -222,8 +225,8 @@ function dsnV8RenderBlock(badge, ctx) {
     }
   }
 
-  // 🎯 thresholds
-  const thresholdsHtml = dsnV8FormatThresholds(badge.thresholds || [], label);
+  // 🎯 thresholds (v9 §B: badge context 전달로 지수 ratio raw 표기 분기)
+  const thresholdsHtml = dsnV8FormatThresholds(badge.thresholds || [], label, badge);
 
   // 추정 경고 배너 (predicted + (pending|low|미상))
   let warningBannerHtml = '';
@@ -274,6 +277,222 @@ function dsnV8SortBadges(badges) {
     const bp = (b.source === 'predicted') ? 1 : 0;
     return ap - bp;
   });
+}
+
+/* ───── DSN-20260425-DSN-003 v9 — 단계 플로우 그래프 + raw 신뢰 표기 + 현재 상태 1줄 + 인과 라인 ─────
+   §A·§B·§C·§D + §6.1 BEM + §6.2 함수 시그니처 5종.
+   togusa C-1 매트릭스(rules/krx-stage-flow.json) 기반 placeholder. 사후 외부화 가능.
+*/
+const KRX_MAIN_TRACK = ['투자주의', '투자경고 예고', '투자경고', '투자위험 예고', '투자위험', '매매거래정지'];
+const KRX_SHORT_TERM_TRACK = ['단기과열 예고', '단기과열'];
+
+function dsnV9MatchStageIndex(track, badgeLabel) {
+  // 배지 라벨을 트랙 노드와 매칭. 정확 일치 우선, 그 다음 prefix 매칭.
+  // "투자위험 근접" predicted_shadow → "투자위험 예고" 노드에 매핑 (krx-stage-flow.json predicted_track 정의).
+  if (!badgeLabel) return -1;
+  // 정확 일치
+  let idx = track.findIndex(label => label === badgeLabel);
+  if (idx !== -1) return idx;
+  // predicted_shadow 매핑: "X 근접" → KRX 공식 "X 예고" 노드
+  if (badgeLabel.endsWith('근접')) {
+    const stripped = badgeLabel.replace(/\s*근접\s*$/, '').trim();
+    // "투자위험 근접" → "투자위험 예고"
+    idx = track.findIndex(label => label === `${stripped} 예고`);
+    if (idx !== -1) return idx;
+    // "투자주의 근접" → "투자주의" (1단계는 예고 부재)
+    idx = track.findIndex(label => label === stripped);
+    if (idx !== -1) return idx;
+  }
+  // prefix
+  return track.findIndex(label => badgeLabel.startsWith(label));
+}
+
+function getStageFlow(badges, viewDate) {
+  // 노드 상태 매트릭스 산출. {trackMain, trackShortTerm} 각 NodeState[].
+  // NodeState = {label, state: 'unvisited'|'current'|'predicted', causalFrom?: boolean}
+  const trackMain = KRX_MAIN_TRACK.map(label => ({ label, state: 'unvisited' }));
+  const trackShortTerm = KRX_SHORT_TERM_TRACK.map(label => ({ label, state: 'unvisited' }));
+  if (!Array.isArray(badges) || badges.length === 0) {
+    return { trackMain, trackShortTerm };
+  }
+
+  const hasPredictedBadge = badges.some(b =>
+    (b.source === 'predicted')
+    || (b.label || '').includes('근접')
+    || (b.label || '').includes('예상')
+  );
+
+  for (const badge of badges) {
+    const label = badge.label || '';
+    const isShortTerm = label.includes('단기과열');
+    const target = isShortTerm ? trackShortTerm : trackMain;
+    const trackArr = isShortTerm ? KRX_SHORT_TERM_TRACK : KRX_MAIN_TRACK;
+    const idx = dsnV9MatchStageIndex(trackArr, label);
+    if (idx === -1) continue;
+    const isPredicted = (badge.source === 'predicted')
+      || label.includes('근접')
+      || label.includes('예상');
+    if (isPredicted) {
+      // current가 이미 있으면 덮어쓰지 않음 (공시 우선)
+      if (target[idx].state !== 'current') {
+        target[idx].state = 'predicted';
+      }
+    } else {
+      target[idx].state = 'current';
+      if (hasPredictedBadge && badges.length > 1) {
+        target[idx].causalFrom = true;
+      }
+    }
+  }
+  return { trackMain, trackShortTerm };
+}
+
+function dsnV9FormatMD(dateStr) {
+  // YYYY-MM-DD → M/D
+  if (!dateStr) return '';
+  const m = String(dateStr).match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (!m) return dateStr;
+  return `${parseInt(m[2], 10)}/${parseInt(m[3], 10)}`;
+}
+
+function getCurrentStateSummary(badges, viewDate) {
+  // §C 카드 펼침 영역 1줄 헤더. 시제 3택 (미지정/지정 중/예고 중).
+  if (!Array.isArray(badges) || badges.length === 0) return '';
+  // 공시 우선
+  const disclosure = badges.find(b =>
+    b.source !== 'predicted'
+    && !(b.label || '').includes('근접')
+    && !(b.label || '').includes('예상')
+  );
+  const predicted = badges.find(b =>
+    (b.source === 'predicted')
+    || (b.label || '').includes('근접')
+    || (b.label || '').includes('예상')
+  );
+  const primary = disclosure || predicted;
+  if (!primary) return '';
+
+  const today = viewDate || primary.view_date || new Date().toISOString().slice(0, 10);
+  const start = primary.start || '';
+  const end = primary.end || '';
+  const label = primary.label || '';
+
+  const isPredictedPrimary = primary === predicted && !disclosure;
+  if (isPredictedPrimary) {
+    return `📍 현재 = ${escapeHtml(label)} 진입 예측 (자체 추정 · KRX 미공식)`;
+  }
+  // disclosure
+  if (start && today < start) {
+    return `📍 현재 = ${escapeHtml(label)} (공시 발효 ${escapeHtml(dsnV9FormatMD(start))}, 미지정 상태)`;
+  }
+  if (start && end && today >= start && today <= end) {
+    const stripped = label.replace(/\s*예고\s*$/, '');
+    return `📍 현재 = ${escapeHtml(stripped)} 지정 중 (${escapeHtml(dsnV9FormatMD(start))}~${escapeHtml(dsnV9FormatMD(end))})`;
+  }
+  return `📍 현재 = ${escapeHtml(label)}`;
+}
+
+function getCausalLine(badges) {
+  // §D multi-badge 인과 라인. 2개+이고 disclosure+predicted 동시일 때만 노출.
+  if (!Array.isArray(badges) || badges.length < 2) return '';
+  const disclosure = badges.find(b =>
+    b.source !== 'predicted'
+    && !(b.label || '').includes('근접')
+    && !(b.label || '').includes('예상')
+  );
+  const predicted = badges.find(b =>
+    (b.source === 'predicted')
+    || (b.label || '').includes('근접')
+    || (b.label || '').includes('예상')
+  );
+  if (!disclosure || !predicted) return '';
+  const dLabel = disclosure.label || '';
+  const pLabel = predicted.label || '';
+  const dTag = dLabel.includes('예고') ? '[지정 예고]' : '[지정 중]';
+  return `${dTag} ${escapeHtml(dLabel)} → [예측 진입] ${escapeHtml(pLabel)} (다음 단계 가능)`;
+}
+
+function getRawExplanation(threshold, badgeContext) {
+  // §B raw 표기. base_price=null 케이스(지수 ratio)는 분자/분모 raw 산출 식 노출.
+  // 실제 데이터에 stock_change_pct/index_change_pct 필드 부재 — badgeContext.price_chg + threshold.current(ratio)로 역산.
+  if (!threshold) return '';
+  const desc = threshold.desc || '';
+  const isIndexRatio = (threshold.base_price == null) && /지수|ratio|배\s*이상/i.test(desc);
+  if (isIndexRatio && badgeContext) {
+    const ratio = threshold.current;
+    const thrVal = threshold.threshold;
+    const stockPct = (badgeContext.price_chg != null) ? badgeContext.price_chg * 100 : null;
+    let stockBase = null, stockNow = null;
+    // 같은 배지 thresholds에서 base_price≠null 항목 중 가장 빠른(price 비교) entry로 종목 base/현재가 추정
+    if (Array.isArray(badgeContext.thresholds)) {
+      const priceEntries = badgeContext.thresholds.filter(t =>
+        t && t.base_price != null && t.current != null && /3일|5일|15일|일\s*전|기준가|최고가/.test(t.desc || '')
+      );
+      // 우선순위: "3일 전" > "5일 전" > "15일 최고가" 등 base_price 가장 작은 것(가장 큰 상승률)
+      if (priceEntries.length > 0) {
+        // 가장 큰 상승률 = (current - base_price) 가 가장 큰 entry
+        priceEntries.sort((a, b) => {
+          const ra = (a.current - a.base_price) / a.base_price;
+          const rb = (b.current - b.base_price) / b.base_price;
+          return rb - ra;
+        });
+        stockBase = priceEntries[0].base_price;
+        stockNow = priceEntries[0].current;
+      }
+    }
+    if (stockPct != null && stockBase != null && stockNow != null && ratio != null && thrVal != null) {
+      const indexPct = stockPct / ratio;
+      const fmtN = (n) => Number(n).toLocaleString('ko-KR');
+      const fmtPct = (n) => (n >= 0 ? '+' : '') + Number(n).toFixed(2) + '%';
+      return `종목 ${fmtPct(stockPct)} (${fmtN(stockBase)}원→${fmtN(stockNow)}원) ÷ 종합지수 ${fmtPct(indexPct)} = ${Number(ratio).toFixed(2)}배 (${Number(thrVal).toFixed(2)}배 이상 충족)`;
+    }
+    // fallback: 부분 raw
+    if (ratio != null && thrVal != null) {
+      return `종합지수 대비 ${Number(ratio).toFixed(2)}배 ÷ 임계 ${Number(thrVal).toFixed(2)}배 (${threshold.triggered ? '충족' : '미충족'})`;
+    }
+  }
+  // base_price=not null 케이스 — v8 기존 표기 유지(호출자에서 분기). 빈 문자열 반환 시 v8 fallback.
+  return '';
+}
+
+function renderStageFlowV9(badges, ctx) {
+  // §A 단계 플로우 그래프 전체. ctx={currentDate, ...}
+  if (!Array.isArray(badges) || badges.length === 0) return '';
+  const viewDate = (ctx && ctx.currentDate) || '';
+  const flow = getStageFlow(badges, viewDate);
+  const currentLine = getCurrentStateSummary(badges, viewDate);
+  const causalLine = getCausalLine(badges);
+
+  const renderNode = (node) => {
+    let cls = 'dsn-v9-stage-flow__node';
+    let dataAttr = '';
+    if (node.state === 'current') cls += ' dsn-v9-stage-flow__node--current';
+    else if (node.state === 'predicted') cls += ' dsn-v9-stage-flow__node--predicted';
+    if (node.causalFrom) dataAttr = ' data-causal-from="true"';
+    return `<span class="${cls}"${dataAttr}>${escapeHtml(node.label)}</span>`;
+  };
+  const renderTrack = (nodes, modCls) => {
+    const parts = [];
+    nodes.forEach((n, i) => {
+      parts.push(renderNode(n));
+      if (i < nodes.length - 1) {
+        parts.push('<span class="dsn-v9-stage-flow__arrow" aria-hidden="true">→</span>');
+      }
+    });
+    return `<div class="dsn-v9-stage-flow__track ${modCls}">${parts.join('')}</div>`;
+  };
+
+  const currentLineHtml = currentLine ? `<div class="dsn-v9-current-state">${currentLine}</div>` : '';
+  const causalLineHtml = causalLine ? `<div class="dsn-v9-causal-line">${causalLine}</div>` : '';
+
+  return `<section class="dsn-v9-stage-flow">
+    ${currentLineHtml}
+    ${causalLineHtml}
+    <h5 class="dsn-v9-stage-flow__title">KRX 시장경보 단계 흐름</h5>
+    ${renderTrack(flow.trackMain, 'dsn-v9-stage-flow__track--main')}
+    <h5 class="dsn-v9-stage-flow__title dsn-v9-stage-flow__title--sub">단기과열 (별도 트랙)</h5>
+    ${renderTrack(flow.trackShortTerm, 'dsn-v9-stage-flow__track--short-term')}
+  </section>`;
 }
 
 function miniCandle(open, high, low, close, changePct) {

@@ -1849,3 +1849,165 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .dsn-v8-legacy-fallback__summary::-webkit-details-marker { display: none; }
 .dsn-v8-legacy-fallback[open] .dsn-v8-legacy-fallback__summary { margin-bottom: 8px; }
 
+/* ───── DSN-20260425-DSN-003 v9 — 단계 플로우 그래프 + 현재 상태 1줄 + 인과 라인 ─────
+   §6.1 BEM. 노드 상태는 텍스트 prefix(● / ↗) + 테두리 형태(굵음/점선)로 색맹 분리.
+*/
+.dsn-v9-stage-flow {
+  margin: 12px 0 14px;
+  padding: 12px 14px;
+  background: var(--sf);
+  border: 1px solid var(--v8-border-subtle);
+  border-radius: 6px;
+}
+
+.dsn-v9-current-state {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--tx);
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: rgba(31, 111, 235, 0.06);
+  border-left: 3px solid var(--badge-disclosure);
+  border-radius: 4px;
+}
+
+.dsn-v9-causal-line {
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background: rgba(229, 90, 43, 0.06);
+  border-left: 3px solid var(--badge-predicted);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: var(--v8-text-secondary);
+}
+
+.dsn-v9-stage-flow__title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--v8-text-secondary);
+  margin: 6px 0 6px;
+}
+.dsn-v9-stage-flow__title--sub {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--v8-border-subtle);
+}
+
+.dsn-v9-stage-flow__track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.dsn-v9-stage-flow__track--main {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.dsn-v9-stage-flow__track--short-term {
+  font-size: 0.75rem;
+}
+
+.dsn-v9-stage-flow__node {
+  position: relative;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--v8-border-subtle);
+  color: var(--v8-text-tertiary);
+  background: rgba(0,0,0,0.02);
+  white-space: nowrap;
+  font-size: 0.8125rem;
+}
+.dsn-v9-stage-flow__node--current {
+  border: 2px solid var(--badge-disclosure);
+  background: rgba(31, 111, 235, 0.08);
+  color: var(--badge-disclosure);
+  font-weight: 600;
+  border-left-width: 4px;
+}
+.dsn-v9-stage-flow__node--current::before {
+  content: "● 현재 ";
+  color: var(--badge-disclosure);
+  font-weight: 700;
+}
+.dsn-v9-stage-flow__node--predicted {
+  border: 1.5px dashed var(--badge-predicted);
+  background: rgba(229, 90, 43, 0.05);
+  color: var(--badge-predicted);
+  font-weight: 600;
+}
+.dsn-v9-stage-flow__node--predicted::before {
+  content: "↗ 예측 ";
+  color: var(--badge-predicted);
+  font-weight: 700;
+}
+
+.dsn-v9-stage-flow__arrow {
+  color: var(--v8-text-tertiary);
+  font-size: 0.875rem;
+  user-select: none;
+  padding: 0 1px;
+}
+
+/* 인과 라인 시각 화살표 — 노드 우측 ↘ (모바일은 ↓로 미디어쿼리 교체) */
+.dsn-v9-stage-flow__node[data-causal-from="true"]::after {
+  content: " ↘";
+  margin-left: 4px;
+  color: var(--badge-predicted);
+  font-weight: 700;
+}
+
+/* 모바일 ≤380px — 1열 세로 흐름 + 화살표 ↓ */
+@media (max-width: 380px) {
+  .dsn-v9-stage-flow__track {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+  }
+  .dsn-v9-stage-flow__arrow {
+    text-align: center;
+    margin: 1px 0;
+  }
+  .dsn-v9-stage-flow__arrow::before {
+    content: "↓";
+  }
+  .dsn-v9-stage-flow__arrow {
+    font-size: 0;
+  }
+  .dsn-v9-stage-flow__arrow::before {
+    font-size: 0.875rem;
+  }
+  .dsn-v9-stage-flow__node {
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+  .dsn-v9-stage-flow__node[data-causal-from="true"]::after {
+    content: " ↓";
+    display: block;
+    margin: 2px 0 0;
+  }
+}
+
+/* 다크모드 — lightness +12% */
+@media (prefers-color-scheme: dark) {
+  .dsn-v9-stage-flow__node--current {
+    background: rgba(31, 111, 235, 0.18);
+  }
+  .dsn-v9-stage-flow__node--predicted {
+    background: rgba(229, 90, 43, 0.14);
+  }
+  .dsn-v9-current-state {
+    background: rgba(31, 111, 235, 0.12);
+  }
+  .dsn-v9-causal-line {
+    background: rgba(229, 90, 43, 0.10);
+  }
+}
+
+/* 고대비 — 보더 두께 강화 */
+@media (prefers-contrast: more) {
+  .dsn-v9-stage-flow__node--current { border-width: 3px; border-left-width: 5px; }
+  .dsn-v9-stage-flow__node--predicted { border-width: 2px; }
+}
+
