@@ -1833,22 +1833,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border-radius: 4px;
 }
 
-/* v6 legacy fallback (회귀 안전망 — UX 워크스루 통과 후 제거) */
-.dsn-v8-legacy-fallback {
-  margin-top: 12px;
-  border-top: 1px dashed var(--v8-border-subtle);
-  padding-top: 8px;
-}
-.dsn-v8-legacy-fallback__summary {
-  cursor: pointer;
-  font-size: 0.75rem;
-  color: var(--v8-text-tertiary);
-  list-style: none;
-  padding: 4px 0;
-}
-.dsn-v8-legacy-fallback__summary::-webkit-details-marker { display: none; }
-.dsn-v8-legacy-fallback[open] .dsn-v8-legacy-fallback__summary { margin-bottom: 8px; }
-
 /* ───── DSN-20260425-DSN-003 v9 — 단계 플로우 그래프 + 현재 상태 1줄 + 인과 라인 ─────
    §6.1 BEM. 노드 상태는 텍스트 prefix(● / ↗) + 테두리 형태(굵음/점선)로 색맹 분리.
 */

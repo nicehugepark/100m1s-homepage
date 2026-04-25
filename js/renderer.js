@@ -523,7 +523,6 @@ function renderCalExpandContent(date, data) {
       // === v8 (DSN-20260425-DSN-002, REQ-010): 시제 분리 정보 위계 ===
       // §3·§4·§5.1·§6.1·§6.2 — 시제 칩 + 5줄 요약 + 🎯 thresholds + 통합 펼침.
       // 복수 배지는 시제 순서(현재 → 예측)로 배치 (§9 시나리오 A).
-      // 기존 v3/v5/v6 블록은 "기존 형식 보기" details로 보존 (회귀 안전망 + UX 워크스루 검증 후 제거).
       const _v8FilteredBadges = (st.status_badges || []).filter(b =>
         b.thresholds || b.regulation || b.start || b.label || (b.single_price === true && (b.label || '').includes('단기과열'))
       );
@@ -1044,8 +1043,6 @@ function renderCalExpandContent(date, data) {
           nextSectionTitle = dN ? `진입 임박 (${dN} 예상)` : `진입 임박 (${escapeHtml(peDateShort)} 예상)`;
         } else if (isPredicted && b.confidence === 'high') {
           nextSectionTitle = '진입 임박';
-        } else if (isPredicted && b.confidence === 'medium') {
-          nextSectionTitle = '진입 조건 근접';
         } else if (nextStageLabel) {
           nextSectionTitle = `다음 단계 (${escapeHtml(nextStageLabel)} 예고)`;
         } else if (isShortTermHot) {
@@ -1090,16 +1087,11 @@ function renderCalExpandContent(date, data) {
         const cls = isAdvisoryWarning ? 'v3 v5 v6' : 'v3 v5';
         return `<div class="cal-status-detail ${cls}${isPredicted ? ' predicted' : ''}">${sections.join('')}</div>`;
       }).join('');
-      // v8 + legacy 합본. v8가 primary, legacy는 회귀 안전망 (details 접힘).
-      // UX 워크스루 §9 6시나리오 통과 + 대표 검수 후 legacy 블록 제거 예정.
-      const statusDetailLegacyToggleHtml = statusDetailLegacyHtml
-        ? `<details class="dsn-v8-legacy-fallback"><summary class="dsn-v8-legacy-fallback__summary">기존 형식 보기 (v6 — 회귀 안전망) ▾</summary>${statusDetailLegacyHtml}</details>`
-        : '';
       // v9 §A: 단계 플로우 그래프 — 펼침 영역 진입 직후 첫 블록(§A.3 채택)
       const v9StageFlowHtml = (typeof renderStageFlowV9 === 'function')
         ? renderStageFlowV9(_v8SortedBadges, { currentDate: date || '' })
         : '';
-      const statusDetailHtml = `${v9StageFlowHtml}${v8DetailHtml}${statusDetailLegacyToggleHtml}`;
+      const statusDetailHtml = `${v9StageFlowHtml}${v8DetailHtml}`;
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
       // toggle 요약 v3: period + label 만 (대표 정정 18:52 KST — 임계 정보는 표로 이동)
