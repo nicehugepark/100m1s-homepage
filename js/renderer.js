@@ -81,6 +81,19 @@ if (typeof document !== 'undefined' && !window.__rulesVerBannerBound) {
   window.__rulesVerBannerBound = true;
 }
 
+/* ───── DSN-20260425-DSN-004 v9.1 §J.1 — KOREA_HOLIDAYS 글로벌 주입 ─────
+   utils.js getNextTradingDay()의 안전망 데이터 소스. build_daily.py 산출 next_trading_day_for_predicted 신뢰가 원칙.
+   estimated 등급 시 console.warn (FLR-20260423-FLR-002 verified 절차).
+*/
+if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.KOREA_HOLIDAYS) {
+  window.__koreaHolidaysLoading = true;
+  fetch('/data/holidays.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(j => { if (j) window.KOREA_HOLIDAYS = j; })
+    .catch(() => {})
+    .finally(() => { window.__koreaHolidaysLoading = false; });
+}
+
 function renderCalExpandContent(date, data) {
   const inner = document.getElementById('cal-content');
   const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
@@ -1187,7 +1200,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle chevron-only" aria-label="상세 보기"><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}</div>` : ''}`
+              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle chevron-only" aria-label="상세 보기"><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${typeof renderDisclaimerFooter === 'function' ? renderDisclaimerFooter() : ''}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;

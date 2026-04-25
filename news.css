@@ -2011,3 +2011,58 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .dsn-v9-stage-flow__node--predicted { border-width: 2px; }
 }
 
+/* ───── DSN-20260425-DSN-004 v9.1 — 시제 칩 [내일 가능] + 법무 푸터 ─────
+   §G.1 dsn-v9-tense-chip--imminent: 점선 1.5px·weight 700·predicted 색 토큰 #E55A2B 유지·채도 +0.04.
+   §G.2 dsn-v91-disclaimer-footer: 0.75rem · var(--text-secondary) · 펼침 최하단 · 미세 구분선 1px.
+*/
+.dsn-v9-tense-chip--imminent {
+  background: rgba(229, 90, 43, 0.14);   /* base 0.10 → 0.14 (채도 +0.04) */
+  color: #E55A2B;
+  border: 1.5px dashed #E55A2B;          /* 점선 1.5px */
+  font-weight: 700;                       /* base 600 → 700 (D+1 강조) */
+}
+.dsn-v9-tense-chip--imminent::before {
+  content: "📅 ";
+  margin-right: 2px;
+}
+
+.dsn-v91-disclaimer-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle, rgba(0,0,0,0.08));
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-secondary, #6B7280);
+}
+.dsn-v91-disclaimer-footer__icon {
+  display: inline-block;
+  margin-right: 4px;
+  color: var(--text-secondary, #6B7280);
+}
+.dsn-v91-disclaimer-footer__text {
+  display: inline;
+}
+
+/* 다크모드 — imminent 칩 lightness +12% / 푸터 var 자동 보정 */
+@media (prefers-color-scheme: dark) {
+  .dsn-v9-tense-chip--imminent {
+    background: rgba(229, 90, 43, 0.22);
+    border-color: #FF7A4A;
+    color: #FF7A4A;
+  }
+  .dsn-v91-disclaimer-footer {
+    border-top-color: var(--border-subtle, rgba(255,255,255,0.10));
+    color: var(--text-secondary, #9CA3AF);
+  }
+  .dsn-v91-disclaimer-footer__icon {
+    color: var(--text-secondary, #9CA3AF);
+  }
+}
+
+/* 고대비 — 점선/구분선 두께 강화 */
+@media (prefers-contrast: more) {
+  .dsn-v9-tense-chip--imminent { border-width: 2px; font-weight: 800; }
+  .dsn-v91-disclaimer-footer { border-top-width: 2px; font-weight: 600; }
+}
+
