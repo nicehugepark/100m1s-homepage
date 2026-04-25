@@ -193,6 +193,11 @@ function dsnV8FormatThresholds(thresholds, label, badgeContext) {
 
 function dsnV8RenderBlock(badge, ctx) {
   // §3·§5.1 — 단일 배지 1블록. 5줄 요약 + 🎯 thresholds + 통합 펼침
+  // v9.1 §B: predicted 칩은 imminent/predicted 분기 (renderTenseChip 우선 사용)
+  const viewDateForChip = (ctx && ctx.currentDate) || badge.view_date || '';
+  const tenseChipHtml = (typeof renderTenseChip === 'function')
+    ? renderTenseChip(badge, viewDateForChip)
+    : null;
   const tense = dsnV8GetTenseChip(badge);
   const isPredicted = (badge.source === 'predicted')
     || (badge.label || '').includes('예상')
@@ -257,9 +262,12 @@ function dsnV8RenderBlock(badge, ctx) {
     ? `<details class="dsn-v8-extra"><summary>${escapeHtml(summaryToggleText)}</summary>${definitionHtml}${regulationHtml}${sourceBlockHtml}</details>`
     : '';
 
+  // v9.1: tenseChipHtml 우선 사용 — predicted 케이스 imminent 분기 포함
+  const chipHtml = tenseChipHtml
+    || `<span class="dsn-v8-tense-chip ${tense.cls}">[${escapeHtml(tense.text)}]</span>`;
   return `<div class="${blockCls}">
     <div class="dsn-v8-block__header">
-      <span class="dsn-v8-tense-chip ${tense.cls}">[${escapeHtml(tense.text)}]</span>
+      ${chipHtml}
       <span class="dsn-v8-block__label">${escapeHtml(label)}</span>
       ${sourceNote}
     </div>
@@ -356,7 +364,8 @@ function dsnV9FormatMD(dateStr) {
 }
 
 function getCurrentStateSummary(badges, viewDate) {
-  // §C 카드 펼침 영역 1줄 헤더. 시제 3택 (미지정/지정 중/예고 중).
+  // §C 카드 펼침 영역 1줄 헤더. 시제 3택 (미지정/기간/예고 중).
+  // v9.1 §C.3: "지정 중" → "기간". label 정제 X (예: "투자경고 예고 기간" 그대로).
   if (!Array.isArray(badges) || badges.length === 0) return '';
   // 공시 우선
   const disclosure = badges.find(b =>
@@ -386,10 +395,99 @@ function getCurrentStateSummary(badges, viewDate) {
     return `📍 현재 = ${escapeHtml(label)} (공시 발효 ${escapeHtml(dsnV9FormatMD(start))}, 미지정 상태)`;
   }
   if (start && end && today >= start && today <= end) {
-    const stripped = label.replace(/\s*예고\s*$/, '');
-    return `📍 현재 = ${escapeHtml(stripped)} 지정 중 (${escapeHtml(dsnV9FormatMD(start))}~${escapeHtml(dsnV9FormatMD(end))})`;
+    // v9.1: label 정제 X — "투자경고 예고 기간"으로 그대로 노출 (예고 단계 명시 보존)
+    return `📍 현재 = ${escapeHtml(label)} 기간 (${escapeHtml(dsnV9FormatMD(start))}~${escapeHtml(dsnV9FormatMD(end))})`;
   }
   return `📍 현재 = ${escapeHtml(label)}`;
+}
+
+/* ───── DSN-20260425-DSN-004 v9.1 — 시제 칩 5번째 [내일 가능] + 법무 푸터 ─────
+   §B 시제 칩 분기 (predicted source 시간차 기반 imminent 분기).
+   §E "내일" 산출 — build_daily.py status_badges.next_trading_day_for_predicted 신뢰. renderer 재산출 X.
+   §G CSS BEM dsn-v9-tense-chip--imminent.
+   §D 법무 푸터 1줄 (펼침 영역 최하단).
+*/
+
+function formatYMD(date) {
+  // Date → YYYY-MM-DD
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function getNextTradingDay(dateStr) {
+  // §E.4 renderer 측 안전망. 우선순위: build_daily.py 산출 next_trading_day_for_predicted 신뢰.
+  // 본 함수는 view_date+1 거래일 비교용(getPredictedTenseVariant 내부) 또는 build_daily 미산출 케이스 폴백.
+  // KOREA_HOLIDAYS estimated 등급 hit 시 console.warn 1회 (FLR-20260423-FLR-002 verified 절차).
+  if (!dateStr) return '';
+  const holidaysData = (typeof window !== 'undefined' && window.KOREA_HOLIDAYS) || null;
+  const holidaysSet = holidaysData && holidaysData.holidays ? new Set(Object.keys(holidaysData.holidays)) : null;
+  const marketClosedSet = holidaysData && holidaysData.market_closed ? new Set(Object.keys(holidaysData.market_closed)) : null;
+  // estimated 등급 (placeholder — 향후 holidays.json verification_status 필드 추가 시 분기)
+  const isEstimated = holidaysData && holidaysData.verification_status === 'estimated';
+
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return '';
+  let next = new Date(date);
+  let safety = 14;
+  while (safety-- > 0) {
+    next.setDate(next.getDate() + 1);
+    const dow = next.getDay();
+    if (dow === 0 || dow === 6) continue;
+    const ymd = formatYMD(next);
+    if (holidaysSet && holidaysSet.has(ymd)) {
+      if (isEstimated && typeof console !== 'undefined') {
+        console.warn(`[DSN-v9.1] getNextTradingDay: holidays.json estimated grade hit (${ymd}). build_daily.py 산출 신뢰 권고.`);
+      }
+      continue;
+    }
+    if (marketClosedSet && marketClosedSet.has(ymd)) {
+      if (isEstimated && typeof console !== 'undefined') {
+        console.warn(`[DSN-v9.1] getNextTradingDay: holidays.json estimated grade hit (${ymd}). build_daily.py 산출 신뢰 권고.`);
+      }
+      continue;
+    }
+    return ymd;
+  }
+  return '';
+}
+
+function getPredictedTenseVariant(badge, viewDate) {
+  // §B.2 predicted 배지 시제 칩 분기 — 'imminent' (D+1 거래일 특정) vs 'predicted' (일자 미특정).
+  // build_daily.py 산출 next_trading_day_for_predicted 신뢰. renderer 재산출 X.
+  if (!badge || badge.source !== 'predicted') return null;
+  const ntd = badge.next_trading_day_for_predicted;
+  if (!ntd) return 'predicted';
+  if (!viewDate) return 'predicted';
+  // viewDate+1 거래일 = ntd → imminent
+  return ntd === getNextTradingDay(viewDate) ? 'imminent' : 'predicted';
+}
+
+function renderTenseChip(badge, viewDate) {
+  // §B.2 시제 칩 분기 진입점. v8 §4.4 칩 4종 + v9.1 §B 5번째 [내일 가능].
+  if (!badge) return '';
+  const isPredicted = (badge.source === 'predicted')
+    || (badge.label || '').includes('예상')
+    || (badge.label || '').includes('근접');
+  if (isPredicted) {
+    const variant = getPredictedTenseVariant(badge, viewDate);
+    if (variant === 'imminent') {
+      return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted dsn-v9-tense-chip--imminent">[내일 가능]</span>`;
+    }
+    return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted">[예측 진입]</span>`;
+  }
+  // disclosure: v8 dsnV8GetTenseChip 재사용
+  const tense = dsnV8GetTenseChip(badge);
+  return `<span class="dsn-v8-tense-chip ${tense.cls}">[${escapeHtml(tense.text)}]</span>`;
+}
+
+function renderDisclaimerFooter() {
+  // §D.2 법무 푸터 1줄 (legal P0 확정 텍스트). 펼침 영역 최하단 노출.
+  return `<div class="dsn-v91-disclaimer-footer">`
+    + `<span class="dsn-v91-disclaimer-footer__icon">ⓘ</span>`
+    + `<span class="dsn-v91-disclaimer-footer__text">투자판단 권고 아님 · 매매 결정은 본인 책임</span>`
+    + `</div>`;
 }
 
 function getCausalLine(badges) {
