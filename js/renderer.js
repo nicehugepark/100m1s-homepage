@@ -1080,7 +1080,11 @@ function renderCalExpandContent(date, data) {
       const statusDetailLegacyToggleHtml = statusDetailLegacyHtml
         ? `<details class="dsn-v8-legacy-fallback"><summary class="dsn-v8-legacy-fallback__summary">기존 형식 보기 (v6 — 회귀 안전망) ▾</summary>${statusDetailLegacyHtml}</details>`
         : '';
-      const statusDetailHtml = `${v8DetailHtml}${statusDetailLegacyToggleHtml}`;
+      // v9 §A: 단계 플로우 그래프 — 펼침 영역 진입 직후 첫 블록(§A.3 채택)
+      const v9StageFlowHtml = (typeof renderStageFlowV9 === 'function')
+        ? renderStageFlowV9(_v8SortedBadges, { currentDate: date || '' })
+        : '';
+      const statusDetailHtml = `${v9StageFlowHtml}${v8DetailHtml}${statusDetailLegacyToggleHtml}`;
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
       // toggle 요약 v3: period + label 만 (대표 정정 18:52 KST — 임계 정보는 표로 이동)
