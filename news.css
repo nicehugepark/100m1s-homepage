@@ -1443,8 +1443,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 11px;
   font-weight: 600;
 }
-.stock-range.v2 .range-pcts .up { color: #1958C7; }   /* 저점 대비 상승 */
-.stock-range.v2 .range-pcts .down { color: #C53939; } /* 고점 대비 하락 */
+.stock-range.v2 .range-pcts .up { color: #C53939; }   /* 양수(상승) — 한국 증시 관습 빨강 */
+.stock-range.v2 .range-pcts .down { color: #1958C7; } /* 음수(하락) — 한국 증시 관습 파랑 */
 /* v2.2: 가운데 "현재가" 라벨 (값 X, 텍스트만) */
 .stock-range.v2 .range-pcts .r-now-label { color: #999; font-weight: 500; font-size: 11px; }
 .stock-range.v2 .range-dates {
