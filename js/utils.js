@@ -549,7 +549,16 @@ function renderTenseChip(badge, viewDate, allBadges) {
       const warnPrefix = isEstimated
         ? '<span class="dsn-v9-tense-chip__grade-warn" aria-label="추정 휴장 캘린더">⚠️</span>'
         : '';
-      return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted dsn-v9-tense-chip--imminent"${gradeAttr}${tooltip}>${warnPrefix}[내일 가능]</span>`;
+      // 휴지 메트릭 의무 — predicted_shadow_v9_1_fired_count (사이클 4 폐기 트리거 측정).
+      // 옵션 1: window 전역 카운터 + console.info(ticker, count). 옵션 2: DOM data-v91-fired="true" (qa grep).
+      if (typeof window !== 'undefined') {
+        window.__v91_fired_count = (window.__v91_fired_count || 0) + 1;
+        const ticker = (badge && (badge.ticker || badge.code || badge.stock_code)) || '';
+        if (typeof console !== 'undefined' && console.info) {
+          console.info(`[v9.1] [내일 가능] fired: ticker=${ticker} grade=${grade || 'unset'} (count=${window.__v91_fired_count})`);
+        }
+      }
+      return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted dsn-v9-tense-chip--imminent" data-v91-fired="true"${gradeAttr}${tooltip}>${warnPrefix}[내일 가능]</span>`;
     }
     return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted">[예측 진입]</span>`;
   }
