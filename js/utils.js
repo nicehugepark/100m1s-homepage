@@ -62,17 +62,23 @@ function dsnV8StripStageLabel(label) {
 }
 
 function dsnV8GetTenseChip(badge) {
-  // [지정 예고] / [지정 중] / [예측 진입] 분기
+  // 시제 칩 4종 분기 (B-12 — design v8.1 사후 갱신).
+  //   predicted source            → [예측 진입]
+  //   label에 "예고" 포함            → [지정 예고]   (KRX 공식 예고 단계)
+  //   "예고" 미포함 + view_date<start → [지정 예정]   (공시 확정 + 시작일 미도래)
+  //   그 외                       → [지정 중]
+  const label = badge.label || '';
   const isPredicted = (badge.source === 'predicted')
-    || (badge.label || '').includes('예상')
-    || (badge.label || '').includes('근접');
+    || label.includes('예상')
+    || label.includes('근접');
   if (isPredicted) {
     return { text: '예측 진입', cls: 'dsn-v8-tense-chip--predicted' };
   }
-  const isNotice = (badge.label || '').includes('예고')
-    || (badge.view_date && badge.start && badge.view_date < badge.start);
-  if (isNotice) {
+  if (label.includes('예고')) {
     return { text: '지정 예고', cls: 'dsn-v8-tense-chip--disclosure' };
+  }
+  if (badge.view_date && badge.start && badge.view_date < badge.start) {
+    return { text: '지정 예정', cls: 'dsn-v8-tense-chip--disclosure' };
   }
   return { text: '지정 중', cls: 'dsn-v8-tense-chip--disclosure' };
 }
