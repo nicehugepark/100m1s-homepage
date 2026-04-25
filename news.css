@@ -1933,13 +1933,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding: 0 1px;
 }
 
-/* 인과 라인 시각 화살표 — 노드 우측 ↘ (모바일은 ↓로 미디어쿼리 교체) */
-.dsn-v9-stage-flow__node[data-causal-from="true"]::after {
-  content: " ↘";
-  margin-left: 4px;
-  color: var(--badge-predicted);
-  font-weight: 700;
-}
+/* v9.3 §IV: 박스 안 ↘/↓ 화살표 제거 (트랙 간 → 화살표는 유지). 인과 정보는 causalLine 텍스트 + 노드 4축 위계로 보강. */
 
 /* 모바일 ≤380px — 1열 세로 흐름 + 화살표 ↓ */
 @media (max-width: 380px) {
@@ -1966,11 +1960,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     font-size: 0.75rem;
     padding: 4px 8px;
   }
-  .dsn-v9-stage-flow__node[data-causal-from="true"]::after {
-    content: " ↓";
-    display: block;
-    margin: 2px 0 0;
-  }
 }
 
 /* 다크모드 — lightness +12% */
@@ -1993,6 +1982,82 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 @media (prefers-contrast: more) {
   .dsn-v9-stage-flow__node--current { border-width: 3px; border-left-width: 5px; }
   .dsn-v9-stage-flow__node--predicted { border-width: 2px; }
+}
+
+/* ───── DSN-20260426-DSN-001 v9.3 §I — 노드 4축 위계 (current/upcoming/predicted-imminent/unvisited) ─────
+   휴지 결정 A=c — 색 변경 0건. dash 패턴·두께·prefix 3축으로 위계 분리.
+   - current(실선 2px, 좌 4px)·upcoming(굵은 점선 2.5px)·predicted-imminent(얇은 점선 1.5px)·predicted(얇은 점선 1.5px·strict 미충족 detail-only).
+   - upcoming = disclosure 발효 D-1 (필연), predicted-imminent = predicted strict 3 AND 충족 (추정 임박).
+*/
+
+/* upcoming — disclosure 확정 + 발효 D-1 (필연) */
+.dsn-v9-stage-flow__node--upcoming {
+  border: 2.5px dashed var(--badge-disclosure);
+  background: rgba(31, 111, 235, 0.06);
+  color: var(--badge-disclosure);
+  font-weight: 600;
+  padding: 4px 10px;
+}
+.dsn-v9-stage-flow__node--upcoming::before {
+  content: "→ 다음 ";
+  color: var(--badge-disclosure);
+  font-weight: 700;
+}
+
+/* predicted-imminent — predicted strict 3 AND 충족 (추정 임박) */
+.dsn-v9-stage-flow__node--predicted-imminent {
+  border: 1.5px dashed var(--badge-predicted);
+  background: rgba(229, 90, 43, 0.05);
+  color: var(--badge-predicted);
+  font-weight: 600;
+  padding: 4px 10px;
+}
+.dsn-v9-stage-flow__node--predicted-imminent::before {
+  content: "↗ 예측 ";
+  color: var(--badge-predicted);
+  font-weight: 700;
+}
+
+/* 박스 효과 영역 — upcoming variant 신규 (점선 정합) */
+.dsn-v92-stage-flow__node-effect--upcoming {
+  color: var(--badge-disclosure);
+  border-top-style: dashed;
+}
+
+/* v9.3 다크모드 */
+@media (prefers-color-scheme: dark) {
+  .dsn-v9-stage-flow__node--upcoming {
+    background: rgba(31, 111, 235, 0.16);
+  }
+  .dsn-v9-stage-flow__node--predicted-imminent {
+    background: rgba(229, 90, 43, 0.14);
+    border-color: #FF7A4A;
+    color: #FF7A4A;
+  }
+  .dsn-v9-stage-flow__node--predicted-imminent::before {
+    color: #FF7A4A;
+  }
+}
+
+/* v9.3 고대비 — 두께 +1px (current/predicted 비례 강화) */
+@media (prefers-contrast: more) {
+  .dsn-v9-stage-flow__node--upcoming { border-width: 3.5px; }
+  .dsn-v9-stage-flow__node--predicted-imminent { border-width: 2.5px; }
+}
+
+/* v9.3 §II — 헤더 뱃지 통합 click 시 카드 자동 펼침. role=button + cursor pointer + focus ring */
+.dsn-v93-header-badge {
+  cursor: pointer;
+  outline-offset: 2px;
+}
+.dsn-v93-header-badge:focus-visible {
+  outline: 2px solid var(--badge-disclosure);
+  outline-offset: 2px;
+}
+@media (hover: hover) {
+  .dsn-v93-header-badge:hover {
+    filter: brightness(1.05);
+  }
 }
 
 /* ───── DSN-20260425-DSN-004 v9.1 — 시제 칩 [내일 가능] + 법무 푸터 ─────
