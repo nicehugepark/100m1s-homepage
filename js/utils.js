@@ -245,11 +245,11 @@ function dsnV8RenderBlock(badge, ctx) {
   // 통합 펼침 (definition / regulation / source)
   const stripped = dsnV8StripStageLabel(label);
   const summaryToggleText = isPredicted
-    ? `${stripped}란 / 적용 예정 제한 / 산출 근거 ▾`
+    ? `${stripped}란 / 적용 예정 제한 ▾`
     : `${stripped}란 / 규정 상세 / 공시 원문 ▾`;
   const ctxDart = (ctx && ctx.dartUrl) || '';
   const sourceBlockHtml = isPredicted
-    ? `<div class="dsn-v8-extra__source"><p>산출 근거: 공개 종가 + KRX 임계 산술 · 신뢰도 ${escapeHtml(dsnV8GetConfidenceLine(badge) || '미상')}</p></div>`
+    ? ''
     : (ctxDart ? `<div class="dsn-v8-extra__source"><a href="${escapeHtml(ctxDart)}" target="_blank" rel="noopener noreferrer">공시 원문 보기 (DART) →</a></div>` : '');
   const definitionText = (ctx && ctx.stageDefinition) || '';
   const regulationText = (ctx && ctx.regulationDetail) || '';
