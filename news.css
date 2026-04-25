@@ -2046,7 +2046,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .dsn-v91-disclaimer-footer {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--border-subtle, rgba(0,0,0,0.08));
+  border-top: 1px dashed var(--border-subtle, rgba(0,0,0,0.08));  /* DSN-004 §D.3·§G.2 명세 dashed (영역 약 분리) */
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.5;
