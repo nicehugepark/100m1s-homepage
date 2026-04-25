@@ -1701,3 +1701,151 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-badges .cal-badge-date-extra {
   display: none;
 }
+
+/* ───── DSN-20260425-DSN-002 v8 — 시제 분리 + 복수 배지 정보 위계 ─────
+   §6.1 BEM. 시제 태그 칩(파랑/주황) + 5줄 요약 + 🎯 thresholds + 통합 펼침.
+   v6/v7 cal-status-* 클래스는 백워드 호환 유지(단일 배지 케이스 회귀 차단). */
+:root {
+  --badge-disclosure: #1F6FEB;
+  --badge-predicted: #E55A2B;
+  --v8-text-secondary: var(--tx2);
+  --v8-text-tertiary: var(--dm);
+  --v8-success: var(--pos);
+  --v8-border-subtle: var(--bd);
+}
+
+.dsn-v8-block {
+  border-left: 4px solid var(--bd);
+  padding: 12px 14px;
+  margin-top: 10px;
+  background: var(--sf);
+  border-radius: 0 4px 4px 0;
+}
+.dsn-v8-block + .dsn-v8-block { margin-top: 12px; }
+.dsn-v8-block--disclosure { border-left-color: var(--badge-disclosure); }
+.dsn-v8-block--predicted { border-left-color: var(--badge-predicted); }
+
+.dsn-v8-block__header {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.dsn-v8-block__label {
+  font-size: 0.95rem; font-weight: 700; color: var(--tx);
+}
+.dsn-v8-block__source-note {
+  font-size: 0.75rem; color: var(--v8-text-secondary); font-weight: 500;
+}
+
+.dsn-v8-tense-chip {
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 600;
+  white-space: nowrap;
+}
+.dsn-v8-tense-chip--disclosure {
+  background: rgba(31, 111, 235, 0.10); color: var(--badge-disclosure);
+}
+.dsn-v8-tense-chip--predicted {
+  background: rgba(229, 90, 43, 0.10); color: var(--badge-predicted);
+}
+
+.dsn-v8-summary {
+  display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px;
+  font-size: 0.875rem; line-height: 1.5;
+}
+.dsn-v8-summary__label {
+  color: var(--v8-text-secondary); font-weight: 500; white-space: nowrap;
+}
+.dsn-v8-summary__value { color: var(--tx); }
+.dsn-v8-summary__reason {
+  grid-column: 1 / -1; padding-top: 4px; line-height: 1.55;
+  color: var(--tx2); font-size: 0.8125rem;
+}
+
+.dsn-v8-thresholds { margin-top: 12px; }
+.dsn-v8-thresholds__title {
+  font-weight: 600; font-size: 0.875rem; color: var(--tx);
+  margin-bottom: 6px;
+}
+.dsn-v8-thresholds__list {
+  list-style: none; padding-left: 12px; margin: 0;
+}
+.dsn-v8-thresholds__item {
+  font-size: 0.8125rem; line-height: 1.6; color: var(--tx2);
+}
+.dsn-v8-thresholds__item--triggered::before {
+  content: "✓ "; color: var(--v8-success); font-weight: 700;
+}
+.dsn-v8-thresholds__item--unmet::before {
+  content: "○ "; color: var(--v8-text-tertiary);
+}
+
+.dsn-v8-warning-banner {
+  margin-top: 10px; padding: 8px 12px;
+  background: rgba(229, 90, 43, 0.06);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: var(--badge-predicted);
+}
+
+.dsn-v8-extra { margin-top: 10px; }
+.dsn-v8-extra summary {
+  cursor: pointer; font-size: 0.8125rem; color: var(--v8-text-secondary);
+  list-style: none; padding: 4px 0;
+}
+.dsn-v8-extra summary::-webkit-details-marker { display: none; }
+.dsn-v8-extra[open] summary { margin-bottom: 8px; }
+.dsn-v8-extra__definition,
+.dsn-v8-extra__regulation,
+.dsn-v8-extra__source {
+  padding-top: 8px; margin-top: 8px;
+  border-top: 1px solid var(--v8-border-subtle);
+}
+.dsn-v8-extra__definition h5,
+.dsn-v8-extra__regulation h5 {
+  font-size: 0.8125rem; font-weight: 600; color: var(--tx);
+  margin-bottom: 4px;
+}
+.dsn-v8-extra__definition p,
+.dsn-v8-extra__regulation p {
+  font-size: 0.8125rem; line-height: 1.55; color: var(--tx2);
+}
+.dsn-v8-extra__regulation ul {
+  list-style: disc; padding-left: 18px;
+  font-size: 0.8125rem; line-height: 1.6; color: var(--tx2);
+}
+.dsn-v8-extra__source a { color: var(--badge-disclosure); }
+
+@media (max-width: 380px) {
+  .dsn-v8-summary {
+    grid-template-columns: 1fr; gap: 2px 0;
+  }
+  .dsn-v8-summary__label { font-size: 0.75rem; }
+  .dsn-v8-summary__value { font-size: 0.8125rem; padding-left: 8px; }
+  .dsn-v8-block { padding: 10px 12px; }
+}
+
+.dsn-v8-thresholds__empty {
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  color: var(--v8-text-tertiary);
+  font-style: italic;
+  background: rgba(0,0,0,0.02);
+  border-radius: 4px;
+}
+
+/* v6 legacy fallback (회귀 안전망 — UX 워크스루 통과 후 제거) */
+.dsn-v8-legacy-fallback {
+  margin-top: 12px;
+  border-top: 1px dashed var(--v8-border-subtle);
+  padding-top: 8px;
+}
+.dsn-v8-legacy-fallback__summary {
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--v8-text-tertiary);
+  list-style: none;
+  padding: 4px 0;
+}
+.dsn-v8-legacy-fallback__summary::-webkit-details-marker { display: none; }
+.dsn-v8-legacy-fallback[open] .dsn-v8-legacy-fallback__summary { margin-bottom: 8px; }
+

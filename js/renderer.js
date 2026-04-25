@@ -507,14 +507,32 @@ function renderCalExpandContent(date, data) {
         if (!next) return '';
         return `현재: ${stage} (${curDate}) → ${dateText} 조건 충족 시 ${next} 진입`;
       };
-      // v6 (DOC-20260422-DSN-001 v6, FLR-20260423-001): 3섹션 재설계
-      //   §1 "{stage} 예고란" (details 기본 접힘, 제도 공통 설명)
-      //   §2 "이 종목의 일정" (기본 펼침): 예고일 / 지정 예정일 / 사유(placeholder면 미노출)
-      //   §3 "지정 시 적용되는 제한" (리스트 4줄 고정 — 토구사 확정 문구)
-      // 폐기: "(→ § 2 참조)" 문구, "현재 KRX 단계: ..." 라인
-      // 투자경고/투자경고 예고 케이스만 v6 풀 구현. 타 배지는 §1 제목만 적용 + 공통설명 "준비 중" 폴백.
-      // REQ-008: 단기과열 지정 + single_price 뱃지는 regulation/start 없어도 부기 라인 노출 위해 detail 영역 포함
-      const statusDetailHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
+      // === v8 (DSN-20260425-DSN-002, REQ-010): 시제 분리 정보 위계 ===
+      // §3·§4·§5.1·§6.1·§6.2 — 시제 칩 + 5줄 요약 + 🎯 thresholds + 통합 펼침.
+      // 복수 배지는 시제 순서(현재 → 예측)로 배치 (§9 시나리오 A).
+      // 기존 v3/v5/v6 블록은 "기존 형식 보기" details로 보존 (회귀 안전망 + UX 워크스루 검증 후 제거).
+      const _v8FilteredBadges = (st.status_badges || []).filter(b =>
+        b.thresholds || b.regulation || b.start || b.label || (b.single_price === true && (b.label || '').includes('단기과열'))
+      );
+      const _v8SortedBadges = dsnV8SortBadges(_v8FilteredBadges);
+      const _v8AllDiscs = st.disclosures || [];
+      const _v8DartByStage = (label) => {
+        const stripped = dsnV8StripStageLabel(label || '');
+        if (!stripped || _v8AllDiscs.length === 0) return '';
+        const m = _v8AllDiscs.find(d => (d.category || '').includes(stripped));
+        return (m && m.url) || '';
+      };
+      const _v8CtxFor = (b) => ({
+        currentDate: date || b.view_date || '',
+        stockCode: it.code || '',
+        dartUrl: _v8DartByStage(b.label),
+        stageDefinition: '',  // togusa krx-stage-rules.json 후속 주입
+        regulationDetail: '', // togusa krx-stage-rules.json 후속 주입
+      });
+      const v8DetailHtml = _v8SortedBadges.map(b => dsnV8RenderBlock(b, _v8CtxFor(b))).join('');
+
+      // === v6/v5.1 legacy 블록 (회귀 안전망, UX 워크스루 통과 후 제거 예정) ===
+      const statusDetailLegacyHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
         const label = b.label || '';
         const stage = _extractStage(label);
         const isPredicted = (b.source === 'predicted') || label.includes('예상') || label.includes('근접');
@@ -1057,6 +1075,12 @@ function renderCalExpandContent(date, data) {
         const cls = isAdvisoryWarning ? 'v3 v5 v6' : 'v3 v5';
         return `<div class="cal-status-detail ${cls}${isPredicted ? ' predicted' : ''}">${sections.join('')}</div>`;
       }).join('');
+      // v8 + legacy 합본. v8가 primary, legacy는 회귀 안전망 (details 접힘).
+      // UX 워크스루 §9 6시나리오 통과 + 대표 검수 후 legacy 블록 제거 예정.
+      const statusDetailLegacyToggleHtml = statusDetailLegacyHtml
+        ? `<details class="dsn-v8-legacy-fallback"><summary class="dsn-v8-legacy-fallback__summary">기존 형식 보기 (v6 — 회귀 안전망) ▾</summary>${statusDetailLegacyHtml}</details>`
+        : '';
+      const statusDetailHtml = `${v8DetailHtml}${statusDetailLegacyToggleHtml}`;
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
       // toggle 요약 v3: period + label 만 (대표 정정 18:52 KST — 임계 정보는 표로 이동)
