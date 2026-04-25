@@ -423,10 +423,23 @@ function renderCalExpandContent(date, data) {
           : b.severity === 'warning' ? 'cal-status-badge warning'
           : b.severity === 'hot' ? 'cal-status-badge hot'
           : 'cal-status-badge caution';
-        // v4: predicted는 dashed border로 구분
+        // v4: predicted는 dashed border로 구분 (sev-disc-* 단계별 색은 그대로 유지 — 브랜딩 권고)
         const predCls = (b.source === 'predicted' || (b.label||'').includes('예상') || (b.label||'').includes('근접')) ? ' predicted' : '';
-        const mainBadge = `<span class="${cls}${predCls}">${escapeHtml(b.label)}</span>`;
-        const singleBadge = b.single_price === true
+        // v9.3 §II — 헤더 뱃지 통합 라벨 + title + aria-label + data-krx-stage (FLR-010 방어)
+        const headerLabel = (typeof getHeaderBadgeLabel === 'function')
+          ? getHeaderBadgeLabel(b, _v92HeaderViewDate)
+          : (b.label || '시장경보');
+        const headerTitle = (typeof getHeaderBadgeTitle === 'function')
+          ? getHeaderBadgeTitle(b, _v92HeaderViewDate)
+          : (b.label || '');
+        const krxStage = (typeof getKrxStageDataset === 'function')
+          ? getKrxStageDataset(b)
+          : (b.label || '');
+        const mainBadge = `<span class="${cls}${predCls} dsn-v93-header-badge" data-krx-stage="${escapeHtml(krxStage)}" title="${escapeHtml(headerTitle)}" aria-label="${escapeHtml(headerTitle)}" role="button" tabindex="0">${escapeHtml(headerLabel)}</span>`;
+        // v9.3 §III — 단기과열 단일가매매 별도 뱃지 — 헤더에서 '단일가' 통합으로 들어가므로 single_price 별도 노출은 main과 다른 dayOffset 케이스만.
+        // 단기과열 D+3-5는 이미 헤더에 '단일가' 노출되므로 중복 방지: kind==='single-price'면 single 뱃지 생략.
+        const stKind = (typeof getShortTermBadgeKind === 'function') ? getShortTermBadgeKind(b, _v92HeaderViewDate) : 'market-warn';
+        const singleBadge = (b.single_price === true && stKind !== 'single-price')
           ? `<span class="cal-status-badge sev-single" title="단기과열종목 지정에 따른 3거래일간 30분 단위 단일가매매 적용 중. 시장경보(투자주의/경고/위험)와 무관한 별도 제도입니다.">단일가매매</span>`
           : '';
         return mainBadge + singleBadge;
@@ -1302,6 +1315,31 @@ function renderCalExpandContent(date, data) {
       if (card) card.classList.toggle('expanded');
     });
     window._cardCollapseInit = true;
+  }
+
+  // v9.3 §II.2 보강 2 — 헤더 뱃지 click 시 카드 자동 펼침 (모바일 hover 미작동 함정 대응, F=c)
+  // 함정 #11: 이벤트 버블링 충돌 방어 — stopPropagation 후 명시적 expanded 부착 (toggle 아닌 add).
+  if (!window._headerBadgeExpandInit) {
+    document.addEventListener('click', e => {
+      const badge = e.target.closest('.dsn-v93-header-badge');
+      if (!badge) return;
+      const card = badge.closest('.cal-feature-card');
+      if (!card) return;
+      e.stopPropagation();
+      card.classList.add('expanded');
+    });
+    // 키보드 a11y — Enter·Space 키
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const badge = e.target.closest && e.target.closest('.dsn-v93-header-badge');
+      if (!badge) return;
+      const card = badge.closest('.cal-feature-card');
+      if (!card) return;
+      e.preventDefault();
+      e.stopPropagation();
+      card.classList.add('expanded');
+    });
+    window._headerBadgeExpandInit = true;
   }
 
   // 공유 버튼 이벤트 위임 (1회만 등록)

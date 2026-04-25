@@ -317,19 +317,21 @@ function dsnV9MatchStageIndex(track, badgeLabel) {
 }
 
 function getStageFlow(badges, viewDate) {
-  // 노드 상태 매트릭스 산출. {trackMain, trackShortTerm} 각 NodeState[].
-  // NodeState = {label, state: 'unvisited'|'current'|'predicted', causalFrom?: boolean}
+  // v9.3 §I — 노드 상태 매트릭스 산출. {trackMain, trackShortTerm} 각 NodeState[].
+  // NodeState = {label, state: 'unvisited'|'current'|'upcoming'|'predicted-imminent'|'predicted'}
+  //   - 'current': source='disclosure' AND start<=viewDate<=end
+  //   - 'upcoming': source='disclosure' AND viewDate<start AND getNextTradingDay(viewDate)===start (D-1 인접 단계만)
+  //   - 'predicted-imminent': isPredicted AND getPredictedBadgeVisibility==='header' (strict 3 AND 충족)
+  //   - 'predicted': isPredicted AND getPredictedBadgeVisibility==='detail-only' (strict 미충족, 시각 그대로)
+  //   - 'unvisited': 기본 (도약 케이스 disclosure 포함)
   const trackMain = KRX_MAIN_TRACK.map(label => ({ label, state: 'unvisited' }));
   const trackShortTerm = KRX_SHORT_TERM_TRACK.map(label => ({ label, state: 'unvisited' }));
   if (!Array.isArray(badges) || badges.length === 0) {
     return { trackMain, trackShortTerm };
   }
 
-  const hasPredictedBadge = badges.some(b =>
-    (b.source === 'predicted')
-    || (b.label || '').includes('근접')
-    || (b.label || '').includes('예상')
-  );
+  // v9.3 §I.2 — D-1 인접 정의 자체가 도약 차단 (getNextTradingDay(viewDate)===start만 upcoming).
+  //   currentIdx 기반 인접 체크 불필요. D-3+ 케이스는 nextTd !== start로 자동 unvisited 분류.
 
   for (const badge of badges) {
     const label = badge.label || '';
@@ -341,16 +343,39 @@ function getStageFlow(badges, viewDate) {
     const isPredicted = (badge.source === 'predicted')
       || label.includes('근접')
       || label.includes('예상');
+
     if (isPredicted) {
-      // current가 이미 있으면 덮어쓰지 않음 (공시 우선)
-      if (target[idx].state !== 'current') {
-        target[idx].state = 'predicted';
+      // v9.3 §I: predicted-imminent vs predicted 분리 — strict 3 AND 충족 여부
+      const vis = (typeof getPredictedBadgeVisibility === 'function')
+        ? getPredictedBadgeVisibility(badge, viewDate, badges)
+        : 'header';
+      const newState = (vis === 'header') ? 'predicted-imminent' : 'predicted';
+      // current/upcoming이 이미 있으면 덮어쓰지 않음 (공시 우선)
+      if (target[idx].state === 'unvisited') {
+        target[idx].state = newState;
       }
     } else {
-      target[idx].state = 'current';
-      if (hasPredictedBadge && badges.length > 1) {
-        target[idx].causalFrom = true;
+      // disclosure source — current vs upcoming 분기 (§I.2)
+      const start = badge.start || '';
+      const end = badge.end || '';
+      const today = viewDate || '';
+      let newState = 'current';
+      if (start && today && today < start) {
+        // v9.3 §I.2 — 발효일 미도래 → D-1 인접만 upcoming (대표 본질 가치 "당장 오늘 혹은 다음 영업일에 필연").
+        // getNextTradingDay(today)===start AND today<start 동시 충족 시 D-1 정확 인접.
+        const nextTd = (typeof getNextTradingDay === 'function') ? getNextTradingDay(today) : '';
+        if (nextTd && nextTd === start) {
+          newState = 'upcoming';
+        } else {
+          // D-2+ — unvisited 유지 (시간 여유 인지)
+          continue;
+        }
+      } else if (start && end && today >= start && today <= end) {
+        newState = 'current';
+      } else {
+        newState = 'current'; // 보수적 fallback (start 없거나 정보 부족)
       }
+      target[idx].state = newState;
     }
   }
   return { trackMain, trackShortTerm };
@@ -654,16 +679,146 @@ const AUTO_EFFECTS_SHORT = {
   '매매거래정지': '거래 중지',
   '해제': '정상 복귀',
   '단기과열 예고': '',
-  '단기과열': '단일가매매'
+  '단기과열': '단일가매매',           // legacy fallback (dayOffset 미지정)
+  '단기과열 D+2': '거래정지 1일',     // v9.3 §III.3 신규
+  '단기과열 D+3-5': '단일가매매'      // v9.3 §III.3 신규
 };
 
-function getAutoEffectsShort(stageLabel) {
+function getAutoEffectsShort(stageLabel, dayOffset) {
   // §I.3 stage 라벨 → 자동 효과 1줄. 미정의/(없음) → '' 반환.
+  // v9.3 §III.3: 단기과열은 dayOffset에 따라 D+2 / D+3-5 분기.
   if (!stageLabel) return '';
+  if (stageLabel === '단기과열' && dayOffset) {
+    if (dayOffset === 'd+2') return AUTO_EFFECTS_SHORT['단기과열 D+2'];
+    if (dayOffset === 'd+3-5') return AUTO_EFFECTS_SHORT['단기과열 D+3-5'];
+    if (dayOffset === 'd+1') return ''; // 지정 당일·익일은 효과 부재 (§III.1 매트릭스)
+  }
   if (Object.prototype.hasOwnProperty.call(AUTO_EFFECTS_SHORT, stageLabel)) {
     return AUTO_EFFECTS_SHORT[stageLabel] || '';
   }
   return '';
+}
+
+/* ───── DSN-20260426-DSN-001 v9.3 §II·§III — 헤더 뱃지 통합 + 단기과열 D+N 분기 ─────
+   §II: 시장경보·거래정지·단일가 통합 라벨. 원 단계 라벨은 data-krx-stage·title·aria-label 보존.
+   §III: 단기과열 D+1·D+2='거래정지' / D+3~D+5='단일가' 분기. computeTradingDayDiff 영업일 차이.
+*/
+
+function computeTradingDayDiff(startDate, viewDate) {
+  // v9.3 §III.2 — 영업일 차이 산출 (휴장 제외). startDate=D+0, viewDate가 D+N이면 N 반환.
+  // 음수=발효 전, 0+=발효 후. KOREA_HOLIDAYS·marketClosed 의존 (getNextTradingDay와 동일 데이터 셋).
+  if (!startDate || !viewDate) return null;
+  if (startDate === viewDate) return 0;
+  const sd = new Date(startDate);
+  const vd = new Date(viewDate);
+  if (isNaN(sd.getTime()) || isNaN(vd.getTime())) return null;
+  // 발효 전 (음수)
+  if (vd < sd) {
+    return -computeTradingDayDiff(viewDate, startDate); // 재귀로 부호 반전
+  }
+  // 영업일 카운트 (start 다음 영업일부터 view까지)
+  const holidaysData = (typeof window !== 'undefined' && window.KOREA_HOLIDAYS) || null;
+  const holidaysSet = holidaysData && holidaysData.holidays ? new Set(Object.keys(holidaysData.holidays)) : null;
+  const marketClosedSet = holidaysData && holidaysData.market_closed ? new Set(Object.keys(holidaysData.market_closed)) : null;
+  let cur = new Date(sd);
+  let n = 0;
+  let safety = 30;
+  while (safety-- > 0) {
+    cur.setDate(cur.getDate() + 1);
+    const dow = cur.getDay();
+    const ymd = formatYMD(cur);
+    if (dow === 0 || dow === 6) {
+      if (ymd === formatYMD(vd)) return n; // viewDate가 휴일이어도 자기 위치 0 반환 (보수)
+      continue;
+    }
+    if (holidaysSet && holidaysSet.has(ymd)) {
+      if (ymd === formatYMD(vd)) return n;
+      continue;
+    }
+    if (marketClosedSet && marketClosedSet.has(ymd)) {
+      if (ymd === formatYMD(vd)) return n;
+      continue;
+    }
+    n += 1;
+    if (ymd === formatYMD(vd)) return n;
+  }
+  return null;
+}
+
+function getShortTermDayOffset(badge, viewDate) {
+  // v9.3 §III.2 — 단기과열 트랙 D 결정. 발효 전→'d+0', D+0~D+1='d+1', D+2='d+2', D+3~D+5='d+3-5', D+6+='d+6+'.
+  if (!badge || !badge.start || !viewDate) return 'unknown';
+  const days = computeTradingDayDiff(badge.start, viewDate);
+  if (days === null) return 'unknown';
+  if (days < 0) return 'd+0';
+  if (days === 0 || days === 1) return 'd+1';
+  if (days === 2) return 'd+2';
+  if (days >= 3 && days <= 5) return 'd+3-5';
+  return 'd+6+';
+}
+
+function getShortTermBadgeKind(badge, viewDate) {
+  // v9.3 §III.2 — 단기과열 헤더 뱃지 종류. 'time-stop'=거래정지 / 'single-price'=단일가 / 'market-warn'=시장경보(예고 등).
+  if (!badge || !(badge.label || '').includes('단기과열')) return 'market-warn';
+  // 예고는 시장경보로 통합
+  if ((badge.label || '').includes('예고') || (badge.label || '').includes('근접')) return 'market-warn';
+  const offset = getShortTermDayOffset(badge, viewDate);
+  if (offset === 'd+1' || offset === 'd+2') return 'time-stop';
+  if (offset === 'd+3-5') return 'single-price';
+  return 'market-warn';
+}
+
+function getHeaderBadgeLabel(badge, viewDate) {
+  // v9.3 §II.1 — 헤더 뱃지 통합 라벨 매핑.
+  // 매매거래정지 → '거래정지' (E=a 4자 가독성)
+  // 단기과열 D+1·D+2 → '거래정지' / D+3-5 → '단일가' (C=b 분기)
+  // 그 외 (투자주의/경고/위험/예고/근접) → '시장경보' (B=a 통합)
+  if (!badge || !badge.label) return '시장경보';
+  const label = badge.label;
+  if (label === '매매거래정지') return '거래정지';
+  if (label.includes('단기과열')) {
+    const kind = getShortTermBadgeKind(badge, viewDate);
+    if (kind === 'time-stop') return '거래정지';
+    if (kind === 'single-price') return '단일가';
+    return '시장경보';
+  }
+  return '시장경보';
+}
+
+function getHeaderBadgeTitle(badge, viewDate) {
+  // v9.3 §II.1 — 헤더 뱃지 hover/aria-label 텍스트. 원 단계 라벨 + (시장경보 N단계 D-N) 형식.
+  if (!badge || !badge.label) return '';
+  const label = badge.label;
+  // 매매거래정지
+  if (label === '매매거래정지') return '매매거래정지 (정식명)';
+  // 단기과열 분기
+  if (label.includes('단기과열')) {
+    if (label.includes('예고')) return '단기과열 예고';
+    if (label.includes('근접')) return '단기과열 근접 (자체 추정 · KRX 미공식)';
+    const kind = getShortTermBadgeKind(badge, viewDate);
+    if (kind === 'time-stop') return '단기과열 D+2 매매거래정지 1일';
+    if (kind === 'single-price') return '단기과열 D+3~D+5 30분 단일가매매';
+    return '단기과열';
+  }
+  // 시장경보 단계 매핑
+  const stageMap = {
+    '투자주의': '시장경보 1단계',
+    '투자경고 예고': '시장경보 2단계 D-1',
+    '투자경고': '시장경보 2단계',
+    '투자위험 예고': '시장경보 3단계 D-1',
+    '투자위험': '시장경보 3단계',
+    '투자주의 근접': '시장경보 1단계 추정',
+    '투자경고 근접': '시장경보 2단계 추정',
+    '투자위험 근접': '시장경보 3단계 추정 · KRX 미공식'
+  };
+  const tag = stageMap[label] || '시장경보';
+  return `${label} (${tag})`;
+}
+
+function getKrxStageDataset(badge) {
+  // v9.3 §II.1 — data-krx-stage 속성값. 원 단계 라벨 그대로 보존 (FLR-010 방어).
+  if (!badge || !badge.label) return '';
+  return badge.label;
 }
 
 function getPredictedBadgeVisibility(badge, viewDate, allBadges) {
@@ -691,20 +846,24 @@ function countStrictUnmetPredicted(badges, viewDate) {
 }
 
 function getNodeBoxText(node, badges, viewDate) {
-  // §I.2 그래프 노드 박스 하단 텍스트 산출. 매트릭스 4종:
+  // v9.3 §I.3 그래프 노드 박스 하단 텍스트 산출. 매트릭스 4종 + state 4축 정합:
   //   미경험: '' (빈 칸)
-  //   현재 (disclosure 진행중): "X/X~X/XX · {효과}" 또는 효과 0건이면 "X/X~X/XX"
-  //   다음 (disclosure 발효 예정): "X/X · {효과}"
-  //   다음 (인접 predicted, strict 충족): "X/X · {효과}"
+  //   현재 (disclosure 진행중, state='current'): "X/X~X/XX · {효과}" 또는 효과 0건이면 "X/X~X/XX"
+  //   필연 (disclosure 발효 D-1, state='upcoming'): "X/X · {효과}" (variant='upcoming')
+  //   추정 임박 (predicted strict 충족, state='predicted-imminent'): "X/X · {효과}" (variant='predicted')
+  //   추정 비임박 (predicted strict 미충족, state='predicted'): '' (시각만 점선 유지)
   //   기타: ''
   // 휴지 약한 명사형 정합 — 동사 0건. 효과 0건이면 effectText 빈 문자열.
-  if (!node || (node.state !== 'current' && node.state !== 'predicted')) {
+  // v9.3 §IX 함정 #1 P0: 분기 4종 확장 의무 — predicted-imminent / upcoming 누락 시 박스 효과 빈 칸.
+  if (!node) return { dateText: '', effectText: '', variant: 'empty' };
+  const validStates = ['current', 'upcoming', 'predicted-imminent', 'predicted'];
+  if (!validStates.includes(node.state)) {
     return { dateText: '', effectText: '', variant: 'empty' };
   }
   if (!Array.isArray(badges) || badges.length === 0) {
     return { dateText: '', effectText: '', variant: 'empty' };
   }
-  // 노드 라벨에 매칭되는 배지 탐색 (current가 우선, 다음 predicted)
+  // 노드 라벨에 매칭되는 배지 탐색 (current/upcoming=disclosure 우선, predicted=predicted)
   const label = node.label || '';
   const matchBadge = (b) => {
     const bl = b.label || '';
@@ -717,15 +876,15 @@ function getNodeBoxText(node, badges, viewDate) {
     return bl.startsWith(label);
   };
   let badge = null;
-  let isCurrent = false;
-  if (node.state === 'current') {
-    // disclosure 우선
+  const isDisclosureNode = (node.state === 'current' || node.state === 'upcoming');
+  const isPredictedNode = (node.state === 'predicted-imminent' || node.state === 'predicted');
+
+  if (isDisclosureNode) {
     badge = badges.find(b => {
       const isPred = (b.source === 'predicted') || (b.label || '').includes('근접') || (b.label || '').includes('예상');
       return !isPred && matchBadge(b);
     });
-    isCurrent = true;
-  } else if (node.state === 'predicted') {
+  } else if (isPredictedNode) {
     badge = badges.find(b => {
       const isPred = (b.source === 'predicted') || (b.label || '').includes('근접') || (b.label || '').includes('예상');
       return isPred && matchBadge(b);
@@ -733,24 +892,23 @@ function getNodeBoxText(node, badges, viewDate) {
   }
   if (!badge) return { dateText: '', effectText: '', variant: 'empty' };
 
-  const effectText = getAutoEffectsShort(label);
   const today = viewDate || badge.view_date || '';
   const start = badge.start || '';
   const end = badge.end || '';
 
-  if (isCurrent) {
-    // disclosure source — 현재 노드(공시 진행/예정)
-    const isPred = (badge.source === 'predicted');
-    if (isPred) {
-      // current state이지만 source=predicted (실제 미발생). 보수적으로 '' 반환.
+  // v9.3 §III.3: 단기과열 dayOffset 분기 — getAutoEffectsShort에 dayOffset 전달
+  const isShortTerm = (badge.label || '').includes('단기과열') && !(badge.label || '').includes('예고') && !(badge.label || '').includes('근접');
+  const dayOffset = isShortTerm ? getShortTermDayOffset(badge, today) : null;
+  const effectText = getAutoEffectsShort(label, dayOffset);
+
+  if (isDisclosureNode) {
+    if (node.state === 'upcoming') {
+      // v9.3 §I.3 — 필연 (D-1): "X/X · {효과}", variant='upcoming'
+      if (start) return { dateText: dsnV9FormatMD(start), effectText, variant: 'upcoming' };
       return { dateText: '', effectText: '', variant: 'empty' };
     }
-    if (start && today && today < start) {
-      // 다음 노드 (disclosure 발효 예정) — 그러나 state=current면 공시 효력 시작 시점이 현재이므로 X/X 시작
-      return { dateText: dsnV9FormatMD(start), effectText, variant: 'upcoming' };
-    }
+    // current
     if (start && end && today >= start && today <= end) {
-      // 현재 진행중: "X/X~X/XX"
       return {
         dateText: `${dsnV9FormatMD(start)}~${dsnV9FormatMD(end)}`,
         effectText,
@@ -763,13 +921,12 @@ function getNodeBoxText(node, badges, viewDate) {
     return { dateText: '', effectText: '', variant: 'empty' };
   }
 
-  // predicted 노드 (인접 검증)
-  // §I.1 인접 predicted (strict 3 AND 충족 — variant='imminent')만 효과 텍스트 노출.
-  const variant = getPredictedTenseVariant(badge, today, badges);
-  if (variant !== 'imminent') {
-    // strict 미충족 — 점선 노드 시각만 유지, 박스 하단 효과 텍스트 비표시 (DSN-005 §I.5)
+  // predicted 노드 (state=predicted-imminent or predicted)
+  if (node.state === 'predicted') {
+    // strict 미충족 — 점선 시각만, 박스 효과 빈 칸 (DSN-005 §I.5)
     return { dateText: '', effectText: '', variant: 'empty' };
   }
+  // state='predicted-imminent' — strict 충족, 박스 효과 노출
   const ntd = badge.next_trading_day_for_predicted || '';
   if (!ntd) return { dateText: '', effectText: '', variant: 'empty' };
   return { dateText: dsnV9FormatMD(ntd), effectText, variant: 'predicted' };
@@ -802,14 +959,16 @@ function renderStageFlowV9(badges, ctx) {
   const causalLine = getCausalLine(badges);
 
   const renderNode = (node) => {
+    // v9.3 §I — 노드 4축 위계 (current/upcoming/predicted-imminent/unvisited).
+    // §IV: data-causal-from 부착 로직 제거 (CSS ::after ↘ 화살표 제거 정합).
     let cls = 'dsn-v9-stage-flow__node';
-    let dataAttr = '';
     if (node.state === 'current') cls += ' dsn-v9-stage-flow__node--current';
+    else if (node.state === 'upcoming') cls += ' dsn-v9-stage-flow__node--upcoming';
+    else if (node.state === 'predicted-imminent') cls += ' dsn-v9-stage-flow__node--predicted-imminent';
     else if (node.state === 'predicted') cls += ' dsn-v9-stage-flow__node--predicted';
-    if (node.causalFrom) dataAttr = ' data-causal-from="true"';
-    // v9.2 §I: 박스 하단 자동 효과 1줄 (current/predicted 노드 한정)
+    // v9.2 §I: 박스 하단 자동 효과 1줄 (current/upcoming/predicted-imminent 노드)
     const effectHtml = renderNodeBoxEffect(node, badges, viewDate);
-    return `<span class="${cls}"${dataAttr}><span class="dsn-v9-stage-flow__node-label">${escapeHtml(node.label)}</span>${effectHtml}</span>`;
+    return `<span class="${cls}"><span class="dsn-v9-stage-flow__node-label">${escapeHtml(node.label)}</span>${effectHtml}</span>`;
   };
   const renderTrack = (nodes, modCls) => {
     const parts = [];
