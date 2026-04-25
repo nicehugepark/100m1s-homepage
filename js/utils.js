@@ -680,18 +680,24 @@ const AUTO_EFFECTS_SHORT = {
   '해제': '정상 복귀',
   '단기과열 예고': '',
   '단기과열': '단일가매매',           // legacy fallback (dayOffset 미지정)
-  '단기과열 D+2': '거래정지 1일',     // v9.3 §III.3 신규
-  '단기과열 D+3-5': '단일가매매'      // v9.3 §III.3 신규
+  '단기과열 D+0': '(D+2부터)',        // v9.3 사이클 2.5 — 휴지 G=a (togusa P0 부정합 보정)
+  '단기과열 D+1': '(D+2부터)',        // v9.3 사이클 2.5 — 휴지 G=a
+  '단기과열 D+2': '거래정지 1일',     // v9.3 §III.3
+  '단기과열 D+3-5': '단일가매매'      // v9.3 §III.3
 };
 
 function getAutoEffectsShort(stageLabel, dayOffset) {
   // §I.3 stage 라벨 → 자동 효과 1줄. 미정의/(없음) → '' 반환.
-  // v9.3 §III.3: 단기과열은 dayOffset에 따라 D+2 / D+3-5 분기.
+  // v9.3 §III.3 + 사이클 2.5 (휴지 G=a) — togusa P0 부정합 보정:
+  //   KRX SSOT(krx-stage-conditions.json:726·772~775·781) D+0·D+1=효과 부재 / D+2=거래정지 1일 / D+3~D+5=단일가매매
+  //   D+0/D+1 박스 효과 텍스트 = '(D+2부터)' 약한 명사형 (휴지 동사 회피 룰 정합. 5자 모바일 안전).
   if (!stageLabel) return '';
   if (stageLabel === '단기과열' && dayOffset) {
+    if (dayOffset === 'd+0') return AUTO_EFFECTS_SHORT['단기과열 D+0'];
+    if (dayOffset === 'd+1') return AUTO_EFFECTS_SHORT['단기과열 D+1'];
     if (dayOffset === 'd+2') return AUTO_EFFECTS_SHORT['단기과열 D+2'];
     if (dayOffset === 'd+3-5') return AUTO_EFFECTS_SHORT['단기과열 D+3-5'];
-    if (dayOffset === 'd+1') return ''; // 지정 당일·익일은 효과 부재 (§III.1 매트릭스)
+    if (dayOffset === 'd+6+') return ''; // 자동 해제 후
   }
   if (Object.prototype.hasOwnProperty.call(AUTO_EFFECTS_SHORT, stageLabel)) {
     return AUTO_EFFECTS_SHORT[stageLabel] || '';
@@ -746,38 +752,50 @@ function computeTradingDayDiff(startDate, viewDate) {
 }
 
 function getShortTermDayOffset(badge, viewDate) {
-  // v9.3 §III.2 — 단기과열 트랙 D 결정. 발효 전→'d+0', D+0~D+1='d+1', D+2='d+2', D+3~D+5='d+3-5', D+6+='d+6+'.
+  // v9.3 §III.2 + 사이클 2.5 — 단기과열 트랙 D 결정. D+0/D+1 분리 (효과 부재 동일 처리이나 디버그·메트릭 추적용).
+  // 발효 전 → 'd+0' (badge.start 미도래 — viewDate < start 케이스. 사이클 2.5 정정: 지정 당일=days=0)
+  // days=0 (지정 당일=D+0 — viewDate==badge.start) / days=1 → 'd+1' (D+1) / days=2 → 'd+2' / 3~5 → 'd+3-5' / 6+ → 'd+6+'
   if (!badge || !badge.start || !viewDate) return 'unknown';
   const days = computeTradingDayDiff(badge.start, viewDate);
   if (days === null) return 'unknown';
-  if (days < 0) return 'd+0';
-  if (days === 0 || days === 1) return 'd+1';
-  if (days === 2) return 'd+2';
-  if (days >= 3 && days <= 5) return 'd+3-5';
-  return 'd+6+';
+  if (days < 0) return 'd+0';      // 발효 전 (badge.start 미도래) — D+0과 동일 처리(효과 부재)
+  if (days === 0) return 'd+0';    // 지정 당일 (D+0)
+  if (days === 1) return 'd+1';    // D+1
+  if (days === 2) return 'd+2';    // D+2 (거래정지 1일)
+  if (days >= 3 && days <= 5) return 'd+3-5';  // D+3~D+5 (단일가매매)
+  return 'd+6+';                   // D+6+ (자동 해제)
 }
 
 function getShortTermBadgeKind(badge, viewDate) {
-  // v9.3 §III.2 — 단기과열 헤더 뱃지 종류. 'time-stop'=거래정지 / 'single-price'=단일가 / 'market-warn'=시장경보(예고 등).
+  // v9.3 §III.2 + 사이클 2.5 — 단기과열 헤더 뱃지 종류.
+  //   'short-term-self'=원라벨 '단기과열' (D+0/D+1, 효과 부재 — togusa P0 부정합 보정 / 휴지 G=a)
+  //   'time-stop'=거래정지 (D+2, 매매거래정지 1일)
+  //   'single-price'=단일가 (D+3~D+5, 30분 단위 단일가매매)
+  //   'market-warn'=시장경보(예고/근접 등)
+  // D+0/D+1: 효과 부재이므로 원라벨 유지. D+2부터 변경 정책 적용 — togusa P0 부정합 보정 / 휴지 G=a
+  // ("단기과열→단일가" 정책(휴지 결정 C=b)과 D+0/D+1='단기과열' 예외 분기 충돌 — 본 주석 명시 의무)
   if (!badge || !(badge.label || '').includes('단기과열')) return 'market-warn';
-  // 예고는 시장경보로 통합
+  // 예고·근접은 시장경보로 통합
   if ((badge.label || '').includes('예고') || (badge.label || '').includes('근접')) return 'market-warn';
   const offset = getShortTermDayOffset(badge, viewDate);
-  if (offset === 'd+1' || offset === 'd+2') return 'time-stop';
+  if (offset === 'd+0' || offset === 'd+1') return 'short-term-self';
+  if (offset === 'd+2') return 'time-stop';
   if (offset === 'd+3-5') return 'single-price';
   return 'market-warn';
 }
 
 function getHeaderBadgeLabel(badge, viewDate) {
-  // v9.3 §II.1 — 헤더 뱃지 통합 라벨 매핑.
+  // v9.3 §II.1 + 사이클 2.5 — 헤더 뱃지 통합 라벨 매핑.
   // 매매거래정지 → '거래정지' (E=a 4자 가독성)
-  // 단기과열 D+1·D+2 → '거래정지' / D+3-5 → '단일가' (C=b 분기)
+  // 단기과열 D+0/D+1 → '단기과열' 원라벨 (효과 부재 예외 — 휴지 G=a)
+  // 단기과열 D+2 → '거래정지' / D+3-5 → '단일가' (C=b 분기)
   // 그 외 (투자주의/경고/위험/예고/근접) → '시장경보' (B=a 통합)
   if (!badge || !badge.label) return '시장경보';
   const label = badge.label;
   if (label === '매매거래정지') return '거래정지';
   if (label.includes('단기과열')) {
     const kind = getShortTermBadgeKind(badge, viewDate);
+    if (kind === 'short-term-self') return '단기과열';  // 사이클 2.5 — 원라벨 예외 유지
     if (kind === 'time-stop') return '거래정지';
     if (kind === 'single-price') return '단일가';
     return '시장경보';
@@ -786,7 +804,8 @@ function getHeaderBadgeLabel(badge, viewDate) {
 }
 
 function getHeaderBadgeTitle(badge, viewDate) {
-  // v9.3 §II.1 — 헤더 뱃지 hover/aria-label 텍스트. 원 단계 라벨 + (시장경보 N단계 D-N) 형식.
+  // v9.3 §II.1 + 사이클 2.5 — 헤더 뱃지 hover/aria-label 텍스트. 원 단계 라벨 + (시장경보 N단계 D-N) 형식.
+  // D+0/D+1은 "단기과열 (D+2 거래정지 예정)" 보강으로 사용자 정보 보강 (자동 효과 부재 + 향후 효과 안내).
   if (!badge || !badge.label) return '';
   const label = badge.label;
   // 매매거래정지
@@ -796,6 +815,12 @@ function getHeaderBadgeTitle(badge, viewDate) {
     if (label.includes('예고')) return '단기과열 예고';
     if (label.includes('근접')) return '단기과열 근접 (자체 추정 · KRX 미공식)';
     const kind = getShortTermBadgeKind(badge, viewDate);
+    if (kind === 'short-term-self') {
+      const offset = getShortTermDayOffset(badge, viewDate);
+      if (offset === 'd+0') return '단기과열 D+0 (D+2 거래정지 예정)';
+      if (offset === 'd+1') return '단기과열 D+1 (D+2 거래정지 예정)';
+      return '단기과열';
+    }
     if (kind === 'time-stop') return '단기과열 D+2 매매거래정지 1일';
     if (kind === 'single-price') return '단기과열 D+3~D+5 30분 단일가매매';
     return '단기과열';
