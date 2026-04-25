@@ -904,9 +904,13 @@ function renderCalExpandContent(date, data) {
 
           // --- §3. 지정 시 적용되는 제한 ---
           // DSN-001 §15.5: badge.auto_effects[] JSON 우선.
-          // task #61 (FLR-002 패턴 재연 방지): 기존 폴백 4번째 줄 "추가 급등(2일 40%↑) 시 익일 매매거래정지 가능"은
-          // v1.2 JSON auto_effects[]에 없는 출처 불명 창작 문구로 확인 → 제거.
-          // 폴백은 v1.2 JSON investment_warning.auto_effects[] 3건 label과 실질 동치 문구만 유지.
+          // task #61 판정 번복 (2026-04-23 04:45 KST team-lead, qa 3중 검증으로 결정):
+          //   "추가 급등(2일 40%↑) 시 익일 매매거래정지 가능"은 KRX 원문(moc.krx.co.kr/.../03020100) 정합.
+          //   원문: "2일간 주가상승률이 40% 이상(코넥스시장 20% 이상)인 종목에 대하여
+          //         그 다음 매매거래일 1일간 매매거래가 정지됨" (투자경고 매매거래정지 섹션).
+          //   togusa v1.3 JSON 패치 진행 중. 패치 완료 시 auto_effects[]로 자동 흡수.
+          //   원본 폴백 4번째 줄 복원.
+          // 폴백은 v1.2 JSON investment_warning.auto_effects[] 3건 + KRX 원문 매매거래정지 조항 1건.
           // data-dev 필드 주입(§16.6) 완료 후 후속 PR에서 폴백 완전 삭제 예정.
           const reexamDate = b.end || '';
           const s3AutoEffects = _resolveAutoEffects(b);
@@ -916,6 +920,7 @@ function renderCalExpandContent(date, data) {
                 '매수 시 위탁증거금 100% 현금 납부',
                 '신용거래 금지',
                 '대용증권 불인정 (KONEX 예외)',
+                '추가 급등(2일 40%↑) 시 익일 매매거래정지 가능',
               ];
           const s3ItemsHtml = s3Items.map(t => `<li class="cal-v6-rule-item">${escapeHtml(t)}</li>`).join('');
           const s3ReexamHtml = reexamDate
