@@ -78,18 +78,24 @@ function dsnV8GetTenseChip(badge) {
 }
 
 function dsnV8GetSinglePriceStatus(badge, currentDate) {
-  // §4.3 분기 — SP_STAGES 화이트리스트 = ['단기과열'] 단일 (togusa B-5 critical_review)
-  // predicted는 항상 null (호출부에서 라인 미렌더)
-  if (badge.source === 'predicted') return null;
+  // §4.3 + §5.1 — SP_STAGES = ['단기과열'] (togusa B-5 critical_review).
+  // §5.1 줄 3 의무: 단일가 라인 항상 1줄 노출 (null 금지). predicted/sp=null/start=null 모두 명시 fallback.
+  // B-11 시정: predicted에 대해 null 리턴 → 호출부 if 가드로 라인 누락. 4/13 217590 케이스 회귀.
   const label = badge.label || '';
-  if (label.includes('예상') || label.includes('근접')) return null;
-  // start/end 부재 → "해당 없음 (이 단계 미적용)" — 4/13 217590 시나리오 C 등
+  const isPredicted = (badge.source === 'predicted')
+    || label.includes('예상') || label.includes('근접');
+  // start/end 부재 → "해당 없음 (이 단계 미적용)" (B-4 가드, predicted/disclosure 공통)
   if (!badge.start || !badge.end) return '해당 없음 (이 단계 미적용)';
   const stripped = dsnV8StripStageLabel(label);
   const stageHasSP = DSN_V8_SP_STAGES.some(s => stripped.includes(s));
   if (!stageHasSP) return '해당 없음 (이 단계 미적용)';
-  // 단기과열 + start/end 둘 다 → today 기준 분기
   const today = currentDate || (badge.view_date || new Date().toISOString().slice(0, 10));
+  // predicted: KRX 공식 지정 전 → "적용 중" 불가. start 미만이면 "적용 예정 (지정 시)", 그 외 "해당 없음".
+  if (isPredicted) {
+    if (today < badge.start) return '적용 예정 (지정 시)';
+    return '해당 없음';
+  }
+  // disclosure
   if (badge.single_price === true && today >= badge.start && today <= badge.end) {
     return '적용 중';
   }
