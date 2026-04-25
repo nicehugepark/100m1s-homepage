@@ -531,6 +531,8 @@ function getPredictedTenseVariant(badge, viewDate, allBadges) {
 function renderTenseChip(badge, viewDate, allBadges) {
   // §B.2 시제 칩 분기 진입점. v8 §4.4 칩 4종 + v9.1 §B 5번째 [내일 가능].
   // allBadges: 같은 카드의 status_badges 전체 (strict 인접 검증용).
+  // backend schema (commit e9e384d): badge.next_trading_day_source ∈ {'verified','estimated','fallback_homepage','fallback_legacy','unknown'}.
+  // estimated/fallback grade는 칩에 data-source-grade 속성 + ⚠️ prefix + tooltip 노출 (DSN-004 §IX 함정 #2).
   if (!badge) return '';
   const isPredicted = (badge.source === 'predicted')
     || (badge.label || '').includes('예상')
@@ -538,7 +540,16 @@ function renderTenseChip(badge, viewDate, allBadges) {
   if (isPredicted) {
     const variant = getPredictedTenseVariant(badge, viewDate, allBadges);
     if (variant === 'imminent') {
-      return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted dsn-v9-tense-chip--imminent">[내일 가능]</span>`;
+      const grade = badge.next_trading_day_source || '';
+      const isEstimated = (grade === 'estimated' || grade === 'fallback_homepage' || grade === 'fallback_legacy');
+      const gradeAttr = grade ? ` data-source-grade="${escapeHtml(grade)}"` : '';
+      const tooltip = isEstimated
+        ? ' title="추정 휴장 캘린더 — KRX 공시 미발표"'
+        : '';
+      const warnPrefix = isEstimated
+        ? '<span class="dsn-v9-tense-chip__grade-warn" aria-label="추정 휴장 캘린더">⚠️</span>'
+        : '';
+      return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted dsn-v9-tense-chip--imminent"${gradeAttr}${tooltip}>${warnPrefix}[내일 가능]</span>`;
     }
     return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted">[예측 진입]</span>`;
   }
