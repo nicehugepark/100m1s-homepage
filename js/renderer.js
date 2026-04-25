@@ -410,7 +410,15 @@ function renderCalExpandContent(date, data) {
         : '';
       // 종목 상태 뱃지 (투자주의/경고/위험/단기과열)
       // REQ-008: single_price=true인 배지 뒤에 "단일가매매" 배지 병기
-      const statusBadges = (st.status_badges || []).map(b => {
+      // v9.2 §II: predicted strict 미충족 배지는 헤더 비노출 (펼침 detail-only로 강등)
+      const _v92HeaderViewDate = date || '';
+      const _v92AllBadges = st.status_badges || [];
+      const statusBadges = (st.status_badges || []).filter(b => {
+        if (typeof getPredictedBadgeVisibility === 'function') {
+          return getPredictedBadgeVisibility(b, _v92HeaderViewDate, _v92AllBadges) === 'header';
+        }
+        return true;
+      }).map(b => {
         const cls = b.severity === 'danger' ? 'cal-status-badge danger'
           : b.severity === 'warning' ? 'cal-status-badge warning'
           : b.severity === 'hot' ? 'cal-status-badge hot'
@@ -423,6 +431,10 @@ function renderCalExpandContent(date, data) {
           : '';
         return mainBadge + singleBadge;
       }).join('');
+      // v9.2 §III: predicted only 카드 트리거 핀 (disclosure 0 + strict 미충족 predicted ≥1)
+      const v92TriggerPinHtml = (typeof renderTriggerPin === 'function')
+        ? renderTriggerPin(_v92AllBadges, _v92HeaderViewDate)
+        : '';
 
       // 상태 뱃지 상세 v3 — 표 형태 + 기간 + 인사이트 (대표 정정 18:52 KST)
       // FLR-20260423-002 (P0-1, DSN-001 §15.5 / §17.4): 하드코딩 금지 원칙 단계 적용.
@@ -1091,7 +1103,11 @@ function renderCalExpandContent(date, data) {
       const v9StageFlowHtml = (typeof renderStageFlowV9 === 'function')
         ? renderStageFlowV9(_v8SortedBadges, { currentDate: date || '' })
         : '';
-      const statusDetailHtml = `${v9StageFlowHtml}${v8DetailHtml}`;
+      // v9.2 §II.4: predicted strict 미충족 detail-only 영역 — 그래프 직후 + v8 상세 직전
+      const v92PredictedDetailOnlyHtml = (typeof renderPredictedDetailOnly === 'function')
+        ? renderPredictedDetailOnly(_v8SortedBadges, date || '')
+        : '';
+      const statusDetailHtml = `${v9StageFlowHtml}${v92PredictedDetailOnlyHtml}${v8DetailHtml}`;
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
       // toggle 요약 v3: period + label 만 (대표 정정 18:52 KST — 임계 정보는 표로 이동)
@@ -1113,8 +1129,10 @@ function renderCalExpandContent(date, data) {
       const chevronHtml = hasDetails
         ? `<span class="cal-detail-toggle chevron-only" aria-label="상세 보기"><span class="cal-chevron">▼</span></span>`
         : '';
-      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges)
-        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}</div>`
+      // v9.2 §III: 트리거 핀 — 헤더 배지 0건 + predicted strict 미충족 ≥1 케이스 시 노출
+      // 위치: badgesRow 우측 끝 (CSS .dsn-v92-trigger-pin{margin-left:auto})
+      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
+        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday

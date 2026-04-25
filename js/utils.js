@@ -638,8 +638,163 @@ function getRawExplanation(threshold, badgeContext) {
   return '';
 }
 
+/* ───── DSN-20260425-DSN-005 v9.2 — 그래프 박스 자동 효과 + predicted 위계 분리 ─────
+   §I 박스 데이터: 각 노드 박스 하단에 "X/X · {auto_effects_short}" 1줄 노출 (휴지 약한 명사형).
+   §II predicted 위계: strict 3 AND 미충족 → 헤더 비노출, 펼침 detail-only.
+   §III predicted-only 카드: 옵션 1-a 트리거 핀 "↗ 추정 N건".
+   §I.3 매트릭스: rules/krx-stage-flow.json#flow.stages[].auto_effects_short (verified 9건, commit f3c0da7).
+   homepage 인라인 상수 — 메인 레포 동기화 시 교체 가능. (사이클 0 strict 룰처럼)
+*/
+const AUTO_EFFECTS_SHORT = {
+  '투자주의': '',
+  '투자경고 예고': '',
+  '투자경고': '신용금지',
+  '투자위험 예고': '거래정지',
+  '투자위험': '거래정지',
+  '매매거래정지': '거래 중지',
+  '해제': '정상 복귀',
+  '단기과열 예고': '',
+  '단기과열': '단일가매매'
+};
+
+function getAutoEffectsShort(stageLabel) {
+  // §I.3 stage 라벨 → 자동 효과 1줄. 미정의/(없음) → '' 반환.
+  if (!stageLabel) return '';
+  if (Object.prototype.hasOwnProperty.call(AUTO_EFFECTS_SHORT, stageLabel)) {
+    return AUTO_EFFECTS_SHORT[stageLabel] || '';
+  }
+  return '';
+}
+
+function getPredictedBadgeVisibility(badge, viewDate, allBadges) {
+  // §II.2 predicted 배지 헤더 노출 분기 — strict 3 AND 충족 → 'header', 미충족 → 'detail-only'.
+  // disclosure source는 항상 'header' (분기 무해당).
+  if (!badge || badge.source !== 'predicted') return 'header';
+  const variant = getPredictedTenseVariant(badge, viewDate, allBadges);
+  return variant === 'imminent' ? 'header' : 'detail-only';
+}
+
+function countStrictUnmetPredicted(badges, viewDate) {
+  // §III.4 트리거 핀 노출 조건 — disclosure 0 + predicted strict 미충족 ≥1 케이스 카운트.
+  if (!Array.isArray(badges) || badges.length === 0) return 0;
+  let count = 0;
+  for (const b of badges) {
+    if (!b) continue;
+    const isPredicted = (b.source === 'predicted')
+      || (b.label || '').includes('근접')
+      || (b.label || '').includes('예상');
+    if (!isPredicted) continue;
+    const vis = getPredictedBadgeVisibility(b, viewDate, badges);
+    if (vis === 'detail-only') count += 1;
+  }
+  return count;
+}
+
+function getNodeBoxText(node, badges, viewDate) {
+  // §I.2 그래프 노드 박스 하단 텍스트 산출. 매트릭스 4종:
+  //   미경험: '' (빈 칸)
+  //   현재 (disclosure 진행중): "X/X~X/XX · {효과}" 또는 효과 0건이면 "X/X~X/XX"
+  //   다음 (disclosure 발효 예정): "X/X · {효과}"
+  //   다음 (인접 predicted, strict 충족): "X/X · {효과}"
+  //   기타: ''
+  // 휴지 약한 명사형 정합 — 동사 0건. 효과 0건이면 effectText 빈 문자열.
+  if (!node || (node.state !== 'current' && node.state !== 'predicted')) {
+    return { dateText: '', effectText: '', variant: 'empty' };
+  }
+  if (!Array.isArray(badges) || badges.length === 0) {
+    return { dateText: '', effectText: '', variant: 'empty' };
+  }
+  // 노드 라벨에 매칭되는 배지 탐색 (current가 우선, 다음 predicted)
+  const label = node.label || '';
+  const matchBadge = (b) => {
+    const bl = b.label || '';
+    if (bl === label) return true;
+    if (bl.endsWith('근접')) {
+      const stripped = bl.replace(/\s*근접\s*$/, '').trim();
+      if (`${stripped} 예고` === label) return true;
+      if (stripped === label) return true;
+    }
+    return bl.startsWith(label);
+  };
+  let badge = null;
+  let isCurrent = false;
+  if (node.state === 'current') {
+    // disclosure 우선
+    badge = badges.find(b => {
+      const isPred = (b.source === 'predicted') || (b.label || '').includes('근접') || (b.label || '').includes('예상');
+      return !isPred && matchBadge(b);
+    });
+    isCurrent = true;
+  } else if (node.state === 'predicted') {
+    badge = badges.find(b => {
+      const isPred = (b.source === 'predicted') || (b.label || '').includes('근접') || (b.label || '').includes('예상');
+      return isPred && matchBadge(b);
+    });
+  }
+  if (!badge) return { dateText: '', effectText: '', variant: 'empty' };
+
+  const effectText = getAutoEffectsShort(label);
+  const today = viewDate || badge.view_date || '';
+  const start = badge.start || '';
+  const end = badge.end || '';
+
+  if (isCurrent) {
+    // disclosure source — 현재 노드(공시 진행/예정)
+    const isPred = (badge.source === 'predicted');
+    if (isPred) {
+      // current state이지만 source=predicted (실제 미발생). 보수적으로 '' 반환.
+      return { dateText: '', effectText: '', variant: 'empty' };
+    }
+    if (start && today && today < start) {
+      // 다음 노드 (disclosure 발효 예정) — 그러나 state=current면 공시 효력 시작 시점이 현재이므로 X/X 시작
+      return { dateText: dsnV9FormatMD(start), effectText, variant: 'upcoming' };
+    }
+    if (start && end && today >= start && today <= end) {
+      // 현재 진행중: "X/X~X/XX"
+      return {
+        dateText: `${dsnV9FormatMD(start)}~${dsnV9FormatMD(end)}`,
+        effectText,
+        variant: 'current'
+      };
+    }
+    if (start) {
+      return { dateText: dsnV9FormatMD(start), effectText, variant: 'current' };
+    }
+    return { dateText: '', effectText: '', variant: 'empty' };
+  }
+
+  // predicted 노드 (인접 검증)
+  // §I.1 인접 predicted (strict 3 AND 충족 — variant='imminent')만 효과 텍스트 노출.
+  const variant = getPredictedTenseVariant(badge, today, badges);
+  if (variant !== 'imminent') {
+    // strict 미충족 — 점선 노드 시각만 유지, 박스 하단 효과 텍스트 비표시 (DSN-005 §I.5)
+    return { dateText: '', effectText: '', variant: 'empty' };
+  }
+  const ntd = badge.next_trading_day_for_predicted || '';
+  if (!ntd) return { dateText: '', effectText: '', variant: 'empty' };
+  return { dateText: dsnV9FormatMD(ntd), effectText, variant: 'predicted' };
+}
+
+function renderNodeBoxEffect(node, badges, viewDate) {
+  // §I HTML 산출 — 박스 하단 영역. 빈 칸이면 영역 자체 비표시 (CSS .dsn-v92-stage-flow__node-effect--empty display:none).
+  const info = getNodeBoxText(node, badges, viewDate);
+  if (info.variant === 'empty' || (!info.dateText && !info.effectText)) {
+    return '';
+  }
+  const variantCls = info.variant === 'current' ? ' dsn-v92-stage-flow__node-effect--current'
+    : info.variant === 'upcoming' ? ' dsn-v92-stage-flow__node-effect--upcoming'
+    : info.variant === 'predicted' ? ' dsn-v92-stage-flow__node-effect--predicted'
+    : '';
+  // 휴지 약한 명사형 — 가운뎃점 분리. 효과 비어있으면 날짜만.
+  const inner = info.effectText
+    ? `${escapeHtml(info.dateText)} · ${escapeHtml(info.effectText)}`
+    : `${escapeHtml(info.dateText)}`;
+  return `<div class="dsn-v92-stage-flow__node-effect${variantCls}">${inner}</div>`;
+}
+
 function renderStageFlowV9(badges, ctx) {
   // §A 단계 플로우 그래프 전체. ctx={currentDate, ...}
+  // v9.2 §I — 노드 박스 하단 자동 효과 1줄 추가.
   if (!Array.isArray(badges) || badges.length === 0) return '';
   const viewDate = (ctx && ctx.currentDate) || '';
   const flow = getStageFlow(badges, viewDate);
@@ -652,7 +807,9 @@ function renderStageFlowV9(badges, ctx) {
     if (node.state === 'current') cls += ' dsn-v9-stage-flow__node--current';
     else if (node.state === 'predicted') cls += ' dsn-v9-stage-flow__node--predicted';
     if (node.causalFrom) dataAttr = ' data-causal-from="true"';
-    return `<span class="${cls}"${dataAttr}>${escapeHtml(node.label)}</span>`;
+    // v9.2 §I: 박스 하단 자동 효과 1줄 (current/predicted 노드 한정)
+    const effectHtml = renderNodeBoxEffect(node, badges, viewDate);
+    return `<span class="${cls}"${dataAttr}><span class="dsn-v9-stage-flow__node-label">${escapeHtml(node.label)}</span>${effectHtml}</span>`;
   };
   const renderTrack = (nodes, modCls) => {
     const parts = [];
@@ -676,6 +833,62 @@ function renderStageFlowV9(badges, ctx) {
     <h5 class="dsn-v9-stage-flow__title dsn-v9-stage-flow__title--sub">단기과열 (별도 트랙)</h5>
     ${renderTrack(flow.trackShortTerm, 'dsn-v9-stage-flow__track--short-term')}
   </section>`;
+}
+
+function renderPredictedDetailOnly(badges, viewDate) {
+  // §II.4 펼침 영역 안 predicted 상세 — strict 미충족 (헤더 비노출) predicted 배지를 시제 칩과 함께 노출.
+  // 위치: §A 그래프 + §B raw 직후, §3 disclosure 상세 직전. (renderer.js 호출부에서 위치 결정)
+  if (!Array.isArray(badges) || badges.length === 0) return '';
+  const detailOnlyBadges = badges.filter(b => {
+    if (!b) return false;
+    const isPred = (b.source === 'predicted')
+      || (b.label || '').includes('근접')
+      || (b.label || '').includes('예상');
+    if (!isPred) return false;
+    return getPredictedBadgeVisibility(b, viewDate, badges) === 'detail-only';
+  });
+  if (detailOnlyBadges.length === 0) return '';
+  const items = detailOnlyBadges.map(b => {
+    const chip = `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted">[예측 진입]</span>`;
+    return `<li class="dsn-v92-predicted-detail-only__item">${chip} ${escapeHtml(b.label || '')}</li>`;
+  }).join('');
+  return `<div class="dsn-v92-predicted-detail-only">`
+    + `<div class="dsn-v92-predicted-detail-only__title">추정 시그널 (KRX 미공식 · 자체 추정)</div>`
+    + `<ul class="dsn-v92-predicted-detail-only__list">${items}</ul>`
+    + `</div>`;
+}
+
+function renderTriggerPin(badges, viewDate) {
+  // §III 트리거 핀 — disclosure 0 + predicted strict 미충족 ≥1 카드에서만 노출. 우측 끝.
+  if (!Array.isArray(badges) || badges.length === 0) return '';
+  const hasDisclosure = badges.some(b => {
+    if (!b) return false;
+    const isPred = (b.source === 'predicted')
+      || (b.label || '').includes('근접')
+      || (b.label || '').includes('예상');
+    return !isPred;
+  });
+  if (hasDisclosure) return '';
+  const hasImminent = badges.some(b => {
+    if (!b) return false;
+    const isPred = (b.source === 'predicted')
+      || (b.label || '').includes('근접')
+      || (b.label || '').includes('예상');
+    if (!isPred) return false;
+    return getPredictedBadgeVisibility(b, viewDate, badges) === 'header';
+  });
+  if (hasImminent) return '';
+  const n = countStrictUnmetPredicted(badges, viewDate);
+  if (n <= 0) return '';
+  // 휴지 메트릭 — __v92_pin_count (사이클 4 임계 5건 추적용)
+  if (typeof window !== 'undefined') {
+    window.__v92_pin_count = (window.__v92_pin_count || 0) + 1;
+  }
+  return `<span class="dsn-v92-trigger-pin" aria-label="추정 시그널 ${n}건">`
+    + `<span class="dsn-v92-trigger-pin__icon">↗</span>`
+    + `<span class="dsn-v92-trigger-pin__text">추정 </span>`
+    + `<span class="dsn-v92-trigger-pin__count">${n}건</span>`
+    + `</span>`;
 }
 
 function miniCandle(open, high, low, close, changePct) {

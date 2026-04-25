@@ -2067,3 +2067,146 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .dsn-v91-disclaimer-footer { border-top-width: 2px; font-weight: 600; }
 }
 
+/* ───── DSN-20260425-DSN-005 v9.2 — 그래프 박스 자동 효과 + predicted 위계 분리 + 트리거 핀 ─────
+   §IV.1 dsn-v92-stage-flow__node-effect: 노드 박스 하단 발효일+자동효과 1줄 (휴지 약한 명사형).
+   §IV.2 dsn-v92-predicted-detail-only: 펼침 영역 안 strict 미충족 predicted 상세.
+   §IV.3 dsn-v92-trigger-pin: 077970·452260 같은 predicted-only 카드 옵션 1-a 핀.
+*/
+
+/* §I 노드 박스 — 라벨/효과 분리. 기존 inline span을 inline-flex column으로 보강 (효과 div 수직 정렬용) */
+.dsn-v9-stage-flow__node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+}
+.dsn-v9-stage-flow__node-label {
+  display: block;
+}
+
+.dsn-v92-stage-flow__node-effect {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--v8-border-subtle, rgba(0,0,0,0.08));
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: var(--v8-text-secondary, #6B7280);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+.dsn-v92-stage-flow__node-effect--current {
+  font-weight: 600;
+  color: var(--v8-text-primary, #1F2937);
+}
+.dsn-v92-stage-flow__node-effect--upcoming {
+  color: var(--badge-disclosure, #1F6FEB);
+  font-weight: 500;
+}
+.dsn-v92-stage-flow__node-effect--predicted {
+  color: var(--badge-predicted, #E55A2B);
+  font-weight: 500;
+  border-top-style: dashed;
+}
+
+/* 모바일 ≤380px — 박스 가로폭 좁아짐. ellipsis 폴백 + 박스 효과 영역 폰트 살짝 축소 */
+@media (max-width: 380px) {
+  .dsn-v92-stage-flow__node-effect {
+    font-size: 0.65rem;
+    max-width: 100%;
+    margin-top: 3px;
+    padding-top: 3px;
+  }
+}
+
+/* 다크모드 — predicted 점선 색 lightness +12% (DSN-005 §VIII) */
+@media (prefers-color-scheme: dark) {
+  .dsn-v92-stage-flow__node-effect {
+    border-top-color: var(--border-subtle, rgba(255,255,255,0.10));
+    color: var(--text-secondary, #9CA3AF);
+  }
+  .dsn-v92-stage-flow__node-effect--current {
+    color: var(--text-primary, #E5E7EB);
+  }
+  .dsn-v92-stage-flow__node-effect--upcoming {
+    color: #4D90FF;
+  }
+  .dsn-v92-stage-flow__node-effect--predicted {
+    color: #FF7A4A;
+  }
+}
+
+/* §II 펼침 영역 predicted detail-only */
+.dsn-v92-predicted-detail-only {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--badge-predicted, #E55A2B);
+  background: rgba(229, 90, 43, 0.04);
+  border-radius: 4px;
+}
+.dsn-v92-predicted-detail-only__title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--badge-predicted, #E55A2B);
+  margin-bottom: 6px;
+}
+.dsn-v92-predicted-detail-only__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dsn-v92-predicted-detail-only__item {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding: 4px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dsn-v92-predicted-detail-only {
+    background: rgba(229, 90, 43, 0.10);
+    border-left-color: #FF7A4A;
+  }
+  .dsn-v92-predicted-detail-only__title {
+    color: #FF7A4A;
+  }
+}
+
+/* §III 트리거 핀 — disclosure 0 + strict 미충족 predicted ≥1 카드 우측 끝 */
+.dsn-v92-trigger-pin {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--badge-predicted, #E55A2B);
+  background: rgba(229, 90, 43, 0.06);
+  border: 1px dashed var(--badge-predicted, #E55A2B);
+  white-space: nowrap;
+}
+.dsn-v92-trigger-pin__icon {
+  margin-right: 2px;
+}
+.dsn-v92-trigger-pin__count {
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dsn-v92-trigger-pin {
+    color: #FF7A4A;
+    background: rgba(229, 90, 43, 0.14);
+    border-color: #FF7A4A;
+  }
+}
+
+/* 고대비 — 트리거 핀/detail-only 보더 강화 */
+@media (prefers-contrast: more) {
+  .dsn-v92-trigger-pin { border-width: 2px; font-weight: 700; }
+  .dsn-v92-predicted-detail-only { border-left-width: 5px; }
+  .dsn-v92-stage-flow__node-effect--predicted { border-top-width: 2px; }
+}
+
