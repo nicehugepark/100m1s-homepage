@@ -541,6 +541,8 @@ function renderCalExpandContent(date, data) {
         dartUrl: _v8DartByStage(b.label),
         stageDefinition: '',  // togusa krx-stage-rules.json 후속 주입
         regulationDetail: '', // togusa krx-stage-rules.json 후속 주입
+        // v9.1 strict: getPredictedTenseVariant 인접 검증용 (4/24 027360 단계 도약 케이스 차단)
+        allBadges: _v8SortedBadges,
       });
       const v8DetailHtml = _v8SortedBadges.map(b => dsnV8RenderBlock(b, _v8CtxFor(b))).join('');
 

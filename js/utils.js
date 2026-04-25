@@ -193,10 +193,11 @@ function dsnV8FormatThresholds(thresholds, label, badgeContext) {
 
 function dsnV8RenderBlock(badge, ctx) {
   // §3·§5.1 — 단일 배지 1블록. 5줄 요약 + 🎯 thresholds + 통합 펼침
-  // v9.1 §B: predicted 칩은 imminent/predicted 분기 (renderTenseChip 우선 사용)
+  // v9.1 §B: predicted 칩은 imminent/predicted 분기 (strict 3 AND 조건). ctx.allBadges 인접 검증 필수.
   const viewDateForChip = (ctx && ctx.currentDate) || badge.view_date || '';
+  const allBadgesForChip = (ctx && ctx.allBadges) || null;
   const tenseChipHtml = (typeof renderTenseChip === 'function')
-    ? renderTenseChip(badge, viewDateForChip)
+    ? renderTenseChip(badge, viewDateForChip, allBadgesForChip)
     : null;
   const tense = dsnV8GetTenseChip(badge);
   const isPredicted = (badge.source === 'predicted')
@@ -419,12 +420,13 @@ function formatYMD(date) {
 function getNextTradingDay(dateStr) {
   // §E.4 renderer 측 안전망. 우선순위: build_daily.py 산출 next_trading_day_for_predicted 신뢰.
   // 본 함수는 view_date+1 거래일 비교용(getPredictedTenseVariant 내부) 또는 build_daily 미산출 케이스 폴백.
+  // 이시카와 P0 — 연 경계 가드: holidays.json은 2026 단년. 2027+ view_date 산출 시 캘린더+1 폴백 + warn (FLR-20260425).
   // KOREA_HOLIDAYS estimated 등급 hit 시 console.warn 1회 (FLR-20260423-FLR-002 verified 절차).
   if (!dateStr) return '';
   const holidaysData = (typeof window !== 'undefined' && window.KOREA_HOLIDAYS) || null;
+  const holidaysYear = holidaysData && holidaysData.year ? Number(holidaysData.year) : null;
   const holidaysSet = holidaysData && holidaysData.holidays ? new Set(Object.keys(holidaysData.holidays)) : null;
   const marketClosedSet = holidaysData && holidaysData.market_closed ? new Set(Object.keys(holidaysData.market_closed)) : null;
-  // estimated 등급 (placeholder — 향후 holidays.json verification_status 필드 추가 시 분기)
   const isEstimated = holidaysData && holidaysData.verification_status === 'estimated';
 
   const date = new Date(dateStr);
@@ -433,6 +435,16 @@ function getNextTradingDay(dateStr) {
   let safety = 14;
   while (safety-- > 0) {
     next.setDate(next.getDate() + 1);
+    const nextYear = next.getFullYear();
+    // 이시카와 P0 연 경계 가드 — holidays.json 데이터 연도 초과 시 캘린더+1 폴백 (주말만 스킵)
+    if (holidaysYear && nextYear > holidaysYear) {
+      if (typeof console !== 'undefined') {
+        console.warn(`[DSN-v9.1] getNextTradingDay: ${nextYear}+ holidays data missing (loaded year ${holidaysYear}), fallback to calendar+1 weekday only (FLR-20260425). build_daily.py 산출 신뢰 권고.`);
+      }
+      const dowFb = next.getDay();
+      if (dowFb === 0 || dowFb === 6) continue;
+      return formatYMD(next);
+    }
     const dow = next.getDay();
     if (dow === 0 || dow === 6) continue;
     const ymd = formatYMD(next);
@@ -453,25 +465,78 @@ function getNextTradingDay(dateStr) {
   return '';
 }
 
-function getPredictedTenseVariant(badge, viewDate) {
+// v9.1 strict 룰 — KRX_MAIN_TRACK 인접 단계 검증용.
+// 인용: rules/krx-stage-flow.json#flow.stages[].predicted_shadow.flow_node + $027360_4_24_mapping.
+// 4/24 027360 케이스: disclosure="투자경고 예고"(stages[1]) + predicted="투자위험 근접"(stages[3] predicted_shadow) → 단계 도약(차이 2) → [예측 진입] 폴백.
+const KRX_MAIN_TRACK_LABELS_FOR_STRICT = ['투자주의', '투자경고 예고', '투자경고', '투자위험 예고', '투자위험', '매매거래정지'];
+
+function matchMainTrackStep(label) {
+  // togusa C-1 매트릭스 — KRX_MAIN_TRACK 인덱스 산출. predicted "X 근접"은 KRX 공식 "X 예고"(또는 1단계 자체)로 매핑.
+  // 인용: rules/krx-stage-flow.json#flow.stages[].predicted_shadow.flow_node ("stages[N] (label) 노드의 'predicted_shadow'").
+  if (!label) return -1;
+  let idx = KRX_MAIN_TRACK_LABELS_FOR_STRICT.findIndex(l => l === label);
+  if (idx !== -1) return idx;
+  if (label.endsWith('근접')) {
+    const stripped = label.replace(/\s*근접\s*$/, '').trim();
+    idx = KRX_MAIN_TRACK_LABELS_FOR_STRICT.findIndex(l => l === `${stripped} 예고`);
+    if (idx !== -1) return idx;
+    idx = KRX_MAIN_TRACK_LABELS_FOR_STRICT.findIndex(l => l === stripped);
+    if (idx !== -1) return idx;
+  }
+  return -1;
+}
+
+function getCurrentStageIndex(badges) {
+  // current = disclosure source 중 KRX_MAIN_TRACK 최대 인덱스 (predicted 제외).
+  if (!Array.isArray(badges) || badges.length === 0) return -1;
+  let maxIdx = -1;
+  for (const b of badges) {
+    if (!b) continue;
+    const isPredicted = (b.source === 'predicted')
+      || (b.label || '').includes('근접')
+      || (b.label || '').includes('예상');
+    if (isPredicted) continue;
+    const idx = matchMainTrackStep(b.label || '');
+    if (idx > maxIdx) maxIdx = idx;
+  }
+  return maxIdx;
+}
+
+function getPredictedTenseVariant(badge, viewDate, allBadges) {
   // §B.2 predicted 배지 시제 칩 분기 — 'imminent' (D+1 거래일 특정) vs 'predicted' (일자 미특정).
-  // build_daily.py 산출 next_trading_day_for_predicted 신뢰. renderer 재산출 X.
+  // togusa strict 3 AND 조건 모두 충족 시에만 'imminent':
+  //   1) badge.source === 'predicted'
+  //   2) predicted_shadow.flow_node === current_stage_index + 1 (KRX_MAIN_TRACK 인접)
+  //   3) badge.next_trading_day_for_predicted == view_date+1 거래일
+  // 인용: rules/krx-stage-flow.json $027360_4_24_mapping ("stages[1] disclosure + stages[3] predicted_shadow = 단계 도약 → [예측 진입] 폴백").
   if (!badge || badge.source !== 'predicted') return null;
   const ntd = badge.next_trading_day_for_predicted;
   if (!ntd) return 'predicted';
   if (!viewDate) return 'predicted';
-  // viewDate+1 거래일 = ntd → imminent
-  return ntd === getNextTradingDay(viewDate) ? 'imminent' : 'predicted';
+  // 조건 3: D+1 거래일 일치
+  if (ntd !== getNextTradingDay(viewDate)) return 'predicted';
+  // 조건 2: 인접 검증 (current+1만 허용). allBadges 미전달 시 보수적으로 'predicted' 폴백.
+  if (Array.isArray(allBadges) && allBadges.length > 0) {
+    const currentIdx = getCurrentStageIndex(allBadges);
+    const predictedIdx = matchMainTrackStep(badge.label || '');
+    if (currentIdx === -1 || predictedIdx === -1) return 'predicted';
+    if (predictedIdx !== currentIdx + 1) return 'predicted';  // 단계 도약 차단 (4/24 027360 케이스)
+  } else {
+    // allBadges 부재 시 인접 검증 불가 → 안전 폴백
+    return 'predicted';
+  }
+  return 'imminent';
 }
 
-function renderTenseChip(badge, viewDate) {
+function renderTenseChip(badge, viewDate, allBadges) {
   // §B.2 시제 칩 분기 진입점. v8 §4.4 칩 4종 + v9.1 §B 5번째 [내일 가능].
+  // allBadges: 같은 카드의 status_badges 전체 (strict 인접 검증용).
   if (!badge) return '';
   const isPredicted = (badge.source === 'predicted')
     || (badge.label || '').includes('예상')
     || (badge.label || '').includes('근접');
   if (isPredicted) {
-    const variant = getPredictedTenseVariant(badge, viewDate);
+    const variant = getPredictedTenseVariant(badge, viewDate, allBadges);
     if (variant === 'imminent') {
       return `<span class="dsn-v8-tense-chip dsn-v8-tense-chip--predicted dsn-v9-tense-chip--imminent">[내일 가능]</span>`;
     }
