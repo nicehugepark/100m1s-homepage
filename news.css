@@ -2026,6 +2026,23 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   margin-right: 2px;
 }
 
+/* v9.1 §IX 함정 #2 — backend next_trading_day_source ∈ {estimated, fallback_*} 시 시각 cue.
+   verified는 cue 없음 (기본 imminent 칩 외관 그대로).
+*/
+.dsn-v9-tense-chip--imminent[data-source-grade="estimated"],
+.dsn-v9-tense-chip--imminent[data-source-grade="fallback_homepage"],
+.dsn-v9-tense-chip--imminent[data-source-grade="fallback_legacy"] {
+  /* base 점선 유지하되 살짝 흐림으로 grade 차이 표현 */
+  border-style: dotted;
+  background: rgba(229, 90, 43, 0.10);   /* 채도 -0.04 (verified 대비 약화) */
+}
+.dsn-v9-tense-chip__grade-warn {
+  display: inline-block;
+  margin-right: 2px;
+  font-size: 0.7em;
+  vertical-align: middle;
+}
+
 .dsn-v91-disclaimer-footer {
   margin-top: 16px;
   padding-top: 12px;
