@@ -147,12 +147,24 @@ function dsnV8FormatThresholds(thresholds, label) {
       <div class="dsn-v8-thresholds__empty">(자동 평가 없음) — 지정 사유는 사유 박스 참조</div>
     </div>`;
   }
+  // 단위 추론: base_price=null + desc에 "배"/"%"/"비율" 키워드 → 단위 없음 (ratio).
+  // base_price 있고 desc가 "최고가"/"종가"/"기준가"/"가격" 키워드 또는 default → "원" 부착.
+  const _detectUnit = (t) => {
+    const d = (t && t.desc) || '';
+    if (/배\s*(이상|이하|↑|↓)?/.test(d) || /비율|ratio/i.test(d)) return '배';
+    if (t && t.base_price == null) return '';
+    return '원';
+  };
   const items = arr.map(t => {
     const cls = t.triggered ? 'dsn-v8-thresholds__item dsn-v8-thresholds__item--triggered'
       : 'dsn-v8-thresholds__item dsn-v8-thresholds__item--unmet';
     const desc = t.desc || '';
-    const cur = (t.current != null) ? Number(t.current).toLocaleString() + '원' : '';
-    const thr = (t.threshold != null) ? Number(t.threshold).toLocaleString() + '원' : '';
+    const unit = _detectUnit(t);
+    const fmt = (v) => unit === '배'
+      ? Number(v).toFixed(2) + '배'
+      : (unit ? Number(v).toLocaleString() + unit : Number(v).toLocaleString());
+    const cur = (t.current != null) ? fmt(t.current) : '';
+    const thr = (t.threshold != null) ? fmt(t.threshold) : '';
     const bodyParts = [desc];
     if (cur && thr) bodyParts.push(`${cur} ${t.triggered ? '≥' : '<'} ${thr}`);
     else if (thr) bodyParts.push(`임계 ${thr}`);
@@ -212,8 +224,8 @@ function dsnV8RenderBlock(badge, ctx) {
   // 통합 펼침 (definition / regulation / source)
   const stripped = dsnV8StripStageLabel(label);
   const summaryToggleText = isPredicted
-    ? `${stripped}이란 / 적용 예정 제한 / 산출 근거 ▾`
-    : `${stripped}이란 / 규정 상세 / 공시 원문 ▾`;
+    ? `${stripped}란 / 적용 예정 제한 / 산출 근거 ▾`
+    : `${stripped}란 / 규정 상세 / 공시 원문 ▾`;
   const ctxDart = (ctx && ctx.dartUrl) || '';
   const sourceBlockHtml = isPredicted
     ? `<div class="dsn-v8-extra__source"><p>산출 근거: 공개 종가 + KRX 임계 산술 · 신뢰도 ${escapeHtml(dsnV8GetConfidenceLine(badge) || '미상')}</p></div>`
