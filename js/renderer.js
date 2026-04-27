@@ -1956,9 +1956,31 @@ async function initThemeTree(dateOverride) {
     const targetDate = dateOverride || data.date;
     if (dateOverride) {
       try {
-        const stockRes = await fetch(`/data/interpreted/stock-${dateOverride}.json`);
-        if (stockRes.ok) {
-          const stockData = await stockRes.json();
+        // REQ-055 P0 — 빈 stocks=[] 파일도 200 OK로 반환되므로 stocks 비어있으면 7일 이내 fallback.
+        //   이 가드 없이는 4/28 같은 신규 거래일 새벽에 theme tree가 "테마 데이터가 없습니다"로 빈 표시되는 결함 발생.
+        async function _loadStockJsonWithFallback(d0) {
+          const tryDate = async (d) => {
+            try {
+              const r = await fetch(`/data/interpreted/stock-${d}.json`);
+              if (!r.ok) return null;
+              const j = await r.json();
+              return (j && Array.isArray(j.stocks) && j.stocks.length > 0) ? j : null;
+            } catch { return null; }
+          };
+          let j = await tryDate(d0);
+          if (j) return j;
+          const dt = new Date(d0 + 'T00:00:00');
+          for (let i = 1; i <= 7; i++) {
+            const prev = new Date(dt);
+            prev.setDate(prev.getDate() - i);
+            const ps = prev.toISOString().slice(0, 10);
+            j = await tryDate(ps);
+            if (j) return j;
+          }
+          return null;
+        }
+        const stockData = await _loadStockJsonWithFallback(dateOverride);
+        if (stockData) {
           // 해당 날짜 종목들의 테마 이름 수집
           const activeThemes = new Set();
           const themeStocks = {}; // theme_name -> [{code, name, change_pct, trade_amount}]

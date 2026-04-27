@@ -103,9 +103,14 @@ async function loadCalDayData(date) {
     fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   let stockDailyData = stockDailyDirect;
-  // 당일 데이터 없으면 최근 7일 이내 이전 날짜 fallback (병렬)
+  // REQ-055 P0 — 당일 stock JSON이 stocks=[] 빈 데이터인 경우도 fallback 대상.
+  //   배포 직후/장 시작 전 build_daily.py가 빈 stocks=[] 파일을 생성하면 truthy로 평가되어
+  //   fallback이 동작하지 않고 카드/sparkline/themes_chip이 모두 비어 보이는 결함 (4/28 07:50 KST 사례).
+  //   stocks가 1건이라도 있어야 해석으로 인정. macro_events/generated_at만 있는 빈 파일은 무시.
+  const _hasStockEntries = (sd) => !!(sd && Array.isArray(sd.stocks) && sd.stocks.length > 0);
+  // 당일 데이터 없거나 stocks 비었으면 최근 7일 이내 이전 날짜 fallback (병렬)
   // 단, 휴장일/주말은 fallback 자체를 비활성화 (옵션 A: 휴장 안내만 표시)
-  if (!stockDailyData && !isMarketClosed(date)) {
+  if (!_hasStockEntries(stockDailyData) && !isMarketClosed(date)) {
     const d = new Date(date + 'T00:00:00');
     const fallbackFetches = [];
     for (let i = 1; i <= 7; i++) {
@@ -115,12 +120,13 @@ async function loadCalDayData(date) {
       const prevHash = prevStr.replace(/-/g, '');
       fallbackFetches.push(
         fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`)
-          .then(r => r.ok ? r.json().then(j => ({ date: prevStr, data: j })) : null)
+          .then(r => r.ok ? r.json().then(j => _hasStockEntries(j) ? { date: prevStr, data: j } : null) : null)
           .catch(() => null)
       );
     }
     const results = (await Promise.all(fallbackFetches)).filter(Boolean);
     if (results.length > 0) {
+      // 가장 최근 날짜 우선 (i=1부터 순서대로 fetch했지만 Promise.all 순서 보장 — 첫 entry가 가장 가까운 과거)
       stockDailyData = results[0].data;
       stockDailyData._fallback_date = results[0].date;
     }
@@ -205,7 +211,10 @@ async function loadCalDayData(date) {
             trade_amount: st.trade_amount ?? null,
             rank: st.rank ?? null,
             code: st.code || null,
-            intraday: stockDailyData._fallback_date ? null : (st.intraday || null),
+            // REQ-055 P0 — fallback 시점에도 분봉 데이터는 해당 날짜의 정합 자료이므로 null화 금지.
+            //   기존 로직은 fallback 데이터의 분봉을 일괄 null 처리해 sparkline이 회색으로만 표시되어
+            //   "차트 안 그려짐" 결함을 유발 (4/28 사례). 데이터 안내 chip이 이미 fallback_date를 명시하므로 혼동 없음.
+            intraday: st.intraday || null,
             status_badges: st.status_badges || [],
             range_240d: st.range_240d || null,
             // REQ-048 — 강세 배지 데이터 패스스루 (build_daily.py REQ-039 entry 루트 → interp 합성).
