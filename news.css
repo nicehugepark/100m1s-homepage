@@ -309,31 +309,53 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
   font-size: 11px; color: #555; font-weight: 500; margin-left: 6px;
 }
-/* REQ-029 §1 — 공시 링크 칩(pill) 디자인. 원시적 밑줄 폐기 → 미니멀 chip.
-   사유 박스 행 안에서 보조 정보 위계 유지 (배경 칩 + 작은 폰트). */
+/* REQ-032 §B — 공시 버튼 텍스트 링크형 (이모지 🔗 폐기 + SVG inline + 호버 underline).
+   REQ-029 §1 칩 디자인 폐기. 사유 박스 본문과 시각 위계 분리 (링크는 텍스트 흐름 안에). */
 .cal-status-detail__link {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  font-size: 10px;
-  font-weight: 500;
-  color: #5A6C7D;
-  background: #EEF2F6;
-  padding: 1px 7px;
-  border-radius: 9999px;  /* REQ-031 — pill 통일 */
-  text-decoration: none;
   margin-left: 6px;
-  transition: background 0.15s, color 0.15s;
-  letter-spacing: 0.1px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #2563EB;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms ease;
+  letter-spacing: normal;
 }
-.cal-status-detail__link::before {
-  content: '🔗';
-  font-size: 8px;
+.cal-status-detail__link::before { content: none; }   /* REQ-032 §B — 기존 🔗 이모지 폐기 */
+.cal-status-detail__link::after {
+  content: '';
+  width: 9px; height: 9px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%232563EB' stroke-width='1.5'><path d='M3 9 L9 3 M5 3 L9 3 L9 7'/></svg>") no-repeat center;
+  background-size: contain;
 }
 .cal-status-detail__link:hover {
-  background: #DDE5EC;
-  color: #2C3E50;
-  text-decoration: none;
+  border-bottom-color: #2563EB;
+}
+/* REQ-032 §A — 사유 박스 그룹 헤더 (KRX 공시 vs 증권사 사유 출처 분리). */
+.cal-credit-group {
+  display: flex; flex-direction: column; gap: 4px;
+  margin-top: 6px;
+}
+.cal-credit-group + .cal-credit-group { margin-top: 10px; }
+.cal-credit-group__heading {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748B;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-bottom: 2px;
+}
+.cal-credit-group__source {
+  font-size: 9.5px;
+  font-weight: 400;
+  color: #94A3B8;
+  margin-left: 4px;
 }
 @media (prefers-color-scheme: dark) {
   /* REQ-029 §2 — 다크모드 사유 박스 톤다운 정합 */
@@ -344,14 +366,21 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
     color: #D1D5DB;
   }
+  /* REQ-032 §B — 다크모드 공시 텍스트 링크 */
   .cal-status-detail__link {
-    color: #94A3B8;
-    background: rgba(255, 255, 255, 0.06);
+    color: #60A5FA;
+    background: transparent;
   }
   .cal-status-detail__link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #CBD5E1;
+    border-bottom-color: #60A5FA;
+    background: transparent;
   }
+  .cal-status-detail__link::after {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%2360A5FA' stroke-width='1.5'><path d='M3 9 L9 3 M5 3 L9 3 L9 7'/></svg>");
+  }
+  /* REQ-032 §A — 다크모드 그룹 헤더 */
+  .cal-credit-group__heading { color: #94A3B8; }
+  .cal-credit-group__source { color: #64748B; }
 }
 /* 2026-04-22 핫픽스: DART 공시 원문 링크 — 공시 기반 배지 상세 하단 */
 .cal-status-detail.v3 .cal-status-dart-link {
@@ -1190,29 +1219,38 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     max-height: 2400px;
   }
 }
-/* REQ-030 §2 — 접기 버튼 칩 디자인 (SPEC-001 §III.5). chevron-only 폐기.
-   텍스트 + 화살표 + 부드러운 호버. 모바일·데스크탑 누름 영역 ≥ 28px 보장. */
+/* REQ-032 §C — 접기 버튼 Ghost outlined (SPEC-001 §III.5).
+   대표 본질 비판: 솔리드 칩 = 어린아이같음. ghost outlined로 typography 미려화.
+   transparent bg + 1px border + focus-visible 접근성. min-height 28px 모바일 누름 보장. */
 .cal-detail-toggle {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  padding: 4px 12px;
+  padding: 5px 12px;
   min-height: 28px;
-  border-radius: 9999px;  /* REQ-031 — pill 통일 */
-  background: #F1F5F9;
+  border-radius: 9999px;  /* REQ-031 — pill 통일 (typography로 미려화) */
+  background: transparent;
+  border: 1px solid #E2E8F0;
   font-size: 11px;
-  color: #64748B;
+  color: #475569;
   font-weight: 500;
-  transition: background 0.2s ease, color 0.2s ease;
+  letter-spacing: 0.01em;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
   user-select: none;
   margin-top: 4px;
   width: fit-content;
   text-align: left;
 }
 .cal-detail-toggle:hover {
-  background: #E2E8F0;
-  color: #334155;
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  color: #1E293B;
+}
+.cal-detail-toggle:active { background: #F1F5F9; }
+.cal-detail-toggle:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
 }
 .cal-toggle-text {
   font-size: 11px;
@@ -1235,20 +1273,25 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   overflow: visible;
 }
 .cal-chevron {
+  width: 10px; height: 10px;
   font-size: 10px;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.6;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-block;
 }
 .cal-feature-card.expanded .cal-chevron {
   transform: rotate(180deg);
 }
 @media (prefers-color-scheme: dark) {
+  /* REQ-032 §C — 다크모드 접기 버튼 ghost outlined */
   .cal-detail-toggle {
-    background: rgba(255, 255, 255, 0.05);
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.1);
     color: #94A3B8;
   }
   .cal-detail-toggle:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
     color: #CBD5E1;
   }
 }
