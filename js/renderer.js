@@ -1959,6 +1959,14 @@ async function initThemeTree(dateOverride) {
         // REQ-055 P0 — 빈 stocks=[] 파일도 200 OK로 반환되므로 stocks 비어있으면 7일 이내 fallback.
         //   이 가드 없이는 4/28 같은 신규 거래일 새벽에 theme tree가 "테마 데이터가 없습니다"로 빈 표시되는 결함 발생.
         async function _loadStockJsonWithFallback(d0) {
+          // REQ-055 P0 — toISOString()는 KST→UTC 변환되어 하루 전 날짜를 반환하는 버그.
+          //   날짜 산술은 로컬 getFullYear/getMonth/getDate 사용.
+          const _localYmd = (dt) => {
+            const y = dt.getFullYear();
+            const m = String(dt.getMonth() + 1).padStart(2, '0');
+            const dd = String(dt.getDate()).padStart(2, '0');
+            return `${y}-${m}-${dd}`;
+          };
           const tryDate = async (d) => {
             try {
               const r = await fetch(`/data/interpreted/stock-${d}.json`);
@@ -1973,7 +1981,7 @@ async function initThemeTree(dateOverride) {
           for (let i = 1; i <= 7; i++) {
             const prev = new Date(dt);
             prev.setDate(prev.getDate() - i);
-            const ps = prev.toISOString().slice(0, 10);
+            const ps = _localYmd(prev);
             j = await tryDate(ps);
             if (j) return j;
           }

@@ -111,12 +111,22 @@ async function loadCalDayData(date) {
   // 당일 데이터 없거나 stocks 비었으면 최근 7일 이내 이전 날짜 fallback (병렬)
   // 단, 휴장일/주말은 fallback 자체를 비활성화 (옵션 A: 휴장 안내만 표시)
   if (!_hasStockEntries(stockDailyData) && !isMarketClosed(date)) {
+    // REQ-055 P0 — toISOString()는 KST→UTC 변환되어 하루 전 날짜를 반환하는 버그.
+    //   `new Date('2026-04-28T00:00:00')` (KST 자정) → UTC `2026-04-27T15:00:00Z`
+    //   → `setDate(-1)` 후 toISOString() → '2026-04-26' (4/27 건너뜀, 4/24가 첫 PASS로 잡힘 사례).
+    //   날짜 산술은 로컬 시간 기준 getFullYear/getMonth/getDate 사용.
+    const _localYmd = (dt) => {
+      const y = dt.getFullYear();
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const d = String(dt.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    };
     const d = new Date(date + 'T00:00:00');
     const fallbackFetches = [];
     for (let i = 1; i <= 7; i++) {
       const prev = new Date(d);
       prev.setDate(prev.getDate() - i);
-      const prevStr = prev.toISOString().slice(0, 10);
+      const prevStr = _localYmd(prev);
       const prevHash = prevStr.replace(/-/g, '');
       fallbackFetches.push(
         fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`)
