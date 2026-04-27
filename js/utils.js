@@ -192,11 +192,17 @@ function dsnV8FormatThresholds(thresholds, label, badgeContext) {
 }
 
 function dsnV8RenderBlock(badge, ctx) {
+  // REQ-020c — 대표 직접 지시: [지정 중] dsn-v8-block--disclosure + [내일 가능] dsn-v8-block--predicted
+  // 상세 박스 둘 다 제거. 헤더 효과 배지(v95) + 그래프 박스 + entry-window가 의미 흡수.
+  // 본 함수 본체는 dead code 잔존 (후속 사이클 정리). 호출부 renderer.js:576 → 빈 문자열만 반환.
+  return '';
+  // ↓↓↓ dead code (REQ-020c 사이클 후속 정리) ↓↓↓
   // §3·§5.1 — 단일 배지 1블록. 5줄 요약 + 🎯 thresholds + 통합 펼침
   // v9.1 §B: predicted 칩은 imminent/predicted 분기 (strict 3 AND 조건). ctx.allBadges 인접 검증 필수.
   // REQ-018 §2 영역 3 (휴지 사이클 0 C=a) — strict 미충족 predicted 박스 차단. 그래프 unvisited와 정합.
   // 단일 진실 소스: getPredictedBadgeVisibility (REQ-015 §II 함수, REQ-016 §III 그래프 unvisited 판정 동일).
   // 사용처 5위치: getStageFlow(349)·countStrictUnmetPredicted(872)·renderPredictedDetailOnly(1043, dead)·renderTriggerPin(1073)·여기(영역 3).
+  // eslint-disable-next-line no-unreachable
   const _isPredictedEarly = (badge.source === 'predicted')
     || (badge.label || '').includes('근접')
     || (badge.label || '').includes('예상');
