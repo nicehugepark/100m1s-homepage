@@ -1894,13 +1894,14 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 
 .dsn-v9-stage-flow__node {
   position: relative;
-  padding: 5px 10px;
+  /* v9.3.2 §II (REQ-017 사이클 2 휴지 B=a): 박스 4토큰 축소 — padding 5/10→4/8, font 0.8125→0.75rem */
+  padding: 4px 8px;
   border-radius: 5px;
   border: 1px solid var(--v8-border-subtle);
   color: var(--v8-text-tertiary);
   background: rgba(0,0,0,0.02);
   white-space: nowrap;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
 }
 .dsn-v9-stage-flow__node--current {
   border: 2px solid var(--badge-disclosure);
@@ -2133,14 +2134,15 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   margin-top: 4px;
   padding-top: 4px;
   border-top: 1px solid var(--v8-border-subtle, rgba(0,0,0,0.08));
-  font-size: 0.7rem;
+  /* v9.3.2 §II (REQ-017 사이클 2 휴지 B=a): font 0.7→0.65rem, max-width 160→130px */
+  font-size: 0.65rem;
   line-height: 1.4;
   color: var(--v8-text-secondary, #6B7280);
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 160px;
+  max-width: 130px;
 }
 .dsn-v92-stage-flow__node-effect--current {
   font-weight: 600;
