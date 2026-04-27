@@ -386,7 +386,13 @@ function renderCalExpandContent(date, data) {
       const pickBadge = pc != null && pc >= 2
         ? `<span class="cal-streak-badge">${pc}연속</span>`
         : '';
-      const creditBadgeHtml = it.interp?.credit_risk
+      // REQ-020a 핫픽스 — v9.5 효과 배지에 credit-block 있으면 cal-credit-badge 중복 차단.
+      // 사유: 헤더 효과 배지 "신용불가(오늘/내일/내일 가능)"가 의미 흡수 (DSN-005 §III.1).
+      // 잔존: KRX 단계와 무관한 신용 사유 (회사한도초과·ETF·SPAC 등) → cal-credit-badge 유지.
+      const _v95HasCreditBlock = Array.isArray(st.status_badges) && st.status_badges.some(b =>
+        Array.isArray(b && b.effect_badges) && b.effect_badges.some(eb => eb && eb.effect === 'credit-block')
+      );
+      const creditBadgeHtml = (it.interp?.credit_risk && !_v95HasCreditBlock)
         ? '<span class="cal-credit-badge">신용불가</span>' : '';
       // v3.2: 신용 사유도 v3 패턴 (라벨 박스 + 인사이트). 대표 정정 19:43 KST 옵션 나
       const creditReasonHtml = (st.credit_risk && st.credit_reason)
