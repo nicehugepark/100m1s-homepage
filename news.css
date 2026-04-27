@@ -201,7 +201,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
 .cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 var(--card-indent-badges); align-items:center; }
 .cal-credit-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#FDE8E8; color:#C53939; border:1px solid #F5C2C2; vertical-align:middle; }
-.cal-status-badge { display:inline-block; font-size:10px; font-weight:600; padding:1px 5px; border-radius:3px; margin-right:3px; vertical-align:middle; }
+/* REQ-031 — pill 통일 (border-radius: 9999px). 시각 일관성 (SPEC-001 §III). */
+.cal-status-badge { display:inline-block; font-size:10px; font-weight:600; padding:1px 8px; border-radius:9999px; margin-right:3px; vertical-align:middle; }
 .cal-status-badge.caution { background:#fff3cd; color:#856404; }
 .cal-status-badge.warning { background:#ffe0b2; color:#e65100; }
 .cal-status-badge.danger { background:#ffcdd2; color:#c62828; }
@@ -319,7 +320,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   color: #5A6C7D;
   background: #EEF2F6;
   padding: 1px 7px;
-  border-radius: 9px;
+  border-radius: 9999px;  /* REQ-031 — pill 통일 */
   text-decoration: none;
   margin-left: 6px;
   transition: background 0.15s, color 0.15s;
@@ -719,7 +720,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .theme-trend-tooltip.show { opacity: 1; }
-.theme-trend-legend-item { min-height: 36px; padding: 6px 10px; border-radius: 6px; transition: color 0.15s; }
+.theme-trend-legend-item { min-height: 36px; padding: 6px 10px; border-radius: 9999px; transition: color 0.15s; }
 .theme-trend-legend-item.dimmed { color: var(--dm); }
 .theme-trend-legend-item .swatch { position: relative; }
 .theme-trend-legend-item.selected .swatch::after {
@@ -728,7 +729,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .trend-detail { margin-top: 12px; overflow: hidden; transition: max-height 0.2s ease-out; max-height: 0; position: relative; z-index: 4; }
 .trend-detail.open { max-height: 400px; }
-.trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 8px; }
+.trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; margin-bottom: 8px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
 .trend-detail-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
@@ -815,8 +816,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .kiwoom-theme-chip {
   display: inline-block;
   font-size: 9px; font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 8px;
+  padding: 2px 8px;
+  border-radius: 9999px;  /* REQ-031 — pill 통일 */
   background: rgba(196,153,48,0.12);
   color: var(--am);
   border: 1px solid rgba(196,153,48,0.25);
@@ -1196,9 +1197,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 4px 12px;
   min-height: 28px;
-  border-radius: 12px;
+  border-radius: 9999px;  /* REQ-031 — pill 통일 */
   background: #F1F5F9;
   font-size: 11px;
   color: #64748B;
@@ -1262,7 +1263,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   color: #475569;
   background: #F1F5F9;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 9999px;  /* REQ-031 — pill 통일 */
   margin-left: 4px;
   transition: background 0.15s, color 0.15s;
   letter-spacing: 0.1px;
@@ -2189,8 +2190,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 2px 10px;
+  border-radius: 9999px;  /* REQ-031 — pill 통일 (헤더 효과 배지도 일관 정합) */
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1.4;
