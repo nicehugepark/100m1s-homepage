@@ -22,8 +22,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="preload" href="/news.css?v=20260428v112" as="style">
-<link rel="stylesheet" href="/news.css?v=20260428v112">
+<link rel="preload" href="/news.css?v=20260428v111" as="style">
+<link rel="stylesheet" href="/news.css?v=20260428v111">
 </head>
 <body>
 
@@ -67,24 +67,15 @@
 <script src="/menu.js"></script>
 
 <main>
-  <!-- REQ-036 partial 3/3 — page-header 이중 헤드라인 (design-lead 명세).
-       page-date: 동적 (calendar.js onCalCellClick + initCalendar에서 채움)
-       page-title: 정적 한글 카피 (Pretendard 700, clamp 48~80px)
-       page-eyebrow-en: 정적 영문 카피 (Instrument Serif Italic, FLR-AGT-002 안전)
-       기존 .page-eyebrow 골드 칩 폐기, .accent span 제거.
-       page-header는 65ch 본문 컬럼 (max-width: var(--measure)). -->
   <div class="page-header">
-    <div class="page-date" id="page-date"></div>
-    <h1 class="page-title">매 시간, 새로 쓰인다.</h1>
-    <p class="page-eyebrow-en">Every Hour, Rewritten.</p>
+    <div class="page-eyebrow">100M1S News</div>
+    <h1 class="page-title">시장은 <span class="accent">매 시간</span> 새로 쓰인다</h1>
     <div class="page-meta" id="meta">로딩 중…</div>
   </div>
 
-  <!-- REQ-036 partial 3/3 — 풀폭 영역 (.full-bleed).
-       65ch 본문 컬럼 밖으로 확장. main 직속 자식 4개 모두 풀폭. -->
-  <div class="theme-trend full-bleed" id="theme-trend"></div>
+  <div class="theme-trend" id="theme-trend"></div>
 
-  <div class="cal-layout full-bleed">
+  <div class="cal-layout">
     <aside class="cal-side">
       <section class="toss-cal" id="toss-cal" aria-label="수집 캘린더">
         <div class="toss-cal-header">
@@ -107,13 +98,13 @@
     </div>
   </div>
 
-  <div class="theme-map full-bleed" id="theme-map" style="display:none;">
+  <div class="theme-map" id="theme-map" style="display:none;">
     <div class="theme-map-title">테마 지도</div>
     <div class="theme-map-grid" id="theme-map-grid"></div>
     <div class="theme-map-expand" id="theme-map-expand"></div>
   </div>
 
-  <section class="cal-content full-bleed" id="cal-content" aria-live="polite">
+  <section class="cal-content" id="cal-content" aria-live="polite">
     <div class="cal-empty"><div class="cal-empty-circle"></div><div>날짜를 선택하세요</div></div>
   </section>
 </main>
@@ -130,10 +121,10 @@
   <p class="copyright" style="margin-top:8px;font-size:10px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6;">이 페이지는 시장 참고 자료입니다. 특정 종목의 매수&middot;매도 권유가 아니며, 모든 투자 판단과 책임은 본인에게 있습니다.</p>
 </footer>
 
-<script src="/js/utils.js?v=20260428v112" defer></script>
-<script src="/js/data-loader.js?v=20260428v112" defer></script>
-<script src="/js/calendar.js?v=20260428v112" defer></script>
-<script src="/js/renderer.js?v=20260428v112" defer></script>
+<script src="/js/utils.js?v=20260428v111" defer></script>
+<script src="/js/data-loader.js?v=20260421v5sp3" defer></script>
+<script src="/js/calendar.js?v=20260421v5sp3" defer></script>
+<script src="/js/renderer.js?v=20260428v111" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});

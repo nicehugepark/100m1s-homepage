@@ -160,9 +160,6 @@ function renderCalendar() {
 
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
-  // REQ-036 partial 3/3 — page-header 동적 날짜 갱신 ("4월 27일 (월)")
-  const _pageDateEl = document.getElementById('page-date');
-  if (_pageDateEl) _pageDateEl.textContent = formatKoDate(date);
   toggleThemeSections(date);
   // Static URL — /news/{date}.html로 공유 시 날짜별 OG 이미지 매칭
   if (pushState !== false) {
@@ -221,10 +218,6 @@ async function initCalendar() {
   calViewYear = iy;
   calViewMonth = im;
   calSelectedDate = initialDate;
-
-  // REQ-036 partial 3/3 — page-header 초기 날짜 채움 (initialDate 결정 직후)
-  const _initPageDateEl = document.getElementById('page-date');
-  if (_initPageDateEl) _initPageDateEl.textContent = formatKoDate(initialDate);
 
   // 2단계: 달력 UI 즉시 렌더 (캐시 기반, fetch 안 기다림)
   renderCalendar();
