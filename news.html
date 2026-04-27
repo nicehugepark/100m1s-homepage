@@ -17,8 +17,8 @@
 <meta name="twitter:image" content="https://100m1s.com/og/og-news.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="preload" href="/news.css?v=20260427v98" as="style">
-<link rel="stylesheet" href="/news.css?v=20260427v98">
+<link rel="preload" href="/news.css?v=20260427v99" as="style">
+<link rel="stylesheet" href="/news.css?v=20260427v99">
 </head>
 <body>
 
@@ -116,13 +116,25 @@
   <p class="copyright" style="margin-top:8px;font-size:10px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6;">이 페이지는 시장 참고 자료입니다. 특정 종목의 매수&middot;매도 권유가 아니며, 모든 투자 판단과 책임은 본인에게 있습니다.</p>
 </footer>
 
-<script src="/js/utils.js?v=20260427v98" defer></script>
+<script src="/js/utils.js?v=20260427v99" defer></script>
 <script src="/js/data-loader.js?v=20260421v5sp3" defer></script>
 <script src="/js/calendar.js?v=20260421v5sp3" defer></script>
-<script src="/js/renderer.js?v=20260427v98" defer></script>
+<script src="/js/renderer.js?v=20260427v99" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
+  // REQ-025 §1: 신규 SW가 active되어 controller가 변경되면 1회 자동 reload (SPEC-001 §VII.2).
+  // 사용자 디바이스에서 강제 새로고침 우회 안 되는 회귀(특히 모바일) 차단.
+  // _hadControllerAtLoad 가드: 첫 등록(controller 부재 → 신규)은 무시, 기존 controller에서 신규로 전환 시에만 reload.
+  // _refreshing 가드: 동일 페이지 내 무한 reload 방지.
+  const _hadControllerAtLoad = !!navigator.serviceWorker.controller;
+  let _refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (_refreshing) return;
+    if (!_hadControllerAtLoad) return;
+    _refreshing = true;
+    window.location.reload();
+  });
 }
 </script>
 
