@@ -1517,11 +1517,14 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
       if (label.startsWith('투자위험')) extra = ' — 신용금지·매매거래정지';
     }
 
+    // REQ-027 §C — 단기과열 예고 등 KRX 공시 링크 (SPEC-001 §V.3).
+    // build_daily.py에서 status_badge.disclosure_url 또는 dart_url 부착 시 사유 박스에 "공시" 칩 노출.
     rows.push({
       label: stageText + extra,
       period,
       sev,
       source: 'krx_disclosure',
+      url: b.disclosure_url || b.dart_url || '',
     });
   }
 
@@ -1530,21 +1533,12 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
   rows.sort((a, b) => (_SEV_ORDER[a.sev] ?? 9) - (_SEV_ORDER[b.sev] ?? 9));
 
   // 2. 증권사 사유 행 (creditRiskInfo)
+  // REQ-027 §B — insightMap 폐기. 부가 설명("익일 재평가 후 회복 가능" 등)은 매매 결정 시점에 잡음.
+  // label은 사유 단어 자체로 충분 (대표 본질 비판: 매매 결정에 무관한 부가 설명 제거).
   if (creditRiskInfo && creditRiskInfo.credit_risk && creditRiskInfo.credit_reason) {
     const reason = (typeof sanitize === 'function') ? sanitize(creditRiskInfo.credit_reason) : String(creditRiskInfo.credit_reason);
-    // §II.2 #11~#15 매트릭스 — 추정 단어 0건. "회복 가능"은 증권사 공식 정책 (허용).
-    const insightMap = {
-      '회사한도초과': '익일 재평가 후 회복 가능',
-      'ETF/ETN': '신용거래 대상 외',
-      '스팩(SPAC)': '합병 전 신용거래 제한',
-      'SPAC': '합병 전 신용거래 제한',
-      '우선주': '신용거래 제한 (일부 증권사 가능)',
-      '신용거래 제한 종목': '증권사 자체 기준',
-      '신용융자 불가': 'kt20017 단건 조회 결과',
-    };
-    const insight = insightMap[reason] || '';
     rows.push({
-      label: insight ? `${reason} — ${insight}` : reason,
+      label: reason,
       period: '',
       sev: 'credit',
       source: 'broker',
@@ -1560,6 +1554,7 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
 }
 
 // §IV.1 박스 N건 출력. §III BEM 재활용 + cal-status-detail--reason modifier 1개 신규.
+// REQ-027 §C — KRX 공시 링크 칩 추가 (SPEC-001 §V.3).
 function renderCreditBlockReasonBox(badges, viewDate, creditRiskInfo) {
   const rows = computeCreditBlockReason(badges, viewDate, creditRiskInfo);
   if (rows.length === 0) return '';
@@ -1568,11 +1563,15 @@ function renderCreditBlockReasonBox(badges, viewDate, creditRiskInfo) {
     const periodHtml = r.period
       ? `<span class="cal-status-period">${escapeHtml(r.period)}</span>`
       : '';
+    const linkHtml = r.url
+      ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-status-detail__link">공시</a>`
+      : '';
     const sourceCls = (r.source === 'krx_disclosure') ? 'krx' : 'credit';
     return `<div class="cal-status-detail v3 ${sourceCls} cal-status-detail--reason">`
       + `<div class="cal-status-head">`
       + `<span class="cal-status-label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`
       + periodHtml
+      + linkHtml
       + `</div>`
       + `</div>`;
   }).join('');
