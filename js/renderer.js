@@ -418,10 +418,10 @@ function renderCalExpandContent(date, data) {
         ? `<span class="cal-streak-badge">거래대금+${pc}</span>`
         : '';
       // REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
-      // entry.bullish_today + bullish_streak (build_daily.py REQ-039 데이터 단).
+      // REQ-048 정정: bullish 필드는 entry 루트(it)에 부착 (build_daily.py 정합). st = it.interp 잘못된 참조 정정.
       // streak >= 1 + bullish_today=true 일 때만 노출. streak=1이면 "강세", 2+면 "강세+N".
-      const bullishStreak = st.bullish_streak || 0;
-      const bullishToday = !!st.bullish_today;
+      const bullishStreak = it.bullish_streak || 0;
+      const bullishToday = !!it.bullish_today;
       const bullishBadge = (bullishToday && bullishStreak >= 1)
         ? `<span class="cal-bullish-badge">${bullishStreak > 1 ? `강세+${bullishStreak}` : '강세'}</span>`
         : '';
