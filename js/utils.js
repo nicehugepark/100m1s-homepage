@@ -194,6 +194,20 @@ function dsnV8FormatThresholds(thresholds, label, badgeContext) {
 function dsnV8RenderBlock(badge, ctx) {
   // §3·§5.1 — 단일 배지 1블록. 5줄 요약 + 🎯 thresholds + 통합 펼침
   // v9.1 §B: predicted 칩은 imminent/predicted 분기 (strict 3 AND 조건). ctx.allBadges 인접 검증 필수.
+  // REQ-018 §2 영역 3 (휴지 사이클 0 C=a) — strict 미충족 predicted 박스 차단. 그래프 unvisited와 정합.
+  // 단일 진실 소스: getPredictedBadgeVisibility (REQ-015 §II 함수, REQ-016 §III 그래프 unvisited 판정 동일).
+  // 사용처 5위치: getStageFlow(349)·countStrictUnmetPredicted(872)·renderPredictedDetailOnly(1043, dead)·renderTriggerPin(1073)·여기(영역 3).
+  const _isPredictedEarly = (badge.source === 'predicted')
+    || (badge.label || '').includes('근접')
+    || (badge.label || '').includes('예상');
+  if (_isPredictedEarly) {
+    const _vis = (typeof getPredictedBadgeVisibility === 'function')
+      ? getPredictedBadgeVisibility(badge, (ctx && ctx.currentDate) || badge.view_date || '', (ctx && ctx.allBadges) || null)
+      : 'header';
+    if (_vis === 'detail-only') {
+      return '';   // strict 미충족 predicted — 그래프 unvisited와 정합 (REQ-016 §III)
+    }
+  }
   const viewDateForChip = (ctx && ctx.currentDate) || badge.view_date || '';
   const allBadgesForChip = (ctx && ctx.allBadges) || null;
   const tenseChipHtml = (typeof renderTenseChip === 'function')
@@ -1017,8 +1031,10 @@ function renderStageFlowV9(badges, ctx) {
     return `<div class="dsn-v9-stage-flow__track ${modCls}">${parts.join('')}</div>`;
   };
 
-  const currentLineHtml = currentLine ? `<div class="dsn-v9-current-state">${currentLine}</div>` : '';
-  const causalLineHtml = causalLine ? `<div class="dsn-v9-causal-line">${causalLine}</div>` : '';
+  // REQ-018 §2 영역 1 (휴지 사이클 0 A=a) — 그래프 박스와 중복으로 둘 다 출력 차단.
+  // currentLine/causalLine 변수 자체는 잔존 (회귀 시 1~2 라인 복원으로 즉시 부활).
+  const currentLineHtml = '';
+  const causalLineHtml = '';
 
   return `<section class="dsn-v9-stage-flow">
     ${currentLineHtml}
@@ -1031,8 +1047,12 @@ function renderStageFlowV9(badges, ctx) {
 }
 
 function renderPredictedDetailOnly(badges, viewDate) {
-  // §II.4 펼침 영역 안 predicted 상세 — strict 미충족 (헤더 비노출) predicted 배지를 시제 칩과 함께 노출.
-  // 위치: §A 그래프 + §B raw 직후, §3 disclosure 상세 직전. (renderer.js 호출부에서 위치 결정)
+  // REQ-018 §2 영역 2 (휴지 사이클 0 B=a) — 통째 제거.
+  // 그래프 predicted 노드와 중복 + strict 미충족은 그래프 unvisited로 정합 처리.
+  // 호출 측(renderer.js:1120) 미수정 — 빈 문자열 반환으로 자연 차단. dead code 잔존(향후 재활용 1줄 제거로 부활).
+  return '';
+  // ↓↓↓ 이하 dead code 잔존 (REQ-018 사이클 2)
+  // eslint-disable-next-line no-unreachable
   if (!Array.isArray(badges) || badges.length === 0) return '';
   const detailOnlyBadges = badges.filter(b => {
     if (!b) return false;
