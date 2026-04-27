@@ -921,8 +921,7 @@ const _DSN_V95_EFFECT_LABEL = {
 // REQ-023 v9.8 §I — 'when' enum 단순화 (DSN-010).
 // 휴지 결정 B: today / tomorrow / today_and_tomorrow 만 (확정만).
 // 폐기 (DSN-009 v9.7 → DSN-010 v9.8 / 대표 본질 비판 #1·#2):
-//   - in_2_days     — "거래정지(2일 후)" 확정 표현 부적절 (예고 단계는 가능성)
-//   - in_3_5_days   — "단일가(3~5일)" 거짓 정밀성 (FLR-AGT-002)
+//   - 거래정지 N일 후·단일가 3~5일 enum 2종 — 거짓 정밀성/확정 표현 부적절 (FLR-AGT-002)
 //   - tomorrow_maybe — predicted_shadow 부활 폐기 (togusa SSOT 4/27 21:12 — 인프라 산출 0건)
 // 단기과열 예고는 §III 헤더 0건 + 사유 박스 1줄로 위계 분리.
 // fallback 가드: dsnV95FormatEffectBadge가 미정의 시 토큰 raw 노출 (회귀 발견 가능).
