@@ -1703,6 +1703,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-details .cal-status-head .cal-status-label {
   display: none;
 }
+/* REQ-026 §1: cal-status-detail--reason 박스 안의 라벨은 사유 텍스트 자체이므로 표시.
+   상위 rule이 의도한 namecell 중복 제거는 사유 박스 외부에만 적용.
+   회귀 차단: REQ-021 v9.6에서 사유 박스 신설 시 상위 rule이 사유 텍스트까지 숨긴 누락 정정.
+   참조: DOC-20260427-SPEC-001 §IV.1 (사유 박스 표시 의무). */
+.cal-feature-details .cal-status-detail--reason .cal-status-head .cal-status-label {
+  display: inline-block;
+}
 /* v9.8 DSN-010 §IV.1 — "지정 조건 상세" 라벨 폐기 (대표 본질 비판 #4 — 모호).
    16자 1줄 모바일 wrap 해소. cal-status-detail--reason modifier가 직접 사유 박스 구조 잔존. */
 .cal-feature-details .cal-status-head {
