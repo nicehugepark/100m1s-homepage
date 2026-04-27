@@ -1909,21 +1909,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-weight: 600;
   border-left-width: 4px;
 }
-.dsn-v9-stage-flow__node--current::before {
-  content: "● 현재 ";
-  color: var(--badge-disclosure);
-  font-weight: 700;
-}
+/* v9.3.1 §II — prefix ::before 4종 제거 (휴지 사이클 0 결정 B=b). 노드 박스 안 라벨 단독. */
 .dsn-v9-stage-flow__node--predicted {
   border: 1.5px dashed var(--badge-predicted);
   background: rgba(229, 90, 43, 0.05);
   color: var(--badge-predicted);
   font-weight: 600;
-}
-.dsn-v9-stage-flow__node--predicted::before {
-  content: "↗ 예측 ";
-  color: var(--badge-predicted);
-  font-weight: 700;
 }
 
 .dsn-v9-stage-flow__arrow {
@@ -1998,11 +1989,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-weight: 600;
   padding: 4px 10px;
 }
-.dsn-v9-stage-flow__node--upcoming::before {
-  content: "→ 다음 ";
-  color: var(--badge-disclosure);
-  font-weight: 700;
-}
+/* v9.3.1 §II — prefix ::before 제거 (휴지 사이클 0 결정 B=b). */
 
 /* predicted-imminent — predicted strict 3 AND 충족 (추정 임박) */
 .dsn-v9-stage-flow__node--predicted-imminent {
@@ -2011,11 +1998,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   color: var(--badge-predicted);
   font-weight: 600;
   padding: 4px 10px;
-}
-.dsn-v9-stage-flow__node--predicted-imminent::before {
-  content: "↗ 예측 ";
-  color: var(--badge-predicted);
-  font-weight: 700;
 }
 
 /* 박스 효과 영역 — upcoming variant 신규 (점선 정합) */
@@ -2034,9 +2016,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     border-color: #FF7A4A;
     color: #FF7A4A;
   }
-  .dsn-v9-stage-flow__node--predicted-imminent::before {
-    color: #FF7A4A;
-  }
+  /* v9.3.1 §II — ::before 다크모드 무효 selector 제거 (휴지 사이클 0 결정 B=b). */
 }
 
 /* v9.3 고대비 — 두께 +1px (current/predicted 비례 강화) */
