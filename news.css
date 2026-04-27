@@ -297,6 +297,26 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail.v3 .cal-status-single-note .cal-status-single-src { color: #6B7280; font-weight: 500; font-size: 10.5px; margin-left: 2px; }
 .cal-status-detail.v3 .cal-status-label.sev-credit { background: #FDE8E8; color: #C53939; }
 .cal-status-detail.v3.credit { border-left-color: #C53939; background: #FFF7F7; }
+
+/* REQ-021 v9.6 §III.3 — 신용불가 사유 박스 modifier (KRX 단계 + 증권사 사유 통합).
+   기존 cal-status-detail.v3 sev-* 색 토큰 재활용. KRX 출처는 .krx + 증권사는 .credit modifier 분리.
+   다중 행(N≥2) 노출 시 박스 사이 gap 4px (출처 분리 시각 위계). */
+.cal-status-detail--reason + .cal-status-detail--reason { margin-top: 4px; }
+.cal-status-detail.v3.krx.cal-status-detail--reason {
+  border-left-color: #E65100;  /* warning 계열 — KRX 출처 시각 구분 */
+  background: rgba(255, 152, 0, 0.04);
+}
+.cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
+  font-size: 11px; color: #555; font-weight: 500; margin-left: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  .cal-status-detail.v3.krx.cal-status-detail--reason {
+    background: rgba(245, 158, 11, 0.10);
+  }
+  .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
+    color: #D1D5DB;
+  }
+}
 /* 2026-04-22 핫픽스: DART 공시 원문 링크 — 공시 기반 배지 상세 하단 */
 .cal-status-detail.v3 .cal-status-dart-link {
   display: inline-flex; align-items: center; gap: 4px;

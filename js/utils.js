@@ -1229,8 +1229,13 @@ function _findUpcomingDisclosureBadge(node, badges) {
 }
 
 function renderStageFlowV9(badges, ctx) {
-  // §A 단계 플로우 그래프 전체. ctx={currentDate, ...}
-  // v9.2 §I — 노드 박스 하단 자동 효과 1줄 추가.
+  // REQ-021 v9.6 §I.1 — 그래프 박스 통째 제거. 대표 19:28 KST 발화 ("시장경보 단계 흐름 제거").
+  // 함수 본체·BEM CSS·entry-window(v9.4)·노드 박스 효과(v9.2)·단기과열 트랙·causal·current-state-summary = dead code 잔존.
+  // 호출부(renderer.js:1122)에도 명시 빈 문자열 — 이중 가드 (회귀 안전).
+  // dead code 정리는 후속 사이클 별도 REQ.
+  return '';
+  // ↓↓↓ 이하 dead code (사이클 후속 정리)
+  // eslint-disable-next-line no-unreachable
   if (!Array.isArray(badges) || badges.length === 0) return '';
   const viewDate = (ctx && ctx.currentDate) || '';
   const flow = getStageFlow(badges, viewDate);
@@ -1368,4 +1373,176 @@ function miniCandle(open, high, low, close, changePct) {
     '<line x1="6" y1="'+wickTop+'" x2="6" y2="'+wickBot+'" stroke="'+color+'" stroke-width="1"/>' +
     '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/>' +
     '</svg>';
+}
+
+/* ───── REQ-021 v9.6 — 신용불가 사유 박스 (DSN-007 §II + §IV) ─────
+   대표 19:28 KST 발화: "지정조건상세 대신 신용불가 사유를 간단·확실하게."
+   §II.2 텍스트 매트릭스 18 (KRX 단계 + 증권사 사유) + 영업일 SSOT (getNextTradingDay·getShortTermDayOffset).
+   FLR-AGT-002 정합 — predicted strict 충족 사유 박스 미노출 (헤더 "(내일 가능)" 배지로만 표현).
+   P0 차단 — 영업일 헬퍼 SSOT (4/30·5/4·5/8 등 휴장일 인접 케이스 정합).
+*/
+
+// §II.5 sev 색 토큰 매핑 (KRX 단계 → sev)
+function _v96MapKrxSev(label) {
+  if (!label) return 'caution';
+  // 매매거래정지·투자위험 → danger
+  if (label === '매매거래정지') return 'danger';
+  if (label.startsWith('투자위험')) return 'danger';  // 투자위험·투자위험 예고
+  // 단기과열 (D+0~D+5) → hot. 예고는 caution (§II.2 #10)
+  if (label.includes('단기과열')) {
+    if (label.includes('예고')) return 'caution';
+    return 'hot';
+  }
+  // 투자경고 예고·투자주의 → caution. 투자경고 → warning
+  if (label.startsWith('투자경고') && !label.includes('예고')) return 'warning';
+  if (label.startsWith('투자경고') && label.includes('예고')) return 'caution';
+  if (label.startsWith('투자주의') && !label.includes('예고')) return 'caution';
+  if (label.startsWith('투자주의')) return 'caution';
+  return 'caution';
+}
+
+// §II.2 단기과열 D 매트릭스 → 효과 텍스트 (#6~#9)
+function _v96ShortTermEffectByOffset(offset) {
+  // §II.2 #6 D+0: "D+2 거래정지·D+3~D+5 단일가"
+  // §II.2 #7 D+1: "D+2 거래정지 예정"
+  // §II.2 #8 D+2: "D+3~D+5 단일가매매"
+  // §II.2 #9 D+3-5: "~D+5"
+  if (offset === 'd+0') return 'D+2 거래정지·D+3~D+5 단일가';
+  if (offset === 'd+1') return 'D+2 거래정지 예정';
+  if (offset === 'd+2') return 'D+3~D+5 단일가매매';
+  if (offset === 'd+3-5') return '~D+5';
+  return '';
+}
+
+// §II.3 산출 로직. P0 차단: getNextTradingDay SSOT 활용 (영업일 휴장일 인접 정합).
+function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
+  const rows = [];
+
+  // 1. KRX disclosure 행 (predicted 제외)
+  const krxBadges = (badges || []).filter(b => {
+    if (!b) return false;
+    if (b.source !== 'disclosure') return false;
+    return true;
+  });
+
+  for (const b of krxBadges) {
+    const label = String(b.label || '');
+    if (!label) continue;
+    const start = b.start || '';
+    const end = b.end || '';
+
+    const isPrenotice = label.includes('예고');
+    const sev = _v96MapKrxSev(label);
+
+    // §II.2 #6~#9 단기과열 케이스 (예고 제외) — dayOffset 표기
+    const isShortTerm = label.includes('단기과열') && !isPrenotice;
+
+    let stageText = '';
+    let extra = '';
+    let period = '';
+
+    if (isShortTerm) {
+      // §II.2 #6~#9 — D+N 표기 + 효과 (P0: getShortTermDayOffset SSOT 영업일 계산)
+      const offset = (typeof getShortTermDayOffset === 'function')
+        ? getShortTermDayOffset(b, viewDate)
+        : 'unknown';
+      const effectText = _v96ShortTermEffectByOffset(offset);
+      if (offset === 'd+0') {
+        stageText = `${label} 지정`;
+        if (start) period = `${dsnV9FormatMD(start)} D+0`;
+      } else if (offset === 'd+1') {
+        stageText = `${label} 지정`;
+        period = 'D+1';
+      } else if (offset === 'd+2') {
+        stageText = `${label} 지정`;
+        period = 'D+2 거래정지';
+      } else if (offset === 'd+3-5') {
+        stageText = `${label} 단일가매매`;
+        period = 'D+3 ~ D+5';
+      } else {
+        // d+6+ 또는 unknown — 효과 부재. 박스 노출 가치 낮음. 기본 표기로 폴백.
+        stageText = `${label} 지정`;
+        if (start && end && start !== end) period = `${dsnV9FormatMD(start)} ~ ${dsnV9FormatMD(end)}`;
+        else if (start) period = `${dsnV9FormatMD(start)} 발효`;
+      }
+      if (effectText) extra = ` — ${effectText}`;
+    } else if (isPrenotice) {
+      // §II.2 #2·#4·#10 — 예고. start = 발효 예정일.
+      // P0 차단: viewDate 인접일 검증 (getNextTradingDay) — start === getNextTradingDay(viewDate)면 D-1 단정.
+      stageText = label;
+      if (start) period = `${dsnV9FormatMD(start)} 발효 예정`;
+      // 투자위험 예고 효과 명시 (#4)
+      if (label.startsWith('투자위험')) extra = ' — 매매거래정지 동반';
+      // 단기과열 예고 (#10)
+      if (label.includes('단기과열')) period = '10거래일 이내 조건 충족 시 지정';
+    } else {
+      // §II.2 #1·#3·#5·#18 — 현재 발효 중 (지정 중)
+      // §II.2 #5 매매거래정지: end가 비어있어도 단일일 표기
+      stageText = `${label} 지정 중`;
+      if (start && end && start !== end) period = `${dsnV9FormatMD(start)} ~ ${dsnV9FormatMD(end)}`;
+      else if (start && end && start === end) period = `${dsnV9FormatMD(start)}, 1거래일`;
+      else if (start) period = `${dsnV9FormatMD(start)}`;
+      // §II.2 #3 투자위험 효과
+      if (label.startsWith('투자위험')) extra = ' — 신용금지·매매거래정지';
+    }
+
+    rows.push({
+      label: stageText + extra,
+      period,
+      sev,
+      source: 'krx_disclosure',
+    });
+  }
+
+  // §II.4 정렬 — severity desc (danger > warning > caution > hot)
+  const _SEV_ORDER = { danger: 0, warning: 1, caution: 2, hot: 3, credit: 4 };
+  rows.sort((a, b) => (_SEV_ORDER[a.sev] ?? 9) - (_SEV_ORDER[b.sev] ?? 9));
+
+  // 2. 증권사 사유 행 (creditRiskInfo)
+  if (creditRiskInfo && creditRiskInfo.credit_risk && creditRiskInfo.credit_reason) {
+    const reason = (typeof sanitize === 'function') ? sanitize(creditRiskInfo.credit_reason) : String(creditRiskInfo.credit_reason);
+    // §II.2 #11~#15 매트릭스 — 추정 단어 0건. "회복 가능"은 증권사 공식 정책 (허용).
+    const insightMap = {
+      '회사한도초과': '익일 재평가 후 회복 가능',
+      'ETF/ETN': '신용거래 대상 외',
+      '스팩(SPAC)': '합병 전 신용거래 제한',
+      'SPAC': '합병 전 신용거래 제한',
+      '우선주': '신용거래 제한 (일부 증권사 가능)',
+      '신용거래 제한 종목': '증권사 자체 기준',
+      '신용융자 불가': 'kt20017 단건 조회 결과',
+    };
+    const insight = insightMap[reason] || '';
+    rows.push({
+      label: insight ? `${reason} — ${insight}` : reason,
+      period: '',
+      sev: 'credit',
+      source: 'broker',
+    });
+  }
+
+  // 3. predicted strict 충족 행 = 사유 박스 미노출 (§II.2 #17, FLR-AGT-002 정합)
+  // 헤더 "(내일 가능)" 배지로만 표현. 의도적 미산출.
+
+  // §II.4 최대 노출 N=3 (실측 frequency 낮음 — 후속 사이클 cropping 검토)
+  const MAX_ROWS = 3;
+  return rows.slice(0, MAX_ROWS);
+}
+
+// §IV.1 박스 N건 출력. §III BEM 재활용 + cal-status-detail--reason modifier 1개 신규.
+function renderCreditBlockReasonBox(badges, viewDate, creditRiskInfo) {
+  const rows = computeCreditBlockReason(badges, viewDate, creditRiskInfo);
+  if (rows.length === 0) return '';
+
+  return rows.map(r => {
+    const periodHtml = r.period
+      ? `<span class="cal-status-period">${escapeHtml(r.period)}</span>`
+      : '';
+    const sourceCls = (r.source === 'krx_disclosure') ? 'krx' : 'credit';
+    return `<div class="cal-status-detail v3 ${sourceCls} cal-status-detail--reason">`
+      + `<div class="cal-status-head">`
+      + `<span class="cal-status-label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`
+      + periodHtml
+      + `</div>`
+      + `</div>`;
+  }).join('');
 }

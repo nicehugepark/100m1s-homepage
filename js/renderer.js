@@ -390,26 +390,10 @@ function renderCalExpandContent(date, data) {
       // utils.js collectEffectBadges에 creditRiskInfo로 전달 → "신용불가(오늘)" v95 형식 통일.
       // dedup으로 KRX disclosure credit-block과 중복 자연 차단.
       const creditBadgeHtml = '';
-      // v3.2: 신용 사유도 v3 패턴 (라벨 박스 + 인사이트). 대표 정정 19:43 KST 옵션 나
-      const creditReasonHtml = (st.credit_risk && st.credit_reason)
-        ? (() => {
-            const _credInsights = {
-              '회사한도초과': '증권사 회사 단위 신용한도 초과 — 다음 영업일 재평가 후 회복 가능.',
-              '신용융자 불가': '단건 조회 결과 신용융자 불가 — kt20017 기준.',
-              'ETF/ETN': 'ETF/ETN은 신용거래 대상 외.',
-              '스팩(SPAC)': 'SPAC은 신용거래 대상 외 (합병 전 거래 제한).',
-              '우선주': '우선주는 보통주 대비 신용거래 제한 (일부 증권사 가능).',
-              '신용거래 제한 종목': '증권사 자체 기준으로 신용거래 제한.',
-            };
-            const reason = sanitize(st.credit_reason);
-            const insight = _credInsights[reason] || '';
-            const insightHtml = insight ? `<div class="cal-status-insight">💡 ${escapeHtml(insight)}</div>` : '';
-            return `<div class="cal-status-detail v3 credit">
-              <div class="cal-status-head"><span class="cal-status-label sev-credit">${escapeHtml(reason)}</span></div>
-              ${insightHtml}
-            </div>`;
-          })()
-        : '';
+      // REQ-021 v9.6 §II + §IV — 신용 사유 박스는 renderCreditBlockReasonBox로 통합 (KRX 단계 + 증권사 사유).
+      // 본 위치 별도 출력은 이중 노출 우려로 무력화. dead code 잔존 (회귀 안전성).
+      // const creditReasonHtml = (st.credit_risk && st.credit_reason) ? (() => { ... })() : '';
+      const creditReasonHtml = '';
       // 종목 상태 뱃지 (투자주의/경고/위험/단기과열)
       // REQ-020 v9.5 §II.3 — 헤더 = 효과 배지 (효과 + 시점). v9.3 통합 라벨(`dsn-v93-header-badge`) 대체.
       // SSOT: build_daily.py status_badges[].effect_badges[] (각 항목 = {effect, when, severity, source_label, source_kind}).
@@ -574,7 +558,10 @@ function renderCalExpandContent(date, data) {
         // v9.1 strict: getPredictedTenseVariant 인접 검증용 (4/24 027360 단계 도약 케이스 차단)
         allBadges: _v8SortedBadges,
       });
-      const v8DetailHtml = _v8SortedBadges.map(b => dsnV8RenderBlock(b, _v8CtxFor(b))).join('');
+      // REQ-021 v9.6 §III.4 — 단계별 v6/v5 표 통째 무력화. 신용불가 사유 박스(§II)로 대체.
+      // dsnV8RenderBlock·sections.push(v6SectionsHtml)·"준비 중" 폴백 등 모두 dead code 잔존 (회귀 1줄 부활 안전성).
+      // const v8DetailHtml = _v8SortedBadges.map(b => dsnV8RenderBlock(b, _v8CtxFor(b))).join('');
+      const v8DetailHtml = '';
 
       // === v6/v5.1 legacy 블록 (회귀 안전망, UX 워크스루 통과 후 제거 예정) ===
       const statusDetailLegacyHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
@@ -1118,15 +1105,16 @@ function renderCalExpandContent(date, data) {
         const cls = isAdvisoryWarning ? 'v3 v5 v6' : 'v3 v5';
         return `<div class="cal-status-detail ${cls}${isPredicted ? ' predicted' : ''}">${sections.join('')}</div>`;
       }).join('');
-      // v9 §A: 단계 플로우 그래프 — 펼침 영역 진입 직후 첫 블록(§A.3 채택)
-      const v9StageFlowHtml = (typeof renderStageFlowV9 === 'function')
-        ? renderStageFlowV9(_v8SortedBadges, { currentDate: date || '' })
+      // REQ-021 v9.6 §I.1 — 그래프 박스 통째 제거 (이중 가드). utils.js renderStageFlowV9 무력화 정합.
+      // 함수 자체는 첫 줄 return '' 보유 — 본 호출부도 명시 빈 문자열로 dead code 회귀 차단.
+      const v9StageFlowHtml = '';
+      // REQ-021 v9.6 §III.4 — predicted detail-only 영역도 명시 빈 문자열 (renderPredictedDetailOnly 자체도 첫 줄 return ''. 이중 가드)
+      const v92PredictedDetailOnlyHtml = '';
+      // REQ-021 v9.6 §IV.2 — 신용불가 사유 박스 (KRX 단계 + 증권사 사유 통합). 그래프 박스·v6 표 대체.
+      const v96CreditBlockHtml = (typeof renderCreditBlockReasonBox === 'function')
+        ? renderCreditBlockReasonBox(_v8SortedBadges, date || '', _v95CreditRiskInfo)
         : '';
-      // v9.2 §II.4: predicted strict 미충족 detail-only 영역 — 그래프 직후 + v8 상세 직전
-      const v92PredictedDetailOnlyHtml = (typeof renderPredictedDetailOnly === 'function')
-        ? renderPredictedDetailOnly(_v8SortedBadges, date || '')
-        : '';
-      const statusDetailHtml = `${v9StageFlowHtml}${v92PredictedDetailOnlyHtml}${v8DetailHtml}`;
+      const statusDetailHtml = `${v96CreditBlockHtml}`;
       // causal 있으면 ishikawa는 details, 없으면 summary에 가므로 details 대상 아님
       const hasDetails = !!(statusDetailHtml || discListHtml || creditReasonHtml || (causalHtml && ishikawaHtml) || pickMeta);
       // toggle 요약 v3: period + label 만 (대표 정정 18:52 KST — 임계 정보는 표로 이동)
