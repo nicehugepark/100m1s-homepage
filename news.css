@@ -2061,8 +2061,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 
 /* ───── REQ-020 v9.5 §II.1 — 효과 배지 (효과+시점) ─────
    매트릭스 (v9.8 DSN-010): 거래정지(danger) / 신용불가(warning) / 단일가(info) × today / today_and_tomorrow / tomorrow.
-   폐기 (DSN-010 §I.1): tomorrow_maybe / in_2_days / in_3_5_days (대표 본질 비판 #1·#2 + togusa SSOT).
-   명세: DOC-20260427-DSN-005 / DOC-20260427-DSN-010. */
+   폐기 (DSN-010 §I.1): 거래정지 N일 후·단일가 3~5일 enum + tomorrow_maybe (대표 본질 비판 #1·#2 + togusa SSOT, REQ-024 §IX-3).
+   명세: DOC-20260427-DSN-005 / DOC-20260427-DSN-010 / DOC-20260427-SPEC-001 §IX-3. */
 .dsn-v95-effect-badges {
   display: inline-flex;
   flex-wrap: wrap;
