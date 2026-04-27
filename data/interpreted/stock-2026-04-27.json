@@ -1,6 +1,6 @@
 {
   "date": "2026-04-27",
-  "generated_at": "2026-04-28T02:30:02.178957",
+  "generated_at": "2026-04-28T02:57:02.330333",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -5137,6 +5137,31 @@
         "low_pct": 404.16,
         "current": 4845
       },
+      "status_badges": [
+        {
+          "label": "거래정지",
+          "severity": "danger",
+          "start": "2026-04-29",
+          "end": "2026-04-29",
+          "summary": "SK증권우가 투자경고종목 지정 중으로, 2026-04-28(D) 종가가 04-06(D-2) 종가 대비 40% 이상 상승하고 투자경고종목 지정전일 종가보다 높은 경우 04-29 2026-04-29 당일 매매거래정지될 수 있다는 예고 공시.",
+          "condition": "2026-04-28(D) 종가가 04-06(D-2) 종가 대비 40% 이상 상승하고 투자경고종목 지정전일 종가보다 높은 경우",
+          "regulation": "2026-04-29 1일간 매매거래정지",
+          "view_date": "2026-04-27",
+          "next_trading_day": "2026-04-28",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "tomorrow",
+              "severity": "danger",
+              "source_label": "거래정지",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260427001002"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 4440,
@@ -5284,7 +5309,9 @@
       },
       "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "403870",
@@ -6154,6 +6181,31 @@
         "low_pct": 711.38,
         "current": 81300
       },
+      "status_badges": [
+        {
+          "label": "거래정지",
+          "severity": "danger",
+          "start": "2026-04-29",
+          "end": "2026-04-29",
+          "summary": "파두 보통주가 투자경고종목 지정중인 상태에서 2026-04-28(D) 종가가 04-24(D-2) 종가 대비 40% 이상 상승하고 투자경고종목 지정전일 종가보다 높을 경우 04-29 2026-04-29 당일 매매거래가 정지될 수 있어 예고. 근거는 시장감시규정 제5조의3 및 시행세칙 제3조의5.",
+          "condition": "2026-04-28(D) 종가가 04-24(D-2) 종가 대비 40% 이상 상승하고 투자경고종목 지정전일 종가보다 높은 경우",
+          "regulation": "2026-04-29 1일간 매매거래정지(투자경고종목 지정중인 경우에 한함)",
+          "view_date": "2026-04-27",
+          "next_trading_day": "2026-04-28",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "tomorrow",
+              "severity": "danger",
+              "source_label": "거래정지",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260427000930"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 69300,
@@ -6711,7 +6763,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "298380",
@@ -6746,7 +6800,7 @@
           "url": "https://www.mk.co.kr/news/it/12025261",
           "source": "매경",
           "published_at": "2026-04-23T05:42:08",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -6761,7 +6815,7 @@
           "url": "https://www.hankyung.com/article/202604230820i",
           "source": "한경",
           "published_at": "2026-04-23T00:34:34",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -6776,7 +6830,7 @@
           "url": "https://biz.chosun.com/science-chosun/bio/2026/04/23/SMPYZ5WAC5BHXALNVQQJENAGK4/",
           "source": "조선비즈",
           "published_at": "2026-04-23T00:13:58",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -6791,7 +6845,7 @@
           "url": "https://www.sedaily.com/article/20036021",
           "source": "서울경제",
           "published_at": "2026-04-23T00:04:46",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -6806,7 +6860,7 @@
           "url": "https://biz.chosun.com/science-chosun/bio/2026/04/21/2TLG5LONRZFHRJVF6RWRPIBE4E/",
           "source": "조선비즈",
           "published_at": "2026-04-21T00:37:49",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -6880,7 +6934,9 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "452190",
@@ -7091,7 +7147,9 @@
       "credit_reason": "투자경고",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "058610",
@@ -7186,7 +7244,9 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "046890",
@@ -7280,7 +7340,9 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "425040",
@@ -7489,7 +7551,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "077970",
@@ -7884,7 +7948,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "006260",
