@@ -1,6 +1,6 @@
 {
   "date": "2026-04-17",
-  "generated_at": "2026-04-28T06:02:46.594315",
+  "generated_at": "2026-04-28T07:48:25.679272",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -88,8 +88,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/17/S6PEVGLV4NC5NKIRABYNTOPZWQ/",
           "source": "조선비즈",
           "published_at": "2026-04-17T02:18:40",
-          "causal_chain": "스페이스X 상장 초읽기 + 머스크 상장 후 슈퍼 의결권 보유 소식 → 스페이스X 관련주 일제 강세 → 미래에셋벤처투자 21% 급등·1년 중 최고가 경신",
-          "macro_event": "스페이스X 상장 임박 기대감 및 머스크 슈퍼 의결권 보유 소식",
+          "causal_chain": "스페이스X 상장 초읽기 확산(머스크 슈퍼 의결권 소식 촉발) → 우주항공 테마주 강세 → 미래에셋벤처투자 주가 상승(+21~+29%)",
+          "macro_event": "스페이스X 상장 기대감 확산",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -537,11 +537,18 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "전자제품및반도체생산용 3차원 납도포검사장비",
       "themes": [
+        "반도체 후공정 장비",
         "광통신",
         "AI데이터센터",
         "반도체"
       ],
       "theme_paths": [
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        },
         {
           "name": "광통신",
           "path": [
@@ -568,8 +575,8 @@
           "url": "https://www.mk.co.kr/news/stock/12026189",
           "source": "매경",
           "published_at": "2026-04-24T00:15:55",
-          "causal_chain": "고영이 1분기 어닝 서프라이즈를 기록하고 AI 반도체 검사장비 공급이 확대→AI 반도체 수요 증가에 따른 검사장비 실적 개선 기대감에 주가 상승.",
-          "macro_event": "AI 반도체 검사장비 공급 확대",
+          "causal_chain": "AI 서버·광 인프라 투자 확대 → AI 반도체 검사장비 수요 증가 → 고영 공급 확대 기대 → 1분기 어닝 서프라이즈 시현.",
+          "macro_event": "AI 서버·광 인프라 투자 확대에 따른 반도체 검사장비 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -583,8 +590,8 @@
           "url": "https://www.etoday.co.kr/news/view/2578748",
           "source": "이투데이",
           "published_at": "2026-04-23T23:36:00",
-          "causal_chain": "신한투자증권이 고영의 AI서버·광 인프라 낙수효과 확인을 근거로 주가 리레이팅 지속 가능성을 제시→AI 투자 사이클 확산에 따른 검사장비 수요 기대감 유입→리레이팅 모멘텀 지속 전망.",
-          "macro_event": "AI서버·광 인프라 투자 낙수효과",
+          "causal_chain": "AI 서버·광 인프라 투자 확대 → AI 반도체 검사장비 수요 증가 → 고영 공급 확대 기대 → 1분기 어닝 서프라이즈 시현.",
+          "macro_event": "AI 서버·광 인프라 투자 확대에 따른 반도체 검사장비 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -988,7 +995,8 @@
       "themes": [
         "조선",
         "LNG선 기자재",
-        "전력설비"
+        "전력설비",
+        "AI데이터센터"
       ],
       "theme_paths": [
         {
@@ -1013,6 +1021,13 @@
             "AI 인프라",
             "전력설비"
           ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
         }
       ],
       "pick_count": 1,
@@ -1025,8 +1040,8 @@
           "url": "https://www.mk.co.kr/news/stock/12020038",
           "source": "매경",
           "published_at": "2026-04-17T06:23:57",
-          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
-          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "causal_chain": "글로벌 조선업 슈퍼 사이클 진입 → 선박 건조 수주 폭증 → 한화엔진의 대형선박용 저속엔진 수요 급증 및 수익성 개선",
+          "macro_event": "조선업 슈퍼 사이클 진입 + 신용등급 전망 상향(안정적→긍정적)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1376,13 +1391,39 @@
       "industry": "일반 목적용 기계 제조업",
       "sector": "엔진,터빈,내연기관 제조,도매",
       "themes": [
-        "조선"
+        "조선",
+        "AI데이터센터",
+        "전력설비",
+        "전쟁재건"
       ],
       "theme_paths": [
         {
           "name": "조선",
           "path": [
             "조선"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "AI",
+            "AI 인프라",
+            "전력설비"
+          ]
+        },
+        {
+          "name": "전쟁재건",
+          "path": [
+            "전쟁",
+            "전쟁완화",
+            "전쟁재건"
           ]
         }
       ],
@@ -1396,8 +1437,8 @@
           "url": "https://www.mk.co.kr/news/stock/12024952",
           "source": "매경",
           "published_at": "2026-04-23T00:43:04",
-          "causal_chain": "데이터센터 전력원 시장 진출 기대 + 중동 재건 수혜 기대감 → MK시그널 AI 매수 추천 후 주가 상승세",
-          "macro_event": "데이터센터 전력원 시장 진출 + 중동 재건 수혜 기대",
+          "causal_chain": "글로벌 데이터센터의 전력 공급원 부족 → STX엔진의 가스터빈 전력원 시장 직접 진출 기회 확대. 중동 지역 재건으로 인한 추가 수혜 기대.",
+          "macro_event": "AI 데이터센터 전력 수요 급증 + 중동 지역 재건 수요",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1622,8 +1663,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/23/ZY55RCJDZBCO7CT5PRFJQXKWVE/",
           "source": "조선비즈",
           "published_at": "2026-04-23T00:13:35",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "이란 전쟁(중동전쟁)에 따른 변압기 수요 확대 + 데이터센터 공급·변압기 수주 전망 + CAPA 확대 → 산일전기 변압기 납품·수주 기회 동시 확대.",
+          "macro_event": "중동전쟁(이란) + 데이터센터 변압기 수요",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1637,8 +1678,8 @@
           "url": "https://www.etoday.co.kr/news/view/2576581",
           "source": "이투데이",
           "published_at": "2026-04-16T23:29:00",
-          "causal_chain": "데이터센터 전력 수요 증가에 따른 변압기 수주 확대 전망 + CAPA 확대 기반 성장 본격화 → 복수 증권사 목표가 상향 → 산일전기 주목.",
-          "macro_event": "데이터센터향 변압기 수주 확대 전망에 따른 복수 증권사 목표가 상향",
+          "causal_chain": "이란 전쟁(중동전쟁)에 따른 변압기 수요 확대 + 데이터센터 공급·변압기 수주 전망 + CAPA 확대 → 산일전기 변압기 납품·수주 기회 동시 확대.",
+          "macro_event": "중동전쟁(이란) + 데이터센터 변압기 수요",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1652,8 +1693,8 @@
           "url": "https://www.etoday.co.kr/news/view/2575441",
           "source": "이투데이",
           "published_at": "2026-04-14T00:08:00",
-          "causal_chain": "데이터센터 전력 수요 증가에 따른 변압기 수주 확대 전망 + CAPA 확대 기반 성장 본격화 → 복수 증권사 목표가 상향 → 산일전기 주목.",
-          "macro_event": "데이터센터향 변압기 수주 확대 전망에 따른 복수 증권사 목표가 상향",
+          "causal_chain": "이란 전쟁(중동전쟁)에 따른 변압기 수요 확대 + 데이터센터 공급·변압기 수주 전망 + CAPA 확대 → 산일전기 변압기 납품·수주 기회 동시 확대.",
+          "macro_event": "중동전쟁(이란) + 데이터센터 변압기 수요",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1667,8 +1708,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02476406645416120",
           "source": "이데일리",
           "published_at": "2026-04-13T22:50:17",
-          "causal_chain": "데이터센터 전력 수요 증가에 따른 변압기 수주 확대 전망 + CAPA 확대 기반 성장 본격화 → 복수 증권사 목표가 상향 → 산일전기 주목.",
-          "macro_event": "데이터센터향 변압기 수주 확대 전망에 따른 복수 증권사 목표가 상향",
+          "causal_chain": "이란 전쟁(중동전쟁)에 따른 변압기 수요 확대 + 데이터센터 공급·변압기 수주 전망 + CAPA 확대 → 산일전기 변압기 납품·수주 기회 동시 확대.",
+          "macro_event": "중동전쟁(이란) + 데이터센터 변압기 수요",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1866,8 +1907,27 @@
       "low_price": 83200,
       "industry": "일반 목적용 기계 제조업",
       "sector": "조선기자재, 기계부품",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "조선",
+        "LNG선 기자재"
+      ],
+      "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        },
+        {
+          "name": "LNG선 기자재",
+          "path": [
+            "전쟁",
+            "중동전쟁",
+            "해운",
+            "LNG선 기자재"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -1878,8 +1938,8 @@
           "url": "https://www.etoday.co.kr/news/view/2576082",
           "source": "이투데이",
           "published_at": "2026-04-15T07:35:00",
-          "causal_chain": "HD현대마린엔진 859억원 규모 선박엔진 공급계약 체결 공시—주요공시 종합 기사에 등재(단순 수주 공시).",
-          "macro_event": "HD현대마린엔진 859억원 선박엔진 공급계약 공시",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1893,8 +1953,8 @@
           "url": "https://www.mk.co.kr/news/stock/12015715",
           "source": "매경",
           "published_at": "2026-04-13T08:50:34",
-          "causal_chain": "HD현대마린엔진 859억원 규모 선박엔진 공급계약 체결 공시—주요공시 종합 기사에 등재(단순 수주 공시).",
-          "macro_event": "HD현대마린엔진 859억원 선박엔진 공급계약 공시",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1908,8 +1968,8 @@
           "url": "https://www.asiae.co.kr/article/2026041310462449422",
           "source": "아시아경제",
           "published_at": "2026-04-13T01:46:24",
-          "causal_chain": "HD현대마린엔진 859억원 규모 선박엔진 공급계약 체결 공시—주요공시 종합 기사에 등재(단순 수주 공시).",
-          "macro_event": "HD현대마린엔진 859억원 선박엔진 공급계약 공시",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2382,8 +2442,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05225046645418416",
           "source": "이데일리",
           "published_at": "2026-04-21T09:13:31",
-          "causal_chain": "구체적 사유 미언급—와이제이링크 250억 원 규모 전환사채(CB) 발행 결정 공시(자금 조달 목적 단순 공시).",
-          "macro_event": "와이제이링크 250억 원 전환사채 발행 결정",
+          "causal_chain": "본문 미제공 — 제목만으로는 테마 파악 불가",
+          "macro_event": "",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2397,8 +2457,8 @@
           "url": "https://www.mk.co.kr/news/stock/12023238",
           "source": "매경",
           "published_at": "2026-04-21T09:08:14",
-          "causal_chain": "구체적 사유 미언급—와이제이링크 250억 원 규모 전환사채(CB) 발행 결정 공시(자금 조달 목적 단순 공시).",
-          "macro_event": "와이제이링크 250억 원 전환사채 발행 결정",
+          "causal_chain": "본문 미제공 — 제목만으로는 테마 파악 불가",
+          "macro_event": "",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2483,8 +2543,18 @@
       "low_price": 34100,
       "industry": "반도체 제조업",
       "sector": "반도체패키징,IOT",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -2565,8 +2635,18 @@
       "low_price": 16100,
       "industry": "반도체 제조업",
       "sector": "솔더볼(Solderball)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-16",
@@ -3803,13 +3883,15 @@
       "industry": "전자부품 제조업",
       "sector": "전력증폭기 모듈(PAM)",
       "themes": [
-        "AI"
+        "AI",
+        "AI데이터센터"
       ],
       "theme_paths": [
         {
-          "name": "AI",
+          "name": "AI데이터센터",
           "path": [
-            "AI"
+            "AI",
+            "AI데이터센터"
           ]
         }
       ],
@@ -3828,8 +3910,8 @@
           "url": "https://www.mk.co.kr/news/stock/12026458",
           "source": "매경",
           "published_at": "2026-04-24T04:44:38",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3843,8 +3925,8 @@
           "url": "https://www.asiae.co.kr/article/2026042408203269006",
           "source": "아시아경제",
           "published_at": "2026-04-23T23:20:32",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3858,8 +3940,8 @@
           "url": "https://www.asiae.co.kr/article/2026042015445554453",
           "source": "아시아경제",
           "published_at": "2026-04-20T06:44:55",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3873,8 +3955,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03847446645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T06:30:02",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4359,8 +4441,8 @@
           "url": "https://biz.chosun.com/it-science/ict/2026/04/27/KOWYVJNKZND5LNOVFL2V2IZ7SA/",
           "source": "조선비즈",
           "published_at": "2026-04-27T02:16:30",
-          "causal_chain": "파두 1분기 매출 595억원 역대 최대 + 영업이익 77억원 흑자전환 → 실적 턴어라운드 부각.",
-          "macro_event": "파두 1분기 실적 어닝 서프라이즈(매출 595억 역대 최대·영업익 77억 흑자전환)",
+          "causal_chain": "파두의 1분기 실적 개선(매출 595억원 최대, 영업익 77억원 흑자전환) 및 기업용 SSD 컨트롤러 공급계약(152억원) → 반도체 컨트롤러 시장 내 수주 확대 및 실적 강화",
+          "macro_event": "파두 1Q 실적 흑자전환 + SSD 컨트롤러 공급계약",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4374,8 +4456,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02581366645420384",
           "source": "이데일리",
           "published_at": "2026-04-27T01:36:28",
-          "causal_chain": "파두 1분기 연결 영업이익 77억원으로 전년비 흑자전환 → 실적 턴어라운드 가시화.",
-          "macro_event": "파두 1Q 연결 영업이익 77억, 전년비 흑자전환",
+          "causal_chain": "파두의 1분기 실적 개선(매출 595억원 최대, 영업익 77억원 흑자전환) 및 기업용 SSD 컨트롤러 공급계약(152억원) → 반도체 컨트롤러 시장 내 수주 확대 및 실적 강화",
+          "macro_event": "파두 1Q 실적 흑자전환 + SSD 컨트롤러 공급계약",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4389,8 +4471,8 @@
           "url": "https://www.sedaily.com/article/20032793",
           "source": "서울경제",
           "published_at": "2026-04-15T03:57:20",
-          "causal_chain": "파두 151억 규모 기업용 SSD 컨트롤러 공급계약 체결 공시 → 코스닥 성장주 초고수 투자자 순매수 2위 유입",
-          "macro_event": "파두 151억 규모 SSD 컨트롤러 공급계약 체결",
+          "causal_chain": "파두의 1분기 실적 개선(매출 595억원 최대, 영업익 77억원 흑자전환) 및 기업용 SSD 컨트롤러 공급계약(152억원) → 반도체 컨트롤러 시장 내 수주 확대 및 실적 강화",
+          "macro_event": "파두 1Q 실적 흑자전환 + SSD 컨트롤러 공급계약",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4404,8 +4486,8 @@
           "url": "https://www.mk.co.kr/news/stock/12015716",
           "source": "매경",
           "published_at": "2026-04-13T08:50:35",
-          "causal_chain": "파두 151억 규모 기업용 SSD 컨트롤러 공급계약 체결 공시 → 코스닥 성장주 초고수 투자자 순매수 2위 유입",
-          "macro_event": "파두 151억 규모 SSD 컨트롤러 공급계약 체결",
+          "causal_chain": "파두의 1분기 실적 개선(매출 595억원 최대, 영업익 77억원 흑자전환) 및 기업용 SSD 컨트롤러 공급계약(152억원) → 반도체 컨트롤러 시장 내 수주 확대 및 실적 강화",
+          "macro_event": "파두 1Q 실적 흑자전환 + SSD 컨트롤러 공급계약",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4419,8 +4501,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03480086645415792",
           "source": "이데일리",
           "published_at": "2026-04-13T05:20:42",
-          "causal_chain": "파두 151억 규모 기업용 SSD 컨트롤러 공급계약 체결 공시 → 코스닥 성장주 초고수 투자자 순매수 2위 유입",
-          "macro_event": "파두 151억 규모 SSD 컨트롤러 공급계약 체결",
+          "causal_chain": "파두의 1분기 실적 개선(매출 595억원 최대, 영업익 77억원 흑자전환) 및 기업용 SSD 컨트롤러 공급계약(152억원) → 반도체 컨트롤러 시장 내 수주 확대 및 실적 강화",
+          "macro_event": "파두 1Q 실적 흑자전환 + SSD 컨트롤러 공급계약",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5330,8 +5412,8 @@
           "url": "https://www.mk.co.kr/news/stock/12020041",
           "source": "매경",
           "published_at": "2026-04-17T06:24:24",
-          "causal_chain": "북미·유럽 시장 고성장세 + 2분기부터 재발주 물량 반영 기대 → 복수 증권사(KB·DB) 목표가 상향(KB 23만원, DB 22%↑) + 실적 안정 속 밸류 매력 부각 → 상위 1% 초고수 투자자 픽 선정",
-          "macro_event": "서구권(북미·유럽) 매출 성장 기대에 복수 증권사 목표가 상향",
+          "causal_chain": "",
+          "macro_event": "",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5399,7 +5481,9 @@
           198000,
           197800
         ]
-      }
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "049480",
