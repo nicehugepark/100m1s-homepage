@@ -618,10 +618,21 @@ function renderTenseChip(badge, viewDate, allBadges) {
 }
 
 function renderDisclaimerFooter() {
-  // §D.2 법무 푸터 1줄 (legal P0 확정 텍스트). 펼침 영역 최하단 노출.
-  return `<div class="dsn-v91-disclaimer-footer">`
-    + `<span class="dsn-v91-disclaimer-footer__icon">ⓘ</span>`
-    + `<span class="dsn-v91-disclaimer-footer__text">투자판단 권고 아님 · 매매 결정은 본인 책임</span>`
+  // §D.2 법무 푸터 1줄 (legal P0 확정 텍스트).
+  // v9.8 DSN-010 §V — 카드별 footer 폐기. 페이지 푸터(news.html)가 면책 1회 표시.
+  // 본 함수는 legacy 호출 가드용 잔존 (호출 차단 — 빈 문자열 반환).
+  return '';
+}
+
+function renderMicroDisclaimerIfShared() {
+  // v9.8 DSN-010 §V.4 — 단일 카드 공유 (#stock-*) 진입 시만 micro 면책 활성.
+  // 일반 목록 진입 시 페이지 푸터(news.html)가 1회 흡수 — 카드 noise 0.
+  if (typeof window === 'undefined' || !window.location) return '';
+  const hash = String(window.location.hash || '');
+  if (!hash.startsWith('#stock-')) return '';
+  return `<div class="dsn-v98-micro-disclaimer">`
+    + `<span class="dsn-v98-micro-disclaimer__icon">ⓘ</span>`
+    + `<span class="dsn-v98-micro-disclaimer__text">투자판단 권고 아님</span>`
     + `</div>`;
 }
 
@@ -907,30 +918,25 @@ const _DSN_V95_EFFECT_LABEL = {
   'trade-halt': '거래정지',
   'single-price': '단일가',
 };
-// REQ-022 v9.7 §II — 'when' enum 확장: in_2_days·in_3_5_days (단기과열 예고 D-1).
-// 명세 DOC-20260427-DSN-009 §II.3·§IV.2. utils.js 4 위치 동시 갱신 의무 (P0 함정 #1).
-//   1) _DSN_V95_WHEN_LABEL    — 라벨 매핑
-//   2) _DSN_V95_WHEN_ORDER    — 정렬 우선순위
-//   3) mergeEffectBadges      — 변경 0건 (in_*_days는 머지 X 자동)
-//   4) computeCreditBlockReason — 단기과열 예고 분기 우선 매칭 (§V.3)
+// REQ-023 v9.8 §I — 'when' enum 단순화 (DSN-010).
+// 휴지 결정 B: today / tomorrow / today_and_tomorrow 만 (확정만).
+// 폐기 (DSN-009 v9.7 → DSN-010 v9.8 / 대표 본질 비판 #1·#2):
+//   - in_2_days     — "거래정지(2일 후)" 확정 표현 부적절 (예고 단계는 가능성)
+//   - in_3_5_days   — "단일가(3~5일)" 거짓 정밀성 (FLR-AGT-002)
+//   - tomorrow_maybe — predicted_shadow 부활 폐기 (togusa SSOT 4/27 21:12 — 인프라 산출 0건)
+// 단기과열 예고는 §III 헤더 0건 + 사유 박스 1줄로 위계 분리.
 // fallback 가드: dsnV95FormatEffectBadge가 미정의 시 토큰 raw 노출 (회귀 발견 가능).
 const _DSN_V95_WHEN_LABEL = {
   'today': '오늘',
   'tomorrow': '내일',
   'today_and_tomorrow': '오늘+내일',
-  'tomorrow_maybe': '내일 가능',
-  'in_2_days': '2일 후',         // v9.7 신규 — 단기과열 예고 D+2 거래정지 시점
-  'in_3_5_days': '3~5일',        // v9.7 신규 — 단기과열 예고 D+3~D+5 단일가매매
 };
-// A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe > in_2_days > in_3_5_days.
+// A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow.
 const _DSN_V95_EFFECT_ORDER = { 'trade-halt': 0, 'credit-block': 1, 'single-price': 2 };
 const _DSN_V95_WHEN_ORDER = {
   'today': 0,
   'today_and_tomorrow': 1,
   'tomorrow': 2,
-  'tomorrow_maybe': 3,
-  'in_2_days': 4,    // v9.7 신규
-  'in_3_5_days': 5,  // v9.7 신규
 };
 
 function dsnV95FormatEffectBadge(eb) {
@@ -951,9 +957,6 @@ function dsnV95EffectBadgeTitle(eb) {
     'today': '오늘 발효 중',
     'tomorrow': '내일 발효',
     'today_and_tomorrow': '오늘 발효 중 + 내일도 잔존',
-    'tomorrow_maybe': '내일 발효 가능 (자체 추정)',
-    'in_2_days': '단기과열 지정 후 2영업일 거래정지',           // v9.7 신규
-    'in_3_5_days': '단기과열 지정 후 3~5영업일 단일가매매',   // v9.7 신규
   }[eb.when] || (_DSN_V95_WHEN_LABEL[eb.when] || '');
   if (src) return `${src} → ${ef} (${whenText})`;
   return `${ef} (${whenText})`;
@@ -961,7 +964,7 @@ function dsnV95EffectBadgeTitle(eb) {
 
 function mergeEffectBadges(effects) {
   // §I.5 A1 — 동일 effect의 today + tomorrow 머지 → today_and_tomorrow.
-  // tomorrow_maybe(조건부)는 머지 X — 어휘 보존 (FLR-AGT-002).
+  // v9.8: in_*_days/tomorrow_maybe 폐기로 머지 룰 단순화.
   if (!Array.isArray(effects) || effects.length === 0) return [];
   const byEffect = {};
   for (const eb of effects) {
@@ -991,7 +994,7 @@ function mergeEffectBadges(effects) {
         source_label: sourceLabels || (items[0].source_label || ''),
         source_kind: items[0].source_kind || 'disclosure',
       });
-      // 외 항목(tomorrow_maybe 등)은 별도 잔존
+      // v9.8: in_*_days/tomorrow_maybe 폐기로 외 항목 잔존 케이스 거의 0
       for (const i of items) {
         if (i.when !== 'today' && i.when !== 'tomorrow') merged.push(i);
       }
@@ -1018,7 +1021,7 @@ function dedupEffectBadges(effects) {
 }
 
 function sortEffectBadges(effects) {
-  // §II.4 A4 — 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe.
+  // §II.4 A4 — 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow.
   if (!Array.isArray(effects)) return [];
   return effects.slice().sort((a, b) => {
     const ea = _DSN_V95_EFFECT_ORDER[a.effect];

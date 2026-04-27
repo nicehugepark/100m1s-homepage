@@ -1703,11 +1703,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-details .cal-status-head .cal-status-label {
   display: none;
 }
-.cal-feature-details .cal-status-head::before {
-  content: '지정 조건 상세';
-  font-size: 11px; font-weight: 600;
-  color: #8a8a8a; letter-spacing: 0.5px;
-}
+/* v9.8 DSN-010 §IV.1 — "지정 조건 상세" 라벨 폐기 (대표 본질 비판 #4 — 모호).
+   16자 1줄 모바일 wrap 해소. cal-status-detail--reason modifier가 직접 사유 박스 구조 잔존. */
 .cal-feature-details .cal-status-head {
   border-top: 1px dashed #e0e0e0;
   padding-top: 6px;
@@ -2063,9 +2060,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 /* ───── REQ-020 v9.5 §II.1 — 효과 배지 (효과+시점) ─────
-   매트릭스: 거래정지(danger) / 신용불가(warning) / 단일가(info) × today / today_and_tomorrow / tomorrow / tomorrow_maybe.
-   tomorrow_maybe = 점선 + 채도 -10% (predicted 자체 추정 → 단정 회피, FLR-AGT-002).
-   명세: DOC-20260427-DSN-005. */
+   매트릭스 (v9.8 DSN-010): 거래정지(danger) / 신용불가(warning) / 단일가(info) × today / today_and_tomorrow / tomorrow.
+   폐기 (DSN-010 §I.1): tomorrow_maybe / in_2_days / in_3_5_days (대표 본질 비판 #1·#2 + togusa SSOT).
+   명세: DOC-20260427-DSN-005 / DOC-20260427-DSN-010. */
 .dsn-v95-effect-badges {
   display: inline-flex;
   flex-wrap: wrap;
@@ -2112,11 +2109,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 1px solid rgba(29, 78, 216, 0.30);
 }
 
-/* 시점 변형 — tomorrow_maybe만 점선 + 채도 약화 (단정 vs 조건부) */
-.dsn-v95-effect-badge--when-tomorrow_maybe {
-  border-style: dashed;
-  background-color: transparent;
-}
+/* v9.8 DSN-010 — tomorrow_maybe BEM modifier 폐기 (predicted_shadow 부활 폐기 정합) */
 
 /* +N 더보기 */
 .dsn-v95-effect-badge--more {
@@ -2209,6 +2202,29 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .dsn-v91-disclaimer-footer__text {
   display: inline;
+}
+
+/* v9.8 DSN-010 §V.4 — 단일 카드 공유 (#stock-*) 진입 시 micro 면책.
+   페이지 푸터 가시성 ↓ 보완. window.location.hash 매칭 시 활성. */
+.dsn-v98-micro-disclaimer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-subtle, rgba(0,0,0,0.08));
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary, #6B7280);
+  text-align: center;
+}
+.dsn-v98-micro-disclaimer__icon {
+  display: inline-block;
+  margin-right: 3px;
+}
+@media (prefers-color-scheme: dark) {
+  .dsn-v98-micro-disclaimer {
+    border-top-color: var(--border-subtle, rgba(255,255,255,0.10));
+    color: var(--text-secondary, #9CA3AF);
+  }
 }
 
 /* 다크모드 — imminent 칩 lightness +12% / 푸터 var 자동 보정 */
