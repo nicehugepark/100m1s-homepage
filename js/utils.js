@@ -907,15 +907,31 @@ const _DSN_V95_EFFECT_LABEL = {
   'trade-halt': '거래정지',
   'single-price': '단일가',
 };
+// REQ-022 v9.7 §II — 'when' enum 확장: in_2_days·in_3_5_days (단기과열 예고 D-1).
+// 명세 DOC-20260427-DSN-009 §II.3·§IV.2. utils.js 4 위치 동시 갱신 의무 (P0 함정 #1).
+//   1) _DSN_V95_WHEN_LABEL    — 라벨 매핑
+//   2) _DSN_V95_WHEN_ORDER    — 정렬 우선순위
+//   3) mergeEffectBadges      — 변경 0건 (in_*_days는 머지 X 자동)
+//   4) computeCreditBlockReason — 단기과열 예고 분기 우선 매칭 (§V.3)
+// fallback 가드: dsnV95FormatEffectBadge가 미정의 시 토큰 raw 노출 (회귀 발견 가능).
 const _DSN_V95_WHEN_LABEL = {
   'today': '오늘',
   'tomorrow': '내일',
   'today_and_tomorrow': '오늘+내일',
   'tomorrow_maybe': '내일 가능',
+  'in_2_days': '2일 후',         // v9.7 신규 — 단기과열 예고 D+2 거래정지 시점
+  'in_3_5_days': '3~5일',        // v9.7 신규 — 단기과열 예고 D+3~D+5 단일가매매
 };
-// A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe.
+// A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe > in_2_days > in_3_5_days.
 const _DSN_V95_EFFECT_ORDER = { 'trade-halt': 0, 'credit-block': 1, 'single-price': 2 };
-const _DSN_V95_WHEN_ORDER = { 'today': 0, 'today_and_tomorrow': 1, 'tomorrow': 2, 'tomorrow_maybe': 3 };
+const _DSN_V95_WHEN_ORDER = {
+  'today': 0,
+  'today_and_tomorrow': 1,
+  'tomorrow': 2,
+  'tomorrow_maybe': 3,
+  'in_2_days': 4,    // v9.7 신규
+  'in_3_5_days': 5,  // v9.7 신규
+};
 
 function dsnV95FormatEffectBadge(eb) {
   // §II.2 — "신용불가(내일)" / "거래정지(오늘+내일)" / "단일가(내일 가능)" 등.
@@ -936,6 +952,8 @@ function dsnV95EffectBadgeTitle(eb) {
     'tomorrow': '내일 발효',
     'today_and_tomorrow': '오늘 발효 중 + 내일도 잔존',
     'tomorrow_maybe': '내일 발효 가능 (자체 추정)',
+    'in_2_days': '단기과열 지정 후 2영업일 거래정지',           // v9.7 신규
+    'in_3_5_days': '단기과열 지정 후 3~5영업일 단일가매매',   // v9.7 신규
   }[eb.when] || (_DSN_V95_WHEN_LABEL[eb.when] || '');
   if (src) return `${src} → ${ef} (${whenText})`;
   return `${ef} (${whenText})`;
@@ -1473,8 +1491,19 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
       if (start) period = `${dsnV9FormatMD(start)} 발효 예정`;
       // 투자위험 예고 효과 명시 (#4)
       if (label.startsWith('투자위험')) extra = ' — 매매거래정지 동반';
-      // 단기과열 예고 (#10)
-      if (label.includes('단기과열')) period = '10거래일 이내 조건 충족 시 지정';
+      // REQ-022 v9.7 §V — 단기과열 예고 (#10): build_daily.py 사전 산출 reason_text 우선 사용.
+      // SSOT는 build_daily.py _add_trading_days (영업일 헬퍼). utils.js는 표시만 (P1 함정 #4 (b)).
+      if (label.includes('단기과열')) {
+        if (b.short_overheat_reason_text) {
+          // build_daily.py 사전 산출 텍스트 — 일정 명시 ("4/28 지정 → 4/30 거래정지 → 5/4~5/7 단일가매매")
+          stageText = b.short_overheat_reason_text;
+          period = '';
+          extra = '';
+        } else {
+          // fallback — 사전 산출 없으면 v9.6 base 텍스트 잔존
+          period = '10거래일 이내 조건 충족 시 지정';
+        }
+      }
     } else {
       // §II.2 #1·#3·#5·#18 — 현재 발효 중 (지정 중)
       // §II.2 #5 매매거래정지: end가 비어있어도 단일일 표기
