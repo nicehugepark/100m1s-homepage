@@ -1,6 +1,6 @@
 {
   "date": "2026-04-27",
-  "generated_at": "2026-04-27T20:39:07.794847",
+  "generated_at": "2026-04-27T20:44:58.352567",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -4203,10 +4203,26 @@
           "next_trading_day": "2026-04-28",
           "single_price": false,
           "source": "disclosure",
-          "end": "2026-05-13",
+          "end": "2026-05-14",
           "reason_text": "고영(KR7098460009)이 코스닥시장 업무규정 제23조의2 등에 따라 2026-04-28 단기과열종목 지정예고. 예고일부터 10거래일 이내 ①주가상승률(40거래일 평균 130% 이상) ②거래회전율(2거래일 평균이 40거래일 평균 600% 이상) ③주가변동성(2거래일 평균이 40거래일 평균 150% 이상) 3요건 모두 충족 + 종가 상승 시 익일부터 단기과열종목 지정(3거래일 30분 단위 단일가매매).",
           "prev_stage": null,
-          "effect_badges": []
+          "short_overheat_reason_text": "단기과열 예고 (4/28 지정 → 4/30 거래정지 → 5/4~5/7 단일가매매)",
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "in_2_days",
+              "severity": "danger",
+              "source_label": "단기과열 예고",
+              "source_kind": "disclosure"
+            },
+            {
+              "effect": "single-price",
+              "when": "in_3_5_days",
+              "severity": "info",
+              "source_label": "단기과열 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -4349,10 +4365,26 @@
           "next_trading_day": "2026-04-28",
           "single_price": false,
           "source": "disclosure",
-          "end": "2026-05-13",
+          "end": "2026-05-14",
           "reason_text": "대원전선우(KR7006341002)에 대해 2026-04-28 단기과열종목 지정예고 발령. 예고일부터 10거래일 이내 ①주가상승률(당일 종가 직전 40거래일 평균 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균 150% 이상) 3요건 모두 충족하고 종가가 직전거래일·지정예고일 전일 종가 대비 상승 시 다음 매매거래일부터 단기과열종목 지정(3거래일간 30분 단위 단일가매매).",
           "prev_stage": null,
-          "effect_badges": []
+          "short_overheat_reason_text": "단기과열 예고 (4/28 지정 → 4/30 거래정지 → 5/4~5/7 단일가매매)",
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "in_2_days",
+              "severity": "danger",
+              "source_label": "단기과열 예고",
+              "source_kind": "disclosure"
+            },
+            {
+              "effect": "single-price",
+              "when": "in_3_5_days",
+              "severity": "info",
+              "source_label": "단기과열 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         },
         {
           "label": "투자경고 예고",
@@ -4369,7 +4401,7 @@
           "entry_threshold_price": 10368,
           "entry_threshold_via": "warn_surge_5d_60pct",
           "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
-          "entry_window_end": "2026-05-13",
+          "entry_window_end": "2026-05-14",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
@@ -4859,7 +4891,7 @@
           "entry_threshold_price": 86880,
           "entry_threshold_via": "warn_surge_5d_60pct",
           "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
-          "entry_window_end": "2026-05-13",
+          "entry_window_end": "2026-05-14",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "reason_text": "한화엔진 보통주가 2026-04-27 종가가 5일 전일 종가 대비 60% 이상 상승하여 2026-04-28 당일 투자주의종목으로 지정되며 투자경고종목 지정예고 상태가 됩니다. 최초 판단일은 2026-04-28이며 2026-05-13까지 순연 판단됩니다.",
           "prev_stage": null,
@@ -5491,10 +5523,26 @@
           "next_trading_day": "2026-04-28",
           "single_price": false,
           "source": "disclosure",
-          "end": "2026-05-13",
+          "end": "2026-05-14",
           "reason_text": "와이제이링크(KR7209640002)가 2026-04-28 단기과열종목 지정예고 대상으로, 예고일부터 10거래일 이내 ①주가상승률(당일 종가 직전 40거래일 평균 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균 150% 이상) 3가지 요건을 모두 충족하고 종가가 직전 거래일 및 지정예고일 전일 종가 대비 상승 시 다음 매매거래일부터 단기과열종목(3거래일 30분 단위 단일가매매)으로 지정될 수 있음.",
           "prev_stage": null,
-          "effect_badges": []
+          "short_overheat_reason_text": "단기과열 예고 (4/28 지정 → 4/30 거래정지 → 5/4~5/7 단일가매매)",
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "in_2_days",
+              "severity": "danger",
+              "source_label": "단기과열 예고",
+              "source_kind": "disclosure"
+            },
+            {
+              "effect": "single-price",
+              "when": "in_3_5_days",
+              "severity": "info",
+              "source_label": "단기과열 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         },
         {
           "label": "투자경고 예고",
@@ -5511,7 +5559,7 @@
           "entry_threshold_price": 8200,
           "entry_threshold_via": "warn_surge_15d_100pct",
           "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
-          "entry_window_end": "2026-05-13",
+          "entry_window_end": "2026-05-14",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
@@ -6705,7 +6753,7 @@
           "entry_threshold_price": 7980,
           "entry_threshold_via": "warn_surge_15d_100pct",
           "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
-          "entry_window_end": "2026-05-13",
+          "entry_window_end": "2026-05-14",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
@@ -6766,9 +6814,9 @@
           ],
           "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 15일 전 종가 대비 100%↑ + 지수 3배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
           "period_start": "2026-04-28",
-          "period_end": "2026-05-04",
+          "period_end": "2026-05-06",
           "start": "2026-04-28",
-          "end": "2026-05-04",
+          "end": "2026-05-06",
           "view_date": "2026-04-27",
           "next_trading_day": "2026-04-28",
           "next_trading_day_for_predicted": "2026-04-28",
@@ -7797,7 +7845,7 @@
           "entry_threshold_price": 3560,
           "entry_threshold_via": "warn_surge_5d_60pct",
           "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
-          "entry_window_end": "2026-05-13",
+          "entry_window_end": "2026-05-14",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "reason_text": "앤로보틱스 보통주가 2026-04-27 종가가 5일 전일 종가 대비 60% 이상 상승하여 2026-04-28 당일 투자주의종목으로 지정되며, 동일 사유로 투자경고종목 지정예고됨. 최초 판단일 2026-04-28부터 2026-05-13까지 5일 전 대비 60% 상승·15일 최고가·지수 대비 5배 상승 요건 충족 시 익일 투자경고 지정.",
           "prev_stage": "투자주의",
@@ -9707,7 +9755,7 @@
           "entry_threshold_price": 14240,
           "entry_threshold_via": "warn_surge_15d_100pct",
           "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
-          "entry_window_end": "2026-05-13",
+          "entry_window_end": "2026-05-14",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
