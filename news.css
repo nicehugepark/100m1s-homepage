@@ -2185,6 +2185,87 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   }
 }
 
+/* REQ-019 §III (DSN-004 v9.4) — 투자경고 예고 upcoming 노드 진입 임계가 5줄 영역.
+   __node-effect 형제 영역 (1줄 효과는 잔존, 그 아래 5줄 추가).
+   P0 차단: max-width 130px 유지 (노드 컨테이너 align-items: stretch — 자식 너비가 부모를 확장.
+   200px 시 trackMain 5노드 가로 배치 깨짐 → 130px + white-space normal로 5~7줄 wrap). */
+.dsn-v94-stage-flow__entry-window {
+  margin-top: 6px;
+  padding: 6px 8px 5px;
+  border-top: 1px dashed var(--badge-disclosure, #1F6FEB);
+  background: rgba(31, 111, 235, 0.04);
+  border-radius: 0 0 4px 4px;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  color: var(--v8-text-secondary, #6B7280);
+  font-weight: 400;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  text-align: left;
+  max-width: 130px;
+  word-break: keep-all;
+}
+.dsn-v94-stage-flow__entry-window-line--primary {
+  font-weight: 600;
+  color: var(--v8-text-primary, #1F2937);
+  margin-bottom: 2px;
+}
+.dsn-v94-stage-flow__entry-window-line--threshold {
+  font-weight: 600;
+  color: var(--badge-disclosure, #1F6FEB);
+  margin-bottom: 3px;
+}
+.dsn-v94-stage-flow__entry-window-line--and {
+  color: var(--v8-text-secondary, #6B7280);
+  padding-left: 2px;
+  margin-bottom: 1px;
+}
+.dsn-v94-stage-flow__entry-window-line--assumption {
+  margin-top: 3px;
+  font-size: 0.6rem;
+  font-style: italic;
+  color: var(--v8-text-tertiary, #9CA3AF);
+}
+
+/* 모바일 ≤380px — 박스 가로폭 좁아짐. 1열 세로 fallback 시 자연 흐름 */
+@media (max-width: 380px) {
+  .dsn-v94-stage-flow__entry-window {
+    max-width: 100%;
+    font-size: 0.62rem;
+    padding: 5px 6px 4px;
+  }
+  .dsn-v94-stage-flow__entry-window-line--assumption {
+    font-size: 0.58rem;
+  }
+}
+
+/* 다크모드 — DSN-005 v9.2 정합 (lightness +12%) */
+@media (prefers-color-scheme: dark) {
+  .dsn-v94-stage-flow__entry-window {
+    background: rgba(77, 144, 255, 0.10);
+    border-top-color: #4D90FF;
+    color: var(--text-secondary, #9CA3AF);
+  }
+  .dsn-v94-stage-flow__entry-window-line--primary {
+    color: var(--text-primary, #E5E7EB);
+  }
+  .dsn-v94-stage-flow__entry-window-line--threshold {
+    color: #4D90FF;
+  }
+  .dsn-v94-stage-flow__entry-window-line--assumption {
+    color: var(--text-tertiary, #6B7280);
+  }
+}
+
+/* 고대비 */
+@media (prefers-contrast: more) {
+  .dsn-v94-stage-flow__entry-window {
+    border-top-width: 2px;
+    background: transparent;
+  }
+}
+
 /* §II 펼침 영역 predicted detail-only */
 .dsn-v92-predicted-detail-only {
   margin: 12px 0;
