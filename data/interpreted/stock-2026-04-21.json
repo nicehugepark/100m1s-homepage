@@ -1,6 +1,6 @@
 {
   "date": "2026-04-21",
-  "generated_at": "2026-04-25T15:24:27.205777",
+  "generated_at": "2026-04-28T06:02:47.048193",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1247,6 +1247,8 @@
         "change_pct": 22.77,
         "trade_amount": 2113101228500
       },
+      "bullish_today": true,
+      "bullish_streak": 2,
       "news": [
         {
           "title": "21일 코스피 시장 공매도 수량 상위 종목. 대우건설, 한온시스템 등",
@@ -1383,8 +1385,11 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
           "reason_text": "[투자경고] [투자주의]투자경고종목 지정예고",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000570"
         },
         {
           "label": "투자위험 근접",
@@ -1429,9 +1434,10 @@
           "end": "2026-04-28",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-22",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -1519,6 +1525,8 @@
         "change_pct": 29.97,
         "trade_amount": 875511253500
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "테슬라 태양광 장비 기대감…주성엔지니어링 27%대 급등 [이런국장 저런주식]",
@@ -1598,8 +1606,11 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
           "reason_text": "[투자경고] [투자주의]투자경고종목 지정예고",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000739"
         },
         {
           "label": "투자위험 근접",
@@ -1644,9 +1655,10 @@
           "end": "2026-04-28",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-22",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -1717,6 +1729,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "21일 코스닥 시장 공매도 수량 상위 종목. 우리기술, 씨아이에스 등",
@@ -1831,6 +1845,8 @@
         "change_pct": 4.71,
         "trade_amount": 662308106000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "“AI 데이터센터 확대에 1분기 호실적 예상”…대한전선  주목[주식 초고수는 지금]",
@@ -1988,10 +2004,22 @@
       "low_price": 43500,
       "industry": "반도체 제조업",
       "sector": "모바일용 LP DDR SDRAM, CRAM, SRAM",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -2100,6 +2128,8 @@
         "change_pct": 12.28,
         "trade_amount": 376882619000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "허윤홍 GS건설 대표, 인도 찾아 재생에너지기업과 MOU",
@@ -2259,6 +2289,8 @@
         "change_pct": 23.77,
         "trade_amount": 1012043457000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[특징주] 스페이스X 관련주 강세…미래에셋벤처투자 ‘1년 중 최고가’",
@@ -2361,6 +2393,12 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 53500,
+          "entry_threshold_via": "warn_surge_15d_100pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
+          "entry_window_end": "2026-05-06",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "5일 전(2026-04-10) 대비 60%↑",
@@ -2378,7 +2416,16 @@
             }
           ],
           "reason_text": "미래에셋벤처투자가 5일 전 대비 60% 이상 급등하여 2026-04-20 투자주의종목 1일 지정. 04-20~05-04 내 3가지 조건(① 5일 전 대비 60%↑ ② 최근 15일 최고가 ③ 종합주가지수 대비 5배↑) 모두 충족 시 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -2464,6 +2511,8 @@
         "change_pct": 3.36,
         "trade_amount": 327063575600
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "21일 코스닥 시장 공매도 금액 상위 종목. 에코프로, 에코프로비엠 등",
@@ -2587,6 +2636,8 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[클릭 e종목]\"엘앤에프, 올해 흑자전환 시작으로 이익 확대…목표가↑\"",
@@ -2719,7 +2770,24 @@
         "change_pct": 28.51,
         "trade_amount": 304641900000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "OCI홀딩스, 비중국산 폴리실리콘 재평가·스페이스X와 계약…증권가, 목표가 상향",
+          "url": "https://www.etoday.co.kr/news/view/2579047",
+          "source": "이투데이",
+          "published_at": "2026-04-26T21:00:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "OCI홀딩스, 중장기 펀더멘털 변화 긍정적..목표가 55% ↑ -삼성證",
           "url": "https://www.fnnews.com/news/202604240845338828",
@@ -2772,21 +2840,6 @@
           "published_at": "2026-04-24T01:46:00",
           "causal_chain": "스페이스X發 태양광 수요 기대와 공급망 재편·신규 수요로 수익성 개선, 2분기 연속 흑자(1Q 영업익 108억) 및 신영증권 목표가 40만원 제시로 9%대 급등.",
           "macro_event": "스페이스X發 태양광 수요 기대 + OCI홀딩스 2분기 연속 흑자 + 신영증권 목표가 40만원 제시",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "OCI홀딩스, 우주 태양광 수요 확대 기대에 15%대 급등",
-          "url": "https://www.hankyung.com/article/2026042436936",
-          "source": "한경",
-          "published_at": "2026-04-24T01:09:37",
-          "causal_chain": "우주 태양광 수요 확대 기대 부각(제목1) + 1분기 영업이익 108억원·2분기 연속 흑자로 실적 회복(제목3·4) + 신영증권이 태양광·에너지 재평가 근거로 2분기 최대 영업익 전망·목표가 40만원 제시(제목2)→리레이팅 기대에 15%대 급등.",
-          "macro_event": "우주 태양광 수요 확대 기대 + 증권사 리레이팅(목표가 40만원) 동반 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2889,6 +2942,8 @@
         "change_pct": 29.98,
         "trade_amount": 233160630480
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[급등락주 짚어보기] 상폐 극복 삼천리자전거·양자암호 공포에 드림시큐리티 등 '上'",
@@ -2940,9 +2995,10 @@
           "end": "2026-04-23",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-22",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -3009,8 +3065,17 @@
       "low_price": 44350,
       "industry": "일반 목적용 기계 제조업",
       "sector": "엔진,터빈,내연기관 제조,도매",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "조선"
+      ],
+      "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        }
+      ],
       "pick_count": 3,
       "prev_pick": {
         "date": "2026-04-20",
@@ -3018,6 +3083,8 @@
         "change_pct": 5.11,
         "trade_amount": 101458618800
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "[MK시그널] STX엔진, 데이터센터 전력원 시장 진출 및 중동 재건 수혜 기대감에 주가 상승세... K시그널 추천 후 상승률 24.15% 기록",
@@ -3066,7 +3133,10 @@
           "summary": "[단기과열] 단기과열종목(3거래일 단일가매매) 지",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000607"
         }
       ],
       "intraday": {
@@ -3135,6 +3205,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -3230,6 +3302,8 @@
         "change_pct": 3.47,
         "trade_amount": 121997311500
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "21일 코스닥 시장 공매도 금액 상위 종목. 에코프로, 에코프로비엠 등",
@@ -3323,8 +3397,36 @@
       "low_price": 53700,
       "industry": "일반 목적용 기계 제조업",
       "sector": "대형선박용엔진,내연발전엔진",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "조선",
+        "LNG선 기자재",
+        "전력설비"
+      ],
+      "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        },
+        {
+          "name": "LNG선 기자재",
+          "path": [
+            "전쟁",
+            "중동전쟁",
+            "해운",
+            "LNG선 기자재"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "AI",
+            "AI 인프라",
+            "전력설비"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-17",
@@ -3332,59 +3434,76 @@
         "change_pct": 20.54,
         "trade_amount": 288555174600
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "[특징주] 한화엔진, 8%대 급등⋯‘어닝 서프라이즈’로 증권가 목표가 줄상향",
+          "url": "https://www.etoday.co.kr/news/view/2579382",
+          "source": "이투데이",
+          "published_at": "2026-04-27T00:56:00",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "\"높아지는 미국 수주 기대감\"…한화엔진 6%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02079526645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T00:32:22",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "\"한화엔진, 美 데이터센터용 4행정 엔진 수주 가능성…목표가↑\"-SK",
+          "url": "https://www.hankyung.com/article/2026042779626",
+          "source": "한경",
+          "published_at": "2026-04-26T22:51:36",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한화엔진, 호실적에 미국 수주 기대감...목표주가 10만원 ↑-SK",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01262806645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-26T22:48:25",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "[오늘의 증시일정] 삼성물산ㆍ한화엔진ㆍ현대로템 등",
           "url": "https://www.etoday.co.kr/news/view/2578738",
           "source": "이투데이",
           "published_at": "2026-04-23T23:18:00",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "조선·엔진주 뜨겁네…18% 급등 한화엔진, 신고가 경신 [매경 자이앤트]",
-          "url": "https://www.mk.co.kr/news/stock/12020038",
-          "source": "매경",
-          "published_at": "2026-04-17T06:23:57",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한신평, 한화엔진 신용등급 전망 '긍정적' 상향",
-          "url": "https://www.fnnews.com/news/202604150910403372",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-04-16T08:47:57.561584",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한화엔진, 고수익성 레벨 향해 구조적 상승 전망…목표가↑-메리츠",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02414086645416448",
-          "source": "이데일리",
-          "published_at": "2026-04-14T22:53:54",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3473,6 +3592,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -3558,6 +3679,8 @@
         "change_pct": 12.89,
         "trade_amount": 159023084000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 2.72,
@@ -3655,6 +3778,8 @@
         "change_pct": 2.86,
         "trade_amount": 147113259000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -3773,7 +3898,24 @@
         "change_pct": 21.63,
         "trade_amount": 106797680660
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "거래소 \"파인텍 주권매매거래 정지\"",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05471046645419400",
+          "source": "이데일리",
+          "published_at": "2026-04-24T08:20:56",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "파인텍, 헬퍼로보틱스와 업무협약…“무인 외식 플랫폼 구축”",
           "url": "https://www.asiae.co.kr/article/2026042310302297679",
@@ -3839,7 +3981,10 @@
           "summary": "[투자경고] 매매거래 정지 및 재개(투자경고종목 ",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000728"
         }
       ],
       "intraday": {
@@ -3931,6 +4076,8 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[MK시그널] 대주전자재료, 1분기 역대급 실적 기대감 및 우주 태양광 모멘텀에 주가 상승세... K시그널 추천 후 상승률 22.9% 기록",
@@ -4060,6 +4207,8 @@
         "change_pct": 2.94,
         "trade_amount": 108110383680
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "21일 코스피 시장 공매도 수량 상위 종목. 대우건설, 한온시스템 등",
@@ -4161,6 +4310,8 @@
         "change_pct": 5.51,
         "trade_amount": 190277523940
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -4196,9 +4347,10 @@
           "end": "2026-04-23",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-22",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -4269,6 +4421,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 2.72,
@@ -4366,7 +4520,39 @@
         "change_pct": 9.13,
         "trade_amount": 127046800900
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "합병 시너지 통했나…HD건설기계, 실적 발표 후 12%대 급등 [이런국장 저런주식]",
+          "url": "https://www.sedaily.com/article/20037672",
+          "source": "서울경제",
+          "published_at": "2026-04-27T07:57:38",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "HD건설기계, 1분기 영업익 1907억원… 전년比 88%↑",
+          "url": "https://biz.chosun.com/industry/company/2026/04/27/RP62LPFGZ5GOBMQOAJVQRDJS34/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T07:12:13",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "멸종 위기종 '애기송이풀'…지킴이 나선 HD건설기계",
           "url": "https://www.mk.co.kr/news/business/12025440",
@@ -4402,36 +4588,6 @@
           "url": "https://biz.chosun.com/en/2026/04/20/EO5LTLFSAJFK3GHGHLFHUNB3PI/",
           "source": "조선비즈",
           "published_at": "2026-04-20T05:19:22",
-          "causal_chain": "고유가 기조 → 연비 효율 높인 신형 굴착기 수요 증가 → HD건설기계 실적 개선 기대. 포르투갈 발전기 업체에 친환경 G2엔진 264대 공급 수주로 글로벌 시장 확대.",
-          "macro_event": "고유가 기조 지속으로 연비 효율 높인 건설기계 신모델 수요 증가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "HD건설기계 신형 굴착기, 고유가에 인기",
-          "url": "https://www.hankyung.com/article/2026041535061",
-          "source": "한경",
-          "published_at": "2026-04-15T08:46:21",
-          "causal_chain": "고유가 기조 → 연비 효율 높인 신형 굴착기 수요 증가 → HD건설기계 실적 개선 기대. 포르투갈 발전기 업체에 친환경 G2엔진 264대 공급 수주로 글로벌 시장 확대.",
-          "macro_event": "고유가 기조 지속으로 연비 효율 높인 건설기계 신모델 수요 증가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "HD건설기계, 연비 효율 높인 신모델로 고유가 부담 경감 기여",
-          "url": "https://biz.chosun.com/industry/company/2026/04/15/QUVTYBUW3BGDLFI6BFJ2GHUROU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-15T03:10:42",
           "causal_chain": "고유가 기조 → 연비 효율 높인 신형 굴착기 수요 증가 → HD건설기계 실적 개선 기대. 포르투갈 발전기 업체에 친환경 G2엔진 264대 공급 수주로 글로벌 시장 확대.",
           "macro_event": "고유가 기조 지속으로 연비 효율 높인 건설기계 신모델 수요 증가",
           "newzy_freshness": null,
@@ -4522,6 +4678,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -4564,8 +4722,11 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
           "reason_text": "[단기과열] (예고)단기과열종목 지정예고",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000767"
         },
         {
           "label": "투자경고 예고",
@@ -4574,8 +4735,11 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
           "reason_text": "[투자경고] [투자주의]투자경고종목 지정예고",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000736"
         },
         {
           "label": "투자위험 근접",
@@ -4620,9 +4784,10 @@
           "end": "2026-04-28",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-22",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -4705,7 +4870,24 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "캐논토키 vs 선익시스템…LGD 6세대 OLED 증착기 공급 경쟁",
+          "url": "https://www.etnews.com/20260424000146",
+          "source": "전자신문",
+          "published_at": "2026-04-26T08:00:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "선익시스템, 북미 현지법인 설립…\"페로브스카이트 상용화 선점\"",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03086486645414808",
@@ -4803,6 +4985,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -4900,6 +5084,8 @@
         "change_pct": 15.37,
         "trade_amount": 77322427840
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "[특징주] 엠플러스, 삼성SDI-벤츠 전고체배터리 주목…양산 난제 극복 기술 개발 부각에 상승세",
@@ -5001,6 +5187,8 @@
         "change_pct": 8.6,
         "trade_amount": 60764791280
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 2.72,
@@ -5091,7 +5279,54 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "\"중저가 전기차도 접수\" 엔켐, 유럽 중저가 EV 시장 공략 본격화",
+          "url": "https://www.fnnews.com/news/202604270929191593",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-04-27T09:37:52.723305",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "엔켐, 유럽 중저가 EV 시장 공략 본격화… 전해액 전략 다변화",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02768326645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T02:04:56",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "엔켐 “유럽 중저가 전기차용 전해액 전략 강화”",
+          "url": "https://www.sedaily.com/article/20037439",
+          "source": "서울경제",
+          "published_at": "2026-04-27T01:22:15",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "엔켐 “북미 전해액 공급 구조 ‘이중 축’ 재편”",
           "url": "https://www.sedaily.com/article/20034520",
@@ -5204,6 +5439,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "'국가 사이버보안 기본지침' 시행 수혜…SGA솔루션즈 14%↑[특징주]",
@@ -5256,28 +5493,17 @@
       },
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-04-14) 대비 +60%↑",
-              "base_price": 541,
-              "threshold": 865,
-              "current": 1168,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-04-22",
-          "period_end": "2026-04-23",
-          "start": "2026-04-22",
-          "end": "2026-04-23",
+          "label": "거래정지 예고",
+          "severity": "danger",
+          "summary": "[거래정지] 매매거래정지 예고",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
-          "next_trading_day_for_predicted": "2026-04-22",
-          "next_trading_day_source": "verified"
+          "source": "disclosure",
+          "reason_text": "[거래정지] 매매거래정지 예고",
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000730"
         }
       ],
       "intraday": {
@@ -5363,6 +5589,8 @@
         "change_pct": 26.3,
         "trade_amount": 162880077600
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -5450,6 +5678,8 @@
         "change_pct": 4.18,
         "trade_amount": 123534345000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[특징주] 무림P&P, ‘가격 담합’ 과징금 소식에 8% 급락…무림페이퍼·한국제지 약세",
@@ -5551,6 +5781,8 @@
         "change_pct": 13.97,
         "trade_amount": 121131923400
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "희림-메가존클라우드, 생성형 AI 기반 ‘건축 법규 검토 시스템’ 개발",
@@ -5677,6 +5909,8 @@
         "change_pct": 20.22,
         "trade_amount": 61012270600
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "[클릭 e종목]\"상신이디피, 각형 배터리 확대·ESS 대형화…턴어라운드 기회\"",
@@ -5725,7 +5959,10 @@
           "summary": "[투자주의] [투자주의]15일간 상승종목의 당일 ",
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
-          "single_price": false
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000746"
         }
       ],
       "intraday": {
@@ -5796,6 +6033,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -5876,6 +6115,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 2.72,
@@ -5966,6 +6207,8 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "\"배터리 전지박 매출 성장세 전환\"…솔루스첨단소재 16%↑[특징주]",
@@ -6064,6 +6307,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -6149,6 +6394,8 @@
         "change_pct": 14.29,
         "trade_amount": 63959120480
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "금강철강 \"임시주총 소집허가 소송 제기\"",
@@ -6198,8 +6445,11 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
           "reason_text": "[단기과열] (예고)단기과열종목 지정예고",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260421000769"
         }
       ],
       "intraday": {
@@ -6268,6 +6518,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -6350,6 +6602,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -6426,11 +6680,46 @@
       "low_price": 59400,
       "industry": "특수 목적용 기계 제조업",
       "sector": "PCB 자동화 설비",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체 후공정 장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        },
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "실적 개선 기대 반도체 장비…한미반도체·태성 신고가 경신 [매경 자이앤트]",
+          "url": "https://www.mk.co.kr/news/stock/12028068",
+          "source": "매경",
+          "published_at": "2026-04-27T01:57:06",
+          "causal_chain": "반도체 장비 업종 실적 개선 기대 → 태성·한미반도체 등 신고가 경신",
+          "macro_event": "반도체 장비 업종 실적 개선 기대에 따른 신고가 경신",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.36,
       "index_multiple_current": 27.17,
@@ -6517,6 +6806,8 @@
         "change_pct": 8.96,
         "trade_amount": 62811322100
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -6599,6 +6890,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -6679,6 +6972,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.36,
@@ -6759,6 +7054,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "삼천리자전거, 거래 재개 이튿날도 강세…25%↑[특징주]",
@@ -6873,7 +7170,25 @@
         "change_pct": 7.17,
         "trade_amount": 91441836100
       },
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "HD현대일렉트릭·심텍·RF머트리얼즈[하나證 주간추천주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01876166645419728",
+          "source": "이데일리",
+          "published_at": "2026-04-24T22:00:05",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.36,
       "index_multiple_current": 12.06,
@@ -6960,6 +7275,8 @@
         "change_pct": 29.94,
         "trade_amount": 98954806170
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "뉴진스 해린·혜인·하니, 덴마크 갔다…민지 거취는 '아직'",
@@ -7017,6 +7334,7 @@
           "view_date": "2026-04-21",
           "next_trading_day": "2026-04-22",
           "single_price": false,
+          "source": "disclosure",
           "thresholds": [
             {
               "desc": "전일(2026-04-20) 대비 5%↑",
@@ -7025,7 +7343,8 @@
               "current": 7530,
               "triggered": false
             }
-          ]
+          ],
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -7092,18 +7411,45 @@
       "low_price": 7390,
       "industry": "반도체 제조업",
       "sector": "반도체패키지(SOP,DIP,QFP)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "24일 코스닥 시장 공매도 수량 상위 종목. SFA반도체, 유니슨 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/27/GFQTQNBQMI2DQMDCGI2TGOJQMQ/",
+          "source": "조선비즈",
+          "published_at": "2026-04-26T23:01:16",
+          "causal_chain": "공매도 수량 상위 종목 리스트 등재 기사(로봇 자동 생성)—SFA반도체 주가에 대한 구체적 상승·하락 원인 미언급.",
+          "macro_event": "해당 없음(공매도 수량 상위 종목 나열 기사)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "14일 코스닥 시장 공매도 수량 상위 종목. 쏠리드, SFA반도체 등",
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/15/GUZGGZRRGJSWMYTBMYYDCNDEHE/",
           "source": "조선비즈",
           "published_at": "2026-04-14T23:01:18",
-          "causal_chain": "구체적 원인 미언급—14일 코스닥 공매도 수량 상위 종목 리스트에 SFA반도체 등재(단순 순위 나열 기사).",
-          "macro_event": "코스닥 공매도 수량 상위 종목 리스트",
+          "causal_chain": "공매도 수량 상위 종목 리스트 등재 기사(로봇 자동 생성)—SFA반도체 주가에 대한 구체적 상승·하락 원인 미언급.",
+          "macro_event": "해당 없음(공매도 수량 상위 종목 나열 기사)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,

@@ -1,6 +1,6 @@
 {
   "date": "2026-04-22",
-  "generated_at": "2026-04-25T15:19:53.870093",
+  "generated_at": "2026-04-28T06:02:47.290767",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3766,7 +3766,24 @@
         "change_pct": 12.72,
         "trade_amount": 489460804200
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
+        {
+          "title": "상상인證 \"이수페타시스, 수요의 구체화…목표가 30%↑\"",
+          "url": "https://www.etoday.co.kr/news/view/2579285",
+          "source": "이투데이",
+          "published_at": "2026-04-26T22:48:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "SOL AI반도체TOP2플러스, 상장 3주 만에 순자산 3500억 돌파",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02679766645416120",
@@ -3879,6 +3896,8 @@
         "change_pct": 29.95,
         "trade_amount": 1201718138500
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "22일 코스닥 시장 공매도 금액 상위 종목. 에코프로, 주성엔지니어링 등",
@@ -3935,7 +3954,18 @@
           "regulation": "지정일 이후 2일간 40% 이상 상승하고 지정전일 종가보다 높을 경우 1회 매매거래 정지 가능",
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
-          "single_price": false
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000601"
         },
         {
           "label": "투자위험 근접",
@@ -3980,9 +4010,10 @@
           "end": "2026-04-29",
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-23",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -4071,6 +4102,8 @@
         "change_pct": 8.68,
         "trade_amount": 409718697700
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "[특징주] 스페이스X 관련주 강세…미래에셋벤처투자 ‘1년 중 최고가’",
@@ -4143,8 +4176,24 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 56800,
+          "entry_threshold_via": "warn_surge_15d_100pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
+          "entry_window_end": "2026-05-11",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "reason_text": "미래에셋벤처투자가 2026-04-22 종가가 15일 전일 종가 대비 100% 이상 상승하여 2026-04-23 하루 투자주의종목으로 지정예고. 지정예고일부터 10일 이내(2026-04-23~2026-05-08) 판단일에 단기급등(5일 60%↑·15일 최고가·지수 5배) 또는 중장기급등(15일 100%↑·15일 최고가·지수 3배) 요건 충족 시 다음 날 투자경고종목으로 지정되며, 경고·위험 단계에서 매매거래 정지 가능.",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000602"
         },
         {
           "label": "투자위험 근접",
@@ -4189,9 +4238,10 @@
           "end": "2026-04-29",
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-23",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -4267,6 +4317,8 @@
         "change_pct": 16.13,
         "trade_amount": 480913069340
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -4293,6 +4345,12 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 18740,
+          "entry_threshold_via": "warn_surge_15d_100pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
+          "entry_window_end": "2026-04-30",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "최근 15일 최고가(2026-04-17)",
@@ -4303,7 +4361,16 @@
             }
           ],
           "reason_text": "아주IB투자가 최근 1년 초과 주가상승률 200% 이상으로 2026-04-16 투자주의종목 1일 지정. 향후 초과상승률 200%↑ & 15일 고점 & 상위 10개 계좌 매수관여율 4일↑를 모두 충족하면 04-29까지 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능(KRX 규정 기준).",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -4379,6 +4446,8 @@
         "change_pct": 29.96,
         "trade_amount": 713732857950
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "22일 코스닥 시장 공매도 수량 상위 종목. 씨아이에스, 국일제지 등",
@@ -4508,6 +4577,8 @@
         "change_pct": 17.51,
         "trade_amount": 434094810700
       },
+      "bullish_today": true,
+      "bullish_streak": 3,
       "news": [
         {
           "title": "미사일 구동장치는 퍼스텍…송수신 제어모듈은 넥스윌",
@@ -4563,6 +4634,7 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
+          "source": "disclosure",
           "thresholds": [
             {
               "desc": "15일 전(2026-03-30) 대비 100%↑",
@@ -4578,7 +4650,17 @@
               "current": 16360,
               "triggered": false
             }
-          ]
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000835"
         },
         {
           "label": "투자위험 근접",
@@ -4623,9 +4705,10 @@
           "end": "2026-04-29",
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-23",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -4701,7 +4784,55 @@
         "change_pct": 4.0,
         "trade_amount": 95655119100
       },
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "HJ중공업, 1만TEU급 컨선 2척 추가 수주…3572억원 규모",
+          "url": "https://www.mk.co.kr/news/business/12028044",
+          "source": "매경",
+          "published_at": "2026-04-27T01:46:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "HJ중공업, 3571억원 규모 컨테이너선 2척 수주",
+          "url": "https://www.hankyung.com/article/2026042785506",
+          "source": "한경",
+          "published_at": "2026-04-27T01:10:08",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "HJ중공업, 1만TEU급 컨테이너선 2척 추가 수주… 3572억원 규모",
+          "url": "https://biz.chosun.com/industry/company/2026/04/27/JXLMJ6RTQ5DSNJTPLYBZGS7HKY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T00:53:50",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "disclosures": [
         {
@@ -4792,8 +4923,36 @@
       "low_price": 58900,
       "industry": "일반 목적용 기계 제조업",
       "sector": "대형선박용엔진,내연발전엔진",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "조선",
+        "LNG선 기자재",
+        "전력설비"
+      ],
+      "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        },
+        {
+          "name": "LNG선 기자재",
+          "path": [
+            "전쟁",
+            "중동전쟁",
+            "해운",
+            "LNG선 기자재"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "AI",
+            "AI 인프라",
+            "전력설비"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-21",
@@ -4801,59 +4960,76 @@
         "change_pct": 11.6,
         "trade_amount": 208891472400
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "[특징주] 한화엔진, 8%대 급등⋯‘어닝 서프라이즈’로 증권가 목표가 줄상향",
+          "url": "https://www.etoday.co.kr/news/view/2579382",
+          "source": "이투데이",
+          "published_at": "2026-04-27T00:56:00",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "\"높아지는 미국 수주 기대감\"…한화엔진 6%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02079526645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T00:32:22",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "\"한화엔진, 美 데이터센터용 4행정 엔진 수주 가능성…목표가↑\"-SK",
+          "url": "https://www.hankyung.com/article/2026042779626",
+          "source": "한경",
+          "published_at": "2026-04-26T22:51:36",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한화엔진, 호실적에 미국 수주 기대감...목표주가 10만원 ↑-SK",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01262806645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-26T22:48:25",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "[오늘의 증시일정] 삼성물산ㆍ한화엔진ㆍ현대로템 등",
           "url": "https://www.etoday.co.kr/news/view/2578738",
           "source": "이투데이",
           "published_at": "2026-04-23T23:18:00",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "조선·엔진주 뜨겁네…18% 급등 한화엔진, 신고가 경신 [매경 자이앤트]",
-          "url": "https://www.mk.co.kr/news/stock/12020038",
-          "source": "매경",
-          "published_at": "2026-04-17T06:23:57",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한신평, 한화엔진 신용등급 전망 '긍정적' 상향",
-          "url": "https://www.fnnews.com/news/202604150910403372",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-04-16T08:47:57.561584",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한화엔진, 고수익성 레벨 향해 구조적 상승 전망…목표가↑-메리츠",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02414086645416448",
-          "source": "이데일리",
-          "published_at": "2026-04-14T22:53:54",
-          "causal_chain": "조선·엔진주 업종 강세→한화엔진 18% 급등, 신고가 경신+한신평 신용등급 전망 '긍정적' 상향+메리츠 목표가 상향(고수익성 레벨 향해 구조적 상승 전망)",
-          "macro_event": "조선·엔진주 업종 전반 강세",
+          "causal_chain": "1분기 어닝 서프라이즈 + 미국 데이터센터용 4행정 엔진 수주 가능성 부각 → 증권가 목표가 줄상향(SK증권 목표주가 10만원 등) + 한신평 신용등급 전망 '긍정적' 상향 → 한화엔진 급등·신고가 경신.",
+          "macro_event": "미국 데이터센터용 4행정 엔진 수주 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4942,6 +5118,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "애경케미칼, R&D 투자 확대...고부가 소재 전환 박차",
@@ -5061,6 +5239,8 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "23일 코스닥 시장 공매도 수량 상위 종목. 우리기술, LS머트리얼즈 등",
@@ -5195,6 +5375,8 @@
         "change_pct": 6.5,
         "trade_amount": 69372790400
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "동진쎄미켐, 211억 규모 자사주 소각",
@@ -5337,7 +5519,24 @@
         "change_pct": 11.54,
         "trade_amount": 284154687000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "OCI홀딩스, 비중국산 폴리실리콘 재평가·스페이스X와 계약…증권가, 목표가 상향",
+          "url": "https://www.etoday.co.kr/news/view/2579047",
+          "source": "이투데이",
+          "published_at": "2026-04-26T21:00:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "OCI홀딩스, 중장기 펀더멘털 변화 긍정적..목표가 55% ↑ -삼성證",
           "url": "https://www.fnnews.com/news/202604240845338828",
@@ -5390,21 +5589,6 @@
           "published_at": "2026-04-24T01:46:00",
           "causal_chain": "스페이스X發 태양광 수요 기대와 공급망 재편·신규 수요로 수익성 개선, 2분기 연속 흑자(1Q 영업익 108억) 및 신영증권 목표가 40만원 제시로 9%대 급등.",
           "macro_event": "스페이스X發 태양광 수요 기대 + OCI홀딩스 2분기 연속 흑자 + 신영증권 목표가 40만원 제시",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "OCI홀딩스, 우주 태양광 수요 확대 기대에 15%대 급등",
-          "url": "https://www.hankyung.com/article/2026042436936",
-          "source": "한경",
-          "published_at": "2026-04-24T01:09:37",
-          "causal_chain": "우주 태양광 수요 확대 기대 부각(제목1) + 1분기 영업이익 108억원·2분기 연속 흑자로 실적 회복(제목3·4) + 신영증권이 태양광·에너지 재평가 근거로 2분기 최대 영업익 전망·목표가 40만원 제시(제목2)→리레이팅 기대에 15%대 급등.",
-          "macro_event": "우주 태양광 수요 확대 기대 + 증권사 리레이팅(목표가 40만원) 동반 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5489,8 +5673,26 @@
       "low_price": 6250,
       "industry": "특수 목적용 기계 제조업",
       "sector": "산업용 레이저 가공장비",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체 후공정 장비",
+        "2차전지 장비 수혜"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        },
+        {
+          "name": "2차전지 장비 수혜",
+          "path": [
+            "전기차",
+            "2차전지",
+            "2차전지 장비 수혜"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-20",
@@ -5498,6 +5700,8 @@
         "change_pct": 14.6,
         "trade_amount": 117894989170
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -5537,9 +5741,13 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
-          "end": "2026-05-08",
+          "source": "disclosure",
+          "end": "2026-05-11",
           "reason_text": "한빛레이저(KR7452190002)가 2026-04-23 단기과열종목 지정예고됨. 예고일부터 10거래일 이내 ①주가상승률(당일 종가≥직전 40거래일 평균 130%) ②거래회전율(최근 2거래일 평균≥직전 40거래일 평균 600%) ③주가변동성(최근 2거래일 평균≥직전 40거래일 평균 150%) 3요건 모두 충족 + 종가 상승 시 다음 거래일부터 3거래일 단일가매매 지정.",
-          "prev_stage": null
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/23 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000661"
         }
       ],
       "intraday": {
@@ -5645,6 +5853,8 @@
         "change_pct": 8.15,
         "trade_amount": 65995006800
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "SK증권 “삼아알미늄, 하반기 풀캐파 가동 예상⋯이달부터 실적 반등”",
@@ -5700,6 +5910,7 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
+          "source": "disclosure",
           "thresholds": [
             {
               "desc": "T-5(2026-04-08) 대비 60%↑",
@@ -5722,7 +5933,17 @@
               "current": 71300,
               "triggered": true
             }
-          ]
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000836"
         },
         {
           "label": "투자위험 근접",
@@ -5767,9 +5988,10 @@
           "end": "2026-04-29",
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
-          "single_price": false,
           "next_trading_day_for_predicted": "2026-04-23",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -5840,6 +6062,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.46,
@@ -5927,6 +6151,8 @@
         "change_pct": 9.85,
         "trade_amount": 268842011400
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -6007,6 +6233,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.46,
@@ -6101,6 +6329,8 @@
         "change_pct": 5.63,
         "trade_amount": 94281586000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "에이피알 '콜라겐 마스크'…판매량 1000만개 돌파",
@@ -6262,6 +6492,8 @@
         "change_pct": 11.52,
         "trade_amount": 73424050090
       },
+      "bullish_today": true,
+      "bullish_streak": 2,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -6302,7 +6534,10 @@
           "regulation": "2026-04-23~2026-04-27 3거래일간 30분 단위 단일가매매",
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
-          "single_price": true
+          "single_price": true,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000670"
         }
       ],
       "intraday": {
@@ -6376,6 +6611,8 @@
         "change_pct": 11.34,
         "trade_amount": 76513013200
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -6402,6 +6639,12 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 155200,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-06",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "최근 15일 최고가(2026-04-17)",
@@ -6419,7 +6662,16 @@
             }
           ],
           "reason_text": "두산테스나가 최근 1년 초과 주가상승률 200% 이상으로 2026-04-20 투자주의종목 1일 지정. 향후 초과상승률 200%↑ & 15일 최고가 & 상위 10개 계좌 매수관여율 4일↑를 모두 충족하면 05-04까지 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -6495,6 +6747,8 @@
         "change_pct": 9.3,
         "trade_amount": 83964996160
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.46,
@@ -6580,6 +6834,8 @@
         "change_pct": 17.18,
         "trade_amount": 141961641000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -6698,7 +6954,25 @@
         "change_pct": 1.4,
         "trade_amount": 53560937400
       },
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "HD현대일렉트릭·심텍·RF머트리얼즈[하나證 주간추천주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01876166645419728",
+          "source": "이데일리",
+          "published_at": "2026-04-24T22:00:05",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.18,
       "index_multiple_current": 50.39,
@@ -6795,6 +7069,8 @@
         "change_pct": 18.52,
         "trade_amount": 172399929800
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "반도체·이차전지·보안주 ‘삼총사’발 코스피 랠리…DB하이텍, 역사적 신고가 달성 [매경 자이앤트]",
@@ -6916,6 +7192,8 @@
         "change_pct": 29.71,
         "trade_amount": 62859521865
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -6998,6 +7276,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "핑거, 300억원 유상증자…서룡전자 주식회사에 제3자배정",
@@ -7161,6 +7441,8 @@
         "change_pct": 4.82,
         "trade_amount": 51890060800
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "‘상위 1% 투자자의 픽’은 달바글로벌·하이닉스…2차전지·금융주는 매도 [주식 초고수는 지금]",
@@ -7344,8 +7626,25 @@
       "low_price": 70200,
       "industry": "특수 목적용 기계 제조업",
       "sector": "PCB 자동화 설비",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체 후공정 장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        },
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-21",
@@ -7353,7 +7652,25 @@
         "change_pct": 11.82,
         "trade_amount": 58400183600
       },
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "실적 개선 기대 반도체 장비…한미반도체·태성 신고가 경신 [매경 자이앤트]",
+          "url": "https://www.mk.co.kr/news/stock/12028068",
+          "source": "매경",
+          "published_at": "2026-04-27T01:57:06",
+          "causal_chain": "반도체 장비 업종 실적 개선 기대 → 태성·한미반도체 등 신고가 경신",
+          "macro_event": "반도체 장비 업종 실적 개선 기대에 따른 신고가 경신",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.18,
       "index_multiple_current": 67.11,
@@ -7438,6 +7755,8 @@
         "change_pct": 16.77,
         "trade_amount": 115834129280
       },
+      "bullish_today": true,
+      "bullish_streak": 2,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -7477,6 +7796,7 @@
           "view_date": "2026-04-22",
           "next_trading_day": "2026-04-23",
           "single_price": false,
+          "source": "disclosure",
           "thresholds": [
             {
               "desc": "지정일(2026-04-22) +2일 종가 대비 40%↑",
@@ -7485,7 +7805,17 @@
               "current": 12260,
               "triggered": false
             }
-          ]
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260422000597"
         }
       ],
       "intraday": {
@@ -7561,6 +7891,8 @@
         "change_pct": 8.29,
         "trade_amount": 52975170900
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.46,
@@ -7656,7 +7988,39 @@
         "change_pct": 2.43,
         "trade_amount": 57908146000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "파두, 1분기 매출 595억원 ‘역대 최대’… 영업익 77억원 ‘흑자전환’",
+          "url": "https://biz.chosun.com/it-science/ict/2026/04/27/KOWYVJNKZND5LNOVFL2V2IZ7SA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T02:16:30",
+          "causal_chain": "파두 1분기 매출 595억원 역대 최대 + 영업이익 77억원 흑자전환 → 실적 턴어라운드 부각.",
+          "macro_event": "파두 1분기 실적 어닝 서프라이즈(매출 595억 역대 최대·영업익 77억 흑자전환)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "파두, 1Q 연결 영업익 77억…전년비 흑자전환",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02581366645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T01:36:28",
+          "causal_chain": "파두 1분기 연결 영업이익 77억원으로 전년비 흑자전환 → 실적 턴어라운드 가시화.",
+          "macro_event": "파두 1Q 연결 영업이익 77억, 전년비 흑자전환",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "‘코스닥 성장주’ 쓸어담은 초고수...알테오젠·파두 나란히 순매수 1·2위[주식 초고수는 지금]",
           "url": "https://www.sedaily.com/article/20032793",
@@ -7692,21 +8056,6 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03480086645415792",
           "source": "이데일리",
           "published_at": "2026-04-13T05:20:42",
-          "causal_chain": "파두 151억 규모 기업용 SSD 컨트롤러 공급계약 체결 공시 → 코스닥 성장주 초고수 투자자 순매수 2위 유입",
-          "macro_event": "파두 151억 규모 SSD 컨트롤러 공급계약 체결",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "파두, 152억원 규모 기업용 SSD 컨트롤러 공급계약",
-          "url": "https://www.asiae.co.kr/article/2026041311001278816",
-          "source": "아시아경제",
-          "published_at": "2026-04-13T02:00:12",
           "causal_chain": "파두 151억 규모 기업용 SSD 컨트롤러 공급계약 체결 공시 → 코스닥 성장주 초고수 투자자 순매수 2위 유입",
           "macro_event": "파두 151억 규모 SSD 컨트롤러 공급계약 체결",
           "newzy_freshness": null,
@@ -7804,7 +8153,25 @@
         "change_pct": 8.04,
         "trade_amount": 77867294400
       },
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "RFHIC, 1Q 연결 영업익 77억…전년비 107%↑",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03621126645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T05:32:17",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.18,
       "index_multiple_current": 25.89,
@@ -7899,7 +8266,54 @@
         "change_pct": 18.92,
         "trade_amount": 90361831500
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "\"중저가 전기차도 접수\" 엔켐, 유럽 중저가 EV 시장 공략 본격화",
+          "url": "https://www.fnnews.com/news/202604270929191593",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-04-27T09:37:52.723305",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "엔켐, 유럽 중저가 EV 시장 공략 본격화… 전해액 전략 다변화",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02768326645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T02:04:56",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "엔켐 “유럽 중저가 전기차용 전해액 전략 강화”",
+          "url": "https://www.sedaily.com/article/20037439",
+          "source": "서울경제",
+          "published_at": "2026-04-27T01:22:15",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "엔켐 “북미 전해액 공급 구조 ‘이중 축’ 재편”",
           "url": "https://www.sedaily.com/article/20034520",
@@ -8017,6 +8431,8 @@
         "change_pct": 5.35,
         "trade_amount": 57718467600
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -8115,14 +8531,16 @@
         "change_pct": 0.76,
         "trade_amount": 56377916000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
-          "title": "\"현대차, 1분기 저점으로 실적 반등 기대…목표가↑\"-LS",
-          "url": "https://www.hankyung.com/article/2026042432606",
-          "source": "한경",
-          "published_at": "2026-04-23T22:42:58",
-          "causal_chain": "자회사 LS ELECTRIC이 북미 데이터센터 수요로 1~3월 최고 실적·수주잔고 5조6000억원 기록→증권사 목표가 일제 상향(하나 77%↑·KB 26만원)→지주사 LS에 간접 수혜 기대. 별도로 LS그룹 전사 DX 가속(LS GPT·AI 비전).",
-          "macro_event": "자회사 LS ELECTRIC 북미 호조 및 증권사 목표가 상향 (지주사 간접수혜)",
+          "title": "롯데웰푸드, 1분기 본격 이익 개선…목표주가↑-LS證",
+          "url": "https://www.fnnews.com/news/202604270849155864",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-04-27T09:37:52.723297",
+          "causal_chain": "LS그룹 전사 DX 가속('LS GPT'·'AI 비전' 도입)으로 그룹 체질 개선 부각. 자회사 LS일렉트릭은 AI 투자 확대에 따른 전력기기 수요 증가로 급등·목표가 대폭 상향(NH 25%↑, 하나 77%↑)되며 지주사 가치 동반 재평가.",
+          "macro_event": "LS그룹 전사 디지털 전환 가속 + 자회사 LS일렉트릭 AI 수혜 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -8132,27 +8550,12 @@
           "newzy_verdict": null
         },
         {
-          "title": "[인기검색TOP5] 대원전선, 아모그린텍, LS ELECTRIC, 유니드, 두산에너빌리티",
-          "url": "https://www.mk.co.kr/news/stock/12025640",
-          "source": "매경",
-          "published_at": "2026-04-23T09:19:35",
-          "causal_chain": "자회사 LS ELECTRIC이 북미 데이터센터 수요로 1~3월 최고 실적·수주잔고 5조6000억원 기록→증권사 목표가 일제 상향(하나 77%↑·KB 26만원)→지주사 LS에 간접 수혜 기대. 별도로 LS그룹 전사 DX 가속(LS GPT·AI 비전).",
-          "macro_event": "자회사 LS ELECTRIC 북미 호조 및 증권사 목표가 상향 (지주사 간접수혜)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "LSグループが全社DX加速 生産性と品質向上",
-          "url": "https://biz.chosun.com/jp/jp-industry/2026/04/23/TT55KBAYRBE3DLWJUPZ6G4IZLQ/",
+          "title": "LS電線 アンマ海上風力の1771億ウォン供給契約を解除",
+          "url": "https://biz.chosun.com/jp/jp-industry/2026/04/27/YIXTD7HR3NCQLEFTGTAVLLMQSM/",
           "source": "조선비즈",
-          "published_at": "2026-04-23T07:15:31",
-          "causal_chain": "자회사 LS ELECTRIC이 북미 데이터센터 수요로 1~3월 최고 실적·수주잔고 5조6000억원 기록→증권사 목표가 일제 상향(하나 77%↑·KB 26만원)→지주사 LS에 간접 수혜 기대. 별도로 LS그룹 전사 DX 가속(LS GPT·AI 비전).",
-          "macro_event": "자회사 LS ELECTRIC 북미 호조 및 증권사 목표가 상향 (지주사 간접수혜)",
+          "published_at": "2026-04-27T09:02:03",
+          "causal_chain": null,
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -8162,12 +8565,12 @@
           "newzy_verdict": null
         },
         {
-          "title": "사무실엔 ‘LS GPT’, 공장엔 ‘AI 비전’… 디지털 전환 속도내는 LS",
-          "url": "https://biz.chosun.com/industry/company/2026/04/23/LSE3M2ZBD5FCBCBLCP6UDRQXLU/",
+          "title": "LS Electric急伸 AI投資追い電力機器需要増",
+          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/27/K5VKKZYDCBG7VICCX2NXPZWAVI/",
           "source": "조선비즈",
-          "published_at": "2026-04-23T07:15:31",
-          "causal_chain": "자회사 LS ELECTRIC이 북미 데이터센터 수요로 1~3월 최고 실적·수주잔고 5조6000억원 기록→증권사 목표가 일제 상향(하나 77%↑·KB 26만원)→지주사 LS에 간접 수혜 기대. 별도로 LS그룹 전사 DX 가속(LS GPT·AI 비전).",
-          "macro_event": "자회사 LS ELECTRIC 북미 호조 및 증권사 목표가 상향 (지주사 간접수혜)",
+          "published_at": "2026-04-27T00:59:41",
+          "causal_chain": "LS그룹 전사 DX 가속('LS GPT'·'AI 비전' 도입)으로 그룹 체질 개선 부각. 자회사 LS일렉트릭은 AI 투자 확대에 따른 전력기기 수요 증가로 급등·목표가 대폭 상향(NH 25%↑, 하나 77%↑)되며 지주사 가치 동반 재평가.",
+          "macro_event": "LS그룹 전사 디지털 전환 가속 + 자회사 LS일렉트릭 AI 수혜 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -8177,12 +8580,27 @@
           "newzy_verdict": null
         },
         {
-          "title": "ハナ証券がLSエレクトリック目標株価77％引き上げ AI投資で業績拡大見込む",
-          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/22/NEQ77ZFEO5GFTODTUIVJ557Z2E/",
+          "title": "NH投資証券がLS Electric目標株価25％引き上げ 利益成長で割高感和らぐ",
+          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/27/IH46FYXCP5ENPA6K5UI2F6XRCM/",
           "source": "조선비즈",
-          "published_at": "2026-04-21T23:34:57",
-          "causal_chain": "자회사 LS ELECTRIC이 북미 데이터센터 수요로 1~3월 최고 실적·수주잔고 5조6000억원 기록→증권사 목표가 일제 상향(하나 77%↑·KB 26만원)→지주사 LS에 간접 수혜 기대. 별도로 LS그룹 전사 DX 가속(LS GPT·AI 비전).",
-          "macro_event": "자회사 LS ELECTRIC 북미 호조 및 증권사 목표가 상향 (지주사 간접수혜)",
+          "published_at": "2026-04-26T23:59:09",
+          "causal_chain": "LS그룹 전사 DX 가속('LS GPT'·'AI 비전' 도입)으로 그룹 체질 개선 부각. 자회사 LS일렉트릭은 AI 투자 확대에 따른 전력기기 수요 증가로 급등·목표가 대폭 상향(NH 25%↑, 하나 77%↑)되며 지주사 가치 동반 재평가.",
+          "macro_event": "LS그룹 전사 디지털 전환 가속 + 자회사 LS일렉트릭 AI 수혜 부각",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "LS証券 現代モービス目標58万ウォン維持 下期に電動化回復見込む",
+          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/27/4WSQBNSIEFB6ZH35WDRCFJUD5E/",
+          "source": "조선비즈",
+          "published_at": "2026-04-26T23:40:39",
+          "causal_chain": "LS그룹 전사 DX 가속('LS GPT'·'AI 비전' 도입)으로 그룹 체질 개선 부각. 자회사 LS일렉트릭은 AI 투자 확대에 따른 전력기기 수요 증가로 급등·목표가 대폭 상향(NH 25%↑, 하나 77%↑)되며 지주사 가치 동반 재평가.",
+          "macro_event": "LS그룹 전사 디지털 전환 가속 + 자회사 LS일렉트릭 AI 수혜 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -8271,6 +8689,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "거래소 \"벨로크 주권매매거래 정지\"",
@@ -8397,6 +8817,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -8473,8 +8895,18 @@
       "low_price": 7320,
       "industry": "반도체 제조업",
       "sector": "반도체패키지(SOP,DIP,QFP)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-21",
@@ -8482,14 +8914,31 @@
         "change_pct": 3.27,
         "trade_amount": 50457971260
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "24일 코스닥 시장 공매도 수량 상위 종목. SFA반도체, 유니슨 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/27/GFQTQNBQMI2DQMDCGI2TGOJQMQ/",
+          "source": "조선비즈",
+          "published_at": "2026-04-26T23:01:16",
+          "causal_chain": "공매도 수량 상위 종목 리스트 등재 기사(로봇 자동 생성)—SFA반도체 주가에 대한 구체적 상승·하락 원인 미언급.",
+          "macro_event": "해당 없음(공매도 수량 상위 종목 나열 기사)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "14일 코스닥 시장 공매도 수량 상위 종목. 쏠리드, SFA반도체 등",
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/15/GUZGGZRRGJSWMYTBMYYDCNDEHE/",
           "source": "조선비즈",
           "published_at": "2026-04-14T23:01:18",
-          "causal_chain": "구체적 원인 미언급—14일 코스닥 공매도 수량 상위 종목 리스트에 SFA반도체 등재(단순 순위 나열 기사).",
-          "macro_event": "코스닥 공매도 수량 상위 종목 리스트",
+          "causal_chain": "공매도 수량 상위 종목 리스트 등재 기사(로봇 자동 생성)—SFA반도체 주가에 대한 구체적 상승·하락 원인 미언급.",
+          "macro_event": "해당 없음(공매도 수량 상위 종목 나열 기사)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -8575,6 +9024,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "index_change_pct": 0.18,
@@ -8657,6 +9108,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "22일 코스닥 시장 공매도 수량 상위 종목. 씨아이에스, 국일제지 등",

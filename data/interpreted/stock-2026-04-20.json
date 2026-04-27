@@ -1,6 +1,6 @@
 {
   "date": "2026-04-20",
-  "generated_at": "2026-04-21T21:12:47.457691",
+  "generated_at": "2026-04-28T06:02:46.818168",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -94,10 +94,24 @@
       "low_price": 70300,
       "industry": "특수 목적용 기계 제조업",
       "sector": "LP CVD",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "태양광"
+      ],
+      "theme_paths": [
+        {
+          "name": "태양광",
+          "path": [
+            "AI",
+            "AI 인프라",
+            "전력설비",
+            "태양광"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "\"주성엔지니어링, 미·중 다툼에 테슬라 납품 뚫나…목표가↑\"-한국",
@@ -116,6 +130,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 66.49,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 91500,
         "high_date": "2026-04-20",
@@ -209,6 +226,8 @@
         "change_pct": 29.7,
         "trade_amount": 1381389483375
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "“AI 데이터센터 확대에 1분기 호실적 예상”…대한전선  주목[주식 초고수는 지금]",
@@ -242,6 +261,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.44,
+      "index_multiple_current": -5.36,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 42775,
         "high_date": "2026-04-20",
@@ -313,18 +335,46 @@
       "low_price": 121800,
       "industry": "전자부품 제조업",
       "sector": "P.C.B(인쇄회로기판),M.L.B 제조",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "AI",
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "상상인證 \"이수페타시스, 수요의 구체화…목표가 30%↑\"",
+          "url": "https://www.etoday.co.kr/news/view/2579285",
+          "source": "이투데이",
+          "published_at": "2026-04-26T22:48:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "SOL AI반도체TOP2플러스, 상장 3주 만에 순자산 3500억 돌파",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02679766645416120",
           "source": "이데일리",
           "published_at": "2026-04-13T23:36:39",
-          "causal_chain": "AI반도체 ETF(SOL AI반도체TOP2플러스)가 상장 3주 만에 순자산 3500억 돌파 → AI반도체 테마 전반에 대한 시장 관심 확인. 다만 이수페타시스의 ETF 편입 여부는 뉴스에서 확인 불가",
-          "macro_event": "AI반도체 테마 ETF 순자산 3주 만에 3500억 돌파",
+          "causal_chain": "SOL AI반도체TOP2플러스 ETF가 상장 3주 만에 순자산 3500억 돌파 → AI반도체 테마에 투자자금 유입 가속 확인",
+          "macro_event": "AI반도체 테마 ETF 자금 유입 가속(순자산 3500억 돌파)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -335,6 +385,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.44,
+      "index_multiple_current": 21.05,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 156600,
         "high_date": "2025-12-11",
@@ -445,14 +498,16 @@
         "change_pct": 16.71,
         "trade_amount": 360101983560
       },
+      "bullish_today": true,
+      "bullish_streak": 2,
       "news": [
         {
           "title": "[MK시그널] 퍼스텍, 방산·드론 기술력 부각 및 글로벌 수요 확대에 주가 상승세... K시그널 추천 후 상승률 29.68% 기록",
           "url": "https://www.mk.co.kr/news/stock/12021505",
           "source": "매경",
           "published_at": "2026-04-20T01:12:02",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "방산·드론 기술력 부각 및 글로벌 수요 확대 → 퍼스텍 주가 상승세(MK시그널 추천 후 29.68% 상승률 기록)",
+          "macro_event": "글로벌 방산 수요 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -478,6 +533,9 @@
           "regulation_period": "투자주의 2026-04-21 1일 지정, 판단기간 04-21~05-06 내 요건 충족 시 익일 투자경고종목 지정"
         }
       ],
+      "index_change_pct": 0.44,
+      "index_multiple_current": 37.43,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 16480,
         "high_date": "2026-04-20",
@@ -498,6 +556,13 @@
           "regulation": "투자주의 2026-04-21 1일 지정, 판단기간 04-21~05-06 내 요건 충족 시 익일 투자경고종목 지정",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 13720,
+          "entry_threshold_via": "warn_surge_15d_100pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
+          "entry_window_end": "2026-05-07",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "5일 전(2026-04-10) 대비 60%↑",
@@ -520,7 +585,67 @@
               "current": 15700,
               "triggered": true
             }
-          ]
+          ],
+          "reason_text": "퍼스텍이 15일 전 대비 종가 100% 이상 상승하여 2026-04-21 투자주의종목 1일 지정. 04-21~05-06 내 단기급등(5일 60%↑·15일 최고가·업종지수 대비 5배↑) 또는 중장기급등(15일 100%↑·15일 최고가·업종지수 대비 3배↑) 충족 시 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000608"
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_15d_100pct_after_warn"
+          ],
+          "path": "risk_surge_15d_100pct_after_warn",
+          "price_chg": 1.2886,
+          "index_ratio": 7.22,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "15일 전(2026-03-30) 대비 +100%↑",
+              "base_price": 6860,
+              "threshold": 13720,
+              "current": 15700,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(15영업일) 상승률 대비 3배 이상",
+              "base_price": null,
+              "threshold": 3.0,
+              "current": 7.22,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-17~2026-03-30)",
+              "base_price": 13480,
+              "threshold": 13480,
+              "current": 15700,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 15일 전 종가 대비 100%↑ + 지수 3배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-27",
+          "start": "2026-04-21",
+          "end": "2026-04-27",
+          "view_date": "2026-04-20",
+          "next_trading_day": "2026-04-21",
+          "next_trading_day_for_predicted": "2026-04-21",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -573,9 +698,7 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
-      "hugepark_grade": "적극",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "적극"
     },
     {
       "code": "356680",
@@ -589,8 +712,17 @@
       "low_price": 14300,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "통합 네트워크 보안 솔루션",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "양자"
+      ],
+      "theme_paths": [
+        {
+          "name": "양자",
+          "path": [
+            "양자"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-14",
@@ -598,6 +730,8 @@
         "change_pct": 29.91,
         "trade_amount": 72076581270
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "엑스게이트, PQC 기반 ‘국가암호모듈검증’ 인증 획득",
@@ -661,6 +795,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 157.46,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 19120,
         "high_date": "2026-04-20",
@@ -672,7 +809,7 @@
       },
       "status_badges": [
         {
-          "label": "투자주의 예상",
+          "label": "투자주의 근접",
           "severity": "caution",
           "source": "predicted",
           "thresholds": [
@@ -685,55 +822,16 @@
             }
           ],
           "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-22",
+          "start": "2026-04-21",
+          "end": "2026-04-22",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
           "next_trading_day_for_predicted": "2026-04-21",
-          "next_trading_day_source": "verified"
-        },
-        {
-          "label": "투자경고 예상",
-          "severity": "warning",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "15일 전(2026-03-30) 대비 +100%↑",
-              "base_price": 6850,
-              "threshold": 13700,
-              "current": 16440,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21",
-          "next_trading_day_for_predicted": "2026-04-21",
-          "next_trading_day_source": "verified"
-        },
-        {
-          "label": "단기과열 예상",
-          "severity": "hot",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "직전 5일 평균 대비 +30%↑",
-              "base_price": 12504,
-              "threshold": 16255,
-              "current": 16440,
-              "triggered": true
-            },
-            {
-              "desc": "25일 전(2026-03-16) 대비 +75%↑",
-              "base_price": 6980,
-              "threshold": 12215,
-              "current": 16440,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21",
-          "next_trading_day_for_predicted": "2026-04-21",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -800,10 +898,22 @@
       "low_price": 150000,
       "industry": "기타 금융업",
       "sector": "환경소재,화학필터,이차전지소재등",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "2차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "2차전지",
+          "path": [
+            "전기차",
+            "2차전지"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "20일 코스닥 시장 공매도 금액 상위 종목. 에코프로, 알테오젠 등",
@@ -837,6 +947,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 7.1,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 190000,
         "high_date": "2026-02-26",
@@ -917,8 +1030,13 @@
         "change_pct": 6.49,
         "trade_amount": 101475054100
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 17.93,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 40700,
         "high_date": "2026-04-20",
@@ -1011,6 +1129,8 @@
         "change_pct": 21.35,
         "trade_amount": 309532129200
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "아이씨티케이, 양자산업 수혜 기대감에 28% 급등",
@@ -1044,6 +1164,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 60.54,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 30550,
         "high_date": "2026-04-20",
@@ -1063,7 +1186,73 @@
           "condition": "3가지 모두 충족: (1) 판단일 종가가 5일 전일 종가보다 60% 이상 상승 (2) 판단일 종가가 최근 15일 중 최고가 (3) 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상",
           "regulation": "투자주의 1거래일(2026-04-16), 투자경고 지정 시 2거래일 단일가 매매 (KRX 규정 기준)",
           "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21"
+          "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 25280,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-04-30",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "아이씨티케이가 2026-04-16부터 2026-04-16 당일 투자주의종목으로 지정되고, 04-16부터 04-29일 내 3가지 조건(① 5일 전일 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전일 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_5d_60pct_after_warn"
+          ],
+          "path": "risk_surge_5d_60pct_after_warn",
+          "price_chg": 0.6867,
+          "index_ratio": 10.07,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-13) 대비 +60%↑",
+              "base_price": 15800,
+              "threshold": 25280,
+              "current": 26650,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(5영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 10.07,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-17~2026-03-30)",
+              "base_price": 25800,
+              "threshold": 25800,
+              "current": 26650,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 5일 전 종가 대비 60%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-27",
+          "start": "2026-04-21",
+          "end": "2026-04-27",
+          "view_date": "2026-04-20",
+          "next_trading_day": "2026-04-21",
+          "next_trading_day_for_predicted": "2026-04-21",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -1132,8 +1321,25 @@
       "low_price": 5720,
       "industry": "특수 목적용 기계 제조업",
       "sector": "SMT(PCB 표면실장) 이송 및 추적장비 등 스마트 공정장비",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체 후공정 장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        },
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-17",
@@ -1141,14 +1347,16 @@
         "change_pct": 29.82,
         "trade_amount": 105457808480
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "와이제이링크, 250억 규모 전환사채권 발행 결정",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05225046645418416",
           "source": "이데일리",
           "published_at": "2026-04-21T09:13:31",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "구체적 사유 미언급—와이제이링크 250억 원 규모 전환사채(CB) 발행 결정 공시(자금 조달 목적 단순 공시).",
+          "macro_event": "와이제이링크 250억 원 전환사채 발행 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1162,8 +1370,8 @@
           "url": "https://www.mk.co.kr/news/stock/12023238",
           "source": "매경",
           "published_at": "2026-04-21T09:08:14",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "구체적 사유 미언급—와이제이링크 250억 원 규모 전환사채(CB) 발행 결정 공시(자금 조달 목적 단순 공시).",
+          "macro_event": "와이제이링크 250억 원 전환사채 발행 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1174,6 +1382,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 8.66,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 6840,
         "high_date": "2026-04-20",
@@ -1245,8 +1456,17 @@
       "low_price": 3000,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "정보보안솔루션",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "양자"
+      ],
+      "theme_paths": [
+        {
+          "name": "양자",
+          "path": [
+            "양자"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-16",
@@ -1254,6 +1474,8 @@
         "change_pct": 29.85,
         "trade_amount": 85132781505
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[급등락주 짚어보기] 상폐 극복 삼천리자전거·양자암호 공포에 드림시큐리티 등 '上'",
@@ -1287,6 +1509,9 @@
           "regulation_period": "2026-04-22 1일간 매매거래정지 (조건 충족 시)"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 23.05,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 3880,
         "high_date": "2026-04-20",
@@ -1298,9 +1523,44 @@
       },
       "status_badges": [
         {
-          "label": "투자주의 예상",
-          "severity": "caution",
+          "label": "거래정지 예고",
+          "severity": "danger",
+          "start": "2026-04-22",
+          "end": "2026-04-22",
+          "summary": "드림시큐리티(투자경고종목)가 2026-04-21 종가가 04-17 종가 대비 40% 이상 상승하고 투자경고종목 지정전일 종가보다 높으면 04-22 2026-04-22 당일 매매거래 정지. 조건 미충족 시 정지 없음.",
+          "condition": "2026-04-21 종가가 04-17 종가 대비 40% 이상 상승 + 투자경고종목 지정전일 종가보다 높을 것 (투자경고종목 지정중인 경우에 한함)",
+          "regulation": "2026-04-22 1일간 매매거래정지 (조건 충족 시)",
+          "view_date": "2026-04-20",
+          "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "thresholds": [
+            {
+              "desc": "2026-04-16 종가 대비 40%↑",
+              "base_price": 3545,
+              "threshold": 4963,
+              "current": 3880,
+              "triggered": false
+            }
+          ],
+          "reason_text": "드림시큐리티(투자경고종목)가 2026-04-21 종가가 04-17 종가 대비 40% 이상 상승하고 투자경고종목 지정전일 종가보다 높으면 04-22 2026-04-22 당일 매매거래 정지. 조건 미충족 시 정지 없음.",
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000772"
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
           "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_5d_60pct_after_warn"
+          ],
+          "path": "risk_surge_5d_60pct_after_warn",
+          "price_chg": 0.9478,
+          "index_ratio": 13.9,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
           "thresholds": [
             {
               "desc": "5일 전(2026-04-13) 대비 +60%↑",
@@ -1308,58 +1568,33 @@
               "threshold": 3187,
               "current": 3880,
               "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21",
-          "next_trading_day_for_predicted": "2026-04-21",
-          "next_trading_day_source": "verified"
-        },
-        {
-          "label": "투자경고 예상",
-          "severity": "warning",
-          "source": "predicted",
-          "thresholds": [
+            },
             {
-              "desc": "15일 전(2026-03-30) 대비 +100%↑",
-              "base_price": 1620,
-              "threshold": 3240,
-              "current": 3880,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21",
-          "next_trading_day_for_predicted": "2026-04-21",
-          "next_trading_day_source": "verified"
-        },
-        {
-          "label": "단기과열 예상",
-          "severity": "hot",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "직전 5일 평균 대비 +30%↑",
-              "base_price": 2670,
-              "threshold": 3471,
-              "current": 3880,
+              "desc": "종합지수(5영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 13.9,
               "triggered": true
             },
             {
-              "desc": "25일 전(2026-03-16) 대비 +75%↑",
-              "base_price": 1544,
-              "threshold": 2702,
+              "desc": "최근 15일 최고가 (2026-04-17~2026-03-30)",
+              "base_price": 3545,
+              "threshold": 3545,
               "current": 3880,
               "triggered": true
             }
           ],
-          "regulation": "KRX 단기과열 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 5일 전 종가 대비 60%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-27",
+          "start": "2026-04-21",
+          "end": "2026-04-27",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
           "next_trading_day_for_predicted": "2026-04-21",
-          "next_trading_day_source": "verified"
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -1426,8 +1661,17 @@
       "low_price": 6140,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "전자상거래 보안 솔루션",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "CCTV·보안"
+      ],
+      "theme_paths": [
+        {
+          "name": "CCTV·보안",
+          "path": [
+            "CCTV·보안"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-16",
@@ -1435,14 +1679,16 @@
         "change_pct": 17.32,
         "trade_amount": 91310456400
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "한컴위드, PQC 차세대 보안 기술 부각…양자보안 시장 핵심 플레이어 주목",
           "url": "https://www.asiae.co.kr/article/2026042013463608168",
           "source": "아시아경제",
           "published_at": "2026-04-20T04:46:36",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "PQC(포스트양자암호) 차세대 보안 기술 부각 → 양자보안 시장 핵심 플레이어로 한컴위드 주목.",
+          "macro_event": "PQC 차세대 보안 기술 부각에 따른 양자보안 시장 관심 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1468,6 +1714,9 @@
           "regulation_period": "지정일 포함 3거래일 단일가매매 (연장 시 최대 6거래일)"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 14.98,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 7980,
         "high_date": "2026-04-20",
@@ -1488,6 +1737,8 @@
           "regulation": "지정일 포함 3거래일 단일가매매 (연장 시 최대 6거래일)",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
+          "single_price": true,
+          "source": "disclosure",
           "thresholds": [
             {
               "desc": "지정일 전일(2026-04-16) 대비 20%↑",
@@ -1496,7 +1747,9 @@
               "current": 7090,
               "triggered": false
             }
-          ]
+          ],
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000826"
         }
       ],
       "intraday": {
@@ -1561,12 +1814,50 @@
       "low_price": 43500,
       "industry": "특수 목적용 기계 제조업",
       "sector": "고압 수소 어닐링 장비",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체 후공정 장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        },
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "대신증권 \"HPSP, 다가오는 재평가의 시간…목표가 5만8000원\"",
+          "url": "https://www.etoday.co.kr/news/view/2577865",
+          "source": "이투데이",
+          "published_at": "2026-04-21T22:41:00",
+          "causal_chain": "구체적 매크로 이벤트 미언급—대신증권이 HPSP에 대해 '다가오는 재평가의 시간'이라며 목표가 5만8000원 제시(증권사 밸류에이션 리포트).",
+          "macro_event": "구체적 매크로 이벤트 미언급",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 6.59,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 53900,
         "high_date": "2026-03-19",
@@ -1638,8 +1929,18 @@
       "low_price": 105500,
       "industry": "반도체 제조업",
       "sector": "반도체 제조",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-16",
@@ -1647,14 +1948,16 @@
         "change_pct": 7.0,
         "trade_amount": 69483586500
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "반도체·이차전지·보안주 ‘삼총사’발 코스피 랠리…DB하이텍, 역사적 신고가 달성 [매경 자이앤트]",
           "url": "https://www.mk.co.kr/news/stock/12021674",
           "source": "매경",
           "published_at": "2026-04-20T04:33:10",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "반도체·이차전지·보안주 삼총사 섹터 동반 강세 → 코스피 랠리 속 DB하이텍 역사적 신고가 달성",
+          "macro_event": "반도체·이차전지·보안주 삼총사발 코스피 랠리",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1665,6 +1968,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.44,
+      "index_multiple_current": 50.95,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 128400,
         "high_date": "2026-04-20",
@@ -1745,6 +2051,8 @@
         "change_pct": 30.0,
         "trade_amount": 82834795680
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "[특징주] 코로나19 변이 확산 조짐에 수젠텍ㆍ신풍제약 등 ↑",
@@ -1777,6 +2085,9 @@
           "regulation_period": "지정 시 3거래일 30분 단위 단일가매매"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 6.85,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9390,
         "high_date": "2025-05-29",
@@ -1796,7 +2107,14 @@
           "regulation": "지정 시 3거래일 30분 단위 단일가매매",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
-          "end": "2026-05-06"
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-07",
+          "reason_text": "수젠텍이 2026-04-21 단기과열종목 지정예고. 예고일부터 10거래일 이내 3가지 요건(①40일 종가평균 대비 130%↑ ②2일 거래회전율 평균이 40일 평균의 600%↑ ③2일 주가변동성 평균이 40일 평균의 150%↑) 모두 충족 + 종가 상승 시 익영업일부터 3거래일 30분 단위 단일가매매 지정.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/21 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000820"
         }
       ],
       "intraday": {
@@ -1861,18 +2179,31 @@
       "low_price": 80800,
       "industry": "통신 및 방송 장비 제조업",
       "sector": "비금융지주회사",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "통신장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "통신장비",
+          "path": [
+            "AI",
+            "AI 인프라",
+            "통신장비"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "\"2차전지의 시간\" 삼성SDI, 목표주가 58만원도 코앞…한화비전, 1분기 '어닝 서프라이즈' 예고 [株토피아]",
           "url": "https://www.fnnews.com/news/202604201003455182",
           "source": "파이낸셜뉴스",
           "published_at": "2026-04-20T10:51:51.078048",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "키움증권이 시큐리티 부문 호조로 1분기 어닝 서프라이즈 전망·목표가 12만원 제시 + 2분기 TC본더 발주 시작 전망 + 인도 사이버 보안 필수 인증 STOQ 획득 → 10%대 급등.",
+          "macro_event": "구체적 매크로 이벤트 미언급—키움증권 1분기 어닝 서프라이즈 전망 + 인도 보안 인증 획득이 주가 촉매.",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1886,8 +2217,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/20/IPP2OQFIO5G5HNDSCYBXWCAGDU/",
           "source": "조선비즈",
           "published_at": "2026-04-20T00:40:10",
-          "causal_chain": "키움증권이 한화비전의 1분기 실적이 시장 기대치를 웃도는 어닝 서프라이즈를 전망하고 목표가 12만원을 제시 → 2분기 TC본더 발주 시작 기대감까지 더해져 10%대 급등.",
-          "macro_event": "키움증권의 한화비전 1분기 어닝 서프라이즈 전망 및 목표가 12만원 제시",
+          "causal_chain": "키움증권이 시큐리티 부문 호조로 1분기 어닝 서프라이즈 전망·목표가 12만원 제시 + 2분기 TC본더 발주 시작 전망 + 인도 사이버 보안 필수 인증 STOQ 획득 → 10%대 급등.",
+          "macro_event": "구체적 매크로 이벤트 미언급—키움증권 1분기 어닝 서프라이즈 전망 + 인도 보안 인증 획득이 주가 촉매.",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1901,8 +2232,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02450166645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T00:26:08",
-          "causal_chain": "키움증권이 한화비전의 1분기 실적이 시장 기대치를 웃도는 어닝 서프라이즈를 전망하고 목표가 12만원을 제시 → 2분기 TC본더 발주 시작 기대감까지 더해져 10%대 급등.",
-          "macro_event": "키움증권의 한화비전 1분기 어닝 서프라이즈 전망 및 목표가 12만원 제시",
+          "causal_chain": "키움증권이 시큐리티 부문 호조로 1분기 어닝 서프라이즈 전망·목표가 12만원 제시 + 2분기 TC본더 발주 시작 전망 + 인도 사이버 보안 필수 인증 STOQ 획득 → 10%대 급등.",
+          "macro_event": "구체적 매크로 이벤트 미언급—키움증권 1분기 어닝 서프라이즈 전망 + 인도 보안 인증 획득이 주가 촉매.",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1913,6 +2244,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.44,
+      "index_multiple_current": 11.23,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 97900,
         "high_date": "2026-03-25",
@@ -1986,8 +2320,26 @@
       "low_price": 6220,
       "industry": "특수 목적용 기계 제조업",
       "sector": "산업용 레이저 가공장비",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체 후공정 장비",
+        "2차전지 장비 수혜"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        },
+        {
+          "name": "2차전지 장비 수혜",
+          "path": [
+            "전기차",
+            "2차전지",
+            "2차전지 장비 수혜"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-16",
@@ -1995,8 +2347,13 @@
         "change_pct": 29.92,
         "trade_amount": 172163121900
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": -4.63,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 7520,
         "high_date": "2026-04-20",
@@ -2017,6 +2374,13 @@
           "regulation": "투자주의 1일(04-17), 투자경고 판단기간 04-17~04-30",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 7384,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-04",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "최근 15일 최고가(2026-04-16)",
@@ -2024,6 +2388,17 @@
               "threshold": 6860,
               "current": 6730,
               "triggered": false
+            }
+          ],
+          "reason_text": "한빛레이저가 2026-04-16 종가 기준 5일 전 대비 60% 이상 상승하여 2026-04-17부터 2026-04-17 당일 투자주의종목으로 지정되고, 04-17~04-30 내 3가지 조건(① 5일 전 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
             }
           ]
         }
@@ -2092,18 +2467,29 @@
       "low_price": 269000,
       "industry": "특수 목적용 기계 제조업",
       "sector": "솔루션(로봇 엑츄에이터 모듈과 구동 소프트웨어), 에듀테인먼트 로봇, 로봇 플랫폼",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "로봇"
+      ],
+      "theme_paths": [
+        {
+          "name": "로봇",
+          "path": [
+            "로봇"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "로보티즈, 휴머노이드 'AI 사피엔스' 공개",
           "url": "https://www.etnews.com/20260420000219",
           "source": "전자신문",
           "published_at": "2026-04-20T03:31:58",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "로보티즈가 휴머노이드 'AI 사피엔스'를 공개 → 휴머노이드 로봇 관련주로 부각.",
+          "macro_event": "로보티즈, 휴머노이드 'AI 사피엔스' 공개",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2114,6 +2500,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 12.07,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 364000,
         "high_date": "2026-01-30",
@@ -2185,8 +2574,17 @@
       "low_price": 7500,
       "industry": "전자부품 제조업",
       "sector": "전력증폭기 모듈(PAM)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "AI"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI",
+          "path": [
+            "AI"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-17",
@@ -2194,14 +2592,16 @@
         "change_pct": 7.36,
         "trade_amount": 75589324740
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "PS일렉트로닉스, 약 30억 규모 자사주 소각 추진…주주가치 제고 강화",
           "url": "https://www.asiae.co.kr/article/2026042015445554453",
           "source": "아시아경제",
           "published_at": "2026-04-20T06:44:55",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
+          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2215,8 +2615,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03847446645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T06:30:02",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
+          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2230,8 +2630,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03794966645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T06:22:19",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "PS일렉트로닉스가 30억 규모 자사주 소각을 결정(주주환원 목적의 단순 공시).",
+          "macro_event": "자사주 소각 30억 결정",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2242,6 +2642,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 25.76,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9300,
         "high_date": "2026-01-12",
@@ -2313,8 +2716,17 @@
       "low_price": 44300,
       "industry": "일반 목적용 기계 제조업",
       "sector": "엔진,터빈,내연기관 제조,도매",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "조선"
+      ],
+      "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-17",
@@ -2322,7 +2734,25 @@
         "change_pct": 29.99,
         "trade_amount": 159297028000
       },
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "[MK시그널] STX엔진, 데이터센터 전력원 시장 진출 및 중동 재건 수혜 기대감에 주가 상승세... K시그널 추천 후 상승률 24.15% 기록",
+          "url": "https://www.mk.co.kr/news/stock/12024952",
+          "source": "매경",
+          "published_at": "2026-04-23T00:43:04",
+          "causal_chain": "데이터센터 전력원 시장 진출 기대 + 중동 재건 수혜 기대감 → MK시그널 AI 매수 추천 후 주가 상승세",
+          "macro_event": "데이터센터 전력원 시장 진출 + 중동 재건 수혜 기대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "disclosures": [
         {
@@ -2338,6 +2768,9 @@
           "regulation_period": "지정 시 3거래일 30분 단위 단일가매매"
         }
       ],
+      "index_change_pct": 0.44,
+      "index_multiple_current": 11.36,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 49800,
         "high_date": "2025-09-05",
@@ -2357,7 +2790,14 @@
           "regulation": "지정 시 3거래일 30분 단위 단일가매매",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
-          "end": "2026-05-06"
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-07",
+          "reason_text": "STX엔진이 2026-04-21 단기과열종목 지정예고. 예고일부터 10거래일 이내 주가상승률(40일 평균 종가 130%↑)·거래회전율(2일 평균이 40일 평균 600%↑)·주가변동성(2일 평균이 40일 평균 150%↑) 3가지 모두 충족 + 종가가 직전일·예고전일 대비 상승 시 익영업일부터 단기과열종목 지정(3거래일 30분 단위 단일가매매). 시총 상위 100위 이내 종목은 지정 제외 가능. 투자경고·위험종목은 단기과열 지정 절차 제외.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/21 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000663"
         }
       ],
       "intraday": {
@@ -2428,6 +2868,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "뉴진스 해린·혜인·하니, 덴마크 갔다…민지 거취는 '아직'",
@@ -2476,6 +2918,9 @@
           "regulation_period": "2026-04-21 1일간 투자주의종목 지정"
         }
       ],
+      "index_change_pct": 0.44,
+      "index_multiple_current": 65.66,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 8030,
         "high_date": "2026-04-20",
@@ -2495,7 +2940,11 @@
           "condition": "단일계좌 순매수 수량이 상장주식수 대비 2% 이상 + 종가 전일 대비 5% 이상 상승",
           "regulation": "2026-04-21 1일간 투자주의종목 지정",
           "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21"
+          "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000610"
         }
       ],
       "intraday": {
@@ -2566,6 +3015,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "현대바이오, 전립선암 병용요법 임상시험계획 변경안 최종 승인",
@@ -2584,6 +3035,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 5.85,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 21500,
         "high_date": "2026-02-24",
@@ -2661,6 +3115,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -2690,6 +3146,9 @@
           "regulation_period": "투자주의 1일(04-21), 판단기간 04-21~05-06 내 조건 충족 시 익일 투자경고 지정"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 33.02,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9910,
         "high_date": "2025-05-28",
@@ -2709,7 +3168,14 @@
           "regulation": "지정 시 3거래일 30분 단위 단일가매매",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
-          "end": "2026-05-06"
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-07",
+          "reason_text": "셀리드가 2026-04-21 단기과열종목 지정예고. 예고일부터 10거래일 이내 주가상승률(40일 평균 종가 130%↑)·거래회전율(2일 평균이 40일 평균 600%↑)·주가변동성(2일 평균이 40일 평균 150%↑) 3가지 모두 충족하고 종가가 직전일·예고 전일 대비 상승 시 다음 매매거래일부터 단기과열종목 지정(3거래일 30분 단위 단일가매매).",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/21 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000818"
         },
         {
           "label": "투자경고 예고",
@@ -2720,7 +3186,74 @@
           "condition": "① 판단일 종가가 5일 전 종가 대비 60%↑ ② 최근 15일 종가 중 최고가 ③ 5일 전 기준 주가상승률이 종합주가지수 상승률의 5배↑",
           "regulation": "투자주의 1일(04-21), 판단기간 04-21~05-06 내 조건 충족 시 익일 투자경고 지정",
           "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21"
+          "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 3960,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-07",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "셀리드가 5일 전 대비 60% 이상 급등하여 2026-04-21 투자주의종목 1일 지정. 04-21~05-06 내 3가지 조건(① 5일 전 대비 60%↑ ② 최근 15일 최고가 ③ 종합주가지수 대비 5배↑) 모두 충족 시 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000782"
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_3d_45pct_after_warn"
+          ],
+          "path": "risk_surge_3d_45pct_after_warn",
+          "price_chg": 0.4784,
+          "index_ratio": 24.59,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "3일 전(2026-04-15) 대비 +45%↑",
+              "base_price": 2780,
+              "threshold": 4031,
+              "current": 4110,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(3영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 24.59,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-17~2026-03-30)",
+              "base_price": 3815,
+              "threshold": 3815,
+              "current": 4110,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 3일 전 종가 대비 45%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-27",
+          "start": "2026-04-21",
+          "end": "2026-04-27",
+          "view_date": "2026-04-20",
+          "next_trading_day": "2026-04-21",
+          "next_trading_day_for_predicted": "2026-04-21",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -2805,7 +3338,24 @@
         "change_pct": 29.93,
         "trade_amount": 102096319890
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "양자컴·미토스 동시 급부상…라온시큐어 'AI 인증'에 증시 주목",
+          "url": "https://www.asiae.co.kr/article/2026042208303089028",
+          "source": "아시아경제",
+          "published_at": "2026-04-21T23:30:30",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "[특징주] 엔비디아 양자컴퓨팅 신기술 공개…라온시큐어 등 양자보안株 급등",
           "url": "https://www.etoday.co.kr/news/view/2576237",
@@ -2853,6 +3403,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 29.85,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 16960,
         "high_date": "2026-04-20",
@@ -2868,11 +3421,18 @@
           "severity": "warning",
           "start": "2026-04-17",
           "end": "2026-04-30",
-          "summary": "라온시큐어가 5일 전 대비 종가 60% 이상 상승하여 2026-04-17 2026-04-17 당일 투자주의종목으로 지정되고, 04-17부터 04-30까지 3가지 조건(① 5일 전 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "summary": "라온시큐어가 5일 전 대비 종가 60% 이상 상승하여 2026-04-17 당일 투자주의종목으로 지정되고, 04-17부터 04-30까지 3가지 조건(① 5일 전 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
           "condition": "① 판단일 종가가 5일 전 종가 대비 60%↑ ② 최근 15일 종가 중 최고가 ③ 5일 전 기준 주가상승률이 종합주가지수 상승률의 5배 이상 — 3개 모두 충족 시 익일 투자경고 지정",
           "regulation": "투자주의 1일(2026-04-17), 투자경고 지정 판단기간 04-17~04-30",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 14272,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-04",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "최근 15일 최고가(2026-04-16)",
@@ -2881,7 +3441,66 @@
               "current": 15410,
               "triggered": true
             }
+          ],
+          "reason_text": "라온시큐어가 5일 전 대비 종가 60% 이상 상승하여 2026-04-17 당일 투자주의종목으로 지정되고, 04-17부터 04-30까지 3가지 조건(① 5일 전 대비 60% 이상 상승 ② 최근 15일 최고가 ③ 5일 전 기준 상승률이 종합주가지수 대비 5배 이상)을 모두 충족하면 투자경고종목으로 지정될 수 있음.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
           ]
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_5d_60pct_after_warn"
+          ],
+          "path": "risk_surge_5d_60pct_after_warn",
+          "price_chg": 0.7276,
+          "index_ratio": 10.67,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-13) 대비 +60%↑",
+              "base_price": 8920,
+              "threshold": 14272,
+              "current": 15410,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(5영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 10.67,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-17~2026-03-30)",
+              "base_price": 15410,
+              "threshold": 15410,
+              "current": 15410,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 5일 전 종가 대비 60%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-27",
+          "start": "2026-04-21",
+          "end": "2026-04-27",
+          "view_date": "2026-04-20",
+          "next_trading_day": "2026-04-21",
+          "next_trading_day_for_predicted": "2026-04-21",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -2949,12 +3568,20 @@
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "유입, 몰드, 주상, 건식 변압기 등",
       "themes": [
+        "중동전쟁",
         "AI데이터센터",
         "전력설비",
         "태양광",
         "저PBR"
       ],
       "theme_paths": [
+        {
+          "name": "중동전쟁",
+          "path": [
+            "전쟁",
+            "중동전쟁"
+          ]
+        },
         {
           "name": "AI데이터센터",
           "path": [
@@ -2985,7 +3612,24 @@
         "change_pct": 5.4,
         "trade_amount": 140632972900
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
+        {
+          "title": "NH證 “산일전기, 이란 전쟁으로 변압기 수요 확대 기대…목표가 25만원”",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/23/ZY55RCJDZBCO7CT5PRFJQXKWVE/",
+          "source": "조선비즈",
+          "published_at": "2026-04-23T00:13:35",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "SK證 \"산일전기, 데이터센터 공급·변압기 수주 전망…목표가 25만원↑\"",
           "url": "https://www.etoday.co.kr/news/view/2576581",
@@ -3048,6 +3692,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.44,
+      "index_multiple_current": 8.5,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 209500,
         "high_date": "2026-04-20",
@@ -3123,14 +3770,16 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "보로노이, AACR2026서 ‘VRN10’ 데이터 공개…HER2 치료 새 가능성 제시",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03450566645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T05:14:29",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AACR2026에서 보로노이의 폐암 표적치료제 VRN11 임상 1상 결과 발표 + VRN10 HER2 치료 데이터 공개 → 기대치 상회 성과 부각 → K바이오 강세 속 보로노이 15% 급등",
+          "macro_event": "보로노이 VRN11 임상 1상 기대치 상회 + VRN10 HER2 데이터 AACR2026 발표",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3144,8 +3793,8 @@
           "url": "https://www.mk.co.kr/news/stock/12021673",
           "source": "매경",
           "published_at": "2026-04-20T04:32:28",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AACR2026에서 보로노이의 폐암 표적치료제 VRN11 임상 1상 결과 발표 + VRN10 HER2 치료 데이터 공개 → 기대치 상회 성과 부각 → K바이오 강세 속 보로노이 15% 급등",
+          "macro_event": "보로노이 VRN11 임상 1상 기대치 상회 + VRN10 HER2 데이터 AACR2026 발표",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3159,8 +3808,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/20/5UE5SHIOYBF4XGFBCM5RABKJ44/",
           "source": "조선비즈",
           "published_at": "2026-04-20T00:27:33",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AACR2026에서 보로노이의 폐암 표적치료제 VRN11 임상 1상 결과 발표 + VRN10 HER2 치료 데이터 공개 → 기대치 상회 성과 부각 → K바이오 강세 속 보로노이 15% 급등",
+          "macro_event": "보로노이 VRN11 임상 1상 기대치 상회 + VRN10 HER2 데이터 AACR2026 발표",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3174,8 +3823,8 @@
           "url": "https://www.hankyung.com/article/2026042019576",
           "source": "한경",
           "published_at": "2026-04-20T00:19:08",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AACR2026에서 보로노이의 폐암 표적치료제 VRN11 임상 1상 결과 발표 + VRN10 HER2 치료 데이터 공개 → 기대치 상회 성과 부각 → K바이오 강세 속 보로노이 15% 급등",
+          "macro_event": "보로노이 VRN11 임상 1상 기대치 상회 + VRN10 HER2 데이터 AACR2026 발표",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3189,8 +3838,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02394406645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T00:15:03",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AACR2026에서 보로노이의 폐암 표적치료제 VRN11 임상 1상 결과 발표 + VRN10 HER2 치료 데이터 공개 → 기대치 상회 성과 부각 → K바이오 강세 속 보로노이 15% 급등",
+          "macro_event": "보로노이 VRN11 임상 1상 기대치 상회 + VRN10 HER2 데이터 AACR2026 발표",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3201,6 +3850,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 21.71,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 375500,
         "high_date": "2026-03-13",
@@ -3278,6 +3930,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -3294,6 +3948,9 @@
           "regulation_period": "지정 시 3거래일 30분 단위 단일가매매"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 18.0,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 6280,
         "high_date": "2026-04-20",
@@ -3313,7 +3970,14 @@
           "regulation": "지정 시 3거래일 30분 단위 단일가매매",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
-          "end": "2026-05-06"
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-07",
+          "reason_text": "에스넷이 2026-04-21 단기과열종목 지정예고. 예고일부터 10거래일 이내 주가상승률(40일 평균 종가 130%↑)·거래회전율(2일 평균이 40일 평균 600%↑)·주가변동성(2일 평균이 40일 평균 150%↑) 3요건 모두 충족 + 종가가 직전일·예고전일 대비 상승 시 익영업일부터 단기과열종목 지정되어 3거래일 30분 단위 단일가매매 적용.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/21 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000828"
         }
       ],
       "intraday": {
@@ -3382,8 +4046,29 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
-      "news": [],
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "RFHIC, 1Q 연결 영업익 77억…전년비 107%↑",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03621126645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T05:32:17",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 21.32,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 101700,
         "high_date": "2026-04-20",
@@ -3459,8 +4144,13 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.44,
+      "index_multiple_current": 31.05,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9980,
         "high_date": "2026-04-20",
@@ -3541,6 +4231,8 @@
         "change_pct": -0.16,
         "trade_amount": 50437912500
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -3557,6 +4249,9 @@
           "regulation_period": "지정 시 3거래일 30분 단위 단일가매매"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 28.1,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 3825,
         "high_date": "2026-04-20",
@@ -3576,7 +4271,14 @@
           "regulation": "지정 시 3거래일 30분 단위 단일가매매",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
-          "end": "2026-05-06"
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-07",
+          "reason_text": "오픈베이스가 2026-04-21 단기과열종목 지정예고. 예고일부터 10거래일 이내 주가상승률(40일 평균 대비 130%↑)·거래회전율(40일 평균 대비 600%↑)·주가변동성(40일 평균 대비 150%↑) 3요건 모두 충족 + 종가가 직전일·예고전일 대비 상승 시 익영업일부터 3거래일 단일가매매 지정.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/21 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000827"
         }
       ],
       "intraday": {
@@ -3650,6 +4352,8 @@
         "change_pct": 24.11,
         "trade_amount": 77778987300
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [],
       "fallback": true,
       "disclosures": [
@@ -3667,6 +4371,9 @@
           "regulation_period": "투자주의 1일(2026-04-21), 최초 판단일 04-21~05-06 내 경고 지정 여부 판단"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 39.46,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 24850,
         "high_date": "2026-04-20",
@@ -3687,6 +4394,13 @@
           "regulation": "투자주의 1일(2026-04-21), 최초 판단일 04-21~05-06 내 경고 지정 여부 판단",
           "view_date": "2026-04-20",
           "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 23248,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-07",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
               "desc": "최근 15일 최고가(2026-04-16)",
@@ -3695,7 +4409,67 @@
               "current": 24050,
               "triggered": true
             }
-          ]
+          ],
+          "reason_text": "미코가 5일 전 대비 60% 이상 급등하여 2026-04-21 투자주의종목 1일 지정. 04-21~05-06 내 3가지 조건(① 5일 전 대비 60%↑ ② 최근 15일 최고가 ③ 종합주가지수 대비 5배↑) 모두 충족 시 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000787"
+        },
+        {
+          "label": "투자위험 근접",
+          "severity": "danger",
+          "source": "predicted",
+          "state": "predicted_stage3_notice",
+          "paths": [
+            "risk_surge_5d_60pct_after_warn"
+          ],
+          "path": "risk_surge_5d_60pct_after_warn",
+          "price_chg": 0.6552,
+          "index_ratio": 9.61,
+          "confidence": "medium",
+          "regulation_source_confidence": "pending",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-13) 대비 +60%↑",
+              "base_price": 14530,
+              "threshold": 23248,
+              "current": 24050,
+              "triggered": true
+            },
+            {
+              "desc": "종합지수(5영업일) 상승률 대비 5배 이상",
+              "base_price": null,
+              "threshold": 5.0,
+              "current": 9.61,
+              "triggered": true
+            },
+            {
+              "desc": "최근 15일 최고가 (2026-04-17~2026-03-30)",
+              "base_price": 20700,
+              "threshold": 20700,
+              "current": 24050,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 투자위험 entry_paths (투자경고 전제 + 5일 전 종가 대비 60%↑ + 지수 5배 + 15일 최고가). 업종지수 미조달 상태 — 종합지수 기준 잠정 평가",
+          "period_start": "2026-04-21",
+          "period_end": "2026-04-27",
+          "start": "2026-04-21",
+          "end": "2026-04-27",
+          "view_date": "2026-04-20",
+          "next_trading_day": "2026-04-21",
+          "next_trading_day_for_predicted": "2026-04-21",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -3771,8 +4545,13 @@
         "change_pct": 21.27,
         "trade_amount": 84802704069
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": -19.76,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 3285,
         "high_date": "2025-05-22",
@@ -3848,8 +4627,13 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 36.15,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 15470,
         "high_date": "2025-05-30",
@@ -3925,6 +4709,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "금강철강 \"임시주총 소집허가 소송 제기\"",
@@ -3943,6 +4729,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 33.83,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 6990,
         "high_date": "2026-04-20",
@@ -4033,7 +4822,24 @@
         "change_pct": 10.42,
         "trade_amount": 65940024000
       },
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
+        {
+          "title": "[특징주] 엠케이전자, AI서버 메모리 강세 수혜…1Q 어닝서프라이즈 증권가 전망에 상승세",
+          "url": "https://www.etoday.co.kr/news/view/2578315",
+          "source": "이투데이",
+          "published_at": "2026-04-23T00:05:00",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "엠케이전자, 32.6억 규모 전환청구권 행사",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04716646645416448",
@@ -4051,6 +4857,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 27.44,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 27900,
         "high_date": "2026-04-20",
@@ -4135,8 +4944,13 @@
         "change_pct": 7.78,
         "trade_amount": 65301433860
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 47.2,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 18580,
         "high_date": "2026-04-20",
@@ -4210,10 +5024,22 @@
       "low_price": 22350,
       "industry": "일차전지 및 이차전지 제조업",
       "sector": "2차전지부품",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "2차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "2차전지",
+          "path": [
+            "전기차",
+            "2차전지"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "[클릭 e종목]\"상신이디피, 각형 배터리 확대·ESS 대형화…턴어라운드 기회\"",
@@ -4232,6 +5058,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 48.02,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 27650,
         "high_date": "2026-04-20",
@@ -4321,14 +5150,16 @@
         "change_pct": 13.01,
         "trade_amount": 61695659900
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "'미토스'·'아이싱' 쌍끌이 위협 대응…폴라리스오피스·아톤, 양자보안 웹오피스 구축",
           "url": "https://www.asiae.co.kr/article/2026042009584901370",
           "source": "아시아경제",
           "published_at": "2026-04-20T00:58:49",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "AI 기반 보안 위협(미토스·아이싱) 대두 → 폴라리스오피스가 아톤과 협력하여 양자보안 웹오피스 구축 및 글로벌 보안 솔루션 확대 적용으로 선제 대응.",
+          "macro_event": "AI 보안 위협(미토스·아이싱) 확산에 따른 보안 솔루션 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4342,8 +5173,8 @@
           "url": "https://www.etoday.co.kr/news/view/2577155",
           "source": "이투데이",
           "published_at": "2026-04-20T00:33:00",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "AI 기반 보안 위협(미토스·아이싱) 대두 → 폴라리스오피스가 아톤과 협력하여 양자보안 웹오피스 구축 및 글로벌 보안 솔루션 확대 적용으로 선제 대응.",
+          "macro_event": "AI 보안 위협(미토스·아이싱) 확산에 따른 보안 솔루션 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4354,6 +5185,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 13.93,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 7030,
         "high_date": "2025-07-07",
@@ -4411,9 +5245,7 @@
       },
       "togusa_verdict": "neutral",
       "theme_leader": true,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "관찰"
     },
     {
       "code": "006260",
@@ -4447,14 +5279,16 @@
         "change_pct": 11.61,
         "trade_amount": 76665468000
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "삼양식품, 1Q 매출 전년동기대비 25% ↑…2Q 성장 지속 전망-LS",
           "url": "https://www.fnnews.com/news/202604200848498180",
           "source": "파이낸셜뉴스",
           "published_at": "2026-04-20T09:46:43.602465",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "자회사 LS ELECTRIC이 북미 데이터센터 수요로 1~3월 최고 실적·수주잔고 5조6000억원 기록→증권사 목표가 일제 상향(하나 77%↑·KB 26만원)→지주사 LS에 간접 수혜 기대. 별도로 LS그룹 전사 DX 가속(LS GPT·AI 비전).",
+          "macro_event": "자회사 LS ELECTRIC 북미 호조 및 증권사 목표가 상향 (지주사 간접수혜)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4465,6 +5299,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.44,
+      "index_multiple_current": -3.05,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 352500,
         "high_date": "2026-04-20",
@@ -4522,9 +5359,7 @@
       },
       "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "관찰"
     },
     {
       "code": "090460",
@@ -4547,6 +5382,8 @@
         "change_pct": 9.93,
         "trade_amount": 82443745800
       },
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "애플 '접는 폰 1위' 전망에…비에이치 등 관련주 들썩",
@@ -4568,8 +5405,8 @@
           "url": "https://www.etoday.co.kr/news/view/2577128",
           "source": "이투데이",
           "published_at": "2026-04-20T00:08:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "애플 스마트폰 증산 전망 + 아이폰 폴더블폰 수혜 기대 → 비에이치 1분기 깜짝 실적 전망 및 목표가 4.3만원 상향 → 15% 급등 강세",
+          "macro_event": "애플 스마트폰 증산 및 아이폰 폴더블폰 출시 기대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4580,6 +5417,9 @@
         }
       ],
       "fallback": false,
+      "index_change_pct": 0.44,
+      "index_multiple_current": 11.93,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 34500,
         "high_date": "2026-04-20",
@@ -4655,8 +5495,13 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 16.29,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 2525,
         "high_date": "2025-08-19",
@@ -4732,8 +5577,13 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 17.22,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 25350,
         "high_date": "2026-02-02",
@@ -4809,6 +5659,8 @@
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
           "title": "엑스큐어, PQC 기반 유심·이심 개발 본격화…연구기관과 협력 확대",
@@ -4900,6 +5752,9 @@
           "regulation_period": "2026-04-21 1일간 투자주의종목 지정"
         }
       ],
+      "index_change_pct": 0.41,
+      "index_multiple_current": 20.22,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 4086,
         "high_date": "2025-04-29",
@@ -4919,7 +5774,11 @@
           "condition": "종료일 종가가 지정일 전일 종가보다 20% 이상 높으면 3거래일 연장(1회 한정)",
           "regulation": "지정일 포함 3거래일 단일가매매 (2026-04-21~04-23), 조건 충족 시 3거래일 1회 연장",
           "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21"
+          "next_trading_day": "2026-04-21",
+          "single_price": true,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000829"
         },
         {
           "label": "투자주의",
@@ -4930,7 +5789,11 @@
           "condition": "단일계좌 순매수 상장주식수 대비 2%↑ + 종가 전일 대비 5%↑",
           "regulation": "2026-04-21 1일간 투자주의종목 지정",
           "view_date": "2026-04-20",
-          "next_trading_day": "2026-04-21"
+          "next_trading_day": "2026-04-21",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000790"
         }
       ],
       "intraday": {
