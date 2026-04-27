@@ -1274,6 +1274,13 @@ function renderCalExpandContent(date, data) {
     const compactBadge = compactPC != null && compactPC >= 2
       ? `<span class="cal-streak-badge">거래대금+${compactPC}</span>`
       : '';
+    // REQ-048 — no-interp 카드 (와이제이링크 등)에도 강세 배지 노출.
+    // entry 루트(it.bullish_today/streak)는 build_daily.py가 모든 entry에 부착.
+    const compactBullishStreak = it.bullish_streak || 0;
+    const compactBullishToday = !!it.bullish_today;
+    const compactBullishBadge = (compactBullishToday && compactBullishStreak >= 1)
+      ? `<span class="cal-bullish-badge">${compactBullishStreak > 1 ? `강세+${compactBullishStreak}` : '강세'}</span>`
+      : '';
     // 테마 칩: interp 없어도 it.themes는 kiwoom merge 단계에서 있을 수 있음
     const simpleThemesHtml = (it.themes && it.themes.length > 0)
       ? `<div class="cal-theme-row">${it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}</div>`
@@ -1305,6 +1312,7 @@ function renderCalExpandContent(date, data) {
             <div class="cal-feature-namecell">
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
               ${compactBadge}
+              ${compactBullishBadge}
             </div>
             ${metaRow}
           </div>
