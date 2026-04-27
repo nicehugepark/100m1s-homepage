@@ -304,83 +304,129 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 /* REQ-029 §2 — .credit / .krx 분기 rule 폐기 (base rule 통합).
    출처 구분은 라벨 텍스트(증권사 사유 단어 vs KRX 단계명)로만. */
 
-/* REQ-021 v9.6 §III.3 — 신용불가 사유 박스 modifier (다중 행 박스 사이 gap만 잔존). */
-.cal-status-detail--reason + .cal-status-detail--reason { margin-top: 4px; }
-.cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
-  font-size: 11px; color: #555; font-weight: 500; margin-left: 6px;
+/* REQ-034 — 사유 박스 본질 재설계 (SPEC-001 §IV.2).
+   기존 .cal-status-detail.v3.cal-status-detail--reason 박스 분기 + .cal-status-detail__link 폐기.
+   박스 컨테이너 폐기 → inline-flex 행으로 통일. 들여쓰기 + ▸ dot 마커 + baseline 정렬.
+   대표 본질 비판: 조약함/통일감 없음/폰트 비균일/들여쓰기/표사용법/시야 흐름 깸. */
+
+/* 그룹 (REQ-032 신설 + REQ-034 typography 정합 갱신) */
+.cal-credit-group {
+  margin-top: 8px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #1F2937;
 }
-/* REQ-032 §B — 공시 버튼 텍스트 링크형 (이모지 🔗 폐기 + SVG inline + 호버 underline).
-   REQ-029 §1 칩 디자인 폐기. 사유 박스 본문과 시각 위계 분리 (링크는 텍스트 흐름 안에). */
-.cal-status-detail__link {
+.cal-credit-group + .cal-credit-group { margin-top: 8px; }
+.cal-credit-group__heading {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #475569;
+  letter-spacing: 0.01em;
+  margin-bottom: 3px;
+}
+.cal-credit-group__source {
+  font-size: 10px;
+  font-weight: 400;
+  color: #94A3B8;
+  margin-left: 4px;
+}
+
+/* 행 — 박스 폐기, 들여쓰기 + ▸ dot + baseline 정렬 */
+.cal-credit-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0 2px 14px;
+  position: relative;
+  font-variant-numeric: tabular-nums;
+}
+.cal-credit-row::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 0.6em;
+  width: 3px; height: 3px;
+  background: #94A3B8;
+  border-radius: 50%;
+}
+.cal-credit-row + .cal-credit-row { margin-top: 1px; }
+
+/* 라벨 — sev-* 색상 균일 */
+.cal-credit-row__label {
+  font-weight: 600;
+  color: #1F2937;
+  flex: 0 1 auto;
+}
+.cal-credit-row__label.sev-caution { color: #92400E; }
+.cal-credit-row__label.sev-warning { color: #C2410C; }
+.cal-credit-row__label.sev-danger,
+.cal-credit-row__label.sev-credit  { color: #991B1B; }
+.cal-credit-row__label.sev-hot     { color: #9D174D; }
+
+/* 시점 — · 구분자 + 회색 */
+.cal-credit-row__period {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 400;
+  flex: 0 1 auto;
+  white-space: nowrap;
+}
+.cal-credit-row__period::before {
+  content: '·';
+  margin-right: 6px;
+  color: #CBD5E1;
+}
+
+/* 공시 링크 — 우측 정렬 + SVG ↗ */
+.cal-credit-row__link {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  margin-left: 6px;
-  padding: 0;
-  background: transparent;
-  border-radius: 0;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 500;
   color: #2563EB;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 120ms ease;
-  letter-spacing: normal;
+  margin-left: auto;
+  flex: 0 0 auto;
 }
-.cal-status-detail__link::before { content: none; }   /* REQ-032 §B — 기존 🔗 이모지 폐기 */
-.cal-status-detail__link::after {
+.cal-credit-row__link::after {
   content: '';
   width: 9px; height: 9px;
   background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%232563EB' stroke-width='1.5'><path d='M3 9 L9 3 M5 3 L9 3 L9 7'/></svg>") no-repeat center;
   background-size: contain;
 }
-.cal-status-detail__link:hover {
-  border-bottom-color: #2563EB;
+.cal-credit-row__link:hover { border-bottom-color: #2563EB; }
+
+/* 모바일 — wrap 시 link 좌측 들여쓰기 유지 */
+@media (max-width: 640px) {
+  .cal-credit-row { flex-wrap: wrap; }
+  .cal-credit-row__link { margin-left: 0; padding-left: 12px; }
 }
-/* REQ-032 §A — 사유 박스 그룹 헤더 (KRX 공시 vs 증권사 사유 출처 분리). */
-.cal-credit-group {
-  display: flex; flex-direction: column; gap: 4px;
-  margin-top: 6px;
-}
-.cal-credit-group + .cal-credit-group { margin-top: 10px; }
-.cal-credit-group__heading {
-  font-size: 10px;
-  font-weight: 600;
-  color: #64748B;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  margin-bottom: 2px;
-}
-.cal-credit-group__source {
-  font-size: 9.5px;
-  font-weight: 400;
-  color: #94A3B8;
-  margin-left: 4px;
-}
+
+/* 다크모드 */
 @media (prefers-color-scheme: dark) {
-  /* REQ-029 §2 — 다크모드 사유 박스 톤다운 정합 */
+  .cal-credit-group { color: #E2E8F0; }
+  .cal-credit-group__heading { color: #94A3B8; }
+  .cal-credit-group__source { color: #64748B; }
+  .cal-credit-row::before { background: #475569; }
+  .cal-credit-row__label { color: #E2E8F0; }
+  .cal-credit-row__label.sev-caution { color: #FCD34D; }
+  .cal-credit-row__label.sev-warning { color: #FB923C; }
+  .cal-credit-row__label.sev-danger,
+  .cal-credit-row__label.sev-credit  { color: #F87171; }
+  .cal-credit-row__period { color: #94A3B8; }
+  .cal-credit-row__period::before { color: #475569; }
+  .cal-credit-row__link { color: #60A5FA; }
+  .cal-credit-row__link::after {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%2360A5FA' stroke-width='1.5'><path d='M3 9 L9 3 M5 3 L9 3 L9 7'/></svg>");
+  }
+  .cal-credit-row__link:hover { border-bottom-color: #60A5FA; }
+  /* REQ-029 §2 — 다크모드 .cal-status-detail.v3 base는 다른 컨텍스트(상태 디테일 등)에서 사용 가능하므로 잔존 */
   .cal-status-detail.v3 {
     background: rgba(255, 255, 255, 0.03);
     border-left-color: rgba(255, 255, 255, 0.1);
   }
-  .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
-    color: #D1D5DB;
-  }
-  /* REQ-032 §B — 다크모드 공시 텍스트 링크 */
-  .cal-status-detail__link {
-    color: #60A5FA;
-    background: transparent;
-  }
-  .cal-status-detail__link:hover {
-    border-bottom-color: #60A5FA;
-    background: transparent;
-  }
-  .cal-status-detail__link::after {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%2360A5FA' stroke-width='1.5'><path d='M3 9 L9 3 M5 3 L9 3 L9 7'/></svg>");
-  }
-  /* REQ-032 §A — 다크모드 그룹 헤더 */
-  .cal-credit-group__heading { color: #94A3B8; }
-  .cal-credit-group__source { color: #64748B; }
 }
 /* 2026-04-22 핫픽스: DART 공시 원문 링크 — 공시 기반 배지 상세 하단 */
 .cal-status-detail.v3 .cal-status-dart-link {
