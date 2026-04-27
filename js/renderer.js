@@ -1343,12 +1343,19 @@ function renderCalExpandContent(date, data) {
   `;
 
   // 접기/펼치기 이벤트 위임 (1회만 등록)
+  // REQ-046 — CSS font-size:0 + ::after content trick 폐기 → JS textContent 직접 변경.
+  // aria-label 동시 갱신 (스크린리더 정합).
   if (!window._cardCollapseInit) {
     document.addEventListener('click', e => {
       const toggle = e.target.closest('.cal-detail-toggle');
       if (!toggle) return;
       const card = toggle.closest('.cal-feature-card');
-      if (card) card.classList.toggle('expanded');
+      if (!card) return;
+      card.classList.toggle('expanded');
+      const isExpanded = card.classList.contains('expanded');
+      const txt = toggle.querySelector('.cal-toggle-text');
+      if (txt) txt.textContent = isExpanded ? '접기' : '상세 보기';
+      toggle.setAttribute('aria-label', isExpanded ? '접기' : '상세 보기');
     });
     window._cardCollapseInit = true;
   }
@@ -1356,6 +1363,15 @@ function renderCalExpandContent(date, data) {
   // REQ-020 v9.5 §II.6 — 헤더 효과 배지 click 시 카드 자동 펼침 (v9.3 호환 — 셀렉터만 교체).
   // 함정 P2 #5: legacy `dsn-v93-header-badge` 셀렉터는 DOM 출력 0건 자연 차단 (잔존 CSS는 dead).
   // 함정 #11: 이벤트 버블링 충돌 방어 — stopPropagation 후 명시적 expanded 부착 (toggle 아닌 add).
+  // REQ-046 — 헤더 배지 → expanded 추가 시도 토글 텍스트 동기 (CSS trick 폐기 정합).
+  const _syncToggleText = (card) => {
+    if (!card) return;
+    const t = card.querySelector('.cal-detail-toggle');
+    if (!t) return;
+    const txt = t.querySelector('.cal-toggle-text');
+    if (txt) txt.textContent = '접기';
+    t.setAttribute('aria-label', '접기');
+  };
   if (!window._headerBadgeExpandInit) {
     document.addEventListener('click', e => {
       const badge = e.target.closest('.dsn-v95-effect-badge');
@@ -1366,6 +1382,7 @@ function renderCalExpandContent(date, data) {
       if (!card) return;
       e.stopPropagation();
       card.classList.add('expanded');
+      _syncToggleText(card);
     });
     // 키보드 a11y — Enter·Space 키
     document.addEventListener('keydown', e => {
@@ -1378,6 +1395,7 @@ function renderCalExpandContent(date, data) {
       e.preventDefault();
       e.stopPropagation();
       card.classList.add('expanded');
+      _syncToggleText(card);
     });
     window._headerBadgeExpandInit = true;
   }

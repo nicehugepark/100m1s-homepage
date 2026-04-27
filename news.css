@@ -1341,15 +1341,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 12px;
   letter-spacing: 0.2px;
 }
-/* expanded 상태: ::after content "접기"로 텍스트 변환 (JS 분기 회피) */
-.cal-feature-card.expanded .cal-detail-toggle .cal-toggle-text {
-  font-size: 0;
-}
-.cal-feature-card.expanded .cal-detail-toggle .cal-toggle-text::after {
-  content: '접기';
-  font-size: 12px;                /* REQ-045 — 11px → 12px (본문과 통일) */
-  letter-spacing: 0.2px;
-}
+/* REQ-046 — font-size:0 + ::after content trick 폐기.
+   본질: 데스크탑 layout에서 부모 font-size:0 + ::after content가 baseline·padding 어색하게 렌더 → 텍스트 흐릿/누락 회귀.
+   해결: JS textContent 직접 변경 (renderer.js 토글 핸들러). aria-label 동시 갱신.
+   대표 발화 02:34 KST: "여전히 데스크탑 희미함" — 본질 정정. */
 .cal-toggle-summary {
   font-size: 11px;
   color: var(--dm);
