@@ -1,6 +1,6 @@
 {
   "date": "2026-04-27",
-  "generated_at": "2026-04-27T09:13:36.288000",
+  "generated_at": "2026-04-27T09:17:38.681940",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -273,20 +273,27 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.7,
-      "index_multiple_current": 5.23,
+      "index_change_pct": 0.58,
+      "index_multiple_current": 6.31,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 43850,
+        "high": 44800,
         "high_date": "2026-04-27",
-        "high_pct": 0.0,
+        "high_pct": -2.12,
         "low": 13550,
         "low_date": "2025-08-21",
         "low_pct": 223.62,
         "current": 43850
       },
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 43250,
+        "base": 42302,
+        "prices": [
+          43250,
+          43950
+        ]
+      }
     },
     {
       "code": "006340",
@@ -327,7 +334,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": 1.03,
+      "index_multiple_current": 9.15,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 10500,
         "high_date": "2026-04-27",
@@ -336,6 +345,15 @@
         "low_date": "2025-05-07",
         "low_pct": 261.54,
         "current": 9870
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 9330,
+        "base": 9020,
+        "prices": [
+          9330,
+          10130
+        ]
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
@@ -364,57 +382,12 @@
       },
       "news": [
         {
-          "title": "[급등락주 짚어보기] 한화그룹 유통 독립·K-뷰티 열풍…한화갤러리아·뷰티스킨 등 '上'",
-          "url": "https://www.etoday.co.kr/news/view/2579044",
+          "title": "[특징주] 1분기 실적 개선 기대·기업가치 제고 등 영향…한화갤러리아 등 백화점株 강세",
+          "url": "https://www.etoday.co.kr/news/view/2579350",
           "source": "이투데이",
-          "published_at": "2026-04-24T07:23:00",
-          "causal_chain": "한화그룹 유통 독립·K-뷰티 열풍 보도→한화갤러리아 상한가('上') 도달",
-          "macro_event": "한화그룹 유통 독립 + K-뷰티 열풍",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 한화 신설법인 재상장 예비심사 적격 판정에…한화갤러리아 15% 상승",
-          "url": "https://biz.chosun.com/stock/stock_general/2026/04/24/DN3JOVJDU5GHNBNGTEG4W4RNBM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-24T00:36:47",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격 판정에 한화갤러리아 15% 급등+파이브가이즈 M&A 수익성 부진으로 인수가격 조정 가능성 보도",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 한화갤러리아, 한화 신설법인 재상장 예심 승인에 15%↑",
-          "url": "https://www.etoday.co.kr/news/view/2578803",
-          "source": "이투데이",
-          "published_at": "2026-04-24T00:33:00",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격 판정에 한화갤러리아 15% 급등+파이브가이즈 M&A 수익성 부진으로 인수가격 조정 가능성 보도",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "H&Q-한화갤러리아, 수익성 떨어진 '파이브가이즈' M&A 가격 조정 들어가나",
-          "url": "https://www.etoday.co.kr/news/view/2575496",
-          "source": "이투데이",
-          "published_at": "2026-04-14T04:38:00",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격 판정에 한화갤러리아 15% 급등+파이브가이즈 M&A 수익성 부진으로 인수가격 조정 가능성 보도",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
+          "published_at": "2026-04-27T00:13:00",
+          "causal_chain": "1분기 실적 개선 기대와 기업가치 제고 정책 영향으로 백화점주 동반 강세→한화갤러리아 주가 상승.",
+          "macro_event": "백화점주 1분기 실적 개선 기대 + 기업가치 제고",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -424,12 +397,14 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
-      "index_change_pct": 0.0,
+      "fallback": false,
+      "index_change_pct": 1.03,
+      "index_multiple_current": 15.41,
+      "index_multiple_eligible": true,
       "range_240d": {
-        "high": 3870,
+        "high": 3965,
         "high_date": "2026-04-27",
-        "high_pct": 0.0,
+        "high_pct": -2.4,
         "low": 999,
         "low_date": "2025-11-05",
         "low_pct": 287.39,
@@ -448,7 +423,16 @@
           "next_trading_day": "2026-04-28",
           "single_price": false
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 3585,
+        "base": 3340,
+        "prices": [
+          3585,
+          3695
+        ]
+      }
     },
     {
       "code": "036540",
@@ -504,20 +488,27 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.7,
-      "index_multiple_current": 5.49,
+      "index_change_pct": 0.58,
+      "index_multiple_current": 6.62,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 10010,
+        "high": 10450,
         "high_date": "2026-04-27",
-        "high_pct": 0.0,
+        "high_pct": -4.21,
         "low": 2815,
         "low_date": "2025-05-27",
         "low_pct": 255.6,
         "current": 10010
       },
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 10190,
+        "base": 9640,
+        "prices": [
+          10190,
+          10080
+        ]
+      }
     },
     {
       "code": "403870",
@@ -558,20 +549,27 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.7,
-      "index_multiple_current": 5.09,
+      "index_change_pct": 0.58,
+      "index_multiple_current": 6.14,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 55400,
-        "high_date": "2026-04-24",
-        "high_pct": -0.18,
+        "high": 57400,
+        "high_date": "2026-04-27",
+        "high_pct": -3.66,
         "low": 21150,
         "low_date": "2025-05-23",
         "low_pct": 161.47,
         "current": 55300
       },
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 54800,
+        "base": 53399,
+        "prices": [
+          54800,
+          55800
+        ]
+      }
     },
     {
       "code": "277810",
@@ -622,11 +620,29 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.7,
-      "index_multiple_current": 8.64,
+      "index_change_pct": 0.58,
+      "index_multiple_current": 10.43,
       "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 934000,
+        "high_date": "2026-03-03",
+        "high_pct": -30.51,
+        "low": 249500,
+        "low_date": "2025-08-20",
+        "low_pct": 160.12,
+        "current": 649000
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 638000,
+        "base": 611975,
+        "prices": [
+          638000,
+          652000
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "108490",
@@ -667,20 +683,27 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.7,
-      "index_multiple_current": 12.94,
+      "index_change_pct": 0.58,
+      "index_multiple_current": 15.62,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 364000,
         "high_date": "2026-01-30",
         "high_pct": -12.36,
-        "low": 32671,
-        "low_date": "2025-04-30",
-        "low_pct": 876.4,
+        "low": 32914,
+        "low_date": "2025-05-02",
+        "low_pct": 869.19,
         "current": 319000
       },
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 301500,
+        "base": 292500,
+        "prices": [
+          301500,
+          314500
+        ]
+      }
     },
     {
       "code": "001510",
@@ -776,7 +799,27 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0
+      "index_change_pct": 1.03,
+      "index_multiple_current": 17.83,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 5656,
+        "high_date": "2026-03-23",
+        "high_pct": -21.94,
+        "low": 961,
+        "low_date": "2025-05-02",
+        "low_pct": 359.42,
+        "current": 4415
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 4440,
+        "base": 3730,
+        "prices": [
+          4440,
+          4380
+        ]
+      }
     }
   ]
 }
