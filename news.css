@@ -215,23 +215,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:#1565c0; font-size:10px; }
 
 /* v3 사유 영역 — 라벨+표+인사이트 통합 (대표 정정 18:52 KST) */
-/* REQ-027 §A — 박스 톤다운 + 라벨 평문화 (SPEC-001 §IV.1).
-   대표 본질 비판: 박스 강조 + 라벨 강조 = 이중 강조 시각 위계 무너짐.
-   사유 박스는 펼침 영역 보조 정보 → 톤다운하여 본문 톤 통일. sev-* 색상으로만 구분. */
+/* REQ-029 §2 — 사유 박스 시각 통합 정합 (SPEC-001 §IV.1).
+   대표 본질 비판: 좌측 막대 강조 잔존 + 라벨 sev-* 강조 색조 잔존 → 미려함 부족.
+   .credit/.krx 분기 rule 폐기, base rule 단일 통합 (회색 톤). 출처 구분은 라벨 텍스트로만. */
 .cal-status-detail.v3 {
   padding: 6px 8px; margin: 4px 0;
-  background: #FAFBFC; border-left: 1px solid #DEE2E6; border-radius: 0 4px 4px 0;
+  background: #F8FAFC; border-left: 1px solid #E2E8F0; border-radius: 0 4px 4px 0;
   display: flex; flex-direction: column; gap: 4px;
 }
 .cal-status-detail.v3 .cal-status-head { display: flex; align-items: center; gap: 8px; }
+/* REQ-029 §3 — 라벨 sev-* 색상 톤다운 (강조 → 진중한 모노톤). */
 .cal-status-detail.v3 .cal-status-label {
   display: inline-block; font-size: 12px; font-weight: 500; padding: 0; border-radius: 0;
-  background: none; color: #C62828;
+  background: none; color: #1F2937;
 }
-.cal-status-detail.v3 .cal-status-label.sev-caution { background: none; color: #856404; }
-.cal-status-detail.v3 .cal-status-label.sev-warning { background: none; color: #E65100; }
-.cal-status-detail.v3 .cal-status-label.sev-danger  { background: none; color: #C62828; }
-.cal-status-detail.v3 .cal-status-label.sev-hot     { background: none; color: #C2185B; }
+.cal-status-detail.v3 .cal-status-label.sev-caution { background: none; color: #92400E; }
+.cal-status-detail.v3 .cal-status-label.sev-warning { background: none; color: #C2410C; }
+.cal-status-detail.v3 .cal-status-label.sev-danger  { background: none; color: #991B1B; }
+.cal-status-detail.v3 .cal-status-label.sev-hot     { background: none; color: #9D174D; }
 .cal-status-detail.v3 .cal-status-period { font-size: 11px; color: #555; font-weight: 500; }
 /* 2026-04-22: 상태 배지 기간의 날짜 범위 강조 — 주황 bold + 살짝 배경 */
 .cal-badge-date-range {
@@ -298,41 +299,58 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .cal-status-detail.v3 .cal-status-single-note strong { color: #1F2937; font-weight: 800; }
 .cal-status-detail.v3 .cal-status-single-note .cal-status-single-src { color: #6B7280; font-weight: 500; font-size: 10.5px; margin-left: 2px; }
-.cal-status-detail.v3 .cal-status-label.sev-credit { background: none; color: #C53939; }
-/* REQ-027 §A — .credit 박스 톤 통일 (회색 일관) */
-.cal-status-detail.v3.credit { border-left-color: #DEE2E6; background: #FAFBFC; }
+.cal-status-detail.v3 .cal-status-label.sev-credit { background: none; color: #991B1B; }
+/* REQ-029 §2 — .credit / .krx 분기 rule 폐기 (base rule 통합).
+   출처 구분은 라벨 텍스트(증권사 사유 단어 vs KRX 단계명)로만. */
 
-/* REQ-021 v9.6 §III.3 — 신용불가 사유 박스 modifier (KRX 단계 + 증권사 사유 통합).
-   기존 cal-status-detail.v3 sev-* 색 토큰 재활용. KRX 출처는 .krx + 증권사는 .credit modifier 분리.
-   다중 행(N≥2) 노출 시 박스 사이 gap 4px (출처 분리 시각 위계). */
+/* REQ-021 v9.6 §III.3 — 신용불가 사유 박스 modifier (다중 행 박스 사이 gap만 잔존). */
 .cal-status-detail--reason + .cal-status-detail--reason { margin-top: 4px; }
-/* REQ-027 §A — .krx 박스 톤다운 (회색 일관). KRX 출처 구분은 라벨 sev-* 색상으로만. */
-.cal-status-detail.v3.krx.cal-status-detail--reason {
-  border-left-color: #DEE2E6;
-  background: #FAFBFC;
-}
 .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
   font-size: 11px; color: #555; font-weight: 500; margin-left: 6px;
 }
-/* REQ-027 §C — 사유 박스 KRX 공시 링크 칩 (SPEC-001 §V.3) */
+/* REQ-029 §1 — 공시 링크 칩(pill) 디자인. 원시적 밑줄 폐기 → 미니멀 chip.
+   사유 박스 행 안에서 보조 정보 위계 유지 (배경 칩 + 작은 폰트). */
 .cal-status-detail__link {
-  font-size: 11px;
-  color: #1565c0;
-  text-decoration: underline;
-  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
   font-weight: 500;
+  color: #5A6C7D;
+  background: #EEF2F6;
+  padding: 1px 7px;
+  border-radius: 9px;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.1px;
 }
-.cal-status-detail__link:hover { text-decoration: none; opacity: 0.85; }
+.cal-status-detail__link::before {
+  content: '🔗';
+  font-size: 8px;
+}
+.cal-status-detail__link:hover {
+  background: #DDE5EC;
+  color: #2C3E50;
+  text-decoration: none;
+}
 @media (prefers-color-scheme: dark) {
-  /* REQ-027 §A — 다크모드 톤다운 */
-  .cal-status-detail.v3.krx.cal-status-detail--reason {
-    background: rgba(255, 255, 255, 0.04);
-    border-left-color: #4B5563;
+  /* REQ-029 §2 — 다크모드 사유 박스 톤다운 정합 */
+  .cal-status-detail.v3 {
+    background: rgba(255, 255, 255, 0.03);
+    border-left-color: rgba(255, 255, 255, 0.1);
   }
   .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
     color: #D1D5DB;
   }
-  .cal-status-detail__link { color: #93c5fd; }
+  .cal-status-detail__link {
+    color: #94A3B8;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .cal-status-detail__link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #CBD5E1;
+  }
 }
 /* 2026-04-22 핫픽스: DART 공시 원문 링크 — 공시 기반 배지 상세 하단 */
 .cal-status-detail.v3 .cal-status-dart-link {
