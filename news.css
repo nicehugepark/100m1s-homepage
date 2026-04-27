@@ -1189,14 +1189,42 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     max-height: 2400px;
   }
 }
+/* REQ-030 §2 — 접기 버튼 칩 디자인 (SPEC-001 §III.5). chevron-only 폐기.
+   텍스트 + 화살표 + 부드러운 호버. 모바일·데스크탑 누름 영역 ≥ 28px 보장. */
 .cal-detail-toggle {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   cursor: pointer;
+  padding: 4px 10px;
   min-height: 28px;
-  padding: 4px 0;
+  border-radius: 12px;
+  background: #F1F5F9;
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+  user-select: none;
+  margin-top: 4px;
+  width: fit-content;
   text-align: left;
+}
+.cal-detail-toggle:hover {
+  background: #E2E8F0;
+  color: #334155;
+}
+.cal-toggle-text {
+  font-size: 11px;
+  letter-spacing: 0.2px;
+}
+/* expanded 상태: ::after content "접기"로 텍스트 변환 (JS 분기 회피) */
+.cal-feature-card.expanded .cal-detail-toggle .cal-toggle-text {
+  font-size: 0;  /* "상세 보기" 텍스트 숨김 */
+}
+.cal-feature-card.expanded .cal-detail-toggle .cal-toggle-text::after {
+  content: '접기';
+  font-size: 11px;
+  letter-spacing: 0.2px;
 }
 .cal-toggle-summary {
   font-size: 11px;
@@ -1207,11 +1235,56 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .cal-chevron {
   font-size: 10px;
-  transition: transform 0.25s;
-  color: var(--dm);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
 }
 .cal-feature-card.expanded .cal-chevron {
   transform: rotate(180deg);
+}
+@media (prefers-color-scheme: dark) {
+  .cal-detail-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    color: #94A3B8;
+  }
+  .cal-detail-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #CBD5E1;
+  }
+}
+
+/* REQ-030 §1 — 헤더 공시 배지 (SPEC-001 §III.4). 펼침 동기 제공. */
+.cal-disclosure-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #475569;
+  background: #F1F5F9;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 4px;
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.1px;
+  vertical-align: middle;
+}
+.cal-disclosure-badge::before {
+  content: '📋';
+  font-size: 9px;
+}
+.cal-disclosure-badge:hover {
+  background: #E2E8F0;
+  color: #1E293B;
+}
+@media (prefers-color-scheme: dark) {
+  .cal-disclosure-badge {
+    color: #CBD5E1;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .cal-disclosure-badge:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #E2E8F0;
+  }
 }
 .cal-feature-reason {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);

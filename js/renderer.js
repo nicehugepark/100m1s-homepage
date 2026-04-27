@@ -314,11 +314,24 @@ function renderCalExpandContent(date, data) {
       }
       const ishikawaHtml = ishikawaLine ? `<div class="cal-ishikawa-line">${escapeHtml(sanitize(ishikawaLine))}</div>` : '';
       // 공시 (DART) — 뱃지는 namecell, 목록은 카드 최하단
-      // 2026-04-22 대표 정정: status_badges에 이미 표시되는 공시(투자경고 등)는 공시 섹션에서 제외 (중복 방지)
+      // 2026-04-22 대표 정정: status_badges에 이미 표시되는 공시(투자경고 등)는 공시 리스트 itemsHtml에서 제외 (중복 방지)
+      // REQ-030 §1 — 헤더 "공시" 배지는 모든 KRX 공시 포함 트리거 (SPEC-001 §III.4):
+      //   - stock.disclosures.length > 0 OR status_badges.filter(source='disclosure').length > 0
+      //   - 사용자가 헤더에서 공시 존재 인지 → 펼침 동기 제공
+      // discListHtml(상세 영역)은 기존대로 STATUS_DISC_CATS 제외 (사유 박스에서 KRX 단계 공시 표시).
       const STATUS_DISC_CATS = ['투자주의', '투자경고', '투자위험', '단기과열', '단기과열예고', '관리종목', '매매거래정지', '상장폐지'];
-      const discs = (st.disclosures || []).filter(d => !STATUS_DISC_CATS.includes(d.category));
+      const allDiscs = st.disclosures || [];
+      const discs = allDiscs.filter(d => !STATUS_DISC_CATS.includes(d.category));
+      const krxDiscBadges = (st.status_badges || []).filter(b => b.source === 'disclosure');
+      const totalDiscCount = allDiscs.length + (allDiscs.length === 0 ? krxDiscBadges.length : 0);
       let discBadgeHtml = '';
       let discListHtml = '';
+      if (totalDiscCount > 0) {
+        const discBadgeLabel = totalDiscCount > 1 ? `공시 ${totalDiscCount}` : '공시';
+        const cbWarnEarly = allDiscs.some(d => d.is_cb) ? '<span class="cal-disc-cb-warn">CB</span>' : '';
+        // REQ-030 §1 — 헤더 공시 배지 (SPEC-001 §III.4). 칩 디자인 (📋 아이콘 CSS ::before).
+        discBadgeHtml = `<span class="cal-disclosure-badge" aria-label="공시 ${totalDiscCount}건">${escapeHtml(discBadgeLabel)}</span>${cbWarnEarly}`;
+      }
       if (discs.length > 0) {
         const sentSum = discs.reduce((s, d) => s + (d.sentiment || 0), 0);
         const health = sentSum > 0 ? 'positive' : sentSum < 0 ? 'negative' : 'neutral';
@@ -356,9 +369,8 @@ function renderCalExpandContent(date, data) {
         const moreHtml = moreCount > 0 ? `<span class="cal-disc-more">+${moreCount}건 더보기</span>` : '';
         const codeId = it.code || it.name;
         const sectionId = `disc-${escapeHtml(codeId)}`;
-        // 2026-04-22 핫픽스 (정정): "공시" 배지는 유지 — 여러 공시 접근 포털 역할.
-        // 투자경고 관련 공시도 이 리스트에 포함되어 DART 링크·요약 접근 가능.
-        discBadgeHtml = `<span class="cal-disc-badge">공시</span>${cbWarn}`;
+        // REQ-030 §1 — discBadgeHtml은 위에서 이미 설정 (모든 KRX 공시 트리거).
+        // 여기서는 discListHtml만 설정 (STATUS_DISC_CATS 제외 정합 유지).
         discListHtml = `<div class="cal-disc-section" id="${sectionId}">${itemsHtml}${moreHtml}</div>`;
       }
       // 뉴스 제목 + 링크 (제목 표시)
@@ -1131,10 +1143,11 @@ function renderCalExpandContent(date, data) {
       } else {
         summarySnippet = '';
       }
-      // toggle v3.1: 화살표만 (대표 정정 18:53 KST — 텍스트 0건)
+      // REQ-030 §2 — 접기 버튼 칩 디자인 (SPEC-001 §III.5). chevron-only 폐기.
+      // 텍스트 "상세 보기" + 화살표 ▾ (CSS .cal-feature-card.expanded 시 회전 + ::after content "접기").
       const truncatedSummary = '';
       const chevronHtml = hasDetails
-        ? `<span class="cal-detail-toggle chevron-only" aria-label="상세 보기"><span class="cal-chevron">▼</span></span>`
+        ? `<span class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span><span class="cal-chevron">▾</span></span>`
         : '';
       // v9.2 §III: 트리거 핀 — 헤더 배지 0건 + predicted strict 미충족 ≥1 케이스 시 노출
       // 위치: badgesRow 우측 끝 (CSS .dsn-v92-trigger-pin{margin-left:auto})
@@ -1219,7 +1232,7 @@ function renderCalExpandContent(date, data) {
           ${badgesRowHtml}
           <div class="cal-feature-body">
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle chevron-only" aria-label="상세 보기"><span class="cal-chevron">▼</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
+              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span><span class="cal-chevron">▾</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
