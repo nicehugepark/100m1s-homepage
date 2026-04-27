@@ -418,10 +418,11 @@ function renderCalExpandContent(date, data) {
         ? `<span class="cal-streak-badge">거래대금+${pc}</span>`
         : '';
       // REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
-      // REQ-048 정정: bullish 필드는 entry 루트(it)에 부착 (build_daily.py 정합). st = it.interp 잘못된 참조 정정.
+      // REQ-048 본질: data-loader.js가 entry → interp 합성 시 bullish 필드 패스스루 (REQ-048 data-loader 정정).
+      // 따라서 st(=it.interp).bullish_today/streak 참조가 올바름. it.bullish_today 폴백도 안전성 확보.
       // streak >= 1 + bullish_today=true 일 때만 노출. streak=1이면 "강세", 2+면 "강세+N".
-      const bullishStreak = it.bullish_streak || 0;
-      const bullishToday = !!it.bullish_today;
+      const bullishStreak = (st && st.bullish_streak) || it.bullish_streak || 0;
+      const bullishToday = !!((st && st.bullish_today) || it.bullish_today);
       const bullishBadge = (bullishToday && bullishStreak >= 1)
         ? `<span class="cal-bullish-badge">${bullishStreak > 1 ? `강세+${bullishStreak}` : '강세'}</span>`
         : '';
@@ -1275,9 +1276,10 @@ function renderCalExpandContent(date, data) {
       ? `<span class="cal-streak-badge">거래대금+${compactPC}</span>`
       : '';
     // REQ-048 — no-interp 카드 (와이제이링크 등)에도 강세 배지 노출.
-    // entry 루트(it.bullish_today/streak)는 build_daily.py가 모든 entry에 부착.
-    const compactBullishStreak = it.bullish_streak || 0;
-    const compactBullishToday = !!it.bullish_today;
+    // it.interp 부재 케이스: it.bullish_today/streak 직접 참조 (entry 루트 패스스루).
+    // it.interp 존재 케이스: data-loader 합성된 interp 객체에서 추출.
+    const compactBullishStreak = it.interp?.bullish_streak || it.bullish_streak || 0;
+    const compactBullishToday = !!(it.interp?.bullish_today || it.bullish_today);
     const compactBullishBadge = (compactBullishToday && compactBullishStreak >= 1)
       ? `<span class="cal-bullish-badge">${compactBullishStreak > 1 ? `강세+${compactBullishStreak}` : '강세'}</span>`
       : '';
