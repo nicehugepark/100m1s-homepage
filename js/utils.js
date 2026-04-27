@@ -1533,12 +1533,13 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
   rows.sort((a, b) => (_SEV_ORDER[a.sev] ?? 9) - (_SEV_ORDER[b.sev] ?? 9));
 
   // 2. 증권사 사유 행 (creditRiskInfo)
-  // REQ-027 §B — insightMap 폐기. 부가 설명("익일 재평가 후 회복 가능" 등)은 매매 결정 시점에 잡음.
-  // label은 사유 단어 자체로 충분 (대표 본질 비판: 매매 결정에 무관한 부가 설명 제거).
+  // REQ-032 §A1 — creditReasonGloss 풀이 매핑 (대표 본질 비판: 컨텍스트 부재).
+  // REQ-027 §B에서 폐기한 "익일 재평가 후 회복 가능" 등 추정·예측 단어는 0건 유지.
+  // 본 매핑은 추정 단어 0건 + 현재 사실 풀이만 (FLR-AGT-002 정합).
   if (creditRiskInfo && creditRiskInfo.credit_risk && creditRiskInfo.credit_reason) {
     const reason = (typeof sanitize === 'function') ? sanitize(creditRiskInfo.credit_reason) : String(creditRiskInfo.credit_reason);
     rows.push({
-      label: reason,
+      label: _glossCreditReason(reason),
       period: '',
       sev: 'credit',
       source: 'broker',
@@ -1553,26 +1554,67 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
   return rows.slice(0, MAX_ROWS);
 }
 
+// REQ-032 §A1 — credit_reason 라벨 풀이 매핑 (SPEC-001 §IV.1).
+// 추정·예측 단어 0건 + 현재 사실 풀이만 (FLR-AGT-002 정합).
+// 토구사 추가 검증 후 확장 가능.
+const _CREDIT_REASON_GLOSS = {
+  '투자경고': '투자경고 단계 도달 — 신용 불가',
+  '회사한도초과': '회사한도초과 — 신용 한도 소진',
+  'ETF': 'ETF — 신용거래 대상 외',
+  'ETN': 'ETN — 신용거래 대상 외',
+  'ETF/ETN': 'ETF/ETN — 신용거래 대상 외',
+  '스팩(SPAC)': 'SPAC — 합병 전 신용거래 제한',
+  'SPAC': 'SPAC — 합병 전 신용거래 제한',
+  '우선주': '우선주 — 신용거래 제한 (일부 증권사 가능)',
+  '신용거래 제한 종목': '신용거래 제한 — 증권사 자체 기준',
+  '신용융자 불가': '신용융자 불가 — kt20017 단건 조회',
+};
+
+function _glossCreditReason(reason) {
+  if (!reason) return '';
+  return _CREDIT_REASON_GLOSS[reason] || reason;  // 미매핑 시 원본 (안전 fallback)
+}
+
+// REQ-032 §A — 사유 박스 행 1건 렌더 (그룹 헤더 내부 호출).
+function _renderCreditBlockRow(r) {
+  const periodHtml = r.period
+    ? `<span class="cal-status-period">${escapeHtml(r.period)}</span>`
+    : '';
+  const linkHtml = r.url
+    ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-status-detail__link">공시</a>`
+    : '';
+  const sourceCls = (r.source === 'krx_disclosure') ? 'krx' : 'credit';
+  return `<div class="cal-status-detail v3 ${sourceCls} cal-status-detail--reason">`
+    + `<div class="cal-status-head">`
+    + `<span class="cal-status-label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`
+    + periodHtml
+    + linkHtml
+    + `</div>`
+    + `</div>`;
+}
+
 // §IV.1 박스 N건 출력. §III BEM 재활용 + cal-status-detail--reason modifier 1개 신규.
 // REQ-027 §C — KRX 공시 링크 칩 추가 (SPEC-001 §V.3).
+// REQ-032 §A — 출처 그룹 분리 (KRX 공시 vs 증권사 사유) + 그룹 헤더 노출.
 function renderCreditBlockReasonBox(badges, viewDate, creditRiskInfo) {
   const rows = computeCreditBlockReason(badges, viewDate, creditRiskInfo);
   if (rows.length === 0) return '';
 
-  return rows.map(r => {
-    const periodHtml = r.period
-      ? `<span class="cal-status-period">${escapeHtml(r.period)}</span>`
-      : '';
-    const linkHtml = r.url
-      ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-status-detail__link">공시</a>`
-      : '';
-    const sourceCls = (r.source === 'krx_disclosure') ? 'krx' : 'credit';
-    return `<div class="cal-status-detail v3 ${sourceCls} cal-status-detail--reason">`
-      + `<div class="cal-status-head">`
-      + `<span class="cal-status-label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`
-      + periodHtml
-      + linkHtml
-      + `</div>`
+  const krxRows = rows.filter(r => r.source === 'krx_disclosure');
+  const brokerRows = rows.filter(r => r.source === 'broker');
+
+  let html = '';
+  if (krxRows.length > 0) {
+    html += `<div class="cal-credit-group cal-credit-group--krx">`
+      + `<div class="cal-credit-group__heading">KRX 시장경보 <span class="cal-credit-group__source">(한국거래소 공시)</span></div>`
+      + krxRows.map(_renderCreditBlockRow).join('')
       + `</div>`;
-  }).join('');
+  }
+  if (brokerRows.length > 0) {
+    html += `<div class="cal-credit-group cal-credit-group--brokerage">`
+      + `<div class="cal-credit-group__heading">신용거래 제한 사유 <span class="cal-credit-group__source">(증권사 통지)</span></div>`
+      + brokerRows.map(_renderCreditBlockRow).join('')
+      + `</div>`;
+  }
+  return html;
 }
