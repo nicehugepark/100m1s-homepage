@@ -317,13 +317,12 @@ function dsnV9MatchStageIndex(track, badgeLabel) {
 }
 
 function getStageFlow(badges, viewDate) {
-  // v9.3 §I — 노드 상태 매트릭스 산출. {trackMain, trackShortTerm} 각 NodeState[].
-  // NodeState = {label, state: 'unvisited'|'current'|'upcoming'|'predicted-imminent'|'predicted'}
-  //   - 'current': source='disclosure' AND start<=viewDate<=end
-  //   - 'upcoming': source='disclosure' AND viewDate<start AND getNextTradingDay(viewDate)===start (D-1 인접 단계만)
+  // v9.3.1 §I — 노드 상태 매트릭스 산출. {trackMain, trackShortTerm} 각 NodeState[].
+  // NodeState = {label, state: 'unvisited'|'current'|'upcoming'|'predicted-imminent'}
+  //   - 'current': source='disclosure' AND start<=viewDate<=end (또는 "X 예고" 라벨이 D-1 인접 시 idx=current)
+  //   - 'upcoming': source='disclosure' AND viewDate<start AND getNextTradingDay(viewDate)===start (D-1 인접 단계만, 또는 "X 예고" D-1 시 idx+1=upcoming 분리 부착)
   //   - 'predicted-imminent': isPredicted AND getPredictedBadgeVisibility==='header' (strict 3 AND 충족)
-  //   - 'predicted': isPredicted AND getPredictedBadgeVisibility==='detail-only' (strict 미충족, 시각 그대로)
-  //   - 'unvisited': 기본 (도약 케이스 disclosure 포함)
+  //   - 'unvisited': 기본 (도약 케이스 disclosure 포함, predicted detail-only 포함 — v9.3.1 휴지 C=a)
   const trackMain = KRX_MAIN_TRACK.map(label => ({ label, state: 'unvisited' }));
   const trackShortTerm = KRX_SHORT_TERM_TRACK.map(label => ({ label, state: 'unvisited' }));
   if (!Array.isArray(badges) || badges.length === 0) {
@@ -345,37 +344,43 @@ function getStageFlow(badges, viewDate) {
       || label.includes('예상');
 
     if (isPredicted) {
-      // v9.3 §I: predicted-imminent vs predicted 분리 — strict 3 AND 충족 여부
+      // v9.3.1 §I — 휴지 사이클 0 결정 C=a: vis==='detail-only' 시 state 부착 폐기 (unvisited 유지).
+      // strict 3 AND 충족(vis==='header')만 'predicted-imminent' 부착.
       const vis = (typeof getPredictedBadgeVisibility === 'function')
         ? getPredictedBadgeVisibility(badge, viewDate, badges)
         : 'header';
-      const newState = (vis === 'header') ? 'predicted-imminent' : 'predicted';
-      // current/upcoming이 이미 있으면 덮어쓰지 않음 (공시 우선)
-      if (target[idx].state === 'unvisited') {
-        target[idx].state = newState;
+      if (vis === 'header' && target[idx].state === 'unvisited') {
+        target[idx].state = 'predicted-imminent';
       }
+      // vis==='detail-only' → state 부착 폐기 (unvisited 유지)
     } else {
-      // disclosure source — current vs upcoming 분기 (§I.2)
+      // disclosure source — current vs upcoming 분기 (§I.2 + v9.3.1 §I 휴지 A=a)
       const start = badge.start || '';
       const end = badge.end || '';
       const today = viewDate || '';
-      let newState = 'current';
       if (start && today && today < start) {
         // v9.3 §I.2 — 발효일 미도래 → D-1 인접만 upcoming (대표 본질 가치 "당장 오늘 혹은 다음 영업일에 필연").
         // getNextTradingDay(today)===start AND today<start 동시 충족 시 D-1 정확 인접.
         const nextTd = (typeof getNextTradingDay === 'function') ? getNextTradingDay(today) : '';
         if (nextTd && nextTd === start) {
-          newState = 'upcoming';
+          // v9.3.1 §I 휴지 A=a — "X 예고" 라벨이면 idx=current(예고 진행 중) + idx+1=upcoming(다음 단계 발효 예정) 분리 부착.
+          // guard: idx+1 < trackArr.length (마지막 단계 예고는 분리 부착 폐기, 자체만 upcoming).
+          if (label.endsWith('예고') && idx + 1 < trackArr.length) {
+            target[idx].state = 'current';
+            target[idx + 1].state = 'upcoming';
+          } else {
+            target[idx].state = 'upcoming';
+          }
+          continue;
         } else {
           // D-2+ — unvisited 유지 (시간 여유 인지)
           continue;
         }
       } else if (start && end && today >= start && today <= end) {
-        newState = 'current';
+        target[idx].state = 'current';
       } else {
-        newState = 'current'; // 보수적 fallback (start 없거나 정보 부족)
+        target[idx].state = 'current'; // 보수적 fallback (start 없거나 정보 부족)
       }
-      target[idx].state = newState;
     }
   }
   return { trackMain, trackShortTerm };
