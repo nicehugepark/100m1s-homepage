@@ -409,41 +409,40 @@ function renderCalExpandContent(date, data) {
           })()
         : '';
       // 종목 상태 뱃지 (투자주의/경고/위험/단기과열)
-      // REQ-008: single_price=true인 배지 뒤에 "단일가매매" 배지 병기
-      // v9.2 §II: predicted strict 미충족 배지는 헤더 비노출 (펼침 detail-only로 강등)
+      // REQ-020 v9.5 §II.3 — 헤더 = 효과 배지 (효과 + 시점). v9.3 통합 라벨(`dsn-v93-header-badge`) 대체.
+      // SSOT: build_daily.py status_badges[].effect_badges[] (각 항목 = {effect, when, severity, source_label, source_kind}).
+      // utils.js collectEffectBadges = 카드 단위 머지(A1) + 우선순위 정렬(A4) + dedup.
+      // A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe.
+      // 최대 N=3 노출 + "+N" 표기.
       const _v92HeaderViewDate = date || '';
       const _v92AllBadges = st.status_badges || [];
-      const statusBadges = (st.status_badges || []).filter(b => {
-        if (typeof getPredictedBadgeVisibility === 'function') {
-          return getPredictedBadgeVisibility(b, _v92HeaderViewDate, _v92AllBadges) === 'header';
-        }
-        return true;
-      }).map(b => {
-        const cls = b.severity === 'danger' ? 'cal-status-badge danger'
-          : b.severity === 'warning' ? 'cal-status-badge warning'
-          : b.severity === 'hot' ? 'cal-status-badge hot'
-          : 'cal-status-badge caution';
-        // v4: predicted는 dashed border로 구분 (sev-disc-* 단계별 색은 그대로 유지 — 브랜딩 권고)
-        const predCls = (b.source === 'predicted' || (b.label||'').includes('예상') || (b.label||'').includes('근접')) ? ' predicted' : '';
-        // v9.3 §II — 헤더 뱃지 통합 라벨 + title + aria-label + data-krx-stage (FLR-010 방어)
-        const headerLabel = (typeof getHeaderBadgeLabel === 'function')
-          ? getHeaderBadgeLabel(b, _v92HeaderViewDate)
-          : (b.label || '시장경보');
-        const headerTitle = (typeof getHeaderBadgeTitle === 'function')
-          ? getHeaderBadgeTitle(b, _v92HeaderViewDate)
-          : (b.label || '');
-        const krxStage = (typeof getKrxStageDataset === 'function')
-          ? getKrxStageDataset(b)
-          : (b.label || '');
-        const mainBadge = `<span class="${cls}${predCls} dsn-v93-header-badge" data-krx-stage="${escapeHtml(krxStage)}" title="${escapeHtml(headerTitle)}" aria-label="${escapeHtml(headerTitle)}" role="button" tabindex="0">${escapeHtml(headerLabel)}</span>`;
-        // v9.3 §III — 단기과열 단일가매매 별도 뱃지 — 헤더에서 '단일가' 통합으로 들어가므로 single_price 별도 노출은 main과 다른 dayOffset 케이스만.
-        // 단기과열 D+3-5는 이미 헤더에 '단일가' 노출되므로 중복 방지: kind==='single-price'면 single 뱃지 생략.
-        const stKind = (typeof getShortTermBadgeKind === 'function') ? getShortTermBadgeKind(b, _v92HeaderViewDate) : 'market-warn';
-        const singleBadge = (b.single_price === true && stKind !== 'single-price')
-          ? `<span class="cal-status-badge sev-single" title="단기과열종목 지정에 따른 3거래일간 30분 단위 단일가매매 적용 중. 시장경보(투자주의/경고/위험)와 무관한 별도 제도입니다.">단일가매매</span>`
-          : '';
-        return mainBadge + singleBadge;
+      const _v95EffectBadges = (typeof collectEffectBadges === 'function')
+        ? collectEffectBadges(_v92AllBadges, _v92HeaderViewDate)
+        : [];
+      const _v95VisibleN = 3;  // A4 — 최대 3개 노출
+      const _v95Overflow = Math.max(0, _v95EffectBadges.length - _v95VisibleN);
+      const _v95Visible = _v95EffectBadges.slice(0, _v95VisibleN);
+      const _v95EffectBadgesHtml = _v95Visible.map(eb => {
+        const label = (typeof dsnV95FormatEffectBadge === 'function') ? dsnV95FormatEffectBadge(eb) : '';
+        const title = (typeof dsnV95EffectBadgeTitle === 'function') ? dsnV95EffectBadgeTitle(eb) : label;
+        const cls = `dsn-v95-effect-badge dsn-v95-effect-badge--${eb.effect} dsn-v95-effect-badge--when-${eb.when}`;
+        const krxStage = eb.source_label || '';
+        return `<span class="${cls}" data-krx-stage="${escapeHtml(krxStage)}" data-effect="${escapeHtml(eb.effect)}" data-when="${escapeHtml(eb.when)}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}" role="button" tabindex="0">${escapeHtml(label)}</span>`;
       }).join('');
+      // P2 함정 #4 — 가려진 효과 라벨 hover 텍스트 join (cropping bias 보강).
+      const _v95MoreTitle = _v95Overflow > 0
+        ? _v95EffectBadges.slice(_v95VisibleN)
+            .map(eb => (typeof dsnV95FormatEffectBadge === 'function') ? dsnV95FormatEffectBadge(eb) : '')
+            .filter(Boolean)
+            .join(' / ')
+        : '';
+      const _v95MoreHtml = _v95Overflow > 0
+        ? `<span class="dsn-v95-effect-badge dsn-v95-effect-badge--more" title="${escapeHtml(_v95MoreTitle || _v95Overflow + '건 추가')}" aria-label="${_v95Overflow}건 더 보기">+${_v95Overflow}</span>`
+        : '';
+      const _v95InnerHtml = _v95EffectBadgesHtml + _v95MoreHtml;
+      const statusBadges = _v95InnerHtml
+        ? `<span class="dsn-v95-effect-badges">${_v95InnerHtml}</span>`
+        : '';
       // v9.2 §III: predicted only 카드 트리거 핀 (disclosure 0 + strict 미충족 predicted ≥1)
       const v92TriggerPinHtml = (typeof renderTriggerPin === 'function')
         ? renderTriggerPin(_v92AllBadges, _v92HeaderViewDate)
@@ -1317,12 +1316,15 @@ function renderCalExpandContent(date, data) {
     window._cardCollapseInit = true;
   }
 
-  // v9.3 §II.2 보강 2 — 헤더 뱃지 click 시 카드 자동 펼침 (모바일 hover 미작동 함정 대응, F=c)
+  // REQ-020 v9.5 §II.6 — 헤더 효과 배지 click 시 카드 자동 펼침 (v9.3 호환 — 셀렉터만 교체).
+  // 함정 P2 #5: legacy `dsn-v93-header-badge` 셀렉터는 DOM 출력 0건 자연 차단 (잔존 CSS는 dead).
   // 함정 #11: 이벤트 버블링 충돌 방어 — stopPropagation 후 명시적 expanded 부착 (toggle 아닌 add).
   if (!window._headerBadgeExpandInit) {
     document.addEventListener('click', e => {
-      const badge = e.target.closest('.dsn-v93-header-badge');
+      const badge = e.target.closest('.dsn-v95-effect-badge');
       if (!badge) return;
+      // "+N" 더보기 배지는 펼침 트리거 X (후속 toolitp 영역)
+      if (badge.classList.contains('dsn-v95-effect-badge--more')) return;
       const card = badge.closest('.cal-feature-card');
       if (!card) return;
       e.stopPropagation();
@@ -1331,8 +1333,9 @@ function renderCalExpandContent(date, data) {
     // 키보드 a11y — Enter·Space 키
     document.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
-      const badge = e.target.closest && e.target.closest('.dsn-v93-header-badge');
+      const badge = e.target.closest && e.target.closest('.dsn-v95-effect-badge');
       if (!badge) return;
+      if (badge.classList.contains('dsn-v95-effect-badge--more')) return;
       const card = badge.closest('.cal-feature-card');
       if (!card) return;
       e.preventDefault();
