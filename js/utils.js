@@ -999,6 +999,74 @@ function renderNodeBoxEffect(node, badges, viewDate) {
   return `<div class="dsn-v92-stage-flow__node-effect${variantCls}">${inner}</div>`;
 }
 
+// REQ-019 §III (DSN-004 v9.4): 투자경고 예고 upcoming 노드용 진입 임계가 영역.
+// 토구사 SSOT path 0~3 라벨 매핑. 신규 path 추가 시 이 매핑 동기화 책임 = design-lead.
+const _DSN_V94_PATH_LABEL = {
+  warn_surge_3d_100pct: '3일 전 종가 × 2.0',
+  warn_surge_5d_60pct: '5일 전 종가 × 1.6',
+  warn_surge_15d_100pct: '15일 전 종가 × 2.0',
+  warn_repeated_caution: '15일 전 종가 × 1.75 (투자주의 반복)',
+};
+function dsnV94ShortPathLabel(via) {
+  return _DSN_V94_PATH_LABEL[via] || (via ? `${via} (조건 미상)` : '');
+}
+
+function renderEntryWindow(badge) {
+  // REQ-019 §III.3 — upcoming disclosure 5줄 임계가 박스.
+  // 가드: 투자경고 예고 + source='disclosure' + start 존재 + entry_window_end 존재.
+  // 가드 미통과 시 빈 문자열 (단기과열·current·predicted·predicted_shadow 영향 0건).
+  if (!badge) return '';
+  if (badge.label !== '투자경고 예고') return '';
+  if (badge.source !== 'disclosure') return '';
+  if (!badge.start || !badge.entry_window_end) return '';
+
+  const startMD = dsnV9FormatMD(badge.start);
+  const endMD = dsnV9FormatMD(badge.entry_window_end);
+  const assumption = badge.entry_threshold_assumption || 'KOSPI 횡보 가정';
+
+  // 줄 2 — 임계가 (path 0~3 산출 불가 시 fallback 텍스트)
+  const hasPrice =
+    typeof badge.entry_threshold_price === 'number' && badge.entry_threshold_price > 0;
+  const thresholdLine = hasPrice
+    ? `임계가: ${badge.entry_threshold_price.toLocaleString('ko-KR')}원 이상 (${escapeHtml(dsnV94ShortPathLabel(badge.entry_threshold_via))})`
+    : '단기 임계가 산출 불가';
+
+  // 줄 3 — 비가격 AND 조건 (산출 불가 시 생략)
+  const andLine =
+    hasPrice && badge.entry_threshold_and_condition
+      ? `<div class="dsn-v94-stage-flow__entry-window-line--and">+ ${escapeHtml(badge.entry_threshold_and_condition)}</div>`
+      : '';
+
+  // 줄 4 — 고정 (path 4 KRX 비공개 잠재 경로 — 거짓 충실성 차단 의무)
+  const path4Line = '+ 별도 비공개 조건(계좌관여율) 충족 시 진입 가능';
+
+  return (
+    `<div class="dsn-v94-stage-flow__entry-window">` +
+    `<div class="dsn-v94-stage-flow__entry-window-line--primary">${escapeHtml(startMD)} ~ ${escapeHtml(endMD)} (10거래일)</div>` +
+    `<div class="dsn-v94-stage-flow__entry-window-line--threshold">${thresholdLine}</div>` +
+    andLine +
+    `<div class="dsn-v94-stage-flow__entry-window-line--and">${path4Line}</div>` +
+    `<div class="dsn-v94-stage-flow__entry-window-line--assumption">※ ${escapeHtml(assumption)}</div>` +
+    `</div>`
+  );
+}
+
+function _findUpcomingDisclosureBadge(node, badges) {
+  // §III.3: upcoming 노드와 매칭되는 disclosure 카드 1건 찾기.
+  // renderNodeBoxEffect의 매칭 로직과 동일 — '투자경고 예고' label + source='disclosure'.
+  if (!Array.isArray(badges) || node.state !== 'upcoming') return null;
+  const nodeLabel = String(node.label || '');
+  return (
+    badges.find((b) => {
+      if (!b) return false;
+      if (b.source !== 'disclosure') return false;
+      const bl = String(b.label || '');
+      // 노드 라벨 = "투자경고", badge.label = "투자경고 예고" → startsWith 매칭
+      return bl.startsWith(nodeLabel) && bl.endsWith('예고');
+    }) || null
+  );
+}
+
 function renderStageFlowV9(badges, ctx) {
   // §A 단계 플로우 그래프 전체. ctx={currentDate, ...}
   // v9.2 §I — 노드 박스 하단 자동 효과 1줄 추가.
@@ -1018,7 +1086,10 @@ function renderStageFlowV9(badges, ctx) {
     else if (node.state === 'predicted') cls += ' dsn-v9-stage-flow__node--predicted';
     // v9.2 §I: 박스 하단 자동 효과 1줄 (current/upcoming/predicted-imminent 노드)
     const effectHtml = renderNodeBoxEffect(node, badges, viewDate);
-    return `<span class="${cls}"><span class="dsn-v9-stage-flow__node-label">${escapeHtml(node.label)}</span>${effectHtml}</span>`;
+    // REQ-019 §III: upcoming '투자경고' 노드에 entry_threshold 5줄 영역 부착
+    const upcomingBadge = _findUpcomingDisclosureBadge(node, badges);
+    const entryWindowHtml = upcomingBadge ? renderEntryWindow(upcomingBadge) : '';
+    return `<span class="${cls}"><span class="dsn-v9-stage-flow__node-label">${escapeHtml(node.label)}</span>${effectHtml}${entryWindowHtml}</span>`;
   };
   const renderTrack = (nodes, modCls) => {
     const parts = [];
