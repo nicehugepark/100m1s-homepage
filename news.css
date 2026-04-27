@@ -1,4 +1,4 @@
-/* REQ-036 §1 — Inter @import 제거 (design-lead 명세). Instrument Serif는 news.html `<head>` 직접 link. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 :root {
   --bg: #FAFBFE; --bg2: #F2F4F8; --sf: #FFFFFF; --bd: #E8ECF2;
   --tx: #1A1D26; --tx2: #3D4351; --dm: #8B95A8;
@@ -32,36 +32,6 @@
   /* REQ-035 §E — 트랜지션 표준화 (Linear-style cubic-bezier) */
   --t-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
   --t-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* REQ-036 §2 — 타이포그래피 토큰 (design-lead 명세, 2026-04-28 01:06 KST)
-     Pretendard 우선 (영문은 Inter 자동 fallback 효과 낮음 — system font 사용).
-     Instrument Serif는 news.html에서 별도 link.
-     본 토큰 set은 REQ-036 batch 1차 (폰트+토큰만). 적용은 후속 batch. */
-  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
-  --font-mono: 'SF Mono', ui-monospace, monospace;
-
-  /* REQ-036 §2 — 폰트 사이즈 토큰 (clamp 기반 반응형) */
-  --fs-display: clamp(48px, 8vw, 80px);
-  --fs-h2: clamp(28px, 4vw, 40px);
-  --fs-body: 17px;
-  --fs-meta: 13px;
-
-  /* REQ-036 §2 — 라인 높이 + measure 토큰 */
-  --lh-body: 1.78;
-  --lh-tight: 1.2;
-  --measure: 65ch;
-
-  /* REQ-036 §2 — 새 색 토큰 (REQ-037에서 전수 정정 시 기존 --bg/--tx 단계적 폐기 예정).
-     본 batch에서는 토큰만 정의, 적용 안함 (기존 색 보존 → 시각 회귀 차단). */
-  --color-bg: #fafafa;
-  --color-text: #0a0a0a;
-  --color-meta: rgba(10,10,10,0.5);
-  --color-hair-soft: rgba(0,0,0,0.04);
-  --color-hair: rgba(0,0,0,0.08);
-  --color-mute: rgba(0,0,0,0.4);
-  --color-dim: rgba(0,0,0,0.6);
-  --color-strong: rgba(0,0,0,0.8);
 }
 @media (max-width: 640px) {
   :root {
@@ -73,9 +43,7 @@
   }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-/* REQ-036 §2 — font-family를 --font-sans로 교체 (Inter 우선 → Pretendard 우선).
-   background/color는 REQ-037 색 전수 정정 batch에서 처리 → 본 batch는 보존. */
-html { font-family: var(--font-sans); background: var(--bg); color: var(--tx); -webkit-font-smoothing: antialiased; }
+html { font-family: 'Inter', 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: var(--tx); -webkit-font-smoothing: antialiased; }
 body { min-height: 100vh; line-height: 1.55; }
 a { color: inherit; text-decoration: none; }
 
@@ -118,77 +86,27 @@ header {
   .mobile-drawer { display: block; }
 }
 
-/* REQ-036 partial 3/3 — main 본문 컬럼 65ch (design-lead 명세).
-   풀폭 영역(.theme-trend·.cal-layout·.theme-map·.cal-content)은 .full-bleed로 viewport 100% 확장. */
-main { max-width: var(--measure); margin: 0 auto; padding: 80px 24px 120px; }
+main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 
-/* REQ-036 partial 3/3 — .full-bleed: 65ch 컬럼에서 viewport 폭으로 확장.
-   부모(main)가 max-width 65ch + margin auto이므로 음수 margin으로 좌우 확장. */
-.full-bleed {
-  width: 100vw;
-  max-width: 1100px;
-  position: relative;
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
-
-/* REQ-036 partial 3/3 — page-header 이중 헤드라인. */
-.page-header {
-  margin-bottom: 80px;
-  padding-top: 40px;
-}
-.page-date {
-  font-family: var(--font-mono);
-  font-size: var(--fs-meta);
-  color: var(--color-meta);
+.page-header { margin-bottom: 32px; }
+.page-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px; background: var(--am3);
+  border: 1px solid rgba(196,153,48,0.25); border-radius: 999px;
+  font-size: 10px; font-weight: 800; color: var(--am);
+  letter-spacing: 1px; text-transform: uppercase;
   margin-bottom: 16px;
-  min-height: 1em; /* 동적 채움 전 레이아웃 시프트 방지 */
 }
 .page-title {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: var(--fs-display);
-  line-height: var(--lh-tight);
-  letter-spacing: -0.02em;
-  color: var(--color-text);
-  margin-bottom: 8px;
+  font-size: clamp(32px, 5vw, 48px); font-weight: 900;
+  letter-spacing: -1.5px; margin-bottom: 8px;
 }
-/* .page-title .accent — 보존 (다른 페이지 호환). 신규 카피에서는 사용 안 함. */
 .page-title .accent { color: var(--am); }
-.page-eyebrow-en {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(20px, 3vw, 28px);
-  color: var(--color-meta);
-  margin-bottom: 24px;
-  letter-spacing: 0;
-}
 .page-desc { font-size: 14px; color: var(--tx2); max-width: 640px; line-height: 1.7; }
 .page-meta {
-  margin-top: 16px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--color-meta);
+  margin-top: 16px; font-size: 11px; color: var(--dm);
+  font-family: 'SF Mono', monospace;
 }
-
-/* REQ-036 partial 3/3 — 모바일 가드.
-   640px 이하: full-bleed 음수 margin 재계산. 380px 이하: padding 축소. */
-@media (max-width: 640px) {
-  .full-bleed {
-    max-width: 100vw;
-    margin-left: calc(-1 * (50vw - 50%));
-    transform: none;
-    width: 100vw;
-  }
-}
-@media (max-width: 380px) {
-  main { padding: 40px 20px 80px; }
-  .page-header { margin-bottom: 48px; padding-top: 24px; }
-}
-
-/* REQ-036 partial 3/3 — .page-eyebrow 폐기. 정의 자체는 유지하되 news.html에서 미사용.
-   lecture.html은 inline CSS로 자체 정의 — 본 css 변경 영향 없음. */
 
 .loading { text-align: center; padding: 80px 24px; color: var(--dm); font-size: 13px; }
 .error {
