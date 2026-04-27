@@ -1575,22 +1575,18 @@ function _glossCreditReason(reason) {
   return _CREDIT_REASON_GLOSS[reason] || reason;  // 미매핑 시 원본 (안전 fallback)
 }
 
-// REQ-032 §A — 사유 박스 행 1건 렌더 (그룹 헤더 내부 호출).
+// REQ-034 §C — 사유 박스 행 1건 렌더 (박스 컨테이너 폐기, inline 행으로 재설계).
+// 기존 cal-status-detail.v3.cal-status-detail--reason 박스 + cal-status-detail__link 폐기.
+// 신규 BEM: cal-credit-row + __label / __period / __link.
 function _renderCreditBlockRow(r) {
+  const labelHtml = `<span class="cal-credit-row__label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`;
   const periodHtml = r.period
-    ? `<span class="cal-status-period">${escapeHtml(r.period)}</span>`
+    ? `<span class="cal-credit-row__period">${escapeHtml(r.period)}</span>`
     : '';
   const linkHtml = r.url
-    ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-status-detail__link">공시</a>`
+    ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-credit-row__link">공시</a>`
     : '';
-  const sourceCls = (r.source === 'krx_disclosure') ? 'krx' : 'credit';
-  return `<div class="cal-status-detail v3 ${sourceCls} cal-status-detail--reason">`
-    + `<div class="cal-status-head">`
-    + `<span class="cal-status-label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`
-    + periodHtml
-    + linkHtml
-    + `</div>`
-    + `</div>`;
+  return `<div class="cal-credit-row">${labelHtml}${periodHtml}${linkHtml}</div>`;
 }
 
 // §IV.1 박스 N건 출력. §III BEM 재활용 + cal-status-detail--reason modifier 1개 신규.
