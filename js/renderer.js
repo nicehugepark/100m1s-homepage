@@ -344,7 +344,8 @@ function renderCalExpandContent(date, data) {
       let discBadgeHtml = '';
       let discListHtml = '';
       if (totalDiscCount > 0) {
-        const discBadgeLabel = totalDiscCount > 1 ? `공시 ${totalDiscCount}` : '공시';
+        // REQ-039 표기 통일 — "공시+N" (1건도 +1).
+        const discBadgeLabel = `공시+${totalDiscCount}`;
         const cbWarnEarly = allDiscs.some(d => d.is_cb) ? '<span class="cal-disc-cb-warn">CB</span>' : '';
         // REQ-030 §1 — 헤더 공시 배지 (SPEC-001 §III.4). 칩 디자인 (📋 아이콘 CSS ::before).
         discBadgeHtml = `<span class="cal-disclosure-badge" aria-label="공시 ${totalDiscCount}건">${escapeHtml(discBadgeLabel)}</span>${cbWarnEarly}`;
@@ -408,12 +409,21 @@ function renderCalExpandContent(date, data) {
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
       const pc = st.pick_count;
+      // REQ-039 명명 정정 — "거래대금" (강세 연속과 모호성 해소). 표기 "거래대금+N".
       const pickMeta = (pp && pc >= 2)
-        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">${pc}연속</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
+        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">거래대금+${pc}</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
         : '';
-      // 종목명 우측 연속 배지: 2+ → "N연속", 1이면 비표시
+      // 종목명 우측 거래대금 연속 배지 (헤더): 2+ → "거래대금+N", 1이면 비표시
       const pickBadge = pc != null && pc >= 2
-        ? `<span class="cal-streak-badge">${pc}연속</span>`
+        ? `<span class="cal-streak-badge">거래대금+${pc}</span>`
+        : '';
+      // REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
+      // entry.bullish_today + bullish_streak (build_daily.py REQ-039 데이터 단).
+      // streak >= 1 + bullish_today=true 일 때만 노출. streak=1이면 "강세", 2+면 "강세+N".
+      const bullishStreak = st.bullish_streak || 0;
+      const bullishToday = !!st.bullish_today;
+      const bullishBadge = (bullishToday && bullishStreak >= 1)
+        ? `<span class="cal-bullish-badge">${bullishStreak > 1 ? `강세+${bullishStreak}` : '강세'}</span>`
         : '';
       // REQ-020c — cal-credit-badge 폐기. KRX 무관 신용 사유(회사한도초과·ETF 등)는
       // utils.js collectEffectBadges에 creditRiskInfo로 전달 → "신용불가(오늘)" v95 형식 통일.
@@ -1168,8 +1178,8 @@ function renderCalExpandContent(date, data) {
         : '';
       // v9.2 §III: 트리거 핀 — 헤더 배지 0건 + predicted strict 미충족 ≥1 케이스 시 노출
       // 위치: badgesRow 우측 끝 (CSS .dsn-v92-trigger-pin{margin-left:auto})
-      const badgesRowHtml = (pickBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
-        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
+      const badgesRowHtml = (pickBadge || bullishBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
+        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
@@ -1259,8 +1269,9 @@ function renderCalExpandContent(date, data) {
     // 대표 지시 (B안, 2026-04-22 16:07 KST): 레이아웃 일관성 유지. compact 한 줄 폐지.
     // kiwoom JSON 기반 데이터만 사용 (range_240d/intraday/news 없음 → 해당 영역은 생략 또는 placeholder)
     const compactPC = it.interp?.pick_count;
+    // REQ-039 표기 통일 — "거래대금+N" (강세 연속과 모호성 해소).
     const compactBadge = compactPC != null && compactPC >= 2
-      ? `<span class="cal-streak-badge">${compactPC}연속</span>`
+      ? `<span class="cal-streak-badge">거래대금+${compactPC}</span>`
       : '';
     // 테마 칩: interp 없어도 it.themes는 kiwoom merge 단계에서 있을 수 있음
     const simpleThemesHtml = (it.themes && it.themes.length > 0)
