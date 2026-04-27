@@ -309,6 +309,15 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
   font-size: 11px; color: #555; font-weight: 500; margin-left: 6px;
 }
+/* REQ-027 §C — 사유 박스 KRX 공시 링크 칩 (SPEC-001 §V.3) */
+.cal-status-detail__link {
+  font-size: 11px;
+  color: #1565c0;
+  text-decoration: underline;
+  margin-left: 6px;
+  font-weight: 500;
+}
+.cal-status-detail__link:hover { text-decoration: none; opacity: 0.85; }
 @media (prefers-color-scheme: dark) {
   .cal-status-detail.v3.krx.cal-status-detail--reason {
     background: rgba(245, 158, 11, 0.10);
@@ -316,6 +325,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .cal-status-detail.v3.cal-status-detail--reason .cal-status-period {
     color: #D1D5DB;
   }
+  .cal-status-detail__link { color: #93c5fd; }
 }
 /* 2026-04-22 핫픽스: DART 공시 원문 링크 — 공시 기반 배지 상세 하단 */
 .cal-status-detail.v3 .cal-status-dart-link {
