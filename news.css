@@ -2027,6 +2027,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 /* v9.3 §II — 헤더 뱃지 통합 click 시 카드 자동 펼침. role=button + cursor pointer + focus ring */
+/* REQ-020 v9.5: legacy. DOM 출력 0건 (renderer.js v9.5 §II.3에서 .dsn-v95-effect-badge로 대체). */
 .dsn-v93-header-badge {
   cursor: pointer;
   outline-offset: 2px;
@@ -2038,6 +2039,105 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 @media (hover: hover) {
   .dsn-v93-header-badge:hover {
     filter: brightness(1.05);
+  }
+}
+
+/* ───── REQ-020 v9.5 §II.1 — 효과 배지 (효과+시점) ─────
+   매트릭스: 거래정지(danger) / 신용불가(warning) / 단일가(info) × today / today_and_tomorrow / tomorrow / tomorrow_maybe.
+   tomorrow_maybe = 점선 + 채도 -10% (predicted 자체 추정 → 단정 회피, FLR-AGT-002).
+   명세: DOC-20260427-DSN-005. */
+.dsn-v95-effect-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  max-width: 100%;
+}
+.dsn-v95-effect-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  outline-offset: 2px;
+}
+.dsn-v95-effect-badge:focus-visible {
+  outline: 2px solid currentColor;
+}
+@media (hover: hover) {
+  .dsn-v95-effect-badge:hover {
+    filter: brightness(1.05);
+  }
+}
+
+/* 효과별 색상 (severity SSOT) */
+.dsn-v95-effect-badge--trade-halt {     /* danger — 거래정지 */
+  background: rgba(220, 38, 38, 0.10);
+  color: #DC2626;
+  border: 1px solid rgba(220, 38, 38, 0.35);
+}
+.dsn-v95-effect-badge--credit-block {   /* warning — 신용불가 */
+  background: rgba(217, 119, 6, 0.10);
+  color: #D97706;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+}
+.dsn-v95-effect-badge--single-price {   /* info — 단일가 */
+  background: rgba(29, 78, 216, 0.08);
+  color: #1D4ED8;
+  border: 1px solid rgba(29, 78, 216, 0.30);
+}
+
+/* 시점 변형 — tomorrow_maybe만 점선 + 채도 약화 (단정 vs 조건부) */
+.dsn-v95-effect-badge--when-tomorrow_maybe {
+  border-style: dashed;
+  background-color: transparent;
+}
+
+/* +N 더보기 */
+.dsn-v95-effect-badge--more {
+  background: var(--surface-2, #F3F4F6);
+  color: var(--text-secondary, #6B7280);
+  border: 1px dashed currentColor;
+  font-weight: 500;
+}
+
+/* 모바일 ≤380px — 폰트/패딩 축소 (FLR feedback_mobile_equal_desktop) */
+@media (max-width: 380px) {
+  .dsn-v95-effect-badge {
+    font-size: 0.68rem;
+    padding: 2px 6px;
+  }
+}
+
+/* 다크모드 — lightness +12% 톤 보정 (DSN-005 §IV 정합) */
+@media (prefers-color-scheme: dark) {
+  .dsn-v95-effect-badge--trade-halt {
+    background: rgba(248, 113, 113, 0.18);
+    color: #F87171;
+    border-color: rgba(248, 113, 113, 0.45);
+  }
+  .dsn-v95-effect-badge--credit-block {
+    background: rgba(245, 158, 11, 0.16);
+    color: #F59E0B;
+    border-color: rgba(245, 158, 11, 0.45);
+  }
+  .dsn-v95-effect-badge--single-price {
+    background: rgba(96, 165, 250, 0.14);
+    color: #60A5FA;
+    border-color: rgba(96, 165, 250, 0.40);
+  }
+}
+
+/* 고대비 모드 (a11y) */
+@media (prefers-contrast: more) {
+  .dsn-v95-effect-badge {
+    border-width: 2px;
+    background: transparent;
   }
 }
 

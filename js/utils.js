@@ -889,6 +889,148 @@ function countStrictUnmetPredicted(badges, viewDate) {
   return count;
 }
 
+// ============================================================================
+// REQ-020 v9.5 — 효과 배지 (effect+when) 헬퍼
+// 명세: DOC-20260427-DSN-005 §I.5 / §II.2 / §II.4 / §II.5.
+// SSOT: build_daily.py _compute_effect_badges가 status_badges[].effect_badges[] 산출.
+// utils.js 책임: 카드 단위 머지(A1) + 우선순위 정렬(A4) + 중복 제거 + 라벨 포맷.
+// ============================================================================
+
+const _DSN_V95_EFFECT_LABEL = {
+  'credit-block': '신용불가',
+  'trade-halt': '거래정지',
+  'single-price': '단일가',
+};
+const _DSN_V95_WHEN_LABEL = {
+  'today': '오늘',
+  'tomorrow': '내일',
+  'today_and_tomorrow': '오늘+내일',
+  'tomorrow_maybe': '내일 가능',
+};
+// A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe.
+const _DSN_V95_EFFECT_ORDER = { 'trade-halt': 0, 'credit-block': 1, 'single-price': 2 };
+const _DSN_V95_WHEN_ORDER = { 'today': 0, 'today_and_tomorrow': 1, 'tomorrow': 2, 'tomorrow_maybe': 3 };
+
+function dsnV95FormatEffectBadge(eb) {
+  // §II.2 — "신용불가(내일)" / "거래정지(오늘+내일)" / "단일가(내일 가능)" 등.
+  if (!eb || !eb.effect) return '';
+  const ef = _DSN_V95_EFFECT_LABEL[eb.effect] || eb.effect;
+  const wh = _DSN_V95_WHEN_LABEL[eb.when] || eb.when || '';
+  return wh ? `${ef}(${wh})` : ef;
+}
+
+function dsnV95EffectBadgeTitle(eb) {
+  // §II.3 hover/aria-label — 원 단계 라벨 + 효과 매핑 + 시점 매핑.
+  // 예: "투자경고 예고 → 신용불가 (내일 발효)" / "투자위험 근접 → 거래정지 (내일 발효 가능)".
+  if (!eb || !eb.effect) return '';
+  const ef = _DSN_V95_EFFECT_LABEL[eb.effect] || eb.effect;
+  const src = eb.source_label || '';
+  const whenText = {
+    'today': '오늘 발효 중',
+    'tomorrow': '내일 발효',
+    'today_and_tomorrow': '오늘 발효 중 + 내일도 잔존',
+    'tomorrow_maybe': '내일 발효 가능 (자체 추정)',
+  }[eb.when] || (_DSN_V95_WHEN_LABEL[eb.when] || '');
+  if (src) return `${src} → ${ef} (${whenText})`;
+  return `${ef} (${whenText})`;
+}
+
+function mergeEffectBadges(effects) {
+  // §I.5 A1 — 동일 effect의 today + tomorrow 머지 → today_and_tomorrow.
+  // tomorrow_maybe(조건부)는 머지 X — 어휘 보존 (FLR-AGT-002).
+  if (!Array.isArray(effects) || effects.length === 0) return [];
+  const byEffect = {};
+  for (const eb of effects) {
+    if (!eb || !eb.effect) continue;
+    const key = eb.effect;
+    if (!byEffect[key]) byEffect[key] = [];
+    byEffect[key].push(eb);
+  }
+  const merged = [];
+  for (const key in byEffect) {
+    const items = byEffect[key];
+    const hasToday = items.some(i => i.when === 'today');
+    const hasTomorrow = items.some(i => i.when === 'tomorrow');
+    if (hasToday && hasTomorrow) {
+      // 머지: today + tomorrow → today_and_tomorrow.
+      // severity는 first item 기준 (동일 effect 동일 severity 가정).
+      const todayItem = items.find(i => i.when === 'today');
+      const tomorrowItem = items.find(i => i.when === 'tomorrow');
+      const sourceLabels = [
+        todayItem && todayItem.source_label,
+        tomorrowItem && tomorrowItem.source_label,
+      ].filter(Boolean).join(' + ');
+      merged.push({
+        effect: key,
+        when: 'today_and_tomorrow',
+        severity: todayItem.severity || items[0].severity,
+        source_label: sourceLabels || (items[0].source_label || ''),
+        source_kind: items[0].source_kind || 'disclosure',
+      });
+      // 외 항목(tomorrow_maybe 등)은 별도 잔존
+      for (const i of items) {
+        if (i.when !== 'today' && i.when !== 'tomorrow') merged.push(i);
+      }
+    } else {
+      merged.push(...items);
+    }
+  }
+  return merged;
+}
+
+function dedupEffectBadges(effects) {
+  // P1 함정 #3 — 다중 출처(같은 effect+when) 1건만 잔존. source_label은 첫 출처 유지.
+  if (!Array.isArray(effects)) return [];
+  const seen = new Set();
+  const out = [];
+  for (const eb of effects) {
+    if (!eb || !eb.effect || !eb.when) continue;
+    const key = `${eb.effect}|${eb.when}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(eb);
+  }
+  return out;
+}
+
+function sortEffectBadges(effects) {
+  // §II.4 A4 — 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow > tomorrow_maybe.
+  if (!Array.isArray(effects)) return [];
+  return effects.slice().sort((a, b) => {
+    const ea = _DSN_V95_EFFECT_ORDER[a.effect];
+    const eb = _DSN_V95_EFFECT_ORDER[b.effect];
+    const da = (ea === undefined ? 99 : ea) - (eb === undefined ? 99 : eb);
+    if (da !== 0) return da;
+    const wa = _DSN_V95_WHEN_ORDER[a.when];
+    const wb = _DSN_V95_WHEN_ORDER[b.when];
+    return (wa === undefined ? 99 : wa) - (wb === undefined ? 99 : wb);
+  });
+}
+
+function collectEffectBadges(allBadges, viewDate) {
+  // §II.5 — 카드 단위 통합. status_badges N건의 effect_badges[]를 합쳐 머지·dedup·정렬.
+  // viewDate 인자는 향후 확장용 (현재 구현은 build_daily.py 산출 신뢰).
+  if (!Array.isArray(allBadges)) return [];
+  const allEffects = [];
+  for (const b of allBadges) {
+    if (!b) continue;
+    const ebs = Array.isArray(b.effect_badges) ? b.effect_badges : [];
+    for (const eb of ebs) {
+      if (!eb) continue;
+      // source_label 보강 (build_daily.py에서 부착됐지만 안전망)
+      const enriched = { ...eb };
+      if (!enriched.source_label && b.label) enriched.source_label = b.label;
+      allEffects.push(enriched);
+    }
+  }
+  // 1. 머지 (A1)
+  const merged = mergeEffectBadges(allEffects);
+  // 2. dedup (P1 함정 #3)
+  const dedup = dedupEffectBadges(merged);
+  // 3. 정렬 (A4)
+  return sortEffectBadges(dedup);
+}
+
 function getNodeBoxText(node, badges, viewDate) {
   // v9.3 §I.3 그래프 노드 박스 하단 텍스트 산출. 매트릭스 4종 + state 4축 정합:
   //   미경험: '' (빈 칸)
