@@ -386,14 +386,10 @@ function renderCalExpandContent(date, data) {
       const pickBadge = pc != null && pc >= 2
         ? `<span class="cal-streak-badge">${pc}연속</span>`
         : '';
-      // REQ-020a 핫픽스 — v9.5 효과 배지에 credit-block 있으면 cal-credit-badge 중복 차단.
-      // 사유: 헤더 효과 배지 "신용불가(오늘/내일/내일 가능)"가 의미 흡수 (DSN-005 §III.1).
-      // 잔존: KRX 단계와 무관한 신용 사유 (회사한도초과·ETF·SPAC 등) → cal-credit-badge 유지.
-      const _v95HasCreditBlock = Array.isArray(st.status_badges) && st.status_badges.some(b =>
-        Array.isArray(b && b.effect_badges) && b.effect_badges.some(eb => eb && eb.effect === 'credit-block')
-      );
-      const creditBadgeHtml = (it.interp?.credit_risk && !_v95HasCreditBlock)
-        ? '<span class="cal-credit-badge">신용불가</span>' : '';
+      // REQ-020c — cal-credit-badge 폐기. KRX 무관 신용 사유(회사한도초과·ETF 등)는
+      // utils.js collectEffectBadges에 creditRiskInfo로 전달 → "신용불가(오늘)" v95 형식 통일.
+      // dedup으로 KRX disclosure credit-block과 중복 자연 차단.
+      const creditBadgeHtml = '';
       // v3.2: 신용 사유도 v3 패턴 (라벨 박스 + 인사이트). 대표 정정 19:43 KST 옵션 나
       const creditReasonHtml = (st.credit_risk && st.credit_reason)
         ? (() => {
@@ -422,8 +418,13 @@ function renderCalExpandContent(date, data) {
       // 최대 N=3 노출 + "+N" 표기.
       const _v92HeaderViewDate = date || '';
       const _v92AllBadges = st.status_badges || [];
+      // REQ-020c — KRX 무관 신용 사유 합성 effect_badge 통합 (라벨 형식 통일).
+      // st = it.interp (라인 296), data-loader.js:198 credit_risk = !!entry.credit_risk.
+      const _v95CreditRiskInfo = (st && st.credit_risk)
+        ? { credit_risk: true, credit_reason: st.credit_reason || '신용 제한' }
+        : null;
       const _v95EffectBadges = (typeof collectEffectBadges === 'function')
-        ? collectEffectBadges(_v92AllBadges, _v92HeaderViewDate)
+        ? collectEffectBadges(_v92AllBadges, _v92HeaderViewDate, _v95CreditRiskInfo)
         : [];
       const _v95VisibleN = 3;  // A4 — 최대 3개 노출
       const _v95Overflow = Math.max(0, _v95EffectBadges.length - _v95VisibleN);

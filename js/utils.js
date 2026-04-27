@@ -1013,9 +1013,12 @@ function sortEffectBadges(effects) {
   });
 }
 
-function collectEffectBadges(allBadges, viewDate) {
+function collectEffectBadges(allBadges, viewDate, creditRiskInfo) {
   // §II.5 — 카드 단위 통합. status_badges N건의 effect_badges[]를 합쳐 머지·dedup·정렬.
   // viewDate 인자는 향후 확장용 (현재 구현은 build_daily.py 산출 신뢰).
+  // REQ-020c — creditRiskInfo (KRX 무관 신용 사유: 회사한도초과·ETF·SPAC·우선주 등) 합성 effect_badge 부착.
+  //   {credit_risk: bool, credit_reason: string} 입력. 라벨 형식 통일 (cal-credit-badge → v95).
+  //   KRX disclosure가 이미 credit-block 출력 시 dedup으로 자연 차단.
   if (!Array.isArray(allBadges)) return [];
   const allEffects = [];
   for (const b of allBadges) {
@@ -1029,9 +1032,19 @@ function collectEffectBadges(allBadges, viewDate) {
       allEffects.push(enriched);
     }
   }
+  // REQ-020c — KRX 무관 신용 사유 합성 effect_badge (today). dedup으로 KRX disclosure와 중복 자연 차단.
+  if (creditRiskInfo && creditRiskInfo.credit_risk) {
+    allEffects.push({
+      effect: 'credit-block',
+      when: 'today',
+      severity: 'warning',
+      source_label: creditRiskInfo.credit_reason || '신용 제한',
+      source_kind: 'credit_risk',
+    });
+  }
   // 1. 머지 (A1)
   const merged = mergeEffectBadges(allEffects);
-  // 2. dedup (P1 함정 #3)
+  // 2. dedup (P1 함정 #3) — credit_risk 합성도 KRX disclosure와 충돌 시 자연 1건 잔존
   const dedup = dedupEffectBadges(merged);
   // 3. 정렬 (A4)
   return sortEffectBadges(dedup);
