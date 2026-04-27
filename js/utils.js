@@ -938,6 +938,12 @@ function getNodeBoxText(node, badges, viewDate) {
       return { dateText: '', effectText: '', variant: 'empty' };
     }
     // current
+    // v9.3.2 §I (REQ-017 사이클 2 휴지 A=a): "예고" 단계 진행 중 (today<start)인 경우
+    // 박스 날짜 = today (= viewDate, 예고 단계의 발효일). badge.start는 다음 단계(본 지정) 진입일이라 부정합.
+    // viewDate fallback (P0 함정 차단): viewDate||badge.view_date||'' — 둘 다 부재 시 빈 박스 회귀.
+    if (label.endsWith('예고') && start && today && today < start) {
+      return { dateText: dsnV9FormatMD(today), effectText, variant: 'current' };
+    }
     if (start && end && today >= start && today <= end) {
       return {
         dateText: `${dsnV9FormatMD(start)}~${dsnV9FormatMD(end)}`,
