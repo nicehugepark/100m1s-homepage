@@ -20,6 +20,18 @@
   --card-indent-badges: var(--card-indent-body);  /* cal-feature-body 하위 요소(뉴스·테마·소스 pill)와 x좌표 일치 (2026-04-22 원인 확정 수정) */
   --card-indent-body: 12px;    /* cal-feature-body (desktop은 padding-left=12) */
   --card-indent-news: 36px;    /* stock-news 기준값 (cal-feature-card와 무관한 별도 박스) */
+
+  /* REQ-035 §D — Stripe Press × Linear × Are.na 미니멀리즘 5단계 그레이 토큰
+     SPEC-001 §IX#10. 자주 등장 hex 5건은 본 토큰으로 매핑, 나머지는 REQ-037에서 처리. */
+  --g04: rgba(0,0,0,0.04);
+  --g08: rgba(0,0,0,0.08);
+  --g40: rgba(0,0,0,0.4);
+  --g60: rgba(0,0,0,0.6);
+  --g80: rgba(0,0,0,0.8);
+
+  /* REQ-035 §E — 트랜지션 표준화 (Linear-style cubic-bezier) */
+  --t-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --t-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (max-width: 640px) {
   :root {
@@ -558,7 +570,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-threshold { font-size:11px; padding:1px 0; color:#555; }
 .cal-threshold.triggered { color:#c62828; font-weight:600; }
 .cal-threshold.safe { color:#2e7d32; }
-.cal-spark-empty { width:80px; height:32px; background:repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(128,128,128,0.08) 4px, rgba(128,128,128,0.08) 5px); border-radius:4px; flex-shrink:0; }
+.cal-spark-empty { width:80px; height:32px; background: var(--g04); border-radius:4px; flex-shrink:0; }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
@@ -762,8 +774,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .trend-scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(196,153,48,0.6); }
 .trend-fade-left {
   position: absolute; top: 20px; left: 68px; width: 32px; height: calc(100% - 44px);
-  background: linear-gradient(to right, var(--sf), transparent);
-  pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.25s;
+  background: var(--sf);
+  pointer-events: none; z-index: 3; opacity: 0; transition: opacity var(--t-fast);
 }
 .theme-trend-legend {
   display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
@@ -838,8 +850,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 /* ───── 키움 거래대금 500억+ 블록 ───── */
 .kiwoom-block {
   margin-bottom: 24px;
-  background: linear-gradient(135deg, #FFF9E8 0%, #FFFFFF 60%);
-  border: 1px solid var(--am2);
+  background: #FAFAFA;
+  border: 1px solid var(--g08);
   border-radius: 14px;
   padding: 18px 22px;
 }
@@ -925,7 +937,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-layout > .cal-side { position: sticky; top: 88px; }
 
 .toss-cal {
-  background: linear-gradient(180deg, #FFFCF3 0%, var(--sf) 70%);
+  background: var(--sf);
   border: 1px solid var(--bd);
   border-radius: 14px;
   padding: 14px 12px 12px;
@@ -1067,7 +1079,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-section-title::before {
   content: ''; display: inline-block;
   width: 4px; height: 14px; border-radius: 2px;
-  background: linear-gradient(180deg, #E8C063, #C49930);
+  background: var(--am);
 }
 .cal-section-title .count {
   color: var(--dm); font-weight: 700;
@@ -1292,7 +1304,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   color: #475569;
   font-weight: 500;
   letter-spacing: 0.01em;
-  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
   user-select: none;
   margin-top: 4px;
   width: fit-content;
@@ -1332,7 +1344,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   width: 10px; height: 10px;
   font-size: 10px;
   opacity: 0.6;
-  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--t-base);
   display: inline-block;
 }
 .cal-feature-card.expanded .cal-chevron {
@@ -1368,10 +1380,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   letter-spacing: 0.1px;
   vertical-align: middle;
 }
-.cal-disclosure-badge::before {
-  content: '📋';
-  font-size: 9px;
-}
+/* REQ-035 §B — content '📋' 제거. REQ-032 텍스트 링크형 정합 (SPEC-001 §IX#10).
+   ::before 자체를 비워 마진/레이아웃 영향 없음. */
 .cal-disclosure-badge:hover {
   background: #E2E8F0;
   color: #1E293B;
@@ -1412,14 +1422,15 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-macro-chip {
   font-size: 11px; font-weight: 700; letter-spacing: -0.2px;
   padding: 5px 10px; border-radius: 999px;
-  background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
-  border: 1px solid #E8C063; color: #6B4A0A;
+  background: #FFF4D1;
+  border: 1px solid var(--g08); color: #6B4A0A;
 }
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
-  border: 1px solid #E8C063; border-radius: 10px;
-  background: linear-gradient(90deg, #FFF9E8, #FFFBEF);
+  border: 1px solid var(--g08); border-radius: 10px;
+  background: #FAFAFA;
   font-size: 12.5px; line-height: 1.5;
+  color: var(--tx);
 }
 .cal-toppick b { color: #6B4A0A; }
 .cal-grade-badge {
@@ -1537,7 +1548,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   position: relative;
   height: 6px;
   border-radius: 3px;
-  background: linear-gradient(90deg, #EAF1FF 0%, #F4F4F4 50%, #FFF0F0 100%);
+  background: var(--g08);
   overflow: visible;
 }
 .stock-range .range-fill {
@@ -1546,7 +1557,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   bottom: 0;
   left: var(--low-pct, 0%);
   right: calc(100% - var(--high-pct, 100%));
-  background: linear-gradient(90deg, #1958C7 0%, #C53939 100%);
+  background: var(--g60);
   border-radius: 3px;
   opacity: 0.55;
 }

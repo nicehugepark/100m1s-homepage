@@ -695,7 +695,7 @@ function renderCalExpandContent(date, data) {
         const _regSrcConf = b.regulation_source_confidence || '';
         if (_regSrcConf === 'low' || b.state === 'predicted_stage2_notice') {
           sectionNext.push(`<div class="cal-reg-source-banner">
-            <span class="cal-reg-source-banner-title">⚠️ 규정 출처 확인 중</span>이 예측의 임계값은 키움·KB증권 2차 자료 기반 잠정 수치입니다. KRX 원문 재대조 후 수치가 달라질 수 있습니다.
+            <span class="cal-reg-source-banner-title">규정 출처 확인 중</span>이 예측의 임계값은 키움·KB증권 2차 자료 기반 잠정 수치입니다. KRX 원문 재대조 후 수치가 달라질 수 있습니다.
           </div>`);
         } else if (_regSrcConf === 'pending') {
           sectionNext.push(`<div class="cal-reg-source-banner pending">규정 원문 1차 대조 진행 중 (2차 자료 기반 잠정 수치).</div>`);
@@ -797,7 +797,7 @@ function renderCalExpandContent(date, data) {
 
             // 조건 표 표제
             const tableTitleTime = isPredicted ? '미확정' : '익일 00시 기준';
-            sectionNext.push(`<h4 class="cal-status-table-title">🎯 ${escapeHtml(nextStageLabel)} 지정 조건 (${escapeHtml(tableTitleTime)})</h4>`);
+            sectionNext.push(`<h4 class="cal-status-table-title">${escapeHtml(nextStageLabel)} 지정 조건 (${escapeHtml(tableTitleTime)})</h4>`);
 
             // DSN-001 §20.8 (v7.4 P2): path-level overall_progress_ratio 행
             // b.paths[] 배열 있으면 경로별 진척 1행씩. easiest_path_flag=true는 녹색 강조.
@@ -873,7 +873,7 @@ function renderCalExpandContent(date, data) {
           // _isPlaceholderReason은 v6 §2에서도 쓰이는 유틸, 배지 루프 상단(524행)에서 선언됨.
           const reasonTextRaw = b.reason_text;
           if (!_isPlaceholderReason(reasonTextRaw)) {
-            sectionNext.push(`<div class="cal-status-next-header">📋 지정 사유: ${escapeHtml(String(reasonTextRaw).trim())}</div>`);
+            sectionNext.push(`<div class="cal-status-next-header">지정 사유: ${escapeHtml(String(reasonTextRaw).trim())}</div>`);
           }
           if (dartLinkHtml) sectionNext.push(dartLinkHtml);
         }
@@ -891,14 +891,14 @@ function renderCalExpandContent(date, data) {
             const ae = _resolveAutoEffects(b);
             if (ae && ae.length > 0) {
               ae.forEach(line => {
-                sectionReg.push(`<div class="cal-status-insight ${cls}"><span class="cal-status-insight-stage">💡 ${escapeHtml(stageName)}(${escapeHtml(tagLabel)}):</span> ${escapeHtml(line)}</div>`);
+                sectionReg.push(`<div class="cal-status-insight ${cls}"><span class="cal-status-insight-stage">${escapeHtml(stageName)}(${escapeHtml(tagLabel)}) —</span> ${escapeHtml(line)}</div>`);
               });
               return true;
             }
             // 폴백: label 기반 문구
             const fallback = _resolveInsightFallback(stageName);
             if (fallback) {
-              sectionReg.push(`<div class="cal-status-insight ${cls}">💡 ${escapeHtml(stageName)}(${escapeHtml(tagLabel)}): ${escapeHtml(fallback)}</div>`);
+              sectionReg.push(`<div class="cal-status-insight ${cls}">${escapeHtml(stageName)}(${escapeHtml(tagLabel)}) — ${escapeHtml(fallback)}</div>`);
               return true;
             }
             return false;
@@ -1063,7 +1063,7 @@ function renderCalExpandContent(date, data) {
           let v6RegBannerHtml = '';
           const _v6RegConf = b.regulation_source_confidence || '';
           if (_v6RegConf === 'low' || b.state === 'predicted_stage2_notice') {
-            v6RegBannerHtml = `<div class="cal-reg-source-banner"><span class="cal-reg-source-banner-title">⚠️ 규정 출처 확인 중</span>이 예측의 임계값은 키움·KB증권 2차 자료 기반 잠정 수치입니다. KRX 원문 재대조 후 수치가 달라질 수 있습니다.</div>`;
+            v6RegBannerHtml = `<div class="cal-reg-source-banner"><span class="cal-reg-source-banner-title">규정 출처 확인 중</span>이 예측의 임계값은 키움·KB증권 2차 자료 기반 잠정 수치입니다. KRX 원문 재대조 후 수치가 달라질 수 있습니다.</div>`;
           } else if (_v6RegConf === 'pending') {
             v6RegBannerHtml = `<div class="cal-reg-source-banner pending">규정 원문 1차 대조 진행 중 (2차 자료 기반 잠정 수치).</div>`;
           }
