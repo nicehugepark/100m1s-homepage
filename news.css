@@ -882,8 +882,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 /* ───── 키움 거래대금 500억+ 블록 ───── */
 .kiwoom-block {
   margin-bottom: 24px;
-  background: #FAFAFA;
-  border: 1px solid var(--g08);
+  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). am2 border 동시 복원. */
+  background: linear-gradient(135deg, #FFF9E8 0%, #FFFFFF 60%);
+  border: 1px solid var(--am2);
   border-radius: 14px;
   padding: 18px 22px;
 }
@@ -969,7 +970,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-layout > .cal-side { position: sticky; top: 88px; }
 
 .toss-cal {
-  background: var(--sf);
+  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). 사이드 캘린더 강조. */
+  background: linear-gradient(180deg, #FFFCF3 0%, var(--sf) 70%);
   border: 1px solid var(--bd);
   border-radius: 14px;
   padding: 14px 12px 12px;
@@ -1454,15 +1456,16 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-macro-chip {
   font-size: 11px; font-weight: 700; letter-spacing: -0.2px;
   padding: 5px 10px; border-radius: 999px;
-  background: #FFF4D1;
-  border: 1px solid var(--g08); color: #6B4A0A;
+  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. */
+  background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
+  border: 1px solid #E8C063; color: #6B4A0A;
 }
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
-  border: 1px solid var(--g08); border-radius: 10px;
-  background: #FAFAFA;
+  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. */
+  border: 1px solid #E8C063; border-radius: 10px;
+  background: linear-gradient(90deg, #FFF9E8, #FFFBEF);
   font-size: 12.5px; line-height: 1.5;
-  color: var(--tx);
 }
 .cal-toppick b { color: #6B4A0A; }
 .cal-grade-badge {
@@ -1580,7 +1583,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   position: relative;
   height: 6px;
   border-radius: 3px;
-  background: var(--g08);
+  /* REQ-035-rev: 의미 그라데이션 복원 — 가격 스펙트럼 (저가 청 → 중간 회 → 고가 적). 240일 가격 범위 시각화. */
+  background: linear-gradient(90deg, #EAF1FF 0%, #F4F4F4 50%, #FFF0F0 100%);
   overflow: visible;
 }
 .stock-range .range-fill {
@@ -1589,7 +1593,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   bottom: 0;
   left: var(--low-pct, 0%);
   right: calc(100% - var(--high-pct, 100%));
-  background: var(--g60);
+  /* REQ-035-rev: 의미 그라데이션 복원 — 청→적 (저가→고가) 진한 톤. opacity로 fill 강도 표현. */
+  background: linear-gradient(90deg, #1958C7 0%, #C53939 100%);
   border-radius: 3px;
   opacity: 0.55;
 }
