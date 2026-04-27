@@ -1,6 +1,6 @@
 {
   "date": "2026-04-24",
-  "generated_at": "2026-04-27T15:38:10.718634",
+  "generated_at": "2026-04-27T17:20:55.473757",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3577,7 +3577,16 @@
             }
           ],
           "reason_text": "아주IB투자 보통주가 2026-04-24 종가가 15일 전 종가 대비 100% 이상 상승하여 2026-04-27 당일 투자주의종목으로 지정 예고. 최초 판단일 2026-04-27부터 10거래일 이내(최대 2026-05-12) 단기급등 또는 중장기급등 요건 충족 시 투자경고종목 지정 가능.",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         },
         {
           "label": "투자위험 근접",
@@ -3624,7 +3633,16 @@
           "next_trading_day": "2026-04-27",
           "next_trading_day_for_predicted": "2026-04-27",
           "next_trading_day_source": "verified",
-          "single_price": false
+          "single_price": false,
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "tomorrow_maybe",
+              "severity": "danger",
+              "source_label": "투자위험 근접",
+              "source_kind": "predicted"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -4100,7 +4118,16 @@
           "view_date": "2026-04-24",
           "next_trading_day": "2026-04-27",
           "single_price": false,
-          "source": "disclosure"
+          "source": "disclosure",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "today",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ]
         },
         {
           "label": "투자위험 근접",
@@ -4147,7 +4174,16 @@
           "next_trading_day": "2026-04-27",
           "next_trading_day_for_predicted": "2026-04-27",
           "next_trading_day_source": "verified",
-          "single_price": false
+          "single_price": false,
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "tomorrow_maybe",
+              "severity": "danger",
+              "source_label": "투자위험 근접",
+              "source_kind": "predicted"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -4477,7 +4513,16 @@
             }
           ],
           "reason_text": "미래에셋벤처투자가 5일 전 대비 60% 이상 급등하여 2026-04-20 투자주의종목 1일 지정. 04-20~05-04 내 3가지 조건(① 5일 전 대비 60%↑ ② 최근 15일 최고가 ③ 종합주가지수 대비 5배↑) 모두 충족 시 투자경고종목 지정 가능하며, 경고·위험 단계에서 매매거래 정지 가능.",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         },
         {
           "label": "투자위험 근접",
@@ -4524,7 +4569,16 @@
           "next_trading_day": "2026-04-27",
           "next_trading_day_for_predicted": "2026-04-27",
           "next_trading_day_source": "verified",
-          "single_price": false
+          "single_price": false,
+          "effect_badges": [
+            {
+              "effect": "trade-halt",
+              "when": "tomorrow_maybe",
+              "severity": "danger",
+              "source_label": "투자위험 근접",
+              "source_kind": "predicted"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -5115,6 +5169,15 @@
               "threshold": 161280,
               "current": 115200,
               "triggered": false
+            }
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
             }
           ]
         }
@@ -6263,7 +6326,8 @@
           "view_date": "2026-04-24",
           "next_trading_day": "2026-04-27",
           "single_price": false,
-          "source": "disclosure"
+          "source": "disclosure",
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -6405,7 +6469,16 @@
           "view_date": "2026-04-24",
           "next_trading_day": "2026-04-27",
           "single_price": false,
-          "source": "disclosure"
+          "source": "disclosure",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ]
         }
       ],
       "intraday": {
@@ -6745,7 +6818,8 @@
           "source": "disclosure",
           "end": "2026-05-12",
           "reason_text": "OCI(KR7456040005)가 2026-04-27 단기과열종목 지정예고. 예고일부터 10거래일 이내 ①주가상승률(당일 종가 직전 40거래일 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 해당일 종가가 직전 거래일 및 지정예고일 전일 종가 대비 상승 시 다음 매매거래일부터 지정(3거래일 30분 단위 단일가매매 적용).",
-          "prev_stage": null
+          "prev_stage": null,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -8326,6 +8400,15 @@
               "current": 36500,
               "triggered": false
             }
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
           ]
         }
       ],
@@ -8523,6 +8606,36 @@
       },
       "news": [
         {
+          "title": "합병 시너지 통했나…HD건설기계, 실적 발표 후 12%대 급등 [이런국장 저런주식]",
+          "url": "https://www.sedaily.com/article/20037672",
+          "source": "서울경제",
+          "published_at": "2026-04-27T07:57:38",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "HD건설기계, 1분기 영업익 1907억원… 전년比 88%↑",
+          "url": "https://biz.chosun.com/industry/company/2026/04/27/RP62LPFGZ5GOBMQOAJVQRDJS34/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T07:12:13",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "멸종 위기종 '애기송이풀'…지킴이 나선 HD건설기계",
           "url": "https://www.mk.co.kr/news/business/12025440",
           "source": "매경",
@@ -8557,36 +8670,6 @@
           "url": "https://biz.chosun.com/en/2026/04/20/EO5LTLFSAJFK3GHGHLFHUNB3PI/",
           "source": "조선비즈",
           "published_at": "2026-04-20T05:19:22",
-          "causal_chain": "고유가 기조 → 연비 효율 높인 신형 굴착기 수요 증가 → HD건설기계 실적 개선 기대. 포르투갈 발전기 업체에 친환경 G2엔진 264대 공급 수주로 글로벌 시장 확대.",
-          "macro_event": "고유가 기조 지속으로 연비 효율 높인 건설기계 신모델 수요 증가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "HD건설기계 신형 굴착기, 고유가에 인기",
-          "url": "https://www.hankyung.com/article/2026041535061",
-          "source": "한경",
-          "published_at": "2026-04-15T08:46:21",
-          "causal_chain": "고유가 기조 → 연비 효율 높인 신형 굴착기 수요 증가 → HD건설기계 실적 개선 기대. 포르투갈 발전기 업체에 친환경 G2엔진 264대 공급 수주로 글로벌 시장 확대.",
-          "macro_event": "고유가 기조 지속으로 연비 효율 높인 건설기계 신모델 수요 증가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "HD건설기계, 연비 효율 높인 신모델로 고유가 부담 경감 기여",
-          "url": "https://biz.chosun.com/industry/company/2026/04/15/QUVTYBUW3BGDLFI6BFJ2GHUROU/",
-          "source": "조선비즈",
-          "published_at": "2026-04-15T03:10:42",
           "causal_chain": "고유가 기조 → 연비 효율 높인 신형 굴착기 수요 증가 → HD건설기계 실적 개선 기대. 포르투갈 발전기 업체에 친환경 G2엔진 264대 공급 수주로 글로벌 시장 확대.",
           "macro_event": "고유가 기조 지속으로 연비 효율 높인 건설기계 신모델 수요 증가",
           "newzy_freshness": null,
@@ -8811,7 +8894,8 @@
           "view_date": "2026-04-24",
           "next_trading_day": "2026-04-27",
           "single_price": false,
-          "source": "disclosure"
+          "source": "disclosure",
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -8943,7 +9027,16 @@
           "entry_window_end": "2026-05-12",
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "reason_text": "네패스 보통주가 2026-04-24 종가의 최근 1년간 초과 주가상승률 200% 이상 및 투자경고종목 지정요건 [1] 중 ③에 해당하여 2026-04-27(1일간) 투자주의종목 지정 예고. 최초 판단일 2026-04-27, 미해당 시 2026-05-12까지 순연 판단.",
-          "prev_stage": "투자주의"
+          "prev_stage": "투자주의",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
         },
         {
           "label": "투자주의",
@@ -8956,7 +9049,8 @@
           "view_date": "2026-04-24",
           "next_trading_day": "2026-04-27",
           "single_price": false,
-          "source": "disclosure"
+          "source": "disclosure",
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -9253,7 +9347,8 @@
               "current": 88900,
               "triggered": true
             }
-          ]
+          ],
+          "effect_badges": []
         }
       ],
       "intraday": {
