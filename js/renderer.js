@@ -418,10 +418,10 @@ function renderCalExpandContent(date, data) {
         ? `<span class="cal-streak-badge">거래대금+${pc}</span>`
         : '';
       // REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
-      // entry.bullish_today + bullish_streak (build_daily.py REQ-039 데이터 단).
+      // REQ-048 정정: bullish 필드는 entry 루트(it)에 부착 (build_daily.py 정합). st = it.interp 잘못된 참조 정정.
       // streak >= 1 + bullish_today=true 일 때만 노출. streak=1이면 "강세", 2+면 "강세+N".
-      const bullishStreak = st.bullish_streak || 0;
-      const bullishToday = !!st.bullish_today;
+      const bullishStreak = it.bullish_streak || 0;
+      const bullishToday = !!it.bullish_today;
       const bullishBadge = (bullishToday && bullishStreak >= 1)
         ? `<span class="cal-bullish-badge">${bullishStreak > 1 ? `강세+${bullishStreak}` : '강세'}</span>`
         : '';
@@ -1274,6 +1274,13 @@ function renderCalExpandContent(date, data) {
     const compactBadge = compactPC != null && compactPC >= 2
       ? `<span class="cal-streak-badge">거래대금+${compactPC}</span>`
       : '';
+    // REQ-048 — no-interp 카드 (와이제이링크 등)에도 강세 배지 노출.
+    // entry 루트(it.bullish_today/streak)는 build_daily.py가 모든 entry에 부착.
+    const compactBullishStreak = it.bullish_streak || 0;
+    const compactBullishToday = !!it.bullish_today;
+    const compactBullishBadge = (compactBullishToday && compactBullishStreak >= 1)
+      ? `<span class="cal-bullish-badge">${compactBullishStreak > 1 ? `강세+${compactBullishStreak}` : '강세'}</span>`
+      : '';
     // 테마 칩: interp 없어도 it.themes는 kiwoom merge 단계에서 있을 수 있음
     const simpleThemesHtml = (it.themes && it.themes.length > 0)
       ? `<div class="cal-theme-row">${it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('')}</div>`
@@ -1305,6 +1312,7 @@ function renderCalExpandContent(date, data) {
             <div class="cal-feature-namecell">
               <span class="cal-feature-name">${escapeHtml(it.name)}</span>
               ${compactBadge}
+              ${compactBullishBadge}
             </div>
             ${metaRow}
           </div>
