@@ -228,13 +228,16 @@ async function loadCalDayData(date) {
 
   // data_source: stock JSON에 포함된 소스 태그 (kiwoom / kiwoom_ranking)
   const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
+  // REQ-033 — 마지막 업데이트 시각 (build_daily.py generated_at). SPEC-001 §I.4.
+  const generatedAt = (stockDailyData && stockDailyData.generated_at) || '';
   const result = {
     kiwoom,
     cafePosts: [],
     narratives: [],
     interpretedByName,
     macroEvents,
-    dataSource
+    dataSource,
+    generatedAt
   };
   calDayCache[date] = result;
   _persistCache();

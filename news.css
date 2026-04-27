@@ -1000,6 +1000,16 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 11px; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
+/* REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). 보조 정보 회색 톤. */
+.cal-day-meta__updated {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+@media (prefers-color-scheme: dark) {
+  .cal-day-meta__updated { color: #64748B; }
+}
 .cal-section { margin-bottom: 22px; }
 .cal-section:last-child { margin-bottom: 0; }
 .cal-section-title {

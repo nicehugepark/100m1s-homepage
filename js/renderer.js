@@ -1,5 +1,16 @@
 /* ───── renderer.js — 카드/차트/테마 렌더링 + 초기화 ───── */
 
+// REQ-033 — 마지막 업데이트 시각 포맷 (SPEC-001 §I.4).
+// build_daily.py의 generated_at은 naive ISO ("2026-04-27T22:59:43.768243") — timezone 미명시.
+// new Date() 파싱 시 브라우저 timezone 의존성 회피하기 위해 substring 직접 추출 (KST 가정 명시).
+// 형식 불일치 시 빈 문자열 반환 (FLR-AGT-002 정합 — 거짓 표시 차단).
+function _formatGeneratedAt(generatedAt) {
+  if (!generatedAt || typeof generatedAt !== 'string') return '';
+  const m = generatedAt.match(/^\d{4}-\d{2}-\d{2}T(\d{2}):(\d{2})/);
+  if (!m) return '';
+  return `${m[1]}:${m[2]} KST`;
+}
+
 // 당일 분봉 sparkline SVG (open 기준선 + 라인 + 하단 그라데이션)
 function buildSparkline(prices, base, dir) {
   if (!prices || prices.length < 2) return '';
@@ -225,8 +236,14 @@ function renderCalExpandContent(date, data) {
   const streakCount = todayStocks.filter(i => i.interp?.prev_pick).length;
   const streakSuffix = streakCount > 0 ? ` · 연속등장 ${streakCount}종` : '';
   const sourceSuffix = '';
+  // REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). build_daily.py generated_at 표시.
+  // 시간대 정합 (개발팀 비판): naive ISO("YYYY-MM-DDTHH:MM:SS.fff") 직접 substring 추출 — Date 파싱 시 브라우저 timezone 의존성 회피. KST 가정 명시.
+  const generatedAt = data.generatedAt || '';
+  const generatedSuffix = generatedAt
+    ? ` · 마지막 업데이트 <span class="cal-day-meta__updated">${escapeHtml(_formatGeneratedAt(generatedAt))}</span>`
+    : '';
   const metaText = todayStocks.length > 0
-    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}`
+    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
     : '—';
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
