@@ -208,6 +208,10 @@ async function loadCalDayData(date) {
             intraday: stockDailyData._fallback_date ? null : (st.intraday || null),
             status_badges: st.status_badges || [],
             range_240d: st.range_240d || null,
+            // REQ-048 — 강세 배지 데이터 패스스루 (build_daily.py REQ-039 entry 루트 → interp 합성).
+            // 이 필드 누락이 라이브 화면 강세 배지 미노출의 진짜 본질 (대표 발화 02:45 KST).
+            bullish_today: !!st.bullish_today,
+            bullish_streak: st.bullish_streak ?? 0,
           });
         }
       }
