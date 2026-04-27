@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+/* REQ-036 §1 — Inter @import 제거 (design-lead 명세). Instrument Serif는 news.html `<head>` 직접 link. */
 :root {
   --bg: #FAFBFE; --bg2: #F2F4F8; --sf: #FFFFFF; --bd: #E8ECF2;
   --tx: #1A1D26; --tx2: #3D4351; --dm: #8B95A8;
@@ -32,6 +32,36 @@
   /* REQ-035 §E — 트랜지션 표준화 (Linear-style cubic-bezier) */
   --t-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
   --t-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* REQ-036 §2 — 타이포그래피 토큰 (design-lead 명세, 2026-04-28 01:06 KST)
+     Pretendard 우선 (영문은 Inter 자동 fallback 효과 낮음 — system font 사용).
+     Instrument Serif는 news.html에서 별도 link.
+     본 토큰 set은 REQ-036 batch 1차 (폰트+토큰만). 적용은 후속 batch. */
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'SF Mono', ui-monospace, monospace;
+
+  /* REQ-036 §2 — 폰트 사이즈 토큰 (clamp 기반 반응형) */
+  --fs-display: clamp(48px, 8vw, 80px);
+  --fs-h2: clamp(28px, 4vw, 40px);
+  --fs-body: 17px;
+  --fs-meta: 13px;
+
+  /* REQ-036 §2 — 라인 높이 + measure 토큰 */
+  --lh-body: 1.78;
+  --lh-tight: 1.2;
+  --measure: 65ch;
+
+  /* REQ-036 §2 — 새 색 토큰 (REQ-037에서 전수 정정 시 기존 --bg/--tx 단계적 폐기 예정).
+     본 batch에서는 토큰만 정의, 적용 안함 (기존 색 보존 → 시각 회귀 차단). */
+  --color-bg: #fafafa;
+  --color-text: #0a0a0a;
+  --color-meta: rgba(10,10,10,0.5);
+  --color-hair-soft: rgba(0,0,0,0.04);
+  --color-hair: rgba(0,0,0,0.08);
+  --color-mute: rgba(0,0,0,0.4);
+  --color-dim: rgba(0,0,0,0.6);
+  --color-strong: rgba(0,0,0,0.8);
 }
 @media (max-width: 640px) {
   :root {
@@ -43,7 +73,9 @@
   }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-family: 'Inter', 'Pretendard', -apple-system, sans-serif; background: var(--bg); color: var(--tx); -webkit-font-smoothing: antialiased; }
+/* REQ-036 §2 — font-family를 --font-sans로 교체 (Inter 우선 → Pretendard 우선).
+   background/color는 REQ-037 색 전수 정정 batch에서 처리 → 본 batch는 보존. */
+html { font-family: var(--font-sans); background: var(--bg); color: var(--tx); -webkit-font-smoothing: antialiased; }
 body { min-height: 100vh; line-height: 1.55; }
 a { color: inherit; text-decoration: none; }
 
