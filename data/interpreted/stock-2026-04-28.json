@@ -1,6 +1,6 @@
 {
   "date": "2026-04-28",
-  "generated_at": "2026-04-28T11:23:51.197777",
+  "generated_at": "2026-04-28T11:27:48.291172",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1877,7 +1877,7 @@
           18790
         ]
       },
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰",
       "causal_chain": "",
@@ -3412,8 +3412,17 @@
       "low_price": 5400,
       "industry": "일반 목적용 기계 제조업",
       "sector": "선박용엔진밸브,형단조품",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "조선"
+      ],
+      "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -3424,8 +3433,8 @@
           "url": "https://www.sedaily.com/article/20037952",
           "source": "서울경제",
           "published_at": "2026-04-28T01:36:55",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "케이에스피가 HD현대중공업에 중속엔진 핵심 부품을 공급 중이라고 밝힘 → HD현대중공업향 부품 공급 관계 확인.",
+          "macro_event": "케이에스피, HD현대중공업 중속엔진 핵심 부품 공급 사실 공개",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3468,7 +3477,10 @@
           6710,
           6720
         ]
-      }
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "120110",
@@ -4055,7 +4067,10 @@
         "low_date": "2026-03-04",
         "low_pct": 85.45,
         "current": 3340
-      }
+      },
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "147830",
@@ -4293,7 +4308,10 @@
         "current": 7770
       },
       "credit_risk": true,
-      "credit_reason": "단기과열"
+      "credit_reason": "단기과열",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     }
   ]
 }
