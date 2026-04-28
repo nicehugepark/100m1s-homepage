@@ -234,7 +234,7 @@ function renderCalExpandContent(date, data) {
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
   const streakCount = todayStocks.filter(i => i.interp?.prev_pick).length;
-  const streakSuffix = streakCount > 0 ? ` · 연속등장 ${streakCount}종` : '';
+  const streakSuffix = streakCount > 0 ? ` · 연속선정 ${streakCount}종` : '';
   const sourceSuffix = '';
   // REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). build_daily.py generated_at 표시.
   // 시간대 정합 (개발팀 비판): naive ISO("YYYY-MM-DDTHH:MM:SS.fff") 직접 substring 추출 — Date 파싱 시 브라우저 timezone 의존성 회피. KST 가정 명시.
@@ -409,13 +409,13 @@ function renderCalExpandContent(date, data) {
       // 연속 선정 메타 (부수적 정보 — 뉴스 요약과 분리)
       const pp = st.prev_pick;
       const pc = st.pick_count;
-      // REQ-039 명명 정정 — "거래대금" (강세 연속과 모호성 해소). 표기 "거래대금+N".
+      // REQ-059 명명 재정정 — "연속선정" (REQ-039 "거래대금"이 맥락 부족 → "연속선정+N"으로 정정).
       const pickMeta = (pp && pc >= 2)
-        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">거래대금+${pc}</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
+        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">연속선정+${pc}</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
         : '';
-      // 종목명 우측 거래대금 연속 배지 (헤더): 2+ → "거래대금+N", 1이면 비표시
+      // 종목명 우측 거래대금 연속 선정 배지 (헤더): 2+ → "연속선정+N", 1이면 비표시
       const pickBadge = pc != null && pc >= 2
-        ? `<span class="cal-streak-badge">거래대금+${pc}</span>`
+        ? `<span class="cal-streak-badge">연속선정+${pc}</span>`
         : '';
       // REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
       // REQ-048 본질: data-loader.js가 entry → interp 합성 시 bullish 필드 패스스루 (REQ-048 data-loader 정정).
@@ -1271,9 +1271,9 @@ function renderCalExpandContent(date, data) {
     // 대표 지시 (B안, 2026-04-22 16:07 KST): 레이아웃 일관성 유지. compact 한 줄 폐지.
     // kiwoom JSON 기반 데이터만 사용 (range_240d/intraday/news 없음 → 해당 영역은 생략 또는 placeholder)
     const compactPC = it.interp?.pick_count;
-    // REQ-039 표기 통일 — "거래대금+N" (강세 연속과 모호성 해소).
+    // REQ-059 표기 재정정 — "연속선정+N" (REQ-039 "거래대금"이 맥락 부족).
     const compactBadge = compactPC != null && compactPC >= 2
-      ? `<span class="cal-streak-badge">거래대금+${compactPC}</span>`
+      ? `<span class="cal-streak-badge">연속선정+${compactPC}</span>`
       : '';
     // REQ-048 — no-interp 카드 (와이제이링크 등)에도 강세 배지 노출.
     // it.interp 부재 케이스: it.bullish_today/streak 직접 참조 (entry 루트 패스스루).
