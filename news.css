@@ -1055,10 +1055,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-bottom: 8px; margin-bottom: 12px;
   /* REQ-070 — 검은 굵은 라인(2px solid var(--tx)) → 얇은 회색 (상위 nav 정합). */
   border-bottom: 1px solid var(--bd);
-  /* REQ-069 — 스크롤 시 현재 일자 sticky 고정. 상위 페이지 헤더 88px 정합. */
+  /* REQ-072 — 스크롤 시 현재 일자 sticky 고정. 상위 page nav header 실제 height 68px(padding 16+brand-mark 36+padding 16) 정합. 88→68px (REQ-069 88px는 nav 끝과 sticky 시작 사이 20px 갭 발생, 콘텐츠가 그 사이로 흘러 시각 단절). */
   position: -webkit-sticky;
   position: sticky;
-  top: 88px;
+  top: 68px;
   z-index: 10;
   /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
   background: rgba(250, 251, 254, 0.85);
