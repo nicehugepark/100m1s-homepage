@@ -1306,12 +1306,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   gap: 6px;
   cursor: pointer;
   width: 100%;
-  padding: 5px 16px;             /* REQ-060 — 8/16 → 5/16 (두께 추가 축소, 대표 발화 11:38) */
-  min-height: 28px;               /* REQ-060 — 36 → 28 */
+  padding: 5px 12px;             /* REQ-061 — page-eyebrow 정합 (5/16 → 5/12, 대표 발화 11:43) */
+  /* min-height 제거 — page-eyebrow가 min-height 미설정. 자연 height = 12*1.5 + 5*2 ≈ 28px */
   border-radius: 9999px;
   background: #F8FAFC;
   border: 1px solid #64748B;      /* REQ-045 §D — #94A3B8 → #64748B (데스크탑 가독성) */
-  font-size: 12px;
+  font-size: 12px;                /* 풀폭 버튼이라 가독성 우선 (eyebrow 10px와 차등) */
   color: #0F172A;
   font-weight: 600;               /* REQ-045 §D — 500 → 600 (데스크탑 가독성) */
   letter-spacing: 0.01em;
@@ -1331,10 +1331,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   outline-offset: 2px;
 }
 @media (max-width: 640px) {
-  /* REQ-060 — 모바일 두께 추가 축소 (풀폭이라 터치 영역 충분, 대표 발화 11:38) */
+  /* REQ-061 — 모바일도 page-eyebrow 정합 (padding 5/12, min-height 제거, 대표 발화 11:43) */
   .cal-detail-toggle {
-    padding: 7px 16px;
-    min-height: 32px;
+    padding: 5px 12px;
   }
 }
 .cal-toggle-text {
