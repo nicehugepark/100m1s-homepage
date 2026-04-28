@@ -238,9 +238,10 @@ function renderCalExpandContent(date, data) {
   const sourceSuffix = '';
   // REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). build_daily.py generated_at 표시.
   // 시간대 정합 (개발팀 비판): naive ISO("YYYY-MM-DDTHH:MM:SS.fff") 직접 substring 추출 — Date 파싱 시 브라우저 timezone 의존성 회피. KST 가정 명시.
+  // REQ-070 — 라벨 축약 ("마지막 업데이트 HH:MM" → "HH:MM 업데이트"). sticky 헤더 폭 축소.
   const generatedAt = data.generatedAt || '';
   const generatedSuffix = generatedAt
-    ? ` · 마지막 업데이트 <span class="cal-day-meta__updated">${escapeHtml(_formatGeneratedAt(generatedAt))}</span>`
+    ? ` · <span class="cal-day-meta__updated">${escapeHtml(_formatGeneratedAt(generatedAt))} 업데이트</span>`
     : '';
   const metaText = todayStocks.length > 0
     ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
