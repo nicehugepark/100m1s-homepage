@@ -1061,7 +1061,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   top: 68px;
   z-index: 10;
   /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
-  background: rgba(250, 251, 254, 0.85);
+  /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255, 0.85 → 0.92 (콘텐츠 가독성). */
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   /* cal-content padding(24px 26px) 보정: sticky 시 좌우 가장자리까지 배경 채움 */
@@ -1070,10 +1071,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-top: 8px;
 }
 @media (prefers-color-scheme: dark) {
-  .cal-content-head { background: rgba(15, 17, 22, 0.85); }
+  /* REQ-073 — dark 미운영. light 통일 (rgba(255,255,255,0.92)). */
+  .cal-content-head { background: rgba(255, 255, 255, 0.92); }
 }
 .cal-content-date {
-  font-size: 24px; font-weight: 900; letter-spacing: -0.7px;
+  /* REQ-074 — 폰트 위계 축소. 24/900/-0.7px → 15/700/-0.2px (메타 정보 위계, 본문 카드와 균형). line-height 1.2 유지. */
+  font-size: 15px; font-weight: 700; letter-spacing: -0.2px;
   line-height: 1.2;
   color: var(--tx);
 }
@@ -1584,7 +1587,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .cal-layout > .cal-side { position: static; }
   .toss-cal { max-width: 280px; margin: 0 auto; }
   .cal-content { padding: 20px 18px; }
-  .cal-content-date { font-size: 20px; }
+  /* REQ-074 — 모바일 폰트 위계 축소. 20px → 13px (데스크탑 15px 대비 모바일 -2px). */
+  .cal-content-date { font-size: 13px; }
   /* REQ-069 — 모바일 sticky 헤더 높이 정합 + cal-content padding(20px 18px) 보정 */
   .cal-content-head {
     top: 72px;
