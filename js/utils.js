@@ -1518,8 +1518,19 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
   // 본 매핑은 추정 단어 0건 + 현재 사실 풀이만 (FLR-AGT-002 정합).
   if (creditRiskInfo && creditRiskInfo.credit_risk && creditRiskInfo.credit_reason) {
     const reason = (typeof sanitize === 'function') ? sanitize(creditRiskInfo.credit_reason) : String(creditRiskInfo.credit_reason);
+    // REQ-067 — 칩(label)은 짧은 reason만, 풀이 텍스트는 title(본문 summary)로 분리.
+    // _glossCreditReason 결과 "투자경고 단계 도달 — 신용 불가"가 칩에 들어가는 회귀 차단.
+    const gloss = _glossCreditReason(reason);
+    let chipLabel = reason;
+    let summaryText = '';
+    if (gloss && gloss !== reason) {
+      // "투자경고 단계 도달 — 신용 불가" → summary = "투자경고 단계 도달 — 신용 불가"
+      // 칩은 원본 reason 유지 (짧은 카테고리)
+      summaryText = gloss;
+    }
     rows.push({
-      label: _glossCreditReason(reason),
+      label: chipLabel,
+      title: summaryText,
       period: '',
       sev: 'credit',
       source: 'broker',
@@ -1571,15 +1582,16 @@ function _renderCreditBlockRow(r) {
   // REQ-067 — 요약 본문 1회만 노출. r.title(공시 풀 제목)을 본문으로 사용. 부재 시 r.label로 폴백.
   const summaryText = r.title ? r.title : '';
   const extSvg = `<svg class="cal-credit-row__ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>`;
+  const summaryHtml = summaryText
+    ? `<span class="cal-credit-row__summary">${escapeHtml(summaryText)}</span>`
+    : '';
   if (r.url) {
     // 글박스 전체 a 태그 wrap. 라벨 칩 + (요약 본문) + 시점 + 우측 ↗.
-    const summaryHtml = summaryText
-      ? `<span class="cal-credit-row__summary">${escapeHtml(summaryText)}</span>`
-      : '';
     return `<a class="cal-credit-row cal-credit-row--link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(r.title || r.label)}">${labelHtml}${summaryHtml}${periodHtml}${extSvg}</a>`;
   }
-  // url 부재 — 평문 div 유지 (predicted source · broker 사유 · disclosure_url 누락 fallback).
-  return `<div class="cal-credit-row">${labelHtml}${periodHtml}</div>`;
+  // url 부재 — 평문 div (predicted source · broker 사유 · disclosure_url 누락 fallback).
+  // broker 사유 등은 summary(풀이 텍스트)도 함께 노출.
+  return `<div class="cal-credit-row">${labelHtml}${summaryHtml}${periodHtml}</div>`;
 }
 
 // §IV.1 박스 N건 출력. §III BEM 재활용 + cal-status-detail--reason modifier 1개 신규.
