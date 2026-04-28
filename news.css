@@ -1054,6 +1054,18 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   flex-wrap: wrap;
   padding-bottom: 14px; margin-bottom: 18px;
   border-bottom: 2px solid var(--tx);
+  /* REQ-069 — 스크롤 시 현재 일자 sticky 고정. 상위 페이지 헤더 88px 정합. */
+  position: -webkit-sticky;
+  position: sticky;
+  top: 88px;
+  z-index: 10;
+  background: var(--sf);
+  /* cal-content padding(24px 26px) 보정: sticky 시 좌우 가장자리까지 배경 채움 */
+  margin-left: -26px; margin-right: -26px;
+  padding-left: 26px; padding-right: 26px;
+  padding-top: 12px;
+  /* sticky 진입 시 자연 분리선 — border-bottom과 별개로 하단 그림자 */
+  box-shadow: 0 1px 0 rgba(26,29,38,0.04);
 }
 .cal-content-date {
   font-size: 24px; font-weight: 900; letter-spacing: -0.7px;
@@ -1567,6 +1579,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .toss-cal { max-width: 280px; margin: 0 auto; }
   .cal-content { padding: 20px 18px; }
   .cal-content-date { font-size: 20px; }
+  /* REQ-069 — 모바일 sticky 헤더 높이 정합 + cal-content padding(20px 18px) 보정 */
+  .cal-content-head {
+    top: 72px;
+    margin-left: -18px; margin-right: -18px;
+    padding-left: 18px; padding-right: 18px;
+  }
 }
 @media (max-width: 640px) {
   .stock-main { grid-template-columns: 16px 1fr auto; padding: 8px 6px; gap: 6px; }
