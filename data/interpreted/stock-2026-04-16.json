@@ -1,6 +1,6 @@
 {
   "date": "2026-04-16",
-  "generated_at": "2026-04-28T07:48:25.899569",
+  "generated_at": "2026-04-28T11:07:23.930233",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1575,7 +1575,9 @@
       },
       "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "430690",
@@ -1787,7 +1789,9 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "082920",
@@ -2919,6 +2923,7 @@
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "차량SW, 내비게이션, 스마트팩토리, AI·클라우드 기반 솔루션, 디지털 전환 컨설팅 및 IT서비스",
       "themes": [
+        "AI",
         "로보택시·자율주행 신사업 진출"
       ],
       "theme_paths": [
@@ -2940,8 +2945,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03132406645416776",
           "source": "이데일리",
           "published_at": "2026-04-16T00:45:53",
-          "causal_chain": "자율주행 상용화 기대감 → 현대차그룹주 전반 강세 → 현대오토에버 8% 상승.",
-          "macro_event": "자율주행 상용화 기대에 현대차그룹주 강세",
+          "causal_chain": "자율주행 상용화 기대감 → 현대차그룹주 전반 강세 → 그룹사 현대오토에버 동반 8% 상승 (간접수혜)",
+          "macro_event": "자율주행 상용화 기대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3271,12 +3276,14 @@
         {
           "name": "스테이블코인",
           "path": [
+            "가상자산",
             "스테이블코인"
           ]
         },
         {
           "name": "토큰화 RWA",
           "path": [
+            "가상자산",
             "토큰화 RWA"
           ]
         },
@@ -3284,12 +3291,6 @@
           "name": "양자",
           "path": [
             "양자"
-          ]
-        },
-        {
-          "name": "가상자산",
-          "path": [
-            "가상자산"
           ]
         }
       ],
@@ -4623,20 +4624,7 @@
         "K-뷰티",
         "음식료"
       ],
-      "theme_paths": [
-        {
-          "name": "K-뷰티",
-          "path": [
-            "K-뷰티"
-          ]
-        },
-        {
-          "name": "음식료",
-          "path": [
-            "음식료"
-          ]
-        }
-      ],
+      "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -5313,8 +5301,17 @@
       "low_price": 14520,
       "industry": "신탁업 및 집합투자업",
       "sector": "투자조합 결성 및 투자",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "금융"
+      ],
+      "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -5607,8 +5604,17 @@
       "low_price": 1903,
       "industry": "기타 금융업",
       "sector": "투자조합, PEF 결성 및 투자",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "금융"
+      ],
+      "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,

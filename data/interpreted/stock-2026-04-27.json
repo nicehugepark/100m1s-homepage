@@ -1,6 +1,6 @@
 {
   "date": "2026-04-27",
-  "generated_at": "2026-04-28T07:48:24.269740",
+  "generated_at": "2026-04-28T11:07:08.199044",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3995,7 +3995,7 @@
       "name": "삼성전자우",
       "rank": 2,
       "trade_amount": 846042526300,
-      "change_pct": 4.16,
+      "change_pct": 2.5,
       "close_price": 160100,
       "open_price": 153800,
       "high_price": 161900,
@@ -4058,7 +4058,7 @@
       "intraday": {
         "step_min": 10,
         "open": 153800,
-        "base": 153706,
+        "base": 156195,
         "prices": [
           153800,
           158500,
@@ -4120,24 +4120,24 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "전자제품및반도체생산용 3차원 납도포검사장비",
       "themes": [
+        "반도체 후공정 장비",
         "광통신",
         "AI데이터센터",
-        "반도체 후공정 장비",
         "반도체"
       ],
       "theme_paths": [
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체 후공정 장비"
+          ]
+        },
         {
           "name": "광통신",
           "path": [
             "AI",
             "AI데이터센터",
             "광통신"
-          ]
-        },
-        {
-          "name": "반도체 후공정 장비",
-          "path": [
-            "반도체 후공정 장비"
           ]
         },
         {
@@ -4370,9 +4370,9 @@
       "index_multiple_current": 5.93,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 10500,
+        "high": 10660,
         "high_date": "2026-04-27",
-        "high_pct": -3.14,
+        "high_pct": -4.6,
         "low": 2730,
         "low_date": "2025-05-07",
         "low_pct": 272.53,
@@ -4494,7 +4494,7 @@
       "name": "로보티즈",
       "rank": 5,
       "trade_amount": 465843240000,
-      "change_pct": 18.97,
+      "change_pct": 21.68,
       "close_price": 348000,
       "open_price": 301500,
       "high_price": 361500,
@@ -4549,7 +4549,7 @@
       ],
       "fallback": true,
       "index_change_pct": 1.86,
-      "index_multiple_current": 10.2,
+      "index_multiple_current": 11.66,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 364000,
@@ -4563,7 +4563,7 @@
       "intraday": {
         "step_min": 10,
         "open": 301500,
-        "base": 292511,
+        "base": 285996,
         "prices": [
           301500,
           316000,
@@ -4623,8 +4623,8 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "제조업용로봇및서비스로봇",
       "themes": [
-        "물류자동화",
         "로봇",
+        "물류자동화",
         "휴머노이드 로봇"
       ],
       "theme_paths": [
@@ -4739,7 +4739,7 @@
       "name": "레인보우로보틱스",
       "rank": 7,
       "trade_amount": 327844119000,
-      "change_pct": 9.31,
+      "change_pct": 4.86,
       "close_price": 669000,
       "open_price": 638000,
       "high_price": 705000,
@@ -4797,7 +4797,7 @@
       ],
       "fallback": true,
       "index_change_pct": 1.86,
-      "index_multiple_current": 5.01,
+      "index_multiple_current": 2.61,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 934000,
@@ -4811,7 +4811,7 @@
       "intraday": {
         "step_min": 10,
         "open": 638000,
-        "base": 612021,
+        "base": 637994,
         "prices": [
           638000,
           648500,
@@ -4873,12 +4873,18 @@
       "industry": "일반 목적용 기계 제조업",
       "sector": "대형선박용엔진,내연발전엔진",
       "themes": [
+        "조선",
         "LNG선 기자재",
         "전력설비",
-        "AI데이터센터",
-        "조선"
+        "AI데이터센터"
       ],
       "theme_paths": [
+        {
+          "name": "조선",
+          "path": [
+            "조선"
+          ]
+        },
         {
           "name": "LNG선 기자재",
           "path": [
@@ -4901,12 +4907,6 @@
           "path": [
             "AI",
             "AI데이터센터"
-          ]
-        },
-        {
-          "name": "조선",
-          "path": [
-            "조선"
           ]
         }
       ],
@@ -5068,15 +5068,25 @@
       "name": "SK증권",
       "rank": 9,
       "trade_amount": 279188265465,
-      "change_pct": 29.89,
+      "change_pct": 9.12,
       "close_price": 4845,
       "open_price": 4440,
       "high_price": 4845,
       "low_price": 4155,
       "industry": "금융 지원 서비스업",
       "sector": "증권업,부동산 임대",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "증권사 업종 강세"
+      ],
+      "theme_paths": [
+        {
+          "name": "증권사 업종 강세",
+          "path": [
+            "금융",
+            "증권사 업종 강세"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -5087,8 +5097,8 @@
           "url": "https://www.sedaily.com/article/20037712",
           "source": "서울경제",
           "published_at": "2026-04-27T08:50:50",
-          "causal_chain": "SK증권이 명동 영업소를 소공한국빌딩으로 이전하여 VIP·법인 고객 자산관리 및 IB 연계 컨설팅 서비스 강화.",
-          "macro_event": "없음 (영업소 재편 및 고객 서비스 개선)",
+          "causal_chain": "MK 골든크로스 돌파종목 선정 + 명동지점을 소공한국빌딩으로 확대 이전하며 VIP·법인 대상 종합 컨설팅 서비스 강화.",
+          "macro_event": "SK증권 골든크로스 돌파 + 명동금융센터 확대 개설",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5102,8 +5112,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/27/Z5GEHB5SVNDCDKJ3DXS6QHYOTU/",
           "source": "조선비즈",
           "published_at": "2026-04-27T08:19:10",
-          "causal_chain": "SK증권이 명동 영업소를 소공한국빌딩으로 이전하여 VIP·법인 고객 자산관리 및 IB 연계 컨설팅 서비스 강화.",
-          "macro_event": "없음 (영업소 재편 및 고객 서비스 개선)",
+          "causal_chain": "MK 골든크로스 돌파종목 선정 + 명동지점을 소공한국빌딩으로 확대 이전하며 VIP·법인 대상 종합 컨설팅 서비스 강화.",
+          "macro_event": "SK증권 골든크로스 돌파 + 명동금융센터 확대 개설",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5117,8 +5127,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04355846645420384",
           "source": "이데일리",
           "published_at": "2026-04-27T08:17:20",
-          "causal_chain": "SK증권이 명동 영업소를 소공한국빌딩으로 이전하여 VIP·법인 고객 자산관리 및 IB 연계 컨설팅 서비스 강화.",
-          "macro_event": "없음 (영업소 재편 및 고객 서비스 개선)",
+          "causal_chain": "MK 골든크로스 돌파종목 선정 + 명동지점을 소공한국빌딩으로 확대 이전하며 VIP·법인 대상 종합 컨설팅 서비스 강화.",
+          "macro_event": "SK증권 골든크로스 돌파 + 명동금융센터 확대 개설",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5132,8 +5142,8 @@
           "url": "https://www.etoday.co.kr/news/view/2579540",
           "source": "이투데이",
           "published_at": "2026-04-27T06:07:00",
-          "causal_chain": "SK증권이 명동 영업소를 소공한국빌딩으로 이전하여 VIP·법인 고객 자산관리 및 IB 연계 컨설팅 서비스 강화.",
-          "macro_event": "없음 (영업소 재편 및 고객 서비스 개선)",
+          "causal_chain": "MK 골든크로스 돌파종목 선정 + 명동지점을 소공한국빌딩으로 확대 이전하며 VIP·법인 대상 종합 컨설팅 서비스 강화.",
+          "macro_event": "SK증권 골든크로스 돌파 + 명동금융센터 확대 개설",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5160,7 +5170,7 @@
         }
       ],
       "index_change_pct": 2.15,
-      "index_multiple_current": 13.9,
+      "index_multiple_current": 4.24,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 5656,
@@ -5193,7 +5203,7 @@
       "intraday": {
         "step_min": 10,
         "open": 4440,
-        "base": 3730,
+        "base": 4440,
         "prices": [
           4440,
           4400,
@@ -5496,27 +5506,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "24일 코스닥 시장 공매도 수량 상위 종목. SFA반도체, 유니슨 등",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/27/GFQTQNBQMI2DQMDCGI2TGOJQMQ/",
+          "title": "27일 코스닥 시장 공매도 수량 상위 종목. SFA반도체, 국일제지 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/28/G42TGYZXMY2WGOBXGE4WMYZWGU/",
           "source": "조선비즈",
-          "published_at": "2026-04-26T23:01:16",
-          "causal_chain": "본문 미제공으로 분석 불가. 공매도 수량 상위 종목 나열은 시장 기술지표일 뿐, 종목 비즈니스 영향·펀더멘탈 변화를 나타내지 않음.",
-          "macro_event": "N/A",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "14일 코스닥 시장 공매도 수량 상위 종목. 쏠리드, SFA반도체 등",
-          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/15/GUZGGZRRGJSWMYTBMYYDCNDEHE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-14T23:01:18",
-          "causal_chain": "명확한 인과관계 없음. 공매도 수량 순위는 기술적 신호일 뿐 SFA반도체의 실질 사업 변화·신사업 진출·수혜 경로 미명시.",
-          "macro_event": null,
+          "published_at": "2026-04-27T23:01:16",
+          "causal_chain": "코스닥 공매도 수량 상위 종목 리스트에 SFA반도체가 포함됐다는 시장 데이터 보도일 뿐, 사업·실적·매크로 이벤트와 직접 인과가 없다.",
+          "macro_event": "코스닥 공매도 수량 상위 종목 집계",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5526,7 +5521,7 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
+      "fallback": false,
       "index_change_pct": 1.86,
       "index_multiple_current": 1.78,
       "index_multiple_eligible": true,
@@ -5945,7 +5940,7 @@
       "name": "한화비전",
       "rank": 15,
       "trade_amount": 209024632800,
-      "change_pct": 8.56,
+      "change_pct": 4.59,
       "close_price": 88800,
       "open_price": 83300,
       "high_price": 92500,
@@ -6060,7 +6055,7 @@
       ],
       "fallback": true,
       "index_change_pct": 2.15,
-      "index_multiple_current": 3.98,
+      "index_multiple_current": 2.13,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 97900,
@@ -6074,7 +6069,7 @@
       "intraday": {
         "step_min": 10,
         "open": 83300,
-        "base": 81798,
+        "base": 84903,
         "prices": [
           83300,
           83600,
@@ -6128,7 +6123,7 @@
       "name": "파두",
       "rank": 16,
       "trade_amount": 207465648900,
-      "change_pct": 19.38,
+      "change_pct": 18.86,
       "close_price": 81300,
       "open_price": 69300,
       "high_price": 82200,
@@ -6214,7 +6209,7 @@
         }
       ],
       "index_change_pct": 1.86,
-      "index_multiple_current": 10.42,
+      "index_multiple_current": 10.14,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 82200,
@@ -6247,7 +6242,7 @@
       "intraday": {
         "step_min": 10,
         "open": 69300,
-        "base": 68102,
+        "base": 68400,
         "prices": [
           69300,
           69000,
@@ -6461,7 +6456,7 @@
       "name": "태성",
       "rank": 18,
       "trade_amount": 164125166400,
-      "change_pct": 17.25,
+      "change_pct": 20.89,
       "close_price": 89700,
       "open_price": 80900,
       "high_price": 94000,
@@ -6498,6 +6493,21 @@
       "bullish_streak": 1,
       "news": [
         {
+          "title": "태성, \"4월 수주 160억 확보…수주 확대 흐름 지속\"",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02702726645420712",
+          "source": "이데일리",
+          "published_at": "2026-04-27T23:38:44",
+          "causal_chain": "태성이 4월 한 달간 160억원 규모 신규 수주를 확보하며 수주 확대 흐름을 이어감 → 매출 가시성 강화.",
+          "macro_event": "태성 4월 수주 160억 확보, 수주 확대 흐름 지속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "실적 개선 기대 반도체 장비…한미반도체·태성 신고가 경신 [매경 자이앤트]",
           "url": "https://www.mk.co.kr/news/stock/12028068",
           "source": "매경",
@@ -6515,7 +6525,7 @@
       ],
       "fallback": false,
       "index_change_pct": 1.86,
-      "index_multiple_current": 9.27,
+      "index_multiple_current": 11.23,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 91400,
@@ -6529,7 +6539,7 @@
       "intraday": {
         "step_min": 10,
         "open": 80900,
-        "base": 76503,
+        "base": 74200,
         "prices": [
           80900,
           88700,
@@ -6583,7 +6593,7 @@
       "name": "한컴위드",
       "rank": 19,
       "trade_amount": 154402993680,
-      "change_pct": 13.95,
+      "change_pct": 9.45,
       "close_price": 7760,
       "open_price": 6900,
       "high_price": 8300,
@@ -6607,12 +6617,14 @@
         {
           "name": "스테이블코인",
           "path": [
+            "가상자산",
             "스테이블코인"
           ]
         },
         {
           "name": "토큰화 RWA",
           "path": [
+            "가상자산",
             "토큰화 RWA"
           ]
         },
@@ -6620,12 +6632,6 @@
           "name": "양자",
           "path": [
             "양자"
-          ]
-        },
-        {
-          "name": "가상자산",
-          "path": [
-            "가상자산"
           ]
         }
       ],
@@ -6672,7 +6678,7 @@
       ],
       "fallback": true,
       "index_change_pct": 1.86,
-      "index_multiple_current": 7.5,
+      "index_multiple_current": 5.08,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 8050,
@@ -6686,7 +6692,7 @@
       "intraday": {
         "step_min": 10,
         "open": 6900,
-        "base": 6810,
+        "base": 7090,
         "prices": [
           6900,
           6830,
@@ -6738,7 +6744,7 @@
       "name": "세명전기",
       "rank": 20,
       "trade_amount": 154212848660,
-      "change_pct": 17.35,
+      "change_pct": 23.03,
       "close_price": 13460,
       "open_price": 12040,
       "high_price": 14650,
@@ -6770,7 +6776,7 @@
       "news": [],
       "fallback": true,
       "index_change_pct": 1.86,
-      "index_multiple_current": 9.33,
+      "index_multiple_current": 12.38,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 14290,
@@ -6784,7 +6790,7 @@
       "intraday": {
         "step_min": 10,
         "open": 12040,
-        "base": 11470,
+        "base": 10940,
         "prices": [
           12040,
           13240,
@@ -6838,7 +6844,7 @@
       "name": "에이비엘바이오",
       "rank": 21,
       "trade_amount": 148655324400,
-      "change_pct": 9.86,
+      "change_pct": 6.15,
       "close_price": 172700,
       "open_price": 162700,
       "high_price": 173900,
@@ -6873,12 +6879,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "에이비엘바이오, AACR에서 이중항체 ADC 전임상 결과 발표",
-          "url": "https://www.mk.co.kr/news/it/12025261",
-          "source": "매경",
-          "published_at": "2026-04-23T05:42:08",
-          "causal_chain": "에이비엘바이오의 이중항체 ADC 후보물질(ABL206·ABL209) 비임상 데이터 → 미국암연구학회(AACR) 학술대회 발표 + 국제 학술지(Molecular Cancer Therapeutics) 논문 게재 → EGFR/MUC1 표적 이중항체+TOP1i 결합 ADC의 항암 효과·안전성 비임상 확인 → 신약 파이프라인 가시화.",
-          "macro_event": "에이비엘바이오 이중항체 ADC(ABL206·ABL209) 비임상 데이터 AACR 발표 및 국제 학술지 게재.",
+          "title": "에이비엘바이오 美 파트너사, 담도암 치료제 2·3상서 종양 진행 억제 효과 확인",
+          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/28/IEN5C6DYDBDRJP6EF6ED3NWJMM/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T23:51:09",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6888,12 +6894,12 @@
           "newzy_verdict": null
         },
         {
-          "title": "에이비엘바이오, 美AACR에서 이중항체 ADC 전임상 결과 발표",
-          "url": "https://www.hankyung.com/article/202604230820i",
+          "title": "에이비엘바이오 파트너사 컴퍼스 테라퓨틱스, 담도암 환자 대상 토베시미그 2/3상서 PFS 충족",
+          "url": "https://www.hankyung.com/article/202604281073i",
           "source": "한경",
-          "published_at": "2026-04-23T00:34:34",
-          "causal_chain": "에이비엘바이오의 이중항체 ADC 후보물질(ABL206·ABL209) 비임상 데이터 → 미국암연구학회(AACR) 학술대회 발표 + 국제 학술지(Molecular Cancer Therapeutics) 논문 게재 → EGFR/MUC1 표적 이중항체+TOP1i 결합 ADC의 항암 효과·안전성 비임상 확인 → 신약 파이프라인 가시화.",
-          "macro_event": "에이비엘바이오 이중항체 ADC(ABL206·ABL209) 비임상 데이터 AACR 발표 및 국제 학술지 게재.",
+          "published_at": "2026-04-27T23:41:34",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6903,42 +6909,12 @@
           "newzy_verdict": null
         },
         {
-          "title": "에이비엘바이오, 美 암학회서 차세대 항암 기술 선보여",
-          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/23/SMPYZ5WAC5BHXALNVQQJENAGK4/",
-          "source": "조선비즈",
-          "published_at": "2026-04-23T00:13:58",
-          "causal_chain": "에이비엘바이오의 이중항체 ADC 후보물질(ABL206·ABL209) 비임상 데이터 → 미국암연구학회(AACR) 학술대회 발표 + 국제 학술지(Molecular Cancer Therapeutics) 논문 게재 → EGFR/MUC1 표적 이중항체+TOP1i 결합 ADC의 항암 효과·안전성 비임상 확인 → 신약 파이프라인 가시화.",
-          "macro_event": "에이비엘바이오 이중항체 ADC(ABL206·ABL209) 비임상 데이터 AACR 발표 및 국제 학술지 게재.",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "에이비엘바이오 ‘ABL206·209’, 美 암학회서 비임상 데이터 공개",
-          "url": "https://www.sedaily.com/article/20036021",
+          "title": "에이비엘바이오, ABL001 임상 고배에도 영향 제한적…플랫폼으로 반전 모색[Why 바이오]",
+          "url": "https://www.sedaily.com/article/20037848",
           "source": "서울경제",
-          "published_at": "2026-04-23T00:04:46",
-          "causal_chain": "에이비엘바이오의 이중항체 ADC 후보물질(ABL206·ABL209) 비임상 데이터 → 미국암연구학회(AACR) 학술대회 발표 + 국제 학술지(Molecular Cancer Therapeutics) 논문 게재 → EGFR/MUC1 표적 이중항체+TOP1i 결합 ADC의 항암 효과·안전성 비임상 확인 → 신약 파이프라인 가시화.",
-          "macro_event": "에이비엘바이오 이중항체 ADC(ABL206·ABL209) 비임상 데이터 AACR 발표 및 국제 학술지 게재.",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "에이비엘바이오 “이중 항체 ADC 후보물질, 비임상서 항암 효과·안전성 확인\"",
-          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/21/2TLG5LONRZFHRJVF6RWRPIBE4E/",
-          "source": "조선비즈",
-          "published_at": "2026-04-21T00:37:49",
-          "causal_chain": "에이비엘바이오의 이중항체 ADC 후보물질(ABL206·ABL209) 비임상 데이터 → 미국암연구학회(AACR) 학술대회 발표 + 국제 학술지(Molecular Cancer Therapeutics) 논문 게재 → EGFR/MUC1 표적 이중항체+TOP1i 결합 ADC의 항암 효과·안전성 비임상 확인 → 신약 파이프라인 가시화.",
-          "macro_event": "에이비엘바이오 이중항체 ADC(ABL206·ABL209) 비임상 데이터 AACR 발표 및 국제 학술지 게재.",
+          "published_at": "2026-04-27T23:40:13",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6948,9 +6924,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
+      "fallback": false,
       "index_change_pct": 1.86,
-      "index_multiple_current": 5.3,
+      "index_multiple_current": 3.31,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 257500,
@@ -6964,7 +6940,7 @@
       "intraday": {
         "step_min": 10,
         "open": 162700,
-        "base": 157200,
+        "base": 162694,
         "prices": [
           162700,
           167700,
@@ -7011,7 +6987,9 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "452190",
@@ -7231,7 +7209,7 @@
       "name": "에스피지",
       "rank": 23,
       "trade_amount": 135262962000,
-      "change_pct": 11.77,
+      "change_pct": 8.76,
       "close_price": 132900,
       "open_price": 122200,
       "high_price": 134900,
@@ -7258,7 +7236,7 @@
       "news": [],
       "fallback": true,
       "index_change_pct": 1.86,
-      "index_multiple_current": 6.33,
+      "index_multiple_current": 4.71,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 165700,
@@ -7272,7 +7250,7 @@
       "intraday": {
         "step_min": 10,
         "open": 122200,
-        "base": 118905,
+        "base": 122196,
         "prices": [
           122200,
           124300,
@@ -7328,7 +7306,7 @@
       "name": "서울반도체",
       "rank": 24,
       "trade_amount": 133810325940,
-      "change_pct": 29.94,
+      "change_pct": 9.0,
       "close_price": 14540,
       "open_price": 13340,
       "high_price": 14540,
@@ -7354,7 +7332,7 @@
       "news": [],
       "fallback": true,
       "index_change_pct": 1.86,
-      "index_multiple_current": 16.1,
+      "index_multiple_current": 4.84,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 14910,
@@ -7368,7 +7346,7 @@
       "intraday": {
         "step_min": 10,
         "open": 13340,
-        "base": 11190,
+        "base": 13339,
         "prices": [
           13340,
           14140,
@@ -7424,7 +7402,7 @@
       "name": "티이엠씨",
       "rank": 25,
       "trade_amount": 131506248120,
-      "change_pct": 29.99,
+      "change_pct": 27.66,
       "close_price": 16340,
       "open_price": 12800,
       "high_price": 16340,
@@ -7475,7 +7453,7 @@
       ],
       "fallback": false,
       "index_change_pct": 1.86,
-      "index_multiple_current": 16.12,
+      "index_multiple_current": 14.87,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 16340,
@@ -7489,7 +7467,7 @@
       "intraday": {
         "step_min": 10,
         "open": 12800,
-        "base": 12570,
+        "base": 12800,
         "prices": [
           12800,
           12620,
@@ -7577,9 +7555,9 @@
       "index_multiple_current": 6.46,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 109900,
+        "high": 112300,
         "high_date": "2026-04-27",
-        "high_pct": 0.0,
+        "high_pct": -2.14,
         "low": 25650,
         "low_date": "2025-05-02",
         "low_pct": 328.46,
@@ -7793,20 +7771,7 @@
         "K-뷰티",
         "음식료"
       ],
-      "theme_paths": [
-        {
-          "name": "K-뷰티",
-          "path": [
-            "K-뷰티"
-          ]
-        },
-        {
-          "name": "음식료",
-          "path": [
-            "음식료"
-          ]
-        }
-      ],
+      "theme_paths": [],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-24",
@@ -7972,7 +7937,7 @@
       "name": "명신산업",
       "rank": 29,
       "trade_amount": 106411947600,
-      "change_pct": 22.5,
+      "change_pct": 17.69,
       "close_price": 14700,
       "open_price": 12490,
       "high_price": 14940,
@@ -7997,7 +7962,7 @@
       "news": [],
       "fallback": true,
       "index_change_pct": 2.15,
-      "index_multiple_current": 10.47,
+      "index_multiple_current": 8.23,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 14700,
@@ -8011,7 +7976,7 @@
       "intraday": {
         "step_min": 10,
         "open": 12490,
-        "base": 12000,
+        "base": 12490,
         "prices": [
           12490,
           12610,
@@ -8073,9 +8038,16 @@
       "industry": "기타 금융업",
       "sector": "전력용전선,일반전선,통신케이블,동선,알루미늄선,공조기,프라스틱사출성형기 제조,도매",
       "themes": [
+        "금융",
         "전력설비"
       ],
       "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        },
         {
           "name": "전력설비",
           "path": [
@@ -8095,6 +8067,36 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "LS証NH投資証券目標株価4万に引き上げ保有維持",
+          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/28/26YM3S2FN5B65GS7WFJU6MA5KU/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T23:31:33",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "LS證 “NH투자증권, 수수료·운용이익 동반 호조…목표가 4만원\"",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/28/ATMEGSXMCJCJHB6NY36J4TFMWY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T23:31:33",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "LS ELECTRIC, 배전 수주 확대·증설 본격화…목표가 35만원↑-LS",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02509206645420712",
@@ -8130,21 +8132,6 @@
           "url": "https://biz.chosun.com/jp/jp-industry/2026/04/27/YIXTD7HR3NCQLEFTGTAVLLMQSM/",
           "source": "조선비즈",
           "published_at": "2026-04-27T09:02:03",
-          "causal_chain": "본문 미제공으로 종합 분석 불가. 뉴스[1]은 LS증권이 롯데웰푸드(타사)를 분석한 리포트로 LS(006260) 자체 뉴스 아님. 뉴스[2,3]은 제목만 제시되어 도메인 키워드·인과 매핑 불가.",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "LS Electric急伸 AI投資追い電力機器需要増",
-          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/27/K5VKKZYDCBG7VICCX2NXPZWAVI/",
-          "source": "조선비즈",
-          "published_at": "2026-04-27T00:59:41",
           "causal_chain": "본문 미제공으로 종합 분석 불가. 뉴스[1]은 LS증권이 롯데웰푸드(타사)를 분석한 리포트로 LS(006260) 자체 뉴스 아님. 뉴스[2,3]은 제목만 제시되어 도메인 키워드·인과 매핑 불가.",
           "macro_event": "",
           "newzy_freshness": null,
@@ -8662,13 +8649,27 @@
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "유입, 몰드, 주상, 건식 변압기 등",
       "themes": [
-        "태양광",
-        "저PBR",
         "중동전쟁",
         "AI데이터센터",
-        "전력설비"
+        "전력설비",
+        "태양광",
+        "저PBR"
       ],
       "theme_paths": [
+        {
+          "name": "중동전쟁",
+          "path": [
+            "전쟁",
+            "중동전쟁"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
         {
           "name": "태양광",
           "path": [
@@ -8682,20 +8683,6 @@
           "name": "저PBR",
           "path": [
             "저PBR"
-          ]
-        },
-        {
-          "name": "중동전쟁",
-          "path": [
-            "전쟁",
-            "중동전쟁"
-          ]
-        },
-        {
-          "name": "AI데이터센터",
-          "path": [
-            "AI",
-            "AI데이터센터"
           ]
         }
       ],
@@ -8889,7 +8876,7 @@
           "url": "https://www.etoday.co.kr/news/view/2575008",
           "source": "이투데이",
           "published_at": "2026-04-12T22:37:00",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -8961,7 +8948,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "033100",
@@ -9381,6 +9370,21 @@
       "bullish_streak": 0,
       "news": [
         {
+          "title": "에스티팜, 수주잔고 확대·수익성 개선 본격화…목표가 53.8%↑-유안타",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02535446645420712",
+          "source": "이데일리",
+          "published_at": "2026-04-27T22:45:31",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "에스티팜 ‘고마진’ 올리고 호조에 1분기 영업익 1024% 급증",
           "url": "https://www.sedaily.com/article/20037662",
           "source": "서울경제",
@@ -9430,21 +9434,6 @@
           "url": "https://www.sedaily.com/article/20037565",
           "source": "서울경제",
           "published_at": "2026-04-27T05:38:04",
-          "causal_chain": "에스티팜의 올리고(Oligo) 사업 매출 성장 및 상업화 프로젝트 비중 증가(67%)에 힘입어 영업이익이 전년 동기 대비 1024% 급증하며 어닝 서프라이즈 달성.",
-          "macro_event": "원료의약품 기업의 고마진 사업 확대 및 매출 구조 개편으로 수익성 개선",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "에스티팜, 1Q 연결 영업익 115억…전년비 1025%↑",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03581766645420384",
-          "source": "이데일리",
-          "published_at": "2026-04-27T05:26:38",
           "causal_chain": "에스티팜의 올리고(Oligo) 사업 매출 성장 및 상업화 프로젝트 비중 증가(67%)에 힘입어 영업이익이 전년 동기 대비 1024% 급증하며 어닝 서프라이즈 달성.",
           "macro_event": "원료의약품 기업의 고마진 사업 확대 및 매출 구조 개편으로 수익성 개선",
           "newzy_freshness": null,
@@ -9621,7 +9610,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "003530",
@@ -9905,8 +9896,24 @@
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "클로봇, '경북 물류·이송 AI+로봇 플래그십' 실증 완료…\"상용화 단계\"",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02683046645420712",
+          "source": "이데일리",
+          "published_at": "2026-04-27T23:36:30",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
       "index_change_pct": 1.86,
       "index_multiple_current": 5.15,
       "index_multiple_eligible": true,
@@ -10638,7 +10645,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "199820",
@@ -10731,7 +10740,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "004710",
