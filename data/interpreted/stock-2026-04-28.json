@@ -1,6 +1,6 @@
 {
   "date": "2026-04-28",
-  "generated_at": "2026-04-28T21:11:29.215856",
+  "generated_at": "2026-04-28T21:30:08.206780",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3084,40 +3084,10 @@
       "industry": "건물 건설업",
       "sector": "아파트건설,토목공사,건축공사,포장공사,전기공사,무역/중장비 대여",
       "themes": [
-        "인프라 수혜",
-        "원전",
-        "에너지정책",
-        "전쟁재건",
         "건설",
         "부동산 재개발"
       ],
       "theme_paths": [
-        {
-          "name": "인프라 수혜",
-          "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
-            "건설",
-            "인프라 수혜"
-          ]
-        },
-        {
-          "name": "원전",
-          "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
-            "원전"
-          ]
-        },
-        {
-          "name": "에너지정책",
-          "path": [
-            "트럼프",
-            "에너지정책"
-          ]
-        },
         {
           "name": "부동산 재개발",
           "path": [
@@ -4083,9 +4053,18 @@
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "반도체 설계 서비스",
       "themes": [
+        "AI",
+        "반도체",
         "건설"
       ],
       "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "AI",
+            "반도체"
+          ]
+        },
         {
           "name": "건설",
           "path": [
@@ -4111,8 +4090,8 @@
           "url": "https://www.sedaily.com/article/20038124",
           "source": "서울경제",
           "published_at": "2026-04-28T06:35:07",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "엣지 비전 AI 상용화 확대 + 3D-IC 적층 설계 수요 증가 → 세미파이브의 유럽 비전 AI 고객사 턴키 3D-IC 설계 수주 확보 → 8나노 Ultra-Edge SoC 개발 착수 → 맞춤형 AI ASIC 본업 매출·기술 입지 확대.",
+          "macro_event": "엣지 디바이스용 비전 AI 반도체 수요 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6672,7 +6651,7 @@
           "url": "https://www.etoday.co.kr/news/view/2579604",
           "source": "이투데이",
           "published_at": "2026-04-27T09:18:00",
-          "causal_chain": "",
+          "causal_chain": "제공된 단일 헤드라인은 'AI 인프라 훈풍'에 따른 변압기·반도체주 급등 리스트에 진흥기업이 동반 거론된 가격 움직임 나열일 뿐, 본업(토목·건축·아파트) 수주·계약·정책 변화 등 매크로→종목으로 이어지는 인과 근거가 제시되지 않았다.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -6757,9 +6736,7 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "주의"
     },
     {
       "code": "066970",
