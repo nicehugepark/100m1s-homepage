@@ -1061,8 +1061,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   top: 68px;
   z-index: 10;
   /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
-  /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255, 0.85 → 0.92 (콘텐츠 가독성). */
-  background: rgba(255, 255, 255, 0.92);
+  /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255. */
+  /* REQ-075 — frosted glass 효과 복원. 0.92 (거의 솔리드) → 0.7 (뒤 콘텐츠 비침 + blur 가시성). */
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   /* cal-content padding(24px 26px) 보정: sticky 시 좌우 가장자리까지 배경 채움 */
@@ -1071,8 +1072,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-top: 8px;
 }
 @media (prefers-color-scheme: dark) {
-  /* REQ-073 — dark 미운영. light 통일 (rgba(255,255,255,0.92)). */
-  .cal-content-head { background: rgba(255, 255, 255, 0.92); }
+  /* REQ-073 — dark 미운영. light 통일. */
+  /* REQ-075 — frosted glass 복원, 0.92 → 0.7. */
+  .cal-content-head { background: rgba(255, 255, 255, 0.7); }
 }
 .cal-content-date {
   /* REQ-074 — 폰트 위계 축소. 24/900/-0.7px → 15/700/-0.2px (메타 정보 위계, 본문 카드와 균형). line-height 1.2 유지. */
