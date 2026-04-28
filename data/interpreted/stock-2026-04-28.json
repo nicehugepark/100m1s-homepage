@@ -1,6 +1,6 @@
 {
   "date": "2026-04-28",
-  "generated_at": "2026-04-28T09:09:48.241173",
+  "generated_at": "2026-04-28T09:11:31.132709",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -193,16 +193,29 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": 0.66,
+      "index_multiple_current": 28.92,
+      "index_multiple_eligible": true,
       "range_240d": {
-        "high": 5770,
+        "high": 6080,
         "high_date": "2026-04-28",
-        "high_pct": 0.0,
-        "low": 961,
-        "low_date": "2025-05-02",
-        "low_pct": 500.42,
+        "high_pct": -5.1,
+        "low": 971,
+        "low_date": "2025-05-07",
+        "low_pct": 494.23,
         "current": 5770
-      }
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 5020,
+        "base": 4845,
+        "prices": [
+          5020,
+          6040
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "058430",
@@ -297,7 +310,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": 0.66,
+      "index_multiple_current": 45.26,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 9130,
         "high_date": "2026-04-28",
@@ -333,7 +348,18 @@
           "single_price": false,
           "effect_badges": []
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 7320,
+        "base": 7030,
+        "prices": [
+          7320,
+          8630
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "322000",
@@ -370,16 +396,29 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": 0.66,
+      "index_multiple_current": 12.29,
+      "index_multiple_eligible": true,
       "range_240d": {
-        "high": 204000,
+        "high": 209000,
         "high_date": "2026-04-28",
-        "high_pct": 0.0,
-        "low": 27350,
-        "low_date": "2025-05-02",
-        "low_pct": 645.89,
+        "high_pct": -2.39,
+        "low": 28100,
+        "low_date": "2025-05-07",
+        "low_pct": 625.98,
         "current": 204000
-      }
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 190300,
+        "base": 188697,
+        "prices": [
+          190300,
+          209000
+        ]
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "006340",
@@ -449,11 +488,13 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": 0.66,
+      "index_multiple_current": -2.53,
+      "index_multiple_eligible": false,
       "range_240d": {
-        "high": 10500,
-        "high_date": "2026-04-27",
-        "high_pct": -4.76,
+        "high": 10750,
+        "high_date": "2026-04-28",
+        "high_pct": -6.98,
         "low": 2730,
         "low_date": "2025-05-07",
         "low_pct": 266.3,
@@ -498,7 +539,16 @@
             }
           ]
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 10680,
+        "base": 10170,
+        "prices": [
+          10680,
+          10150
+        ]
+      }
     }
   ]
 }
