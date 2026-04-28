@@ -1469,11 +1469,15 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
       if (label.startsWith('투자위험')) extra = ' — 매매거래정지 동반';
       // REQ-022 v9.7 §V — 단기과열 예고 (#10): build_daily.py 사전 산출 reason_text 우선 사용.
       // SSOT는 build_daily.py _add_trading_days (영업일 헬퍼). utils.js는 표시만 (P1 함정 #4 (b)).
+      // REQ-067 — reason_text는 라벨 칩이 아닌 period(시점 텍스트)로 분리. 칩은 짧은 카테고리 유지.
+      // reason_text가 "라벨 — 시점" 형태인 경우 라벨 prefix 제거하여 칩과 중복 제거.
       if (label.includes('단기과열')) {
         if (b.short_overheat_reason_text) {
-          // build_daily.py 사전 산출 텍스트 — 일정 명시 ("4/28 지정 → 4/30 거래정지 → 5/4~5/7 단일가매매")
-          stageText = b.short_overheat_reason_text;
-          period = '';
+          let txt = b.short_overheat_reason_text;
+          // "단기과열 예고 — 4/28 지정 가능" → "4/28 지정 가능"
+          const prefix = label + ' — ';
+          if (txt.startsWith(prefix)) txt = txt.slice(prefix.length);
+          period = txt;
           extra = '';
         } else {
           // fallback — 사전 산출 없으면 v9.6 base 텍스트 잔존
@@ -1555,20 +1559,27 @@ function _glossCreditReason(reason) {
 }
 
 // REQ-034 §C — 사유 박스 행 1건 렌더 (박스 컨테이너 폐기, inline 행으로 재설계).
-// 기존 cal-status-detail.v3.cal-status-detail--reason 박스 + cal-status-detail__link 폐기.
-// 신규 BEM: cal-credit-row + __label / __period / __link.
+// REQ-067 §A — KRX 시장경보 박스를 CB 박스(cal-disc-item)와 동일 패턴으로 통일:
+//   단일 a 태그가 row 전체 wrap (라벨 칩 + 요약 + 우측 ↗). 분리 행/중복 제거.
+//   url 부재 시 평문 div 유지 (predicted source 등 a 태그 미생성 가드 — REQ-066 정합).
+// BEM: cal-credit-row + __label / __period / __link 유지 (CSS sev-* 색상·dot 칩으로 재해석).
 function _renderCreditBlockRow(r) {
   const labelHtml = `<span class="cal-credit-row__label sev-${escapeHtml(r.sev)}">${escapeHtml(r.label)}</span>`;
   const periodHtml = r.period
     ? `<span class="cal-credit-row__period">${escapeHtml(r.period)}</span>`
     : '';
-  // REQ-063 §A — 링크 텍스트를 공시 풀 제목(raw_title)으로 표기. cal-disc-item과 정합.
-  // disclosure_title 부재 시 fallback "공시" 유지 (구 데이터 호환).
-  const linkText = r.title ? r.title : (r.url ? '공시' : '');
-  const linkHtml = r.url
-    ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-credit-row__link" title="${escapeHtml(r.title || '공시')}">${escapeHtml(linkText)}</a>`
-    : '';
-  return `<div class="cal-credit-row">${labelHtml}${periodHtml}${linkHtml}</div>`;
+  // REQ-067 — 요약 본문 1회만 노출. r.title(공시 풀 제목)을 본문으로 사용. 부재 시 r.label로 폴백.
+  const summaryText = r.title ? r.title : '';
+  const extSvg = `<svg class="cal-credit-row__ext" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1h6v6M9 1L4 6" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>`;
+  if (r.url) {
+    // 글박스 전체 a 태그 wrap. 라벨 칩 + (요약 본문) + 시점 + 우측 ↗.
+    const summaryHtml = summaryText
+      ? `<span class="cal-credit-row__summary">${escapeHtml(summaryText)}</span>`
+      : '';
+    return `<a class="cal-credit-row cal-credit-row--link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(r.title || r.label)}">${labelHtml}${summaryHtml}${periodHtml}${extSvg}</a>`;
+  }
+  // url 부재 — 평문 div 유지 (predicted source · broker 사유 · disclosure_url 누락 fallback).
+  return `<div class="cal-credit-row">${labelHtml}${periodHtml}</div>`;
 }
 
 // §IV.1 박스 N건 출력. §III BEM 재활용 + cal-status-detail--reason modifier 1개 신규.
