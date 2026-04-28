@@ -1518,13 +1518,15 @@ function computeCreditBlockReason(badges, viewDate, creditRiskInfo) {
     }
 
     // REQ-027 §C — 단기과열 예고 등 KRX 공시 링크 (SPEC-001 §V.3).
-    // build_daily.py에서 status_badge.disclosure_url 또는 dart_url 부착 시 사유 박스에 "공시" 칩 노출.
+    // build_daily.py에서 status_badge.disclosure_url 또는 dart_url 부착 시 사유 박스에 공시 링크 노출.
+    // REQ-063 §A — disclosure_title(raw_title) 부착 시 링크 텍스트로 풀 제목 사용 (cal-disc-item 정합).
     rows.push({
       label: stageText + extra,
       period,
       sev,
       source: 'krx_disclosure',
       url: b.disclosure_url || b.dart_url || '',
+      title: b.disclosure_title || '',
     });
   }
 
@@ -1586,8 +1588,11 @@ function _renderCreditBlockRow(r) {
   const periodHtml = r.period
     ? `<span class="cal-credit-row__period">${escapeHtml(r.period)}</span>`
     : '';
+  // REQ-063 §A — 링크 텍스트를 공시 풀 제목(raw_title)으로 표기. cal-disc-item과 정합.
+  // disclosure_title 부재 시 fallback "공시" 유지 (구 데이터 호환).
+  const linkText = r.title ? r.title : (r.url ? '공시' : '');
   const linkHtml = r.url
-    ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-credit-row__link">공시</a>`
+    ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="cal-credit-row__link" title="${escapeHtml(r.title || '공시')}">${escapeHtml(linkText)}</a>`
     : '';
   return `<div class="cal-credit-row">${labelHtml}${periodHtml}${linkHtml}</div>`;
 }
