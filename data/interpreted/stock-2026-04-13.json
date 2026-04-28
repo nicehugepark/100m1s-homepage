@@ -1,6 +1,6 @@
 {
   "date": "2026-04-13",
-  "generated_at": "2026-04-28T06:03:10.583232",
+  "generated_at": "2026-04-28T16:48:43.380242",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -268,13 +268,56 @@
       "low_price": 31000,
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "반도체 설계 서비스",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "전쟁",
+            "전쟁완화",
+            "전쟁재건",
+            "건설"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
       "bullish_streak": 1,
-      "news": [],
+      "news": [
+        {
+          "title": "세미파이브, 3D-IC 경쟁력 기반 유럽 비전 AI 고객사 확보",
+          "url": "https://www.sedaily.com/article/20038124",
+          "source": "서울경제",
+          "published_at": "2026-04-28T06:35:07",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "세미파이브, 유럽 비전 AI 기업향 3D-IC 턴키 수주",
+          "url": "https://biz.chosun.com/it-science/ict/2026/04/28/OCDPIAHLJ5FMBDZWMHSFMCBMVA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-28T05:23:12",
+          "causal_chain": "유럽 비전 AI 기업향 3D-IC 턴키 수주 → 세미파이브의 첨단 반도체 설계 플랫폼 사업 해외 수주 확대 가시화.",
+          "macro_event": "세미파이브 유럽 비전 AI 기업 대상 3D-IC 턴키 수주",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.57,
       "index_multiple_current": 29.14,
@@ -1890,10 +1933,17 @@
       "industry": "기초 화학물질 제조업",
       "sector": "반도체,LCD용재료(감광제,봉지제),발포제",
       "themes": [
+        "디스플레이",
         "반도체",
         "MASGA/미국 제조업 쇼어링"
       ],
       "theme_paths": [
+        {
+          "name": "디스플레이",
+          "path": [
+            "디스플레이"
+          ]
+        },
         {
           "name": "반도체",
           "path": [
@@ -1919,8 +1969,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04034406645415792",
           "source": "이데일리",
           "published_at": "2026-04-13T07:30:14",
-          "causal_chain": "211억 규모 자사주 소각 결정(유통주식수 감소·주당 가치 제고) + 미국 양산 임박 및 실적 성장 기대감 → 주주환원 + 실적 기대로 주가 상승세",
-          "macro_event": "동진쎄미켐 미국 양산 임박에 따른 실적 성장 기대",
+          "causal_chain": "동진쎄미켐 미국 양산 임박 + 실적 성장 기대 → 주가 상승 / 자사주 소각·신탁해지 → 주주환원 신호",
+          "macro_event": "개별 종목 모멘텀(미국 양산 임박 + 자사주 소각)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2350,13 +2400,15 @@
       "industry": "전자부품 제조업",
       "sector": "전력증폭기 모듈(PAM)",
       "themes": [
-        "AI"
+        "AI",
+        "AI데이터센터"
       ],
       "theme_paths": [
         {
-          "name": "AI",
+          "name": "AI데이터센터",
           "path": [
-            "AI"
+            "AI",
+            "AI데이터센터"
           ]
         }
       ],
@@ -2370,8 +2422,8 @@
           "url": "https://www.mk.co.kr/news/stock/12026458",
           "source": "매경",
           "published_at": "2026-04-24T04:44:38",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2385,8 +2437,8 @@
           "url": "https://www.asiae.co.kr/article/2026042408203269006",
           "source": "아시아경제",
           "published_at": "2026-04-23T23:20:32",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2400,8 +2452,8 @@
           "url": "https://www.asiae.co.kr/article/2026042015445554453",
           "source": "아시아경제",
           "published_at": "2026-04-20T06:44:55",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2415,8 +2467,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03847446645418088",
           "source": "이데일리",
           "published_at": "2026-04-20T06:30:02",
-          "causal_chain": "교환사채(EB) 220억원 발행으로 AI 서버 사업 확대 자금 조달 + 자사주 약 30억원 소각 결정으로 주주가치 제고.",
-          "macro_event": "교환사채 220억 발행(AI 서버 사업 확대 자금) + 자사주 30억 소각",
+          "causal_chain": "AI·데이터센터 투자 확대 → 고성능 서버 수요 증가 → PS일렉트로닉스 신사업 확대 필요. 교환사채 220억원 자금조달로 사업 확장 재원 확보.",
+          "macro_event": "AI 및 데이터센터 투자 확대에 따른 고성능 서버 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3480,8 +3532,17 @@
       "low_price": 17200,
       "industry": "1차 철강 제조업",
       "sector": "OCTG Pipe, Line Pipe, Standard Pipe, 일반관",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "철강"
+      ],
+      "theme_paths": [
+        {
+          "name": "철강",
+          "path": [
+            "철강"
+          ]
+        }
+      ],
       "pick_count": 3,
       "prev_pick": {
         "date": "2026-04-10",
@@ -3696,8 +3757,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02532166645416120",
           "source": "이데일리",
           "published_at": "2026-04-13T23:01:24",
-          "causal_chain": "북미·유럽 시장 고성장세 + 2분기부터 재발주 물량 반영 기대 → 복수 증권사(KB·DB) 목표가 상향(KB 23만원, DB 22%↑) + 실적 안정 속 밸류 매력 부각 → 상위 1% 초고수 투자자 픽 선정",
-          "macro_event": "서구권(북미·유럽) 매출 성장 기대에 복수 증권사 목표가 상향",
+          "causal_chain": "",
+          "macro_event": "",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3767,7 +3828,9 @@
         ]
       },
       "togusa_verdict": "weak_bull",
-      "theme_leader": false
+      "theme_leader": false,
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "035460",
