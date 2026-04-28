@@ -1330,37 +1330,11 @@ function renderPredictedDetailOnly(badges, viewDate) {
     + `</div>`;
 }
 
-function renderTriggerPin(badges, viewDate) {
-  // §III 트리거 핀 — disclosure 0 + predicted strict 미충족 ≥1 카드에서만 노출. 우측 끝.
-  if (!Array.isArray(badges) || badges.length === 0) return '';
-  const hasDisclosure = badges.some(b => {
-    if (!b) return false;
-    const isPred = (b.source === 'predicted')
-      || (b.label || '').includes('근접')
-      || (b.label || '').includes('예상');
-    return !isPred;
-  });
-  if (hasDisclosure) return '';
-  const hasImminent = badges.some(b => {
-    if (!b) return false;
-    const isPred = (b.source === 'predicted')
-      || (b.label || '').includes('근접')
-      || (b.label || '').includes('예상');
-    if (!isPred) return false;
-    return getPredictedBadgeVisibility(b, viewDate, badges) === 'header';
-  });
-  if (hasImminent) return '';
-  const n = countStrictUnmetPredicted(badges, viewDate);
-  if (n <= 0) return '';
-  // 휴지 메트릭 — __v92_pin_count (사이클 4 임계 5건 추적용)
-  if (typeof window !== 'undefined') {
-    window.__v92_pin_count = (window.__v92_pin_count || 0) + 1;
-  }
-  return `<span class="dsn-v92-trigger-pin" aria-label="추정 시그널 ${n}건">`
-    + `<span class="dsn-v92-trigger-pin__icon">↗</span>`
-    + `<span class="dsn-v92-trigger-pin__text">추정 </span>`
-    + `<span class="dsn-v92-trigger-pin__count">${n}건</span>`
-    + `</span>`;
+function renderTriggerPin(_badges, _viewDate) {
+  // REQ-064 (2026-04-28): "추정 N건" 트리거 핀 제거 — 라벨 모호성 (대표 라이브 발화).
+  // 함수 시그니처는 유지하여 호출자 안전성 보존. predicted 데이터 자체는 보존 (본문 펼침 영역).
+  // 이전 구현: DSN-005 v9.2 §III 옵션 1-a (commit f3c0da7).
+  return '';
 }
 
 function miniCandle(open, high, low, close, changePct) {

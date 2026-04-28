@@ -2532,10 +2532,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .dsn-v91-disclaimer-footer { border-top-width: 2px; font-weight: 600; }
 }
 
-/* ───── DSN-20260425-DSN-005 v9.2 — 그래프 박스 자동 효과 + predicted 위계 분리 + 트리거 핀 ─────
+/* ───── DSN-20260425-DSN-005 v9.2 — 그래프 박스 자동 효과 + predicted 위계 분리 ─────
    §IV.1 dsn-v92-stage-flow__node-effect: 노드 박스 하단 발효일+자동효과 1줄 (휴지 약한 명사형).
    §IV.2 dsn-v92-predicted-detail-only: 펼침 영역 안 strict 미충족 predicted 상세.
-   §IV.3 dsn-v92-trigger-pin: 077970·452260 같은 predicted-only 카드 옵션 1-a 핀.
+   ※ §IV.3 트리거 핀(dsn-v92-trigger-pin)은 REQ-064 (2026-04-28)에서 제거됨 — 라벨 모호성.
 */
 
 /* §I 노드 박스 — 라벨/효과 분리. 기존 inline span을 inline-flex column으로 보강 (효과 div 수직 정렬용) */
@@ -2720,39 +2720,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   }
 }
 
-/* §III 트리거 핀 — disclosure 0 + strict 미충족 predicted ≥1 카드 우측 끝 */
-.dsn-v92-trigger-pin {
-  display: inline-flex;
-  align-items: center;
-  margin-left: auto;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--badge-predicted, #E55A2B);
-  background: rgba(229, 90, 43, 0.06);
-  border: 1px dashed var(--badge-predicted, #E55A2B);
-  white-space: nowrap;
-}
-.dsn-v92-trigger-pin__icon {
-  margin-right: 2px;
-}
-.dsn-v92-trigger-pin__count {
-  font-weight: 600;
-  margin-left: 2px;
-}
+/* REQ-064 (2026-04-28): §III 트리거 핀(.dsn-v92-trigger-pin) CSS rule 제거 — 라벨 모호성 (대표 라이브 발화).
+   detail-only / node-effect rule은 보존. 부활 필요 시 git history (commit f3c0da7 이전) 복원. */
 
-@media (prefers-color-scheme: dark) {
-  .dsn-v92-trigger-pin {
-    color: #FF7A4A;
-    background: rgba(229, 90, 43, 0.14);
-    border-color: #FF7A4A;
-  }
-}
-
-/* 고대비 — 트리거 핀/detail-only 보더 강화 */
+/* 고대비 — detail-only / node-effect 보더 강화 (트리거 핀 rule 삭제됨) */
 @media (prefers-contrast: more) {
-  .dsn-v92-trigger-pin { border-width: 2px; font-weight: 700; }
   .dsn-v92-predicted-detail-only { border-left-width: 5px; }
   .dsn-v92-stage-flow__node-effect--predicted { border-top-width: 2px; }
 }

@@ -1178,8 +1178,8 @@ function renderCalExpandContent(date, data) {
       const chevronHtml = hasDetails
         ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span></div>`
         : '';
-      // v9.2 §III: 트리거 핀 — 헤더 배지 0건 + predicted strict 미충족 ≥1 케이스 시 노출
-      // 위치: badgesRow 우측 끝 (CSS .dsn-v92-trigger-pin{margin-left:auto})
+      // REQ-064 (2026-04-28): v9.2 §III 트리거 핀 제거 — renderTriggerPin은 빈 문자열 반환 (utils.js).
+      // v92TriggerPinHtml은 항상 ''이므로 조건/삽입 모두 무영향. 호출 보존(미래 부활 안전성).
       const badgesRowHtml = (pickBadge || bullishBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
         ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
