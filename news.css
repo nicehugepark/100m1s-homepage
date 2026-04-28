@@ -1306,8 +1306,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   gap: 6px;
   cursor: pointer;
   width: 100%;
-  padding: 8px 16px;             /* REQ-045 §D — 10/16 → 8/16 (두께 줄임) */
-  min-height: 36px;               /* REQ-045 §D — 40 → 36 */
+  padding: 5px 16px;             /* REQ-060 — 8/16 → 5/16 (두께 추가 축소, 대표 발화 11:38) */
+  min-height: 28px;               /* REQ-060 — 36 → 28 */
   border-radius: 9999px;
   background: #F8FAFC;
   border: 1px solid #64748B;      /* REQ-045 §D — #94A3B8 → #64748B (데스크탑 가독성) */
@@ -1331,10 +1331,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   outline-offset: 2px;
 }
 @media (max-width: 640px) {
-  /* REQ-045 §D — 모바일 터치 영역 보강 (Apple HIG 44px) */
+  /* REQ-060 — 모바일 두께 추가 축소 (풀폭이라 터치 영역 충분, 대표 발화 11:38) */
   .cal-detail-toggle {
-    padding: 10px 16px;
-    min-height: 40px;
+    padding: 7px 16px;
+    min-height: 32px;
   }
 }
 .cal-toggle-text {
