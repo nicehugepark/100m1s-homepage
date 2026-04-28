@@ -215,7 +215,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-credit-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; background:#FDE8E8; color:#C53939; border:1px solid #F5C2C2; vertical-align:middle; }
 /* REQ-031 — pill 통일 (border-radius: 9999px). 시각 일관성 (SPEC-001 §III). */
 /* REQ-045 §A — 헤더 배지 폰트 통일 (11px / weight 600 / letter-spacing 0.01em). */
-.cal-status-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; margin-right:3px; vertical-align:middle; }
+/* REQ-062 — margin-right 제거. 부모 .cal-feature-badges flex gap:6px 으로 형제 간격 통제 (들여쓰기 결함 fix). */
+.cal-status-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; vertical-align:middle; }
 .cal-status-badge.caution { background:#fff3cd; color:#856404; }
 .cal-status-badge.warning { background:#ffe0b2; color:#e65100; }
 .cal-status-badge.danger { background:#ffcdd2; color:#c62828; }
@@ -1389,7 +1390,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 1px solid #CBD5E1;
   padding: 2px 8px;
   border-radius: 9999px;  /* REQ-031 — pill 통일 */
-  margin-left: 4px;
+  /* REQ-062 — margin-left 제거. 부모 flex gap 사용 (들여쓰기 결함 fix). */
   transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
   vertical-align: middle;
 }
@@ -1428,7 +1429,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 1px solid #E8C063;
   padding: 2px 8px;
   border-radius: 9999px;
-  margin-left: 4px;
+  /* REQ-062 — margin-left 제거. 부모 .cal-feature-badges flex gap 사용 (들여쓰기 결함 fix). */
   vertical-align: middle;
 }
 @media (prefers-color-scheme: dark) {
