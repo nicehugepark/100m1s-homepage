@@ -207,7 +207,17 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-feature-sparkline { width: 60px; height: 32px; flex-shrink: 0; display: inline-block; }
 .cal-feature-sparkline svg { width: 100%; height: 100%; display: block; }
 @media (max-width: 640px) {
-  .cal-feature-sparkline { width: 44px; height: 26px; }
+  /* REQ-pm320-ux-cycle #3 — 모바일 카드 head 폭 부족, 당일 분봉 sparkline 숨기고
+     20영업일 일봉(매매 결단에 더 직결)만 노출. design-lead 권고 */
+  .cal-feature-sparkline { display: none; }
+}
+/* REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측). */
+.cal-feature-candles20 { width: 110px; height: 32px; flex-shrink: 0; display: inline-block; }
+.cal-feature-candles20 svg { width: 100%; height: 100%; display: block; }
+.cal-candles20-empty { width: 110px; height: 32px; background: var(--g04); border-radius: 4px; flex-shrink: 0; }
+@media (max-width: 640px) {
+  .cal-feature-candles20 { width: 78px; height: 26px; }
+  .cal-candles20-empty { width: 78px; height: 26px; }
 }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
@@ -673,6 +683,68 @@ a.cal-credit-row:hover,
 /* ───── Below-Fold 2-Column Grid ───── */
 .theme-trend { margin-bottom: 48px; }
 
+/* REQ-pm320-ux-cycle #2 — 상한가 종목 추이 (theme-trend 직하). */
+.limit-up-trend { margin-bottom: 48px; }
+.lut-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #C53939; }
+.lut-title { font-size: 14px; font-weight: 800; color: #C53939; }
+.lut-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
+.lut-wrap {
+  display: flex; align-items: stretch;
+  background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
+  padding: 16px 20px; gap: 4px;
+}
+.lut-yaxis-col { flex-shrink: 0; }
+.lut-scroll { flex: 1; overflow-x: auto; overflow-y: hidden; }
+.lut-svg { display: block; }
+.lut-bar { cursor: pointer; transition: fill 150ms ease; }
+.lut-bar:hover { fill: #A02828; }
+.lut-bar:focus-visible { outline: 2px solid #C53939; outline-offset: 2px; }
+.lut-bar--active { fill: #A02828; }
+.lut-detail {
+  margin-top: 12px; padding: 12px 14px;
+  background: var(--bg2); border-radius: 10px;
+  max-height: 360px; overflow-y: auto;
+  animation: lut-detail-in 200ms ease;
+}
+@keyframes lut-detail-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lut-detail-head { font-size: 12px; color: var(--tx2); margin-bottom: 8px; }
+.lut-detail-date { font-weight: 700; color: var(--tx); }
+.lut-detail-list { display: flex; flex-direction: column; gap: 2px; }
+.lut-stock-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  gap: 10px; align-items: center;
+  padding: 7px 10px; border-radius: 6px;
+  background: var(--sf); text-decoration: none; color: inherit;
+  font-size: 12px;
+  transition: background 120ms ease;
+}
+.lut-stock-row:hover { background: rgba(196, 153, 48, 0.08); }
+.lut-stock-name { font-weight: 700; color: var(--tx); }
+.lut-stock-code { font-family: 'SF Mono', monospace; font-size: 10px; color: var(--dm); }
+.lut-stock-pct { font-weight: 800; color: #C53939; min-width: 60px; text-align: right; }
+.lut-stock-amt { font-family: 'SF Mono', monospace; font-size: 10px; color: var(--tx2); min-width: 56px; text-align: right; }
+.lut-streak {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 999px;
+  background: #FFF4D1; color: #6B4A0A;
+}
+@media (max-width: 640px) {
+  .lut-wrap { padding: 12px; }
+  .lut-stock-row {
+    grid-template-columns: 1fr auto auto;
+    gap: 6px; padding: 6px 8px;
+  }
+  .lut-stock-amt { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lut-detail { animation: none; }
+  .lut-bar { transition: none; }
+}
+
 /* ───── 테마 트리 (Indented Tree + Inline Bar) ───── */
 .theme-tree { margin-top: 0; }
 .theme-tree-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
@@ -1075,6 +1147,24 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   /* REQ-073 — dark 미운영. light 통일. */
   /* REQ-075 — frosted glass 복원, 0.92 → 0.7. */
   .cal-content-head { background: rgba(255, 255, 255, 0.7); }
+}
+/* REQ-pm320-ux-cycle #1 — cal-content-head 클릭 가능 (→ #toss-cal scrollIntoView).
+   hover 햇살 톤(#C49930 6%) + focus outline + active pulse. */
+.cal-content-head[data-scroll-to-cal] {
+  cursor: pointer;
+  transition: background-color 200ms ease, transform 100ms ease;
+}
+.cal-content-head[data-scroll-to-cal]:hover {
+  background: rgba(196, 153, 48, 0.06);
+}
+.cal-content-head[data-scroll-to-cal]:focus-visible {
+  outline: 2px solid var(--am);
+  outline-offset: -2px;
+}
+.cal-content-head--pulse { transform: scale(0.98); }
+@media (prefers-reduced-motion: reduce) {
+  .cal-content-head[data-scroll-to-cal] { transition: none; }
+  .cal-content-head--pulse { transform: none; }
 }
 .cal-content-date {
   /* REQ-074 — 폰트 위계 축소. 24/900/-0.7px → 15/700/-0.2px (메타 정보 위계, 본문 카드와 균형). line-height 1.2 유지. */
