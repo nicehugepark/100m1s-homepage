@@ -1,6 +1,6 @@
 {
   "date": "2026-04-29",
-  "generated_at": "2026-04-29T09:39:12.580917",
+  "generated_at": "2026-04-29T09:42:03.999064",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -870,8 +870,8 @@
           11850
         ]
       },
-      "togusa_verdict": "neutral",
-      "theme_leader": false,
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
       "hugepark_grade": "관찰"
     },
     {
@@ -1015,7 +1015,7 @@
           48200
         ]
       },
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -1057,8 +1057,8 @@
           "url": "https://www.hankyung.com/article/2026042818156",
           "source": "한경",
           "published_at": "2026-04-28T04:51:40",
-          "causal_chain": "ESS 수요 확대 → 서진시스템이 1206억 규모 ESS 장비 공급계약 체결(매출의 11.31%, 2027년 1월까지) → ESS 부문 매출 기저 확대.",
-          "macro_event": "ESS 장비 대형 수주(1206억, 매출 11.31%)",
+          "causal_chain": "ESS(에너지저장장치) 시장 확대 → 서진시스템이 에이스엔지니어링과 1206억 규모 ESS 장비 공급계약 체결 → 2차전지 기반 ESS 장비 매출 기저 확대",
+          "macro_event": "ESS 장비 대형 공급계약 체결 (1206억, 매출 대비 11.31%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1072,8 +1072,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03371846645420712",
           "source": "이데일리",
           "published_at": "2026-04-28T01:36:25",
-          "causal_chain": "ESS 수요 확대 → 서진시스템이 1206억 규모 ESS 장비 공급계약 체결(매출의 11.31%, 2027년 1월까지) → ESS 부문 매출 기저 확대.",
-          "macro_event": "ESS 장비 대형 수주(1206억, 매출 11.31%)",
+          "causal_chain": "ESS(에너지저장장치) 시장 확대 → 서진시스템이 에이스엔지니어링과 1206억 규모 ESS 장비 공급계약 체결 → 2차전지 기반 ESS 장비 매출 기저 확대",
+          "macro_event": "ESS 장비 대형 공급계약 체결 (1206억, 매출 대비 11.31%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1143,10 +1143,15 @@
       "themes": [
         "전력설비",
         "AI데이터센터",
-        "원전",
-        "스마트그리드"
+        "원전"
       ],
       "theme_paths": [
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
         {
           "name": "AI데이터센터",
           "path": [
@@ -1158,13 +1163,6 @@
           "name": "원전",
           "path": [
             "원전"
-          ]
-        },
-        {
-          "name": "스마트그리드",
-          "path": [
-            "전력설비",
-            "스마트그리드"
           ]
         }
       ],
@@ -1183,8 +1181,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/24/MQ3DEZLDMYYDCOJUGE4DMOJWMQ/",
           "source": "조선비즈",
           "published_at": "2026-04-23T23:01:11",
-          "causal_chain": "美 핵융합 상용화 프로젝트 추진 → 순간 고출력(15㎿급) 전력 공급 필요 → LS머트리얼즈 울트라캐패시터 1000개+ 첫 공급 → 핵융합 신규 수주처 선점",
-          "macro_event": "미국 핵융합 발전 상용화 프로젝트, 첫 상업 공급 개시",
+          "causal_chain": "핵융합 발전 상용화 투자 확대 → 핵융합 장치 운용에 필수적인 순간 고출력(0.06초 내 15MW) 전력 공급 수요 발생 → 과점 구조의 중·대형 UC 핵심 공급사인 LS머트리얼즈가 미국 실증 프로젝트 첫 수주(1000개+ 대형 모듈)를 확보하며 핵융합 UC 시장 레퍼런스 구축.",
+          "macro_event": "미국 핵융합 발전 상용화 실증 프로젝트에 UC 첫 공급 계약 체결",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1198,8 +1196,8 @@
           "url": "https://www.mk.co.kr/news/business/12025199",
           "source": "매경",
           "published_at": "2026-04-23T04:46:34",
-          "causal_chain": "美 핵융합 상용화 프로젝트 추진 → 순간 고출력(15㎿급) 전력 공급 필요 → LS머트리얼즈 울트라캐패시터 1000개+ 첫 공급 → 핵융합 신규 수주처 선점",
-          "macro_event": "미국 핵융합 발전 상용화 프로젝트, 첫 상업 공급 개시",
+          "causal_chain": "핵융합 발전 상용화 투자 확대 → 핵융합 장치 운용에 필수적인 순간 고출력(0.06초 내 15MW) 전력 공급 수요 발생 → 과점 구조의 중·대형 UC 핵심 공급사인 LS머트리얼즈가 미국 실증 프로젝트 첫 수주(1000개+ 대형 모듈)를 확보하며 핵융합 UC 시장 레퍼런스 구축.",
+          "macro_event": "미국 핵융합 발전 상용화 실증 프로젝트에 UC 첫 공급 계약 체결",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1232,7 +1230,10 @@
           28950,
           28600
         ]
-      }
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "199820",
@@ -1281,7 +1282,12 @@
         "current": 15700
       },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "058430",
