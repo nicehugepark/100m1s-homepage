@@ -168,7 +168,7 @@ async function onCalCellClick(date, pushState) {
   renderCalendar();
   const inner = document.getElementById('cal-content');
   inner.innerHTML = `
-    <div class="cal-content-head">
+    <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">불러오는 중…</div>
     </div>
@@ -230,7 +230,7 @@ async function initCalendar() {
     // 캐시 없음 — 로딩 표시
     toggleThemeSections(initialDate);
     const inner = document.getElementById('cal-content');
-    if (inner) inner.innerHTML = '<div class="cal-content-head"><div class="cal-content-date">' + formatKoDate(initialDate) + '</div><div class="cal-content-meta">불러오는 중\u2026</div></div><div class="cal-empty"><div>데이터 로드 중</div></div>';
+    if (inner) inner.innerHTML = '<div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1"><div class="cal-content-date">' + formatKoDate(initialDate) + '</div><div class="cal-content-meta">불러오는 중\u2026</div></div><div class="cal-empty"><div>데이터 로드 중</div></div>';
   }
 
   // 4단계: 비동기 네트워크 갱신 (사용자가 기다리지 않음)
@@ -284,6 +284,7 @@ async function _refreshDataAsync(initialDate) {
     // 테마 트리/트렌드 초기화 (휴장일은 함수 내부에서 안내 메시지 표시)
     initThemeTree(initialDate);
     initThemeTrend();
+    initLimitUpTrend();
     initThemeMap();
   } catch (e) {
     console.warn('_refreshDataAsync:', e);

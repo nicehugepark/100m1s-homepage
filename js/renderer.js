@@ -36,6 +36,45 @@ function buildSparkline(prices, base, dir) {
   </svg>`;
 }
 
+// REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 SVG.
+// 양봉(close>open) #C53939, 음봉 #1958C7, 동가 #94A3B8 (한국 증시 관습).
+// 데스크탑 110×32, 모바일은 CSS viewBox preserveAspectRatio로 78×26 자동 축소.
+// daily_20 = [{date, o, h, l, c}] 정시 정렬(ASC).
+function buildCandles20(daily20) {
+  if (!Array.isArray(daily20) || daily20.length < 5) return '';
+  const N = daily20.length;
+  const W = 110, H = 32, PAD_X = 4, PAD_Y = 2;
+  const slot = (W - 2 * PAD_X) / N;
+  const bodyW = Math.max(1.5, slot * 0.7);
+  const lows = daily20.map(d => d.l).filter(v => v > 0);
+  const highs = daily20.map(d => d.h).filter(v => v > 0);
+  if (!lows.length || !highs.length) return '';
+  const lo = Math.min(...lows);
+  const hi = Math.max(...highs);
+  const span = hi - lo || 1;
+  const y = p => PAD_Y + (H - 2 * PAD_Y) * (1 - (p - lo) / span);
+  const parts = daily20.map((d, i) => {
+    const xc = PAD_X + slot * (i + 0.5);
+    const xBody = xc - bodyW / 2;
+    const isUp = d.c > d.o;
+    const isFlat = d.c === d.o;
+    const color = isFlat ? '#94A3B8' : (isUp ? '#C53939' : '#1958C7');
+    const yHi = y(d.h), yLo = y(d.l);
+    const yOpen = y(d.o), yClose = y(d.c);
+    const yBodyTop = Math.min(yOpen, yClose);
+    const bodyH = Math.max(0.8, Math.abs(yClose - yOpen));
+    const wick = `<line x1="${xc.toFixed(1)}" y1="${yHi.toFixed(1)}" x2="${xc.toFixed(1)}" y2="${yLo.toFixed(1)}" stroke="${color}" stroke-width="1"/>`;
+    const body = isFlat
+      ? `<line x1="${xBody.toFixed(1)}" y1="${yOpen.toFixed(1)}" x2="${(xBody + bodyW).toFixed(1)}" y2="${yOpen.toFixed(1)}" stroke="${color}" stroke-width="1.2"/>`
+      : `<rect x="${xBody.toFixed(1)}" y="${yBodyTop.toFixed(1)}" width="${bodyW.toFixed(1)}" height="${bodyH.toFixed(1)}" fill="${color}"/>`;
+    const pct = d.o > 0 ? (((d.c - d.o) / d.o) * 100).toFixed(1) : '0.0';
+    const tip = `${d.date}\n시 ${d.o.toLocaleString()} / 고 ${d.h.toLocaleString()}\n저 ${d.l.toLocaleString()} / 종 ${d.c.toLocaleString()} (${pct >= 0 ? '+' : ''}${pct}%)`;
+    const hit = `<rect x="${(xc - slot/2).toFixed(1)}" y="0" width="${slot.toFixed(1)}" height="${H}" fill="transparent"><title>${tip}</title></rect>`;
+    return wick + body + hit;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${parts}</svg>`;
+}
+
 function deriveDate(post) {
   if (post.post_date) return post.post_date;
   if (post.fetched_at) return post.fetched_at.slice(0, 10);
@@ -167,7 +206,7 @@ function renderCalExpandContent(date, data) {
     const _emptyVerBanner = _buildRulesVersionBanner(data && data.rules_version);
     inner.innerHTML = `
       ${_emptyVerBanner}
-      <div class="cal-content-head">
+      <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
         <div class="cal-content-date">${formatKoDate(date)}</div>
         <div class="cal-content-meta">${closed ? '휴장' : '데이터 없음'}</div>
       </div>
@@ -686,6 +725,11 @@ function renderCalExpandContent(date, data) {
       const sparkHtml = it.interp?.intraday
         ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
+      // REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측, 모바일은 CSS로 sparkline 숨김 + candles20만).
+      const d20 = it.interp?.daily_20;
+      const candles20Html = (Array.isArray(d20) && d20.length >= 5)
+        ? `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`
+        : '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
 
       // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B / 레이아웃 v2 — 4행 분해)
       const r240 = it.interp?.range_240d;
@@ -748,6 +792,7 @@ function renderCalExpandContent(date, data) {
               <div class="cal-trade-rank">#${it.rank}</div>
               <div class="cal-trade-candle">${candleHtml}</div>
               ${sparkHtml}
+              ${candles20Html}
             </div>
             <div class="cal-feature-head-right">
               <div class="cal-feature-namecell">
@@ -844,7 +889,7 @@ function renderCalExpandContent(date, data) {
   const _rulesVersionBanner = _buildRulesVersionBanner(data && data.rules_version);
   inner.innerHTML = `
     ${_rulesVersionBanner}
-    <div class="cal-content-head">
+    <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">${metaText}</div>
     </div>
@@ -867,6 +912,43 @@ function renderCalExpandContent(date, data) {
       toggle.setAttribute('aria-label', isExpanded ? '접기' : '상세 보기');
     });
     window._cardCollapseInit = true;
+  }
+
+  // REQ-pm320-ux-cycle #1 — cal-content-head 클릭/Enter/Space → #toss-cal scrollIntoView.
+  // 모바일에서 카드 list 깊이 스크롤 후 달력 역접근 어려움 해소. 데스크탑은 sticky로 이미 보이지만
+  // page top 정렬 시 toss-cal이 시야 중앙으로 회귀하여 다른 날짜 클릭 부담 ↓.
+  if (!window._calHeadScrollInit) {
+    const scrollToCal = () => {
+      const target = document.getElementById('toss-cal');
+      if (!target) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.innerWidth <= 880;
+      // sticky nav header 68px(데스크탑) / 76px(모바일 nav 추정) 보정.
+      const navOffset = isMobile ? 76 : 84;
+      const rect = target.getBoundingClientRect();
+      const top = window.pageYOffset + rect.top - navOffset;
+      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+    };
+    document.addEventListener('click', e => {
+      const head = e.target.closest('[data-scroll-to-cal]');
+      if (!head) return;
+      // 헤더 내부 다른 인터랙티브 요소(링크/버튼) bubble 차단 — 현재는 하위 요소 없음, 안전망.
+      if (e.target.closest('a, button, input, [role="button"]:not([data-scroll-to-cal])')) return;
+      // 시각 펄스 (reduced-motion 시 transform 생략 — CSS @media 처리)
+      head.classList.add('cal-content-head--pulse');
+      setTimeout(() => head.classList.remove('cal-content-head--pulse'), 200);
+      scrollToCal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const head = e.target.closest('[data-scroll-to-cal]');
+      if (!head) return;
+      e.preventDefault();
+      head.classList.add('cal-content-head--pulse');
+      setTimeout(() => head.classList.remove('cal-content-head--pulse'), 200);
+      scrollToCal();
+    });
+    window._calHeadScrollInit = true;
   }
 
   // REQ-020 v9.5 §II.6 — 헤더 효과 배지 click 시 카드 자동 펼침 (v9.3 호환 — 셀렉터만 교체).
@@ -1361,6 +1443,141 @@ async function initThemeTrend() {
     });
 
   } catch (e) { console.warn('theme-trend:', e); }
+}
+
+// ───── REQ-pm320-ux-cycle #2 — 상한가 종목 추이 (theme-trend 직하) ─────
+async function initLimitUpTrend() {
+  try {
+    const res = await fetch('/data/limit-up-trend.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    const container = document.getElementById('limit-up-trend');
+    if (!container || !Array.isArray(data.items) || data.items.length === 0) return;
+
+    const items = data.items;
+    const dates = items.map(it => it.date);
+    const counts = items.map(it => it.count);
+    const maxCount = Math.max(1, ...counts);
+    // Y-axis ticks (auto-scale 정수)
+    const yMax = Math.max(5, Math.ceil(maxCount / 5) * 5);
+    const yTicks = [];
+    for (let v = 0; v <= yMax; v += Math.max(1, Math.ceil(yMax / 5))) yTicks.push(v);
+
+    const isMobile = window.innerWidth <= 640;
+    const containerW = container.clientWidth || 800;
+    const wrapPadding = isMobile ? 28 : 40;
+    const yAxisW = isMobile ? 36 : 44;
+    const innerW = containerW - wrapPadding - yAxisW;
+    const slot = Math.max(isMobile ? 24 : 36, innerW / dates.length);
+    const chartW = Math.max(innerW, slot * dates.length);
+    const H = isMobile ? 140 : 180;
+    const padTop = 12, padBottom = 28;
+    const plotH = H - padTop - padBottom;
+    const yScale = v => padTop + plotH * (1 - v / yMax);
+    const barW = slot * 0.6;
+
+    const fmtMD = (d) => {
+      const m = parseInt(d.slice(5, 7), 10);
+      const day = parseInt(d.slice(8, 10), 10);
+      return `${m}/${day}`;
+    };
+
+    // Y axis SVG (sticky)
+    let yAxisSvg = '<svg class="lut-svg lut-yaxis" viewBox="0 0 ' + yAxisW + ' ' + H + '" width="' + yAxisW + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
+    for (const v of yTicks) {
+      const y = yScale(v).toFixed(1);
+      yAxisSvg += '<line x1="' + (yAxisW - 4) + '" y1="' + y + '" x2="' + yAxisW + '" y2="' + y + '" stroke="#CBD5E1" stroke-width="0.5"/>';
+      yAxisSvg += '<text x="' + (yAxisW - 6) + '" y="' + y + '" font-size="10" fill="#64748B" text-anchor="end" dominant-baseline="middle">' + v + '</text>';
+    }
+    yAxisSvg += '</svg>';
+
+    // Chart SVG
+    let chartSvg = '<svg class="lut-svg lut-chart" viewBox="0 0 ' + chartW + ' ' + H + '" width="' + chartW + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
+    // gridlines
+    for (const v of yTicks) {
+      const y = yScale(v).toFixed(1);
+      chartSvg += '<line x1="0" y1="' + y + '" x2="' + chartW + '" y2="' + y + '" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="2,3"/>';
+    }
+    // bars
+    items.forEach((it, i) => {
+      const x = slot * i + (slot - barW) / 2;
+      const y = yScale(it.count);
+      const h = Math.max(0, plotH - (y - padTop));
+      const baseline = padTop + plotH;
+      if (it.count > 0) {
+        chartSvg += '<rect class="lut-bar" data-date="' + it.date + '" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="#C53939" rx="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></rect>';
+      }
+      // X-axis label
+      const lx = (slot * i + slot / 2).toFixed(1);
+      chartSvg += '<text x="' + lx + '" y="' + (baseline + 14) + '" font-size="10" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>';
+    });
+    chartSvg += '</svg>';
+
+    const dateRange = dates.length > 1 ? (fmtMD(dates[0]) + '~' + fmtMD(dates[dates.length - 1])) : fmtMD(dates[0]);
+    container.innerHTML =
+      '<div class="lut-header"><div class="lut-title">상한가 종목 추이</div>' +
+      '<div class="lut-sub">최근 ' + dates.length + '영업일 · ' + dateRange + ' · 총 ' + (data.total_count || 0) + '건</div></div>' +
+      '<div class="lut-wrap">' +
+        '<div class="lut-yaxis-col">' + yAxisSvg + '</div>' +
+        '<div class="lut-scroll">' + chartSvg + '</div>' +
+      '</div>' +
+      '<div class="lut-detail" id="lut-detail" hidden></div>';
+
+    // Inline expand on bar click/keydown
+    const detail = container.querySelector('#lut-detail');
+    let activeDate = null;
+    const closeDetail = () => {
+      detail.hidden = true;
+      detail.innerHTML = '';
+      activeDate = null;
+      container.querySelectorAll('.lut-bar.lut-bar--active').forEach(b => b.classList.remove('lut-bar--active'));
+    };
+    const openDetail = (date) => {
+      const it = items.find(x => x.date === date);
+      if (!it || it.count === 0) return;
+      if (activeDate === date) { closeDetail(); return; }
+      activeDate = date;
+      container.querySelectorAll('.lut-bar.lut-bar--active').forEach(b => b.classList.remove('lut-bar--active'));
+      const bar = container.querySelector('.lut-bar[data-date="' + date + '"]');
+      if (bar) bar.classList.add('lut-bar--active');
+      const fmtPct = v => v == null ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+      const fmtAmt = v => {
+        if (v == null) return '';
+        const eok = v / 1e8;
+        if (eok >= 10000) return (eok / 10000).toFixed(1) + '조';
+        if (eok >= 1) return Math.round(eok).toLocaleString() + '억';
+        return v.toLocaleString();
+      };
+      detail.hidden = false;
+      detail.innerHTML =
+        '<div class="lut-detail-head"><span class="lut-detail-date">' + it.date + '</span> · 상한가 <strong>' + it.count + '건</strong></div>' +
+        '<div class="lut-detail-list">' +
+        it.stocks.map(s => {
+          const cc = s.consecutive_count > 1 ? '<span class="lut-streak">' + s.consecutive_count + '일 연속</span>' : '';
+          const href = '?date=' + it.date + '#stock-' + (s.code || '');
+          return '<a class="lut-stock-row" href="' + href + '">' +
+            '<span class="lut-stock-name">' + (s.name || s.code) + '</span>' +
+            '<span class="lut-stock-code">' + s.code + '</span>' +
+            '<span class="lut-stock-pct">' + fmtPct(s.change_pct) + '</span>' +
+            '<span class="lut-stock-amt">' + fmtAmt(s.trade_amount) + '</span>' +
+            cc +
+            '</a>';
+        }).join('') +
+        '</div>';
+    };
+    container.addEventListener('click', e => {
+      const bar = e.target.closest('.lut-bar');
+      if (!bar) return;
+      openDetail(bar.getAttribute('data-date'));
+    });
+    container.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const bar = e.target.closest('.lut-bar');
+      if (!bar) return;
+      e.preventDefault();
+      openDetail(bar.getAttribute('data-date'));
+    });
+  } catch (e) { console.warn('limit-up-trend:', e); }
 }
 
 // ───── 테마 지도 ─────
