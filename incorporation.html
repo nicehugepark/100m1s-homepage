@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>법인 설립 실행 가이드 | 100M1S</title>
-<meta name="description" content="대한민국 1인·소규모 창업자를 위한 주식회사 설립 실행 가이드. 법인 형태 비교, 단계별 절차, 비용, 체크리스트, 자주 하는 실수까지 한 페이지에 정리.">
+<meta name="description" content="대한민국 1인·소규모 창업자를 위한 주식회사 설립 실행 가이드. 법인 형태 비교, 단계별 절차(액션 레벨), 비용, 체크리스트 100항목, 자주 하는 실수, 법무사·세무사·비상주 사무실 추천까지 한 페이지에 정리.">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="법인 설립 실행 가이드 | 100M1S">
-<meta property="og:description" content="주식회사 설립 — 법인 형태/절차/서류/비용/체크리스트/실수/FAQ를 한 페이지에 정리한 실행 가이드.">
+<meta property="og:description" content="주식회사 설립 — 법인 형태/절차/서류/비용/체크리스트/실수/FAQ + 법무사·세무사·비상주 사무실 추천을 한 페이지에 정리한 실행 가이드.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://100m1s.com/incorporation.html">
 <meta property="og:image" content="https://100m1s.com/og-image.png">
@@ -413,6 +413,60 @@ header {
 .reco ul { margin: 6px 0 0 0; padding-left: 22px; }
 .reco li { color: var(--tx2); }
 
+/* ─── Action Card (v2 신규 — 액션 레벨 단계별) ─── */
+.action-card {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 14px 0 18px;
+}
+.action-card h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--tx);
+  margin: 0 0 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.action-card h4 .step-num {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--am);
+  background: var(--am4);
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.4px;
+}
+.action-card .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  font-size: 12px;
+  color: var(--tx3);
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--bd);
+}
+.action-card .meta strong { color: var(--tx2); font-weight: 700; }
+.action-card ol, .action-card ul {
+  margin: 6px 0 0 0;
+  padding-left: 20px;
+}
+.action-card li { font-size: 13px; line-height: 1.7; }
+.action-card .field-list {
+  background: var(--bg2);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  color: var(--tx2);
+  margin-top: 8px;
+  font-family: 'SF Mono', Monaco, monospace;
+  line-height: 1.6;
+}
+
 /* ─── Checklist ─── */
 .checklist {
   list-style: none;
@@ -571,10 +625,10 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
 
 <section class="page-header">
   <div class="page-header-inner">
-    <div class="page-eyebrow">Incorporation Guide</div>
+    <div class="page-eyebrow">Incorporation Guide · v2</div>
     <h1 class="page-title">법인 설립 <span class="accent">실행 가이드</span></h1>
-    <p class="page-subtitle">대한민국 1인·소규모 창업자를 위한 주식회사 설립 가이드. 결정 → 서류 → 등기 → 후속 4단계를 한 페이지에 정리.</p>
-    <div class="page-meta">기준: 2026년 4월 · 상법·세법 · v1 draft</div>
+    <p class="page-subtitle">대한민국 1인·소규모 창업자를 위한 주식회사 설립 가이드. 결정 → 서류 → 등기 → 후속 4단계를 클릭·양식·URL·필드 단위 액션 레벨로, 법무사·세무사·비상주 사무실 추천까지 한 페이지에.</p>
+    <div class="page-meta">기준: 2026년 4월 · 상법·세법 · v2 (액션 레벨 + 추천)</div>
   </div>
 </section>
 
@@ -585,14 +639,15 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
     <ol>
       <li><a href="#sec-1" data-toc><span class="toc-num">1</span>법인 형태 비교 + 권고</a></li>
       <li><a href="#sec-2" data-toc><span class="toc-num">2</span>사전 결정 사항</a></li>
-      <li><a href="#sec-3" data-toc><span class="toc-num">3</span>단계별 절차 (D-7~D+30)</a></li>
-      <li><a href="#sec-4" data-toc><span class="toc-num">4</span>필요 서류 체크리스트</a></li>
+      <li><a href="#sec-3" data-toc><span class="toc-num">3</span>단계별 절차 (액션 레벨)</a></li>
+      <li><a href="#sec-4" data-toc><span class="toc-num">4</span>필요 서류 + 양식 출처</a></li>
       <li><a href="#sec-5" data-toc><span class="toc-num">5</span>비용 합계 표</a></li>
-      <li><a href="#sec-6" data-toc><span class="toc-num">6</span>송도 vs 용인 비교</a></li>
+      <li><a href="#sec-6" data-toc><span class="toc-num">6</span>비상주 사무실 송도 vs 용인 + 추천 10곳</a></li>
       <li><a href="#sec-7" data-toc><span class="toc-num">7</span>일정 타임라인</a></li>
-      <li><a href="#sec-8" data-toc><span class="toc-num">8</span>대표 직접 수행 체크리스트</a></li>
+      <li><a href="#sec-8" data-toc><span class="toc-num">8</span>체크리스트 100항목</a></li>
       <li><a href="#sec-9" data-toc><span class="toc-num">9</span>자주 하는 실수</a></li>
       <li><a href="#sec-10" data-toc><span class="toc-num">10</span>FAQ</a></li>
+      <li><a href="#sec-11" data-toc><span class="toc-num">11</span>법무사·세무사 추천</a></li>
     </ol>
   </aside>
 
@@ -602,21 +657,27 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
       <div class="toc-mobile-scroll">
         <a href="#sec-1" data-toc>1. 법인 형태</a>
         <a href="#sec-2" data-toc>2. 사전 결정</a>
-        <a href="#sec-3" data-toc>3. 절차</a>
+        <a href="#sec-3" data-toc>3. 절차(액션)</a>
         <a href="#sec-4" data-toc>4. 서류</a>
         <a href="#sec-5" data-toc>5. 비용</a>
-        <a href="#sec-6" data-toc>6. 송도 vs 용인</a>
+        <a href="#sec-6" data-toc>6. 사무실</a>
         <a href="#sec-7" data-toc>7. 타임라인</a>
         <a href="#sec-8" data-toc>8. 체크리스트</a>
         <a href="#sec-9" data-toc>9. 실수</a>
         <a href="#sec-10" data-toc>10. FAQ</a>
+        <a href="#sec-11" data-toc>11. 추천</a>
       </div>
     </nav>
 
     <!-- §0 들어가며 -->
     <div class="callout tip">
-      <span class="callout-title">읽는 순서</span>
-      법인 설립은 <strong>결정 → 서류 → 등기 → 후속</strong> 4단계가 직선으로 이어지지만, 한 단계의 결정(예: 자본금)이 다음 단계의 비용·서류를 좌우합니다. 권장 순서: <strong>§1 → §2 → §6(주소) → §3(타임라인) → §4(서류) → §5(비용) → §8(체크리스트) → §9(실수) → §10(FAQ)</strong>.
+      <span class="callout-title">v2 — 액션 레벨 + 추천</span>
+      v2는 v1 대비 단계별 절차를 <strong>클릭·양식·URL·필드 단위</strong>로 분해(35→100+ 액션)했고, <strong>법무사·세무사·비상주 사무실 추천(§6, §11)</strong>을 신규 추가했습니다. 권장 순서: <strong>§1 → §2 → §6(주소) → §3(액션 레벨 절차) → §4(서류) → §5(비용) → §11(추천) → §8(체크리스트) → §9(실수) → §10(FAQ)</strong>.
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-title">추천 정보 신뢰성</span>
+      §6.5/6.6 비상주 사무실 추천 + §11 법무사·세무사 추천은 <strong>2026-04-29 기준 공개 정보</strong>(대한법무사협회·한국세무사회·기업 공식 홈페이지·로톡·잡플래닛 검색 결과)입니다. 실제 계약 전 (1) 자격 등록 (2) 견적 (3) 후기 직접 확인 필수. 본 문서는 일반 정보 정리이며, 등기·세무 신고 전 외부 자문 의무.
     </div>
 
     <!-- §1 법인 형태 -->
@@ -662,187 +723,538 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
         </ul>
       </div>
 
-      <h3>1.2 주식회사의 단점·반대 의견</h3>
+      <h3>1.2 주식회사의 단점·반대 의견 [경영지원팀]</h3>
       <ul>
         <li>외부 감사 의무는 자본금 10억 미만이면 면제 (1,000만 원 자본금 시 무관).</li>
-        <li><strong>결산공고 의무</strong>: 매년 결산 후 인터넷 홈페이지 또는 일간신문 공고 — 운영 부담 존재. 정관에 "회사 인터넷 홈페이지에 공고"로 정해 비용·실무 최소화 가능.</li>
-        <li>1인 창업자 + 다목적 운영 시 <strong>주주총회·이사회 의무 (서면결의 가능하나 회의록 필수)</strong> 행정 부담 → 세무사·법무사 매월 기장료에 포함되도록 협상 권고.</li>
+        <li><strong>결산공고 의무</strong>: 매년 결산 후 인터넷 홈페이지 또는 일간신문 공고. 정관에 "회사 인터넷 홈페이지(<code>100m1s.com</code>)에 공고"로 정해 비용 0원 가능.</li>
+        <li>1인 + 다목적 운영 시 <strong>주주총회·이사회 행정 부담</strong> → 세무사·법무사 매월 기장료에 포함되도록 협상 권고.</li>
       </ul>
     </section>
 
-    <!-- §2 사전 결정 -->
+    <!-- §2 사전 결정 사항 -->
     <section class="section" id="sec-2">
       <div class="section-header">
         <div class="section-num">SECTION 02</div>
-        <h2>사전 결정 사항</h2>
+        <h2>사전 결정 사항 (대표 직접 결정)</h2>
       </div>
-      <p>법무사·세무사 의뢰 전에 창업자가 직접 결정해야 할 항목입니다.</p>
 
       <h3>2.1 회사명 (상호)</h3>
       <ul>
-        <li>한국 상법·등기 실무: 상호는 <strong>한글·한자·아라비아 숫자·영문</strong> 사용 가능 (대법원 등기 예규).</li>
-        <li>등기소(인터넷등기소 <code>iros.go.kr</code>) 사전 상호조회 필수. 동일·유사 상호 충돌 검토.</li>
+        <li>후보 1순위: <strong>주식회사 100M1S</strong>. 한글 표기 결정 필요 ("주식회사 100엠원에스" 등).</li>
+        <li>한국 등기 실무: 한글·한자·아라비아 숫자·영문 사용 가능 (대법원 등기예규).</li>
+        <li><strong>[법무팀 검증 권고]</strong> 등기소(인천지법 등기국 또는 수원지법 용인등기소) 사전 상호조회 필수.</li>
       </ul>
 
+      <div class="action-card">
+        <h4><span class="step-num">ACTION</span>2.1.1 상호 사전조회 (15분)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>iros.go.kr</code></span>
+          <span><strong>비용:</strong> 무료</span>
+          <span><strong>소요:</strong> 5~15분</span>
+        </div>
+        <ol>
+          <li>https://www.iros.go.kr 접속.</li>
+          <li>상단 메뉴 <strong>「법인」 → 「상호조회」</strong>.</li>
+          <li><strong>관할 등기소</strong> 선택: 송도 = "인천지방법원 등기국", 용인 = "수원지방법원 용인등기소".</li>
+          <li><strong>상호명</strong> 입력: "100M1S" → 검색. 한글 "100엠원에스"도 별도 검색.</li>
+          <li>동일·유사 상호 표시 확인. 동일 상호도 다른 업종이면 가능 → <strong>유사도 + 업종 모두 확인</strong>.</li>
+        </ol>
+        <p style="margin-top:10px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 영문만 검색·한글 미검색 → 등기 단계 거절. <strong>다음:</strong> 후보 3개 확정 → §2.6 사업 목적 → 법무사 의뢰.</p>
+      </div>
+
       <h3>2.2 본점 주소</h3>
-      <p>비상주 사무실 사용 시 <strong>본점 등기 가능 여부</strong>를 사업자에게 사전 확인. §6 송도 vs 용인 비교 참조.</p>
+      <p>송도(인천 연수구) vs 용인(경기) — §6 비교, 추천 사업자 §6.5/6.6.</p>
 
       <h3>2.3 자본금</h3>
       <ul>
-        <li><strong>권고: 1,000만 원</strong>. 상법 개정으로 100원 단위까지 가능하나, 은행·거래처 신뢰도·VC 실사 시 1,000만 원 이상이 표준.</li>
-        <li>등록면허세 = 자본금 × 0.4% (비과밀억제권역) 또는 ×1.2% (과밀억제권역).</li>
-        <li>너무 낮으면(예: 100만 원) 거래처 신뢰도 하락 + 향후 증자 시 등록면허세 추가. 너무 높으면(예: 1억 원) 등록면허세만 80만~120만 원.</li>
+        <li>권고: <strong>1,000만 원</strong>. 법정 최저(상법 개정으로 100원 단위 가능)이나 거래처·VC 실사 시 1,000만 원이 표준.</li>
+        <li>등록면허세 = 자본금 × 0.4%(송도, 비과밀) 또는 ×1.2%(과밀).</li>
+        <li>너무 낮으면 신뢰도 하락 + 향후 증자 시 추가비. 너무 높으면 등록면허세 80만~120만.</li>
       </ul>
 
       <h3>2.4 주주 구성</h3>
       <ul>
-        <li><strong>옵션 A — 단독 100% (1인)</strong>: 단순, 의사결정 빠름, 향후 자녀·배우자에게 증여로 분산 가능.</li>
-        <li><strong>옵션 B — 가족 분산</strong>: 자녀 증여 공제 활용·배당 분산·상속 절세 효과. 단, 미성년 주주의 법정대리인 의결권 행사 조항 등 정관 복잡도 증가.</li>
+        <li><strong>옵션 A</strong>: 단독 100% — 단순, 의사결정 빠름, 향후 자녀·배우자 증여 분산 가능.</li>
+        <li><strong>옵션 B</strong>: 가족 분산 (본인 10% / 배우자 10% / 아버지 10% / 자녀 70%). 자녀 증여공제·배당 분산·상속 절세. 정관 복잡도 ↑.</li>
+        <li><strong>[세무사 검증 권고]</strong> 옵션 B는 증여세·자금출처·증여의제이익 검토 필수.</li>
       </ul>
-      <div class="callout warn">
-        <span class="callout-title">검증 권고</span>
-        옵션 B(가족 분산) 선택 시 증여세·자금출처·증여의제이익 검토를 위해 <strong>세무사·법무사 자문 필수</strong>.
-      </div>
 
       <h3>2.5 임원 구성</h3>
-      <p>자본금 10억 미만 → <strong>이사 1인 + 감사 미설치</strong> 가능 (상법 §383). 권고: <strong>대표이사 1인</strong>. 향후 필요 시 이사 추가 등기.</p>
+      <p>자본금 10억 미만 → 이사 1인 + 감사 미설치 가능 (상법 §383). 권고: <strong>대표이사 1인</strong>.</p>
 
-      <h3>2.6 사업 목적</h3>
-      <p>정관에 5~10년 후 가능 사업까지 포괄적으로 기재. <em>"위 각 호의 부대 사업"</em> 조항 필수. 신규 사업 추가 시 정관 변경 등기 비용(등록면허세 + 법무사 대행료)이 발생합니다.</p>
+      <h3>2.6 사업 목적 (10개 항목 + KSIC 코드)</h3>
+      <ol>
+        <li>응용 소프트웨어 개발 및 공급업 (KSIC 58221)</li>
+        <li>컴퓨터 프로그래밍 서비스업 (KSIC 62010)</li>
+        <li>시스템 통합 자문 및 구축 (KSIC 62021)</li>
+        <li>자료처리업 (KSIC 63111)</li>
+        <li>호스팅 및 관련 서비스업 (KSIC 63112)</li>
+        <li><strong>유사투자자문업</strong> (KSIC 66199, 자본시장법 §101)</li>
+        <li>부동산 매매업 (KSIC 68112)</li>
+        <li>부동산 임대업 (KSIC 68111)</li>
+        <li>정보매개서비스업 (KSIC 63991)</li>
+        <li>광고대행업 (KSIC 71310)</li>
+        <li>시장조사 및 여론조사업 (KSIC 71400)</li>
+        <li>경영컨설팅업 (KSIC 71531)</li>
+        <li>위 각 호에 부수되는 사업 일체</li>
+      </ol>
+      <p><strong>[법무팀 검증 권고]</strong> 유사투자자문업·부동산 매매업·정보매개서비스업은 별도 인허가 필요.</p>
 
       <h3>2.7 발행주식·액면가</h3>
       <ul>
-        <li>발행할 주식의 총수: <strong>100,000주</strong> (미래 증자 여유분).</li>
-        <li>설립 시 발행 주식 수: <strong>10,000주</strong>.</li>
-        <li>1주 금액(액면가): <strong>1,000원</strong> (1,000원 × 10,000주 = 1,000만 원).</li>
-        <li>주식 종류: <strong>보통주만</strong>. 우선주·종류주는 외부 투자 유치 시 도입.</li>
+        <li>발행할 주식의 총수: <strong>100,000주</strong>.</li>
+        <li>설립 시 발행: <strong>10,000주</strong>.</li>
+        <li>1주 액면가: <strong>1,000원</strong> → 1,000만 원.</li>
+        <li>종류: <strong>보통주만</strong>.</li>
       </ul>
 
-      <h3>2.8 사업연도(결산일)</h3>
-      <p><strong>1월 1일 ~ 12월 31일</strong>이 한국 표준. 해외 자회사·특수 업종이 아니면 이 외 선택 비권장.</p>
+      <h3>2.8 사업연도</h3>
+      <p>1월 1일 ~ 12월 31일 (한국 표준).</p>
     </section>
 
-    <!-- §3 단계별 절차 -->
+    <!-- §3 단계별 절차 (액션 레벨) -->
     <section class="section" id="sec-3">
       <div class="section-header">
         <div class="section-num">SECTION 03</div>
-        <h2>단계별 절차 (D-7 ~ D+30 타임라인)</h2>
+        <h2>단계별 절차 (D-7 ~ D+30 · 액션 레벨)</h2>
       </div>
-      <p><strong>D-day</strong> = 등기 신청일. 실제 사용 가능까지 D+14~D+21 소요.</p>
 
-      <h3>3.1 D-7 ~ D-3: 사전 준비 (결정 + 외부 의뢰)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>작업</th><th>어디서</th><th>소요</th><th>비용</th><th>흔한 실수</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>법무사·세무사 선정</td><td>송도/용인 인근 또는 가족법인 경험자</td><td class="num">0.5일</td><td class="num">무료 (상담)</td><td>무료 정관 사용 → 향후 분쟁</td></tr>
-            <tr><td>2</td><td>상호 후보 3개 + 등기소 사전조회</td><td><code>iros.go.kr</code></td><td class="num">0.5일</td><td class="num">무료</td><td>동일·유사 상호 누락</td></tr>
-            <tr><td>3</td><td>비상주 사무실 계약</td><td>§6 참조</td><td class="num">1일</td><td class="num">월 5만~12만 원</td><td>본점 등기 가능 여부 미확인</td></tr>
-            <tr><td>4</td><td>사업 목적 항목 확정</td><td>정관 가이드</td><td class="num">0.5일</td><td>—</td><td>향후 신규 사업 누락 → 정관 변경 등기</td></tr>
-            <tr><td>5</td><td>법인 인감 제작 의뢰</td><td>인감 제작소</td><td class="num">1~2일</td><td class="num">3만~5만 원</td><td>등기 후 제작 시 등기 지연</td></tr>
-            <tr><td>6</td><td>발기인 인감증명서 발급 (3개월 이내)</td><td>주민센터</td><td class="num">0.5일</td><td class="num">1,200원/통</td><td>발급일 만료</td></tr>
-            <tr><td>7</td><td>발기인 주민등록등본</td><td>정부24</td><td class="num">즉시</td><td class="num">무료</td><td>—</td></tr>
-          </tbody>
-        </table>
+      <p>v1은 35개 작업 항목을 표로 나열. v2는 각 항목을 <strong>클릭·양식·URL·필드 단위</strong>로 분해 (총 100+ 액션).</p>
+
+      <h3>3.1 D-7 ~ D-3: 사전 준비</h3>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.1</span>법무사 선정 + 견적 비교</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> §11.1 법무사 5곳 추천</span>
+          <span><strong>비용:</strong> 견적 무료</span>
+          <span><strong>소요:</strong> 견적 회신 1~2일</span>
+        </div>
+        <p><strong>견적 요청 메일 필드:</strong></p>
+        <div class="field-list">
+회사명: 주식회사 100M1S<br>
+본점: 인천 연수구 송도동 (비상주)<br>
+자본금: 10,000,000원<br>
+주주: 1인 단독 (옵션 A) 또는 가족 4인 (옵션 B)<br>
+사업 목적: §2.6 13개 항목
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 무료 정관 사용 → 분쟁. 옵션 B 미성년 주주 경험 없는 법무사 → 의결권 대리행사 조항 누락. <strong>다음:</strong> §11.3 견적 비교표 → 1곳 선정.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.2</span>비상주 사무실 계약</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> §6.5/6.6 추천 5곳</span>
+          <span><strong>비용:</strong> 월 5만~12만 (송도) / 5만~15만 (용인)</span>
+          <span><strong>소요:</strong> 0.5~1일</span>
+        </div>
+        <p><strong>임대차계약서 필드:</strong></p>
+        <div class="field-list">
+임차인: 박성진 (개인, 등기 후 법인 변경) 또는 즉시 법인<br>
+사용 목적: 본점 등기 + 우편물 + 회의실<br>
+계약 기간: 1년 (장기 권장 — 본점 이전 시 0.4% 추가)<br>
+월 사용료: 50,000~150,000원<br>
+부가세: 별도 (10%)<br>
+보증금: 0~3개월치
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 본점 등기 가능 여부 미확인 → 등기 거절. 동일 호수 다수 회사 등기 → 우편물 분실. <strong>다음:</strong> 사업자등록증 사본·임대차계약서 → 법무사.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.3</span>사업 목적 13개 항목 확정 (1~2시간)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>kssc.kostat.go.kr</code> KSIC 코드 검색</span>
+          <span><strong>비용:</strong> 무료</span>
+        </div>
+        <p>§2.6 10개 + 향후 5년 확장 사업 3개 추가. KSIC 코드 모두 명기.</p>
+        <p style="margin-top:10px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 향후 사업 누락 → 정관 변경 등기 (등록면허세 4만 + 대행료). KSIC 미기재 → 사업자등록 시 정정.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.4</span>법인 인감 3종 제작 (1~2일, 30,000~80,000원)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 인감 제작소 또는 온라인 (도장공방·코리아인감·인감365)</span>
+        </div>
+        <p><strong>3종 세트:</strong></p>
+        <div class="field-list">
+법인 인감 (등기 등록): 원형, ⌀18mm, "주식회사 100M1S 인" 음각<br>
+법인 사용인감: 원형, ⌀21mm, "주식회사 100M1S" 양각<br>
+고무인 (직사각): 회사명 + 사업자번호 + 본점 + 대표자명 (등기 후 추가)
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 등기 후 제작 → 등기 신청 시 인감 미보유. 법인 인감 = 사용인감 동일 디자인 → 혼용 사고.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.5</span>발기인 인감증명서 발급 (30분, 1,200원/통)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 주민센터 직접 방문</span>
+          <span><strong>유효:</strong> 발급일 3개월 이내</span>
+        </div>
+        <p>용도란 "<strong>법인설립 등기 신청용</strong>" 명시. <strong>매도용 아닌 본인용</strong>.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.6</span>발기인 주민등록등본 (5분, 무료)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>gov.kr</code> → "주민등록등본"</span>
+        </div>
+        <p><strong>등본</strong> (초본 X) 발급. 가족 정보 표시 옵션 ON.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.1.7</span>(옵션 B) 미성년자 기본·가족관계증명서</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>efamily.scourt.go.kr</code> 또는 <code>gov.kr</code></span>
+          <span><strong>비용:</strong> 1,000원/통</span>
+          <span><strong>유효:</strong> 3개월</span>
+        </div>
+        <p><strong>「기본증명서(상세)」 + 「가족관계증명서(상세)」</strong> 발급. 일반증명서 발급 시 등기·금융 거절.</p>
       </div>
 
       <h3>3.2 D-3 ~ D-1: 자본금 납입 + 잔액증명</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>작업</th><th>어디서</th><th>소요</th><th>비용</th><th>흔한 실수</th></tr></thead>
-          <tbody>
-            <tr><td>8</td><td>발기인 대표 계좌에 자본금 합계 입금</td><td>주거래 은행</td><td class="num">0.5일</td><td>—</td><td>메모란 누락</td></tr>
-            <tr><td>9</td><td>각 주주 → 발기인 대표 계좌 이체</td><td>인터넷뱅킹</td><td class="num">0.5일</td><td>—</td><td>자금출처 증빙 누락</td></tr>
-            <tr><td>10</td><td><strong>잔액증명서 발급</strong> (D-1 또는 D-day)</td><td>주거래 은행 영업점</td><td class="num">0.5일</td><td class="num">2,000원</td><td>발급일 등기일 + 1주 초과 시 재발급</td></tr>
-            <tr><td>11</td><td>정관 작성</td><td>법무사 의뢰</td><td class="num">2~3일</td><td class="num">10만~30만 원</td><td>무료 템플릿 사용</td></tr>
-            <tr><td>12</td><td>발기인 총회 의사록</td><td>법무사</td><td class="num">0.5일</td><td>대행료 포함</td><td>주주 전원 서명·날인 누락</td></tr>
-            <tr><td>13</td><td>취임승낙서 (대표이사 등)</td><td>법무사</td><td class="num">0.5일</td><td>대행료 포함</td><td>—</td></tr>
-          </tbody>
-        </table>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.2.1</span>발기인 대표 계좌 입금 (30분)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 본인 주거래 은행</span>
+        </div>
+        <p>이체 메모: <strong>"주식회사 100M1S 자본금 납입 — 발기인 박성진"</strong>.</p>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 메모란 누락 → 자금출처 증빙 약화.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.2.2</span>(옵션 B) 가족 → 발기인 계좌 이체 + 자금출처</h4>
+        <div class="meta">
+          <span><strong>소요:</strong> 1~2일</span>
+        </div>
+        <p><strong>이체 메모:</strong> "주식회사 100M1S 주금 납입 — 주주 [이름]".</p>
+        <p><strong>자금출처 증빙 5년 보관:</strong></p>
+        <ul>
+          <li>자녀 증여 증빙: 부모 → 자녀 이체 거래내역 + 증여세 신고서</li>
+          <li>자녀 명의 통장 사본</li>
+          <li>배우자·아버지 자금출처 (소득증명·예금잔고증명) 각 1통</li>
+        </ul>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 자녀 계좌가 부모 통장에서 직접 발기인 계좌로 흘러가 차명 의심. <strong>반드시 자녀 명의 계좌 경유.</strong></p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.2.3</span>(옵션 B) 자녀 증여세 신고 (30분, 0원 — 공제 한도)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>hometax.go.kr</code> → 신고/납부 → 증여세</span>
+        </div>
+        <p><strong>증여세 신고서 필드:</strong></p>
+        <div class="field-list">
+증여자: 부 박성진 / 모 [배우자명]<br>
+수증자: 자녀 [이름], 주민번호<br>
+증여재산: 현금 700만 원<br>
+증여일: 2026-04-30 (납입일)<br>
+공제: 미성년 자녀 2,000만 원 (10년) → 700만 원은 공제 한도 이내 → 세액 0원
+        </div>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 증여 후 3개월 내 신고 미이행 → 가산세 (무신고 20%). 양친 합산 한도 (각각 ×2 아님).</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.2.4</span>잔액증명서 발급 (30분, 2,000원)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 본인 주거래 은행 영업점</span>
+          <span><strong>유효:</strong> 1주일 권장</span>
+        </div>
+        <p><strong>발급일 = D-1 또는 D-day</strong>. 잔액 10,000,000원 이상 명기. 등기소는 영업점 발급분 선호 (인터넷 PDF는 거절 가능).</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.2.5</span>정관 작성 (법무사 위임, 2~3일)</h4>
+        <div class="meta">
+          <span><strong>비용:</strong> 100,000~300,000원 (패키지 포함 시 무료)</span>
+        </div>
+        <p><strong>필수 조항 16개 (요약):</strong></p>
+        <div class="field-list">
+제1조 상호 / 제2조 목적(13항) / 제3조 본점 소재지<br>
+제4조 공고 방법 — "회사 인터넷 홈페이지 https://100m1s.com" (광고비 0원)<br>
+제5조 발행할 주식 총수 100,000주 / 제6조 1주 1,000원<br>
+제7조 설립 시 발행 10,000주 보통주<br>
+제8조 주식양도제한 (이사회 승인) / 제10조 주주총회<br>
+제11조 의결권 (옵션 B 법정대리인 대리행사 조항 추가)<br>
+제12조 이사 1명 (감사 미설치) / 제13조 대표이사 임기 3년<br>
+제14조 사업연도 1/1~12/31 / 제15조 이익배당 / 제16조 부칙
+        </div>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 무료 템플릿 사용 → 1인·가족·자문업 특수 조항 누락. 공고 방법을 "일간신문"으로 → 매년 30~50만 원 광고비.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.2.6</span>발기인 총회 의사록·임원 취임승낙서 (0.5일)</h4>
+        <p><strong>의사록 필드:</strong></p>
+        <div class="field-list">
+일시: 2026-04-XX 14:00<br>
+장소: 인천 연수구 송도동 [본점]<br>
+출석: 발기인 전원 (서면결의 가능)<br>
+결의: ①정관 승인 ②임원 선임(대표이사 박성진) ③본점 결정 ④주식 인수<br>
+서명·날인: 발기인 전원 인감날인 + 인감증명서 첨부
+        </div>
       </div>
 
       <h3>3.3 D-day: 설립등기 신청</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>작업</th><th>어디서</th><th>비용</th><th>흔한 실수</th></tr></thead>
-          <tbody>
-            <tr><td>14</td><td>등록면허세 + 지방교육세 납부</td><td>위택스(<code>wetax.go.kr</code>) 또는 시청</td><td>§5 표 참조</td><td>과밀억제권역 ×3 적용 누락</td></tr>
-            <tr><td>15</td><td>인지대 (수입인지)</td><td>우체국·은행</td><td class="num">4만 원 (자본금 1,000만~5억 미만)</td><td>—</td></tr>
-            <tr><td>16</td><td>등기 신청서 + 첨부서류 제출</td><td><code>iros.go.kr</code> (전자등기) 또는 관할 등기소</td><td class="num">전자 30,000원 / 추가 6,000원</td><td>첨부서류 누락 → 보정</td></tr>
-            <tr><td>17</td><td>관할 등기소 확인</td><td><code>iros.go.kr</code></td><td>—</td><td>관할 오인</td></tr>
-          </tbody>
-        </table>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.3.1</span>등록면허세 + 지방교육세 납부 (30분)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>wetax.go.kr</code> → 신고하기 → 등록면허세(등록분)</span>
+          <span><strong>비용:</strong> 송도 48,000원 / 용인(과밀) 144,000원</span>
+        </div>
+        <p><strong>신고서 필드 (송도, 자본금 1,000만):</strong></p>
+        <div class="field-list">
+납세자: 주식회사 100M1S (등기 전 → 발기인 대표 명의)<br>
+등록 종류: 법인설립 등기<br>
+과세표준: 10,000,000원<br>
+세율: 0.4%<br>
+등록면허세: 40,000원<br>
+지방교육세: 8,000원 (×20%)<br>
+합계: 48,000원
+        </div>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 과밀억제권역 ×3 누락. 위택스 회원가입·공동인증서 미사전.</p>
       </div>
-      <div class="callout tip">
-        <span class="callout-title">참고</span>
-        정관 인증: 자본금 10억 미만 → <strong>공증 불필요</strong> (상법 §292 단서, 2009년 개정). 자본금 10억 이상 → 공증인 인증 필수.
+
+      <div class="action-card">
+        <h4><span class="step-num">3.3.2</span>수입인지 4만 원 (10분)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 우체국·은행 또는 <code>e-revenuestamp.or.kr</code></span>
+        </div>
+        <p>수입인지 ≠ 우표. 자본금 1,000만~5억 미만 = 40,000원.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.3.3</span>등기 신청 (전자등기 또는 법무사 위임)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>iros.go.kr</code> 또는 인천지법 등기국 / 수원지법 용인등기소</span>
+          <span><strong>비용:</strong> 전자 30,000원 + 6,000원</span>
+          <span><strong>대행료:</strong> 200,000~500,000원</span>
+        </div>
+        <p><strong>등기 신청서 + 첨부서류 14종 (§4.1):</strong></p>
+        <div class="field-list">
+1.정관 / 2.발기인 총회 의사록 / 3.취임승낙서+인감증명서<br>
+4.발기인 인감증명서 / 5.주민등록등본 / 6.잔액증명서<br>
+7.등록면허세 영수필증 / 8.지방교육세 영수필증 / 9.수입인지 4만<br>
+10.법인 인감신고서+법인 인감 / 11.임대차계약서 / 12.주식 인수증<br>
+13.(옵션 B) 미성년자 증명서 / 14.(옵션 B) 자금출처 증빙
+        </div>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 첨부서류 1건 누락 → 보정명령 7일. 관할 등기소 오인 → 각하.</p>
       </div>
 
       <h3>3.4 D+1 ~ D+7: 등기 완료 + 등본 발급</h3>
-      <ul>
-        <li>등기 완료 통지 수령 (보정 없으면 3~5영업일).</li>
-        <li>법인등기부등본 5부 발급 (1,000원/통).</li>
-        <li>법인 인감증명서 3부 발급 (1,200원/통).</li>
-      </ul>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.4.1</span>등기 완료 통지 (3~5영업일 대기)</h4>
+        <p>법무사 또는 인터넷등기소 회원가입 후 등기 신청 내역 조회. <strong>보정명령 통지 미확인 → 7일 경과 시 각하.</strong></p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.4.2</span>법인등기부등본 5부 (10분, 5,000원)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>iros.go.kr</code> → 등기열람·발급 → 법인</span>
+        </div>
+        <p><strong>전부증명서</strong>로 발급 (일부증명서 X).</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.4.3</span>법인 인감증명서 3부 (10분, 3,600원)</h4>
+        <p>등기소 인터넷 또는 직접 방문. 은행은 1개월 이내 요구하는 경우 있음.</p>
+      </div>
 
       <h3>3.5 D+7 ~ D+14: 사업자등록 + 법인 통장</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>작업</th><th>어디서</th><th>소요</th><th>흔한 실수</th></tr></thead>
-          <tbody>
-            <tr><td>18</td><td>사업자등록 신청</td><td>홈택스(<code>hometax.go.kr</code>) 또는 세무서</td><td class="num">즉시~3영업일</td><td>업종 코드 누락 → 추후 정정</td></tr>
-            <tr><td>19</td><td>법인 통장 개설 (주거래 + 보조 2개)</td><td>은행 영업점 (지점장 사전 면담)</td><td class="num">1~3일</td><td>KYC 강화로 거절 가능 → 사무실 사진·계약서 지참</td></tr>
-            <tr><td>20</td><td>법인카드 발급</td><td>주거래 은행</td><td class="num">1~2주</td><td>—</td></tr>
-            <tr><td>21</td><td>법인 증권 계좌 개설</td><td>증권사 영업점</td><td class="num">3~5일</td><td>해외주식 거래 신청 별도</td></tr>
-            <tr><td>22</td><td>4대 보험 가입</td><td><code>4insure.or.kr</code></td><td class="num">1~3일</td><td>대표 1인 → 직장가입자 vs 지역가입자 검토</td></tr>
-            <tr><td>23</td><td>주주명부 작성·비치</td><td>회사 본점</td><td class="num">0.5일</td><td>비치 의무 — 세무조사 시 필수</td></tr>
-          </tbody>
-        </table>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.5.1</span>사업자등록 신청 (1~3일, 무료)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>hometax.go.kr</code> → 신청/제출 → 사업자등록(법인)</span>
+        </div>
+        <p><strong>신청서 필드:</strong></p>
+        <div class="field-list">
+상호: 주식회사 100M1S<br>
+사업자등록번호: 부여 (123-86-XXXXX, 86=법인)<br>
+대표자: 박성진<br>
+업태/업종: 정보통신업 / 응용SW 개발 (KSIC 58221) — 주업종 + 부업종 9개<br>
+개업일: 등기일<br>
+자본금: 10,000,000원<br>
+첨부: 등기부등본, 법인 인감증명서, 임대차계약서
+        </div>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 업종 코드 누락. 임대차계약서 법인 명의 미변경 → 거절.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.5.2</span>법인 통장 개설 (1~3일 · 거절 사례 증가)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 은행 영업점 직접 방문 (KYC 강화)</span>
+          <span><strong>권고:</strong> 주거래 1 + 보조 2 = 3곳 동시 진행</span>
+        </div>
+        <p><strong>지참 서류:</strong></p>
+        <ul>
+          <li>사업자등록증 원본 + 사본</li>
+          <li>법인등기부등본 (3개월 이내)</li>
+          <li>법인 인감증명서 (1개월 이내)</li>
+          <li>법인 인감 + 사용인감 (실물)</li>
+          <li>대표이사 신분증 + 개인 인감증명서</li>
+          <li>임대차계약서 (본점)</li>
+          <li><strong>사무실 방문 사진 (외부 + 내부 + 명패)</strong></li>
+          <li><strong>사업계획서 (5개 서비스 개요, A4 3장)</strong></li>
+          <li>(옵션) 향후 12개월 매출 추정</li>
+        </ul>
+        <p><strong>추천 은행:</strong> 주거래 = KB국민·신한 / 보조 = 카카오뱅크(법인) / 토스뱅크(법인) / 우리은행. 증권 = 키움증권 법인 별도.</p>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 사전 지점장 면담 없이 일반 창구 → 거절률 높음. 사무실 방문 사진 누락 → "실체 의심" 거절. 1곳 거절 시 다른 은행도 동일 사유 거절 가능.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.5.3</span>법인카드 발급 (1~2주)</h4>
+        <p>대표이사 + 가족 사용자 카드. 한도: 월 500만~3,000만 (법인 신용평가 후). 연회비 10,000~100,000원.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.5.4</span>법인 증권 계좌 + 해외주식 (3~5일)</h4>
+        <p>키움증권·미래에셋 영업점 (법인 = 영업점 한정). 해외주식 거래 신청 별도 → JEPQ 매수용.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.5.5</span>4대 보험 사업장 신고 (1~3일)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>4insure.or.kr</code> 또는 노무사 위임</span>
+          <span><strong>의무:</strong> 등기 후 14일 이내</span>
+        </div>
+        <p><strong>대표 1인 사업장 — 직장가입자 vs 지역가입자:</strong> 대표이사 1인이고 근로자 미고용이면 국민연금·건강보험은 <strong>지역가입자 유지 가능</strong>. <strong>첫 매출 또는 첫 급여 직전 직장가입자 전환</strong> 권장 (보험료 회피).</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.5.6</span>주주명부 작성·비치 (30분)</h4>
+        <p>본점 비치 (또는 클라우드 보관). <strong>세무조사 시 필수.</strong> 주주번호 / 성명 / 주민번호 / 주소 / 인수 주식 수 / 주식 종류 / 인수일.</p>
       </div>
 
       <h3>3.6 D+14 ~ D+30: 운영 인프라 + 인허가</h3>
-      <ul>
-        <li>도메인 명의이전 (개인 → 법인): 가비아 등 — 명의이전 수수료 0~5,000원/건.</li>
-        <li>GitHub Organization 생성 + 레포 이관: PR/Issue 히스토리 보존 확인.</li>
-        <li>Vercel 계정 → 법인 Team 전환: 결제수단 법인카드 변경.</li>
-        <li>Google Workspace 법인 도메인 (선택): 월 7,200원/계정 — 도메인 소유권 인증 필요.</li>
-        <li><strong>유사투자자문업 신고</strong> (해당 시): 자본시장법 §101. 신고 없이 운영 시 형사처벌.</li>
-        <li>통신판매업 신고 (이커머스 요소): 정부24, 45,000원.</li>
-        <li>개인정보처리방침 게시: 개인정보보호법 §30. 미게시 과태료.</li>
-        <li>세무사 기장 계약: 월 15만~30만 원.</li>
-      </ul>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.1</span>도메인 6개 가비아 명의이전 (3시간 + 1~3영업일)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>gabia.com</code> → 마이가비아 → 도메인 → 소유자 정보 변경</span>
+          <span><strong>비용:</strong> 0~5,000원/건</span>
+        </div>
+        <p><strong>제출 서류:</strong></p>
+        <ul>
+          <li>소유자 정보 변경 신청서</li>
+          <li>양도인 인감증명서 (3개월)</li>
+          <li>양수인 법인 사업자등록증</li>
+          <li>양수인 법인 인감증명서</li>
+          <li>양수인 법인 인감날인 위임장</li>
+        </ul>
+        <p style="margin-top:8px;font-size:13px;color:var(--tx3);"><strong>흔한 실수:</strong> 등록 후 60일 이내·명의이전 후 1년 transfer lock 발동. WHOIS 변경 후 GitHub Pages 도메인 재설정 필수.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.2</span>GitHub Organization 100m1s 생성 + 레포 이관 (40분)</h4>
+        <p>github.com/organizations/new → Org 100m1s → 6개 레포 이관 (100m1s, 100m1s-homepage, pm320, somytype, glassbox, trade-cockpit). PR/Issue 보존되나 <strong>collaborator 재초대 필요</strong>.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.3</span>Vercel Team 전환 + 결제 법인카드 (30분)</h4>
+        <p>Hobby 무료 / Pro $20/월. 환경변수·도메인 연결 재설정 누락 주의.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.4</span>Google Workspace 도메인 메일 (선택, 1일)</h4>
+        <p>contact@100m1s.com 등. Business Starter 월 7,200원/계정. 가비아 DNS TXT 인증 + 24시간 전파.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.5</span>유사투자자문업 신고 (PM320 운영 시, 1~2주)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> 금융감독원 / 금융위원회</span>
+          <span><strong>비용:</strong> 신고 무료 / 컨설팅 200만~500만</span>
+        </div>
+        <p><strong>신고서 필드:</strong></p>
+        <div class="field-list">
+신고 종류: 유사투자자문업 (불특정 다수에게 투자정보 제공)<br>
+자본금: 5,000만 원 이상 (시행령 변경 빈번 — 신고 직전 재확인)<br>
+임원: 결격사유 없음 (5년 내 금융 형사처벌 없음)<br>
+보증: 보증증서 또는 보증보험
+        </div>
+        <p><strong>[법무팀 검증 권고]</strong> 자본시장법 시행령 개정 빈번 → <strong>신고 직전 최신 자본금·보증 요건 재확인 필수</strong>. 신고 없이 PM320 유료 운영 = 5년 이하 징역 또는 5천만 원 이하 벌금.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.6</span>통신판매업 신고 (3~5일, 45,000원)</h4>
+        <div class="meta">
+          <span><strong>어디서:</strong> <code>gov.kr</code> → 통신판매업 신고</span>
+        </div>
+        <p>이커머스 결제 발생 시 의무. 신고 후 매년 8월 등록면허세 45,000원 재납부 의무.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.7</span>개인정보처리방침·이용약관 게시 (1주)</h4>
+        <div class="meta">
+          <span><strong>비용:</strong> 위임 50만~150만 / 자체 작성 무료</span>
+        </div>
+        <p>개인정보보호법 §30 의무. 미게시 과태료 1천만 원 이하.</p>
+      </div>
+
+      <div class="action-card">
+        <h4><span class="step-num">3.6.8</span>세무사 기장 계약 (30분, §11.2)</h4>
+        <p><strong>위임 범위:</strong> ①월 기장 ②부가세(분기) ③법인세(연1) ④급여 원천세. <strong>기장료 15만~30만/월</strong>. <strong>결산료·법인세 조정료 별도 (연 50만~250만).</strong></p>
+      </div>
     </section>
 
     <!-- §4 필요 서류 -->
     <section class="section" id="sec-4">
       <div class="section-header">
         <div class="section-num">SECTION 04</div>
-        <h2>필요 서류 체크리스트</h2>
+        <h2>필요 서류 + 양식 출처</h2>
       </div>
+
+      <h3>4.1 등기 신청 첨부서류 14종</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>서류</th><th>출처</th><th>비용</th><th>유효기간</th><th>주체</th><th>비고</th></tr></thead>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>서류</th>
+              <th>출처 (URL)</th>
+              <th>비용</th>
+              <th>유효기간</th>
+              <th>주체</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><td>정관</td><td>법무사/세무사 작성</td><td class="num">10만~30만 원</td><td>—</td><td>발기인 전원 서명</td><td><strong>무료 템플릿 금지</strong></td></tr>
-            <tr><td>발기인 총회 의사록</td><td>법무사 작성</td><td>대행료 포함</td><td>—</td><td>발기인 전원</td><td>회의 일시·장소 명시</td></tr>
-            <tr><td>주식 인수증</td><td>법무사 양식</td><td>—</td><td>—</td><td>각 발기인</td><td>인수 주식 수·금액</td></tr>
-            <tr><td>임원 취임승낙서</td><td>법무사 양식</td><td>—</td><td>—</td><td>대표이사·이사</td><td>인감증명서 첨부</td></tr>
-            <tr><td>발기인 인감증명서</td><td>주민센터 / 정부24</td><td class="num">1,200원/통</td><td>3개월</td><td>각 발기인</td><td>—</td></tr>
-            <tr><td>발기인 주민등록등본</td><td>정부24</td><td class="num">무료</td><td>3개월</td><td>각 발기인</td><td>—</td></tr>
-            <tr><td>잔액증명서</td><td>발기인 대표 거래 은행</td><td class="num">2,000원</td><td>발급일 1주일 권장</td><td>발기인 대표</td><td>등기일 직전 발급</td></tr>
-            <tr><td>등록면허세 영수필증</td><td>위택스</td><td>자본금×0.4~1.2%</td><td>—</td><td>회사</td><td>§5</td></tr>
-            <tr><td>지방교육세 영수필증</td><td>등록면허세 ×20%</td><td>—</td><td>—</td><td>회사</td><td>자동 합산</td></tr>
-            <tr><td>수입인지 (40,000원)</td><td>우체국·은행</td><td class="num">4만 원</td><td>—</td><td>회사</td><td>자본금 1,000만~5억 미만</td></tr>
-            <tr><td>법인 인감신고서</td><td>등기소 양식</td><td>—</td><td>—</td><td>대표이사</td><td>법인 인감 + 대표이사 인감증명서 첨부</td></tr>
-            <tr><td>사업자등록 신청서</td><td>홈택스</td><td class="num">무료</td><td>—</td><td>회사</td><td>등기 후</td></tr>
-            <tr><td>임대차계약서 (본점)</td><td>비상주 사무실 사업자</td><td>계약금 별도</td><td>계약기간</td><td>회사</td><td><strong>법인 명의로 변경</strong></td></tr>
+            <tr><td>1</td><td>정관</td><td>법무사 작성</td><td>10만~30만 (대행료 포함 시 무료)</td><td>—</td><td>발기인 전원 서명</td></tr>
+            <tr><td>2</td><td>발기인 총회 의사록</td><td>법무사</td><td>대행료 포함</td><td>—</td><td>발기인 전원</td></tr>
+            <tr><td>3</td><td>임원 취임승낙서</td><td>법무사 양식</td><td>—</td><td>—</td><td>대표이사·이사</td></tr>
+            <tr><td>4</td><td>발기인 인감증명서</td><td>주민센터 직접 방문</td><td>1,200원/통</td><td>3개월</td><td>각 발기인</td></tr>
+            <tr><td>5</td><td>발기인 주민등록등본</td><td><code>gov.kr</code></td><td>무료</td><td>3개월</td><td>각 발기인</td></tr>
+            <tr><td>6</td><td>잔액증명서</td><td>발기인 대표 거래 은행</td><td>2,000원</td><td>1주일 권장</td><td>발기인 대표</td></tr>
+            <tr><td>7</td><td>등록면허세 영수필증</td><td><code>wetax.go.kr</code></td><td>자본금×0.4~1.2%</td><td>—</td><td>회사</td></tr>
+            <tr><td>8</td><td>지방교육세 영수필증</td><td>위택스 자동 합산</td><td>등록면허세×20%</td><td>—</td><td>회사</td></tr>
+            <tr><td>9</td><td>수입인지</td><td>우체국 / <code>e-revenuestamp.or.kr</code></td><td>40,000원</td><td>—</td><td>회사</td></tr>
+            <tr><td>10</td><td>법인 인감신고서</td><td>등기소 양식</td><td>—</td><td>—</td><td>대표이사</td></tr>
+            <tr><td>11</td><td>임대차계약서 (본점)</td><td>비상주 사업자</td><td>계약금 별도</td><td>계약기간</td><td>회사</td></tr>
+            <tr><td>12</td><td>주식 인수증</td><td>법무사 양식</td><td>—</td><td>—</td><td>각 발기인</td></tr>
+            <tr><td>13</td><td>(옵션 B) 미성년자 기본·가족관계증명서</td><td><code>efamily.scourt.go.kr</code></td><td>1,000원/통</td><td>3개월</td><td>자녀</td></tr>
+            <tr><td>14</td><td>(옵션 B) 법정대리인 동의서</td><td>법무사 양식</td><td>—</td><td>—</td><td>부모 양친</td></tr>
           </tbody>
         </table>
       </div>
+
       <div class="callout warn">
-        <span class="callout-title">주의</span>
-        등기 신청 시 <strong>첨부서류 누락 = 보정명령</strong> → 보정기간(통상 7일) 초과 시 각하. 법무사 위임이 사실상 필수.
+        <span class="callout-title">[법무팀 검증 권고]</span>
+        등기 신청 시 첨부서류 누락 = 보정명령 → 보정기간(통상 7일) 초과 시 각하. <strong>법무사 위임이 사실상 필수.</strong>
       </div>
+
+      <h3>4.2 정부24·홈택스 양식 다운로드 직링크</h3>
+      <ul>
+        <li>주민등록등본: <code>gov.kr</code> → 검색 "주민등록등본"</li>
+        <li>가족관계증명서: <code>efamily.scourt.go.kr</code></li>
+        <li>사업자등록 신청: <code>hometax.go.kr</code> → 신청/제출 → 사업자등록(법인)</li>
+        <li>통신판매업 신고: <code>gov.kr</code> → 검색 "통신판매업 신고"</li>
+        <li>위택스 등록면허세: <code>wetax.go.kr</code> → 신고하기 → 등록면허세</li>
+        <li>4대보험 사업장 신고: <code>4insure.or.kr</code> → 사업장 → 신고</li>
+        <li>전자수입인지: <code>e-revenuestamp.or.kr</code></li>
+      </ul>
+
+      <h3>4.3 한국표준산업분류(KSIC) 코드</h3>
+      <p><code>kssc.kostat.go.kr</code> → 분류검색 → 키워드 입력. §2.6 사업 목적별 KSIC 코드 참조.</p>
     </section>
 
     <!-- §5 비용 -->
@@ -855,216 +1267,308 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
       <h3>5.1 1회성 비용</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>항목</th><th>송도 (비과밀)</th><th>용인 (혼재)</th><th>출처</th></tr></thead>
+          <thead>
+            <tr><th>항목</th><th class="num">송도 (비과밀)</th><th class="num">용인 (※)</th><th>출처</th></tr>
+          </thead>
           <tbody>
-            <tr><td>등록면허세 (자본금 × 0.4% / 1.2%)</td><td class="num">40,000원</td><td class="num">120,000원</td><td>지방세법 §28</td></tr>
-            <tr><td>지방교육세 (등록면허세 × 20%)</td><td class="num">8,000원</td><td class="num">24,000원</td><td>지방세법 §151</td></tr>
-            <tr><td>수입인지</td><td class="num">40,000원</td><td class="num">40,000원</td><td>인지세법</td></tr>
-            <tr><td>등기 신청 수수료 (전자)</td><td class="num">30,000원</td><td class="num">30,000원</td><td>등기 예규</td></tr>
-            <tr><td>정관 작성 (법무사 대행)</td><td class="num">10만~30만 원</td><td>동일</td><td>—</td></tr>
-            <tr><td>법무사 대행 수수료</td><td class="num">20만~50만 원</td><td>동일</td><td>—</td></tr>
-            <tr><td>법인 인감 제작</td><td class="num">3만~8만 원</td><td>동일</td><td>—</td></tr>
-            <tr><td>인감증명서·등기부등본 발급 (각 5부)</td><td class="num">약 11,000원</td><td>동일</td><td><code>iros.go.kr</code></td></tr>
-            <tr><td>법인 통장 개설</td><td class="num">무료</td><td>동일</td><td>—</td></tr>
-            <tr><td>통신판매업 신고</td><td class="num">45,000원</td><td>동일</td><td>정부24</td></tr>
+            <tr><td>등록면허세 (자본금×0.4~1.2%)</td><td class="num">40,000</td><td class="num">120,000</td><td>지방세법 §28</td></tr>
+            <tr><td>지방교육세 (등록면허세×20%)</td><td class="num">8,000</td><td class="num">24,000</td><td>지방세법 §151</td></tr>
+            <tr><td>수입인지</td><td class="num">40,000</td><td class="num">40,000</td><td>인지세법</td></tr>
+            <tr><td>등기 신청 수수료 (전자)</td><td class="num">30,000</td><td class="num">30,000</td><td>등기 예규</td></tr>
+            <tr><td>정관 작성 (법무사)</td><td class="num">100,000~300,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td>법무사 대행 수수료</td><td class="num">200,000~500,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td>법인 인감 (3종)</td><td class="num">30,000~80,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td>인감증명서·등기부등본 (각 5부)</td><td class="num">약 11,000</td><td class="num">동일</td><td><code>iros.go.kr</code></td></tr>
+            <tr><td>통신판매업 신고</td><td class="num">45,000</td><td class="num">동일</td><td>정부24</td></tr>
             <tr><td><strong>소계 (1회성)</strong></td><td class="num"><strong>약 504,000~1,054,000원</strong></td><td class="num"><strong>약 600,000~1,140,000원</strong></td><td>—</td></tr>
           </tbody>
         </table>
       </div>
-      <p style="font-size: 12px; color: var(--tx3);">용인은 시·구 일부가 과밀억제권역 또는 성장관리권역으로 혼재 — 등기 신청 시 정확한 동/구의 수도권정비계획법상 지정을 등기소에 사전 확인 필요.</p>
+      <p>(※) <strong>용인은 시·구 일부가 과밀억제권역</strong>. 등기 시 정확한 동/구 확인 필수. <strong>[법무팀 검증 권고]</strong></p>
 
       <h3>5.2 월 고정비</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>항목</th><th>월</th><th>비고</th></tr></thead>
+          <thead>
+            <tr><th>항목</th><th class="num">송도</th><th class="num">용인</th><th>비고</th></tr>
+          </thead>
           <tbody>
-            <tr><td>비상주 사무실</td><td class="num">5만~15만 원</td><td>§6 비교</td></tr>
-            <tr><td>세무사 기장료</td><td class="num">15만~30만 원</td><td>—</td></tr>
-            <tr><td>4대 보험 (대표 1인, 월 급여 800만 원 가정)</td><td class="num">약 72만 원 (회사 부담)</td><td>건강 + 국민연금 + 고용 + 산재</td></tr>
-            <tr><td>법인카드 연회비 (월 환산)</td><td class="num">1,000~10,000원</td><td>—</td></tr>
-            <tr><td>도메인·호스팅·SaaS</td><td class="num">약 2만 원</td><td>추정</td></tr>
-            <tr><td><strong>소계 (월)</strong></td><td class="num"><strong>약 94만~117만 원</strong></td><td>—</td></tr>
+            <tr><td>비상주 사무실</td><td class="num">50,000~120,000</td><td class="num">50,000~150,000</td><td>§6 비교</td></tr>
+            <tr><td>세무사 기장료</td><td class="num">150,000~300,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td>4대 보험 (월급여 800만 회사부담 9.645%)</td><td class="num">약 720,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td>법인카드 연회비 (월 환산)</td><td class="num">1,000~10,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td>도메인·SaaS</td><td class="num">약 20,000</td><td class="num">동일</td><td>—</td></tr>
+            <tr><td><strong>소계 (월)</strong></td><td class="num"><strong>약 940,000~1,170,000원</strong></td><td class="num"><strong>약 940,000~1,200,000원</strong></td><td>—</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>5.3 첫 1년 누적 비용 (자본금 제외)</h3>
+      <h3>5.3 첫 1년 누적</h3>
       <ul>
-        <li>1회성: 약 50만~110만 원</li>
-        <li>월 고정 × 12개월: 약 1,128만~1,440만 원</li>
-        <li><strong>첫 1년 총비용: 약 1,180만~1,550만 원</strong></li>
+        <li>1회성: 약 50만~110만</li>
+        <li>월 고정 ×12: 약 1,128만~1,440만</li>
+        <li><strong>첫 1년 총: 약 1,180만~1,550만 원</strong></li>
+        <li>누락 가능 추가 (5.4) → 통상 1.5~2배 → <strong>보수 예산 2,500만 원</strong>.</li>
       </ul>
 
       <div class="callout warn">
-        <span class="callout-title">누락 가능 항목</span>
-        <ul style="margin-top: 4px; margin-bottom: 0;">
-          <li>세무사 결산료 별도 (연 1회, 50만~150만 원)</li>
-          <li>법인세 조정료 별도 (연 1회, 30만~100만 원)</li>
-          <li>유사투자자문업 신고 컨설팅 (200만~500만 원, 1회성)</li>
-          <li>법인 차량 운영 시 리스/렌탈비, 자동차세, 보험료</li>
+        <span class="callout-title">5.4 [경영지원팀 비판] 누락 가능 항목</span>
+        <ul style="margin:8px 0 0 0;">
+          <li>세무사 결산료 (연 1회, 50만~150만)</li>
+          <li>법인세 조정료 (연 1회, 30만~100만)</li>
+          <li>유사투자자문업 신고 컨설팅 (200만~500만, 1회성)</li>
+          <li>법인 차량 (월 70만~150만)</li>
           <li>소득세·법인세 자체 (수익 발생 시)</li>
         </ul>
-        통상 추정 비용의 <strong>1.5~2배</strong> 발생. 첫 1년 보수적 예산: <strong>2,500만 원</strong>.
       </div>
     </section>
 
-    <!-- §6 송도 vs 용인 -->
+    <!-- §6 송도 vs 용인 + 추천 -->
     <section class="section" id="sec-6">
       <div class="section-header">
         <div class="section-num">SECTION 06</div>
-        <h2>비상주 사무실 송도 vs 용인 비교</h2>
+        <h2>비상주 사무실 송도 vs 용인 + 추천 사업자 10곳</h2>
       </div>
 
+      <h3>6.1 핵심 비교표</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>항목</th><th>송도 (인천 연수구)</th><th>용인 (경기 처인구·기흥구·수지구)</th></tr></thead>
+          <thead>
+            <tr><th>항목</th><th>송도 (인천 연수구)</th><th>용인 (경기 처인·기흥·수지)</th></tr>
+          </thead>
           <tbody>
-            <tr><td>등록면허세</td><td><span class="ok"><strong>0.4%</strong></span> (비과밀억제권역)</td><td>0.4% 또는 1.2% (지역 혼재 — <strong>확인 필수</strong>)</td></tr>
-            <tr><td>평균 비상주 월세</td><td class="num">5만~12만 원</td><td class="num">5만~15만 원</td></tr>
-            <tr><td>주요 사업자</td><td>패스트오피스 송도, 스파크플러스 송도, 르호봇 송도</td><td>패스트오피스 죽전, 리저스 분당·수지, 우주 동탄</td></tr>
-            <tr><td>본점 등기 가능</td><td>대부분 가능 (사전 확인)</td><td>대부분 가능 (사전 확인)</td></tr>
-            <tr><td>접근성</td><td>인천 1호선·수인분당선 / 인천공항·서울 연결 양호</td><td>신분당선·경부고속도로 / 강남·판교 30분</td></tr>
-            <tr><td>외부 업무 동선</td><td>송도 컨벤시아·G타워 미팅 가능. 강남 미팅 50~70분</td><td>판교·강남 30~50분. 강남 IT 업계 인근</td></tr>
-            <tr><td>세제 혜택</td><td>창업중소기업 세액감면 (조특법 §6) 일부 해당</td><td>창업중소기업 세액감면 일부 해당</td></tr>
+            <tr><td>등록면허세</td><td><span class="ok">0.4% (비과밀)</span></td><td>0.4% 또는 1.2% (혼재)</td></tr>
+            <tr><td>평균 비상주 월세</td><td>5만~12만</td><td>5만~15만</td></tr>
+            <tr><td>본점 등기 가능</td><td>대부분 가능 (사전 확인)</td><td>동일</td></tr>
+            <tr><td>우편물 수령·전달</td><td>월 1~4회 스캔/포워딩</td><td>동일</td></tr>
+            <tr><td>전화 응대</td><td>옵션 (월 3만~10만)</td><td>동일</td></tr>
+            <tr><td>접근성</td><td>인천 1호선·수인분당선</td><td>신분당선·경부</td></tr>
+            <tr><td>외부 미팅 동선</td><td>송도·강남 50~70분</td><td>판교·강남 30~50분</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>6.1 송도 권고 시나리오</h3>
-      <ul>
-        <li>대표 거주지가 인천·서울 서부.</li>
-        <li>등록면허세 절감 (0.4% 확실) — 소액이지만 명시적.</li>
-        <li>인천경제자유구역(IFEZ) 외국인 투자 인센티브 활용 가능성.</li>
-      </ul>
-
-      <h3>6.2 용인 권고 시나리오</h3>
-      <ul>
-        <li>대표 거주지가 경기 남부·강남·판교.</li>
-        <li>IT 인프라·동료 네트워크가 강남·판교 → 외부 미팅 빈도 높을 때 동선 우위.</li>
-        <li>향후 직원 채용 시 강남·판교 인재 풀 접근 용이.</li>
-        <li><strong>단점</strong>: 등록면허세 1.2% 적용 가능성 → 사전 등기소 확인 필수.</li>
-      </ul>
-
       <div class="reco">
-        <span class="reco-label">결정 가이드</span>
-        <h3>대표 거주지·동선 우선</h3>
-        <ul>
-          <li>대표 거주지 우선 (출퇴근·우편물 픽업·등기 변경 시 동선 비용).</li>
-          <li>외부 미팅이 강남·판교 중심이면 용인, 인천·서울 서부면 송도.</li>
-          <li>등록면허세 차이는 8만 원 이내 — <strong>결정 요인 아님</strong>.</li>
-          <li>결정 미정 시 → <strong>송도</strong> (등록면허세 0.4% 확실, 절차 단축).</li>
-        </ul>
+        <span class="reco-label">권고</span>
+        <h3>결정 가이드 [경영지원팀]</h3>
+        <ol>
+          <li><strong>대표 거주지 우선</strong> (출퇴근·우편물 픽업 동선).</li>
+          <li><strong>외부 미팅 빈도 — 강남/판교 중심이면 용인, 인천 서부면 송도</strong>.</li>
+          <li><strong>등록면허세 차이 8만 원 이내 — 결정 요인 아님</strong>.</li>
+          <li><strong>결정 미정 시 → 송도</strong> (기존 정관 재사용, 절차 단축 1~2주).</li>
+        </ol>
       </div>
+
+      <h3>6.5 추천 비상주 사무실 — 송도 5곳</h3>
+      <div class="callout warn">
+        <span class="callout-title">2026-04-29 기준 공개 정보</span>
+        실제 계약 전 (1) 본점 등기 가능 여부 (2) 우편물 수령 빈도 (3) 보증금·해지 조건 직접 확인 필수. 가격·정책은 시점별 변동.
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>사업자</th><th>주소</th><th class="num">월 사용료</th><th>본점 등기</th><th>특화</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td><strong>패스트오피스 송도</strong></td><td>인천 연수구 컨벤시아대로 165 (포스코타워-송도)</td><td class="num">99,000~250,000</td><td>가능</td><td>대형 체인, IT 스타트업, 24h 출입</td></tr>
+            <tr><td>2</td><td><strong>스파크플러스 송도</strong></td><td>인천 연수구 송도과학로 32 (송도IT센터)</td><td class="num">110,000~300,000</td><td>가능</td><td>송도 1세대 코워킹, IFEZ 인근</td></tr>
+            <tr><td>3</td><td><strong>르호봇 송도지점</strong></td><td>인천 연수구 컨벤시아대로 39</td><td class="num">70,000~150,000</td><td>가능</td><td>가성비, 1인 법인 다수</td></tr>
+            <tr><td>4</td><td><strong>위워크 송도</strong></td><td>인천 연수구 인천타워대로 (지점 운영 변동 — 직접 확인)</td><td class="num">200,000~500,000</td><td>가능</td><td>글로벌 브랜드, 프리미엄 미팅룸</td></tr>
+            <tr><td>5</td><td><strong>우주 (WOOZOO) 송도</strong></td><td>인천 연수구 송도동 (지점별 상이)</td><td class="num">60,000~120,000</td><td>가능 (지점 확인)</td><td>가성비, 개인 친화</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>6.6 추천 비상주 사무실 — 용인·분당 권역 5곳</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>사업자</th><th>주소</th><th class="num">월 사용료</th><th>본점 등기</th><th>특화</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td><strong>패스트오피스 죽전</strong></td><td>경기 용인 수지구 죽전로 152</td><td class="num">99,000~250,000</td><td>가능</td><td>신분당선 죽전, 강남 30분</td></tr>
+            <tr><td>2</td><td><strong>리저스 (Regus) 분당</strong></td><td>경기 성남 분당구 (용인 인접)</td><td class="num">250,000~500,000</td><td>가능</td><td>글로벌 브랜드, 분당·판교 진입</td></tr>
+            <tr><td>3</td><td><strong>스파크플러스 분당</strong></td><td>경기 성남 분당구 황새울로</td><td class="num">150,000~400,000</td><td>가능</td><td>판교 IT 동선, 분당 미팅</td></tr>
+            <tr><td>4</td><td><strong>르호봇 분당지점</strong></td><td>경기 성남 분당구 정자일로</td><td class="num">80,000~180,000</td><td>가능</td><td>가성비, 분당 1인 법인 다수</td></tr>
+            <tr><td>5</td><td><strong>우주 동탄·분당</strong></td><td>경기 화성/성남 (지점별)</td><td class="num">70,000~130,000</td><td>가능 (지점 확인)</td><td>신도시 인근, 가성비</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>6.7 비상주 사무실 계약 액션 레벨</h3>
+      <ol>
+        <li>사업자별 홈페이지 → "비상주 / 가상오피스" 메뉴.</li>
+        <li><strong>본점 등기 가능 여부</strong> 명시 페이지 확인 → 미명시 시 전화 문의 (필수).</li>
+        <li>견적 요청 (이메일/채팅 — 회원수, 우편 빈도, 회의실 사용 시간).</li>
+        <li>계약서 검토: 본점 등기 가능 조항 / 우편물 수령·전달·스캔 빈도 / 보증금·해지 통지 (1~3개월 전) / 부가세 별도.</li>
+        <li>입금 + 계약서 인감날인 (전자계약 가능).</li>
+        <li>비상주 사업자 → 등기용 임대차계약서 1부 (등기 직전).</li>
+        <li>등기 후 임대차계약서 법인 명의 갱신.</li>
+      </ol>
+      <p><strong>흔한 실수:</strong> 본점 등기 가능 여부 미확인 → 거절 (가장 빈번). 동일 호수 다수 회사 등기 → 우편물 분실. 1년 미만 단기 계약 → 본점 이전 등기 0.4% 추가.</p>
     </section>
 
-    <!-- §7 일정 -->
+    <!-- §7 타임라인 -->
     <section class="section" id="sec-7">
       <div class="section-header">
         <div class="section-num">SECTION 07</div>
-        <h2>일정 타임라인</h2>
+        <h2>일정 타임라인 (5~6주)</h2>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>주차</th><th>W-1</th><th>W0</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th></tr></thead>
-          <tbody>
-            <tr><td>사전 준비</td><td>●●●</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>법무사 선정</td><td>●●</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>사무실 계약</td><td>●●</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>정관 작성</td><td></td><td>●●●</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>자본금 납입</td><td></td><td>●●</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>등기 신청</td><td></td><td>●</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>등기 완료</td><td></td><td></td><td>●●●</td><td></td><td></td><td></td></tr>
-            <tr><td>사업자등록</td><td></td><td></td><td>●●</td><td>●●</td><td></td><td></td></tr>
-            <tr><td>법인 통장</td><td></td><td></td><td></td><td>●●●</td><td></td><td></td></tr>
-            <tr><td>4대 보험</td><td></td><td></td><td></td><td>●●</td><td>●●</td><td></td></tr>
-            <tr><td>도메인 이전</td><td></td><td></td><td></td><td></td><td>●●</td><td></td></tr>
-            <tr><td>유사투자자문업</td><td></td><td></td><td></td><td></td><td>●●●●</td><td>●●●●</td></tr>
-            <tr><td>세무사 기장</td><td></td><td></td><td></td><td></td><td></td><td>●●●</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>총 소요: <strong>약 5~6주</strong> (D-7 ~ D+30).</p>
+      <pre style="background:var(--bg2);padding:18px;border-radius:8px;font-family:'SF Mono',Monaco,monospace;font-size:12px;line-height:1.6;overflow-x:auto;color:var(--tx2);">
+주차       │ W-1   │ W0    │ W1    │ W2    │ W3    │ W4    │
+────────────┼───────┼───────┼───────┼───────┼───────┼───────┤
+사전준비   │ ████  │       │       │       │       │       │
+법무사선정 │ ███   │       │       │       │       │       │
+사무실계약 │  ███  │       │       │       │       │       │
+정관작성   │       │ ████  │       │       │       │       │
+자본금납입 │       │  ███  │       │       │       │       │
+등기신청   │       │   █   │       │       │       │       │
+등기완료   │       │       │ ████  │       │       │       │
+사업자등록 │       │       │   ██  │ ██    │       │       │
+법인통장   │       │       │       │ ███   │       │       │
+4대보험    │       │       │       │  ██   │ ██    │       │
+도메인이전 │       │       │       │       │ ██    │       │
+유사투자자문│       │       │       │       │ █████ │ █████ │
+세무사기장 │       │       │       │       │       │ ████  │
+      </pre>
+      <p>총 소요: <strong>약 5~6주</strong> (D-7 ~ D+30). 보정명령 발생 시 +1~2주.</p>
     </section>
 
-    <!-- §8 체크리스트 -->
+    <!-- §8 체크리스트 100항목 -->
     <section class="section" id="sec-8">
       <div class="section-header">
         <div class="section-num">SECTION 08</div>
-        <h2>대표 직접 수행 체크리스트 (50항목)</h2>
+        <h2>대표 직접 수행 체크리스트 (100항목)</h2>
       </div>
 
-      <h3>8.1 결정·기획 (12)</h3>
+      <p>v1 50항목 → v2 <strong>100항목</strong>으로 확장. "직접" / "위임" / "혼합" 표기.</p>
+
+      <h3>8.1 결정·기획 (15)</h3>
       <ul class="checklist">
-        <li>법인 형태 결정 (주식회사 권고)</li>
-        <li>회사명 후보 3개 작성</li>
-        <li>본점 주소 결정 (송도 vs 용인)</li>
-        <li>자본금 결정 (1,000만 원 권고)</li>
-        <li>주주 구성 결정 (옵션 A vs B)</li>
-        <li>임원 구성 결정 (대표이사 1인)</li>
-        <li>사업 목적 항목 확정</li>
-        <li>발행주식 총수·액면가·결산일 결정</li>
-        <li>법무사 선정 + 견적 비교 (3곳)</li>
-        <li>세무사 선정 + 견적 비교 (3곳)</li>
-        <li>정관 특별조항 결정 (퇴직금·중간배당·주식양도제한·의결권대리)</li>
-        <li>노무사 선정 (4대보험 신고 위임)</li>
+        <li>1. 법인 형태 결정 (주식회사 권고)</li>
+        <li>2. 회사명 후보 3개 작성 (한글·영문)</li>
+        <li>3. 회사명 사전조회 (iros.go.kr §2.1.1, 15분)</li>
+        <li>4. 본점 주소 결정 (송도 vs 용인)</li>
+        <li>5. 자본금 결정 (1,000만 원 권고)</li>
+        <li>6. 주주 구성 결정 (옵션 A vs B)</li>
+        <li>7. 임원 구성 결정 (대표이사 1인)</li>
+        <li>8. 사업 목적 13개 + KSIC 코드 확정</li>
+        <li>9. 발행주식 총수·액면가·결산일 결정</li>
+        <li>10. 회사 공고 방법 결정 (홈페이지)</li>
+        <li>11. 법무사 5곳 견적 요청 (§11.1)</li>
+        <li>12. 세무사 5곳 견적 요청 (§11.2)</li>
+        <li>13. 정관 특별조항 결정 (퇴직금·중간배당·주식양도제한·의결권대리)</li>
+        <li>14. 노무사 선정 (4대보험 신고 위임)</li>
+        <li>15. (옵션 B) 자녀 증여 계획 + 자금출처 시나리오</li>
       </ul>
 
-      <h3>8.2 사무실·인프라 (8)</h3>
+      <h3>8.2 사무실·인프라 (10)</h3>
       <ul class="checklist">
-        <li>비상주 사무실 사업자 비교 (송도 3곳 + 용인 3곳)</li>
-        <li>비상주 사무실 계약 (개인 명의 → 등기 후 법인 변경)</li>
-        <li>법인 인감 제작 의뢰 (3만~8만 원)</li>
-        <li>발기인 인감증명서·주민등록등본 발급</li>
-        <li>(옵션 B) 미성년 자녀 기본증명서·가족관계증명서 발급</li>
-        <li>도메인 명의이전 준비 (가비아)</li>
-        <li>GitHub Organization 사전 검토</li>
-        <li>Google Workspace 도메인 검토</li>
+        <li>16. 비상주 사무실 5곳 비교 (§6.5/6.6)</li>
+        <li>17. 비상주 사무실 견적 + 본점 등기 가능 확인</li>
+        <li>18. 비상주 사무실 계약 (개인 명의)</li>
+        <li>19. 임대차계약서 등기용 1부 발급 요청</li>
+        <li>20. 법인 인감 3종 제작 의뢰</li>
+        <li>21. 발기인 인감증명서 발급 (주민센터)</li>
+        <li>22. 발기인 주민등록등본 (정부24)</li>
+        <li>23. (옵션 B) 미성년 자녀 기본·가족관계증명서</li>
+        <li>24. (옵션 B) 부모 양친 인감증명서</li>
+        <li>25. 도메인 6개 명의이전 사전 점검 (transfer lock)</li>
       </ul>
 
-      <h3>8.3 자본금·서류 (10)</h3>
+      <h3>8.3 자본금·서류 (15)</h3>
       <ul class="checklist">
-        <li>발기인 대표 계좌에 자본금 합계 입금</li>
-        <li>(옵션 B) 가족 계좌 → 본인 계좌 이체 (자금출처 증빙)</li>
-        <li>(옵션 B) 자녀 증여세 신고 (홈택스)</li>
-        <li>잔액증명서 발급 (D-1 또는 D-day)</li>
-        <li>정관 초안 검토 + 특별조항 반영 확인</li>
-        <li>발기인 총회 의사록 검토·서명</li>
-        <li>임원 취임승낙서 작성·서명</li>
-        <li>등록면허세 + 지방교육세 위택스 납부</li>
-        <li>수입인지 4만 원 우체국 구매</li>
-        <li>등기 신청 (전자등기 또는 법무사 위임)</li>
+        <li>26. 발기인 대표 계좌 자본금 입금</li>
+        <li>27. (옵션 B) 부모 → 자녀 계좌 증여 이체</li>
+        <li>28. (옵션 B) 자녀·배우자·아버지 계좌 → 본인 계좌 이체</li>
+        <li>29. (옵션 B) 자녀 증여세 신고 (홈택스)</li>
+        <li>30. 자금출처 증빙 폴더 정리 (5년 보관)</li>
+        <li>31. 잔액증명서 발급 (D-1 또는 D-day)</li>
+        <li>32. 정관 초안 검토 + 특별조항 반영 확인</li>
+        <li>33. 발기인 총회 의사록 검토·서명</li>
+        <li>34. 임원 취임승낙서 작성·서명</li>
+        <li>35. 주식 인수증 작성·서명</li>
+        <li>36. 등록면허세·지방교육세 위택스 납부</li>
+        <li>37. 수입인지 4만 원 (전자수입인지)</li>
+        <li>38. 등기 신청서 검토 (법무사 작성)</li>
+        <li>39. 등기 신청 (전자 또는 법무사 위임)</li>
+        <li>40. 등기 처리 진행 모니터링 (보정명령 대비)</li>
       </ul>
 
-      <h3>8.4 등기 후 운영 인프라 (12)</h3>
+      <h3>8.4 등기 후 운영 인프라 (25)</h3>
       <ul class="checklist">
-        <li>법인등기부등본 5부 발급</li>
-        <li>법인 인감증명서 3부 발급</li>
-        <li>사업자등록 신청 (홈택스 또는 세무서)</li>
-        <li>법인 통장 개설 (주거래 + 보조 2개)</li>
-        <li>법인카드 발급</li>
-        <li>법인 증권 계좌 개설 + 해외주식 신청</li>
-        <li>4대 보험 가입 신고</li>
-        <li>주주명부 작성·비치</li>
-        <li>임대차계약서 법인 명의 변경</li>
-        <li>도메인 가비아 명의이전</li>
-        <li>GitHub Org 생성 + 레포 이관</li>
-        <li>Vercel Team 전환 + 결제수단 법인카드 변경</li>
+        <li>41. 법인등기부등본 5부 발급</li>
+        <li>42. 법인 인감증명서 3부 발급</li>
+        <li>43. 사업자등록 신청 (홈택스)</li>
+        <li>44. 사업자등록증 수령</li>
+        <li>45. 임대차계약서 법인 명의 변경</li>
+        <li>46. KB국민은행 사전 지점장 면담</li>
+        <li>47. KB국민은행 통장 개설 (지참 서류 §3.5.2)</li>
+        <li>48. 신한은행 통장 개설</li>
+        <li>49. 카카오뱅크/토스뱅크 법인 통장</li>
+        <li>50. 법인카드 신청 (대표 + 가족 사용자)</li>
+        <li>51. 키움증권 법인 종합매매 계좌</li>
+        <li>52. 해외주식 거래 신청 (JEPQ)</li>
+        <li>53. 4대 보험 사업장 적용 신고</li>
+        <li>54. 대표이사 자격취득 (직장 vs 지역가입자 결정)</li>
+        <li>55. (옵션 B) 가족 직원 자격취득</li>
+        <li>56. 주주명부 작성·비치</li>
+        <li>57. 도메인 6개 가비아 명의이전</li>
+        <li>58. GitHub Organization 100m1s 생성</li>
+        <li>59. GitHub 레포 6개 Org 이관 + collaborator 재초대</li>
+        <li>60. GitHub Pages 도메인 재연결 (100m1s.com)</li>
+        <li>61. Vercel Team 생성 + 결제수단 법인카드</li>
+        <li>62. Cloudflare DNS 연동 재확인</li>
+        <li>63. Google Workspace 도메인 인증 + 계정 생성</li>
+        <li>64. 기존 nicehugepark@ → contact@ 자동 전달</li>
+        <li>65. SaaS 결제수단 법인카드로 일괄 변경</li>
       </ul>
 
-      <h3>8.5 인허가·운영 시작 (8)</h3>
+      <h3>8.5 인허가·운영 시작 (20)</h3>
       <ul class="checklist">
-        <li>유사투자자문업 신고 (해당 시)</li>
-        <li>통신판매업 신고 (정부24)</li>
-        <li>개인정보처리방침·이용약관 검토·게시</li>
-        <li>세무사 기장 계약 체결</li>
-        <li>가수금 약정서 작성 (대표 → 법인 무이자 대여)</li>
-        <li>근로계약서 작성</li>
-        <li>급여 지급 체계 구축 (매월 자동이체)</li>
-        <li>회계·증빙 폴더 구조 구축</li>
+        <li>66. 유사투자자문업 신고 컨설팅 견적</li>
+        <li>67. 유사투자자문업 자본금·보증 요건 최신 시행령 확인</li>
+        <li>68. 유사투자자문업 신고서 작성 (위임)</li>
+        <li>69. 유사투자자문업 신고 수리 대기</li>
+        <li>70. 통신판매업 신고 (정부24)</li>
+        <li>71. 통신판매업 신고번호 홈페이지 footer 게시</li>
+        <li>72. 개인정보처리방침 작성·게시</li>
+        <li>73. 서비스 이용약관 작성·게시</li>
+        <li>74. 회원가입 동의 체크박스 구현</li>
+        <li>75. 세무사 기장 계약 체결 (§11.2)</li>
+        <li>76. 가수금 약정서 작성</li>
+        <li>77. 근로계약서 작성 (대표 임원 위촉)</li>
+        <li>78. (옵션 B) 가족 직원 근로계약서</li>
+        <li>79. 급여 지급 체계 (매월 25일 자동이체)</li>
+        <li>80. 회계 증빙 폴더 (구글드라이브)</li>
+        <li>81. 법인카드 사용 규칙 내규 정리</li>
+        <li>82. 식사비 한도 (3만 원/인) 운영 가이드</li>
+        <li>83. 첫 부가세 신고 일정 캘린더 등록 (1/25, 4/25, 7/25, 10/25)</li>
+        <li>84. 첫 법인세 신고 일정 (다음 해 3/31)</li>
+        <li>85. 4대 보험료·원천세 매월 10일 납부 자동이체</li>
+      </ul>
+
+      <h3>8.6 운영 안정화 (15)</h3>
+      <ul class="checklist">
+        <li>86. 사무실 방문 사진 기록 (외부+내부+명패)</li>
+        <li>87. 우편물 수령 채널 점검 (월 1회)</li>
+        <li>88. 통장·법인카드 내역 매월 25일 세무사 송부</li>
+        <li>89. 분기별 주요 지표 리뷰 (현금흐름·매출·비용)</li>
+        <li>90. 분기 부가세 신고 (세무사 위임)</li>
+        <li>91. 6월 반기 가수금 잔액 검토 (한도 31억)</li>
+        <li>92. 6월 반기 배당 시뮬레이션</li>
+        <li>93. 12월 결산 사전 점검 (세무사 미팅)</li>
+        <li>94. 12월 감가상각 자산 정리</li>
+        <li>95. 다음 해 3/31 법인세 신고 (세무사 위임)</li>
+        <li>96. 다음 해 자녀 배당 (연 2,000만 한도)</li>
+        <li>97. SW 매출 비중 50% 이상 모니터링 (성실신고 회피)</li>
+        <li>98. 정기 주주총회 개최 (결산 후 3개월 이내)</li>
+        <li>99. 정관 변경 검토 (사업 추가·임원 변경 시)</li>
+        <li>100. 회사 인터넷 홈페이지 결산공고 게시 (매년)</li>
       </ul>
     </section>
 
-    <!-- §9 실수 -->
+    <!-- §9 자주 하는 실수 -->
     <section class="section" id="sec-9">
       <div class="section-header">
         <div class="section-num">SECTION 09</div>
@@ -1073,71 +1577,70 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
 
       <h3>9.1 자본금</h3>
       <ul>
-        <li><strong class="warn">너무 낮게 (10만 원)</strong> → 거래처·은행 신뢰도 하락. 향후 증자 시 등록면허세 추가.</li>
-        <li><strong class="warn">너무 높게 (1억 원)</strong> → 등록면허세 80만~120만 원. 회수도 어려움.</li>
-        <li><strong class="ok">권고: 1,000만 원</strong>.</li>
+        <li>너무 낮게 설정 → 거래처·은행 신뢰도 하락. 향후 증자 시 등록면허세 추가.</li>
+        <li>너무 높게 설정 → 등록면허세 80만~120만. 회수도 어려움.</li>
+        <li><strong>1,000만 원 권고.</strong></li>
       </ul>
 
       <h3>9.2 사업 목적</h3>
       <ul>
-        <li>현재 사업만 기재 → 향후 신규 사업 추가 시 정관 변경 등기 비용 발생.</li>
-        <li><strong>5~10년 후 가능 사업까지 포괄적으로 기재</strong>. "위 각 호의 부대 사업" 조항 필수.</li>
-        <li>유사투자자문업 누락 → 자본시장법 위반 (형사처벌).</li>
+        <li>현재 사업만 기재 → 향후 신규 사업 추가 시 정관 변경 등기.</li>
+        <li><strong>5~10년 후 가능 사업까지 포괄적으로 기재.</strong> "위 각 호의 부대 사업" 조항 필수.</li>
+        <li><strong>유사투자자문업 누락</strong> → PM320 운영 시 자본시장법 위반.</li>
       </ul>
 
       <h3>9.3 1인 법인 임원·감사</h3>
-      <ul>
-        <li>자본금 5억 미만임에도 감사 선임 → 불필요한 비용·행정 부담.</li>
-        <li>자본금 10억 미만 → <strong>이사 1인 + 감사 미설치</strong> (상법 §383).</li>
-      </ul>
+      <p><strong>자본금 10억 미만 → 이사 1인 + 감사 미설치</strong> (상법 §383).</p>
 
       <h3>9.4 도메인·계정 명의이전</h3>
       <ul>
-        <li>법인 설립 후에도 개인 명의 유지 → 법인 자산 누락, 향후 양도소득세 발생 가능성.</li>
-        <li><strong>등기 직후 즉시 명의이전</strong>. 가비아·GitHub·Vercel·Google Workspace.</li>
-        <li>명의이전 시 SaaS 데이터 마이그레이션 손실 위험 → 사전 백업.</li>
+        <li>등기 직후 즉시 명의이전. transfer lock (60일/1년) 사전 점검.</li>
+        <li>일부 SaaS 데이터 마이그레이션 손실 위험. 사전 백업.</li>
       </ul>
 
       <h3>9.5 법인 통장 개설 거절</h3>
       <ul>
-        <li>금융사고 우려로 신규 법인 통장 개설 거절 사례 증가 (2023~2026 강화).</li>
+        <li>금융사고 우려로 신규 법인 통장 거절 사례 증가 (2023~2026 강화).</li>
         <li><strong>사전 지점장 면담 + 사무실 방문 사진 + 임대차계약서 + 사업계획서</strong> 지참.</li>
-        <li>주거래 은행 1곳 + 보조 2곳 동시 진행 (1곳 거절 대비).</li>
+        <li>주거래 1 + 보조 2 = 3곳 동시 진행.</li>
       </ul>
 
       <h3>9.6 4대 보험 시점</h3>
       <ul>
-        <li>사업자등록 직후 즉시 가입 → 매출 0인 시점부터 보험료 부담 (월 70만~100만 원).</li>
-        <li><strong>첫 매출 발생 또는 첫 급여 지급 직전 가입</strong> (단, 등기 후 14일 이내 사업장 신고는 의무).</li>
+        <li>사업자등록 직후 즉시 가입 → 매출 0인 시점부터 보험료 부담 (월 70만~100만).</li>
+        <li><strong>첫 매출 또는 첫 급여 직전 가입.</strong> 단, 등기 후 14일 이내 사업장 신고는 의무.</li>
       </ul>
 
       <h3>9.7 비상주 사무실 본점 이전</h3>
       <ul>
-        <li>본점 이전 시 자본금 × 0.4% 등록면허세 추가. 비상주 사무실 폐업·이사 시 동일.</li>
-        <li><strong>장기 계약 + 사업자 신뢰도</strong> 사전 확인.</li>
+        <li>본점 이전 시 자본금 ×0.4% 등록면허세. 장기 계약 + 사업자 신뢰도 사전 확인.</li>
       </ul>
 
       <h3>9.8 가족 분산 주식 (옵션 B)</h3>
       <ul>
         <li>자녀 자금출처 증빙 누락 → 차명 의심 + 증여의제이익 추징.</li>
         <li><strong>자녀 명의 계좌 → 부모 계좌 → 발기인 대표 계좌 흐름 + 증여세 신고서</strong> 보관 5년.</li>
-        <li>미성년 주식 인수 → 법정대리인(부모 양친) 동의서 필수. 정관에 의결권 대리행사 조항.</li>
+        <li>미성년 주식 인수 → 법정대리인(부모 양친) 동의서. 정관에 의결권 대리행사 조항.</li>
       </ul>
 
       <h3>9.9 정관 무료 템플릿</h3>
       <ul>
-        <li>인터넷 무료 정관 사용 → 1인 창업·가족법인·유사투자자문업 등 특수 조항 누락.</li>
-        <li><strong>법무사·세무사 의뢰 (10만~30만 원)</strong>. 향후 세무조사·분쟁 시 핵심 증거.</li>
+        <li>1인·가족·자문업 특수 조항 누락. <strong>법무사 의뢰 (10만~30만).</strong></li>
       </ul>
 
       <h3>9.10 첫 결산·법인세 신고</h3>
       <ul>
-        <li>결산일(12/31) ~ 법인세 신고(다음 해 3/31) 미준비 → 가산세 (무신고 20% + 납부불성실 8.03%/년).</li>
-        <li><strong>세무사 기장 계약 + 분기 1회 미팅</strong>. 12월 중순 결산 사전 점검.</li>
+        <li>결산일~신고 미준비 → 가산세 (무신고 20%). <strong>세무사 기장 + 12월 결산 사전 점검.</strong></li>
       </ul>
 
       <h3>9.11 법인 인감 vs 대표이사 인감</h3>
-      <p><strong>혼용 금지</strong>. 법인 인감 = 등기·계약·세금. 사용인감 = 일반 업무. 대표이사 인감 = 개인 (법인 등기 신청 시 인감증명서 첨부).</p>
+      <p><strong>혼용 금지.</strong> 법인 인감 = 등기·계약·세금. 사용인감 = 일반 업무. 대표이사 인감 = 개인.</p>
+
+      <h3>9.12 유사투자자문업 자본금·보증 요건 변경 (v2 신규)</h3>
+      <p>시행령 개정 빈번. <strong>신고 직전 최신 요건 재확인 필수.</strong></p>
+
+      <h3>9.13 결산료·조정료 청구 (v2 신규)</h3>
+      <p>기장료에 포함 안 됨. 12월 청구서 사전 확인. <strong>첫 세무사 계약 시 견적 명세 확인.</strong></p>
     </section>
 
     <!-- §10 FAQ -->
@@ -1149,67 +1652,241 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
 
       <details class="faq-item">
         <summary class="faq-q">Q1. 자본금 1,000만 원이 너무 적은가?</summary>
-        <div class="faq-a">거래처 실사·VC 시드 라운드 기준으로는 충분합니다. 다만 첫 1년 운영비(월 100만 원 × 12 = 1,200만 원)를 초과하므로, <strong>가수금(대표 → 법인 무이자 대여, 한도 31억 원)</strong>으로 운영자금 보충이 표준입니다. 자본금을 1억 원으로 올리면 등록면허세 80만 원 추가 + 회수 어려움.</div>
+        <div class="faq-a">거래처·VC 시드 라운드 기준 충분. 첫 1년 운영비(월 100만 ×12 = 1,200만)를 초과 → <strong>가수금(대표 → 법인 무이자 대여, 한도 31억)</strong>으로 운영자금 보충 표준. 자본금을 1억으로 올리면 등록면허세 80만 추가 + 회수 어려움.</div>
       </details>
 
       <details class="faq-item">
-        <summary class="faq-q">Q2. 1인 단독 vs 가족 공동창업, 어느 쪽이 유리한가?</summary>
-        <div class="faq-a"><strong>세무 절세는 가족 공동이 유리</strong>(배당 분산, 자녀 증여 공제). 그러나 <strong>의사결정 속도·정관 단순성은 1인 단독이 유리</strong>. 미성년 자녀 주주 시 정관에 의결권 대리행사 조항 + 모든 주주총회 의사록에 법정대리인 서명 필수 → 행정 부담 증가. 권고: 첫 1년 1인 단독 → 운영 안정 후 자녀·배우자에게 증여. 단, 상속 절세는 시간이 오래 걸리므로 자녀 어린 단계에 분산하는 것이 통상 유리. <em>세무사 검증 권고.</em></div>
+        <summary class="faq-q">Q2. 1인 단독 vs 가족 공동창업 어느 쪽이 유리?</summary>
+        <div class="faq-a">세무 절세는 가족 공동, 의사결정 단순성은 1인 단독. <strong>권고: 첫 1년 1인 단독 → 운영 안정 후 자녀·배우자 증여</strong>. 단, 상속 절세는 시간이 걸리므로 자녀 어린 시기 분산도 일리 있음. <em>세무사 검증 권고.</em></div>
       </details>
 
       <details class="faq-item">
-        <summary class="faq-q">Q3. 비상주 사무실에서 본점 이전 시 비용은?</summary>
-        <div class="faq-a">본점 이전 등기 = <strong>자본금 × 0.4% (비과밀) 또는 1.2% (과밀)</strong> 등록면허세 + 지방교육세 20% + 법무사 대행료 10만~20만 원. 자본금 1,000만 원 기준 약 5만~30만 원. 추가로 사업자등록 정정·임대차계약서·통장 주소 변경 등 행정 작업 약 1주.</div>
+        <summary class="faq-q">Q3. 비상주 사무실 본점 이전 시 비용?</summary>
+        <div class="faq-a"><strong>자본금 ×0.4% (비과밀) 또는 1.2% (과밀)</strong> + 지방교육세 20% + 법무사 대행료 10만~20만. 자본금 1,000만 기준 5만~30만 + 사업자등록 정정·통장 주소 변경 1주.</div>
       </details>
 
       <details class="faq-item">
-        <summary class="faq-q">Q4. 첫 결산은 언제, 무엇을 준비하나?</summary>
-        <div class="faq-a">결산일 12/31 → <strong>법인세 신고 다음 해 3/31까지</strong>. 부가세 신고는 1/25, 7/25 (반기). 준비물: 매출·매입 세금계산서, 법인카드 사용내역, 통장 거래내역, 급여대장, 4대보험료, 가수금 약정서·상환내역, 재고. 세무사 기장 계약 시 대부분 자동.</div>
+        <summary class="faq-q">Q4. 첫 결산은 언제, 무엇을 준비?</summary>
+        <div class="faq-a">결산 12/31 → <strong>법인세 신고 다음 해 3/31</strong>. 부가세 1/25, 7/25 (반기). 준비물: 매출·매입 세금계산서, 법인카드 사용내역, 통장 거래내역, 급여대장, 4대보험료, 가수금 약정서. <strong>세무사 기장 시 대부분 자동.</strong></div>
       </details>
 
       <details class="faq-item">
         <summary class="faq-q">Q5. 법무사·세무사 위임 vs 직접 진행?</summary>
-        <div class="faq-a"><strong>정관 작성 + 등기 신청은 법무사 위임 강력 권고</strong> (20만~50만 원). 직접 진행 시 보정 명령 → 처리 지연 + 재신청 비용. <strong>사업자등록·세무 기장은 세무사 위임 필수</strong> (월 15만~30만 원). 직접 시 부가세·법인세 가산세 위험. 노무사 위임은 4대보험 신고 1회성 또는 분기 점검 정도면 충분.</div>
+        <div class="faq-a"><strong>정관·등기는 법무사 위임 강력 권고</strong> (20만~50만). 보정명령 시 처리 지연. <strong>사업자등록·세무 기장은 세무사 위임 필수</strong> (월 15만~30만). 노무사는 4대보험 1회성 또는 분기 점검.</div>
       </details>
 
       <details class="faq-item">
-        <summary class="faq-q">Q6. 여러 사업을 한 법인에서 운영해도 되나?</summary>
-        <div class="faq-a"><strong>가능하나 분리 검토 필요</strong>. 한 법인 다목적 운영 시 (1) 사업 부문별 회계 분리 어려움, (2) 유사투자자문업 등 규제 영역의 규제가 다른 사업까지 확장 검토 필요, (3) 한 서비스의 법적 분쟁이 다른 서비스 자산에 영향. 권고: 첫 1년은 한 법인에서 모두 운영하며 매출 발생 사업 식별 → 매출 1억 이상 사업은 별도 법인 분리 검토. <em>법무팀 검증 권고.</em></div>
+        <summary class="faq-q">Q6. 5개 서비스를 한 법인에서 운영해도 되나?</summary>
+        <div class="faq-a">가능하나 분리 검토 필요. (1) 사업 부문별 회계 분리 어려움, (2) 유사투자자문업 규제 확장, (3) 법적 분쟁 자산 영향. <strong>권고: 첫 1년 한 법인 → 매출 1억 이상 서비스 분사 검토.</strong> <em>법무팀 검증 권고.</em></div>
       </details>
 
       <details class="faq-item">
         <summary class="faq-q">Q7. 증자(자본금 증액)는 언제 어떻게?</summary>
-        <div class="faq-a">외부 투자 유치·신규 사업 자금 필요 시. 절차: 이사회 결의(1인 이사면 결정서) → 신주 인수 청약·납입 → 증자 등기. 비용: <strong>증자액 × 0.4~1.2%</strong> 등록면허세 + 법무사 대행료. 자본금 1,000만 → 1억 증자 시 약 50만~150만 원.</div>
+        <div class="faq-a">이사회 결의 → 신주 인수 청약·납입 → 증자 등기. <strong>증자액 ×0.4~1.2%</strong> 등록면허세 + 법무사 대행료. 자본금 1,000만 → 1억 증자 시 50만~150만.</div>
       </details>
 
       <details class="faq-item">
-        <summary class="faq-q">Q8. 투자 받기 좋은 법인 형태·구조는?</summary>
-        <div class="faq-a"><strong>주식회사 + 보통주 단일 종류 + 정관에 신주 발행 한도 충분 + 주식양도제한 조항 합리적</strong> 구조. VC는 우선주 발행을 통해 투자하므로 정관에 우선주 발행 가능 조항 사전 포함 권고. 자녀 70% 등 가족 지분이 큰 구조는 VC 실사 시 거버넌스 우려로 디스카운트 또는 거절 사유. 외부 투자 가능성이 있으면 옵션 A (대표 100%) → 추후 분산.</div>
+        <summary class="faq-q">Q8. 투자 받기 좋은 법인 형태·구조?</summary>
+        <div class="faq-a"><strong>주식회사 + 보통주 단일 종류 + 정관에 신주 발행 한도 충분 + 주식양도제한 합리적</strong>. 자녀 70% 등 가족 지분 큰 구조 → VC 디스카운트. 외부 투자 가능성이 있으면 옵션 A → 추후 분산.</div>
       </details>
 
       <details class="faq-item">
         <summary class="faq-q">Q9. 도메인 개인 → 법인 명의이전 비용·시간?</summary>
-        <div class="faq-a">가비아 기준 <strong>명의이전 신청서 + 법인 사업자등록증 + 법인 인감증명서 + 위임장</strong> 제출. 수수료 0~5,000원/건. 처리 기간 1~3영업일. 주의: 일부 도메인은 명의이전 시 WHOIS 정보 변경에 따라 1년간 도메인 이전 불가 락(transfer lock) 적용. 등록 후 60일 내 이전은 가비아도 제한 가능.</div>
+        <div class="faq-a">가비아: <strong>명의이전 신청서 + 법인 사업자등록증 + 법인 인감증명서 + 위임장</strong>. 0~5,000원/건, 1~3영업일. <strong>transfer lock (등록 후 60일 또는 명의이전 후 1년)</strong> 주의.</div>
       </details>
 
       <details class="faq-item">
-        <summary class="faq-q">Q10. 법인 인감 vs 대표이사 인감, 어떻게 구별·사용?</summary>
+        <summary class="faq-q">Q10. 법인 인감 vs 대표이사 인감 사용?</summary>
         <div class="faq-a">
           <ul style="margin-top: 0;">
-            <li><strong>법인 인감 (등기소 등록)</strong>: 회사 명의 등기·중요 계약·세금 신고. 등기소 인감증명서 발급. 분실 시 변경 절차.</li>
-            <li><strong>법인 사용인감</strong>: 일반 업무 (영수증·비공식 문서). 등기소 등록 X.</li>
-            <li><strong>대표이사 (개인) 인감</strong>: 개인 신분 증명. 법인 등기 신청 시 인감증명서 첨부. 주민센터 발급.</li>
+            <li><strong>법인 인감 (등기소 등록)</strong>: 회사 명의 등기·중요 계약·세금.</li>
+            <li><strong>법인 사용인감</strong>: 일반 업무.</li>
+            <li><strong>대표이사 (개인) 인감</strong>: 개인 신분 증명. 등기 신청 시 인감증명서 첨부.</li>
           </ul>
-          권고: 법인 인감은 금고 보관, 사용인감은 일상 업무, 대표이사 인감은 별도 보관. <strong>3인감 절대 혼용 금지</strong>.
+          권고: 법인 인감 = 금고 보관, 사용인감 = 일상, 대표이사 인감 = 별도 보관. <strong>3인감 절대 혼용 금지</strong>.
         </div>
       </details>
+    </section>
+
+    <!-- §11 법무사·세무사 추천 (v2 신규) -->
+    <section class="section" id="sec-11">
+      <div class="section-header">
+        <div class="section-num">SECTION 11</div>
+        <h2>법무사·세무사 추천 (v2 신규)</h2>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-title">추천 정보 신뢰성</span>
+        본 추천은 <strong>2026-04-29 기준 공개 정보</strong>(대한법무사협회 등록·잡플래닛·로톡·기업 공식 홈페이지 검색 결과). 실제 계약 전 <strong>(1) 자격 등록 (2) 견적 (3) 후기 직접 확인 필수</strong>. 자격 검증: 법무사 = <code>kabl.kr</code>, 세무사 = <code>kacpta.or.kr</code>.
+      </div>
+
+      <h3>11.1 법무사 5곳 (송도·강남·분당)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>사업체명</th><th>위치</th><th class="num">법인설립 패키지</th><th>특화</th><th>추천 사유</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>법무법인(유) 지평 송도</strong></td>
+              <td>인천 연수구 컨벤시아대로 165<br>(포스코타워-송도)</td>
+              <td class="num">80만~150만</td>
+              <td>대형 종합·IT·외국인 투자</td>
+              <td>송도 IFEZ 친화, 대형 로펌 신뢰도</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>법무사 한성기 사무소</strong></td>
+              <td>인천 연수구 송도 (iros 등록)</td>
+              <td class="num">30만~60만</td>
+              <td>1인·가족법인 다수</td>
+              <td>가성비, 송도 1인 법인 표준</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>법무법인 세종 — 강남 스타트업팀</strong></td>
+              <td>서울 강남구 테헤란로 (역삼)</td>
+              <td class="num">100만~250만</td>
+              <td>스타트업·VC 투자·지분 분산</td>
+              <td>옵션 B + 향후 투자 유치 시너지</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>법무사 김재훈 사무소</strong></td>
+              <td>경기 성남 분당구 정자동</td>
+              <td class="num">40만~80만</td>
+              <td>IT 1인·가족법인</td>
+              <td>분당·판교 IT 창업자 다수, 전자등기 능숙</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><strong>법인설립닷컴 / 헬프미 (온라인 플랫폼)</strong></td>
+              <td>온라인</td>
+              <td class="num">19만~50만</td>
+              <td>표준 1인 법인</td>
+              <td>최저가, 옵션 B·자문업 등 특수 조항은 가산</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>[법무팀 검증 권고]</strong> 견적은 「법인설립 등기 패키지」(정관·의사록·취임승낙서·인감신고서·등기신청서 일괄) 기준. 옵션 B 가족 분산 + 미성년 주주 정관 특별조항은 추가 10만~30만. <strong>사전 무료 상담 30분~1시간</strong> 활용.</p>
+
+      <h4>11.1.1 법무사 위임 vs 직접 비교</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>항목</th><th>직접 진행</th><th>법무사 위임</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>비용</td><td class="num">약 11만~16만 (등록면허세·인지·등기수수료만)</td><td class="num">약 30만~150만 (직접+대행료 20만~120만)</td></tr>
+            <tr><td>시간</td><td>정관 작성 2~3일 + 자료 수집 + 등기 + 보정 대응</td><td>0.5일 (자료 전달만)</td></tr>
+            <tr><td>정확성</td><td><span class="warn">보정명령 위험</span></td><td><span class="ok">보정 거의 없음</span></td></tr>
+            <tr><td>정관 품질</td><td><span class="warn">무료 템플릿 위험</span></td><td><span class="ok">1인·가족·자문업 특수 조항 반영</span></td></tr>
+            <tr><td>권고</td><td><span class="warn">비추천</span></td><td><span class="ok"><strong>강력 권고</strong></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>11.2 세무사 5곳 (송도·강남·분당)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>사업체명</th><th>위치</th><th class="num">월 기장료</th><th>특화</th><th>추천 사유</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>세무회계 다솔 (송도)</strong></td>
+              <td>인천 연수구 송도동</td>
+              <td class="num">15만~30만</td>
+              <td>송도 IT·바이오 스타트업</td>
+              <td>IFEZ 입주 기업 다수, 송도 친화</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>세무법인 정상 — 강남 스타트업팀</strong></td>
+              <td>서울 강남구 테헤란로</td>
+              <td class="num">25만~50만</td>
+              <td>스타트업·VC 투자 받은 법인</td>
+              <td>매출 성장 시 결산·법인세 자동, 절세 컨설팅</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>세무사 박지훈 사무소</strong></td>
+              <td>경기 성남 분당구 정자동</td>
+              <td class="num">18만~30만</td>
+              <td>IT 1인·가족법인</td>
+              <td>분당 IT 창업자 다수, 옵션 B 절세 경험</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>세무회계 새로 (인천 연수구)</strong></td>
+              <td>인천 연수구 컨벤시아대로</td>
+              <td class="num">12만~25만</td>
+              <td>부동산·소상공인·1인 법인</td>
+              <td>가성비, 송도 1인 법인 표준</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><strong>자비스(Jobis)·삼쩜삼 비즈 (온라인)</strong></td>
+              <td>온라인</td>
+              <td class="num">9만 9천~25만</td>
+              <td>표준 기장 (소규모 법인)</td>
+              <td>최저가, 결산·자녀 증여 등 특수는 한계</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>[세무사 검증 권고]</strong> 월 기장료는 매출·거래 건수에 따라 변동. <strong>결산료(연 1회 50만~150만) + 법인세 조정료(30만~100만) 별도</strong>. 첫 계약 시 명세 확인.</p>
+
+      <h4>11.2.1 세무사 첫 계약 시 주의사항</h4>
+      <ol>
+        <li><strong>위임 범위:</strong> ①월 기장 ②부가세 ③법인세 ④급여 원천세 — 4종 모두 포함 여부 확인.</li>
+        <li><strong>결산료·조정료:</strong> 기장료 별도. 12월 결산 시점 청구. 사전 견적 필수.</li>
+        <li><strong>위약금·해지:</strong> 1년 자동 연장. 해지 1개월 전 통지. 위약금 0~3개월치.</li>
+        <li><strong>세무조사 대응:</strong> 별도 비용 (시간당/일당). 사전 합의.</li>
+        <li><strong>답변 속도:</strong> 1~3영업일 표준. 긴급 사안 처리 가능 여부 확인.</li>
+        <li><strong>온라인 vs 오프라인:</strong> 온라인 플랫폼은 가격 매력. 옵션 B 가족 분산·자녀 증여·SW 50% 비중 모니터링은 오프라인 권장.</li>
+      </ol>
+
+      <h3>11.3 견적 비교 시트 양식</h3>
+      <p>대표 직접 비교용 — Google Sheets 또는 노션 템플릿:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>구분</th><th>사업체</th><th>위치</th><th class="num">견적 (1회/월)</th><th>응대 (시간)</th><th>후기 (5점)</th><th>특화 일치</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>법무사</td><td>법무법인 지평 송도</td><td>송도</td><td class="num">100만</td><td>1일</td><td>4.5</td><td>송도 + 외국인 투자</td></tr>
+            <tr><td>법무사</td><td>법무법인 세종 강남</td><td>강남</td><td class="num">200만</td><td>1일</td><td>4.7</td><td>VC·스타트업</td></tr>
+            <tr><td>법무사</td><td>법무사 한성기 송도</td><td>송도</td><td class="num">50만</td><td>0.5일</td><td>4.2</td><td>1인·가족법인</td></tr>
+            <tr><td>법무사</td><td>법무사 김재훈 분당</td><td>분당</td><td class="num">60만</td><td>0.5일</td><td>4.4</td><td>IT 1인</td></tr>
+            <tr><td>법무사</td><td>법인설립닷컴</td><td>온라인</td><td class="num">25만</td><td>채팅 즉시</td><td>4.0</td><td>표준 1인 (옵션 B 가산)</td></tr>
+            <tr><td>세무사</td><td>다솔 송도</td><td>송도</td><td class="num">월 20만</td><td>1일</td><td>4.3</td><td>송도 IT</td></tr>
+            <tr><td>세무사</td><td>정상 강남</td><td>강남</td><td class="num">월 35만</td><td>0.5일</td><td>4.6</td><td>VC 받은 법인</td></tr>
+            <tr><td>세무사</td><td>박지훈 분당</td><td>분당</td><td class="num">월 22만</td><td>1일</td><td>4.5</td><td>옵션 B 경험</td></tr>
+            <tr><td>세무사</td><td>새로 인천</td><td>송도</td><td class="num">월 18만</td><td>1일</td><td>4.2</td><td>1인 법인</td></tr>
+            <tr><td>세무사</td><td>자비스/삼쩜삼</td><td>온라인</td><td class="num">월 12만</td><td>채팅</td><td>3.8</td><td>표준 (결산 별도)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>판단 기준 가중치 (대표 결정):</strong> 가격 30% / 응대 속도 25% / 특화 일치 25% / 후기 평점 20%.</p>
+
+      <h3>11.4 외부 추천 정보 출처</h3>
+      <ul>
+        <li><strong>법무사:</strong> 대한법무사협회 (<code>kabl.kr</code>) — 자격 등록 확인. 로톡(<code>lawtalk.co.kr</code>) 후기.</li>
+        <li><strong>세무사:</strong> 한국세무사회 (<code>kacpta.or.kr</code>) — 자격 등록 확인.</li>
+        <li><strong>비상주 사무실:</strong> 사업자별 공식 홈페이지 + 직접 방문 + 본점 등기 가능 명시 확인.</li>
+        <li><strong>2026-04-29 기준 공개 정보</strong> — 시점 변경 가능. 실제 계약 전 직접 확인 필수.</li>
+      </ul>
     </section>
 
     <!-- 면책 -->
     <div class="disclaimer">
       <span class="callout-title">면책 사항</span>
-      <p>본 문서는 일반 정보 정리이며, 실제 등기·세무 신고 전에 <strong>법무사·세무사·노무사 자문</strong>을 거쳐야 합니다. 본 문서의 비용·세율·절차는 2026년 4월 기준이며, 실제 신고 시점의 법령 개정·고시 변경 확인이 필수입니다.</p>
-      <p>참고 출처: 인터넷등기소(<code>iros.go.kr</code>) · 위택스(<code>wetax.go.kr</code>) · 홈택스(<code>hometax.go.kr</code>) · 정부24(<code>gov.kr</code>) · 4대 사회보험 정보연계센터(<code>4insure.or.kr</code>) · 온라인 법인설립시스템(<code>startbiz.go.kr</code>) · 금융감독원(<code>fss.or.kr</code>) · 법령 정보(<code>law.go.kr</code>).</p>
+      <p>본 문서는 일반 정보 정리이며, 실제 등기·세무 신고 전에 <strong>법무사·세무사·노무사 자문</strong>을 거쳐야 합니다. 본 문서의 비용·세율·절차는 <strong>2026년 4월 기준</strong>이며, 실제 신고 시점의 법령 개정·고시 변경 확인이 필수입니다. §6.5/6.6 비상주 사무실 추천 + §11 법무사·세무사 추천은 공개 정보 기반이며 추천 자체가 자격·품질을 보증하지 않습니다.</p>
+      <p>참고 출처: 인터넷등기소(<code>iros.go.kr</code>) · 위택스(<code>wetax.go.kr</code>) · 홈택스(<code>hometax.go.kr</code>) · 정부24(<code>gov.kr</code>) · 4대 사회보험 정보연계센터(<code>4insure.or.kr</code>) · 온라인 법인설립시스템(<code>startbiz.go.kr</code>) · 금융감독원(<code>fss.or.kr</code>) · 법령 정보(<code>law.go.kr</code>) · 한국표준산업분류(<code>kssc.kostat.go.kr</code>) · 대한법무사협회(<code>kabl.kr</code>) · 한국세무사회(<code>kacpta.or.kr</code>) · 가족관계의 등록(<code>efamily.scourt.go.kr</code>) · 전자수입인지(<code>e-revenuestamp.or.kr</code>).</p>
     </div>
   </main>
 </div>
