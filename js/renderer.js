@@ -282,6 +282,7 @@ function renderCalExpandContent(date, data) {
     const amountText = it.amount ? fmtTradeAmount(it.amount) : '';
     const candleHtml = miniCandle(it.open, it.high, it.low, it.price, it.pct);
     // 테마칩: 같은 루트 트리는 합쳐서 중복 노드 제거
+    // REQ-P1 #7 (2026-04-29): chip별 data-tooltip = 해당 노드가 속한 path 전체 ("부모 > 자식")
     const tp = it.interp?.theme_paths || [];
     const themesHtml = (() => {
       if (tp.length === 0) return it.themes.slice(0, 3).map(t => `<span class="cal-ind-chip">${escapeHtml(t.name)}</span>`).join('');
@@ -295,15 +296,24 @@ function renderCalExpandContent(date, data) {
       });
       return groupOrder.map((root, gi) => {
         const paths = groups[root];
-        // 모든 경로의 노드를 순서 유지하며 합집합
+        // 모든 경로의 노드를 순서 유지하며 합집합 + 노드별 가장 긴 path 기록
         const seen = new Set();
         const merged = [];
+        const nodeFullPath = {}; // node → path 전체 (복수면 가장 긴 것)
         paths.forEach(path => {
           path.forEach(node => {
             if (!seen.has(node)) { seen.add(node); merged.push(node); }
+            const cur = nodeFullPath[node];
+            if (!cur || path.length > cur.length) nodeFullPath[node] = path;
           });
         });
-        const chips = merged.map(s => `<span class="cal-ind-chip">${escapeHtml(s)}</span>`).join('');
+        const chips = merged.map(s => {
+          const fullPath = nodeFullPath[s] || [s];
+          const tooltipText = fullPath.join(' > ');
+          // 단일 노드(부모-자식 관계 없음)면 tooltip 생략
+          const tooltipAttr = fullPath.length > 1 ? ` data-tooltip="${escapeHtml(tooltipText)}"` : '';
+          return `<span class="cal-ind-chip"${tooltipAttr}>${escapeHtml(s)}</span>`;
+        }).join('');
         return (gi > 0 ? '<span class="cal-theme-sep">│</span>' : '') + chips;
       }).join('');
     })();
