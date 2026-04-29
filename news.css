@@ -914,6 +914,8 @@ a.cal-credit-row:hover,
   padding: 20px; overflow: visible;
 }
 .theme-trend-svg { display: block; min-height: 180px; height: auto; }
+/* REQ-017 후속 #9 v166 — anchor scroll 위치 sticky header 보정 */
+[id^="stock-"] { scroll-margin-top: 100px; }
 .theme-trend-svg text { font-family: 'Inter', 'Pretendard', sans-serif; }
 /* tt-dot 기본 = 빈(fill=#FFF + stroke=color) — JS 인라인 fill="#FFF" stroke=color stroke-width=1.5.
    active = fill=color (data-color 속성에서 JS가 직접 적용). */

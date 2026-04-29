@@ -1454,7 +1454,7 @@ async function initThemeTrend() {
           // #12 — 종목명을 카드 anchor 링크로 (lut와 동일 패턴)
           const code = s.stock_code || s.code || '';
           const nameCell = code
-            ? '<a class="trend-stock-link" href="?date=' + dateStr + '#stock-' + code + '">' + escapeHtml(s.name) + '</a>'
+            ? '<a class="trend-stock-link" href="?date=' + dateStr + '#stock-' + code + '" onclick="return _stockNav(event)">' + escapeHtml(s.name) + '</a>'
             : escapeHtml(s.name);
           html += '<tr><td class="td-name">' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
@@ -1698,7 +1698,7 @@ async function initLimitUpTrend() {
         // "+N" → "연속+N"
         const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">연속+' + s.consecutive_count + '</span>' : '';
         const href = '?date=' + it.date + '#stock-' + (s.code || '');
-        const nameLink = '<a class="trend-stock-link" href="' + href + '">' + (s.name || s.code) + '</a>';
+        const nameLink = '<a class="trend-stock-link" href="' + href + '" onclick="return _stockNav(event)">' + (s.name || s.code) + '</a>';
         const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
         const candleHtml = miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct);
         html += '<tr>' +
@@ -2209,22 +2209,21 @@ async function initThemeTree(dateOverride) {
   } catch (e) { console.warn('theme-tree:', e); }
 }
 
-/* ───── 종목 anchor 클릭 — calendar 갱신 + 종목카드 scroll (REQ-017 후속 #9, capture+stopImmediate v165) ───── */
-function _stockNavHandler(e) {
-  const a = e.target.closest('.trend-stock-link');
-  if (!a) return;
-  e.preventDefault();
-  e.stopImmediatePropagation();
+/* ───── 종목 anchor 클릭 — inline onclick + capture fallback (REQ-017 후속 #9 v166) ───── */
+window._stockNav = function(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const a = e && e.currentTarget ? e.currentTarget : (e && e.target ? e.target.closest('.trend-stock-link') : null);
+  if (!a) return false;
   const href = a.getAttribute('href') || '';
   const hashMatch = href.match(/#stock-([A-Za-z0-9_-]+)/);
   const dateMatch = href.match(/[?&]date=([0-9]{4}-[0-9]{2}-[0-9]{2})/);
-  if (!hashMatch) return;
+  if (!hashMatch) return false;
   const cardId = hashMatch[0];
   const newDate = dateMatch ? dateMatch[1] : null;
   const curDate = (new URLSearchParams(window.location.search)).get('date');
   const pollScroll = (attempts = 25) => {
     const t = document.querySelector(cardId);
-    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     if (attempts > 0) setTimeout(() => pollScroll(attempts - 1), 200);
   };
   if (newDate && newDate !== curDate) {
@@ -2232,11 +2231,13 @@ function _stockNavHandler(e) {
     window.dispatchEvent(new PopStateEvent('popstate'));
   }
   pollScroll();
-}
-// capture phase 등록 — 다른 listener보다 먼저 실행
-document.addEventListener('click', _stockNavHandler, true);
-// touch device fallback — touch 후 click이 안 fire되는 환경 대응
-document.addEventListener('touchend', _stockNavHandler, true);
+  return false;
+};
+// capture phase fallback (inline onclick 미적용 케이스 대응)
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('.trend-stock-link');
+  if (a && !a.hasAttribute('onclick')) window._stockNav({ preventDefault:()=>e.preventDefault(), stopPropagation:()=>e.stopPropagation(), target: e.target, currentTarget: a });
+}, true);
 
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
