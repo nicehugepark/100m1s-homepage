@@ -1179,7 +1179,7 @@ async function initThemeTrend() {
     const container = document.getElementById('theme-trend');
     if (!container || !data.themes || !data.dates) return;
 
-    const VISIBLE_DAYS = 7; // 화면에 보이는 영업일 수
+    const VISIBLE_DAYS = 6; // 화면에 보이는 영업일 수 (LUT와 통일 — 한 윈도우 6영업일, 대표 명시)
     const allDates = data.dates;
     if (allDates.length < 1) return;
     const dates = allDates.slice(-20); // 최대 20영업일
@@ -1447,7 +1447,7 @@ async function initThemeTrend() {
       if (stocks.length === 0) {
         html += '<div style="font-size:12px;color:var(--dm);padding:8px 0;">종목 데이터가 없습니다</div>';
       } else {
-        html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+        html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
         stocks.forEach(s => {
           const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
@@ -1691,7 +1691,7 @@ async function initLimitUpTrend() {
       // 타이틀 박스 = .trend-detail-chip (theme-trend SoT) — 황금 pill, 11px 700w, var(--am4) bg
       const chipDate = it.date.slice(5).replace('-', '/');
       let html = '<div class="trend-detail-chip">' + chipDate + ' &middot; 상한가 ' + it.count + '건</div>';
-      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
       // 거래대금 역순(DESC) 정렬
       const sortedStocks = it.stocks.slice().sort((a, b) => (b.trade_amount || 0) - (a.trade_amount || 0));
       sortedStocks.forEach(s => {
