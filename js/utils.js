@@ -917,6 +917,7 @@ const _DSN_V95_EFFECT_LABEL = {
   'credit-block': '신용불가',
   'trade-halt': '거래정지',
   'single-price': '단일가',
+  'limit-up': '상한가',
 };
 // REQ-023 v9.8 §I — 'when' enum 단순화 (DSN-010).
 // 휴지 결정 B: today / tomorrow / today_and_tomorrow 만 (확정만).
@@ -930,8 +931,9 @@ const _DSN_V95_WHEN_LABEL = {
   'tomorrow': '내일',
   'today_and_tomorrow': '오늘+내일',
 };
-// A4 우선순위: 거래정지 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow.
-const _DSN_V95_EFFECT_ORDER = { 'trade-halt': 0, 'credit-block': 1, 'single-price': 2 };
+// A4 우선순위: 거래정지 > 상한가 > 신용불가 > 단일가 / today > today_and_tomorrow > tomorrow.
+// REQ-082 Phase2 — 상한가는 매매 직결성 최상위 (위험·기회 둘 다 trade-halt 다음).
+const _DSN_V95_EFFECT_ORDER = { 'trade-halt': 0, 'limit-up': 1, 'credit-block': 2, 'single-price': 3 };
 const _DSN_V95_WHEN_ORDER = {
   'today': 0,
   'today_and_tomorrow': 1,
@@ -941,6 +943,11 @@ const _DSN_V95_WHEN_ORDER = {
 function dsnV95FormatEffectBadge(eb) {
   // §II.2 — "신용불가(내일)" / "거래정지(오늘+내일)" / "단일가(내일 가능)" 등.
   if (!eb || !eb.effect) return '';
+  // REQ-082 Phase2 — 상한가는 when 표기 생략 + cc>=2 시 +N 부착 ("상한가" / "상한가+2")
+  if (eb.effect === 'limit-up') {
+    const cc = Number(eb.consecutive_count);
+    return cc >= 2 ? `상한가+${cc}` : '상한가';
+  }
   const ef = _DSN_V95_EFFECT_LABEL[eb.effect] || eb.effect;
   const wh = _DSN_V95_WHEN_LABEL[eb.when] || eb.when || '';
   return wh ? `${ef}(${wh})` : ef;
@@ -950,6 +957,11 @@ function dsnV95EffectBadgeTitle(eb) {
   // §II.3 hover/aria-label — 원 단계 라벨 + 효과 매핑 + 시점 매핑.
   // 예: "투자경고 예고 → 신용불가 (내일 발효)" / "투자위험 근접 → 거래정지 (내일 발효 가능)".
   if (!eb || !eb.effect) return '';
+  // REQ-082 Phase2 — 상한가는 KRX 단계 효과 아님 (가격제한 도달). 별도 툴팁.
+  if (eb.effect === 'limit-up') {
+    const cc = Number(eb.consecutive_count);
+    return cc >= 2 ? `${cc}일 연속 상한가 (오늘 +30% 도달)` : '오늘 상한가 (+30% 도달)';
+  }
   const ef = _DSN_V95_EFFECT_LABEL[eb.effect] || eb.effect;
   const src = eb.source_label || '';
   const whenText = {
