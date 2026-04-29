@@ -1,6 +1,6 @@
 {
   "date": "2026-04-29",
-  "generated_at": "2026-04-29T09:02:37.231691",
+  "generated_at": "2026-04-29T09:10:28.687190",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -10,6 +10,10 @@
     {
       "title": "AI전력기기",
       "summary": "AI 투자 확대로 반도체 설비·전력기기 수요 급증 → 관련 부품사 공급 병목 → 부품 가격 인상 및 목표가 연속 상향"
+    },
+    {
+      "title": "반도체소재",
+      "summary": "반도체 기판 수요 증가·가격 인상 → 한국 반도체 소재 기업 목표가 연이은 상향"
     },
     {
       "title": "삼성파업",
@@ -38,14 +42,200 @@
     {
       "title": "AI전력수요",
       "summary": "AI 데이터센터 전력 수요 급증 → 투자 사이클 반도체에서 전력·인프라로 시프트 → 효성중공업·현대제철 등 전력기기·소재 섹터 강세"
-    },
-    {
-      "title": "D램수요",
-      "summary": "D램 수요 폭주 (AI 데이터센터 HBM 확대) → 삼성·SK하이닉스 공급 제약 → 반도체 가격 상승 기대"
     }
   ],
   "narratives": [],
-  "themes_macro_summary": [],
-  "themes_tree": null,
+  "themes_macro_summary": [
+    {
+      "keyword": "반도체급등",
+      "summary": "AI·데이터센터 D램/HBM 수요 폭발 → SK하이닉스 신고가·코스피 6700선 돌파 → 반도체·IT 섹터 주도 강세",
+      "source_count": 4,
+      "verified": true
+    },
+    {
+      "keyword": "AI전력기기",
+      "summary": "AI 투자 확대로 반도체 설비·전력기기 수요 급증 → 관련 부품사 공급 병목 → 부품 가격 인상 및 목표가 연속 상향",
+      "source_count": 4,
+      "verified": true
+    },
+    {
+      "keyword": "반도체소재",
+      "summary": "반도체 기판 수요 증가·가격 인상 → 한국 반도체 소재 기업 목표가 연이은 상향",
+      "source_count": 4,
+      "verified": true
+    },
+    {
+      "keyword": "삼성파업",
+      "summary": "삼성전자 총파업 예정 → 반도체·전자 공급망 차질 우려 → 전자·부품 섹터 변동성 확대",
+      "source_count": 3,
+      "verified": true
+    },
+    {
+      "keyword": "부동산펀드",
+      "summary": "제이알글로벌리츠 400억 단기채 미상환 → 회생 신청 → 부동산·금융 신용리스크 노출",
+      "source_count": 3,
+      "verified": true
+    }
+  ],
+  "themes_tree": {
+    "date": "2026-04-29",
+    "roots": [
+      {
+        "name": "AI 인프라",
+        "children": [
+          {
+            "name": "AI 메모리 (HBM)",
+            "summary": "AI 추론 시대 진입과 D램 수요 폭주로 HBM 중심 메모리 공급 부족 심화, 삼성전자·SK하이닉스 등 메모리 반도체 수혜.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "전력기기·전력인프라",
+            "summary": "북미 데이터센터·전력망 투자 확대로 변압기·전력기기 수주 급증, HD현대일렉트릭 등 전력기기 업체 수혜.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 클라우드",
+            "summary": "OpenAI가 MS 독점 종료 후 AWS 진입, AI 모델 멀티클라우드 확산으로 클라우드 인프라 수요 분산.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "2차전지",
+        "children": [
+          {
+            "name": "2차전지 ESS",
+            "summary": "미국 ESS 시장 성장 지속과 xEV 적자 축소 기대로 2차전지 셀 업체 실적 반등, 삼성SDI 중심 재평가.",
+            "source_count": 4,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "반도체 소재·부품",
+            "summary": "AI 수요 확대로 반도체 기판·소재 가격 상승 및 증설 효과 본격화, LG이노텍·롯데정밀화학 등 후공정 소재 업체 수혜.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "신재생에너지",
+        "children": [
+          {
+            "name": "태양광·신재생에너지",
+            "summary": "미국 모듈 판가 상승과 화학부문 적자 축소로 한화솔루션 실적 개선, 태양광 업체 이익체력 회복.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "조선",
+        "children": [
+          {
+            "name": "조선·해양",
+            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "화장품",
+        "children": [
+          {
+            "name": "K-뷰티 미국 진출",
+            "summary": "CJ 올리브영 미국 본격 진출과 아모레퍼시픽 1분기 호실적으로 K뷰티 북미 확장 모멘텀 강화.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "건설",
+        "children": [
+          {
+            "name": "원전·건설",
+            "summary": "원전 수주 기대감과 수익성 안정화로 현대건설·대우건설 등 대형 건설사 재평가, 목표가 대폭 상향.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "콘텐츠",
+        "children": [
+          {
+            "name": "게임·콘텐츠",
+            "summary": "펄어비스 '붉은사막' 흥행 기대와 더블유게임즈 DDI 상장 우려 해소로 게임주 실적 추정치 상향.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "기계",
+        "children": [
+          {
+            "name": "건설기계",
+            "summary": "판가 인상 효과로 두산밥캣 1분기 호실적, 건설기계 업황 회복 신호.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "금융",
+        "children": [
+          {
+            "name": "보험",
+            "summary": "보험업 실적 터널 끝 진입 기대감으로 삼성화재 최선호주 부각, 실적 반등 전망.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "자동차부품",
+        "children": [
+          {
+            "name": "타이어",
+            "summary": "글로벌 공급 리스크가 한국 타이어 업체에 점유율 확대 기회로 작용, 한국타이어 목표가 상향.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "유통",
+        "children": [
+          {
+            "name": "백화점·럭셔리",
+            "summary": "백화점 채널 고성장 수혜로 한섬 등 의류·럭셔리 브랜드 목표가 대폭 상향.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "전력인프라",
+        "children": [
+          {
+            "name": "희토류·HVDC",
+            "summary": "중국 희토류 공급 차질 반사이익으로 LS에코에너지 희토류·HVDC 동시 가동, 공급망 다변화 수혜.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      }
+    ]
+  },
   "stocks": []
 }
