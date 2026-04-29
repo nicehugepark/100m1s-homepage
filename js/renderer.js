@@ -11,69 +11,8 @@ function _formatGeneratedAt(generatedAt) {
   return `${m[1]}:${m[2]} KST`;
 }
 
-// 당일 분봉 sparkline SVG (open 기준선 + 라인 + 하단 그라데이션)
-function buildSparkline(prices, base, dir) {
-  if (!prices || prices.length < 2) return '';
-  const W = 60, H = 32, PAD = 2;
-  const min = Math.min(...prices, base);
-  const max = Math.max(...prices, base);
-  const span = max - min || 1;
-  const x = i => PAD + (W - 2*PAD) * i / (prices.length - 1);
-  const y = p => PAD + (H - 2*PAD) * (1 - (p - min) / span);
-  const d = prices.map((p, i) => (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ' ' + y(p).toFixed(1)).join(' ');
-  const color = dir === 'up' ? '#C53939' : dir === 'down' ? '#1958C7' : '#888';
-  const gradId = 'g' + Math.random().toString(36).slice(2, 8);
-  const fillD = d + ` L${x(prices.length-1).toFixed(1)} ${H-PAD} L${x(0).toFixed(1)} ${H-PAD} Z`;
-  const baseY = y(base).toFixed(1);
-  return `<svg viewBox="0 0 ${W} ${H}">
-    <defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="${color}" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="${color}" stop-opacity="0"/>
-    </linearGradient></defs>
-    <path d="${fillD}" fill="url(#${gradId})"/>
-    <line x1="${PAD}" y1="${baseY}" x2="${W-PAD}" y2="${baseY}" stroke="#888" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.5"/>
-    <path d="${d}" fill="none" stroke="${color}" stroke-width="1.3"/>
-  </svg>`;
-}
-
-// REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 SVG.
-// 양봉(close>open) #C53939, 음봉 #1958C7, 동가 #94A3B8 (한국 증시 관습).
-// 데스크탑 110×32, 모바일은 CSS viewBox preserveAspectRatio로 78×26 자동 축소.
-// daily_20 = [{date, o, h, l, c}] 정시 정렬(ASC).
-function buildCandles20(daily20) {
-  if (!Array.isArray(daily20) || daily20.length < 5) return '';
-  const N = daily20.length;
-  const W = 110, H = 32, PAD_X = 4, PAD_Y = 2;
-  const slot = (W - 2 * PAD_X) / N;
-  const bodyW = Math.max(1.5, slot * 0.7);
-  const lows = daily20.map(d => d.l).filter(v => v > 0);
-  const highs = daily20.map(d => d.h).filter(v => v > 0);
-  if (!lows.length || !highs.length) return '';
-  const lo = Math.min(...lows);
-  const hi = Math.max(...highs);
-  const span = hi - lo || 1;
-  const y = p => PAD_Y + (H - 2 * PAD_Y) * (1 - (p - lo) / span);
-  const parts = daily20.map((d, i) => {
-    const xc = PAD_X + slot * (i + 0.5);
-    const xBody = xc - bodyW / 2;
-    const isUp = d.c > d.o;
-    const isFlat = d.c === d.o;
-    const color = isFlat ? '#94A3B8' : (isUp ? '#C53939' : '#1958C7');
-    const yHi = y(d.h), yLo = y(d.l);
-    const yOpen = y(d.o), yClose = y(d.c);
-    const yBodyTop = Math.min(yOpen, yClose);
-    const bodyH = Math.max(0.8, Math.abs(yClose - yOpen));
-    const wick = `<line x1="${xc.toFixed(1)}" y1="${yHi.toFixed(1)}" x2="${xc.toFixed(1)}" y2="${yLo.toFixed(1)}" stroke="${color}" stroke-width="1"/>`;
-    const body = isFlat
-      ? `<line x1="${xBody.toFixed(1)}" y1="${yOpen.toFixed(1)}" x2="${(xBody + bodyW).toFixed(1)}" y2="${yOpen.toFixed(1)}" stroke="${color}" stroke-width="1.2"/>`
-      : `<rect x="${xBody.toFixed(1)}" y="${yBodyTop.toFixed(1)}" width="${bodyW.toFixed(1)}" height="${bodyH.toFixed(1)}" fill="${color}"/>`;
-    const pct = d.o > 0 ? (((d.c - d.o) / d.o) * 100).toFixed(1) : '0.0';
-    const tip = `${d.date}\n시 ${d.o.toLocaleString()} / 고 ${d.h.toLocaleString()}\n저 ${d.l.toLocaleString()} / 종 ${d.c.toLocaleString()} (${pct >= 0 ? '+' : ''}${pct}%)`;
-    const hit = `<rect x="${(xc - slot/2).toFixed(1)}" y="0" width="${slot.toFixed(1)}" height="${H}" fill="transparent"><title>${tip}</title></rect>`;
-    return wick + body + hit;
-  }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${parts}</svg>`;
-}
+// buildSparkline → js/lib/sparkline.js (REQ-001 §3 Phase 1 분리)
+// buildCandles20 → js/lib/mini-candle.js (REQ-001 §3 Phase 1 분리)
 
 function deriveDate(post) {
   if (post.post_date) return post.post_date;
@@ -1135,40 +1074,7 @@ function showShareToast(msg) {
   toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// 해시에 #stock-{code} 있으면 해당 카드로 스크롤 + 강조
-function _scrollToHashStockIfAny() {
-  const hash = window.location.hash || '';
-  // 하이브리드 형식 #stock-{code}-{name} 또는 기존 #stock-{code} 둘 다 수용 (code만 추출)
-  const m = hash.match(/^#stock-([A-Za-z0-9]+)(?:-.+)?$/);
-  if (!m) return;
-  // 1회만 실행 — 재렌더 시 중간 스크롤 위치로 override되지 않도록
-  if (window._scrolledToStockHash === hash) return;
-  window._scrolledToStockHash = hash;
-  const code = m[1];
-  // 렌더가 비동기이므로 약간의 지연 후 시도 (최대 5회)
-  let tries = 0;
-  const tryScroll = () => {
-    const el = document.getElementById('stock-' + code);
-    if (el) {
-      // CSS scroll-margin-top: 88px이 sticky header + 여유 오프셋 처리.
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      el.classList.add('card-highlight');
-      setTimeout(() => el.classList.remove('card-highlight'), 2000);
-      // 다른 렌더/스크롤 코드가 override할 수 있어 1.5초 뒤 강제 재정렬
-      setTimeout(() => {
-        const el2 = document.getElementById('stock-' + code);
-        if (!el2) return;
-        const top = el2.getBoundingClientRect().top;
-        if (Math.abs(top - 88) > 30) {
-          el2.scrollIntoView({ behavior: 'auto', block: 'start' });
-        }
-      }, 1500);
-      return;
-    }
-    if (++tries < 5) setTimeout(tryScroll, 400);
-  };
-  tryScroll();
-}
+// _scrollToHashStockIfAny → js/components/stock-nav.js (REQ-001 §3 Phase 2 분리, window 전역 호출 호환)
 
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
@@ -2209,35 +2115,8 @@ async function initThemeTree(dateOverride) {
   } catch (e) { console.warn('theme-tree:', e); }
 }
 
-/* ───── 종목 anchor 클릭 — inline onclick + capture fallback (REQ-017 후속 #9 v166) ───── */
-window._stockNav = function(e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
-  const a = e && e.currentTarget ? e.currentTarget : (e && e.target ? e.target.closest('.trend-stock-link') : null);
-  if (!a) return false;
-  const href = a.getAttribute('href') || '';
-  const hashMatch = href.match(/#stock-([A-Za-z0-9_-]+)/);
-  const dateMatch = href.match(/[?&]date=([0-9]{4}-[0-9]{2}-[0-9]{2})/);
-  if (!hashMatch) return false;
-  const cardId = hashMatch[0];
-  const newDate = dateMatch ? dateMatch[1] : null;
-  const curDate = (new URLSearchParams(window.location.search)).get('date');
-  const pollScroll = (attempts = 25) => {
-    const t = document.querySelector(cardId);
-    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    if (attempts > 0) setTimeout(() => pollScroll(attempts - 1), 200);
-  };
-  if (newDate && newDate !== curDate) {
-    history.pushState({}, '', href);
-    window.dispatchEvent(new PopStateEvent('popstate'));
-  }
-  pollScroll();
-  return false;
-};
-// capture phase fallback (inline onclick 미적용 케이스 대응)
-document.addEventListener('click', (e) => {
-  const a = e.target.closest('.trend-stock-link');
-  if (a && !a.hasAttribute('onclick')) window._stockNav({ preventDefault:()=>e.preventDefault(), stopPropagation:()=>e.stopPropagation(), target: e.target, currentTarget: a });
-}, true);
+/* ───── 종목 anchor 클릭 — js/components/stock-nav.js 분리 (REQ-001 §3 Phase 2) ───── */
+// window._stockNav, capture phase fallback, _scrollToHashStockIfAny 전부 stock-nav.js로 이동.
 
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
