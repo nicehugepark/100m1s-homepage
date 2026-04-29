@@ -1640,22 +1640,23 @@ async function initLimitUpTrend() {
         return v.toLocaleString();
       };
       detail.hidden = false;
-      detail.innerHTML =
-        '<div class="lut-detail-head"><span class="lut-detail-date">' + it.date + '</span> · 상한가 <strong>' + it.count + '건</strong></div>' +
-        '<div class="lut-detail-list">' +
-        it.stocks.map(s => {
-          const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">+' + s.consecutive_count + '</span>' : '';
-          const href = '?date=' + it.date + '#stock-' + (s.code || '');
-          return '<a class="lut-stock-row" href="' + href + '">' +
-            '<span class="lut-stock-main">' +
-              '<span class="lut-stock-name">' + (s.name || s.code) + '</span>' +
-              cc +
-            '</span>' +
-            '<span class="lut-stock-pct">' + fmtPct(s.change_pct) + '</span>' +
-            '<span class="lut-stock-amt">' + fmtAmt(s.trade_amount) + '</span>' +
-            '</a>';
-        }).join('') +
-        '</div>';
+      // #13 — trend-detail-table 구조 재사용 (폰트·padding·border 자동 정합)
+      // 컬럼: 종목명+연속칩 | 등락률 | 거래대금 (3컬럼)
+      let html = '<div class="lut-detail-head"><span class="lut-detail-date">' + it.date + '</span> · 상한가 <strong>' + it.count + '건</strong></div>';
+      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+      it.stocks.forEach(s => {
+        // #14 — "+N" → "연속+N" 라벨 명확화 (cc>=2)
+        const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">연속+' + s.consecutive_count + '</span>' : '';
+        const href = '?date=' + it.date + '#stock-' + (s.code || '');
+        const nameLink = '<a class="trend-stock-link" href="' + href + '">' + (s.name || s.code) + '</a>';
+        html += '<tr>' +
+          '<td><span class="lut-stock-main">' + nameLink + cc + '</span></td>' +
+          '<td class="td-pct">' + fmtPct(s.change_pct) + '</td>' +
+          '<td class="td-amount">' + fmtAmt(s.trade_amount) + '</td>' +
+        '</tr>';
+      });
+      html += '</tbody></table>';
+      detail.innerHTML = html;
     };
     container.addEventListener('click', e => {
       const target = e.target.closest('.lut-dot, .lut-dot-hit');

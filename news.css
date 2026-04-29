@@ -784,52 +784,40 @@ a.cal-credit-row:hover,
 }
 .lut-detail-head { font-size: 12px; color: var(--tx2); margin-bottom: 8px; }
 .lut-detail-date { font-weight: 700; color: var(--tx); }
-.lut-detail-list { display: flex; flex-direction: column; gap: 0; }
-/* #11 폰트 SoT: .trend-detail-table (12px desktop, 10px mobile, padding 6px 8px / 4px 3px, border #f0f0f0). */
-.lut-stock-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 10px; align-items: center;
-  padding: 6px 8px;
-  background: var(--sf); text-decoration: none; color: inherit;
-  font-size: 12px;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background 120ms ease;
+/* #13 — 상한가 list = trend-detail-table 구조 재사용. lut-detail-table은 컬럼별 색만 재정의. */
+.lut-detail-table tr:hover td { background: rgba(196, 153, 48, 0.08); }
+.lut-detail-table .td-pct { color: #C53939; font-weight: 600; text-align: right; }
+.lut-detail-table .td-amount {
+  font-family: 'SF Mono', monospace; font-weight: 600;
+  color: #8B6E1F;
+  text-align: right;
 }
-.lut-stock-row:last-child { border-bottom: none; }
-.lut-stock-row:hover { background: rgba(196, 153, 48, 0.08); }
+.lut-detail-table .th-pct { text-align: right; }
+.lut-detail-table .th-amount { text-align: right; }
 .lut-stock-main {
   display: inline-flex; align-items: center; gap: 6px;
   min-width: 0;
-}
-.lut-stock-name {
-  font-weight: 600; color: var(--tx);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.lut-stock-pct { font-weight: 600; color: #C53939; font-size: 12px; min-width: 56px; text-align: right; }
-.lut-stock-amt {
-  font-family: 'SF Mono', monospace; font-weight: 600; font-size: 12px;
-  color: #8B6E1F;
-  min-width: 56px; text-align: right;
 }
 .lut-streak {
   font-size: 10px; font-weight: 700;
   padding: 1px 6px; border-radius: 999px;
   background: #FFF4D1; color: #6B4A0A;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 /* #12 — 거래대금 추이 종목명 anchor 링크 */
 .trend-stock-link { color: inherit; text-decoration: none; font-weight: 600; }
 .trend-stock-link:hover { color: var(--am); text-decoration: underline; }
 @media (max-width: 880px) {
   .lut-wrap { padding: 12px; }
-  .lut-stock-row {
-    gap: 6px; padding: 4px 3px;
-    font-size: 10px;
-  }
-  .lut-stock-amt { font-size: 10px; min-width: 48px; }
-  .lut-stock-pct { font-size: 10px; min-width: 50px; }
   .lut-streak { font-size: 9px; padding: 1px 5px; }
+  /* lut-detail-table 컬럼 너비 정합 — trend-detail-table mobile (28% / 22% / 22%)에 맞춰 재분배 */
+  .lut-detail-table th:nth-child(1),
+  .lut-detail-table td:nth-child(1) { width: 50%; overflow: hidden; }
+  .lut-detail-table th:nth-child(2),
+  .lut-detail-table td:nth-child(2) { width: 22%; }
+  .lut-detail-table th:nth-child(3),
+  .lut-detail-table td:nth-child(3) { width: 28%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lut-detail { animation: none; }
