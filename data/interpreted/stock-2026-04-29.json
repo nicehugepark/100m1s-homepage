@@ -1,6 +1,6 @@
 {
   "date": "2026-04-29",
-  "generated_at": "2026-04-29T19:57:00.344313",
+  "generated_at": "2026-04-29T20:10:39.806283",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -4564,6 +4564,33 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "대원전선 보통주가 2026-04-29 종가가 5일 전 대비 60% 이상, 15일 전 대비 100% 이상 상승하여 2026-04-30(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-04-30, 미해당 시 2026-05-15까지 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001141",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-04-30",
+          "period_end": "2026-05-15",
+          "condition": "T일 종가가 T-5일 종가 대비 60% 이상 상승 또는 T-15일 종가 대비 100% 이상 상승 (각각 추가 요건 충족)",
+          "regulation_period": "2026-04-30~2026-05-15 (매매거래일 기준 순연 판단)"
+        },
+        {
+          "title": "대원전선우(우선주)가 2026-04-30 투자경고종목으로 지정 — 지정사유: ① 04-29 종가가 5일전 종가 대비 60% 이상 상승, ② 04-29 종가가 최근 15일 종가 중 최고가, ③ 5일 주가상승률이 같은기간 업종지수 상승률의 5배 이상. 지정일 이후 2일간 40% 이상 상승하고 지정전일 종가보다 높을 경우 1회에 한해 매매거래 정지 가능, 최초 해제판단일 2026-05-15(예정).",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001139",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "투자경고종목 지정(대원전선우)",
+          "period_start": "2026-04-30",
+          "condition": "5일전 대비 종가 +60% 이상 + 15일 최고가 + 업종지수 상승률 5배 이상",
+          "regulation_period": "2026-04-30 지정 ~ 해제판단일 2026-05-15(예정) 이후 요건 미해당 시 익일 해제"
+        }
+      ],
       "index_change_pct": 0.75,
       "index_multiple_current": 39.99,
       "index_multiple_eligible": true,
@@ -4720,20 +4747,67 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의",
-          "severity": "caution",
-          "start": "2026-04-29",
-          "end": "2026-04-29",
-          "summary": "대원전선우가 2026-04-29 당일 투자주의종목으로 지정. 2026-04-29 ~ 2026-05-13 (15일간) 주가상승률 82.90%, 당일 상위20개 계좌 매수관여율 33.79%, 상위3개 계좌 매수관여율 7.65%(외국인)·3.35%(개인)·2.73%(외국인).",
-          "condition": "당일 종가가 15일 전날 종가 대비 75% 이상 상승 + 상위 20개 계좌 매수관여율 30% 이상",
-          "regulation": "2026-04-29 (1일간)",
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-04-30",
+          "end": "2026-05-15",
+          "summary": "대원전선 보통주가 2026-04-29 종가가 5일 전 대비 60% 이상, 15일 전 대비 100% 이상 상승하여 2026-04-30(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-04-30, 미해당 시 2026-05-15까지 순연 판단.",
+          "condition": "T일 종가가 T-5일 종가 대비 60% 이상 상승 또는 T-15일 종가 대비 100% 이상 상승 (각각 추가 요건 충족)",
+          "regulation": "2026-04-30~2026-05-15 (매매거래일 기준 순연 판단)",
           "view_date": "2026-04-29",
           "next_trading_day": "2026-04-30",
           "single_price": false,
           "source": "disclosure",
-          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260428001243",
-          "disclosure_title": "[투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목(대원전선우)",
-          "effect_badges": []
+          "entry_threshold_price": 10304,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-18",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "대원전선 보통주가 2026-04-29 종가가 5일 전 대비 60% 이상, 15일 전 대비 100% 이상 상승하여 2026-04-30(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-04-30, 미해당 시 2026-05-15까지 순연 판단.",
+          "prev_stage": "투자경고",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001141",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
+        },
+        {
+          "label": "투자경고",
+          "severity": "warning",
+          "start": "2026-04-30",
+          "summary": "대원전선우(우선주)가 2026-04-30 투자경고종목으로 지정 — 지정사유: ① 04-29 종가가 5일전 종가 대비 60% 이상 상승, ② 04-29 종가가 최근 15일 종가 중 최고가, ③ 5일 주가상승률이 같은기간 업종지수 상승률의 5배 이상. 지정일 이후 2026-04-30 ~ 2026-05-01 (2일간) 40% 이상 상승하고 지정전일 종가보다 높을 경우 1회에 한해 매매거래 정지 가능, 최초 해제판단일 2026-05-15(예정).",
+          "condition": "5일전 대비 종가 +60% 이상 + 15일 최고가 + 업종지수 상승률 5배 이상",
+          "regulation": "2026-04-30 지정 ~ 해제판단일 2026-05-15(예정) 이후 요건 미해당 시 익일 해제",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-04-28)",
+              "base_price": 10750,
+              "threshold": 10750,
+              "current": 13090,
+              "triggered": true
+            }
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001141",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
         },
         {
           "label": "상한가",
@@ -4806,6 +4880,8 @@
           13090
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "투자경고",
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
       "hugepark_grade": "적극"
@@ -5993,6 +6069,20 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "세명전기(017510, 코스닥)가 2026-04-30 단기과열종목 지정예고 — 예고일부터 10거래일 이내 ①주가상승률(당일 종가가 직전 40거래일 종가 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3요건 모두 충족하고 해당일 종가가 직전 거래일·예고일 전일 종가 대비 상승 시 다음 매매거래일부터 3거래일간 30분 단위 단일가매매 지정.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001177",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-04-30",
+          "condition": "3요건(주가상승률 130%·거래회전율 600%·주가변동성 150%) 모두 충족 + 해당일 종가가 직전거래일·예고일전일 종가 대비 상승",
+          "regulation_period": "예고일부터 10거래일 이내"
+        }
+      ],
       "index_change_pct": 0.39,
       "index_multiple_current": 26.74,
       "index_multiple_eligible": true,
@@ -6145,6 +6235,26 @@
           "h": 15380,
           "l": 12580,
           "c": 14680
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-04-30",
+          "summary": "세명전기(017510, 코스닥)가 2026-04-30 단기과열종목 지정예고 — 예고일부터 10거래일 이내 ①주가상승률(당일 종가가 직전 40거래일 종가 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3요건 모두 충족하고 해당일 종가가 직전 거래일·예고일 전일 종가 대비 상승 시 다음 매매거래일부터 3거래일간 30분 단위 단일가매매 지정.",
+          "condition": "3요건(주가상승률 130%·거래회전율 600%·주가변동성 150%) 모두 충족 + 해당일 종가가 직전거래일·예고일전일 종가 대비 상승",
+          "regulation": "예고일부터 10거래일 이내",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "reason_text": "세명전기(017510, 코스닥)가 2026-04-30 단기과열종목 지정예고 — 예고일부터 10거래일 이내 ①주가상승률(당일 종가가 직전 40거래일 종가 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3요건 모두 충족하고 해당일 종가가 직전 거래일·예고일 전일 종가 대비 상승 시 다음 매매거래일부터 3거래일간 30분 단위 단일가매매 지정.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/30 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001177",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
         }
       ],
       "intraday": {
@@ -6568,6 +6678,20 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "제룡산업(KR7147830004)이 코스닥시장 업무규정 제23조의2에 따라 2026-04-30 단기과열종목 지정예고 — 예고일부터 10거래일 이내 ①주가상승률(40일평균 130% 이상) ②거래회전율(2일평균이 40일평균 600% 이상) ③주가변동성(2일평균이 40일평균 150% 이상) 3요건 충족 + 직전·예고일 전일 종가 대비 상승 시 익영업일부터 3거래일간 30분 단위 단일가매매 지정.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001176",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-04-30",
+          "condition": "40일 평균 대비 주가상승률 130%·거래회전율 600%·주가변동성 150% 동시 충족 + 종가가 직전 거래일 및 예고일 전일 종가 대비 상승",
+          "regulation_period": "지정예고일(2026-04-30)부터 10거래일 이내 요건 충족 시 익영업일부터 3거래일간 단일가매매"
+        }
+      ],
       "index_change_pct": 0.39,
       "index_multiple_current": 28.54,
       "index_multiple_eligible": true,
@@ -6720,6 +6844,26 @@
           "h": 12220,
           "l": 9800,
           "c": 11210
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-04-30",
+          "summary": "제룡산업(KR7147830004)이 코스닥시장 업무규정 제23조의2에 따라 2026-04-30 단기과열종목 지정예고 — 예고일부터 10거래일 이내 ①주가상승률(40일평균 130% 이상) ②거래회전율(2일평균이 40일평균 600% 이상) ③주가변동성(2일평균이 40일평균 150% 이상) 3요건 충족 + 직전·예고일 전일 종가 대비 상승 시 익영업일부터 3거래일간 30분 단위 단일가매매 지정.",
+          "condition": "40일 평균 대비 주가상승률 130%·거래회전율 600%·주가변동성 150% 동시 충족 + 종가가 직전 거래일 및 예고일 전일 종가 대비 상승",
+          "regulation": "지정예고일(2026-04-30)부터 10거래일 이내 요건 충족 시 익영업일부터 3거래일간 단일가매매",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "reason_text": "제룡산업(KR7147830004)이 코스닥시장 업무규정 제23조의2에 따라 2026-04-30 단기과열종목 지정예고 — 예고일부터 10거래일 이내 ①주가상승률(40일평균 130% 이상) ②거래회전율(2일평균이 40일평균 600% 이상) ③주가변동성(2일평균이 40일평균 150% 이상) 3요건 충족 + 직전·예고일 전일 종가 대비 상승 시 익영업일부터 3거래일간 30분 단위 단일가매매 지정.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/30 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001176",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
         }
       ],
       "intraday": {
@@ -7097,6 +7241,21 @@
         }
       ],
       "fallback": false,
+      "disclosures": [
+        {
+          "title": "LS에코에너지 보통주가 2026-04-29 종가가 15일 전일 종가 대비 100% 이상 상승하여 투자경고종목 지정예고됨에 따라 2026-04-30(1일간) 투자주의종목으로 지정. 최초 판단일 2026-04-30이며 미해당 시 2026-05-15까지 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001140",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-04-30",
+          "period_end": "2026-04-30",
+          "condition": "T종가가 T-15 종가 대비 100% 이상 상승 + 최근 15일 종가 중 최고가 + T-15 기준 주가상승률이 업종지수 상승률의 3배 이상 (또는 단기급등 [1] 요건 충족)",
+          "regulation_period": "2026-04-30~2026-05-15 (투자경고종목 지정여부 판단 기간)"
+        }
+      ],
       "index_change_pct": 0.75,
       "index_multiple_current": 33.37,
       "index_multiple_eligible": true,
@@ -7251,6 +7410,39 @@
           "c": 89800
         }
       ],
+      "status_badges": [
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-04-30",
+          "end": "2026-04-30",
+          "summary": "LS에코에너지 보통주가 2026-04-29 종가가 15일 전일 종가 대비 100% 이상 상승하여 투자경고종목 지정예고됨에 따라 2026-04-30(1일간) 투자주의종목으로 지정. 최초 판단일 2026-04-30이며 미해당 시 2026-05-15까지 순연 판단.",
+          "condition": "T종가가 T-15 종가 대비 100% 이상 상승 + 최근 15일 종가 중 최고가 + T-15 기준 주가상승률이 업종지수 상승률의 3배 이상 (또는 단기급등 [1] 요건 충족)",
+          "regulation": "2026-04-30~2026-05-15 (투자경고종목 지정여부 판단 기간)",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 90800,
+          "entry_threshold_via": "warn_surge_15d_100pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
+          "entry_window_end": "2026-05-18",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "LS에코에너지 보통주가 2026-04-29 종가가 15일 전일 종가 대비 100% 이상 상승하여 투자경고종목 지정예고됨에 따라 2026-04-30(1일간) 투자주의종목으로 지정. 최초 판단일 2026-04-30이며 미해당 시 2026-05-15까지 순연 판단.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001140",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 76600,
@@ -7297,6 +7489,8 @@
           90900
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "투자경고",
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
       "hugepark_grade": "적극"
@@ -7586,6 +7780,21 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "비나텍이 2026-04-30 1일간 투자주의종목으로 지정 — 15일간 주가상승률 81.76%, 당일 상위 20개계좌 매수관여율 39.76%, 상위 3개계좌 매수관여율 5.31%(외국인)·3.87%(기관)·3.32%(외국인)로 지정요건(15일 75% 이상 상승 + 상위 20계좌 매수관여율 30% 이상) 충족.",
+          "category": "투자주의",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001120",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목",
+          "period_start": "2026-04-30",
+          "period_end": "2026-04-30",
+          "condition": "15일전 종가 대비 당일 종가 75% 이상 상승 + 당일 상위 20개 계좌 매수관여율 30% 이상",
+          "regulation_period": "2026-04-30 1일간"
+        }
+      ],
       "index_change_pct": 0.39,
       "index_multiple_current": 76.87,
       "index_multiple_eligible": true,
@@ -7741,6 +7950,22 @@
         }
       ],
       "status_badges": [
+        {
+          "label": "투자주의",
+          "severity": "caution",
+          "start": "2026-04-30",
+          "end": "2026-04-30",
+          "summary": "비나텍이 2026-04-30 당일 투자주의종목으로 지정 — 2026-04-30 ~ 2026-05-14 (15일간) 주가상승률 81.76%, 당일 상위 20개계좌 매수관여율 39.76%, 상위 3개계좌 매수관여율 5.31%(외국인)·3.87%(기관)·3.32%(외국인)로 지정요건(15일 75% 이상 상승 + 상위 20계좌 매수관여율 30% 이상) 충족.",
+          "condition": "15일전 종가 대비 당일 종가 75% 이상 상승 + 당일 상위 20개 계좌 매수관여율 30% 이상",
+          "regulation": "2026-04-30 1일간",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001120",
+          "disclosure_title": "[투자주의]15일간 상승종목의 당일 소수계좌 매수관여 과다종목"
+        },
         {
           "label": "상한가",
           "severity": "hot",
@@ -8948,6 +9173,20 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "휴스틸(KR7005010004)에 대한 단기과열종목 지정예고로, 지정예고일 2026-04-30부터 10거래일 이내 ①주가상승률(당일 종가가 직전 40거래일 종가 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 종가가 직전거래일 및 지정예고일 전일 종가 대비 상승할 경우 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됨.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001171",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-04-30",
+          "condition": "10거래일 이내 ①주가상승률 130% 이상 ②거래회전율 600% 이상 ③주가변동성 150% 이상 3요건 모두 충족 + 종가가 직전거래일·지정예고일 전일 종가 대비 상승",
+          "regulation_period": "지정 시 3거래일간 30분 단위 단일가매매"
+        }
+      ],
       "index_change_pct": 0.75,
       "index_multiple_current": 7.52,
       "index_multiple_eligible": true,
@@ -9100,6 +9339,27 @@
           "h": 7300,
           "l": 6120,
           "c": 7100
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-04-30",
+          "summary": "휴스틸(KR7005010004)에 대한 단기과열종목 지정예고로, 지정예고일 2026-04-30부터 10거래일 이내 ①주가상승률(당일 종가가 직전 40거래일 종가 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 종가가 직전거래일 및 지정예고일 전일 종가 대비 상승할 경우 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됨.",
+          "condition": "10거래일 이내 ①주가상승률 130% 이상 ②거래회전율 600% 이상 ③주가변동성 150% 이상 3요건 모두 충족 + 종가가 직전거래일·지정예고일 전일 종가 대비 상승",
+          "regulation": "지정 시 3거래일간 30분 단위 단일가매매",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-18",
+          "reason_text": "휴스틸(KR7005010004)에 대한 단기과열종목 지정예고로, 지정예고일 2026-04-30부터 10거래일 이내 ①주가상승률(당일 종가가 직전 40거래일 종가 평균의 130% 이상) ②거래회전율(최근 2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(최근 2거래일 평균이 직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 종가가 직전거래일 및 지정예고일 전일 종가 대비 상승할 경우 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됨.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 4/30 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260429001171",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
         }
       ],
       "intraday": {
