@@ -1445,7 +1445,12 @@ async function initThemeTrend() {
         stocks.forEach(s => {
           const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
-          html += '<tr><td>' + escapeHtml(s.name) + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
+          // #12 — 종목명을 카드 anchor 링크로 (lut와 동일 패턴)
+          const code = s.stock_code || s.code || '';
+          const nameCell = code
+            ? '<a class="trend-stock-link" href="?date=' + dateStr + '#stock-' + code + '">' + escapeHtml(s.name) + '</a>'
+            : escapeHtml(s.name);
+          html += '<tr><td>' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
         html += '</tbody></table>';
       }
