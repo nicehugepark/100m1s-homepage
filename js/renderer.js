@@ -1429,7 +1429,7 @@ async function initThemeTrend() {
         const matchDot = svgEl.querySelector('circle.tt-dot[cx="' + cx + '"][cy="' + cy + '"][data-theme-idx="' + themeIdx + '"]');
         if (matchDot) {
           matchDot.classList.add('tt-dot--active');
-          matchDot.setAttribute('fill', matchDot.getAttribute('data-color') || '#C49930');
+          matchDot.setAttribute('fill', h.getAttribute('data-color') || '#C49930');
         }
         const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         ring.setAttribute('cx', cx);
