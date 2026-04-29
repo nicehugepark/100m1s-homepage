@@ -2436,6 +2436,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   color: #DC2626;
   border: 1px solid rgba(220, 38, 38, 0.35);
 }
+/* REQ-082 Phase2 — 상한가 effect (햇살 정체성 그라데이션 + 진한 빨강 + 위계 +1단계) */
+.dsn-v95-effect-badge--limit-up {
+  background: linear-gradient(135deg, #FFF4D1 0%, #FFE89A 100%);
+  color: #B91C1C;
+  border: 1px solid #E8C063;
+  font-weight: 700;
+}
 .dsn-v95-effect-badge--credit-block {   /* warning — 신용불가 */
   background: rgba(217, 119, 6, 0.10);
   color: #D97706;
@@ -2472,6 +2479,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     color: #F87171;
     border-color: rgba(248, 113, 113, 0.45);
   }
+  .dsn-v95-effect-badge--limit-up {
+    background: linear-gradient(135deg, rgba(232, 192, 99, 0.20) 0%, rgba(232, 192, 99, 0.10) 100%);
+    color: #FCA5A5;
+    border-color: rgba(232, 192, 99, 0.50);
+  }
   .dsn-v95-effect-badge--credit-block {
     background: rgba(245, 158, 11, 0.16);
     color: #F59E0B;
@@ -2489,6 +2501,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .dsn-v95-effect-badge {
     border-width: 2px;
     background: transparent;
+  }
+  .dsn-v95-effect-badge--limit-up {
+    border-width: 2px;
+    background: transparent;
+    color: #B91C1C;
   }
 }
 
