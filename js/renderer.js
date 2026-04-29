@@ -2209,11 +2209,12 @@ async function initThemeTree(dateOverride) {
   } catch (e) { console.warn('theme-tree:', e); }
 }
 
-/* ───── 종목 anchor 클릭 — calendar 갱신 + 종목카드 scroll (REQ-017 후속 #9, polling fix) ───── */
-document.addEventListener('click', (e) => {
+/* ───── 종목 anchor 클릭 — calendar 갱신 + 종목카드 scroll (REQ-017 후속 #9, capture+stopImmediate v165) ───── */
+function _stockNavHandler(e) {
   const a = e.target.closest('.trend-stock-link');
   if (!a) return;
   e.preventDefault();
+  e.stopImmediatePropagation();
   const href = a.getAttribute('href') || '';
   const hashMatch = href.match(/#stock-([A-Za-z0-9_-]+)/);
   const dateMatch = href.match(/[?&]date=([0-9]{4}-[0-9]{2}-[0-9]{2})/);
@@ -2221,8 +2222,7 @@ document.addEventListener('click', (e) => {
   const cardId = hashMatch[0];
   const newDate = dateMatch ? dateMatch[1] : null;
   const curDate = (new URLSearchParams(window.location.search)).get('date');
-  // calendar 비동기 재렌더 — element 등장까지 polling (최대 4초)
-  const pollScroll = (attempts = 20) => {
+  const pollScroll = (attempts = 25) => {
     const t = document.querySelector(cardId);
     if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
     if (attempts > 0) setTimeout(() => pollScroll(attempts - 1), 200);
@@ -2232,7 +2232,11 @@ document.addEventListener('click', (e) => {
     window.dispatchEvent(new PopStateEvent('popstate'));
   }
   pollScroll();
-});
+}
+// capture phase 등록 — 다른 listener보다 먼저 실행
+document.addEventListener('click', _stockNavHandler, true);
+// touch device fallback — touch 후 click이 안 fire되는 환경 대응
+document.addEventListener('touchend', _stockNavHandler, true);
 
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
