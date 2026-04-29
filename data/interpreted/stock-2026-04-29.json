@@ -1,6 +1,6 @@
 {
   "date": "2026-04-29",
-  "generated_at": "2026-04-29T12:12:47.054915",
+  "generated_at": "2026-04-29T12:20:54.511599",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -14,6 +14,14 @@
     {
       "title": "반도체소재",
       "summary": "반도체 기판 수요 증가·가격 인상 → 한국 반도체 소재 기업 목표가 연이은 상향"
+    },
+    {
+      "title": "반도체기판",
+      "summary": "반도체 기판 가격 상승 + CLT 검사장비 수요 확대 → 삼성·SK하이닉스 설비투자 가속화 신호"
+    },
+    {
+      "title": "대기업재편",
+      "summary": "한화 재계 5위 약진 + 신규 10곳 편입(K컬처·토스·한국콜마·오리온) → 기업 평가 체계 및 섹터 재편"
     },
     {
       "title": "삼성파업",
@@ -34,14 +42,6 @@
     {
       "title": "JRG부도",
       "summary": "제이알글로벌리츠 단기채 400억원 미상환 → 회생절차 신청 → 신용등급 D강등"
-    },
-    {
-      "title": "파업",
-      "summary": "삼성전자 파업 임박(18일간 30조 손실) → 반도체·디스플레이 생산 차질 → 반도체·전장 섹터 약세 리스크"
-    },
-    {
-      "title": "AI전력수요",
-      "summary": "AI 데이터센터 전력 수요 급증 → 투자 사이클 반도체에서 전력·인프라로 시프트 → 효성중공업·현대제철 등 전력기기·소재 섹터 강세"
     }
   ],
   "narratives": [],
@@ -80,6 +80,59 @@
   "themes_tree": {
     "date": "2026-04-29",
     "roots": [
+      {
+        "name": "AI",
+        "children": [
+          {
+            "name": "AI 데이터센터 인프라",
+            "summary": "미국 AI 데이터센터 급증으로 전력·배전·연료전지·피팅·전선 수요가 폭증해 한국 부품·소재 기업이 수혜.",
+            "source_count": 6,
+            "verdict": "unverified"
+          },
+          {
+            "name": "AI 데이터센터 인프라",
+            "summary": "美 AI 데이터센터 급증으로 피팅·밸브·배전반·전력반도체·연료전지 등 전력 인프라 부품주 수요 확대.",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
+          {
+            "name": "AI 데이터센터 인프라",
+            "summary": "미국 AI 데이터센터 폭증으로 피팅·밸브(디케이락), 연료전지·SOFC(두산퓨얼셀·에스프리즘), 배전반(에스엔시스·LS Electric) 등 전력·기계 부품 수요 확대.",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "폴라리스AI가 中 유비테크와 손잡고 휴머노이드 로봇 국내 총괄, 피지컬 AI 사업화 본격 진입",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "피지컬 AI/휴머노이드",
+            "summary": "폴라리스AI가 중국 유비테크 휴머노이드 로봇 국내 총괄 계약 체결, AI 모델→실물 로봇 연결 '피지컬 AI' 내러티브로 로봇·자동화 부품주 자금 유입",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "휴머노이드 로봇·피지컬 AI",
+            "summary": "폴라리스AI가 중국 유비테크 휴머노이드 국내 총괄권 확보→피지컬 AI 시장 진입 본격화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "피지컬 AI/로봇",
+            "summary": "현대차 로보틱스랩 AVP본부 편입 + 폴라리스AI-유비테크 협력으로 휴머노이드·피지컬 AI 밸류체인 부각.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "휴머노이드/피지컬 AI",
+            "summary": "폴라리스AI가 중국 유비테크 휴머노이드 로봇 국내 총괄 맡으며 피지컬 AI 사업 본격화, 로봇주 모멘텀.",
+            "source_count": 1,
+            "verdict": "pass"
+          }
+        ]
+      },
       {
         "name": "AI 인프라",
         "children": [
@@ -176,53 +229,6 @@
         ]
       },
       {
-        "name": "AI",
-        "children": [
-          {
-            "name": "AI 데이터센터 인프라",
-            "summary": "美 AI 데이터센터 급증으로 피팅·밸브·배전반·전력반도체·연료전지 등 전력 인프라 부품주 수요 확대.",
-            "source_count": 5,
-            "verdict": "unverified"
-          },
-          {
-            "name": "AI 데이터센터 인프라",
-            "summary": "미국 AI 데이터센터 폭증으로 피팅·밸브(디케이락), 연료전지·SOFC(두산퓨얼셀·에스프리즘), 배전반(에스엔시스·LS Electric) 등 전력·기계 부품 수요 확대.",
-            "source_count": 5,
-            "verdict": "unverified"
-          },
-          {
-            "name": "휴머노이드 로봇",
-            "summary": "폴라리스AI가 中 유비테크와 손잡고 휴머노이드 로봇 국내 총괄, 피지컬 AI 사업화 본격 진입",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "피지컬 AI/휴머노이드",
-            "summary": "폴라리스AI가 중국 유비테크 휴머노이드 로봇 국내 총괄 계약 체결, AI 모델→실물 로봇 연결 '피지컬 AI' 내러티브로 로봇·자동화 부품주 자금 유입",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "휴머노이드 로봇·피지컬 AI",
-            "summary": "폴라리스AI가 중국 유비테크 휴머노이드 국내 총괄권 확보→피지컬 AI 시장 진입 본격화",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "피지컬 AI/로봇",
-            "summary": "현대차 로보틱스랩 AVP본부 편입 + 폴라리스AI-유비테크 협력으로 휴머노이드·피지컬 AI 밸류체인 부각.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "휴머노이드/피지컬 AI",
-            "summary": "폴라리스AI가 중국 유비테크 휴머노이드 로봇 국내 총괄 맡으며 피지컬 AI 사업 본격화, 로봇주 모멘텀.",
-            "source_count": 1,
-            "verdict": "pass"
-          }
-        ]
-      },
-      {
         "name": "반도체",
         "children": [
           {
@@ -288,6 +294,12 @@
           {
             "name": "반도체 설비·소재",
             "summary": "엑시콘 삼성 CLT 공급 확대와 LG이노텍 기판 가격 상승으로 반도체 설비투자·소재 가속화.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "반도체 설비투자",
+            "summary": "삼성 설비투자 가속에 따른 검사장비(CLT) 공급 확대와 기판 가격 급등으로 후공정·소재 기업 목표가가 상향.",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -435,6 +447,12 @@
           },
           {
             "name": "2차전지 실적 턴어라운드",
+            "summary": "에코프로비엠 1분기 영업이익 823% 급증과 삼성SDI 연내 흑자 전환 기대로 2차전지 셀·소재 모멘텀이 살아남.",
+            "source_count": 4,
+            "verdict": "weak"
+          },
+          {
+            "name": "2차전지 실적 턴어라운드",
             "summary": "삼성SDI 4분기 흑자 전환 기대로 신고가 경신·목표가 83만원 상향, 배터리 셀 업체 실적 회복 모멘텀.",
             "source_count": 2,
             "verdict": "weak"
@@ -482,6 +500,12 @@
           {
             "name": "2차전지",
             "summary": "삼성SDI 연내 흑자 전환 기대와 전고체 배터리 상용화 추진으로 배터리 섹터 모멘텀 회복.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "원자력/SMR",
+            "summary": "대우건설 체코 원전 수주 기대와 DL이앤씨가 투자한 미 SMR기업 엑스에너지 나스닥 상장으로 원전·SMR 밸류체인이 재평가.",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -540,6 +564,53 @@
         ]
       },
       {
+        "name": "조선",
+        "children": [
+          {
+            "name": "조선",
+            "summary": "대한조선 1분기 영업익 18% 증가, 현대글로비스 1만대급 PCTC 도입 등 K-조선 수주·실적 가시화.",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "조선·해양",
+            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "조선·해양",
+            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "조선·해양",
+            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "조선기자재/엔진",
+            "summary": "한화엔진 수주·수익성 동반 개선, 데이터센터 모멘텀 없이도 본업 체력 상승으로 목표가 10.1만원 상향.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "조선기자재/엔진",
+            "summary": "한화엔진 수주·수익성 동반 개선, 데이터센터 모멘텀 없이도 본업 체력 상승으로 목표가 10.1만원 상향.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "조선기자재",
+            "summary": "한화엔진 데이터센터 모멘텀 없이도 본업 체력 상승 평가, 선박엔진 본업 사이클 지속",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
         "name": "신재생에너지",
         "children": [
           {
@@ -577,47 +648,6 @@
             "summary": "한화솔루션 화학 적자 축소·미국 모듈 판가 상승으로 깜짝실적, 투자의견 매수 상향 등 태양광 수익성 개선.",
             "source_count": 3,
             "verdict": "weak"
-          }
-        ]
-      },
-      {
-        "name": "조선",
-        "children": [
-          {
-            "name": "조선·해양",
-            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
-            "source_count": 3,
-            "verdict": "pass"
-          },
-          {
-            "name": "조선·해양",
-            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
-            "source_count": 3,
-            "verdict": "pass"
-          },
-          {
-            "name": "조선·해양",
-            "summary": "선가 상승과 수주 증가로 한화오션·한화엔진 등 조선 기자재 수익성 동반 개선, 본업 체력 상승.",
-            "source_count": 3,
-            "verdict": "pass"
-          },
-          {
-            "name": "조선기자재/엔진",
-            "summary": "한화엔진 수주·수익성 동반 개선, 데이터센터 모멘텀 없이도 본업 체력 상승으로 목표가 10.1만원 상향.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "조선기자재/엔진",
-            "summary": "한화엔진 수주·수익성 동반 개선, 데이터센터 모멘텀 없이도 본업 체력 상승으로 목표가 10.1만원 상향.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "조선기자재",
-            "summary": "한화엔진 데이터센터 모멘텀 없이도 본업 체력 상승 평가, 선박엔진 본업 사이클 지속",
-            "source_count": 1,
-            "verdict": "unverified"
           }
         ]
       },
@@ -793,6 +823,12 @@
             "summary": "우크라전 실전 검증과 천궁 수주 증가 기대로 LIG넥스원 자회사 LIG D&A 목표가 130만원 매수 추천, 방산 수출 모멘텀 지속.",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "방산",
+            "summary": "한화시스템 등 수주 잔액 누적으로 성장 모멘텀 확대 가능성 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1021,6 +1057,17 @@
           {
             "name": "K-푸드 수출",
             "summary": "농심 라이필 콜라겐 중국 왕라오지 첫 수출로 K-푸드·건기식 중국 진출 확대.",
+            "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "모빌리티",
+        "children": [
+          {
+            "name": "현대차 로보틱스/자율주행",
+            "summary": "현대차가 로보틱스·AI·자율주행 조직을 AVP본부로 통합해 모빌리티 신사업 시너지 가속.",
             "source_count": 2,
             "verdict": "unverified"
           }
@@ -1345,8 +1392,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 164.56,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 59.24,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 52800,
@@ -1380,6 +1427,8 @@
           50800,
           51300,
           52300,
+          52200,
+          52200,
           52100
         ]
       },
@@ -1468,8 +1517,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 285.78,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 102.88,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 12820,
@@ -1519,7 +1568,9 @@
           12200,
           12230,
           12730,
-          12570
+          12620,
+          12620,
+          12620
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -1615,8 +1666,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -13.89,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -18.75,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 45000,
@@ -1650,6 +1701,8 @@
           41450,
           41500,
           41450,
+          41500,
+          41550,
           41500
         ]
       },
@@ -1737,8 +1790,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -75.19,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -101.5,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 32725,
@@ -1772,7 +1825,9 @@
           31800,
           32550,
           31950,
-          32350
+          32300,
+          31650,
+          31850
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1859,8 +1914,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -37.56,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -50.7,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 58700,
@@ -1894,7 +1949,9 @@
           56700,
           56500,
           56700,
-          56600
+          56600,
+          56600,
+          56500
         ]
       },
       "credit_risk": true,
@@ -1992,8 +2049,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 30.44,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 10.96,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 10500,
@@ -2072,7 +2129,9 @@
           9170,
           9270,
           9330,
-          9390
+          9400,
+          9270,
+          9260
         ]
       },
       "credit_risk": true,
@@ -2115,8 +2174,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -111.11,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -150.0,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 16640,
@@ -2166,6 +2225,8 @@
           16640,
           16640,
           16640,
+          16640,
+          16640,
           16640
         ]
       },
@@ -2200,8 +2261,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -41.96,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -56.65,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 12220,
@@ -2235,7 +2296,9 @@
           11090,
           11010,
           11240,
-          11120
+          11120,
+          11060,
+          11080
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -2301,8 +2364,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 255.22,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 91.88,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 93300,
@@ -2336,7 +2399,9 @@
           90600,
           89800,
           89900,
-          89300
+          89400,
+          89300,
+          89100
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -2368,8 +2433,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -9.52,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -12.85,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 13800,
@@ -2403,7 +2468,9 @@
           12270,
           12160,
           12280,
-          12380
+          12390,
+          12320,
+          12310
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -2430,8 +2497,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 182.56,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 65.72,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 13980,
@@ -2465,7 +2532,9 @@
           11770,
           11740,
           11730,
-          11520
+          11430,
+          11380,
+          11380
         ]
       },
       "credit_risk": true,
@@ -2508,8 +2577,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -87.93,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -118.7,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 181800,
@@ -2543,7 +2612,9 @@
           173600,
           174000,
           173800,
-          174100
+          174200,
+          174300,
+          174500
         ]
       },
       "credit_risk": true,
@@ -2604,8 +2675,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 58.78,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 21.16,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 121400,
@@ -2639,7 +2710,9 @@
           115800,
           116400,
           117500,
-          117300
+          117600,
+          117700,
+          117800
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -2705,8 +2778,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 86.56,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 31.16,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 58400,
@@ -2740,7 +2813,9 @@
           56900,
           56600,
           56700,
-          56700
+          56800,
+          56400,
+          56400
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -2797,8 +2872,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -44.74,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -60.4,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7850,
@@ -2832,7 +2907,9 @@
           7260,
           7360,
           7280,
-          7270
+          7270,
+          7320,
+          7330
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -2886,8 +2963,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -16.15,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -21.8,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5300,
@@ -2921,6 +2998,8 @@
           3645,
           3645,
           3585,
+          3580,
+          3580,
           3585
         ]
       },
@@ -2948,8 +3027,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -24.78,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -33.45,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9230,
@@ -2983,7 +3062,9 @@
           8360,
           8390,
           8400,
-          8410
+          8410,
+          8480,
+          8480
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -3019,8 +3100,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 333.33,
+      "index_change_pct": 0.25,
+      "index_multiple_current": 120.0,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 6500,
@@ -3070,6 +3151,7 @@
           6500,
           6500,
           6500,
+          6500,
           6500
         ]
       },
@@ -3077,7 +3159,9 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "001820",
@@ -3099,9 +3183,46 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.09,
-      "index_multiple_current": 82.33,
-      "index_multiple_eligible": true
+      "index_change_pct": 0.25,
+      "index_multiple_current": 29.64,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 73000,
+        "high_date": "2026-04-29",
+        "high_pct": -4.66,
+        "low": 23700,
+        "low_date": "2025-05-27",
+        "low_pct": 193.67,
+        "current": 69600
+      },
+      "intraday": {
+        "step_min": 10,
+        "open": 66000,
+        "base": 64798,
+        "prices": [
+          66000,
+          66800,
+          66700,
+          67300,
+          67900,
+          68500,
+          67900,
+          68200,
+          69200,
+          69100,
+          70200,
+          71600,
+          72500,
+          71100,
+          70300,
+          69700,
+          70100,
+          69600,
+          69400,
+          69300,
+          69300
+        ]
+      }
     },
     {
       "code": "039860",
@@ -3163,8 +3284,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -110.59,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -149.3,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9390,
@@ -3214,6 +3335,8 @@
           7350,
           7350,
           7350,
+          7350,
+          7350,
           7350
         ]
       },
@@ -3246,8 +3369,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -111.0,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -149.85,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3925,
@@ -3280,6 +3403,8 @@
         "base": 3020,
         "prices": [
           3145,
+          3925,
+          3925,
           3925,
           3925,
           3925,
@@ -3349,8 +3474,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -110.85,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -149.65,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 26400,
@@ -3400,6 +3525,8 @@
           16280,
           16280,
           16280,
+          16280,
+          16280,
           16280
         ]
       },
@@ -3429,8 +3556,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -110.81,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -149.6,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 15240,
@@ -3463,6 +3590,7 @@
         "base": 11730,
         "prices": [
           14960,
+          15240,
           15240,
           15240,
           15240,
@@ -3543,8 +3671,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -110.96,
+      "index_change_pct": -0.2,
+      "index_multiple_current": -149.8,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 16511,
@@ -3577,6 +3705,8 @@
         "base": 7410,
         "prices": [
           8600,
+          9630,
+          9630,
           9630,
           9630,
           9630,
