@@ -960,6 +960,49 @@ function renderCalExpandContent(date, data) {
     window._calHeadScrollInit = true;
   }
 
+  // REQ-homepage-news-polish #2 — 섹션 헤더 sticky + 클릭 → 자기 섹션 scrollIntoView.
+  // design-lead-2 spec (2026-04-29 17:18 KST): scrollIntoView({behavior:'smooth', block:'start'}).
+  // sticky nav 가림은 CSS scroll-margin-top: 132/120px 으로 회피.
+  if (!window._sectionHeaderScrollInit) {
+    const pulseClassFor = (head) => {
+      const cls = head.classList;
+      if (cls.contains('theme-trend-header')) return 'theme-trend-header--pulse';
+      if (cls.contains('lut-header')) return 'lut-header--pulse';
+      if (cls.contains('theme-tree-header')) return 'theme-tree-header--pulse';
+      return '';
+    };
+    const scrollToSection = (head) => {
+      const id = head.getAttribute('data-scroll-to-section');
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    };
+    const triggerPulse = (head) => {
+      const pc = pulseClassFor(head);
+      if (!pc) return;
+      head.classList.add(pc);
+      setTimeout(() => head.classList.remove(pc), 200);
+    };
+    document.addEventListener('click', e => {
+      const head = e.target.closest('[data-scroll-to-section]');
+      if (!head) return;
+      if (e.target.closest('a, button, input, [role="button"]:not([data-scroll-to-section])')) return;
+      triggerPulse(head);
+      scrollToSection(head);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const head = e.target.closest('[data-scroll-to-section]');
+      if (!head) return;
+      e.preventDefault();
+      triggerPulse(head);
+      scrollToSection(head);
+    });
+    window._sectionHeaderScrollInit = true;
+  }
+
   // REQ-020 v9.5 §II.6 — 헤더 효과 배지 click 시 카드 자동 펼침 (v9.3 호환 — 셀렉터만 교체).
   // 함정 P2 #5: legacy `dsn-v93-header-badge` 셀렉터는 DOM 출력 0건 자연 차단 (잔존 CSS는 dead).
   // 함정 #11: 이벤트 버블링 충돌 방어 — stopPropagation 후 명시적 expanded 부착 (toggle 아닌 add).
@@ -1164,7 +1207,7 @@ async function initThemeTrend() {
         ? `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nextLabel ? '다음 거래일 ' + escapeHtml(nextLabel) : ''}</div></div>`
         : '<div class="cal-empty" style="padding:24px 0;">테마 트렌드 데이터가 없습니다</div>';
       container.innerHTML = `
-        <div class="theme-trend-header">
+        <div class="theme-trend-header" role="button" tabindex="0" aria-label="테마 트렌드 섹션으로 이동" data-scroll-to-section="theme-trend">
           <div class="theme-trend-title">테마 트렌드</div>
           <div class="theme-trend-sub">최근 거래대금 흐름</div>
         </div>
@@ -1275,7 +1318,7 @@ async function initThemeTrend() {
 
     const dateRange = fmtDate(dates[0]) + ' ~ ' + fmtDate(dates[dates.length - 1]);
     container.innerHTML =
-      '<div class="theme-trend-header"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + dates.length + '영업일 · ' + dateRange + '</div></div>' +
+      '<div class="theme-trend-header" role="button" tabindex="0" aria-label="테마별 거래대금 추이 섹션으로 이동" data-scroll-to-section="theme-trend"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + dates.length + '영업일 · ' + dateRange + '</div></div>' +
       '<div class="theme-trend-wrap">' +
         '<div class="trend-y-axis">' + yAxisSvg + '</div>' +
         (needsScroll ? '<div class="trend-fade-left"></div>' : '') +
@@ -1566,7 +1609,7 @@ async function initLimitUpTrend() {
 
     const dateRange = dates.length > 1 ? (fmtMD(dates[0]) + '~' + fmtMD(dates[dates.length - 1])) : fmtMD(dates[0]);
     container.innerHTML =
-      '<div class="lut-header"><div class="lut-title">상한가 종목 추이</div>' +
+      '<div class="lut-header" role="button" tabindex="0" aria-label="상한가 종목 추이 섹션으로 이동" data-scroll-to-section="limit-up-trend"><div class="lut-title">상한가 종목 추이</div>' +
       '<div class="lut-sub">최근 ' + dates.length + '영업일 · ' + dateRange + ' · 총 ' + (data.total_count || 0) + '건</div></div>' +
       '<div class="lut-wrap">' +
         '<div class="lut-yaxis-col">' + yAxisSvg + '</div>' +
