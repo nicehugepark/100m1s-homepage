@@ -1,6 +1,6 @@
 {
   "date": "2026-04-29",
-  "generated_at": "2026-04-29T09:21:59.473404",
+  "generated_at": "2026-04-29T09:26:42.408205",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -478,14 +478,121 @@
   },
   "stocks": [
     {
+      "code": "006340",
+      "name": "대원전선",
+      "rank": 1,
+      "trade_amount": 245421444800,
+      "change_pct": 15.99,
+      "close_price": 11680,
+      "open_price": 10070,
+      "high_price": 12180,
+      "low_price": 9830,
+      "industry": "절연선 및 케이블 제조업",
+      "sector": "전선,통신케이블,무선통신장비,합성수지 제조,도매/부동산 매매,임대",
+      "themes": [
+        "케이블"
+      ],
+      "theme_paths": [
+        {
+          "name": "케이블",
+          "path": [
+            "케이블"
+          ]
+        }
+      ],
+      "pick_count": 5,
+      "prev_pick": {
+        "date": "2026-04-28",
+        "rank": 11,
+        "change_pct": 1.08,
+        "trade_amount": 227587125630
+      },
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "news": [
+        {
+          "title": "[MK시그널] 대원전선, 중동 휴전 연장에 따른 원가 부담 완화 및 공급망 정상화 기대감 주가 상승세, K시그널 추천 후 상승률 24.68%",
+          "url": "https://www.mk.co.kr/news/stock/12028001",
+          "source": "매경",
+          "published_at": "2026-04-27T01:11:41",
+          "causal_chain": "미국-이란 휴전 연장 → 중동 위험 프리미엄 완화 → 원자재·구리 등 원가 부담 완화 기대 → 절연선·케이블 제조사 마진 개선 기대감 (간접수혜)",
+          "macro_event": "미국-이란 휴전 연장 발표로 중동 위험 프리미엄 완화",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[인기검색TOP5] 대원전선, 아모그린텍, LS ELECTRIC, 유니드, 두산에너빌리티",
+          "url": "https://www.mk.co.kr/news/stock/12025640",
+          "source": "매경",
+          "published_at": "2026-04-23T09:19:35",
+          "causal_chain": "본문에 대원전선의 비즈니스 드라이버 명시 없음. AI매매비서 투자 알고리즘이 인기검색 리스트로만 선정하는 마케팅 콘텐츠.",
+          "macro_event": "명시 없음",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.27,
+      "index_multiple_current": -59.22,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 12180,
+        "high_date": "2026-04-29",
+        "high_pct": -4.11,
+        "low": 2765,
+        "low_date": "2025-09-03",
+        "low_pct": 322.42,
+        "current": 11680
+      },
+      "status_badges": [
+        {
+          "label": "투자주의",
+          "severity": "caution",
+          "start": "2026-04-29",
+          "end": "2026-04-29",
+          "summary": "대원전선우가 2026-04-29 당일 투자주의종목으로 지정. 2026-04-29 ~ 2026-05-13 (15일간) 주가상승률 82.90%, 당일 상위20개 계좌 매수관여율 33.79%, 상위3개 계좌 매수관여율 7.65%(외국인)·3.35%(개인)·2.73%(외국인).",
+          "condition": "당일 종가가 15일 전날 종가 대비 75% 이상 상승 + 상위 20개 계좌 매수관여율 30% 이상",
+          "regulation": "2026-04-29 (1일간)",
+          "view_date": "2026-04-29",
+          "next_trading_day": "2026-04-30",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 10070,
+        "base": 10070,
+        "prices": [
+          10070,
+          12090,
+          12000
+        ]
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
+    },
+    {
       "code": "001440",
       "name": "대한전선",
-      "rank": 1,
-      "trade_amount": 131465490000,
-      "change_pct": 6.21,
-      "close_price": 48750,
+      "rank": 2,
+      "trade_amount": 243323735250,
+      "change_pct": 4.96,
+      "close_price": 48175,
       "open_price": 46000,
-      "high_price": 48750,
+      "high_price": 49450,
       "low_price": 45400,
       "industry": "절연선 및 케이블 제조업",
       "sector": "전력선,통신케이블,적산계기,스텐레스압연제품,광케이블,초고압선,알루미늄 제조,도매/전기공사",
@@ -596,167 +703,51 @@
       ],
       "fallback": true,
       "index_change_pct": -0.27,
-      "index_multiple_current": -23.0,
+      "index_multiple_current": -18.37,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 48750,
+        "high": 49450,
         "high_date": "2026-04-29",
-        "high_pct": 0.0,
+        "high_pct": -2.58,
         "low": 11530,
         "low_date": "2025-04-30",
-        "low_pct": 322.81,
-        "current": 48750
+        "low_pct": 317.82,
+        "current": 48175
       },
       "intraday": {
         "step_min": 10,
         "open": 46000,
-        "base": 45900,
+        "base": 45898,
         "prices": [
           46000,
           48900,
           48550
         ]
-      }
-    },
-    {
-      "code": "006340",
-      "name": "대원전선",
-      "rank": 2,
-      "trade_amount": 123825853160,
-      "change_pct": 13.9,
-      "close_price": 11470,
-      "open_price": 10070,
-      "high_price": 11730,
-      "low_price": 9830,
-      "industry": "절연선 및 케이블 제조업",
-      "sector": "전선,통신케이블,무선통신장비,합성수지 제조,도매/부동산 매매,임대",
-      "themes": [
-        "케이블"
-      ],
-      "theme_paths": [
-        {
-          "name": "케이블",
-          "path": [
-            "케이블"
-          ]
-        }
-      ],
-      "pick_count": 5,
-      "prev_pick": {
-        "date": "2026-04-28",
-        "rank": 11,
-        "change_pct": 1.08,
-        "trade_amount": 227587125630
       },
-      "bullish_today": true,
-      "bullish_streak": 1,
-      "news": [
-        {
-          "title": "[MK시그널] 대원전선, 중동 휴전 연장에 따른 원가 부담 완화 및 공급망 정상화 기대감 주가 상승세, K시그널 추천 후 상승률 24.68%",
-          "url": "https://www.mk.co.kr/news/stock/12028001",
-          "source": "매경",
-          "published_at": "2026-04-27T01:11:41",
-          "causal_chain": "미국-이란 휴전 연장 → 중동 위험 프리미엄 완화 → 원자재·구리 등 원가 부담 완화 기대 → 절연선·케이블 제조사 마진 개선 기대감 (간접수혜)",
-          "macro_event": "미국-이란 휴전 연장 발표로 중동 위험 프리미엄 완화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[인기검색TOP5] 대원전선, 아모그린텍, LS ELECTRIC, 유니드, 두산에너빌리티",
-          "url": "https://www.mk.co.kr/news/stock/12025640",
-          "source": "매경",
-          "published_at": "2026-04-23T09:19:35",
-          "causal_chain": "본문에 대원전선의 비즈니스 드라이버 명시 없음. AI매매비서 투자 알고리즘이 인기검색 리스트로만 선정하는 마케팅 콘텐츠.",
-          "macro_event": "명시 없음",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "index_change_pct": -0.27,
-      "index_multiple_current": -51.48,
-      "index_multiple_eligible": false,
-      "range_240d": {
-        "high": 12180,
-        "high_date": "2026-04-29",
-        "high_pct": -5.83,
-        "low": 2765,
-        "low_date": "2025-09-03",
-        "low_pct": 314.83,
-        "current": 11470
-      },
-      "status_badges": [
-        {
-          "label": "투자주의",
-          "severity": "caution",
-          "start": "2026-04-29",
-          "end": "2026-04-29",
-          "summary": "대원전선우가 2026-04-29 당일 투자주의종목으로 지정. 2026-04-29 ~ 2026-05-13 (15일간) 주가상승률 82.90%, 당일 상위20개 계좌 매수관여율 33.79%, 상위3개 계좌 매수관여율 7.65%(외국인)·3.35%(개인)·2.73%(외국인).",
-          "condition": "당일 종가가 15일 전날 종가 대비 75% 이상 상승 + 상위 20개 계좌 매수관여율 30% 이상",
-          "regulation": "2026-04-29 (1일간)",
-          "view_date": "2026-04-29",
-          "next_trading_day": "2026-04-30",
-          "single_price": false,
-          "source": "disclosure",
-          "effect_badges": []
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 10070,
-        "base": 10070,
-        "prices": [
-          10070,
-          12090,
-          12000
-        ]
-      }
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "178320",
       "name": "서진시스템",
       "rank": 3,
-      "trade_amount": 101703465600,
-      "change_pct": 9.36,
-      "close_price": 56100,
+      "trade_amount": 137446457600,
+      "change_pct": 10.72,
+      "close_price": 56800,
       "open_price": 51400,
       "high_price": 58700,
       "low_price": 51000,
       "industry": "기타 전기장비 제조업",
       "sector": "통신장비부품,휴대폰부품(메탈케이스 등)",
       "themes": [
-        "2차전지",
-        "미중갈등",
-        "반도체"
+        "2차전지"
       ],
       "theme_paths": [
         {
           "name": "2차전지",
           "path": [
             "2차전지"
-          ]
-        },
-        {
-          "name": "미중갈등",
-          "path": [
-            "트럼프",
-            "미중갈등"
-          ]
-        },
-        {
-          "name": "반도체",
-          "path": [
-            "반도체"
           ]
         }
       ],
@@ -775,8 +766,8 @@
           "url": "https://www.hankyung.com/article/2026042818156",
           "source": "한경",
           "published_at": "2026-04-28T04:51:40",
-          "causal_chain": "글로벌 ESS 수요 확대 + 미중갈등에 따른 비중국 공급망 재편 → 서진시스템이 메탈케이스·함체 등 전공정 내재화 역량으로 ESS 장비를 대형 수주(1206억, 매출의 11.31%) → ESS·반도체 부품 매출 기저 확대.",
-          "macro_event": "ESS(에너지저장장치) 수요 확대에 따른 1206억원 규모 장비 공급계약 체결 (지난해 매출의 11.31%)",
+          "causal_chain": "ESS 수요 확대 → 서진시스템이 1206억 규모 ESS 장비 공급계약 체결(매출의 11.31%, 2027년 1월까지) → ESS 부문 매출 기저 확대.",
+          "macro_event": "ESS 장비 대형 수주(1206억, 매출 11.31%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -790,8 +781,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03371846645420712",
           "source": "이데일리",
           "published_at": "2026-04-28T01:36:25",
-          "causal_chain": "글로벌 ESS 수요 확대 + 미중갈등에 따른 비중국 공급망 재편 → 서진시스템이 메탈케이스·함체 등 전공정 내재화 역량으로 ESS 장비를 대형 수주(1206억, 매출의 11.31%) → ESS·반도체 부품 매출 기저 확대.",
-          "macro_event": "ESS(에너지저장장치) 수요 확대에 따른 1206억원 규모 장비 공급계약 체결 (지난해 매출의 11.31%)",
+          "causal_chain": "ESS 수요 확대 → 서진시스템이 1206억 규모 ESS 장비 공급계약 체결(매출의 11.31%, 2027년 1월까지) → ESS 부문 매출 기저 확대.",
+          "macro_event": "ESS 장비 대형 수주(1206억, 매출 11.31%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -818,21 +809,21 @@
       ],
       "fallback": true,
       "index_change_pct": -0.15,
-      "index_multiple_current": -62.4,
+      "index_multiple_current": -71.47,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 58700,
         "high_date": "2026-04-29",
-        "high_pct": -4.43,
+        "high_pct": -3.24,
         "low": 18410,
         "low_date": "2025-08-20",
-        "low_pct": 204.73,
-        "current": 56100
+        "low_pct": 208.53,
+        "current": 56800
       },
       "intraday": {
         "step_min": 10,
         "open": 51400,
-        "base": 51298,
+        "base": 51301,
         "prices": [
           51400,
           56900,
@@ -840,27 +831,29 @@
         ]
       },
       "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "058430",
       "name": "포스코스틸리온",
       "rank": 4,
-      "trade_amount": 69923992300,
-      "change_pct": 6.24,
-      "close_price": 9700,
+      "trade_amount": 84484832490,
+      "change_pct": -0.44,
+      "close_price": 9090,
       "open_price": 9330,
       "high_price": 10500,
-      "low_price": 9130,
+      "low_price": 8750,
       "industry": "1차 철강 제조업",
       "sector": "용융아연도금강판,용융알루미늄도금강판,칼라도장강판,냉연강판 가공,제조,도매",
       "themes": [
-        "철강",
         "AI",
+        "철강",
         "AI 인프라",
         "AI데이터센터",
-        "건설자재",
-        "건설"
+        "건설자재"
       ],
       "theme_paths": [
         {
@@ -906,8 +899,8 @@
           "url": "https://www.etoday.co.kr/news/view/2579604",
           "source": "이투데이",
           "published_at": "2026-04-27T09:18:00",
-          "causal_chain": "AI 인프라 수요 증대 → 글로벌 하이퍼스케일 데이터센터 건설 지속 → 건설에 필요한 강판·강재 공급 수요 증가 → 포스코스틸리온의 건설자재(강판) 매출 기저 확대.",
-          "macro_event": "AI 인프라 투자 확대 추세 속 글로벌 하이퍼스케일 데이터센터 건설 프로젝트 증가",
+          "causal_chain": "AI 인프라 수요 증대 → 글로벌 하이퍼스케일 데이터센터 건설 확대(호주 등) → 데이터센터 건축에 필요한 강판·강재 공급 수요 증가 → 포스코스틸리온의 건설자재(도금강판) 수주·매출 기저 확대.",
+          "macro_event": "글로벌 AI 인프라 수요 증대로 하이퍼스케일 데이터센터 건설 지속 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -921,8 +914,8 @@
           "url": "https://biz.chosun.com/industry/company/2026/04/24/C27R5ERNIJD7FHAKB5LFBPXNTY/",
           "source": "조선비즈",
           "published_at": "2026-04-24T00:53:04",
-          "causal_chain": "AI 인프라 수요 증대 → 글로벌 하이퍼스케일 데이터센터 건설 지속 → 건설에 필요한 강판·강재 공급 수요 증가 → 포스코스틸리온의 건설자재(강판) 매출 기저 확대.",
-          "macro_event": "AI 인프라 투자 확대 추세 속 글로벌 하이퍼스케일 데이터센터 건설 프로젝트 증가",
+          "causal_chain": "AI 인프라 수요 증대 → 글로벌 하이퍼스케일 데이터센터 건설 확대(호주 등) → 데이터센터 건축에 필요한 강판·강재 공급 수요 증가 → 포스코스틸리온의 건설자재(도금강판) 수주·매출 기저 확대.",
+          "macro_event": "글로벌 AI 인프라 수요 증대로 하이퍼스케일 데이터센터 건설 지속 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -934,16 +927,16 @@
       ],
       "fallback": true,
       "index_change_pct": -0.27,
-      "index_multiple_current": -23.11,
+      "index_multiple_current": 1.63,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 10500,
         "high_date": "2026-04-29",
-        "high_pct": -7.62,
+        "high_pct": -13.43,
         "low": 3560,
         "low_date": "2025-10-10",
-        "low_pct": 172.47,
-        "current": 9700
+        "low_pct": 155.34,
+        "current": 9090
       },
       "status_badges": [
         {
@@ -1001,7 +994,107 @@
         ]
       },
       "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "417200",
+      "name": "LS머트리얼즈",
+      "rank": 5,
+      "trade_amount": 67773516800,
+      "change_pct": 8.57,
+      "close_price": 29150,
+      "open_price": 27400,
+      "high_price": 29500,
+      "low_price": 27300,
+      "industry": "전자부품 제조업",
+      "sector": "울트라커패시터(셀 및 모듈)",
+      "themes": [
+        "전력설비",
+        "AI데이터센터",
+        "원전",
+        "스마트그리드"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "원전",
+          "path": [
+            "원전"
+          ]
+        },
+        {
+          "name": "스마트그리드",
+          "path": [
+            "전력설비",
+            "스마트그리드"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-24",
+        "rank": 19,
+        "change_pct": 5.57,
+        "trade_amount": 191142560000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "23일 코스닥 시장 공매도 수량 상위 종목. 우리기술, LS머트리얼즈 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/24/MQ3DEZLDMYYDCOJUGE4DMOJWMQ/",
+          "source": "조선비즈",
+          "published_at": "2026-04-23T23:01:11",
+          "causal_chain": "美 핵융합 상용화 프로젝트 추진 → 순간 고출력(15㎿급) 전력 공급 필요 → LS머트리얼즈 울트라캐패시터 1000개+ 첫 공급 → 핵융합 신규 수주처 선점",
+          "macro_event": "미국 핵융합 발전 상용화 프로젝트, 첫 상업 공급 개시",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "LS머트리얼즈, 美 핵융합 프로젝트 첫 공급...상용화 시장 선점",
+          "url": "https://www.mk.co.kr/news/business/12025199",
+          "source": "매경",
+          "published_at": "2026-04-23T04:46:34",
+          "causal_chain": "美 핵융합 상용화 프로젝트 추진 → 순간 고출력(15㎿급) 전력 공급 필요 → LS머트리얼즈 울트라캐패시터 1000개+ 첫 공급 → 핵융합 신규 수주처 선점",
+          "macro_event": "미국 핵융합 발전 상용화 프로젝트, 첫 상업 공급 개시",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.15,
+      "index_multiple_current": -57.13,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 29500,
+        "high_date": "2026-04-29",
+        "high_pct": -1.19,
+        "low": 9160,
+        "low_date": "2025-10-13",
+        "low_pct": 218.23,
+        "current": 29150
+      },
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
     }
   ]
 }
