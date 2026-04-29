@@ -1,6 +1,6 @@
 {
   "date": "2026-04-14",
-  "generated_at": "2026-04-28T16:48:43.189377",
+  "generated_at": "2026-04-29T14:14:17.030618",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -62,15 +62,19 @@
           "name": "광통신",
           "path": [
             "AI",
-            "AI데이터센터",
             "광통신"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
           ]
         },
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         }
@@ -292,8 +296,6 @@
         {
           "name": "알루미늄 수급불안",
           "path": [
-            "전쟁",
-            "전쟁악화",
             "비철금속",
             "알루미늄 수급불안"
           ]
@@ -431,7 +433,23 @@
       "prev_pick": null,
       "bullish_today": true,
       "bullish_streak": 1,
-      "news": [],
+      "news": [
+        {
+          "title": "[특징주] 아주IB투자, 대주주 1580억 블록딜 소식에 20% 급락",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/29/HYMHNB4ITNEO7JOVOT446I7E5U/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T00:29:45",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 2.0,
       "index_multiple_current": 14.96,
@@ -517,9 +535,6 @@
         {
           "name": "부동산 재개발",
           "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
             "건설",
             "부동산 재개발"
           ]
@@ -672,15 +687,28 @@
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "반도체 설계 서비스",
       "themes": [
+        "AI",
+        "반도체",
+        "AI 인프라",
         "건설"
       ],
       "theme_paths": [
         {
+          "name": "반도체",
+          "path": [
+            "반도체"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
+        {
           "name": "건설",
           "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
             "건설"
           ]
         }
@@ -700,8 +728,8 @@
           "url": "https://www.sedaily.com/article/20038124",
           "source": "서울경제",
           "published_at": "2026-04-28T06:35:07",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "엣지 AI 장치 시장 확대(리테일·드론·모바일·영상장비 온디바이스 AI 추론) → 초저전력·고성능 AI 추론 칩 수요 → 3D-IC 기술(소형화·전력효율 극대화)이 엣지 솔루션의 핵심 기술 → 세미파이브의 검증된 3D-IC 설계·패키징 통합 역량으로 글로벌 AI ASIC 시장에서 엣지 영역 턴키 수주 기저 확대",
+          "macro_event": "글로벌 엣지 AI 장치(드론, 리테일시스템, 모바일, 특수영상장비) 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -715,8 +743,8 @@
           "url": "https://biz.chosun.com/it-science/ict/2026/04/28/OCDPIAHLJ5FMBDZWMHSFMCBMVA/",
           "source": "조선비즈",
           "published_at": "2026-04-28T05:23:12",
-          "causal_chain": "유럽 비전 AI 기업향 3D-IC 턴키 수주 → 세미파이브의 첨단 반도체 설계 플랫폼 사업 해외 수주 확대 가시화.",
-          "macro_event": "세미파이브 유럽 비전 AI 기업 대상 3D-IC 턴키 수주",
+          "causal_chain": "엣지 AI 장치 시장 확대(리테일·드론·모바일·영상장비 온디바이스 AI 추론) → 초저전력·고성능 AI 추론 칩 수요 → 3D-IC 기술(소형화·전력효율 극대화)이 엣지 솔루션의 핵심 기술 → 세미파이브의 검증된 3D-IC 설계·패키징 통합 역량으로 글로벌 AI ASIC 시장에서 엣지 영역 턴키 수주 기저 확대",
+          "macro_event": "글로벌 엣지 AI 장치(드론, 리테일시스템, 모바일, 특수영상장비) 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -835,10 +863,16 @@
       ],
       "theme_paths": [
         {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
           "name": "광통신",
           "path": [
             "AI",
-            "AI데이터센터",
             "광통신"
           ]
         }
@@ -1118,8 +1152,6 @@
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         }
@@ -1218,7 +1250,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -1344,11 +1375,14 @@
           ]
         },
         {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
+        {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
@@ -1463,8 +1497,6 @@
         {
           "name": "통신장비",
           "path": [
-            "AI",
-            "AI 인프라",
             "통신장비"
           ]
         },
@@ -1472,7 +1504,6 @@
           "name": "광통신",
           "path": [
             "AI",
-            "AI데이터센터",
             "광통신"
           ]
         }
@@ -1741,7 +1772,6 @@
         {
           "name": "비료",
           "path": [
-            "전쟁",
             "비료"
           ]
         }
@@ -2008,8 +2038,6 @@
         {
           "name": "알루미늄 수급불안",
           "path": [
-            "전쟁",
-            "전쟁악화",
             "비철금속",
             "알루미늄 수급불안"
           ]
@@ -2117,14 +2145,21 @@
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "연료전지",
       "themes": [
+        "AI데이터센터",
+        "AI",
         "전력설비"
       ],
       "theme_paths": [
         {
-          "name": "전력설비",
+          "name": "AI데이터센터",
           "path": [
             "AI",
-            "AI 인프라",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
             "전력설비"
           ]
         }
@@ -2133,7 +2168,23 @@
       "prev_pick": null,
       "bullish_today": true,
       "bullish_streak": 1,
-      "news": [],
+      "news": [
+        {
+          "title": "[MK시그널] 두산퓨얼셀, AI 전력난 수혜 및 SOFC 양산 본격화에 주가 상승세... K시그널 추천 후 상승률 26.75% 기록",
+          "url": "https://www.mk.co.kr/news/stock/12030500",
+          "source": "매경",
+          "published_at": "2026-04-29T01:08:59",
+          "causal_chain": "AI 데이터센터 급증 → 전력 수요 폭증 → 안정성·공간효율 갖춘 수소 연료전지가 핵심 대안으로 부상 → 두산퓨얼셀 2026년 SOFC 양산 체제 가동 + 하이액시엄 생산 중단에 따른 공급 일원화 → 해외 수주 수익성 직접 개선.",
+          "macro_event": "AI 데이터센터 확대로 전력 수요 폭증 → 수소 연료전지 대안 부상",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 2.74,
       "index_multiple_current": 5.78,
@@ -2195,9 +2246,7 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "주의"
     },
     {
       "code": "217590",
@@ -2218,9 +2267,6 @@
         {
           "name": "케이블",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "케이블"
           ]
         }
@@ -2361,16 +2407,12 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -2877,15 +2919,12 @@
         {
           "name": "통신장비",
           "path": [
-            "AI",
-            "AI 인프라",
             "통신장비"
           ]
         },
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -3035,7 +3074,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -3165,7 +3203,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -3348,7 +3385,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -3755,7 +3791,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -4081,8 +4116,6 @@
         {
           "name": "공중 기동 로봇",
           "path": [
-            "전쟁",
-            "전쟁악화",
             "방산",
             "공중 기동 로봇"
           ]
@@ -4291,7 +4324,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -4452,8 +4484,17 @@
       "low_price": 126000,
       "industry": "일차전지 및 이차전지 제조업",
       "sector": "초고용량 커패시터(슈퍼커패시터)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "2차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "2차전지",
+          "path": [
+            "2차전지"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -4541,9 +4582,6 @@
         {
           "name": "건설",
           "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
             "건설"
           ]
         }
@@ -4639,8 +4677,14 @@
           "name": "광통신",
           "path": [
             "AI",
-            "AI데이터센터",
             "광통신"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
           ]
         }
       ],
