@@ -727,9 +727,18 @@ function renderCalExpandContent(date, data) {
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       // REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측, 모바일은 CSS로 sparkline 숨김 + candles20만).
       const d20 = it.interp?.daily_20;
-      const candles20Html = (Array.isArray(d20) && d20.length >= 5)
-        ? `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`
-        : '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+      // #4 안전망: daily_20 마지막 봉 일자 < 카드 일자 시 라벨 노출 (design-lead 명세 (A) 라벨)
+      let candles20Html;
+      if (Array.isArray(d20) && d20.length >= 5) {
+        const lastBarDate = d20[d20.length - 1]?.date;
+        const isStale = lastBarDate && date && lastBarDate < date;
+        const staleLabel = isStale
+          ? `<div class="cal-feature-candles20-stale">데이터 ${lastBarDate.slice(5).replace('-', '/')}</div>`
+          : '';
+        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>${staleLabel}`;
+      } else {
+        candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+      }
 
       // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B / 레이아웃 v2 — 4행 분해)
       const r240 = it.interp?.range_240d;
@@ -1474,7 +1483,6 @@ async function initLimitUpTrend() {
     const padTop = 12, padBottom = 28;
     const plotH = H - padTop - padBottom;
     const yScale = v => padTop + plotH * (1 - v / yMax);
-    const barW = slot * 0.6;
 
     const fmtMD = (d) => {
       const m = parseInt(d.slice(5, 7), 10);
@@ -1491,25 +1499,52 @@ async function initLimitUpTrend() {
     }
     yAxisSvg += '</svg>';
 
-    // Chart SVG
+    // Chart SVG (라인+포인트 — design-lead 명세)
     let chartSvg = '<svg class="lut-svg lut-chart" viewBox="0 0 ' + chartW + ' ' + H + '" width="' + chartW + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
+    // 영역 그라디언트 정의
+    chartSvg += '<defs><linearGradient id="lutAreaGrad" x1="0" y1="0" x2="0" y2="1">';
+    chartSvg += '<stop offset="0%" stop-color="#C49930" stop-opacity="0.18"/>';
+    chartSvg += '<stop offset="100%" stop-color="#C49930" stop-opacity="0"/>';
+    chartSvg += '</linearGradient></defs>';
     // gridlines
     for (const v of yTicks) {
       const y = yScale(v).toFixed(1);
       chartSvg += '<line x1="0" y1="' + y + '" x2="' + chartW + '" y2="' + y + '" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="2,3"/>';
     }
-    // bars
+    // 좌표 사전 계산 (line, area 공유)
+    const baseline = padTop + plotH;
+    const pts = items.map((it, i) => {
+      const cx = slot * i + slot / 2;
+      const cy = yScale(it.count);
+      return { cx, cy, it };
+    });
+    // 영역 path
+    if (pts.length >= 2) {
+      let areaD = 'M ' + pts[0].cx.toFixed(1) + ' ' + baseline.toFixed(1);
+      for (const p of pts) areaD += ' L ' + p.cx.toFixed(1) + ' ' + p.cy.toFixed(1);
+      areaD += ' L ' + pts[pts.length - 1].cx.toFixed(1) + ' ' + baseline.toFixed(1) + ' Z';
+      chartSvg += '<path class="lut-area" d="' + areaD + '" fill="url(#lutAreaGrad)"/>';
+    }
+    // 라인 path
+    if (pts.length >= 2) {
+      let lineD = 'M ' + pts[0].cx.toFixed(1) + ' ' + pts[0].cy.toFixed(1);
+      for (let i = 1; i < pts.length; i++) lineD += ' L ' + pts[i].cx.toFixed(1) + ' ' + pts[i].cy.toFixed(1);
+      chartSvg += '<path class="lut-line" d="' + lineD + '" stroke="var(--am, #C49930)" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>';
+    }
+    // dot + hit-area + label
     items.forEach((it, i) => {
-      const x = slot * i + (slot - barW) / 2;
-      const y = yScale(it.count);
-      const h = Math.max(0, plotH - (y - padTop));
-      const baseline = padTop + plotH;
-      if (it.count > 0) {
-        chartSvg += '<rect class="lut-bar" data-date="' + it.date + '" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="#C53939" rx="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></rect>';
-      }
+      const cx = (slot * i + slot / 2);
+      const cy = yScale(it.count);
+      const isZero = it.count === 0;
+      const dotCls = isZero ? 'lut-dot lut-dot-zero' : 'lut-dot';
+      const dotR = isZero ? 3 : 4;
+      // 0건도 표시 (회색 dot) — design 명세
+      const fill = isZero ? '#CBD5E1' : '#FFF';
+      const stroke = isZero ? '#CBD5E1' : 'var(--am, #C49930)';
+      chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + (slot * i).toFixed(1) + '" y="0" width="' + slot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
+      chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + dotR + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
       // X-axis label
-      const lx = (slot * i + slot / 2).toFixed(1);
-      chartSvg += '<text x="' + lx + '" y="' + (baseline + 14) + '" font-size="10" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>';
+      chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="10" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>';
     });
     chartSvg += '</svg>';
 
@@ -1523,23 +1558,26 @@ async function initLimitUpTrend() {
       '</div>' +
       '<div class="lut-detail" id="lut-detail" hidden></div>';
 
-    // Inline expand on bar click/keydown
+    // Inline expand on dot click/keydown
     const detail = container.querySelector('#lut-detail');
     let activeDate = null;
+    const clearActive = () => {
+      container.querySelectorAll('.lut-dot.lut-dot--active').forEach(b => b.classList.remove('lut-dot--active'));
+    };
     const closeDetail = () => {
       detail.hidden = true;
       detail.innerHTML = '';
       activeDate = null;
-      container.querySelectorAll('.lut-bar.lut-bar--active').forEach(b => b.classList.remove('lut-bar--active'));
+      clearActive();
     };
     const openDetail = (date) => {
       const it = items.find(x => x.date === date);
       if (!it || it.count === 0) return;
       if (activeDate === date) { closeDetail(); return; }
       activeDate = date;
-      container.querySelectorAll('.lut-bar.lut-bar--active').forEach(b => b.classList.remove('lut-bar--active'));
-      const bar = container.querySelector('.lut-bar[data-date="' + date + '"]');
-      if (bar) bar.classList.add('lut-bar--active');
+      clearActive();
+      const dot = container.querySelector('.lut-dot[data-date="' + date + '"]');
+      if (dot) dot.classList.add('lut-dot--active');
       const fmtPct = v => v == null ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
       const fmtAmt = v => {
         if (v == null) return '';
@@ -1566,16 +1604,16 @@ async function initLimitUpTrend() {
         '</div>';
     };
     container.addEventListener('click', e => {
-      const bar = e.target.closest('.lut-bar');
-      if (!bar) return;
-      openDetail(bar.getAttribute('data-date'));
+      const target = e.target.closest('.lut-dot, .lut-dot-hit');
+      if (!target) return;
+      openDetail(target.getAttribute('data-date'));
     });
     container.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
-      const bar = e.target.closest('.lut-bar');
-      if (!bar) return;
+      const dot = e.target.closest('.lut-dot');
+      if (!dot) return;
       e.preventDefault();
-      openDetail(bar.getAttribute('data-date'));
+      openDetail(dot.getAttribute('data-date'));
     });
   } catch (e) { console.warn('limit-up-trend:', e); }
 }
