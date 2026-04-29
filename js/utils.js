@@ -949,6 +949,15 @@ function dsnV95FormatEffectBadge(eb) {
     return cc >= 2 ? `상한가+${cc}` : '상한가';
   }
   const ef = _DSN_V95_EFFECT_LABEL[eb.effect] || eb.effect;
+  // 대표 발화 2026-04-29 16:55 — credit-block 라벨 정책:
+  //   today → '신용불가' (괄호 생략, default = 오늘)
+  //   tomorrow → '신용불가(내일)'
+  //   today_and_tomorrow → '신용불가(+내일)' (괄호 안 "+내일"만)
+  if (eb.effect === 'credit-block') {
+    if (eb.when === 'today' || !eb.when) return '신용불가';
+    if (eb.when === 'tomorrow') return '신용불가(내일)';
+    if (eb.when === 'today_and_tomorrow') return '신용불가(+내일)';
+  }
   const wh = _DSN_V95_WHEN_LABEL[eb.when] || eb.when || '';
   return wh ? `${ef}(${wh})` : ef;
 }
