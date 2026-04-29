@@ -685,8 +685,8 @@ a.cal-credit-row:hover,
 
 /* REQ-pm320-ux-cycle #2 — 상한가 종목 추이 (theme-trend 직하). */
 .limit-up-trend { margin-bottom: 48px; }
-.lut-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #C53939; }
-.lut-title { font-size: 14px; font-weight: 800; color: #C53939; }
+.lut-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
+.lut-title { font-size: 14px; font-weight: 800; color: var(--am); }
 .lut-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
 .lut-wrap {
   display: flex; align-items: stretch;
@@ -696,10 +696,14 @@ a.cal-credit-row:hover,
 .lut-yaxis-col { flex-shrink: 0; }
 .lut-scroll { flex: 1; overflow-x: auto; overflow-y: hidden; }
 .lut-svg { display: block; }
-.lut-bar { cursor: pointer; transition: fill 150ms ease; }
-.lut-bar:hover { fill: #A02828; }
-.lut-bar:focus-visible { outline: 2px solid #C53939; outline-offset: 2px; }
-.lut-bar--active { fill: #A02828; }
+.lut-line { transition: opacity 200ms ease; pointer-events: none; }
+.lut-area { pointer-events: none; }
+.lut-dot { transition: r 150ms ease, fill 150ms ease; cursor: pointer; }
+.lut-dot:hover { r: 5.5; fill: var(--am2); }
+.lut-dot:focus-visible { outline: none; r: 7; fill: var(--am); stroke: #FFF; stroke-width: 2; }
+.lut-dot--active { r: 7; fill: var(--am); stroke: #FFF; stroke-width: 2; }
+.lut-dot-zero { fill: #CBD5E1; }
+.lut-dot-hit { fill: transparent; cursor: pointer; }
 .lut-detail {
   margin-top: 12px; padding: 12px 14px;
   background: var(--bg2); border-radius: 10px;
@@ -742,8 +746,20 @@ a.cal-credit-row:hover,
 }
 @media (prefers-reduced-motion: reduce) {
   .lut-detail { animation: none; }
-  .lut-bar { transition: none; }
+  .lut-dot { transition: none; }
+  .lut-line { transition: none; }
 }
+
+/* #4 데이터 정합 안전망 라벨 — daily_20 마지막 봉 일자 < 카드 일자 시 표시 */
+.cal-feature-candles20-stale {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 9px;
+  color: var(--dm);
+  font-family: 'SF Mono', monospace;
+  letter-spacing: 0.02em;
+}
+.cal-feature-candles20-stale::before { content: '\203B  '; }
 
 /* ───── 테마 트리 (Indented Tree + Inline Bar) ───── */
 .theme-tree { margin-top: 0; }
