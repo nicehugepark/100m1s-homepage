@@ -1447,7 +1447,7 @@ async function initThemeTrend() {
       if (stocks.length === 0) {
         html += '<div style="font-size:12px;color:var(--dm);padding:8px 0;">종목 데이터가 없습니다</div>';
       } else {
-        html += '<table class="trend-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+        html += '<table class="trend-detail-table"><thead><tr><th class="th-name">종목명</th><th class="th-price">종가</th><th class="th-pct">등락률</th><th class="th-candle"></th><th class="th-amount">거래대금</th></tr></thead><tbody>';
         stocks.forEach(s => {
           const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
@@ -1456,7 +1456,7 @@ async function initThemeTrend() {
           const nameCell = code
             ? '<a class="trend-stock-link" href="?date=' + dateStr + '#stock-' + code + '">' + escapeHtml(s.name) + '</a>'
             : escapeHtml(s.name);
-          html += '<tr><td>' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
+          html += '<tr><td class="td-name">' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
         html += '</tbody></table>';
       }
@@ -1691,7 +1691,7 @@ async function initLimitUpTrend() {
       // 타이틀 박스 = .trend-detail-chip (theme-trend SoT) — 황금 pill, 11px 700w, var(--am4) bg
       const chipDate = it.date.slice(5).replace('-', '/');
       let html = '<div class="trend-detail-chip">' + chipDate + ' &middot; 상한가 ' + it.count + '건</div>';
-      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th class="th-name">종목명</th><th class="th-price">종가</th><th class="th-pct">등락률</th><th class="th-candle"></th><th class="th-amount">거래대금</th></tr></thead><tbody>';
       // 거래대금 역순(DESC) 정렬
       const sortedStocks = it.stocks.slice().sort((a, b) => (b.trade_amount || 0) - (a.trade_amount || 0));
       sortedStocks.forEach(s => {
@@ -1702,10 +1702,10 @@ async function initLimitUpTrend() {
         const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
         const candleHtml = miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct);
         html += '<tr>' +
-          '<td><span class="lut-stock-main">' + nameLink + cc + '</span></td>' +
+          '<td class="td-name"><span class="lut-stock-main">' + nameLink + cc + '</span></td>' +
           '<td class="td-price">' + (s.price != null ? s.price.toLocaleString() : '-') + '</td>' +
-          '<td class="td-candle">' + candleHtml + '</td>' +
           '<td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + fmtPct(s.change_pct) + '</td>' +
+          '<td class="td-candle">' + candleHtml + '</td>' +
           '<td class="td-amount">' + fmtAmt(s.trade_amount) + '</td>' +
         '</tr>';
       });
