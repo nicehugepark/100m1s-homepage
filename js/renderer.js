@@ -1687,8 +1687,10 @@ async function initLimitUpTrend() {
         return v.toLocaleString();
       };
       detail.hidden = false;
-      // 거래대금 추이 종목 list 완전 복제 — 5컬럼 (종목명+연속칩 | 종가 | 미니캔들 | 등락률 | 거래대금)
-      let html = '<div class="lut-detail-head"><span class="lut-detail-date">' + it.date + '</span> · 상한가 <strong>' + it.count + '건</strong></div>';
+      // 거래대금 추이 종목 list 완전 복제 — 타이틀 chip + 5컬럼 (종목명+연속칩 | 종가 | 미니캔들 | 등락률 | 거래대금)
+      // 타이틀 박스 = .trend-detail-chip (theme-trend SoT) — 황금 pill, 11px 700w, var(--am4) bg
+      const chipDate = it.date.slice(5).replace('-', '/');
+      let html = '<div class="trend-detail-chip">' + chipDate + ' &middot; 상한가 ' + it.count + '건</div>';
       html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
       // 거래대금 역순(DESC) 정렬
       const sortedStocks = it.stocks.slice().sort((a, b) => (b.trade_amount || 0) - (a.trade_amount || 0));

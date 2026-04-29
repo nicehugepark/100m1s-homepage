@@ -764,9 +764,10 @@ a.cal-credit-row:hover,
 .lut-dot-zero:hover { fill: #CBD5E1; }
 .lut-dot-hit { fill: transparent; cursor: pointer; }
 .lut-gold-ring { pointer-events: none; }
+/* theme-trend SoT 정합: padding/배경 제거 (.trend-detail와 동일 — 페이지 배경 직접 사용).
+   타이틀은 .trend-detail-chip 재사용 (lut-detail-head/lut-detail-date deprecated). */
 .lut-detail {
-  margin-top: 12px; padding: 12px 14px;
-  background: var(--bg2); border-radius: 10px;
+  margin-top: 12px;
   max-height: 360px; overflow-y: auto;
   animation: lut-detail-in 200ms ease;
 }
@@ -774,8 +775,6 @@ a.cal-credit-row:hover,
   from { opacity: 0; transform: translateY(-4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.lut-detail-head { font-size: 12px; color: var(--tx2); margin-bottom: 8px; }
-.lut-detail-date { font-weight: 700; color: var(--tx); }
 /* 상한가 list = 거래대금 list 완전 복제 (.trend-detail-table 클래스 재사용).
    .lut-detail-table는 hover 색·금액 색만 재정의. 5컬럼 = 종목명 / 종가 / 미니캔들 / 등락률 / 거래대금. */
 .lut-detail-table tr:hover td { background: rgba(196, 153, 48, 0.08); }
