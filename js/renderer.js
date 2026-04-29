@@ -1529,10 +1529,13 @@ async function initLimitUpTrend() {
     const container = document.getElementById('limit-up-trend');
     if (!container || !Array.isArray(data.items) || data.items.length === 0) return;
 
+    // 6영업일 윈도우 + 가로 스크롤 (theme-trend SoT 정합)
+    const VISIBLE_DAYS = 6;
     const items = data.items;
     const dates = items.map(it => it.date);
     const counts = items.map(it => it.count);
     const maxCount = Math.max(1, ...counts);
+    const needsScroll = dates.length > VISIBLE_DAYS;
     // Y-axis ticks (auto-scale 정수)
     const yMax = Math.max(5, Math.ceil(maxCount / 5) * 5);
     const yTicks = [];
@@ -1542,9 +1545,11 @@ async function initLimitUpTrend() {
     const containerW = container.clientWidth || 800;
     const wrapPadding = isMobile ? 28 : 40;
     const yAxisW = isMobile ? 36 : 44;
-    const innerW = containerW - wrapPadding - yAxisW;
-    const slot = Math.max(isMobile ? 24 : 36, innerW / dates.length);
-    const chartW = Math.max(innerW, slot * dates.length);
+    const innerW = Math.max(280, containerW - wrapPadding - yAxisW);
+    // theme-trend SoT: VISIBLE_DAYS 기준 가용폭을 날짜 수에 비례 확장
+    const baseW = innerW;
+    const chartW = needsScroll ? Math.round(baseW * (dates.length / VISIBLE_DAYS)) : baseW;
+    const slot = chartW / dates.length;
     const H = isMobile ? 140 : 180;
     const padTop = 12, padBottom = 28;
     const plotH = H - padTop - padBottom;
@@ -1597,10 +1602,10 @@ async function initLimitUpTrend() {
       for (let i = 1; i < pts.length; i++) lineD += ' L ' + pts[i].cx.toFixed(1) + ' ' + pts[i].cy.toFixed(1);
       chartSvg += '<path class="lut-line" d="' + lineD + '" stroke="var(--am, #C49930)" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>';
     }
-    // dot + hit-area + label
-    // 정정 #1 (대표 18:06): theme-trend SoT (r=2 desktop / 3.5 mobile, fill=#FFF + stroke=color). 빈 default + active 시 fill=color.
+    // dot + hit-area + label — theme-trend SoT 정합 (r=3.5 mobile / 2 desktop, active 시 fill=color + 골드 링)
     const lutIsMobile = window.innerWidth < 880;
     const lutDotR = lutIsMobile ? 3.5 : 2;
+    const lutDotActiveR = lutIsMobile ? 5 : 5; // 골드 링 반경 (theme-trend SoT)
     items.forEach((it, i) => {
       const cx = (slot * i + slot / 2);
       const cy = yScale(it.count);
@@ -1624,14 +1629,24 @@ async function initLimitUpTrend() {
       '</div>' +
       '<div class="lut-detail" id="lut-detail" hidden></div>';
 
+    // 횡스크롤 초기화 — 최신일자가 우측 끝, 초기 진입 시 우측 정렬 (theme-trend SoT)
+    const lutScroll = container.querySelector('.lut-scroll');
+    if (lutScroll && needsScroll) {
+      requestAnimationFrame(() => {
+        lutScroll.scrollLeft = lutScroll.scrollWidth;
+      });
+    }
+
     // Inline expand on dot click/keydown
     const detail = container.querySelector('#lut-detail');
+    const chartSvgEl = container.querySelector('.lut-chart');
     let activeDate = null;
     const clearActive = () => {
       container.querySelectorAll('.lut-dot.lut-dot--active').forEach(b => {
         b.classList.remove('lut-dot--active');
         b.setAttribute('fill', '#FFF');
       });
+      if (chartSvgEl) chartSvgEl.querySelectorAll('.lut-gold-ring').forEach(el => el.remove());
     };
     const closeDetail = () => {
       detail.hidden = true;
@@ -1646,10 +1661,22 @@ async function initLimitUpTrend() {
       activeDate = date;
       clearActive();
       const dot = container.querySelector('.lut-dot[data-date="' + date + '"]');
-      if (dot) {
+      if (dot && chartSvgEl) {
         dot.classList.add('lut-dot--active');
         // SVG fill attr이 CSS보다 우선이므로 JS로 직접 설정 (active 채움)
         dot.setAttribute('fill', '#C49930');
+        // 골드 링 추가 — theme-trend SoT (.tt-gold-ring r=5)
+        const cx = dot.getAttribute('cx');
+        const cy = dot.getAttribute('cy');
+        const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('cx', cx);
+        ring.setAttribute('cy', cy);
+        ring.setAttribute('r', String(lutDotActiveR));
+        ring.setAttribute('fill', 'none');
+        ring.setAttribute('stroke', '#C49930');
+        ring.setAttribute('stroke-width', '2');
+        ring.classList.add('lut-gold-ring');
+        chartSvgEl.appendChild(ring);
       }
       const fmtPct = v => v == null ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
       const fmtAmt = v => {
@@ -1660,20 +1687,23 @@ async function initLimitUpTrend() {
         return v.toLocaleString();
       };
       detail.hidden = false;
-      // 정정 #11/#13 (대표 18:06): 거래대금 추이 종목 list 완전 복제 (trend-detail-table 구조).
-      // 컬럼: 종목명+연속칩 | 등락률 | 거래대금. CSS는 .trend-detail-table 재사용 + .lut-detail-table 색만 재정의.
+      // 거래대금 추이 종목 list 완전 복제 — 5컬럼 (종목명+연속칩 | 종가 | 미니캔들 | 등락률 | 거래대금)
       let html = '<div class="lut-detail-head"><span class="lut-detail-date">' + it.date + '</span> · 상한가 <strong>' + it.count + '건</strong></div>';
-      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
-      // #17 (대표 18:30): 거래대금 역순(DESC) 정렬
+      html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-price">종가</th><th class="th-candle"></th><th>등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
+      // 거래대금 역순(DESC) 정렬
       const sortedStocks = it.stocks.slice().sort((a, b) => (b.trade_amount || 0) - (a.trade_amount || 0));
       sortedStocks.forEach(s => {
-        // #14 — "+N" → "연속+N"
+        // "+N" → "연속+N"
         const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">연속+' + s.consecutive_count + '</span>' : '';
         const href = '?date=' + it.date + '#stock-' + (s.code || '');
         const nameLink = '<a class="trend-stock-link" href="' + href + '">' + (s.name || s.code) + '</a>';
+        const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
+        const candleHtml = miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct);
         html += '<tr>' +
           '<td><span class="lut-stock-main">' + nameLink + cc + '</span></td>' +
-          '<td class="td-pct">' + fmtPct(s.change_pct) + '</td>' +
+          '<td class="td-price">' + (s.price != null ? s.price.toLocaleString() : '-') + '</td>' +
+          '<td class="td-candle">' + candleHtml + '</td>' +
+          '<td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + fmtPct(s.change_pct) + '</td>' +
           '<td class="td-amount">' + fmtAmt(s.trade_amount) + '</td>' +
         '</tr>';
       });
