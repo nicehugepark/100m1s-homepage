@@ -615,7 +615,9 @@ function renderCalExpandContent(date, data) {
       const v8DetailHtml = '';
 
       // === v6/v5.1 legacy 블록 (회귀 안전망, UX 워크스루 통과 후 제거 예정) ===
-      const statusDetailLegacyHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
+      // REQ-082 fix (2026-04-29): label-only 배지(상한가 등 source=pipeline_chg, start 없음) 차단 회귀.
+      // line 592 _v8FilteredBadges와 동일 조건으로 통일. b.label 추가 → 상한가 chip 정상 노출.
+      const statusDetailLegacyHtml = (st.status_badges || []).filter(b => b.thresholds || b.regulation || b.start || b.label || (b.single_price === true && (b.label || '').includes('단기과열'))).map(b => {
         const label = b.label || '';
         const stage = _extractStage(label);
         const isPredicted = (b.source === 'predicted') || label.includes('예상') || label.includes('근접');
