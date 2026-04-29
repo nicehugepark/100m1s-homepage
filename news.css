@@ -2509,6 +2509,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   }
 }
 
+/* 고대비 + 다크 — 다크 surface 대비 보강 (WCAG AA, qa-2 측정 2.74:1 → ~6.5:1) */
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  .dsn-v95-effect-badge--limit-up {
+    color: #FCA5A5;
+  }
+}
+
 /* ───── DSN-20260425-DSN-004 v9.1 — 시제 칩 [내일 가능] + 법무 푸터 ─────
    §G.1 dsn-v9-tense-chip--imminent: 점선 1.5px·weight 700·predicted 색 토큰 #E55A2B 유지·채도 +0.04.
    §G.2 dsn-v91-disclaimer-footer: 0.75rem · var(--text-secondary) · 펼침 최하단 · 미세 구분선 1px.
