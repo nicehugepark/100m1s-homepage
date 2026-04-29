@@ -1110,7 +1110,11 @@ function renderCalExpandContent(date, data) {
           nextSectionTitle = '다음 단계';
         }
         const sections = [];
-        sections.push(`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(label)}</span>${labelExtra}</div>`);
+        // REQ-082 — 상한가 배지에 consecutive_count 부착 (≥2일 때만 +N 표시).
+        // ka10017 payload.cnt (실시간) 또는 pipeline_chg backfill streak (daily_picks 기반).
+        const _cc = Number(b.consecutive_count);
+        const _displayLabel = (label === '상한가' && _cc >= 2) ? `${label}+${_cc}` : label;
+        sections.push(`<div class="cal-status-head"><span class="cal-status-label sev-${b.severity || 'caution'}">${escapeHtml(_displayLabel)}</span>${labelExtra}</div>`);
         if (isAdvisoryWarning) {
           // v6: 투자경고/투자경고 예고 풀 구현
           sections.push(v6SectionsHtml);
