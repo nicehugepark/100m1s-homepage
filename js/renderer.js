@@ -2209,7 +2209,7 @@ async function initThemeTree(dateOverride) {
   } catch (e) { console.warn('theme-tree:', e); }
 }
 
-/* ───── 종목 anchor 클릭 — calendar 갱신 + 종목카드 scroll (REQ-017 후속 #9) ───── */
+/* ───── 종목 anchor 클릭 — calendar 갱신 + 종목카드 scroll (REQ-017 후속 #9, polling fix) ───── */
 document.addEventListener('click', (e) => {
   const a = e.target.closest('.trend-stock-link');
   if (!a) return;
@@ -2221,17 +2221,17 @@ document.addEventListener('click', (e) => {
   const cardId = hashMatch[0];
   const newDate = dateMatch ? dateMatch[1] : null;
   const curDate = (new URLSearchParams(window.location.search)).get('date');
+  // calendar 비동기 재렌더 — element 등장까지 polling (최대 4초)
+  const pollScroll = (attempts = 20) => {
+    const t = document.querySelector(cardId);
+    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+    if (attempts > 0) setTimeout(() => pollScroll(attempts - 1), 200);
+  };
   if (newDate && newDate !== curDate) {
     history.pushState({}, '', href);
     window.dispatchEvent(new PopStateEvent('popstate'));
-    setTimeout(() => {
-      const t = document.querySelector(cardId);
-      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 250);
-  } else {
-    const t = document.querySelector(cardId);
-    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+  pollScroll();
 });
 
 /* ───── 초기화 호출 ───── */
