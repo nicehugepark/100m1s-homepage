@@ -699,10 +699,11 @@ a.cal-credit-row:hover,
 .lut-line { transition: opacity 200ms ease; pointer-events: none; }
 .lut-area { pointer-events: none; }
 .lut-dot { transition: r 150ms ease, fill 150ms ease; cursor: pointer; }
-.lut-dot:hover { r: 5.5; fill: var(--am2); }
-.lut-dot:focus-visible { outline: none; r: 7; fill: var(--am); stroke: #FFF; stroke-width: 2; }
-.lut-dot--active { r: 7; fill: var(--am); stroke: #FFF; stroke-width: 2; }
-.lut-dot-zero { fill: #CBD5E1; }
+.lut-dot:hover { r: 4; fill: var(--am); }
+.lut-dot:focus-visible { outline: none; r: 4.5; fill: var(--am); stroke: #FFF; stroke-width: 1.5; }
+.lut-dot--active { r: 4.5; fill: var(--am); stroke: #FFF; stroke-width: 1.5; }
+.lut-dot-zero { fill: #FFF; stroke: #CBD5E1; }
+.lut-dot-zero:hover { fill: #CBD5E1; }
 .lut-dot-hit { fill: transparent; cursor: pointer; }
 .lut-detail {
   margin-top: 12px; padding: 12px 14px;
@@ -719,7 +720,7 @@ a.cal-credit-row:hover,
 .lut-detail-list { display: flex; flex-direction: column; gap: 2px; }
 .lut-stock-row {
   display: grid;
-  grid-template-columns: 1fr auto auto auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 10px; align-items: center;
   padding: 7px 10px; border-radius: 6px;
   background: var(--sf); text-decoration: none; color: inherit;
@@ -728,9 +729,8 @@ a.cal-credit-row:hover,
 }
 .lut-stock-row:hover { background: rgba(196, 153, 48, 0.08); }
 .lut-stock-name { font-weight: 700; color: var(--tx); }
-.lut-stock-code { font-family: 'SF Mono', monospace; font-size: 10px; color: var(--dm); }
-.lut-stock-pct { font-weight: 800; color: #C53939; min-width: 60px; text-align: right; }
-.lut-stock-amt { font-family: 'SF Mono', monospace; font-size: 10px; color: var(--tx2); min-width: 56px; text-align: right; }
+.lut-stock-pct { font-weight: 500; color: var(--dm); font-size: 11px; min-width: 56px; text-align: right; }
+.lut-stock-amt { font-family: 'SF Mono', monospace; font-weight: 700; font-size: 12px; color: var(--tx); min-width: 56px; text-align: right; }
 .lut-streak {
   font-size: 10px; font-weight: 700;
   padding: 2px 7px; border-radius: 999px;
@@ -742,7 +742,7 @@ a.cal-credit-row:hover,
     grid-template-columns: 1fr auto auto;
     gap: 6px; padding: 6px 8px;
   }
-  .lut-stock-amt { display: none; }
+  .lut-stock-pct { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lut-detail { animation: none; }
