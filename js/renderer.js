@@ -1456,7 +1456,7 @@ async function initThemeTrend() {
           const nameCell = code
             ? '<a class="trend-stock-link" href="?date=' + dateStr + '#stock-' + code + '">' + escapeHtml(s.name) + '</a>'
             : escapeHtml(s.name);
-          html += '<tr><td>' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
+          html += '<tr><td>' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
         html += '</tbody></table>';
       }

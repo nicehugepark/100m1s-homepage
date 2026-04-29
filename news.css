@@ -778,7 +778,7 @@ a.cal-credit-row:hover,
 /* 상한가 list = 거래대금 list 완전 복제 (.trend-detail-table 클래스 재사용).
    .lut-detail-table는 hover 색·금액 색만 재정의. 5컬럼 = 종목명 / 종가 / 미니캔들 / 등락률 / 거래대금. */
 .lut-detail-table tr:hover td { background: rgba(196, 153, 48, 0.08); }
-.lut-detail-table .td-pct { font-weight: 600; text-align: right; }
+/* .lut-detail-table .td-pct 라인 제거 — SoT (.trend-detail-table .td-pct) 에 통합. font-weight는 inline. */
 .lut-detail-table .td-amount {
   font-family: 'SF Mono', monospace; font-weight: 600;
   color: #8B6E1F;
@@ -1002,6 +1002,7 @@ a.cal-credit-row:hover,
 .trend-detail-table .th-amount { text-align: right; }
 .trend-detail-table .td-price,
 .trend-detail-table .td-amount { text-align: right; font-family: 'SF Mono', monospace; }
+.trend-detail-table .td-pct { text-align: right; }
 @media (max-width: 640px) {
   .trend-detail-table { font-size: 10px; table-layout: fixed; width: 100%; }
   .trend-detail-table th { padding: 4px 3px; }
