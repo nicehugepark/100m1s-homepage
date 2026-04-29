@@ -1034,11 +1034,6 @@ function renderCalExpandContent(date, data) {
     });
     window._cardShareInit = true;
   }
-
-  // 해시 앵커로 진입 시 해당 카드로 스크롤 + 강조
-  // window. prefix 명시 — components/stock-nav.js IIFE의 root 등록(window._scrollToHashStockIfAny)에서 lookup.
-  // bare 호출 시 P0 회귀 (Phase 1+2 분리 후 ReferenceError 노출, lead cross-check 확정).
-  window._scrollToHashStockIfAny();
 }
 
 // 공유 버튼 HTML 생성 (SVG 아이콘 + 접근성 속성)
@@ -1075,8 +1070,6 @@ function showShareToast(msg) {
   clearTimeout(toast._hideTimer);
   toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
 }
-
-// _scrollToHashStockIfAny → js/components/stock-nav.js (REQ-001 §3 Phase 2 분리, window 전역 호출 호환)
 
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
@@ -1359,11 +1352,8 @@ async function initThemeTrend() {
         stocks.forEach(s => {
           const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
           const pctStr = (s.change_pct > 0 ? '+' : '') + s.change_pct.toFixed(2) + '%';
-          // #12 — 종목명을 카드 anchor 링크로 (lut와 동일 패턴)
-          const code = s.stock_code || s.code || '';
-          const nameCell = code
-            ? '<a class="trend-stock-link" href="?date=' + dateStr + '#stock-' + code + '" onclick="return _stockNav(event)">' + escapeHtml(s.name) + '</a>'
-            : escapeHtml(s.name);
+          // 종목명 (anchor click 폐기 — 대표 결정 2026-04-30, 텍스트만 노출)
+          const nameCell = escapeHtml(s.name);
           html += '<tr><td class="td-name">' + nameCell + '</td><td class="td-price">' + (s.price ? s.price.toLocaleString() : '-') + '</td><td class="td-pct" style="color:' + pctClass + ';font-weight:600">' + pctStr + '</td><td class="td-candle">' + miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct) + '</td><td class="td-amount">' + fmtAmount(s.trade_amount) + '</td></tr>';
         });
         html += '</tbody></table>';
@@ -1605,8 +1595,8 @@ async function initLimitUpTrend() {
       sortedStocks.forEach(s => {
         // "+N" → "연속+N"
         const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">연속+' + s.consecutive_count + '</span>' : '';
-        const href = '?date=' + it.date + '#stock-' + (s.code || '');
-        const nameLink = '<a class="trend-stock-link" href="' + href + '" onclick="return _stockNav(event)">' + (s.name || s.code) + '</a>';
+        // 종목명 (anchor click 폐기 — 대표 결정 2026-04-30, 텍스트만 노출)
+        const nameLink = escapeHtml(s.name || s.code || '');
         const pctClass = s.change_pct > 0 ? '#E03131' : s.change_pct < 0 ? '#1971C2' : 'var(--tx)';
         const candleHtml = miniCandle(s.open_price, s.high_price, s.low_price, s.price, s.change_pct);
         html += '<tr>' +
@@ -2116,9 +2106,6 @@ async function initThemeTree(dateOverride) {
 
   } catch (e) { console.warn('theme-tree:', e); }
 }
-
-/* ───── 종목 anchor 클릭 — js/components/stock-nav.js 분리 (REQ-001 §3 Phase 2) ───── */
-// window._stockNav, capture phase fallback, _scrollToHashStockIfAny 전부 stock-nav.js로 이동.
 
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
