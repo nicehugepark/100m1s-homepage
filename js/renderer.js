@@ -1036,7 +1036,9 @@ function renderCalExpandContent(date, data) {
   }
 
   // 해시 앵커로 진입 시 해당 카드로 스크롤 + 강조
-  _scrollToHashStockIfAny();
+  // window. prefix 명시 — components/stock-nav.js IIFE의 root 등록(window._scrollToHashStockIfAny)에서 lookup.
+  // bare 호출 시 P0 회귀 (Phase 1+2 분리 후 ReferenceError 노출, lead cross-check 확정).
+  window._scrollToHashStockIfAny();
 }
 
 // 공유 버튼 HTML 생성 (SVG 아이콘 + 접근성 속성)
