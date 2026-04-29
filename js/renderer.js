@@ -1250,16 +1250,16 @@ async function initThemeTrend() {
       if (points.length < 1) return;
 
       if (points.length === 1) {
-        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="3" fill="#FFF" stroke="' + color + '" stroke-width="1.5" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-hit tt-dot" style="cursor:pointer"/>';
+        svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="3" fill="' + color + '" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-hit tt-dot" style="cursor:pointer"/>';
       } else {
         const polyPts = points.map(p => p.x + ',' + p.y).join(' ');
         const strokeW = isMobile ? 2 : 1.2;
-        const dotR = isMobile ? 3 : 2;
+        const dotR = isMobile ? 3.5 : 2;
         const hitR = isMobile ? 16 : 12;
         svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="' + strokeW + '" stroke-linecap="round" stroke-linejoin="round" opacity="0.8" data-theme-idx="' + ti + '"/>';
         points.forEach(p => {
           svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + hitR + '" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-hit" style="cursor:pointer"/>';
-          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + dotR + '" fill="#FFF" stroke="' + color + '" stroke-width="1.5" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-dot"/>';
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + dotR + '" fill="' + color + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-dot"/>';
         });
       }
     });
@@ -1358,12 +1358,9 @@ async function initThemeTrend() {
 
     function showStockDetail(themeName, dateStr, themeIdx) {
       const key = themeName + '|' + dateStr;
-      // 기존 골드 링 제거 + 모든 dot 빈 상태로 복원
+      // 기존 골드 링 제거 + active 클래스 해제 (CSS .tt-dot--active stroke=#FFF 복원)
       svgEl.querySelectorAll('.tt-gold-ring').forEach(el => el.remove());
-      svgEl.querySelectorAll('.tt-dot.tt-dot--active').forEach(el => {
-        el.classList.remove('tt-dot--active');
-        el.setAttribute('fill', '#FFF');
-      });
+      svgEl.querySelectorAll('.tt-dot.tt-dot--active').forEach(el => el.classList.remove('tt-dot--active'));
       activePoint = key;
       // 테마 데이터에서 stocks 찾기
       const theme = themes[themeIdx];
@@ -1378,17 +1375,13 @@ async function initThemeTrend() {
         seenStockKey.add(key);
         return true;
       });
-      // 골드 링 추가 + 해당 dot 채움
+      // 골드 링 추가 + 해당 dot active 클래스 부여 (CSS stroke=#FFF + r 확대)
       const hits = svgEl.querySelectorAll('.tt-hit[data-theme="' + themeName.replace(/"/g, '\\"') + '"][data-date="' + dateStr + '"]');
       hits.forEach(h => {
         const cx = h.getAttribute('cx');
         const cy = h.getAttribute('cy');
-        // 같은 좌표 dot 채움 (theme color)
         const matchDot = svgEl.querySelector('circle.tt-dot[cx="' + cx + '"][cy="' + cy + '"][data-theme-idx="' + themeIdx + '"]');
-        if (matchDot) {
-          matchDot.classList.add('tt-dot--active');
-          matchDot.setAttribute('fill', matchDot.getAttribute('data-color') || '#C49930');
-        }
+        if (matchDot) matchDot.classList.add('tt-dot--active');
         const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         ring.setAttribute('cx', cx);
         ring.setAttribute('cy', cy);
@@ -1449,10 +1442,7 @@ async function initThemeTrend() {
       if (!hit) {
         // 포인트 외 클릭 → 선택 해제
         svgEl.querySelectorAll('.tt-gold-ring').forEach(el => el.remove());
-        svgEl.querySelectorAll('.tt-dot.tt-dot--active').forEach(el => {
-          el.classList.remove('tt-dot--active');
-          el.setAttribute('fill', '#FFF');
-        });
+        svgEl.querySelectorAll('.tt-dot.tt-dot--active').forEach(el => el.classList.remove('tt-dot--active'));
         activePoint = null;
         detailDiv.classList.remove('open');
         detailDiv.innerHTML = '';
@@ -1553,12 +1543,11 @@ async function initLimitUpTrend() {
       const cy = yScale(it.count);
       const isZero = it.count === 0;
       const dotCls = isZero ? 'lut-dot lut-dot-zero' : 'lut-dot';
-      const dotR = isZero ? 2.5 : 3;
-      // 기본: 빈 dot (fill=#FFF + stroke=색). 선택·hover 시 채움.
-      const fill = '#FFF';
-      const stroke = isZero ? '#CBD5E1' : 'var(--am, #C49930)';
+      const dotR = isZero ? 2.5 : 4;
+      // theme-trend 통일: 비선택 = 라인색 fill / 선택(active) = 흰테 1.5px 추가 (CSS .lut-dot--active).
+      const fill = isZero ? '#CBD5E1' : 'var(--am, #C49930)';
       chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + (slot * i).toFixed(1) + '" y="0" width="' + slot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
-      chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + dotR + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
+      chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + dotR + '" fill="' + fill + '" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
       // X-axis label
       chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="10" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>';
     });
@@ -1610,8 +1599,10 @@ async function initLimitUpTrend() {
           const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">+' + s.consecutive_count + '</span>' : '';
           const href = '?date=' + it.date + '#stock-' + (s.code || '');
           return '<a class="lut-stock-row" href="' + href + '">' +
-            '<span class="lut-stock-name">' + (s.name || s.code) + '</span>' +
-            cc +
+            '<span class="lut-stock-main">' +
+              '<span class="lut-stock-name">' + (s.name || s.code) + '</span>' +
+              cc +
+            '</span>' +
             '<span class="lut-stock-pct">' + fmtPct(s.change_pct) + '</span>' +
             '<span class="lut-stock-amt">' + fmtAmt(s.trade_amount) + '</span>' +
             '</a>';
