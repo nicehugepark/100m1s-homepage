@@ -1492,6 +1492,9 @@ async function initThemeTrend() {
     }
 
     wrap.addEventListener('click', function(e) {
+      // 정정 #12 (대표 18:30): trend-stock-link anchor 클릭은 wrap handler가 가로채면 안 됨.
+      // outside-click logic으로 detail 닫히고 navigation 직전 DOM 변경 → anchor 동작 깨짐.
+      if (e.target.closest('.trend-stock-link, a[href]')) return;
       const hit = e.target.closest('.tt-hit');
       if (!hit) {
         // 포인트 외 클릭 → 선택 해제 (fill #FFF 복원)
@@ -1661,7 +1664,9 @@ async function initLimitUpTrend() {
       // 컬럼: 종목명+연속칩 | 등락률 | 거래대금. CSS는 .trend-detail-table 재사용 + .lut-detail-table 색만 재정의.
       let html = '<div class="lut-detail-head"><span class="lut-detail-date">' + it.date + '</span> · 상한가 <strong>' + it.count + '건</strong></div>';
       html += '<table class="trend-detail-table lut-detail-table"><thead><tr><th>종목명</th><th class="th-pct">등락률</th><th class="th-amount">거래대금</th></tr></thead><tbody>';
-      it.stocks.forEach(s => {
+      // #17 (대표 18:30): 거래대금 역순(DESC) 정렬
+      const sortedStocks = it.stocks.slice().sort((a, b) => (b.trade_amount || 0) - (a.trade_amount || 0));
+      sortedStocks.forEach(s => {
         // #14 — "+N" → "연속+N"
         const cc = s.consecutive_count >= 2 ? '<span class="lut-streak">연속+' + s.consecutive_count + '</span>' : '';
         const href = '?date=' + it.date + '#stock-' + (s.code || '');
