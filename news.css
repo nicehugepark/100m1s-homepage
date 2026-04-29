@@ -759,7 +759,8 @@ a.cal-credit-row:hover,
 .lut-dot { fill: #FFF; stroke: var(--am); stroke-width: 1.5; transition: fill 150ms ease, r 150ms ease; cursor: pointer; }
 .lut-dot:hover { fill: var(--am); }
 .lut-dot:focus-visible { outline: none; fill: var(--am); }
-.lut-dot--active { fill: var(--am); }
+.lut-dot--active { fill: var(--am); stroke: #FFF; stroke-width: 2; }
+.tt-dot--active { fill: var(--am); stroke: #FFF; stroke-width: 2; }
 .lut-dot-zero { fill: #FFF; stroke: #CBD5E1; }
 .lut-dot-zero:hover { fill: #CBD5E1; }
 .lut-dot-hit { fill: transparent; cursor: pointer; }
@@ -995,7 +996,7 @@ a.cal-credit-row:hover,
   .trend-detail-table th { padding: 4px 3px; }
   .trend-detail-table td { padding: 4px 3px; }
   .trend-detail-table .th-name,
-  .trend-detail-table .td-name { width: 28%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trend-detail-table .td-name { width: 34%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .trend-detail-table .th-price,
   .trend-detail-table .td-price { width: 22%; }
   .trend-detail-table .th-pct,
@@ -1003,7 +1004,7 @@ a.cal-credit-row:hover,
   .trend-detail-table .th-candle,
   .trend-detail-table .td-candle { width: 16px; min-width: 16px; }
   .trend-detail-table .th-amount,
-  .trend-detail-table .td-amount { width: 22%; }
+  .trend-detail-table .td-amount { width: 16%; }
 }
 
 footer {
