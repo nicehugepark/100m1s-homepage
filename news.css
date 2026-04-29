@@ -683,25 +683,26 @@ a.cal-credit-row:hover,
 /* ───── Below-Fold 2-Column Grid ───── */
 .theme-trend { margin-bottom: 48px; }
 
-/* REQ-homepage-news-polish #2 — 섹션 sticky 헤더 통합 (design-lead-2 spec, 2026-04-29 17:18 KST).
-   theme-trend-header / lut-header / theme-tree-header / cal-content-head 단일 위계 (top:68px, z:50).
-   nav header(z:100) 직하. cal-content-head는 본 블록 뒤 z-index만 50으로 통일. */
+/* 정정 #2 (대표 18:06): sticky 다중 스택 누적 — 위에서부터 헤더가 쌓임.
+   nav(top:0,z:100) → theme-trend(top:68) → lut(top:114) → theme-tree(top:160).
+   각 헤더 자체 높이 ≈ 46px (padding 8+8 + content ~30 + border).
+   z-index도 누적 (먼저 stick한 헤더가 더 높은 z, 나중에 stick한 헤더가 그 아래 깔리지 않음). */
 .theme-trend-header,
 .lut-header,
 .theme-tree-header {
   position: -webkit-sticky;
   position: sticky;
-  top: 68px;
   z-index: 50;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  /* 컨테이너 padding 보정 — 좌우 가장자리까지 배경 채움 (theme-trend / limit-up-trend / theme-tree 컨테이너 padding 0 → -16/16) */
   margin-left: -16px; margin-right: -16px;
   padding: 8px 16px;
-  /* border-left 3px 유지 (각 섹션 .lut-header / .theme-trend-header / .theme-tree-header 자체 declaration) */
   margin-bottom: 10px;
 }
+.theme-trend-header { top: 68px; z-index: 53; }
+.lut-header { top: 114px; z-index: 52; }
+.theme-tree-header { top: 160px; z-index: 51; }
 @media (max-width: 880px) {
   .theme-trend-header,
   .lut-header,
@@ -709,6 +710,10 @@ a.cal-credit-row:hover,
     margin-left: -12px; margin-right: -12px;
     padding: 6px 12px;
   }
+  /* 모바일은 헤더 높이 약간 작음 (~42px) */
+  .theme-trend-header { top: 68px; }
+  .lut-header { top: 110px; }
+  .theme-tree-header { top: 152px; }
 }
 .theme-trend-header[data-scroll-to-section],
 .lut-header[data-scroll-to-section],
