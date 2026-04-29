@@ -1,6 +1,6 @@
 {
   "date": "2026-04-20",
-  "generated_at": "2026-04-28T16:48:42.214864",
+  "generated_at": "2026-04-29T11:49:41.020856",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -109,9 +109,6 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         }
@@ -150,6 +147,22 @@
         "low_pct": 251.25,
         "current": 91500
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-20",
+          "summary": "주성엔지니어링 상한가 (29.97%)",
+          "cur_prc": 91500,
+          "flu_rt": 29.97,
+          "trde_qty": null,
+          "trde_prica_calc": 875511253500,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-21"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 71900,
@@ -213,26 +226,20 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "전력선,통신케이블,적산계기,스텐레스압연제품,광케이블,초고압선,알루미늄 제조,도매/전기공사",
       "themes": [
-        "AI데이터센터",
-        "AI 인프라",
         "케이블",
         "전력설비"
       ],
       "theme_paths": [
         {
-          "name": "AI데이터센터",
+          "name": "케이블",
           "path": [
-            "AI",
-            "AI데이터센터"
+            "케이블"
           ]
         },
         {
-          "name": "케이블",
+          "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
-            "케이블"
+            "전력설비"
           ]
         }
       ],
@@ -251,8 +258,8 @@
           "url": "https://www.mk.co.kr/news/stock/12021853",
           "source": "매경",
           "published_at": "2026-04-20T06:40:01",
-          "causal_chain": "AI 데이터센터 증설 → 전력 인프라 수요 급증 → 초고압·해저 케이블 신규 수주 가속화 → 대한전선 수주 잔고 3조7000억원 기록, 영업이익률 10% 이상의 고마진 케이블 수주로 이익 성장 견인.",
-          "macro_event": "AI 기반시설 확장으로 전력 병목 현실화 → 초고압·해저 케이블 수요 증가",
+          "causal_chain": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대 → 초고압·해저 케이블 수요 급증 → 대한전선 수주 잔고 역대 최대(3조7000억원) 및 1분기 호실적 전망. 수익률 상위 1% 투자자들이 SK하이닉스 차익실현 후 대한전선 순매수 1위로 이동.",
+          "macro_event": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대에 따른 케이블 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -266,8 +273,8 @@
           "url": "https://www.sedaily.com/article/20034579",
           "source": "서울경제",
           "published_at": "2026-04-20T03:11:55",
-          "causal_chain": "AI 데이터센터 증설 → 전력 인프라 수요 급증 → 초고압·해저 케이블 신규 수주 가속화 → 대한전선 수주 잔고 3조7000억원 기록, 영업이익률 10% 이상의 고마진 케이블 수주로 이익 성장 견인.",
-          "macro_event": "AI 기반시설 확장으로 전력 병목 현실화 → 초고압·해저 케이블 수요 증가",
+          "causal_chain": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대 → 초고압·해저 케이블 수요 급증 → 대한전선 수주 잔고 역대 최대(3조7000억원) 및 1분기 호실적 전망. 수익률 상위 1% 투자자들이 SK하이닉스 차익실현 후 대한전선 순매수 1위로 이동.",
+          "macro_event": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대에 따른 케이블 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -358,9 +365,14 @@
       ],
       "theme_paths": [
         {
+          "name": "AI",
+          "path": [
+            "AI"
+          ]
+        },
+        {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -488,22 +500,18 @@
           "name": "전쟁재건",
           "path": [
             "전쟁",
-            "전쟁완화",
             "전쟁재건"
           ]
         },
         {
           "name": "방산",
           "path": [
-            "전쟁",
-            "전쟁악화",
             "방산"
           ]
         },
         {
           "name": "생체인식",
           "path": [
-            "AI",
             "생체인식"
           ]
         }
@@ -923,7 +931,6 @@
         {
           "name": "2차전지",
           "path": [
-            "전기차",
             "2차전지"
           ]
         }
@@ -1046,7 +1053,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -1154,7 +1160,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -1362,15 +1367,9 @@
       ],
       "theme_paths": [
         {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        },
-        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         }
@@ -1631,6 +1630,20 @@
           "next_trading_day_source": "verified",
           "single_price": false,
           "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-20",
+          "summary": "드림시큐리티 상한가 (29.98%)",
+          "cur_prc": 3880,
+          "flu_rt": 29.98,
+          "trde_qty": null,
+          "trde_prica_calc": 233160630480,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-21"
         }
       ],
       "intraday": {
@@ -1698,19 +1711,11 @@
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "전자상거래 보안 솔루션",
       "themes": [
-        "CCTV·보안",
         "스테이블코인",
         "토큰화 RWA",
-        "양자",
         "가상자산"
       ],
       "theme_paths": [
-        {
-          "name": "CCTV·보안",
-          "path": [
-            "CCTV·보안"
-          ]
-        },
         {
           "name": "스테이블코인",
           "path": [
@@ -1723,12 +1728,6 @@
           "path": [
             "가상자산",
             "토큰화 RWA"
-          ]
-        },
-        {
-          "name": "양자",
-          "path": [
-            "양자"
           ]
         }
       ],
@@ -1747,8 +1746,8 @@
           "url": "https://www.asiae.co.kr/article/2026042013463608168",
           "source": "아시아경제",
           "published_at": "2026-04-20T04:46:36",
-          "causal_chain": "글로벌 RWA(실물자산 토큰화) 시장 성장 → 한컴위드가 온토리움 플랫폼 출시로 금 토큰화 스테이블코인 신사업 진출 → 블록체인/가상자산 수익 다각화 기대. 동시에 양자컴퓨팅 보안위협 대응 수요 → PQC 기술 강화로 양자보안 시장 플레이어 포지셔닝.",
-          "macro_event": "RWA 시장 확대 + 양자보안 기술 경쟁",
+          "causal_chain": "글로벌 스테이블코인/RWA 시장 성장 + 원화 스테이블코인 국내 법제화 흐름 → 한컴위드의 기존 금거래소(매출 7500억원) 운영 노하우를 블록체인 기술로 토큰화 플랫폼 전환 → 온토리움/아쿠아 신규 사업 매출 + 기존 금거래소 시너지로 신사업 기반 매출 성장.",
+          "macro_event": "한컴위드, 실물 금 기반 스테이블코인 플랫폼 온토리움 글로벌 출시",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1881,15 +1880,9 @@
       ],
       "theme_paths": [
         {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        },
-        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         }
@@ -1997,7 +1990,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -2249,8 +2241,6 @@
         {
           "name": "통신장비",
           "path": [
-            "AI",
-            "AI 인프라",
             "통신장비"
           ]
         },
@@ -2397,13 +2387,13 @@
         {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         },
         {
           "name": "2차전지 장비 수혜",
           "path": [
-            "전기차",
             "2차전지",
             "2차전지 장비 수혜"
           ]
@@ -2821,8 +2811,6 @@
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         },
@@ -2830,7 +2818,6 @@
           "name": "전쟁재건",
           "path": [
             "전쟁",
-            "전쟁완화",
             "전쟁재건"
           ]
         }
@@ -3055,6 +3042,20 @@
           "effect_badges": [],
           "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260420000610",
           "disclosure_title": "[투자주의]단일계좌 거래량 상위종목"
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-20",
+          "summary": "혜인 상한가 (29.94%)",
+          "cur_prc": 8030,
+          "flu_rt": 29.94,
+          "trde_qty": null,
+          "trde_prica_calc": 98954806170,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-21"
         }
       ],
       "intraday": {
@@ -3702,11 +3703,14 @@
           ]
         },
         {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
+        {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
@@ -4925,7 +4929,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -5146,7 +5149,6 @@
         {
           "name": "2차전지",
           "path": [
-            "전기차",
             "2차전지"
           ]
         }
@@ -5395,8 +5397,6 @@
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         }

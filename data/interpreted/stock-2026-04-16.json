@@ -1,6 +1,6 @@
 {
   "date": "2026-04-16",
-  "generated_at": "2026-04-28T16:48:42.719336",
+  "generated_at": "2026-04-29T11:49:40.452166",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -67,7 +67,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -169,16 +168,12 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -321,10 +316,16 @@
       ],
       "theme_paths": [
         {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
           "name": "광통신",
           "path": [
             "AI",
-            "AI데이터센터",
             "광통신"
           ]
         }
@@ -610,7 +611,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -766,16 +766,12 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
         {
           "name": "MASGA/미국 제조업 쇼어링",
           "path": [
-            "트럼프",
             "MASGA/미국 제조업 쇼어링"
           ]
         }
@@ -993,6 +989,22 @@
         "low_pct": 170.35,
         "current": 17870
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "큐에스아이 상한가 (29.93%)",
+          "cur_prc": 17870,
+          "flu_rt": 29.93,
+          "trde_qty": null,
+          "trde_prica_calc": 237975397580,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 20500,
@@ -1177,13 +1189,13 @@
         {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         },
         {
           "name": "2차전지 장비 수혜",
           "path": [
-            "전기차",
             "2차전지",
             "2차전지 장비 수혜"
           ]
@@ -1315,6 +1327,20 @@
           "next_trading_day_source": "verified",
           "single_price": false,
           "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "한빛레이저 상한가 (29.92%)",
+          "cur_prc": 6860,
+          "flu_rt": 29.92,
+          "trde_qty": null,
+          "trde_prica_calc": 172163121900,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
         }
       ],
       "intraday": {
@@ -1506,7 +1532,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -1529,6 +1554,22 @@
         "low_pct": 337.6,
         "current": 16410
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "덕산하이메탈 상한가 (29.93%)",
+          "cur_prc": 16410,
+          "flu_rt": 29.93,
+          "trde_qty": null,
+          "trde_prica_calc": 132707620770,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 12980,
@@ -1705,15 +1746,28 @@
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "반도체 설계 서비스",
       "themes": [
+        "AI",
+        "반도체",
+        "AI 인프라",
         "건설"
       ],
       "theme_paths": [
         {
+          "name": "반도체",
+          "path": [
+            "반도체"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
+        {
           "name": "건설",
           "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
             "건설"
           ]
         }
@@ -1733,8 +1787,8 @@
           "url": "https://www.sedaily.com/article/20038124",
           "source": "서울경제",
           "published_at": "2026-04-28T06:35:07",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "엣지 AI 장치 시장 확대(리테일·드론·모바일·영상장비 온디바이스 AI 추론) → 초저전력·고성능 AI 추론 칩 수요 → 3D-IC 기술(소형화·전력효율 극대화)이 엣지 솔루션의 핵심 기술 → 세미파이브의 검증된 3D-IC 설계·패키징 통합 역량으로 글로벌 AI ASIC 시장에서 엣지 영역 턴키 수주 기저 확대",
+          "macro_event": "글로벌 엣지 AI 장치(드론, 리테일시스템, 모바일, 특수영상장비) 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1748,8 +1802,8 @@
           "url": "https://biz.chosun.com/it-science/ict/2026/04/28/OCDPIAHLJ5FMBDZWMHSFMCBMVA/",
           "source": "조선비즈",
           "published_at": "2026-04-28T05:23:12",
-          "causal_chain": "유럽 비전 AI 기업향 3D-IC 턴키 수주 → 세미파이브의 첨단 반도체 설계 플랫폼 사업 해외 수주 확대 가시화.",
-          "macro_event": "세미파이브 유럽 비전 AI 기업 대상 3D-IC 턴키 수주",
+          "causal_chain": "엣지 AI 장치 시장 확대(리테일·드론·모바일·영상장비 온디바이스 AI 추론) → 초저전력·고성능 AI 추론 칩 수요 → 3D-IC 기술(소형화·전력효율 극대화)이 엣지 솔루션의 핵심 기술 → 세미파이브의 검증된 3D-IC 설계·패키징 통합 역량으로 글로벌 AI ASIC 시장에서 엣지 영역 턴키 수주 기저 확대",
+          "macro_event": "글로벌 엣지 AI 장치(드론, 리테일시스템, 모바일, 특수영상장비) 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2116,7 +2170,7 @@
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-15",
-        "rank": 41,
+        "rank": 42,
         "change_pct": 3.93,
         "trade_amount": 50184157800
       },
@@ -2417,7 +2471,6 @@
           "name": "비만약 테마주",
           "path": [
             "바이오",
-            "GLP-1 비만치료제",
             "비만약 테마주"
           ]
         }
@@ -2720,6 +2773,20 @@
           "next_trading_day_source": "verified",
           "single_price": false,
           "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "라온시큐어 상한가 (29.93%)",
+          "cur_prc": 15410,
+          "flu_rt": 29.93,
+          "trde_qty": null,
+          "trde_prica_calc": 102096319890,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
         }
       ],
       "intraday": {
@@ -2958,14 +3025,13 @@
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "차량SW, 내비게이션, 스마트팩토리, AI·클라우드 기반 솔루션, 디지털 전환 컨설팅 및 IT서비스",
       "themes": [
-        "AI",
         "로보택시·자율주행 신사업 진출"
       ],
       "theme_paths": [
         {
           "name": "로보택시·자율주행 신사업 진출",
           "path": [
-            "AI",
+            "전기차",
             "로보택시·자율주행 신사업 진출"
           ]
         }
@@ -2980,8 +3046,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03132406645416776",
           "source": "이데일리",
           "published_at": "2026-04-16T00:45:53",
-          "causal_chain": "자율주행 상용화 기대감 → 현대차그룹주 전반 강세 → 그룹사 현대오토에버 동반 8% 상승 (간접수혜)",
-          "macro_event": "자율주행 상용화 기대",
+          "causal_chain": "자율주행 기술 상용화 가시화 → 현대차그룹 자율주행 플랫폼 개발·탑재 수요 증가 → 차량SW 핵심 공급업체인 현대오토에버의 자율주행 소프트웨어 매출 기저 확대",
+          "macro_event": "자율주행 상용화 기대 고조",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3075,15 +3141,12 @@
           "name": "전쟁재건",
           "path": [
             "전쟁",
-            "전쟁완화",
             "전쟁재건"
           ]
         },
         {
           "name": "통신장비",
           "path": [
-            "AI",
-            "AI 인프라",
             "통신장비"
           ]
         }
@@ -3091,7 +3154,7 @@
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-15",
-        "rank": 42,
+        "rank": 43,
         "change_pct": 12.28,
         "trade_amount": 49216413750
       },
@@ -3185,7 +3248,6 @@
         {
           "name": "FC-BGA",
           "path": [
-            "AI",
             "반도체",
             "FC-BGA"
           ]
@@ -3295,19 +3357,11 @@
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "전자상거래 보안 솔루션",
       "themes": [
-        "CCTV·보안",
         "스테이블코인",
         "토큰화 RWA",
-        "양자",
         "가상자산"
       ],
       "theme_paths": [
-        {
-          "name": "CCTV·보안",
-          "path": [
-            "CCTV·보안"
-          ]
-        },
         {
           "name": "스테이블코인",
           "path": [
@@ -3320,12 +3374,6 @@
           "path": [
             "가상자산",
             "토큰화 RWA"
-          ]
-        },
-        {
-          "name": "양자",
-          "path": [
-            "양자"
           ]
         }
       ],
@@ -3344,8 +3392,8 @@
           "url": "https://www.mk.co.kr/news/it/12022766",
           "source": "매경",
           "published_at": "2026-04-21T04:33:54",
-          "causal_chain": "글로벌 RWA(실물자산 토큰화) 시장 성장 → 한컴위드가 온토리움 플랫폼 출시로 금 토큰화 스테이블코인 신사업 진출 → 블록체인/가상자산 수익 다각화 기대. 동시에 양자컴퓨팅 보안위협 대응 수요 → PQC 기술 강화로 양자보안 시장 플레이어 포지셔닝.",
-          "macro_event": "RWA 시장 확대 + 양자보안 기술 경쟁",
+          "causal_chain": "글로벌 스테이블코인/RWA 시장 성장 + 원화 스테이블코인 국내 법제화 흐름 → 한컴위드의 기존 금거래소(매출 7500억원) 운영 노하우를 블록체인 기술로 토큰화 플랫폼 전환 → 온토리움/아쿠아 신규 사업 매출 + 기존 금거래소 시너지로 신사업 기반 매출 성장.",
+          "macro_event": "한컴위드, 실물 금 기반 스테이블코인 플랫폼 온토리움 글로벌 출시",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3359,8 +3407,8 @@
           "url": "https://www.asiae.co.kr/article/2026042013463608168",
           "source": "아시아경제",
           "published_at": "2026-04-20T04:46:36",
-          "causal_chain": "글로벌 RWA(실물자산 토큰화) 시장 성장 → 한컴위드가 온토리움 플랫폼 출시로 금 토큰화 스테이블코인 신사업 진출 → 블록체인/가상자산 수익 다각화 기대. 동시에 양자컴퓨팅 보안위협 대응 수요 → PQC 기술 강화로 양자보안 시장 플레이어 포지셔닝.",
-          "macro_event": "RWA 시장 확대 + 양자보안 기술 경쟁",
+          "causal_chain": "글로벌 스테이블코인/RWA 시장 성장 + 원화 스테이블코인 국내 법제화 흐름 → 한컴위드의 기존 금거래소(매출 7500억원) 운영 노하우를 블록체인 기술로 토큰화 플랫폼 전환 → 온토리움/아쿠아 신규 사업 매출 + 기존 금거래소 시너지로 신사업 기반 매출 성장.",
+          "macro_event": "한컴위드, 실물 금 기반 스테이블코인 플랫폼 온토리움 글로벌 출시",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3621,6 +3669,20 @@
           "next_trading_day_source": "verified",
           "single_price": false,
           "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "드림시큐리티 상한가 (29.85%)",
+          "cur_prc": 3545,
+          "flu_rt": 29.85,
+          "trde_qty": null,
+          "trde_prica_calc": 85132781505,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
         }
       ],
       "intraday": {
@@ -3707,6 +3769,22 @@
         "low_pct": 86.82,
         "current": 15880
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "케이사인 상한가 (29.93%)",
+          "cur_prc": 15880,
+          "flu_rt": 29.93,
+          "trde_qty": null,
+          "trde_prica_calc": 81427637800,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 13110,
@@ -3774,7 +3852,7 @@
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-04-15",
-        "rank": 46,
+        "rank": 40,
         "change_pct": 29.93,
         "trade_amount": 56432027943
       },
@@ -3840,6 +3918,20 @@
               "source_kind": "disclosure"
             }
           ]
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "서울전자통신 상한가 (29.87%)",
+          "cur_prc": 691,
+          "flu_rt": 29.87,
+          "trde_qty": null,
+          "trde_prica_calc": 79598328831,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
         }
       ],
       "intraday": {
@@ -4260,7 +4352,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -4270,6 +4361,21 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "DB하이텍, 獨 ‘PCIM 2026’ 참가... 유럽 전력반도체 시장 공략",
+          "url": "https://biz.chosun.com/it-science/ict/2026/04/29/VHPLZGTFXRFM5ET364EBVDKXCY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T01:27:47",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "반도체·이차전지·보안주 ‘삼총사’발 코스피 랠리…DB하이텍, 역사적 신고가 달성 [매경 자이앤트]",
           "url": "https://www.mk.co.kr/news/stock/12021674",
@@ -4450,7 +4556,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -4659,8 +4764,17 @@
       "low_price": 50200,
       "industry": "기타 상품 전문 소매업",
       "sector": "면세판매,관광숙박,외식사업,예식업",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -4671,8 +4785,8 @@
           "url": "https://www.asiae.co.kr/article/2026042715590593025",
           "source": "아시아경제",
           "published_at": "2026-04-27T21:01:00",
-          "causal_chain": "1분기 면세 부문 7개 분기 만에 흑자 전환(어닝 서프라이즈) + 이부진 사장 자사주 매입 겹호재 → 증권사 목표가 상향·투자의견 매수 상향 → 6일 연속 상승세·10%대 급등.",
-          "macro_event": "1분기 면세 흑자 전환 + 이부진 자사주 매입 + 중국 경기 회복 기대",
+          "causal_chain": "인바운드 관광 회복(특히 중국) + 위안화 강세 → 면세점 고객 구성 개선 + 호텔 객실 가동률·객단가 상승 → 할인율 축소·임차료 감면과 결합되어 7개 분기 연속 적자에서 흑자 전환. 이부진 사장의 자사주 매입은 실적 개선에 대한 신뢰 신호로 투자심리 회복을 강화.",
+          "macro_event": "1분기 영업이익 204억원 기록 — 시장전망(약 30억원) 대비 827% 상회",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4686,8 +4800,8 @@
           "url": "https://www.asiae.co.kr/article/2026042716175322323",
           "source": "아시아경제",
           "published_at": "2026-04-27T21:00:00",
-          "causal_chain": "1분기 면세 부문 7개 분기 만에 흑자 전환(어닝 서프라이즈) + 이부진 사장 자사주 매입 겹호재 → 증권사 목표가 상향·투자의견 매수 상향 → 6일 연속 상승세·10%대 급등.",
-          "macro_event": "1분기 면세 흑자 전환 + 이부진 자사주 매입 + 중국 경기 회복 기대",
+          "causal_chain": "인바운드 관광 회복(특히 중국) + 위안화 강세 → 면세점 고객 구성 개선 + 호텔 객실 가동률·객단가 상승 → 할인율 축소·임차료 감면과 결합되어 7개 분기 연속 적자에서 흑자 전환. 이부진 사장의 자사주 매입은 실적 개선에 대한 신뢰 신호로 투자심리 회복을 강화.",
+          "macro_event": "1분기 영업이익 204억원 기록 — 시장전망(약 30억원) 대비 827% 상회",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4701,8 +4815,8 @@
           "url": "https://www.fnnews.com/news/202604271018200312",
           "source": "파이낸셜뉴스",
           "published_at": "2026-04-27T11:08:38.805960",
-          "causal_chain": "1분기 면세 부문 7개 분기 만에 흑자 전환(어닝 서프라이즈) + 이부진 사장 자사주 매입 겹호재 → 증권사 목표가 상향·투자의견 매수 상향 → 6일 연속 상승세·10%대 급등.",
-          "macro_event": "1분기 면세 흑자 전환 + 이부진 자사주 매입 + 중국 경기 회복 기대",
+          "causal_chain": "인바운드 관광 회복(특히 중국) + 위안화 강세 → 면세점 고객 구성 개선 + 호텔 객실 가동률·객단가 상승 → 할인율 축소·임차료 감면과 결합되어 7개 분기 연속 적자에서 흑자 전환. 이부진 사장의 자사주 매입은 실적 개선에 대한 신뢰 신호로 투자심리 회복을 강화.",
+          "macro_event": "1분기 영업이익 204억원 기록 — 시장전망(약 30억원) 대비 827% 상회",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4716,8 +4830,8 @@
           "url": "https://www.sedaily.com/article/20037551",
           "source": "서울경제",
           "published_at": "2026-04-27T05:06:03",
-          "causal_chain": "1분기 면세 부문 7개 분기 만에 흑자 전환(어닝 서프라이즈) + 이부진 사장 자사주 매입 겹호재 → 증권사 목표가 상향·투자의견 매수 상향 → 6일 연속 상승세·10%대 급등.",
-          "macro_event": "1분기 면세 흑자 전환 + 이부진 자사주 매입 + 중국 경기 회복 기대",
+          "causal_chain": "인바운드 관광 회복(특히 중국) + 위안화 강세 → 면세점 고객 구성 개선 + 호텔 객실 가동률·객단가 상승 → 할인율 축소·임차료 감면과 결합되어 7개 분기 연속 적자에서 흑자 전환. 이부진 사장의 자사주 매입은 실적 개선에 대한 신뢰 신호로 투자심리 회복을 강화.",
+          "macro_event": "1분기 영업이익 204억원 기록 — 시장전망(약 30억원) 대비 827% 상회",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4731,8 +4845,8 @@
           "url": "https://www.mk.co.kr/news/stock/12028052",
           "source": "매경",
           "published_at": "2026-04-27T01:50:43",
-          "causal_chain": "1분기 면세 부문 7개 분기 만에 흑자 전환(어닝 서프라이즈) + 이부진 사장 자사주 매입 겹호재 → 증권사 목표가 상향·투자의견 매수 상향 → 6일 연속 상승세·10%대 급등.",
-          "macro_event": "1분기 면세 흑자 전환 + 이부진 자사주 매입 + 중국 경기 회복 기대",
+          "causal_chain": "인바운드 관광 회복(특히 중국) + 위안화 강세 → 면세점 고객 구성 개선 + 호텔 객실 가동률·객단가 상승 → 할인율 축소·임차료 감면과 결합되어 7개 분기 연속 적자에서 흑자 전환. 이부진 사장의 자사주 매입은 실적 개선에 대한 신뢰 신호로 투자심리 회복을 강화.",
+          "macro_event": "1분기 영업이익 204억원 기록 — 시장전망(약 30억원) 대비 827% 상회",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -4853,6 +4967,22 @@
         "low_pct": 68.26,
         "current": 5990
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "시공테크 상한가 (29.79%)",
+          "cur_prc": 5990,
+          "flu_rt": 29.79,
+          "trde_qty": null,
+          "trde_prica_calc": 64050716590,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 4750,
@@ -5467,6 +5597,22 @@
         "low_pct": 62.77,
         "current": 3135
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "오픈베이스 상한가 (29.81%)",
+          "cur_prc": 3135,
+          "flu_rt": 29.81,
+          "trde_qty": null,
+          "trde_prica_calc": 59820869295,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 2535,
@@ -5688,6 +5834,22 @@
         "low_pct": 123.44,
         "current": 2440
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-16",
+          "summary": "나우IB 상한가 (29.79%)",
+          "cur_prc": 2440,
+          "flu_rt": 29.79,
+          "trde_qty": null,
+          "trde_prica_calc": 56983657520,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-17"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 1946,

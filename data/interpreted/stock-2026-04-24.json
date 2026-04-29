@@ -1,6 +1,6 @@
 {
   "date": "2026-04-24",
-  "generated_at": "2026-04-28T16:48:41.207238",
+  "generated_at": "2026-04-29T11:49:42.153120",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3033,15 +3033,22 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "전자제품및반도체생산용 3차원 납도포검사장비",
       "themes": [
+        "실적",
         "반도체 후공정 장비",
         "광통신",
-        "AI데이터센터",
-        "반도체"
+        "AI데이터센터"
       ],
       "theme_paths": [
         {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        },
+        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         },
@@ -3049,15 +3056,14 @@
           "name": "광통신",
           "path": [
             "AI",
-            "AI데이터센터",
             "광통신"
           ]
         },
         {
-          "name": "반도체",
+          "name": "AI데이터센터",
           "path": [
             "AI",
-            "반도체"
+            "AI데이터센터"
           ]
         }
       ],
@@ -3076,8 +3082,8 @@
           "url": "https://www.mk.co.kr/news/stock/12026189",
           "source": "매경",
           "published_at": "2026-04-24T00:15:55",
-          "causal_chain": "AI 서버·광 인프라 투자 확대 → AI 반도체 검사장비 수요 증가 → 고영 공급 확대 기대 → 1분기 어닝 서프라이즈 시현.",
-          "macro_event": "AI 서버·광 인프라 투자 확대에 따른 반도체 검사장비 수요 증가",
+          "causal_chain": "글로벌 AI 데이터센터 투자 확대 → 광통신 모듈 고객사의 수율 확보 중요성 증대 → 고영의 3D 반도체 패키징 검사장비·스마트팩토리 솔루션 공급 확대 → 1분기 매출 727억·영업이익 99억 어닝 서프라이즈",
+          "macro_event": "글로벌 AI 인프라 투자 확대에 따른 광통신 모듈향 3D 반도체 패키징 검사장비 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3100,6 +3106,22 @@
         "low_pct": 212.18,
         "current": 42300
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-24",
+          "summary": "고영 상한가 (29.95%)",
+          "cur_prc": 42300,
+          "flu_rt": 29.95,
+          "trde_qty": null,
+          "trde_prica_calc": 1295230653000,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-27"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 34650,
@@ -3169,7 +3191,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -3264,15 +3285,28 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "전선,통신케이블,무선통신장비,합성수지 제조,도매/부동산 매매,임대",
       "themes": [
+        "전쟁완화",
+        "중동 지정학",
         "케이블"
       ],
       "theme_paths": [
         {
+          "name": "전쟁완화",
+          "path": [
+            "전쟁",
+            "전쟁완화"
+          ]
+        },
+        {
+          "name": "중동 지정학",
+          "path": [
+            "전쟁",
+            "중동 지정학"
+          ]
+        },
+        {
           "name": "케이블",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "케이블"
           ]
         }
@@ -3292,8 +3326,8 @@
           "url": "https://www.mk.co.kr/news/stock/12028001",
           "source": "매경",
           "published_at": "2026-04-27T01:11:41",
-          "causal_chain": "미국-이란 휴전 연장 → 중동 위험 프리미엄 완화 → 원자재·구리 등 원가 부담 완화 기대 → 절연선·케이블 제조사 마진 개선 기대감 (간접수혜)",
-          "macro_event": "미국-이란 휴전 연장 발표로 중동 위험 프리미엄 완화",
+          "causal_chain": "미국-이란 휴전 연장 → 중동 지정학적 리스크 해소로 구리 등 핵심 원재료 수급 차질·물류비 상승 우려 감소 → 원자재 수입 의존도가 높은 전선 업종 특성상 원가 부담 완화에 따른 수익성 개선 기대 → 대원전선 포함 전선주 매수세 유입.",
+          "macro_event": "미국-이란 휴전 연장으로 중동 지정학적 리스크 해소",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3307,8 +3341,8 @@
           "url": "https://www.mk.co.kr/news/stock/12025640",
           "source": "매경",
           "published_at": "2026-04-23T09:19:35",
-          "causal_chain": "본문에 대원전선의 비즈니스 드라이버 명시 없음. AI매매비서 투자 알고리즘이 인기검색 리스트로만 선정하는 마케팅 콘텐츠.",
-          "macro_event": "명시 없음",
+          "causal_chain": "미국-이란 휴전 연장 → 중동 지정학적 리스크 해소로 구리 등 핵심 원재료 수급 차질·물류비 상승 우려 감소 → 원자재 수입 의존도가 높은 전선 업종 특성상 원가 부담 완화에 따른 수익성 개선 기대 → 대원전선 포함 전선주 매수세 유입.",
+          "macro_event": "미국-이란 휴전 연장으로 중동 지정학적 리스크 해소",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3392,26 +3426,20 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "전력선,통신케이블,적산계기,스텐레스압연제품,광케이블,초고압선,알루미늄 제조,도매/전기공사",
       "themes": [
-        "AI데이터센터",
-        "AI 인프라",
         "케이블",
         "전력설비"
       ],
       "theme_paths": [
         {
-          "name": "AI데이터센터",
+          "name": "케이블",
           "path": [
-            "AI",
-            "AI데이터센터"
+            "케이블"
           ]
         },
         {
-          "name": "케이블",
+          "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
-            "케이블"
+            "전력설비"
           ]
         }
       ],
@@ -3430,8 +3458,8 @@
           "url": "https://www.mk.co.kr/news/stock/12021853",
           "source": "매경",
           "published_at": "2026-04-20T06:40:01",
-          "causal_chain": "AI 데이터센터 증설 → 전력 인프라 수요 급증 → 초고압·해저 케이블 신규 수주 가속화 → 대한전선 수주 잔고 3조7000억원 기록, 영업이익률 10% 이상의 고마진 케이블 수주로 이익 성장 견인.",
-          "macro_event": "AI 기반시설 확장으로 전력 병목 현실화 → 초고압·해저 케이블 수요 증가",
+          "causal_chain": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대 → 초고압·해저 케이블 수요 급증 → 대한전선 수주 잔고 역대 최대(3조7000억원) 및 1분기 호실적 전망. 수익률 상위 1% 투자자들이 SK하이닉스 차익실현 후 대한전선 순매수 1위로 이동.",
+          "macro_event": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대에 따른 케이블 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3445,8 +3473,8 @@
           "url": "https://www.sedaily.com/article/20034579",
           "source": "서울경제",
           "published_at": "2026-04-20T03:11:55",
-          "causal_chain": "AI 데이터센터 증설 → 전력 인프라 수요 급증 → 초고압·해저 케이블 신규 수주 가속화 → 대한전선 수주 잔고 3조7000억원 기록, 영업이익률 10% 이상의 고마진 케이블 수주로 이익 성장 견인.",
-          "macro_event": "AI 기반시설 확장으로 전력 병목 현실화 → 초고압·해저 케이블 수요 증가",
+          "causal_chain": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대 → 초고압·해저 케이블 수요 급증 → 대한전선 수주 잔고 역대 최대(3조7000억원) 및 1분기 호실적 전망. 수익률 상위 1% 투자자들이 SK하이닉스 차익실현 후 대한전선 순매수 1위로 이동.",
+          "macro_event": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대에 따른 케이블 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3460,8 +3488,8 @@
           "url": "https://www.mk.co.kr/news/stock/12018785",
           "source": "매경",
           "published_at": "2026-04-16T04:48:32",
-          "causal_chain": "AI 데이터센터 증설 → 전력 인프라 수요 급증 → 초고압·해저 케이블 신규 수주 가속화 → 대한전선 수주 잔고 3조7000억원 기록, 영업이익률 10% 이상의 고마진 케이블 수주로 이익 성장 견인.",
-          "macro_event": "AI 기반시설 확장으로 전력 병목 현실화 → 초고압·해저 케이블 수요 증가",
+          "causal_chain": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대 → 초고압·해저 케이블 수요 급증 → 대한전선 수주 잔고 역대 최대(3조7000억원) 및 1분기 호실적 전망. 수익률 상위 1% 투자자들이 SK하이닉스 차익실현 후 대한전선 순매수 1위로 이동.",
+          "macro_event": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대에 따른 케이블 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3475,8 +3503,8 @@
           "url": "https://www.sedaily.com/article/20033284",
           "source": "서울경제",
           "published_at": "2026-04-16T02:40:51",
-          "causal_chain": "AI 데이터센터 증설 → 전력 인프라 수요 급증 → 초고압·해저 케이블 신규 수주 가속화 → 대한전선 수주 잔고 3조7000억원 기록, 영업이익률 10% 이상의 고마진 케이블 수주로 이익 성장 견인.",
-          "macro_event": "AI 기반시설 확장으로 전력 병목 현실화 → 초고압·해저 케이블 수요 증가",
+          "causal_chain": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대 → 초고압·해저 케이블 수요 급증 → 대한전선 수주 잔고 역대 최대(3조7000억원) 및 1분기 호실적 전망. 수익률 상위 1% 투자자들이 SK하이닉스 차익실현 후 대한전선 순매수 1위로 이동.",
+          "macro_event": "AI 데이터센터 확대 및 글로벌 전력 인프라 투자 확대에 따른 케이블 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3580,7 +3608,23 @@
       },
       "bullish_today": true,
       "bullish_streak": 2,
-      "news": [],
+      "news": [
+        {
+          "title": "[특징주] 아주IB투자, 대주주 1580억 블록딜 소식에 20% 급락",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/29/HYMHNB4ITNEO7JOVOT446I7E5U/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T00:29:45",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "disclosures": [
         {
@@ -3697,6 +3741,20 @@
           "next_trading_day_source": "verified",
           "single_price": false,
           "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-24",
+          "summary": "아주IB투자 상한가 (29.88%)",
+          "cur_prc": 18720,
+          "flu_rt": 29.88,
+          "trde_qty": null,
+          "trde_prica_calc": 696439074240,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-27"
         }
       ],
       "intraday": {
@@ -3901,16 +3959,12 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
         {
           "name": "MASGA/미국 제조업 쇼어링",
           "path": [
-            "트럼프",
             "MASGA/미국 제조업 쇼어링"
           ]
         }
@@ -4089,9 +4143,6 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         }
@@ -4338,7 +4389,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -4353,6 +4403,21 @@
       "bullish_today": true,
       "bullish_streak": 1,
       "news": [
+        {
+          "title": "28일 코스닥 시장 공매도 수량 상위 종목. 우리기술, SFA반도체 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/29/GNSGEZJQMU2DSNTBHBSTMN3CMQ/",
+          "source": "조선비즈",
+          "published_at": "2026-04-28T23:01:15",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "27일 코스닥 시장 공매도 수량 상위 종목. SFA반도체, 국일제지 등",
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/28/G42TGYZXMY2WGOBXGE4WMYZWGU/",
@@ -4761,15 +4826,9 @@
       ],
       "theme_paths": [
         {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        },
-        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         }
@@ -4891,9 +4950,6 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         }
@@ -4952,6 +5008,22 @@
         "low_pct": 210.36,
         "current": 182800
       },
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-24",
+          "summary": "대주전자재료 상한가 (30.0%)",
+          "cur_prc": 182800,
+          "flu_rt": 30.0,
+          "trde_qty": null,
+          "trde_prica_calc": 335022678400,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-27"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 142700,
@@ -5022,7 +5094,6 @@
         {
           "name": "HBM",
           "path": [
-            "AI",
             "반도체",
             "HBM"
           ]
@@ -5153,7 +5224,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -5246,7 +5316,6 @@
         {
           "name": "FC-BGA",
           "path": [
-            "AI",
             "반도체",
             "FC-BGA"
           ]
@@ -5393,15 +5462,9 @@
       ],
       "theme_paths": [
         {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        },
-        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         }
@@ -5532,25 +5595,15 @@
       ],
       "theme_paths": [
         {
-          "name": "조선",
-          "path": [
-            "조선"
-          ]
-        },
-        {
           "name": "LNG선 기자재",
           "path": [
-            "전쟁",
-            "중동전쟁",
-            "해운",
+            "조선",
             "LNG선 기자재"
           ]
         },
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         },
@@ -5572,6 +5625,36 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "iM증권 \"한화엔진, 데이터센터 없어도 충분⋯본업 체력 상승\"",
+          "url": "https://www.etoday.co.kr/news/view/2580143",
+          "source": "이투데이",
+          "published_at": "2026-04-28T23:10:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한화엔진, 수주·수익성 동반 개선…목표가 10.1만원↑-iM",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02833926645421040",
+          "source": "이데일리",
+          "published_at": "2026-04-28T22:46:26",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "[특징주] 한화엔진, 8%대 급등⋯‘어닝 서프라이즈’로 증권가 목표가 줄상향",
           "url": "https://www.etoday.co.kr/news/view/2579382",
@@ -5609,36 +5692,6 @@
           "published_at": "2026-04-26T22:51:36",
           "causal_chain": "미국 AI 데이터센터 전력 수요 확대 → 데이터센터용 4행정 엔진 수주 기대 + 어닝 서프라이즈 → 증권가 목표가 줄상향(10만원, SK·메리츠) + 한신평 신용등급 전망 '긍정적' 상향",
           "macro_event": "미국 데이터센터 전력공급용 4행정 엔진 수요 확대 + 한화엔진 호실적",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한화엔진, 호실적에 미국 수주 기대감...목표주가 10만원 ↑-SK",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01262806645420384",
-          "source": "이데일리",
-          "published_at": "2026-04-26T22:48:25",
-          "causal_chain": "미국 AI 데이터센터 전력 수요 확대 → 데이터센터용 4행정 엔진 수주 기대 + 어닝 서프라이즈 → 증권가 목표가 줄상향(10만원, SK·메리츠) + 한신평 신용등급 전망 '긍정적' 상향",
-          "macro_event": "미국 데이터센터 전력공급용 4행정 엔진 수요 확대 + 한화엔진 호실적",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[오늘의 증시일정] 삼성물산ㆍ한화엔진ㆍ현대로템 등",
-          "url": "https://www.etoday.co.kr/news/view/2578738",
-          "source": "이투데이",
-          "published_at": "2026-04-23T23:18:00",
-          "causal_chain": "글로벌 조선업 슈퍼 사이클 진입 → 선박 건조 수주 폭증 → 한화엔진의 대형선박용 저속엔진 수요 급증 및 수익성 개선",
-          "macro_event": "조선업 슈퍼 사이클 진입 + 신용등급 전망 상향(안정적→긍정적)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5740,17 +5793,9 @@
       ],
       "theme_paths": [
         {
-          "name": "조선",
-          "path": [
-            "조선"
-          ]
-        },
-        {
           "name": "LNG선 기자재",
           "path": [
-            "전쟁",
-            "중동전쟁",
-            "해운",
+            "조선",
             "LNG선 기자재"
           ]
         }
@@ -5889,10 +5934,15 @@
       "themes": [
         "전력설비",
         "AI데이터센터",
-        "원전",
-        "스마트그리드"
+        "원전"
       ],
       "theme_paths": [
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
         {
           "name": "AI데이터센터",
           "path": [
@@ -5903,19 +5953,7 @@
         {
           "name": "원전",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "원전"
-          ]
-        },
-        {
-          "name": "스마트그리드",
-          "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
-            "스마트그리드"
           ]
         }
       ],
@@ -5934,8 +5972,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/24/MQ3DEZLDMYYDCOJUGE4DMOJWMQ/",
           "source": "조선비즈",
           "published_at": "2026-04-23T23:01:11",
-          "causal_chain": "美 핵융합 상용화 프로젝트 추진 → 순간 고출력(15㎿급) 전력 공급 필요 → LS머트리얼즈 울트라캐패시터 1000개+ 첫 공급 → 핵융합 신규 수주처 선점",
-          "macro_event": "미국 핵융합 발전 상용화 프로젝트, 첫 상업 공급 개시",
+          "causal_chain": "미국 핵융합 발전 실증 프로젝트 UC 공급 계약 체결 → 핵융합 분야 최초 레퍼런스 확보로 고출력 UC 과점 시장 내 선점 효과 → 후속 수주 및 상용화 단계 대규모 수주 가시화로 UC 본업 매출 기저 확대. AI 데이터센터 전력 수요 급증이 핵융합 투자 확대를 견인하며 고출력 UC 수요 동반 성장.",
+          "macro_event": "미국 핵융합 발전 실증 프로젝트에 UC 1000개+ 대형 모듈 첫 공급 계약 체결",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -5949,8 +5987,8 @@
           "url": "https://www.mk.co.kr/news/business/12025199",
           "source": "매경",
           "published_at": "2026-04-23T04:46:34",
-          "causal_chain": "美 핵융합 상용화 프로젝트 추진 → 순간 고출력(15㎿급) 전력 공급 필요 → LS머트리얼즈 울트라캐패시터 1000개+ 첫 공급 → 핵융합 신규 수주처 선점",
-          "macro_event": "미국 핵융합 발전 상용화 프로젝트, 첫 상업 공급 개시",
+          "causal_chain": "미국 핵융합 발전 실증 프로젝트 UC 공급 계약 체결 → 핵융합 분야 최초 레퍼런스 확보로 고출력 UC 과점 시장 내 선점 효과 → 후속 수주 및 상용화 단계 대규모 수주 가시화로 UC 본업 매출 기저 확대. AI 데이터센터 전력 수요 급증이 핵융합 투자 확대를 견인하며 고출력 UC 수요 동반 성장.",
+          "macro_event": "미국 핵융합 발전 실증 프로젝트에 UC 1000개+ 대형 모듈 첫 공급 계약 체결",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6036,15 +6074,28 @@
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "반도체 설계 서비스",
       "themes": [
+        "AI",
+        "반도체",
+        "AI 인프라",
         "건설"
       ],
       "theme_paths": [
         {
+          "name": "반도체",
+          "path": [
+            "반도체"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
+        {
           "name": "건설",
           "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
             "건설"
           ]
         }
@@ -6064,8 +6115,8 @@
           "url": "https://www.sedaily.com/article/20038124",
           "source": "서울경제",
           "published_at": "2026-04-28T06:35:07",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "엣지 AI 장치 시장 확대(리테일·드론·모바일·영상장비 온디바이스 AI 추론) → 초저전력·고성능 AI 추론 칩 수요 → 3D-IC 기술(소형화·전력효율 극대화)이 엣지 솔루션의 핵심 기술 → 세미파이브의 검증된 3D-IC 설계·패키징 통합 역량으로 글로벌 AI ASIC 시장에서 엣지 영역 턴키 수주 기저 확대",
+          "macro_event": "글로벌 엣지 AI 장치(드론, 리테일시스템, 모바일, 특수영상장비) 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6079,8 +6130,8 @@
           "url": "https://biz.chosun.com/it-science/ict/2026/04/28/OCDPIAHLJ5FMBDZWMHSFMCBMVA/",
           "source": "조선비즈",
           "published_at": "2026-04-28T05:23:12",
-          "causal_chain": "유럽 비전 AI 기업향 3D-IC 턴키 수주 → 세미파이브의 첨단 반도체 설계 플랫폼 사업 해외 수주 확대 가시화.",
-          "macro_event": "세미파이브 유럽 비전 AI 기업 대상 3D-IC 턴키 수주",
+          "causal_chain": "엣지 AI 장치 시장 확대(리테일·드론·모바일·영상장비 온디바이스 AI 추론) → 초저전력·고성능 AI 추론 칩 수요 → 3D-IC 기술(소형화·전력효율 극대화)이 엣지 솔루션의 핵심 기술 → 세미파이브의 검증된 3D-IC 설계·패키징 통합 역량으로 글로벌 AI ASIC 시장에서 엣지 영역 턴키 수주 기저 확대",
+          "macro_event": "글로벌 엣지 AI 장치(드론, 리테일시스템, 모바일, 특수영상장비) 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6172,7 +6223,6 @@
         {
           "name": "2차전지",
           "path": [
-            "전기차",
             "2차전지"
           ]
         }
@@ -6192,8 +6242,8 @@
           "url": "https://www.asiae.co.kr/article/2026042116285211951",
           "source": "아시아경제",
           "published_at": "2026-04-21T21:00:00",
-          "causal_chain": "탄산리튬 가격 상승과 전방 배터리 수요 회복 → 엘앤에프 양극재 판가 1% 인상(미드니켈 중심) 및 출하량 전분기비 9% 증가(BEP 초과) → 재고평가이익 669억원 발생과 1분기 실적 기대치 상회",
-          "macro_event": "탄산리튬 가격 상승 + 양극재 수출/전방 수요 회복",
+          "causal_chain": "2차전지 산업의 수급 정상화 및 양극활물질 공급부족 → 엘앤에프의 양극재 판가 강세(1% 상승, 2분기 상승폭 확대) + 출하량 증가(BEP 수준 초과) → 탄산리튬 가격 상승으로 재고평가이익 669억원 + 올해 흑자전환 신호",
+          "macro_event": "양극활물질 산업 수급 정상화 + 판가 강세",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6207,8 +6257,8 @@
           "url": "https://www.hankyung.com/article/2026042146376",
           "source": "한경",
           "published_at": "2026-04-20T23:23:41",
-          "causal_chain": "탄산리튬 가격 상승과 전방 배터리 수요 회복 → 엘앤에프 양극재 판가 1% 인상(미드니켈 중심) 및 출하량 전분기비 9% 증가(BEP 초과) → 재고평가이익 669억원 발생과 1분기 실적 기대치 상회",
-          "macro_event": "탄산리튬 가격 상승 + 양극재 수출/전방 수요 회복",
+          "causal_chain": "2차전지 산업의 수급 정상화 및 양극활물질 공급부족 → 엘앤에프의 양극재 판가 강세(1% 상승, 2분기 상승폭 확대) + 출하량 증가(BEP 수준 초과) → 탄산리튬 가격 상승으로 재고평가이익 669억원 + 올해 흑자전환 신호",
+          "macro_event": "양극활물질 산업 수급 정상화 + 판가 강세",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6222,8 +6272,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02804406645417104",
           "source": "이데일리",
           "published_at": "2026-04-17T00:30:07",
-          "causal_chain": "탄산리튬 가격 상승과 전방 배터리 수요 회복 → 엘앤에프 양극재 판가 1% 인상(미드니켈 중심) 및 출하량 전분기비 9% 증가(BEP 초과) → 재고평가이익 669억원 발생과 1분기 실적 기대치 상회",
-          "macro_event": "탄산리튬 가격 상승 + 양극재 수출/전방 수요 회복",
+          "causal_chain": "2차전지 산업의 수급 정상화 및 양극활물질 공급부족 → 엘앤에프의 양극재 판가 강세(1% 상승, 2분기 상승폭 확대) + 출하량 증가(BEP 수준 초과) → 탄산리튬 가격 상승으로 재고평가이익 669억원 + 올해 흑자전환 신호",
+          "macro_event": "양극활물질 산업 수급 정상화 + 판가 강세",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -6330,7 +6380,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -6429,7 +6478,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -6444,6 +6492,21 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "DB하이텍, 獨 ‘PCIM 2026’ 참가... 유럽 전력반도체 시장 공략",
+          "url": "https://biz.chosun.com/it-science/ict/2026/04/29/VHPLZGTFXRFM5ET364EBVDKXCY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T01:27:47",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "반도체·이차전지·보안주 ‘삼총사’발 코스피 랠리…DB하이텍, 역사적 신고가 달성 [매경 자이앤트]",
           "url": "https://www.mk.co.kr/news/stock/12021674",
@@ -6635,6 +6698,20 @@
           "effect_badges": [],
           "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260424001006",
           "disclosure_title": "단기과열종목(가격괴리율, 3거래일 단일가매매) 지정 연장(한화갤러리아우)"
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "pipeline_chg",
+          "view_date": "2026-04-24",
+          "summary": "한화갤러리아 상한가 (29.96%)",
+          "cur_prc": 3340,
+          "flu_rt": 29.96,
+          "trde_qty": null,
+          "trde_prica_calc": 156486782200,
+          "consecutive_count": null,
+          "estimated": true,
+          "next_trading_day": "2026-04-27"
         }
       ],
       "intraday": {
@@ -6856,8 +6933,17 @@
       "low_price": 55800,
       "industry": "기타 상품 전문 소매업",
       "sector": "면세판매,관광숙박,외식사업,예식업",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-16",
@@ -7053,17 +7139,12 @@
         {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
         {
           "name": "유가상승",
           "path": [
-            "전쟁",
-            "중동전쟁",
             "유가상승"
           ]
         }
@@ -7209,9 +7290,6 @@
         {
           "name": "케이블",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "케이블"
           ]
         }
@@ -7225,7 +7303,23 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
+      "news": [
+        {
+          "title": "[특징주] 전선株 급등세⋯LS에코에너지 17%ㆍ일진전기 7%↑",
+          "url": "https://www.etoday.co.kr/news/view/2580232",
+          "source": "이투데이",
+          "published_at": "2026-04-29T01:02:00",
+          "causal_chain": "로봇 기사로 전선주 급등 현상만 보도하며, 급등의 원인이 되는 매크로 이벤트나 인과 사슬이 본문에 제시되지 않음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": -0.0,
       "range_240d": {
@@ -7285,9 +7379,7 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "주의"
     },
     {
       "code": "062040",
@@ -7324,11 +7416,14 @@
           ]
         },
         {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
+        {
           "name": "태양광",
           "path": [
-            "AI",
-            "AI 인프라",
-            "전력설비",
             "태양광"
           ]
         },
@@ -7506,15 +7601,9 @@
       ],
       "theme_paths": [
         {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        },
-        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         }
@@ -7927,14 +8016,21 @@
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "연료전지",
       "themes": [
+        "AI데이터센터",
+        "AI",
         "전력설비"
       ],
       "theme_paths": [
         {
-          "name": "전력설비",
+          "name": "AI데이터센터",
           "path": [
             "AI",
-            "AI 인프라",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
             "전력설비"
           ]
         }
@@ -7948,7 +8044,23 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
+      "news": [
+        {
+          "title": "[MK시그널] 두산퓨얼셀, AI 전력난 수혜 및 SOFC 양산 본격화에 주가 상승세... K시그널 추천 후 상승률 26.75% 기록",
+          "url": "https://www.mk.co.kr/news/stock/12030500",
+          "source": "매경",
+          "published_at": "2026-04-29T01:08:59",
+          "causal_chain": "AI 데이터센터 급증 → 전력 수요 폭증 → 안정성·공간효율 갖춘 수소 연료전지가 핵심 대안으로 부상 → 두산퓨얼셀 2026년 SOFC 양산 체제 가동 + 하이액시엄 생산 중단에 따른 공급 일원화 → 해외 수주 수익성 직접 개선.",
+          "macro_event": "AI 데이터센터 확대로 전력 수요 폭증 → 수소 연료전지 대안 부상",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": -0.0,
       "range_240d": {
@@ -8008,9 +8120,7 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "주의"
     },
     {
       "code": "102120",
@@ -8031,7 +8141,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -8146,8 +8255,6 @@
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         }
@@ -8163,72 +8270,72 @@
       "bullish_streak": 0,
       "news": [
         {
+          "title": "LS Electric 米DC向け配電3190億ウォン受注",
+          "url": "https://biz.chosun.com/jp/jp-industry/2026/04/29/YEF6LQMYIFFJ3DPSX3RCF2GLMQ/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T00:47:59",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "LS証券がLIG D&Aを買い推奨 天宮受注増で目標130万ウォン",
+          "url": "https://biz.chosun.com/jp/jp-finance/2026/04/29/3FWATDMT4BFEVN3E4G4NDJEYNI/",
+          "source": "조선비즈",
+          "published_at": "2026-04-28T23:47:11",
+          "causal_chain": "LS(지주) 자회사 LIG D&A의 천궁 관련 방위사업 수주 기대는 종목의 간접 수혜만 해당. LS의 핵심 사업(금융)과 직접 연관 없음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "LS證 “LIG D&A, 전쟁으로 실전 검증·천궁 수주 증가 기대…목표가 130만원”",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/29/DS5UXLNZ7REMDELD74ORXLMAPI/",
+          "source": "조선비즈",
+          "published_at": "2026-04-28T23:47:11",
+          "causal_chain": "LS(지주) 자회사 LIG D&A의 천궁 관련 방위사업 수주 기대는 종목의 간접 수혜만 해당. LS의 핵심 사업(금융)과 직접 연관 없음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "28일 코스피 시장 공매도 금액 상위 종목. SK하이닉스, LS ELECTRIC 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/29/GNQTEZDCMJTDSNTEHA4TMNBZHA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-28T23:01:15",
+          "causal_chain": "LS(지주) 자회사 LIG D&A의 천궁 관련 방위사업 수주 기대는 종목의 간접 수혜만 해당. LS의 핵심 사업(금융)과 직접 연관 없음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "LS証NH投資証券目標株価4万に引き上げ保有維持",
           "url": "https://biz.chosun.com/jp/jp-finance/2026/04/28/26YM3S2FN5B65GS7WFJU6MA5KU/",
           "source": "조선비즈",
           "published_at": "2026-04-27T23:31:33",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "LS證 “NH투자증권, 수수료·운용이익 동반 호조…목표가 4만원\"",
-          "url": "https://biz.chosun.com/stock/stock_general/2026/04/28/ATMEGSXMCJCJHB6NY36J4TFMWY/",
-          "source": "조선비즈",
-          "published_at": "2026-04-27T23:31:33",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "LS ELECTRIC, 배전 수주 확대·증설 본격화…목표가 35만원↑-LS",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02509206645420712",
-          "source": "이데일리",
-          "published_at": "2026-04-27T22:37:14",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "롯데웰푸드, 1분기 본격 이익 개선…목표주가↑-LS證",
-          "url": "https://www.fnnews.com/news/202604270849155864",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-04-27T09:37:52.723297",
-          "causal_chain": "본문 미제공으로 종합 분석 불가. 뉴스[1]은 LS증권이 롯데웰푸드(타사)를 분석한 리포트로 LS(006260) 자체 뉴스 아님. 뉴스[2,3]은 제목만 제시되어 도메인 키워드·인과 매핑 불가.",
-          "macro_event": "",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "LS電線 アンマ海上風力の1771億ウォン供給契約を解除",
-          "url": "https://biz.chosun.com/jp/jp-industry/2026/04/27/YIXTD7HR3NCQLEFTGTAVLLMQSM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-27T09:02:03",
-          "causal_chain": "본문 미제공으로 종합 분석 불가. 뉴스[1]은 LS증권이 롯데웰푸드(타사)를 분석한 리포트로 LS(006260) 자체 뉴스 아님. 뉴스[2,3]은 제목만 제시되어 도메인 키워드·인과 매핑 불가.",
-          "macro_event": "",
+          "causal_chain": "전력 인프라 투자 확대 국면 → 지주사 LS의 핵심 자회사 LS ELECTRIC 배전 부문 수주 잔고 확대 + 생산 증설 본격화 → 본업(전력용 전선·전력설비) 매출 성장 기대로 증권사 목표가 35만원 상향.",
+          "macro_event": "LS ELECTRIC 배전 수주 확대·증설 본격화로 목표가 35만원 상향",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -8331,7 +8438,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -8435,14 +8541,12 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         },
         {
           "name": "MASGA/미국 제조업 쇼어링",
           "path": [
-            "트럼프",
             "MASGA/미국 제조업 쇼어링"
           ]
         }
@@ -8616,8 +8720,6 @@
         {
           "name": "전력설비",
           "path": [
-            "AI",
-            "AI 인프라",
             "전력설비"
           ]
         },
@@ -8625,7 +8727,6 @@
           "name": "전쟁재건",
           "path": [
             "전쟁",
-            "전쟁완화",
             "전쟁재건"
           ]
         }
@@ -8806,7 +8907,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -9072,25 +9172,36 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "굴삭기, 지게차, 휠로더 등",
       "themes": [
+        "인프라 수혜",
+        "전력설비",
+        "방산",
         "유가상승",
         "건설"
       ],
       "theme_paths": [
         {
-          "name": "유가상승",
+          "name": "인프라 수혜",
           "path": [
-            "전쟁",
-            "중동전쟁",
-            "유가상승"
+            "건설",
+            "인프라 수혜"
           ]
         },
         {
-          "name": "건설",
+          "name": "전력설비",
           "path": [
-            "전쟁",
-            "전쟁완화",
-            "전쟁재건",
-            "건설"
+            "전력설비"
+          ]
+        },
+        {
+          "name": "방산",
+          "path": [
+            "방산"
+          ]
+        },
+        {
+          "name": "유가상승",
+          "path": [
+            "유가상승"
           ]
         }
       ],
@@ -9109,8 +9220,8 @@
           "url": "https://www.hankyung.com/article/2026042810696",
           "source": "한경",
           "published_at": "2026-04-27T23:36:22",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "글로벌 인프라 투자(건설·데이터센터·전력) 확대 + 원자재 강세 + 고유가 기조 → 건설기계·발전기 엔진 수요 동반 증가. HD건설기계는 합병 시너지(유럽·북미 센터 통합, 비용 20% 절감)로 고수익성을 확보하면서 신흥시장 68~46% 고성장과 고연비 신모델 인기로 1분기 영업익 88% 증가.",
+          "macro_event": "글로벌 건설기계 수요 회복 + 신흥시장(중동/아프리카/남미) 광산 투자 확대로 매출 22% 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -9124,8 +9235,8 @@
           "url": "https://www.sedaily.com/article/20037672",
           "source": "서울경제",
           "published_at": "2026-04-27T07:57:38",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "글로벌 인프라 투자(건설·데이터센터·전력) 확대 + 원자재 강세 + 고유가 기조 → 건설기계·발전기 엔진 수요 동반 증가. HD건설기계는 합병 시너지(유럽·북미 센터 통합, 비용 20% 절감)로 고수익성을 확보하면서 신흥시장 68~46% 고성장과 고연비 신모델 인기로 1분기 영업익 88% 증가.",
+          "macro_event": "글로벌 건설기계 수요 회복 + 신흥시장(중동/아프리카/남미) 광산 투자 확대로 매출 22% 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -9139,8 +9250,8 @@
           "url": "https://biz.chosun.com/industry/company/2026/04/27/RP62LPFGZ5GOBMQOAJVQRDJS34/",
           "source": "조선비즈",
           "published_at": "2026-04-27T07:12:13",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "글로벌 인프라 투자(건설·데이터센터·전력) 확대 + 원자재 강세 + 고유가 기조 → 건설기계·발전기 엔진 수요 동반 증가. HD건설기계는 합병 시너지(유럽·북미 센터 통합, 비용 20% 절감)로 고수익성을 확보하면서 신흥시장 68~46% 고성장과 고연비 신모델 인기로 1분기 영업익 88% 증가.",
+          "macro_event": "글로벌 건설기계 수요 회복 + 신흥시장(중동/아프리카/남미) 광산 투자 확대로 매출 22% 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -9154,8 +9265,8 @@
           "url": "https://www.mk.co.kr/news/business/12025440",
           "source": "매경",
           "published_at": "2026-04-23T08:01:37",
-          "causal_chain": "국제유가 상승 → HD건설기계 신모델(DX08+FEH) 출시로 연비 25% 개선, 유류비 660만원/년 절감 → 운영비 절감 가치 상승 → 고객 선호도↑(3개월 60대, 전분기 대비 50%↑)",
-          "macro_event": "국제유가 상승으로 건설기계 구매 시 운영비 절감 효율이 핵심 선택 요소 부상",
+          "causal_chain": "글로벌 인프라 투자(건설·데이터센터·전력) 확대 + 원자재 강세 + 고유가 기조 → 건설기계·발전기 엔진 수요 동반 증가. HD건설기계는 합병 시너지(유럽·북미 센터 통합, 비용 20% 절감)로 고수익성을 확보하면서 신흥시장 68~46% 고성장과 고연비 신모델 인기로 1분기 영업익 88% 증가.",
+          "macro_event": "글로벌 건설기계 수요 회복 + 신흥시장(중동/아프리카/남미) 광산 투자 확대로 매출 22% 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -9169,8 +9280,8 @@
           "url": "https://www.mk.co.kr/news/business/12025306",
           "source": "매경",
           "published_at": "2026-04-23T06:22:03",
-          "causal_chain": "국제유가 상승 → HD건설기계 신모델(DX08+FEH) 출시로 연비 25% 개선, 유류비 660만원/년 절감 → 운영비 절감 가치 상승 → 고객 선호도↑(3개월 60대, 전분기 대비 50%↑)",
-          "macro_event": "국제유가 상승으로 건설기계 구매 시 운영비 절감 효율이 핵심 선택 요소 부상",
+          "causal_chain": "글로벌 인프라 투자(건설·데이터센터·전력) 확대 + 원자재 강세 + 고유가 기조 → 건설기계·발전기 엔진 수요 동반 증가. HD건설기계는 합병 시너지(유럽·북미 센터 통합, 비용 20% 절감)로 고수익성을 확보하면서 신흥시장 68~46% 고성장과 고연비 신모델 인기로 1분기 영업익 88% 증가.",
+          "macro_event": "글로벌 건설기계 수요 회복 + 신흥시장(중동/아프리카/남미) 광산 투자 확대로 매출 22% 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -9474,7 +9585,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -9792,7 +9902,6 @@
         {
           "name": "FC-BGA",
           "path": [
-            "AI",
             "반도체",
             "FC-BGA"
           ]
@@ -9968,7 +10077,6 @@
         {
           "name": "반도체",
           "path": [
-            "AI",
             "반도체"
           ]
         }
@@ -10068,15 +10176,9 @@
       ],
       "theme_paths": [
         {
-          "name": "반도체",
-          "path": [
-            "AI",
-            "반도체"
-          ]
-        },
-        {
           "name": "반도체 후공정 장비",
           "path": [
+            "반도체",
             "반도체 후공정 장비"
           ]
         }
