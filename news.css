@@ -762,15 +762,14 @@ a.cal-credit-row:hover,
 .lut-svg { display: block; }
 .lut-line { transition: opacity 200ms ease; pointer-events: none; }
 .lut-area { pointer-events: none; }
-.lut-dot { fill: var(--am); stroke: none; transition: r 150ms ease, stroke-width 150ms ease; cursor: pointer; }
-.lut-dot:hover { r: 5; }
-.lut-dot:focus-visible { outline: none; r: 5; stroke: #FFF; stroke-width: 1.5; }
-.lut-dot--active { r: 5; stroke: #FFF; stroke-width: 1.5; fill: var(--am); }
-.lut-dot-zero { fill: #CBD5E1; stroke: none; }
-@media (max-width: 880px) {
-  .lut-dot { r: 4; }
-  .lut-dot--active { r: 5.5; stroke-width: 1.5; }
-}
+/* 정정 #1 (대표 18:06): theme-trend SoT (fill=#FFF + stroke=color, r=2 desktop / 3.5 mobile) 통일.
+   기본 = 빈 stroke. 선택 active 시 fill=color 채움. */
+.lut-dot { fill: #FFF; stroke: var(--am); stroke-width: 1.5; transition: fill 150ms ease; cursor: pointer; }
+.lut-dot:hover { fill: var(--am); }
+.lut-dot:focus-visible { outline: none; fill: var(--am); }
+.lut-dot--active { fill: var(--am); }
+.lut-dot-zero { fill: #FFF; stroke: #CBD5E1; }
+.lut-dot-zero:hover { fill: #CBD5E1; }
 .lut-dot-hit { fill: transparent; cursor: pointer; }
 .lut-detail {
   margin-top: 12px; padding: 12px 14px;
@@ -784,7 +783,8 @@ a.cal-credit-row:hover,
 }
 .lut-detail-head { font-size: 12px; color: var(--tx2); margin-bottom: 8px; }
 .lut-detail-date { font-weight: 700; color: var(--tx); }
-/* #13 — 상한가 list = trend-detail-table 구조 재사용. lut-detail-table은 컬럼별 색만 재정의. */
+/* 정정 #11/#13 (대표 18:06): 상한가 list = 거래대금 list 완전 복제 (.trend-detail-table 클래스 재사용).
+   .lut-detail-table는 색·정렬만 재정의. lut-stock-row/-name/-pct/-amt 클래스는 deprecated (테이블 td 사용). */
 .lut-detail-table tr:hover td { background: rgba(196, 153, 48, 0.08); }
 .lut-detail-table .td-pct { color: #C53939; font-weight: 600; text-align: right; }
 .lut-detail-table .td-amount {
@@ -805,13 +805,13 @@ a.cal-credit-row:hover,
   flex-shrink: 0;
   white-space: nowrap;
 }
-/* #12 — 거래대금 추이 종목명 anchor 링크 */
+/* #12 — 거래대금 추이 종목명 anchor 링크 (양 차트 모두 사용) */
 .trend-stock-link { color: inherit; text-decoration: none; font-weight: 600; }
 .trend-stock-link:hover { color: var(--am); text-decoration: underline; }
 @media (max-width: 880px) {
   .lut-wrap { padding: 12px; }
   .lut-streak { font-size: 9px; padding: 1px 5px; }
-  /* lut-detail-table 컬럼 너비 정합 — trend-detail-table mobile (28% / 22% / 22%)에 맞춰 재분배 */
+  /* lut-detail-table 컬럼 너비 (trend-detail-table mobile 28%/22% 정신) */
   .lut-detail-table th:nth-child(1),
   .lut-detail-table td:nth-child(1) { width: 50%; overflow: hidden; }
   .lut-detail-table th:nth-child(2),
@@ -925,11 +925,9 @@ a.cal-credit-row:hover,
 }
 .theme-trend-svg { display: block; min-height: 180px; height: auto; }
 .theme-trend-svg text { font-family: 'Inter', 'Pretendard', sans-serif; }
-.tt-dot { transition: r 150ms ease, stroke-width 150ms ease; cursor: pointer; }
-.tt-dot--active { stroke: #FFF; stroke-width: 1.5; r: 5; }
-@media (max-width: 880px) {
-  .tt-dot--active { r: 5.5; stroke-width: 1.5; }
-}
+/* tt-dot 기본 = 빈(fill=#FFF + stroke=color) — JS 인라인 fill="#FFF" stroke=color stroke-width=1.5.
+   active = fill=color (data-color 속성에서 JS가 직접 적용). */
+.tt-dot { transition: fill 150ms ease; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .tt-dot { transition: none; }
 }
