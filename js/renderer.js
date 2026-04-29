@@ -1436,7 +1436,7 @@ async function initThemeTrend() {
         ring.setAttribute('cy', cy);
         ring.setAttribute('r', '5');
         ring.setAttribute('fill', 'none');
-        ring.setAttribute('stroke', '#C49930');
+        ring.setAttribute('stroke', h.getAttribute('data-color') || '#C49930');
         ring.setAttribute('stroke-width', '2');
         ring.classList.add('tt-gold-ring');
         svgEl.appendChild(ring);
