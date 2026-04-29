@@ -683,23 +683,11 @@ a.cal-credit-row:hover,
 /* ───── Below-Fold 2-Column Grid ───── */
 .theme-trend { margin-bottom: 48px; }
 
-/* 정정 #16 (대표 18:30): sticky = theme-trend / lut만. theme-tree는 cal-layout grid 내부라 sticky 컨텍스트 깨짐 → 제외.
-   nav(top:0,z:100) → theme-trend(top:68,z:53) → lut(top:114,z:52). 두 헤더 누적 stack. */
+/* 정정 원복 (대표 18:42): sticky 모두 제거. 날짜 헤더(cal-content-head)만 sticky 유지 (별도 영역).
+   theme-trend-header / lut-header / theme-tree-header는 일반 헤더 — 배경/패딩만 호환 유지.
+   클릭 → scrollIntoView 핸들러는 보존 (대표 #1 "날짜 클릭 → 달력 스크롤" 패턴 정합). */
 .theme-trend-header,
-.lut-header {
-  position: -webkit-sticky;
-  position: sticky;
-  z-index: 50;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  margin-left: -16px; margin-right: -16px;
-  padding: 8px 16px;
-  margin-bottom: 10px;
-}
-.theme-trend-header { top: 68px; z-index: 53; }
-.lut-header { top: 114px; z-index: 52; }
-/* theme-tree-header는 sticky 제거 (대표 명시). 일반 헤더로 동작. */
+.lut-header,
 .theme-tree-header {
   background: rgba(255, 255, 255, 0.7);
   margin-left: -16px; margin-right: -16px;
@@ -708,16 +696,11 @@ a.cal-credit-row:hover,
 }
 @media (max-width: 880px) {
   .theme-trend-header,
-  .lut-header {
-    margin-left: -12px; margin-right: -12px;
-    padding: 6px 12px;
-  }
+  .lut-header,
   .theme-tree-header {
     margin-left: -12px; margin-right: -12px;
     padding: 6px 12px;
   }
-  .theme-trend-header { top: 68px; }
-  .lut-header { top: 110px; }
 }
 .theme-trend-header[data-scroll-to-section],
 .lut-header[data-scroll-to-section],
