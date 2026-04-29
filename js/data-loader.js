@@ -227,6 +227,11 @@ async function loadCalDayData(date) {
             intraday: st.intraday || null,
             status_badges: st.status_badges || [],
             range_240d: st.range_240d || null,
+            // REQ-pm320-ux-cycle #3 P0 fix (FLR-20260429-FLR-002) — 20영업일 일봉 OHLC 패스스루.
+            // build_daily.py가 stocks[N].daily_20 부착하지만 본 패스스루 누락 시 renderer.js
+            // it.interp.daily_20 undefined → cal-candles20-empty 100% 회색 박스. 모바일은 sparkline
+            // display:none이라 매매 직결 정보 100% 손실.
+            daily_20: st.daily_20 || null,
             // REQ-048 — 강세 배지 데이터 패스스루 (build_daily.py REQ-039 entry 루트 → interp 합성).
             // 이 필드 누락이 라이브 화면 강세 배지 미노출의 진짜 본질 (대표 발화 02:45 KST).
             bullish_today: !!st.bullish_today,
