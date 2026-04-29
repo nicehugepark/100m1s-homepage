@@ -758,6 +758,7 @@ a.cal-credit-row:hover,
    active 시 fill=color + 골드 링(.lut-gold-ring r=5) 추가. */
 .lut-dot { fill: #FFF; stroke: var(--am); stroke-width: 1.5; transition: fill 150ms ease, r 150ms ease; cursor: pointer; }
 .lut-dot:hover { fill: var(--am); }
+.lut-dot:focus { outline: none; }
 .lut-dot:focus-visible { outline: none; fill: var(--am); }
 .lut-dot--active { fill: var(--am); stroke: #FFF; stroke-width: 2; }
 .tt-dot--active { fill: var(--am); stroke: #FFF; stroke-width: 2; }
@@ -917,6 +918,9 @@ a.cal-credit-row:hover,
 /* tt-dot 기본 = 빈(fill=#FFF + stroke=color) — JS 인라인 fill="#FFF" stroke=color stroke-width=1.5.
    active = fill=color (data-color 속성에서 JS가 직접 적용). */
 .tt-dot { transition: fill 150ms ease; cursor: pointer; }
+/* multi-point dot은 .tt-hit 위에 렌더되어 클릭 가로챔 — pointer-events: none으로 hit 통과.
+   single-point는 class="tt-hit tt-dot" 동시 보유이므로 :not(.tt-hit)로 제외. */
+.tt-dot:not(.tt-hit) { pointer-events: none; }
 @media (prefers-reduced-motion: reduce) {
   .tt-dot { transition: none; }
 }
