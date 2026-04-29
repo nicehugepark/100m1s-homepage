@@ -2209,6 +2209,31 @@ async function initThemeTree(dateOverride) {
   } catch (e) { console.warn('theme-tree:', e); }
 }
 
+/* ───── 종목 anchor 클릭 — calendar 갱신 + 종목카드 scroll (REQ-017 후속 #9) ───── */
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('.trend-stock-link');
+  if (!a) return;
+  e.preventDefault();
+  const href = a.getAttribute('href') || '';
+  const hashMatch = href.match(/#stock-([A-Za-z0-9_-]+)/);
+  const dateMatch = href.match(/[?&]date=([0-9]{4}-[0-9]{2}-[0-9]{2})/);
+  if (!hashMatch) return;
+  const cardId = hashMatch[0];
+  const newDate = dateMatch ? dateMatch[1] : null;
+  const curDate = (new URLSearchParams(window.location.search)).get('date');
+  if (newDate && newDate !== curDate) {
+    history.pushState({}, '', href);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    setTimeout(() => {
+      const t = document.querySelector(cardId);
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 250);
+  } else {
+    const t = document.querySelector(cardId);
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
 initCalendar();
