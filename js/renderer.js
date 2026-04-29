@@ -107,7 +107,33 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
 
 function renderCalExpandContent(date, data) {
   const inner = document.getElementById('cal-content');
-  const kiwoomStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
+  const _baseStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
+  // REQ-082 Phase 2 §본질 fix (FLR-20260429-FLR-001 §본질) — REQ-080 §1 union 정책을 frontend에서도 적용.
+  // build_daily.py union(line 2351-2410)이 interpreted JSON `stocks`에 상한가 종목을 추가하지만,
+  // 종래 renderer는 raw kiwoom.daily_top만 사용 → union 결과 무시 → 4/29 6건 카드 미렌더 (qa-2 FAIL 6건).
+  // design-lead 옵션 C: 정렬 SSOT(daily_top) 보존 + 상한가 union 종목만 list 끝에 append.
+  // data.stocks는 data-loader가 interpretedByName Map만 노출하므로 Map iterate로 적응.
+  const _interpByName = data.interpretedByName || new Map();
+  const _baseTickers = new Set(_baseStocks.map(s => s.ticker || s.code).filter(Boolean));
+  const _limitUpAdded = [];
+  for (const [_name, _interp] of _interpByName) {
+    const _ticker = _interp.code || '';
+    if (!_ticker || _baseTickers.has(_ticker)) continue;
+    const _hasLimitUp = (_interp.status_badges || []).some(b => b.label === '상한가');
+    if (!_hasLimitUp) continue;
+    // kiwoom dict 호환 형태로 합성 (build_daily.py:2378 _added_lu와 동일 시그니처)
+    _limitUpAdded.push({
+      ticker: _ticker,
+      name: _name,
+      last_price: _interp.close_price ?? null,
+      max_trade_amount: _interp.trade_amount ?? null,
+      trade_amount: _interp.trade_amount ?? null,
+      max_change_pct: _interp.change_pct ?? null,
+      change_pct: _interp.change_pct ?? null,
+      _source_union: 'limit_up',
+    });
+  }
+  const kiwoomStocks = _limitUpAdded.length > 0 ? [..._baseStocks, ..._limitUpAdded] : _baseStocks;
   const hasInterpretedStocks = data.interpretedByName && data.interpretedByName.size > 0;
   const hasAny = kiwoomStocks.length > 0 || hasInterpretedStocks;
 
