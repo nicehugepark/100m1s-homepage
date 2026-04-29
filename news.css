@@ -754,15 +754,16 @@ a.cal-credit-row:hover,
 .lut-svg { display: block; }
 .lut-line { transition: opacity 200ms ease; pointer-events: none; }
 .lut-area { pointer-events: none; }
-/* 정정 #1 (대표 18:06): theme-trend SoT (fill=#FFF + stroke=color, r=2 desktop / 3.5 mobile) 통일.
-   기본 = 빈 stroke. 선택 active 시 fill=color 채움. */
-.lut-dot { fill: #FFF; stroke: var(--am); stroke-width: 1.5; transition: fill 150ms ease; cursor: pointer; }
+/* theme-trend SoT 통일: fill=#FFF + stroke=color (r=2 desktop / 3.5 mobile).
+   active 시 fill=color + 골드 링(.lut-gold-ring r=5) 추가. */
+.lut-dot { fill: #FFF; stroke: var(--am); stroke-width: 1.5; transition: fill 150ms ease, r 150ms ease; cursor: pointer; }
 .lut-dot:hover { fill: var(--am); }
 .lut-dot:focus-visible { outline: none; fill: var(--am); }
 .lut-dot--active { fill: var(--am); }
 .lut-dot-zero { fill: #FFF; stroke: #CBD5E1; }
 .lut-dot-zero:hover { fill: #CBD5E1; }
 .lut-dot-hit { fill: transparent; cursor: pointer; }
+.lut-gold-ring { pointer-events: none; }
 .lut-detail {
   margin-top: 12px; padding: 12px 14px;
   background: var(--bg2); border-radius: 10px;
@@ -775,16 +776,18 @@ a.cal-credit-row:hover,
 }
 .lut-detail-head { font-size: 12px; color: var(--tx2); margin-bottom: 8px; }
 .lut-detail-date { font-weight: 700; color: var(--tx); }
-/* 정정 #11/#13 (대표 18:06): 상한가 list = 거래대금 list 완전 복제 (.trend-detail-table 클래스 재사용).
-   .lut-detail-table는 색·정렬만 재정의. lut-stock-row/-name/-pct/-amt 클래스는 deprecated (테이블 td 사용). */
+/* 상한가 list = 거래대금 list 완전 복제 (.trend-detail-table 클래스 재사용).
+   .lut-detail-table는 hover 색·금액 색만 재정의. 5컬럼 = 종목명 / 종가 / 미니캔들 / 등락률 / 거래대금. */
 .lut-detail-table tr:hover td { background: rgba(196, 153, 48, 0.08); }
-.lut-detail-table .td-pct { color: #C53939; font-weight: 600; text-align: right; }
+.lut-detail-table .td-pct { font-weight: 600; text-align: right; }
 .lut-detail-table .td-amount {
   font-family: 'SF Mono', monospace; font-weight: 600;
   color: #8B6E1F;
   text-align: right;
 }
-.lut-detail-table .th-pct { text-align: right; }
+.lut-detail-table .td-price { text-align: right; font-family: 'SF Mono', monospace; }
+.lut-detail-table .th-pct,
+.lut-detail-table .th-price,
 .lut-detail-table .th-amount { text-align: right; }
 .lut-stock-main {
   display: inline-flex; align-items: center; gap: 6px;
@@ -803,13 +806,20 @@ a.cal-credit-row:hover,
 @media (max-width: 880px) {
   .lut-wrap { padding: 12px; }
   .lut-streak { font-size: 9px; padding: 1px 5px; }
-  /* lut-detail-table 컬럼 너비 (trend-detail-table mobile 28%/22% 정신) */
+  /* lut-detail-table 5컬럼 너비 (trend-detail-table mobile 28%/22%/16px/22%/22% 정합) */
+  .lut-detail-table { font-size: 10px; table-layout: fixed; width: 100%; }
+  .lut-detail-table th { padding: 4px 3px; }
+  .lut-detail-table td { padding: 4px 3px; }
   .lut-detail-table th:nth-child(1),
-  .lut-detail-table td:nth-child(1) { width: 50%; overflow: hidden; }
+  .lut-detail-table td:nth-child(1) { width: 28%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .lut-detail-table th:nth-child(2),
   .lut-detail-table td:nth-child(2) { width: 22%; }
-  .lut-detail-table th:nth-child(3),
-  .lut-detail-table td:nth-child(3) { width: 28%; }
+  .lut-detail-table .th-candle,
+  .lut-detail-table .td-candle { width: 16px; min-width: 16px; }
+  .lut-detail-table th:nth-child(4),
+  .lut-detail-table td:nth-child(4) { width: 22%; }
+  .lut-detail-table th:nth-child(5),
+  .lut-detail-table td:nth-child(5) { width: 22%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lut-detail { animation: none; }
