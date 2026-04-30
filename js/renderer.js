@@ -1122,7 +1122,7 @@ async function initThemeTrend() {
     // REQ-002: lut-trend와 마진/폰트 정합 — yAxisW 좁게 + PAD.right 좁게 + axisFontSize 데스크탑 키움
     const isMobile = window.innerWidth < 640;
     const yAxisW = isMobile ? 36 : 44;
-    const H = isMobile ? 180 : 160;
+    const H = isMobile ? 180 : 180; // REQ-003: desktop 160→180 (lut-trend 정합, viewBox 비율 정합)
     const PAD = isMobile
       ? { top: 10, right: 8, bottom: 26 }
       : { top: 12, right: 8, bottom: 28 };
@@ -1159,7 +1159,7 @@ async function initThemeTrend() {
     for (let i = 0; i <= 2; i++) {
       const v = (yMax / 2) * i;
       const y = toY(v);
-      yAxisSvg += '<text x="' + (yAxisW - 4) + '" y="' + (y + 3) + '" text-anchor="end" fill="#8B95A8" font-size="' + axisFontSize + '">' + fmtTril(v) + '</text>';
+      yAxisSvg += '<text x="' + (yAxisW - 4) + '" y="' + (y + 3) + '" text-anchor="end" fill="#64748B" font-size="' + axisFontSize + '">' + fmtTril(v) + '</text>'; // REQ-003: fill 색 lut-trend 정합 (#8B95A8 → #64748B)
     }
     yAxisSvg += '</svg>';
 
@@ -1175,8 +1175,8 @@ async function initThemeTrend() {
 
     // X축 날짜 라벨
     dates.forEach((d, i) => {
-      const xFontSize = isMobile ? 10 : 7;
-      svg += '<text x="' + toX(i) + '" y="' + (H - 4) + '" text-anchor="middle" fill="#8B95A8" font-size="' + xFontSize + '">' + fmtDate(d) + '</text>';
+      const xFontSize = isMobile ? 9 : 10; // REQ-003: 데스크탑 7→10, 모바일 10→9 (lut-trend 정합 + 차트 내 yAxis와도 정합)
+      svg += '<text x="' + toX(i) + '" y="' + (H - 4) + '" text-anchor="middle" fill="#64748B" font-size="' + xFontSize + '">' + fmtDate(d) + '</text>'; // REQ-003: fill 색 lut-trend 정합
     });
 
     // 각 테마 polyline + 투명 히트 서클
@@ -1514,7 +1514,7 @@ async function initLimitUpTrend() {
       chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + (slot * i).toFixed(1) + '" y="0" width="' + slot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
       chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + lutDotR + '" fill="#FFF" stroke="' + stroke + '" stroke-width="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
       // X-axis label
-      chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="10" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>';
+      chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="' + (isMobile ? 9 : 10) + '" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>'; // REQ-003: 모바일 9 통일 (theme-trend 정합)
     });
     chartSvg += '</svg>';
 
