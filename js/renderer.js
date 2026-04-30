@@ -674,7 +674,8 @@ function renderCalExpandContent(date, data) {
         const staleLabel = isStale
           ? `<div class="cal-feature-candles20-stale">데이터 ${lastBarDate.slice(5).replace('-', '/')}</div>`
           : '';
-        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>${staleLabel}`;
+        // REQ-004 v182: staleLabel을 candles20 자식으로 (absolute overlay 기준점 정합)
+        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}${staleLabel}</div>`;
       } else {
         candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
       }
