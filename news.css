@@ -911,7 +911,7 @@ a.cal-credit-row:hover,
 .theme-trend-wrap {
   position: relative;
   background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
-  padding: 20px; overflow: visible;
+  padding: 16px 20px; overflow: visible;
 }
 .theme-trend-svg { display: block; min-height: 180px; height: auto; }
 /* REQ-017 후속 #9 v166 — anchor scroll 위치 sticky header 보정 */
@@ -927,11 +927,11 @@ a.cal-credit-row:hover,
   .tt-dot { transition: none; }
 }
 .trend-y-axis {
-  position: absolute; top: 20px; left: 20px; width: 48px; height: calc(100% - 40px);
+  position: absolute; top: 16px; left: 20px; width: 44px; height: calc(100% - 32px);
   z-index: 2; pointer-events: none; background: var(--sf);
 }
 .trend-scroll-area {
-  margin-left: 48px; overflow-x: auto; overflow-y: hidden;
+  margin-left: 44px; overflow-x: auto; overflow-y: hidden;
   -webkit-overflow-scrolling: touch; scrollbar-width: thin;
   scrollbar-color: rgba(196,153,48,0.4) transparent;
 }
@@ -940,7 +940,7 @@ a.cal-credit-row:hover,
 .trend-scroll-area::-webkit-scrollbar-thumb { background: rgba(196,153,48,0.35); border-radius: 2px; }
 .trend-scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(196,153,48,0.6); }
 .trend-fade-left {
-  position: absolute; top: 20px; left: 68px; width: 32px; height: calc(100% - 44px);
+  position: absolute; top: 16px; left: 64px; width: 32px; height: calc(100% - 36px);
   background: var(--sf);
   pointer-events: none; z-index: 3; opacity: 0; transition: opacity var(--t-fast);
 }
@@ -962,9 +962,9 @@ a.cal-credit-row:hover,
   .theme-trend-legend-item .swatch { width: 12px; height: 4px; }
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
   .theme-trend-wrap { padding: 14px; overflow: visible; }
-  .trend-y-axis { top: 14px; left: 14px; width: 40px; height: calc(100% - 28px); }
-  .trend-scroll-area { margin-left: 40px; }
-  .trend-fade-left { top: 14px; left: 54px; height: calc(100% - 32px); }
+  .trend-y-axis { top: 14px; left: 14px; width: 36px; height: calc(100% - 28px); }
+  .trend-scroll-area { margin-left: 36px; }
+  .trend-fade-left { top: 14px; left: 50px; height: calc(100% - 32px); }
 }
 .theme-trend-tooltip {
   position: absolute; pointer-events: none;
