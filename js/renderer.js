@@ -1509,7 +1509,8 @@ async function initLimitUpTrend() {
       chartSvg += '<path class="lut-line" d="' + lineD + '" stroke="var(--am, #C49930)" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>';
     }
     // dot + hit-area + label — theme-trend SoT 정합 (r=3.5 mobile / 2 desktop, active 시 fill=color + 골드 링)
-    const lutIsMobile = window.innerWidth < 880;
+    // REQ-008 v179: lutIsMobile breakpoint 880→640 (theme-trend isMobile 정합 — desktop dot 사이즈 통일)
+    const lutIsMobile = window.innerWidth < 640;
     const lutDotR = lutIsMobile ? 3.5 : 2;
     const lutDotActiveR = lutIsMobile ? 5 : 5; // 골드 링 반경 (theme-trend SoT)
     items.forEach((it, i) => {
