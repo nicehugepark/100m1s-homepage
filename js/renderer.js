@@ -1119,12 +1119,13 @@ async function initThemeTrend() {
     const COLORS = ['#C49930','#5B8DEF','#E06B6B','#4BC9A0','#A97BDB','#E8963E','#6BB5E0','#D46BAD','#7B9E3D','#E0886B','#6B8FD4','#B86BD4'];
 
     // SVG 치수 — 반응형 (모바일 vs 데스크탑)
+    // REQ-002: lut-trend와 마진/폰트 정합 — yAxisW 좁게 + PAD.right 좁게 + axisFontSize 데스크탑 키움
     const isMobile = window.innerWidth < 640;
-    const yAxisW = isMobile ? 40 : 48;
+    const yAxisW = isMobile ? 36 : 44;
     const H = isMobile ? 180 : 160;
     const PAD = isMobile
-      ? { top: 10, right: 36, bottom: 26 }
-      : { top: 12, right: 32, bottom: 28 };
+      ? { top: 10, right: 8, bottom: 26 }
+      : { top: 12, right: 8, bottom: 28 };
     const plotH = H - PAD.top - PAD.bottom;
 
     // 차트 SVG 폭: 7일 기준 가용폭을 날짜 수에 비례 확장
@@ -1147,14 +1148,14 @@ async function initThemeTrend() {
 
     const xStep = plotW / Math.max(dates.length - 1, 1);
 
-    function toX(i) { return 8 + i * xStep; } // 차트 SVG 내부 좌측 약간 여백
+    function toX(i) { return i * xStep; } // REQ-002: 좌측 padding 제거 — yAxis 직후 시작 (lut-trend 정합)
     function toY(v) { return PAD.top + plotH - (v / yMax) * plotH; }
     function fmtTril(v) { return (v / 1e12).toFixed(1) + '조'; }
     function fmtDate(d) { return d.slice(5).replace('-', '/'); }
 
     // Y축 별도 SVG (고정)
     let yAxisSvg = '<svg class="theme-trend-svg" viewBox="0 0 ' + yAxisW + ' ' + H + '" width="' + yAxisW + '" xmlns="http://www.w3.org/2000/svg">';
-    const axisFontSize = isMobile ? 9 : 7;
+    const axisFontSize = isMobile ? 9 : 10; // REQ-002: 데스크탑 7→10 (lut-trend 정합)
     for (let i = 0; i <= 2; i++) {
       const v = (yMax / 2) * i;
       const y = toY(v);
@@ -1464,7 +1465,7 @@ async function initLimitUpTrend() {
     for (const v of yTicks) {
       const y = yScale(v).toFixed(1);
       yAxisSvg += '<line x1="' + (yAxisW - 4) + '" y1="' + y + '" x2="' + yAxisW + '" y2="' + y + '" stroke="#CBD5E1" stroke-width="0.5"/>';
-      yAxisSvg += '<text x="' + (yAxisW - 6) + '" y="' + y + '" font-size="10" fill="#64748B" text-anchor="end" dominant-baseline="middle">' + v + '</text>';
+      yAxisSvg += '<text x="' + (yAxisW - 6) + '" y="' + y + '" font-size="' + (isMobile ? 9 : 10) + '" fill="#64748B" text-anchor="end" dominant-baseline="middle">' + v + '</text>';
     }
     yAxisSvg += '</svg>';
 
