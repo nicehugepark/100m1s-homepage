@@ -1173,10 +1173,11 @@ async function initThemeTrend() {
       svg += '<line x1="0" y1="' + y + '" x2="' + chartW + '" y2="' + y + '" stroke="#E8ECF2" stroke-width="0.5"/>';
     }
 
-    // X축 날짜 라벨
+    // X축 날짜 라벨 — REQ-007 v177: 첫/마지막 anchor 변경 (chart 가장자리 침범 회피)
+    const xFontSize = isMobile ? 9 : 10;
     dates.forEach((d, i) => {
-      const xFontSize = isMobile ? 9 : 10; // REQ-003: 데스크탑 7→10, 모바일 10→9 (lut-trend 정합 + 차트 내 yAxis와도 정합)
-      svg += '<text x="' + toX(i) + '" y="' + (H - 4) + '" text-anchor="middle" fill="#64748B" font-size="' + xFontSize + '">' + fmtDate(d) + '</text>'; // REQ-003: fill 색 lut-trend 정합
+      const anchor = i === 0 ? 'start' : (i === dates.length - 1 ? 'end' : 'middle');
+      svg += '<text x="' + toX(i) + '" y="' + (H - 4) + '" text-anchor="' + anchor + '" fill="#64748B" font-size="' + xFontSize + '">' + fmtDate(d) + '</text>';
     });
 
     // 각 테마 polyline + 투명 히트 서클
@@ -1515,8 +1516,9 @@ async function initLimitUpTrend() {
       const stroke = isZero ? '#CBD5E1' : 'var(--am, #C49930)';
       chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + (lutSlot * i).toFixed(1) + '" y="0" width="' + lutSlot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
       chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + lutDotR + '" fill="#FFF" stroke="' + stroke + '" stroke-width="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
-      // X-axis label
-      chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="' + (isMobile ? 9 : 10) + '" fill="#64748B" text-anchor="middle">' + fmtMD(it.date) + '</text>'; // REQ-003: 모바일 9 통일 (theme-trend 정합)
+      // X-axis label — REQ-007 v177: 첫/마지막 anchor 변경 (chart 가장자리 침범 회피)
+      const lutAnchor = i === 0 ? 'start' : (i === items.length - 1 ? 'end' : 'middle');
+      chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="' + (isMobile ? 9 : 10) + '" fill="#64748B" text-anchor="' + lutAnchor + '">' + fmtMD(it.date) + '</text>';
     });
     chartSvg += '</svg>';
 
