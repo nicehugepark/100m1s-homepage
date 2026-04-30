@@ -750,7 +750,7 @@ a.cal-credit-row:hover,
   padding: 16px 20px; gap: 4px;
 }
 .lut-yaxis-col { flex-shrink: 0; }
-.lut-scroll { flex: 1; overflow-x: auto; overflow-y: hidden; }
+.lut-scroll { flex: 1; padding-left: 8px; overflow-x: auto; overflow-y: hidden; }
 .lut-svg { display: block; }
 .lut-line { transition: opacity 200ms ease; pointer-events: none; }
 .lut-area { pointer-events: none; }
@@ -931,7 +931,7 @@ a.cal-credit-row:hover,
   z-index: 2; pointer-events: none; background: var(--sf);
 }
 .trend-scroll-area {
-  margin-left: 44px; overflow-x: auto; overflow-y: hidden;
+  margin-left: 44px; padding-left: 8px; overflow-x: auto; overflow-y: hidden;
   -webkit-overflow-scrolling: touch; scrollbar-width: thin;
   scrollbar-color: rgba(196,153,48,0.4) transparent;
 }
