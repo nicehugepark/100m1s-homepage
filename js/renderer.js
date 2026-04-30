@@ -1146,9 +1146,11 @@ async function initThemeTrend() {
     themes.forEach(t => t.data.forEach(d => { if (d.trade_amount > yMax) yMax = d.trade_amount; }));
     yMax = yMax * 1.1; // 10% headroom
 
-    // REQ-005 v175: 두 차트 cx=slot/2 padding 패턴 통일 (잘림 방지 + 좌우 균형). lut와 동일 패턴.
-    const slot = chartW / dates.length;
-    function toX(i) { return slot / 2 + i * slot; }
+    // REQ-008 v178: chart svg 양 끝 20px padding 내장 — text 잘림 회피 본질 fix
+    const CHART_EDGE_PAD = 20;
+    const plotInnerW = Math.max(1, chartW - 2 * CHART_EDGE_PAD);
+    const slot = plotInnerW / Math.max(dates.length - 1, 1);
+    function toX(i) { return CHART_EDGE_PAD + i * slot; }
     function toY(v) { return PAD.top + plotH - (v / yMax) * plotH; }
     function fmtTril(v) { return (v / 1e12).toFixed(1) + '조'; }
     function fmtDate(d) { return d.slice(5).replace('-', '/'); }
@@ -1484,10 +1486,12 @@ async function initLimitUpTrend() {
     }
     // 좌표 사전 계산 (line, area 공유)
     const baseline = padTop + plotH;
-    // REQ-005 v175: cx=slot/2 padding 통일 (잘림 방지 + theme-trend 정합)
-    const lutSlot = chartW / items.length;
+    // REQ-008 v178: chart svg 양 끝 20px padding 내장 (text 잘림 회피 본질 fix)
+    const LUT_EDGE_PAD = 20;
+    const lutInnerW = Math.max(1, chartW - 2 * LUT_EDGE_PAD);
+    const lutSlot = lutInnerW / Math.max(items.length - 1, 1);
     const pts = items.map((it, i) => {
-      const cx = lutSlot * i + lutSlot / 2;
+      const cx = LUT_EDGE_PAD + i * lutSlot;
       const cy = yScale(it.count);
       return { cx, cy, it };
     });
@@ -1509,12 +1513,12 @@ async function initLimitUpTrend() {
     const lutDotR = lutIsMobile ? 3.5 : 2;
     const lutDotActiveR = lutIsMobile ? 5 : 5; // 골드 링 반경 (theme-trend SoT)
     items.forEach((it, i) => {
-      const cx = lutSlot * i + lutSlot / 2; // REQ-005 v175: cx=slot/2 padding 패턴
+      const cx = LUT_EDGE_PAD + i * lutSlot; // REQ-008 v178: edge padding 20
       const cy = yScale(it.count);
       const isZero = it.count === 0;
       const dotCls = isZero ? 'lut-dot lut-dot-zero' : 'lut-dot';
       const stroke = isZero ? '#CBD5E1' : 'var(--am, #C49930)';
-      chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + (lutSlot * i).toFixed(1) + '" y="0" width="' + lutSlot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
+      chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + Math.max(0, cx - lutSlot / 2).toFixed(1) + '" y="0" width="' + lutSlot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
       chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + lutDotR + '" fill="#FFF" stroke="' + stroke + '" stroke-width="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
       // X-axis label — REQ-007 v177: 첫/마지막 anchor 변경 (chart 가장자리 침범 회피)
       const lutAnchor = i === 0 ? 'start' : (i === items.length - 1 ? 'end' : 'middle');
