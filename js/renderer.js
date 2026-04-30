@@ -1146,9 +1146,9 @@ async function initThemeTrend() {
     themes.forEach(t => t.data.forEach(d => { if (d.trade_amount > yMax) yMax = d.trade_amount; }));
     yMax = yMax * 1.1; // 10% headroom
 
-    const xStep = plotW / Math.max(dates.length - 1, 1);
-
-    function toX(i) { return i * xStep; } // REQ-002: 좌측 padding 제거 — yAxis 직후 시작 (lut-trend 정합)
+    // REQ-003 v173: lut-trend slot 기반 패턴 정합 — 양 끝 slot/2 padding (lut와 동일 시각 정합)
+    const slot = chartW / dates.length;
+    function toX(i) { return slot / 2 + i * slot; }
     function toY(v) { return PAD.top + plotH - (v / yMax) * plotH; }
     function fmtTril(v) { return (v / 1e12).toFixed(1) + '조'; }
     function fmtDate(d) { return d.slice(5).replace('-', '/'); }
