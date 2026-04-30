@@ -212,7 +212,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .cal-feature-sparkline { display: none; }
 }
 /* REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측). */
-.cal-feature-candles20 { width: 110px; height: 32px; flex-shrink: 0; display: inline-block; }
+/* REQ-004 v181: position relative — staleLabel을 absolute overlay로 layout 침범 회피 */
+.cal-feature-candles20 { width: 110px; height: 32px; flex-shrink: 0; display: inline-block; position: relative; }
 .cal-feature-candles20 svg { width: 100%; height: 100%; display: block; }
 .cal-candles20-empty { width: 110px; height: 32px; background: var(--g04); border-radius: 4px; flex-shrink: 0; }
 @media (max-width: 640px) {
@@ -816,13 +817,20 @@ a.cal-credit-row:hover,
 }
 
 /* #4 데이터 정합 안전망 라벨 — daily_20 마지막 봉 일자 < 카드 일자 시 표시 */
+/* REQ-004 v181: absolute overlay — candles20 영역 안 우상단에 위치하여 layout 침범 회피 */
 .cal-feature-candles20-stale {
-  display: inline-block;
-  margin-top: 2px;
-  font-size: 9px;
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 8px;
   color: var(--dm);
   font-family: 'SF Mono', monospace;
   letter-spacing: 0.02em;
+  background: rgba(255,255,255,0.85);
+  padding: 0 3px;
+  border-radius: 2px;
+  pointer-events: none;
+  white-space: nowrap;
 }
 .cal-feature-candles20-stale::before { content: '\203B  '; }
 
