@@ -1212,6 +1212,9 @@ async function initThemeTrend() {
       }
     });
 
+    // REQ-009 v180: chart svg 좌우 cover rect — text 잘림 mask (가장 위에 그려서 chart 가장자리 영역 cover)
+    svg += '<rect x="0" y="0" width="' + CHART_EDGE_PAD + '" height="' + H + '" fill="var(--sf, #FFFFFF)"/>';
+    svg += '<rect x="' + (chartW - CHART_EDGE_PAD) + '" y="0" width="' + CHART_EDGE_PAD + '" height="' + H + '" fill="var(--sf, #FFFFFF)"/>';
     svg += '</svg>';
 
     // 레전드
@@ -1525,6 +1528,9 @@ async function initLimitUpTrend() {
       const lutAnchor = i === 0 ? 'start' : (i === items.length - 1 ? 'end' : 'middle');
       chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="' + (isMobile ? 9 : 10) + '" fill="#64748B" text-anchor="' + lutAnchor + '">' + fmtMD(it.date) + '</text>';
     });
+    // REQ-009 v180: chart svg 좌우 cover rect — text 잘림 mask
+    chartSvg += '<rect x="0" y="0" width="' + LUT_EDGE_PAD + '" height="' + H + '" fill="var(--sf, #FFFFFF)"/>';
+    chartSvg += '<rect x="' + (chartW - LUT_EDGE_PAD) + '" y="0" width="' + LUT_EDGE_PAD + '" height="' + H + '" fill="var(--sf, #FFFFFF)"/>';
     chartSvg += '</svg>';
 
     const dateRange = dates.length > 1 ? (fmtMD(dates[0]) + '~' + fmtMD(dates[dates.length - 1])) : fmtMD(dates[0]);

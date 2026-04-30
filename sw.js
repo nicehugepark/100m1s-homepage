@@ -1,4 +1,4 @@
-const CACHE_NAME = 'news-v179';
+const CACHE_NAME = 'news-v180';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
