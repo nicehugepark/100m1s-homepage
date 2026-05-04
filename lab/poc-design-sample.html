@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>비공개 연구 자료 — PPT PoC</title>
+<!-- 5중 차단 (1/5: HTML robots) -->
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+<meta name="bingbot" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="referrer" content="no-referrer">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  /* PPT 영화 톤 (다크 누아르 + 햇살 골드 액센트) — DOC-20260504-DSN-003 §2.2 */
+  --ppt-bg:       #0F1218;
+  --ppt-bg2:      #1A1F28;
+  --ppt-bg3:      #252B36;
+  --ppt-bd:       #3D4351;
+  --ppt-tx:       #F2F4F8;
+  --ppt-tx2:      #B8C0CC;
+  --ppt-dm:       #6B7280;
+
+  /* 액센트 (lab/attack-stock-playbook.html과 동일 hex — 정체성 보존) */
+  --ppt-am:       #C49930;
+  --ppt-am2:      #E8C063;
+  --ppt-am-glow:  rgba(232,192,99,0.18);
+  --ppt-ru:       #A01528;
+  --ppt-ru-glow:  rgba(160,21,40,0.20);
+  --ppt-pos:      #4ADE80;
+  --ppt-neg:      #F87171;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0A0C10;
+  color: var(--ppt-tx);
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* === Sticky 비공개 배지 (lab 정합) === */
+.lab-badge {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: var(--ppt-ru); color: #fff;
+  padding: 10px 20px; font-size: 12px; font-weight: 800;
+  letter-spacing: 0.5px; text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  box-shadow: 0 2px 8px rgba(160,21,40,0.45);
+}
+.lab-badge .dot {
+  width: 8px; height: 8px; background: #fff; border-radius: 50%;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* === PPT 슬라이드 (16:9 1920x1080 비율) === */
+.slide-frame {
+  width: 100%;
+  max-width: 1280px;
+  aspect-ratio: 16 / 9;
+  background: var(--ppt-bg);
+  background-image: radial-gradient(ellipse at 75% 75%, rgba(232,192,99,0.06) 0%, transparent 60%);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px var(--ppt-bd);
+  padding: 56px 64px 64px;
+  margin-top: 60px;
+}
+
+/* === 워터마크 (사선 5% opacity) === */
+.slide-frame::before {
+  content: "비공개 연구자료 100M1S";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 110px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: rgba(232,192,99,0.04);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* === 영화 슬레이트 모티프 (좌하단) === */
+.slate {
+  position: absolute;
+  left: 32px; bottom: 32px;
+  width: 38px; height: 80px;
+  background: linear-gradient(135deg,
+    var(--ppt-bg) 0%, var(--ppt-bg) 50%,
+    var(--ppt-am2) 50%, var(--ppt-am2) 60%,
+    var(--ppt-bg) 60%, var(--ppt-bg) 70%,
+    var(--ppt-am2) 70%, var(--ppt-am2) 80%,
+    var(--ppt-bg) 80%);
+  border-radius: 4px;
+  border: 1px solid var(--ppt-bd);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 6px;
+  font-size: 14px; font-weight: 800;
+  color: var(--ppt-tx);
+  letter-spacing: 0.5px;
+}
+
+/* === 100M1S 워드마크 (우상단) === */
+.brand-mark {
+  position: absolute;
+  right: 32px; top: 32px;
+  font-size: 11px; font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--ppt-am);
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 6px;
+}
+.brand-mark::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--ppt-am);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ppt-am);
+}
+
+/* === Scene Label === */
+.scene-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  background: var(--ppt-am-glow);
+  border: 1px solid rgba(232,192,99,0.35);
+  border-radius: 999px;
+  font-size: 13px; font-weight: 800;
+  color: var(--ppt-am2);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  position: relative; z-index: 2;
+}
+.scene-label .scene-num { font-weight: 900; color: var(--ppt-am); }
+.scene-label .scene-time { color: var(--ppt-tx2); font-weight: 600; letter-spacing: 0.8px; font-size: 12px; }
+
+/* === Title === */
+.scene-title {
+  font-size: 56px; font-weight: 900;
+  letter-spacing: -1.8px; line-height: 1.15;
+  color: var(--ppt-tx);
+  margin-bottom: 8px;
+  position: relative; z-index: 2;
+}
+.scene-title .accent { color: var(--ppt-am2); }
+.scene-subtitle {
+  font-size: 18px; font-weight: 500;
+  color: var(--ppt-dm);
+  letter-spacing: 0.3px;
+  margin-bottom: 32px;
+  position: relative; z-index: 2;
+}
+
+/* === 메인 그리드 (인용 + 인물 + 수치) === */
+.scene-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  position: relative; z-index: 2;
+}
+
+/* === 인용박스 (영화 대본) === */
+.cite {
+  background: var(--ppt-bg3);
+  border-left: 4px solid var(--ppt-am);
+  padding: 22px 26px;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--ppt-tx);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 22px;
+  position: relative;
+}
+.cite::before {
+  content: "“";
+  position: absolute;
+  left: 12px; top: -8px;
+  font-size: 56px; font-weight: 900;
+  color: var(--ppt-am);
+  font-style: normal;
+  line-height: 1;
+}
+.cite p { margin-bottom: 6px; padding-left: 28px; }
+.cite p:last-child { margin-bottom: 0; }
+
+/* === 인물 카드 (3장 가로) === */
+.character-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.char-card {
+  background: var(--ppt-bg2);
+  border: 1px solid var(--ppt-bd);
+  border-radius: 12px;
+  padding: 16px 14px;
+  position: relative;
+}
+.char-card .char-icon {
+  width: 32px; height: 32px;
+  margin-bottom: 10px;
+  color: var(--ppt-am2);
+}
+.char-card.villain .char-icon { color: var(--ppt-am2); }
+.char-card.host .char-icon { color: var(--ppt-tx2); }
+.char-card.dupe { border-color: rgba(248,113,113,0.25); }
+.char-card.dupe .char-icon { color: var(--ppt-neg); }
+.char-name {
+  font-size: 14px; font-weight: 800;
+  color: var(--ppt-am2);
+  margin-bottom: 2px;
+}
+.char-card.host .char-name { color: var(--ppt-tx); }
+.char-card.dupe .char-name { color: var(--ppt-neg); }
+.char-role {
+  font-size: 11px; font-weight: 600;
+  color: var(--ppt-dm);
+  margin-bottom: 10px;
+}
+.char-action {
+  font-size: 13px; font-weight: 600;
+  color: var(--ppt-tx);
+  line-height: 1.5;
+}
+.char-action small {
+  display: block;
+  font-size: 11px; font-weight: 500;
+  color: var(--ppt-tx2);
+  margin-top: 2px;
+}
+
+/* === 수치 박스 (우측) === */
+.numbers-box {
+  background: var(--ppt-bg2);
+  border: 1px solid var(--ppt-bd);
+  border-left: 3px solid var(--ppt-ru);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.numbers-box .nb-title {
+  font-size: 11px; font-weight: 800;
+  color: var(--ppt-ru);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.numbers-box dl {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.numbers-box dt {
+  font-size: 11px; font-weight: 600;
+  color: var(--ppt-dm);
+  margin-bottom: 2px;
+}
+.numbers-box dd {
+  font-size: 18px; font-weight: 800;
+  color: var(--ppt-tx);
+  font-feature-settings: 'tnum';
+  letter-spacing: -0.3px;
+}
+.numbers-box dd .accent {
+  color: var(--ppt-am);
+}
+.numbers-box dd .neg-accent {
+  color: var(--ppt-neg);
+  font-size: 13px;
+  margin-left: 6px;
+}
+
+/* === 시간선 (하단 풀폭) === */
+.timeline {
+  position: absolute;
+  left: 64px; right: 64px; bottom: 56px;
+  z-index: 2;
+}
+.timeline-rail {
+  position: relative;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+.timeline-rail::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: var(--ppt-bd);
+}
+.timeline-points {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+}
+.tl-point {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.tl-dot {
+  width: 8px; height: 8px;
+  background: var(--ppt-dm);
+  border-radius: 50%;
+  border: 2px solid var(--ppt-bg);
+}
+.tl-point.current .tl-dot {
+  width: 14px; height: 14px;
+  background: var(--ppt-am);
+  border-color: var(--ppt-bg);
+  box-shadow: 0 0 0 6px var(--ppt-am-glow);
+}
+.tl-label {
+  position: absolute;
+  top: 18px;
+  font-size: 10px;
+  font-family: 'SF Mono', 'JetBrains Mono', Consolas, monospace;
+  font-weight: 700;
+  color: var(--ppt-tx2);
+  white-space: nowrap;
+}
+.tl-point.current .tl-label { color: var(--ppt-am); }
+
+.tl-anchors {
+  display: flex; justify-content: space-between;
+  margin-top: 12px;
+  font-size: 10px;
+  font-family: 'SF Mono', 'JetBrains Mono', Consolas, monospace;
+  font-weight: 700;
+  color: var(--ppt-dm);
+  letter-spacing: 0.5px;
+}
+
+/* === 메타 푸터 (PoC 안내) === */
+.poc-hint {
+  position: fixed;
+  bottom: 16px; left: 16px;
+  background: var(--ppt-bg3);
+  border: 1px solid var(--ppt-bd);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--ppt-tx2);
+  max-width: 320px;
+  z-index: 50;
+  font-weight: 600;
+}
+.poc-hint strong { color: var(--ppt-am); }
+
+/* === 모바일 (PPT 비주얼은 모바일 비주류, but 가독성 보존) === */
+@media (max-width: 900px) {
+  .slide-frame { padding: 28px 22px 90px; }
+  .scene-title { font-size: 28px; }
+  .scene-subtitle { font-size: 13px; }
+  .scene-grid { grid-template-columns: 1fr; gap: 16px; }
+  .character-row { grid-template-columns: 1fr; }
+  .cite { font-size: 14px; padding: 16px 18px 16px 30px; }
+  .timeline { left: 22px; right: 22px; bottom: 28px; }
+  .slate { left: 16px; bottom: 16px; }
+  .brand-mark { right: 16px; top: 16px; font-size: 9px; }
+  .slide-frame::before { font-size: 60px; }
+  .poc-hint { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="lab-badge">
+  <span class="dot"></span>
+  <span><strong>비공개 연구 자료</strong> · 영구 비공개 · 외부 공유 금지</span>
+  <span style="opacity:0.85;font-weight:600;font-size:11px;">PPT PoC · DSN-003 · 케이스 5 장면 1</span>
+</div>
+
+<div class="slide-frame">
+  <!-- 워드마크 -->
+  <div class="brand-mark">100M1S</div>
+
+  <!-- Scene 라벨 -->
+  <div class="scene-label">
+    <span class="scene-num">SCENE 01</span>
+    <span style="color:var(--ppt-dm);">·</span>
+    <span class="scene-time">D-180</span>
+  </div>
+
+  <!-- Title -->
+  <h1 class="scene-title">매집 — <span class="accent">CB 헐값 발행</span></h1>
+  <p class="scene-subtitle">전환사채(CB) 200만주, 전환가 5,000원 (현재가 6,200원의 80%) — 작전 시드 자금 100억 투입</p>
+
+  <!-- 메인 그리드 -->
+  <div class="scene-grid">
+    <div>
+      <!-- 인용박스 (영화 대본) -->
+      <div class="cite">
+        <p>D-180 이사회 결의: "운영자금 <strong style="color:var(--ppt-am2);">100억</strong> 조달을 위한 사모 CB 발행. 인수자: ㈜S캐피탈."</p>
+        <p>S가 100억으로 CB 200만주 분 인수 = 전환 시 시총 <strong style="color:var(--ppt-am2);">12% 확보</strong>.</p>
+      </div>
+
+      <!-- 인물 카드 3장 -->
+      <div class="character-row">
+        <div class="char-card villain">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12 L8 8 L12 12 L16 6 L20 12 L24 8 L28 12 L26 22 L6 22 Z"/>
+            <line x1="6" y1="22" x2="26" y2="22"/>
+            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+          </svg>
+          <div class="char-name">㈜S캐피탈</div>
+          <div class="char-role">작전 세력장</div>
+          <div class="char-action">
+            차익 +24% 즉시 확보
+            <small>전환가 5,000 vs 현재가 6,200</small>
+          </div>
+        </div>
+
+        <div class="char-card host">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="8" width="20" height="20" rx="1"/>
+            <line x1="10" y1="14" x2="14" y2="14"/>
+            <line x1="18" y1="14" x2="22" y2="14"/>
+            <line x1="10" y1="20" x2="14" y2="20"/>
+            <line x1="18" y1="20" x2="22" y2="20"/>
+            <path d="M14 28 L14 22 L18 22 L18 28"/>
+          </svg>
+          <div class="char-name">㈜D</div>
+          <div class="char-role">자금난 코스닥 (시총 400억)</div>
+          <div class="char-action">
+            100억 운영자금 조달
+            <small>"운영자금" 명목 (실제 = 작전 시드)</small>
+          </div>
+        </div>
+
+        <div class="char-card dupe">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="16" cy="11" r="4"/>
+            <path d="M7 26 C 7 20 11 18 16 18 C 21 18 25 20 25 26"/>
+            <line x1="22" y1="6" x2="26" y2="10"/>
+            <line x1="26" y1="6" x2="22" y2="10"/>
+          </svg>
+          <div class="char-name">호구 매매자</div>
+          <div class="char-role">관찰자 (신호 미인지)</div>
+          <div class="char-action">
+            DART 공시 미열람
+            <small>"운영자금 조달 = 정상 회사 활동" 오인</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 우측 수치 박스 -->
+    <div class="numbers-box">
+      <div class="nb-title">▲ 핵심 수치</div>
+      <dl>
+        <div>
+          <dt>회사 시총</dt>
+          <dd>400억 <span class="neg-accent">코스닥</span></dd>
+        </div>
+        <div>
+          <dt>CB 발행 규모</dt>
+          <dd><span class="accent">100억</span></dd>
+        </div>
+        <div>
+          <dt>전환가 / 현재가</dt>
+          <dd>5,000 / 6,200원</dd>
+        </div>
+        <div>
+          <dt>전환주식 (시총비)</dt>
+          <dd>200만주 <span class="neg-accent">12%</span></dd>
+        </div>
+        <div>
+          <dt>전환 가능 시점</dt>
+          <dd style="font-size:14px;">발행 +1년 후</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 시간선 -->
+  <div class="timeline">
+    <div class="timeline-rail">
+      <div class="timeline-points">
+        <div class="tl-point current">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S01</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S02</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S03</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S04</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S05</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S06</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S07</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S08</div>
+        </div>
+        <div class="tl-point">
+          <div class="tl-dot"></div>
+          <div class="tl-label">S09</div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-anchors">
+      <span>D-180</span>
+      <span>D-90</span>
+      <span>D-30</span>
+      <span>D-7</span>
+      <span>D 0</span>
+      <span>D+5</span>
+      <span>D+30</span>
+      <span>D+60</span>
+      <span>D+90</span>
+    </div>
+  </div>
+
+  <!-- 슬레이트 -->
+  <div class="slate">01</div>
+</div>
+
+<!-- PoC 안내 (라이브 페이지에는 없음, 검토용) -->
+<div class="poc-hint">
+  <strong>PPT PoC — 옵션 C</strong><br>
+  본 슬라이드 비주얼을 Keynote/PowerPoint에 1:1 옮기면 케이스 5 장면 1 완성. 나머지 11장은 DOC-20260504-DSN-003 §4 wireframe 참고.
+</div>
+
+</body>
+</html>

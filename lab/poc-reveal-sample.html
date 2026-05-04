@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>작전주 빈틈 시나리오 — reveal.js PoC · 비공개</title>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+<style>
+  :root {
+    --am: #C49930; --am2: #E8C063; --neg: #B8302E;
+  }
+  .reveal { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .reveal h1 { color: var(--am2); font-size: 2.2em; }
+  .reveal h2 { color: var(--am); font-size: 1.6em; }
+  .reveal h3 { color: #fff; font-size: 1.3em; }
+  .reveal blockquote {
+    border-left: 4px solid var(--am);
+    background: rgba(228, 192, 99, 0.08);
+    font-style: italic; padding: 0.8em 1em;
+  }
+  .reveal table { font-size: 0.6em; }
+  .reveal table th { background: #1A1D26; color: var(--am2); }
+  .reveal strong { color: var(--am2); }
+  .reveal .legal-section { background: rgba(184, 48, 46, 0.12); padding: 0.5em; border-left: 6px solid var(--neg); }
+  .reveal .lab-badge {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--neg); color: #fff;
+    padding: 6px 12px; font-size: 11px; font-weight: 800;
+    text-align: center; letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="lab-badge">[비공개 연구 자료] 외부 공유·캡처·전송 금지 · 100M1S 내부 전용</div>
+
+<div class="reveal">
+  <div class="slides">
+    <!-- External markdown plugin: reveal.js가 fetch + parse -->
+    <section data-markdown="poc-reveal-content.md"
+             data-separator="^---$"
+             data-separator-vertical="^--$"
+             data-separator-notes="^Note:">
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+  });
+</script>
+
+</body>
+</html>

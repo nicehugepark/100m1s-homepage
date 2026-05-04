@@ -442,6 +442,71 @@ footer.lab-foot {
   .md-content details.act-details > .act-summary { padding: 12px 14px; font-size: 14px; }
   .md-content details.act-details > .act-body { padding: 14px 14px 18px; }
 }
+
+/* === 슬라이드 모드 (옵션 D PoC, ?slide=true 토글) === */
+/* 기본 모드 영향 0건 — body.slide-mode 클래스가 있을 때만 적용 */
+body.slide-mode { overflow: hidden; }
+body.slide-mode .lab-badge { display: none; }
+body.slide-mode .toc-side { display: none; }
+body.slide-mode .layout { display: block; max-width: none; padding: 0; margin: 0; }
+body.slide-mode article { max-width: none; }
+body.slide-mode .lab-section { padding: 0 !important; background: none !important; }
+
+/* 슬라이드 컨테이너: JS가 동적으로 .slide-group div를 생성 (h2 기준) */
+body.slide-mode .slide-group { display: none; }
+body.slide-mode .slide-group.slide-active {
+  display: flex; flex-direction: column; justify-content: flex-start;
+  min-height: 100vh; padding: 50px 70px 80px; box-sizing: border-box;
+  background: linear-gradient(135deg, #FAFBFE 0%, #F2F4F8 100%);
+  overflow-y: auto;
+}
+body.slide-mode .slide-group h1 { font-size: 48px; color: var(--am); border-bottom: 3px solid var(--am); padding-bottom: 14px; margin-bottom: 22px; }
+body.slide-mode .slide-group h2 { font-size: 36px; color: var(--tx); margin-bottom: 16px; }
+body.slide-mode .slide-group h3 { font-size: 24px; color: var(--am); margin-top: 16px; margin-bottom: 10px; }
+body.slide-mode .slide-group table { font-size: 16px; }
+body.slide-mode .slide-group blockquote { font-size: 18px; padding: 16px 22px; margin: 14px 0; }
+body.slide-mode .slide-group p,
+body.slide-mode .slide-group li { font-size: 19px; line-height: 1.7; }
+body.slide-mode .slide-group details { margin: 12px 0; }
+/* 빌드된 비-슬라이드 콘텐츠 숨김 — 슬라이드 모드는 .slide-group만 표시 */
+body.slide-mode .md-content > *:not(.slide-group) { display: none; }
+
+/* 슬라이드 네비게이션 표시 */
+.slide-nav {
+  position: fixed; bottom: 24px; right: 24px; z-index: 300;
+  background: rgba(26, 29, 38, 0.92); color: #fff;
+  padding: 10px 16px; border-radius: 999px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+  display: none;
+}
+body.slide-mode .slide-nav { display: flex; gap: 12px; align-items: center; }
+.slide-nav button {
+  background: var(--am); color: #1A1D26; border: none; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 50%; font-size: 16px; font-weight: 900;
+}
+.slide-nav button:hover { background: var(--am2); }
+.slide-nav .pos { color: var(--am2); }
+
+/* 슬라이드 헬프 (ESC 안내) */
+.slide-help {
+  position: fixed; top: 12px; right: 16px; z-index: 300;
+  background: rgba(26, 29, 38, 0.85); color: #fff;
+  padding: 6px 12px; border-radius: 6px;
+  font-size: 11px; font-weight: 600; opacity: 0.7;
+  display: none;
+}
+body.slide-mode .slide-help { display: block; }
+
+@media print {
+  body.slide-mode .md-content > * { display: block !important; page-break-after: always; min-height: 100vh; }
+  body.slide-mode .slide-nav, body.slide-mode .slide-help { display: none !important; }
+}
+
+@media (max-width: 900px) {
+  body.slide-mode .md-content .slide-active { padding: 40px 24px; }
+  body.slide-mode .md-content .slide-active h1 { font-size: 38px; }
+  body.slide-mode .md-content .slide-active h2 { font-size: 28px; }
+}
 </style>
 </head>
 <body>
@@ -2842,12 +2907,86 @@ score &lt; 0 → 진성 폭락 (즉시 청산 또는 진입 금지)</code></pre>
   <div style="margin-top:6px;">본 페이지는 검색엔진·소셜 노출이 차단됩니다. 외부 전송·캡처 금지.</div>
 </footer>
 
+<!-- 슬라이드 모드 네비게이션 (옵션 D PoC, ?slide=true) -->
+<div class="slide-help">ESC: 종료 · ←/→: 이전/다음 · Space: 다음</div>
+<div class="slide-nav" role="navigation" aria-label="슬라이드 네비게이션">
+  <button type="button" id="slide-prev" aria-label="이전 슬라이드">‹</button>
+  <span class="pos"><span id="slide-pos">1</span> / <span id="slide-total">1</span></span>
+  <button type="button" id="slide-next" aria-label="다음 슬라이드">›</button>
+</div>
+
 <script>
 // 모바일에서 막 단위 details default closed (데스크탑은 open 유지) — Q-033c 권고
 (function() {
   if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) {
     document.querySelectorAll('details.act-details').forEach(function(d) { d.removeAttribute('open'); });
   }
+})();
+
+// 슬라이드 모드 (옵션 D PoC) — ?slide=true URL에서만 활성화
+// 기본 모드 영향 0건 보장: 쿼리 없으면 전체 코드 NOOP
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('slide') !== 'true') return; // ← 기본 모드 보호 가드
+
+  // 모든 .md-content (Part 1 + Part 2) 처리
+  var mdRoots = document.querySelectorAll('.md-content');
+  if (mdRoots.length === 0) return;
+
+  var slides = []; // .slide-group div 배열
+
+  mdRoots.forEach(function(contentRoot) {
+    // h1/h2 헤딩을 슬라이드 시작점으로 그룹화
+    var children = Array.from(contentRoot.children);
+    var current = null;
+
+    children.forEach(function(el) {
+      if (el.nodeType !== 1) return;
+      if (el.tagName === 'H1' || el.tagName === 'H2') {
+        // 신규 슬라이드 그룹 시작
+        current = document.createElement('div');
+        current.className = 'slide-group';
+        contentRoot.appendChild(current); // 끝에 임시로 붙이고 자식 이동
+        slides.push(current);
+      }
+      if (current) {
+        current.appendChild(el); // 헤딩 + 후속 요소 그룹화
+      }
+    });
+  });
+
+  if (slides.length === 0) return;
+
+  document.body.classList.add('slide-mode');
+
+  var idx = 0;
+  var posEl = document.getElementById('slide-pos');
+  var totalEl = document.getElementById('slide-total');
+  totalEl.textContent = slides.length;
+
+  function show(i) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function(s, k) {
+      s.classList.toggle('slide-active', k === idx);
+    });
+    posEl.textContent = idx + 1;
+    window.scrollTo(0, 0);
+  }
+  show(0);
+
+  document.getElementById('slide-prev').addEventListener('click', function() { show(idx - 1); });
+  document.getElementById('slide-next').addEventListener('click', function() { show(idx + 1); });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') { show(idx - 1); e.preventDefault(); }
+    else if (e.key === 'ArrowRight' || e.key === ' ') { show(idx + 1); e.preventDefault(); }
+    else if (e.key === 'Escape') {
+      // 슬라이드 종료 시 전체 reload — 그룹화 DOM 변형 되돌리기 가장 안전
+      var url = new URL(window.location.href);
+      url.searchParams.delete('slide');
+      window.location.replace(url.pathname + url.hash);
+    }
+  });
 })();
 </script>
 
