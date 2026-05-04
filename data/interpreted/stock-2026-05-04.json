@@ -1,6 +1,6 @@
 {
   "date": "2026-05-04",
-  "generated_at": "2026-05-04T17:47:37.833813",
+  "generated_at": "2026-05-04T17:59:54.813640",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -17,11 +17,15 @@
     },
     {
       "title": "반도체공급부족",
-      "summary": "AI 수요 증가 + 반도체 공급 부족 장기화 → 삼성전기·SK하이닉스 등 반도체·전기전자 섹터 급등(SK하이닉스 시총 1000조 돌파)"
+      "summary": "D램·HBM 공급 부족 장기화 → 반도체 가격 상승 기대 → SK하이닉스·삼성전기 등 반도체 업종 강세"
     },
     {
       "title": "코스피신고가증권주",
       "summary": "코스피 6900선 돌파·신고가 경신 → 거래량·거래대금 급증 → 증권사 수수료 수혜 28~29% 급등"
+    },
+    {
+      "title": "삼성전자노조리스크",
+      "summary": "삼성전자 노조 파업 리스크 → 생산성·실적 우려 → 목표가 하향 조정 → 전자 섹터 리스크 요인"
     },
     {
       "title": "반도체부족",
@@ -38,10 +42,6 @@
     {
       "title": "AI반도체",
       "summary": "AI 수요 확대 × 메모리 공급부족 → SK하이닉스·삼성전기 가격 인상·실적 개선"
-    },
-    {
-      "title": "반도체공급",
-      "summary": "반도체 공급 부족 장기화 → 가격 인상 + 수요 증가 → SK하이닉스 시총 1000조 돌파, 삼성전기 목표가 100만원 상향"
     }
   ],
   "narratives": [],
@@ -222,6 +222,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "HBM/AI 메모리",
+            "summary": "SK하이닉스 12% 급등하며 시총 1000조 돌파·140만원대 진입, AI 메모리 공급 부족 장기화로 메모리 반도체 섹터 자금 집중",
+            "source_count": 6,
+            "verdict": "weak"
+          },
+          {
             "name": "AI 반도체/HBM",
             "summary": "빅테크 실적 호조와 AI 투자 확대로 SK하이닉스 134만원 사상 최고가, 삼성전자 동반 강세하며 반도체 섹터 자금 집중",
             "source_count": 5,
@@ -370,6 +376,18 @@
             "summary": "AI 수요·가격 인상 기대로 삼성전기 공급 부족 장기화 전망, 목표가 100만원 상향에 황제주 등극 기대",
             "source_count": 3,
             "verdict": "pass"
+          },
+          {
+            "name": "MLCC/적층세라믹콘덴서",
+            "summary": "삼성전기 AI 수요·가격 인상 기대로 목표가 100만원 상향, MLCC 공급 부족 장기화 전망에 부품주 재평가",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "데이터센터/원전",
+            "summary": "덴마크 데이터센터 수요 폭증으로 전력망 한계, 유럽 원자력 부활 논의로 AI 전력 인프라 글로벌 병목 현실화",
+            "source_count": 3,
+            "verdict": "unverified"
           },
           {
             "name": "MLCC",
@@ -800,6 +818,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "전기차/완성차",
+            "summary": "기아 4월 판매 27.7만대로 현대차 첫 추월·EV 견인, 현대차는 부품 수급 차질로 글로벌 판매 8% 감소 양극화",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
             "name": "게임 어닝서프라이즈",
             "summary": "크래프톤 1분기 어닝서프라이즈+쏘카와 자율주행 법인 설립 호재로 12%대 급등, 목표가 줄상향",
             "source_count": 3,
@@ -928,6 +952,48 @@
           {
             "name": "증권사 디지털 서비스",
             "summary": "대신증권 선물환 매도 상품·LS증권 토스뱅크 비대면 개설·SK증권 MTS 연금 시뮬레이션 등 리테일 디지털 강화",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "DX노조 파업 공동대응 이탈·노노갈등 격화에 씨티 목표가 30만원 하향, 삼성전자 단기 디스카운트 요인",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "DX노조 파업 공동대응 이탈·노노갈등 격화에 씨티 목표가 30만원 하향, 삼성전자 단기 디스카운트 요인",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "DX노조 파업 공동대응 이탈·노노갈등 격화에 씨티 목표가 30만원 하향, 삼성전자 단기 디스카운트 요인",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "코스피 신고가/외국인 매수",
+            "summary": "코스피 6900선 돌파·신고가 경신, 외국인 매수에 환율 중동전쟁 이후 최저로 위험자산 선호 강화",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "조선/해운",
+            "summary": "한화오션·삼성중공업·HD현대중공업 주요공시, 팬오션 1분기 영업익 24% 증가로 LNG·탱커선 운임 강세 확인",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "재건축/도시정비",
+            "summary": "GS건설 서초진흥아파트 6800억 재건축 수주로 강남권 정비사업 모멘텀, 건설 도시정비 섹터 수주잔고 확대",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "거래정지 해제",
+            "summary": "엘컴텍·뉴온·파인디앤씨 주권매매거래 정지 해제로 단기 수급 이벤트 발생",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -1187,7 +1253,7 @@
             "name": "STX 페루 장갑차 계약 해지",
             "summary": "페루 장갑차 수출 계약 해지로 STX 경영 위기 심화, 방산 수출 리스크 부각",
             "source_count": 2,
-            "verdict": "unverified"
+            "verdict": "weak"
           },
           {
             "name": "재건축/도시정비",
@@ -1264,6 +1330,30 @@
           {
             "name": "음식료 실적",
             "summary": "롯데칠성음료 1분기 영업익 91% 급증·흑자 전환, 소비 부진 속 실적 차별화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "트럼프 관세",
+            "summary": "트럼프 신규 자동차 관세 위협에 유럽 증시 하락 출발, 한국 완성차주 관세 리스크 재부각",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "2차전지 양극재/리튬",
+            "summary": "POSCO홀딩스 자회사 정상화로 리튬 가치 재평가, JKL인베 삼아알미늄 양극박 투자 2배 회수로 2차전지 소재 재조명",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "면세점/관광",
+            "summary": "호텔신라 면세 할인율 축소로 수익성 개선 기대, 롯데관광개발 4월 제주 외국인 투숙률 최고로 인바운드 회복 시그널",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "음식료/내수소비",
+            "summary": "롯데칠성음료 1분기 영업익 91% 급증·흑자 전환으로 내수 부진 속 음식료 실적주 차별화",
             "source_count": 2,
             "verdict": "unverified"
           },
@@ -1396,6 +1486,12 @@
           {
             "name": "건자재/건축",
             "summary": "LX하우시스 1Q 영업익 전년비 550% 급증 어닝서프라이즈로 17% 급등, 건자재 실적 회복.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "위성/방산통신",
+            "summary": "제노코 차세대중형위성 2호 XTX 탑재로 위성 통신장비 기술 검증, 위성·방산 통신 부품 모멘텀",
             "source_count": 1,
             "verdict": "unverified"
           }
@@ -1704,13 +1800,13 @@
             "name": "조선/가스운반선 수주",
             "summary": "HD한국조선해양·한화오션·삼성중공업 LNG·LPG·암모니아운반선 1兆원대 동시 수주.",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "조선/가스운반선 수주",
             "summary": "HD한국조선해양 VLGC 5048억·한화오션 VLAC 5074억·삼성중공업 LNG-FSRU 4848억 동시 수주, 친환경 선박 수주 모멘텀",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "조선/가스운반선",
@@ -1734,13 +1830,13 @@
             "name": "조선/가스운반선 수주",
             "summary": "HD한국조선해양·한화오션·삼성중공업이 LNG/암모니아 운반선 1조원대 수주, 친환경 선박 사이클 지속.",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "조선/가스운반선 수주",
             "summary": "HD한국조선해양·한화오션·삼성중공업이 같은 날 초대형 LNG·LPG·암모니아 운반선 수주를 잇따라 공시, LNG/암모니아 해상수송 사이클 회복 신호.",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "조선·가스운반선",
@@ -1804,7 +1900,7 @@
             "name": "위성통신/방산",
             "summary": "제노코 차세대중형위성 2호 XTX 탑재·AP위성 위성휴대폰 공급계약·케이엔에스 4D 레이더 협약으로 위성·방산 부품 섹터 부각.",
             "source_count": 4,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "위성/방산통신",
@@ -1816,7 +1912,7 @@
             "name": "위성통신/방산",
             "summary": "제노코 차세대중형위성 2호 XTX 탑재, AP위성 62억 위성휴대폰 공급계약으로 한국 우주통신 부품 국산화 모멘텀 확인.",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "위성통신·방산",
@@ -1834,7 +1930,7 @@
             "name": "위성통신/방산",
             "summary": "제노코 차세대중형위성 2호 XTX 탑재, 케이엔에스-스마트레이더시스템 4D 레이더 방산 생산라인 협력으로 위성·방산 부품 수혜",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "방산 수출 리스크",
@@ -1864,13 +1960,13 @@
             "name": "위성통신/방산",
             "summary": "제노코 차세대중형위성2호 탑재·AP위성 위성폰 62억 수주로 위성통신 모멘텀",
             "source_count": 2,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "STX 페루 장갑차 계약 해지",
             "summary": "페루 장갑차 수출 계약 해지로 STX 경영 지속 중대 기로",
             "source_count": 2,
-            "verdict": "unverified"
+            "verdict": "weak"
           },
           {
             "name": "STX 방산 계약 해지",
@@ -2024,7 +2120,7 @@
             "name": "트럼프 자동차 관세 리스크",
             "summary": "트럼프 신규 자동차 관세 위협으로 유럽 증시 약세, 현대차·기아 4월 미국 판매 2.1% 감소 등 관세 선구매 효과 소멸 우려.",
             "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "pass"
           },
           {
             "name": "자동차 관세 리스크",
@@ -2765,17 +2861,6 @@
           {
             "name": "에너지저장장치(ESS)",
             "summary": "엠젠솔루션 수명 10배 LIC 양산 돌입으로 ESS·모빌리티 시장 공략 가속, 차세대 에너지저장 부품 부각.",
-            "source_count": 2,
-            "verdict": "unverified"
-          }
-        ]
-      },
-      {
-        "name": "지배구조",
-        "children": [
-          {
-            "name": "하림 그룹 승계/M&A",
-            "summary": "하림 2세 김준영 홈플러스익스프레스·팬오션 딜로 그룹 M&A 전면 등장, 승계 시험대.",
             "source_count": 2,
             "verdict": "unverified"
           }
@@ -7785,6 +7870,28 @@
           "raw_title": "일괄신고추가서류(파생결합사채-주가연계파생결합사채)",
           "period_start": "2025-12-21",
           "period_end": "2026-12-20"
+        },
+        {
+          "title": "한화투자증권 발행 한화스마트ELB 제1064호 파생결합사채(주가연계파생결합사채) 청약 결과 모집총액 29,850,000,000원 중 18,815,450,000원(63.03%) 청약·배정 완료, 제1065호는 모집총액 39,800,000,000원 중 23,886,169,000원(60.02%) 청약·배정 완료, 납입일 2026-05-04.",
+          "category": "실적",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504000459",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "증권발행실적보고서",
+          "period_start": "2026-05-04",
+          "period_end": "2026-05-04"
+        },
+        {
+          "title": "한화투자증권의 한화스마트ELB 제1063호 파생결합사채(주가연계, 기초자산 S&P500 지수)가 모집총액 9,990,000,000원 중 청약 2,710,287,000원(27.13%)으로 최종배정되어 2026-05-04 납입·발행 완료(만기 2027-04-29).",
+          "category": "실적",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504000457",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "증권발행실적보고서",
+          "period_start": "2026-05-04",
+          "period_end": "2027-04-29"
         }
       ],
       "index_change_pct": 5.12,
@@ -9649,6 +9756,17 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "서진시스템 최대주주 전동규의 주식담보 계약 정정으로 채무금액 총액이 195,146,084,814원→187,146,084,814원, 담보설정금액 총액이 271,275,301,777원→255,375,301,777원으로 감소했고, 누적 담보계약 15건/10,847,281주→13건/10,211,390주로 축소(주담대 만기연장 및 상환 사유). 담보권 전부 실행 시 최대주주 지분율은 2.72%→3.55%.",
+          "category": "",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504900832",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "[기재정정]최대주주변경을수반하는주식담보제공계약체결              "
+        }
+      ],
       "index_change_pct": 1.79,
       "index_multiple_current": 1.69,
       "index_multiple_eligible": true,
