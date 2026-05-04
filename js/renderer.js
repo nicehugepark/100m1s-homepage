@@ -1129,13 +1129,14 @@ async function initThemeTrend() {
       : { top: 12, right: 8, bottom: 28 };
     const plotH = H - PAD.top - PAD.bottom;
 
-    // 차트 SVG 폭: 7일 기준 가용폭을 날짜 수에 비례 확장
-    // 데스크탑은 컨테이너 실측 폭 기반 (좌측 쏠림 방지)
-    const wrapPadding = isMobile ? 28 : 40; // .theme-trend-wrap 좌우 padding 합
+    // REQ-003 5/4 v185: SLOT pixel 고정 강제 — lut와 chart layout 100% 동일 보장 (chartW = (N-1)*SLOT + 2*EDGE_PAD)
+    // 두 chart 같은 SLOT + 같은 EDGE_PAD + 같은 plotW 식 → 같은 방식 렌더링/표시/동작
+    const wrapPadding = isMobile ? 28 : 40;
     const measuredW = container.clientWidth || 720;
     const availableW = Math.max(280, measuredW - wrapPadding - yAxisW);
     const baseW = isMobile ? 320 : availableW;
-    const chartW = needsScroll ? Math.round(baseW * (dates.length / VISIBLE_DAYS)) : baseW;
+    const FIXED_SLOT = isMobile ? 53 : 80;
+    const chartW = needsScroll ? ((dates.length - 1) * FIXED_SLOT + 2 * 32) : baseW;
     const plotW = chartW - PAD.right;
 
     // 날짜 인덱스 맵
@@ -1445,15 +1446,16 @@ async function initLimitUpTrend() {
     const yTicks = [];
     for (let v = 0; v <= yMax; v += Math.max(1, Math.ceil(yMax / 5))) yTicks.push(v);
 
-    const isMobile = window.innerWidth <= 640;
+    // REQ-003 5/4 v185: SLOT pixel 고정 강제 (theme-trend 정합) — chartW = (N-1)*SLOT + 2*EDGE_PAD
+    const isMobile = window.innerWidth < 640;
     const containerW = container.clientWidth || 800;
     const wrapPadding = isMobile ? 28 : 40;
     const yAxisW = isMobile ? 36 : 44;
     const innerW = Math.max(280, containerW - wrapPadding - yAxisW);
-    // theme-trend SoT: VISIBLE_DAYS 기준 가용폭을 날짜 수에 비례 확장
     const baseW = innerW;
-    const chartW = needsScroll ? Math.round(baseW * (dates.length / VISIBLE_DAYS)) : baseW;
-    const slot = chartW / dates.length;
+    const FIXED_SLOT = isMobile ? 53 : 80;
+    const chartW = needsScroll ? ((items.length - 1) * FIXED_SLOT + 2 * 32) : baseW;
+    const slot = FIXED_SLOT;
     const H = isMobile ? 140 : 180;
     const padTop = 12, padBottom = 28;
     const plotH = H - padTop - padBottom;
