@@ -1,6 +1,6 @@
 {
   "date": "2026-05-04",
-  "generated_at": "2026-05-04T17:12:32.384085",
+  "generated_at": "2026-05-04T17:24:06.974832",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "title": "반도체공급부족",
-      "summary": "메모리칩 공급 부족·AI수요 호황 → 반도체 섹터 일괄 재평가 → SK하이닉스 시총 1000조 돌파, 삼성전기 목표가 100만원 상향"
+      "summary": "AI 수요 증가 + 반도체 공급 부족 장기화 → 삼성전기·SK하이닉스 등 반도체·전기전자 섹터 급등(SK하이닉스 시총 1000조 돌파)"
     },
     {
       "title": "코스피신고가증권주",
@@ -36,12 +36,12 @@
       "summary": "메모리 반도체 공급 부족 + AI 칩 수요 폭증 → SK하이닉스·삼성전기 실적 개선 기대 → 반도체 섹터 이틀째 강세"
     },
     {
-      "title": "재건축수주",
-      "summary": "재건축 활동화 신호 → GS건설 6800억 서초진흥 수주 → 대형 건설사 수주 회복 → 건설 섹터 기저 개선"
-    },
-    {
       "title": "반도체강세",
       "summary": "SK하이닉스 신고가·시총 1000조 돌파 → 반도체 초호황 신호 → 반도체·정보기술 섹터 강세"
+    },
+    {
+      "title": "노조리스크",
+      "summary": "삼성전자 노조 파업 리스크 → 실적 부담·목표가 하향 → IT 장비 섹터 약세"
     }
   ],
   "narratives": [],
@@ -106,6 +106,12 @@
             "summary": "SK하이닉스 11~12% 급등하며 시총 1000조 돌파·140만원 신고가, HBM 공급 부족 장기화로 반도체 메모리 섹터 자금 집중",
             "source_count": 8,
             "verdict": "unverified"
+          },
+          {
+            "name": "HBM/AI 메모리",
+            "summary": "SK하이닉스 12% 급등·시총 1000조 돌파, HBM 공급 부족 장기화 전망에 AI 메모리 수요 폭증으로 반도체 메모리 섹터 자금 집중",
+            "source_count": 7,
+            "verdict": "weak"
           },
           {
             "name": "AI 메모리 슈퍼사이클",
@@ -438,6 +444,12 @@
             "verdict": "pass"
           },
           {
+            "name": "MLCC/적층세라믹콘덴서",
+            "summary": "AI 서버 수요 폭증과 가격 인상 기대로 삼성전기 목표가 100만원 상향, MLCC 공급 부족 장기화에 부품주 재평가",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
             "name": "MLCC 공급부족",
             "summary": "AI 서버향 MLCC 공급 부족 장기화 전망에 삼성전기 목표가 100만원으로 상향",
             "source_count": 1,
@@ -455,10 +467,10 @@
         "name": "반도체",
         "children": [
           {
-            "name": "AI 반도체/HBM",
-            "summary": "SK하이닉스 140만원 돌파·시총 1000조 진입으로 HBM 공급우위가 재확인되며 외인·기관 자금이 메모리·후공정 장비로 집중 유입.",
-            "source_count": 6,
-            "verdict": "weak"
+            "name": "AI 반도체 (HBM)",
+            "summary": "SK하이닉스 11~12% 급등하며 시총 1000조 돌파·144만원 신고가, HBM 공급 부족 장기화로 AI 메모리 수혜 확산",
+            "source_count": 8,
+            "verdict": "unverified"
           },
           {
             "name": "AI 반도체/HBM",
@@ -467,6 +479,12 @@
             "verdict": "weak"
           },
           {
+            "name": "AI 반도체/HBM",
+            "summary": "SK하이닉스 140만원 돌파·시총 1000조 진입으로 HBM 공급우위가 재확인되며 외인·기관 자금이 메모리·후공정 장비로 집중 유입.",
+            "source_count": 6,
+            "verdict": "weak"
+          },
+          {
             "name": "삼성전자 노조 리스크",
             "summary": "씨티 목표가 30만원 하향·DX 노노 갈등 격화로 삼성전자 디스카운트, 하이닉스 대비 차별화 심화",
             "source_count": 3,
@@ -481,6 +499,24 @@
           {
             "name": "삼성전자 노조 리스크",
             "summary": "씨티 목표가 30만원 하향·DX 노노 갈등 격화로 삼성전자 디스카운트, 하이닉스 대비 차별화 심화",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원 하향·동행노조 연대 이탈로 노조 파업 리스크 가시화, DX부문 갈등 격화",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원 하향·동행노조 연대 이탈로 노조 파업 리스크 가시화, DX부문 갈등 격화",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원 하향·동행노조 연대 이탈로 노조 파업 리스크 가시화, DX부문 갈등 격화",
             "source_count": 3,
             "verdict": "pass"
           },
@@ -643,6 +679,24 @@
           {
             "name": "삼성전자 노조 리스크",
             "summary": "씨티 등 외국계 증권사 삼성전자 목표가 30만원으로 하향, 노조 파업 리스크·실적 부담 우려로 SK하이닉스 대비 디커플링 심화.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원 하향, DX 부문 홀대 갈등에 동행노조 이탈로 노조 파업 리스크 가시화, 삼성전자 단기 디스카운트 요인",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원 하향, DX 부문 홀대 갈등에 동행노조 이탈로 노조 파업 리스크 가시화, 삼성전자 단기 디스카운트 요인",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원 하향, DX 부문 홀대 갈등에 동행노조 이탈로 노조 파업 리스크 가시화, 삼성전자 단기 디스카운트 요인",
             "source_count": 2,
             "verdict": "pass"
           }
@@ -720,6 +774,12 @@
             "summary": "POSCO홀딩스 자회사 정상화·리튬 가치 재평가, LG화학 1분기 적자 축소·포스코퓨처엠 목표가 상향으로 소재주 반등",
             "source_count": 4,
             "verdict": "pass"
+          },
+          {
+            "name": "코스피 랠리",
+            "summary": "코스피 6900 돌파·6936 마감(+5.12%), SK하이닉스 주도 신고가 랠리에 외국인 매수 유입",
+            "source_count": 4,
+            "verdict": "unverified"
           },
           {
             "name": "게임 어닝서프라이즈",
@@ -802,6 +862,12 @@
           {
             "name": "조선/가스운반선",
             "summary": "HD한국조선해양·한화오션·삼성중공업이 LNG·LPG·암모니아운반선 1.5조원대 동시 수주, 친환경 선박 수주 사이클 가속.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "조선",
+            "summary": "한화오션·삼성중공업·HD현대중공업 주요 공시 동시 발표, 조선 빅3 모멘텀 지속",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -1118,6 +1184,12 @@
             "verdict": "pass"
           },
           {
+            "name": "해운",
+            "summary": "팬오션 1분기 영업익 1409억원 24% 증가, LNG·탱커선 쌍끌이 실적 호조",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
             "name": "철강 실적 턴어라운드",
             "summary": "POSCO홀딩스 깜짝 실적으로 2년여 만에 50만원 회복, 철강 업황 개선 시그널",
             "source_count": 1,
@@ -1363,6 +1435,30 @@
             "verdict": "unverified"
           },
           {
+            "name": "2차전지 양극박/소재",
+            "summary": "JKL인베 삼아알미늄 2배 차익 실현, POSCO홀딩스 리튬 가치 재평가로 양극박·리튬 등 2차전지 소재 밸류 재조정",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "2차전지 소재",
+            "summary": "POSCO홀딩스 자회사 정상화로 리튬 재평가, JKL인베 삼아알미늄 양극박 투자 700억 회수 2배 수익",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "2차전지 소재",
+            "summary": "POSCO홀딩스 자회사 정상화로 리튬 재평가, JKL인베 삼아알미늄 양극박 투자 700억 회수 2배 수익",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "ESS",
+            "summary": "엠젠솔루션 수명 10배 LIC 양산 돌입, ESS·모빌리티 시장 확대 본격화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
             "name": "ESS/LIC 에너지저장",
             "summary": "엠젠솔루션 수명 10배 LIC 양산으로 ESS·모빌리티 시장 공략",
             "source_count": 1,
@@ -1454,6 +1550,12 @@
           {
             "name": "HLB 신약 글로벌 상업화",
             "summary": "HLB 차바이오 출신 양은영 사장 영입해 글로벌 파트너십 총괄, 신약 상업화 체제 구축",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "HLB/신약 글로벌 상업화",
+            "summary": "HLB가 차바이오 출신 양은영 사장 영입해 신약 글로벌 파트너십·상업화 총괄, 리보세라닙 FDA 재신청 앞둔 체제 정비",
             "source_count": 2,
             "verdict": "unverified"
           },
@@ -1563,6 +1665,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "조선/LNG·가스운반선",
+            "summary": "HD한국조선해양 초대형 가스운반선 5048억 수주, 팬오션 LNG·탱커 쌍끌이로 1Q 영업익 24% 증가, 조선·해운 수주 모멘텀 지속",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
             "name": "조선 기자재",
             "summary": "KS인더스트리 국내 대형 조선사 대량 발주 확보, HD현대중공업 +2.92% 출발로 조선 기자재 수주 사이클 지속",
             "source_count": 2,
@@ -1633,6 +1741,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "위성통신/방산",
+            "summary": "제노코 차세대중형위성 2호 XTX 탑재, 케이엔에스-스마트레이더시스템 4D 레이더 방산 생산라인 협력으로 위성·방산 부품 수혜",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
             "name": "방산 수출 리스크",
             "summary": "페루 장갑차 수출 계약 해지로 STX 경영 위기 심화, 방산 수출 모멘텀 대비 개별 종목 리스크 부각.",
             "source_count": 2,
@@ -1673,6 +1787,18 @@
             "summary": "페루 장갑차 수출 계약 해지로 STX 경영 위기 심화, 방산 수출 리스크 부각",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "위성통신",
+            "summary": "제노코 차세대중형위성 2호에 XTX 탑재, 위성 통신장비 기술력 입증",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "4D 레이더",
+            "summary": "케이엔에스-스마트레이더시스템 AI 적용 자동화·방산 생산라인 구축 협력",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1682,6 +1808,12 @@
           {
             "name": "도시정비 재건축",
             "summary": "GS건설 6800억 서초진흥 재건축 수주(서초자이 컬리너스 58층) 등 강남권 정비사업 발주 본격화",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "재건축/도시정비",
+            "summary": "GS건설 서초진흥아파트 6800억 재건축 수주(58층 서초자이 컬리너스), 강남권 정비사업 수주잔고 확대로 대형 건설사 수혜",
             "source_count": 4,
             "verdict": "unverified"
           },
@@ -1706,6 +1838,12 @@
           {
             "name": "재건축·도시정비",
             "summary": "GS건설 서초진흥아파트 6800억 재건축 수주, DL이앤씨 압구정5구역 평당 공사비 차별화로 강남권 정비사업 경쟁 가열·수주 모멘텀 부각.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "재건축",
+            "summary": "GS건설 6800억 서초진흥아파트 재건축 시공사 선정, 강남권 재건축 모멘텀",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -1933,6 +2071,18 @@
             "summary": "덴마크 데이터센터 전력 수요 폭증·유럽 에너지 부족으로 원자력이 대안으로 부상, AI 데이터센터 전력원으로서의 원전 재평가 흐름.",
             "source_count": 2,
             "verdict": "unverified"
+          },
+          {
+            "name": "원자력발전",
+            "summary": "유럽 데이터센터 전력 수요 폭증으로 원전이 해법으로 부상, 글로벌 원자력 르네상스 내러티브 강화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "원자력",
+            "summary": "유럽 데이터센터 전력난 심화로 원자력이 대안으로 부상, 글로벌 전력 수요 급증",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
@@ -2061,6 +2211,18 @@
             "summary": "코스피 6900 돌파·신고가 랠리에 거래대금 폭증, 삼성증권 27~29% 급등 등 증권 섹터 동반 강세",
             "source_count": 3,
             "verdict": "unverified"
+          },
+          {
+            "name": "증권주",
+            "summary": "코스피 6900선 돌파 랠리에 거래대금 급증, 삼성증권 27~29% 급등 등 증권업 전반 수혜로 자금 집중",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "증권주",
+            "summary": "코스피 6900 돌파 랠리로 증권주 동반 강세, 삼성증권 28~29% 급등 거래대금 증가 수혜",
+            "source_count": 3,
+            "verdict": "unverified"
           }
         ]
       },
@@ -2131,6 +2293,18 @@
             "verdict": "unverified"
           },
           {
+            "name": "자동차 관세 리스크",
+            "summary": "트럼프 신규 자동차 관세 위협으로 유럽 시장 약세, 현대차·기아 4월 美 판매 2.1% 감소(관세 선구매 기저효과)로 완성차 단기 리스크 부각",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "자동차 관세",
+            "summary": "트럼프 신규 자동차 관세 위협으로 현대차·기아 4월 美 판매 2.1% 감소, 선구매 기저효과",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
             "name": "관세 역기저",
             "summary": "현대차·기아 4월 미국 판매 2.1% 감소, 관세 선구매 기저효과로 자동차주 단기 부담",
             "source_count": 2,
@@ -2172,6 +2346,17 @@
           {
             "name": "외국인 자금 유입",
             "summary": "외국인 매수에 환율 중동전쟁 이후 최저, 코스피 6936·5.12% 급등으로 신고가 랠리 가속",
+            "source_count": 3,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "신재생에너지",
+        "children": [
+          {
+            "name": "ESS/에너지저장장치",
+            "summary": "엠젠솔루션 화재 없는 수명 10배 LIC 양산 돌입, AI 데이터센터 전력 수요 급증으로 ESS·모빌리티 배터리 시장 확대",
             "source_count": 3,
             "verdict": "unverified"
           }
@@ -2436,6 +2621,12 @@
             "verdict": "pass"
           },
           {
+            "name": "MLCC",
+            "summary": "삼성전기 AI 수요·가격 인상 기대로 목표가 100만원 상향, MLCC 공급 부족 장기화 수혜",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
             "name": "MLCC 공급부족",
             "summary": "삼성전기 MLCC 공급 부족 장기화 전망으로 목표가 100만원 상향, 부품주 재평가",
             "source_count": 1,
@@ -2561,6 +2752,12 @@
             "summary": "호텔신라 면세사업 할인율 축소 단계 진입, iM증권 수익성 개선 기대 제시",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "면세점/리오프닝",
+            "summary": "호텔신라 면세사업 할인율 축소 단계 진입으로 수익성 개선 기대, 면세업 정상화 내러티브 재가동",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -2604,6 +2801,17 @@
           {
             "name": "화학 실적 회복",
             "summary": "LG화학 1분기 적자 폭 대폭 축소, 목표가 줄상향에 8%대 급등하며 화학주 턴어라운드",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "매크로",
+        "children": [
+          {
+            "name": "환율 강세/외국인 매수",
+            "summary": "외국인 코스피 매수세에 원달러 환율 중동 전쟁 이후 최저, 환율 강세→외국인 추가 유입 선순환으로 대형주 수혜",
             "source_count": 1,
             "verdict": "unverified"
           }
