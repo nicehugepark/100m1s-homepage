@@ -1084,12 +1084,11 @@ async function initThemeTrend() {
     const VISIBLE_DAYS = 6; // 화면에 보이는 영업일 수 (LUT와 통일 — 한 윈도우 6영업일, 대표 명시)
     const allDates = data.dates;
     if (allDates.length < 1) return;
-    const dates = allDates.slice(-17); // REQ-006 5/4 v193: 17영업일 격리 (scroll 발생 조건 재현, 대표 발화 16:11 KST)
-    const dateSet = new Set(dates);
-    const needsScroll = dates.length > VISIBLE_DAYS;
+    let dates = allDates.slice(-17); // REQ-006 5/4 v195: 17영업일 윈도우 후 첫 데이터 일자로 trim (대표 발화 17:27 KST)
+    let dateSet = new Set(dates);
 
     // 모든 테마 표시 (데이터 있는 것만, 표시 기간 내 데이터 필터)
-    const themes = data.themes
+    let themes = data.themes
       .map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }))
       .filter(t => t.data.length >= 1 && t.data.some(d => d.stock_count > 0))
       .sort((a, b) => {
@@ -1098,6 +1097,28 @@ async function initThemeTrend() {
         return bLast - aLast;
       })
       .slice(0, 12);
+
+    // REQ-006 5/4 v195 — 첫 데이터 일자 trim. 80px 시각 차이 root cause:
+    // theme polyline 첫 점 i=k>0 (해당 일자 데이터 없어 stroke 시작 우측 이동) vs lut line i=0.
+    // 두 차트 모두 firstDataIdx 일자부터 시작하도록 dates 윈도우를 통일.
+    if (themes.length > 0 && dates.length > 0) {
+      let firstDataIdx = 0;
+      for (let i = 0; i < dates.length; i++) {
+        if (themes.some(t => t.data.some(d => d.date === dates[i] && d.stock_count > 0))) {
+          firstDataIdx = i;
+          break;
+        }
+      }
+      if (firstDataIdx > 0) {
+        dates = dates.slice(firstDataIdx);
+        dateSet = new Set(dates);
+        themes = themes.map(t => ({ ...t, data: t.data.filter(d => dateSet.has(d.date)) }));
+      }
+    }
+    // lut renderer가 참조할 SSOT 저장 (race-free: theme이 먼저 fetch+render되면 lut가 사용,
+    // 미존재 시 lut가 동일 로직으로 fallback 계산)
+    window.__chartDates = dates;
+    const needsScroll = dates.length > VISIBLE_DAYS;
 
     if (themes.length === 0) {
       const now = new Date();
@@ -1436,21 +1457,39 @@ async function initLimitUpTrend() {
 
     // 6영업일 윈도우 + 가로 스크롤 (theme-trend SoT 정합)
     const VISIBLE_DAYS = 6;
-    // REQ-006 5/4 v194: dates 윈도우 정합 — theme-trend.json의 data.dates를 SSOT로 사용 후
-    // 누락 일자 count=0 padding. design-lead root cause: theme(4/9~) vs lut(4/16~) 시작 좌표
-    // 80px 차이 → polyline 첫 점 i=1 vs lut line i=0 정확 일치. (대표 발화 16:11 KST)
-    let windowDates = null;
-    try {
-      const themeRes = await fetch('/data/themes/theme-trend.json');
-      if (themeRes.ok) {
-        const themeData = await themeRes.json();
-        if (Array.isArray(themeData.dates) && themeData.dates.length > 0) {
-          windowDates = themeData.dates.slice(-17);
-        }
-      }
-    } catch (_) { /* fallback below */ }
+    // REQ-006 5/4 v195: theme renderer가 trim한 windowDates(window.__chartDates) 우선 사용.
+    // 두 차트의 dates[0] 동일 + 첫 dot/line cx 동일(=32) 보장. (대표 발화 17:27 KST)
+    let windowDates = Array.isArray(window.__chartDates) && window.__chartDates.length > 0
+      ? window.__chartDates.slice()
+      : null;
     if (!windowDates) {
-      // theme-trend 실패 시 lut 자체 dates로 fallback
+      // theme renderer 미동작/지연 시 fallback — 동일 trim 로직 직접 실행
+      try {
+        const themeRes = await fetch('/data/themes/theme-trend.json');
+        if (themeRes.ok) {
+          const themeData = await themeRes.json();
+          if (Array.isArray(themeData.dates) && themeData.dates.length > 0) {
+            let tDates = themeData.dates.slice(-17);
+            const tDateSet = new Set(tDates);
+            const tThemes = (themeData.themes || [])
+              .map(t => ({ ...t, data: (t.data || []).filter(d => tDateSet.has(d.date)) }))
+              .filter(t => t.data.some(d => d.stock_count > 0));
+            if (tThemes.length > 0) {
+              let firstIdx = 0;
+              for (let i = 0; i < tDates.length; i++) {
+                if (tThemes.some(t => t.data.some(d => d.date === tDates[i] && d.stock_count > 0))) {
+                  firstIdx = i; break;
+                }
+              }
+              if (firstIdx > 0) tDates = tDates.slice(firstIdx);
+            }
+            windowDates = tDates;
+          }
+        }
+      } catch (_) { /* fallback below */ }
+    }
+    if (!windowDates) {
+      // theme-trend.json fetch 실패 시 최종 fallback — lut 자체 items
       windowDates = data.items.slice(-17).map(it => it.date);
     }
     const itemMap = new Map(data.items.map(it => [it.date, it]));
