@@ -1120,8 +1120,8 @@ async function initThemeTrend() {
     const COLORS = ['#C49930','#5B8DEF','#E06B6B','#4BC9A0','#A97BDB','#E8963E','#6BB5E0','#D46BAD','#7B9E3D','#E0886B','#6B8FD4','#B86BD4'];
 
     // SVG 치수 — 반응형 (모바일 vs 데스크탑)
-    // REQ-002: lut-trend와 마진/폰트 정합 — yAxisW 좁게 + PAD.right 좁게 + axisFontSize 데스크탑 키움
-    const isMobile = window.innerWidth < 640;
+    // REQ-007 5/4 v190: isMobile breakpoint 640→880 (CSS @media + lut 정합)
+    const isMobile = window.innerWidth < 880;
     const yAxisW = isMobile ? 36 : 44;
     const H = isMobile ? 180 : 180; // REQ-003: desktop 160→180 (lut-trend 정합, viewBox 비율 정합)
     const PAD = isMobile
@@ -1447,8 +1447,8 @@ async function initLimitUpTrend() {
     const yTicks = [];
     for (let v = 0; v <= yMax; v += Math.max(1, Math.ceil(yMax / 5))) yTicks.push(v);
 
-    // REQ-003 5/4 v185: SLOT pixel 고정 강제 (theme-trend 정합) — chartW = (N-1)*SLOT + 2*EDGE_PAD
-    const isMobile = window.innerWidth < 640;
+    // REQ-007 5/4 v190: lut isMobile breakpoint 640→880 (theme + CSS @media 정합)
+    const isMobile = window.innerWidth < 880;
     const containerW = container.clientWidth || 800;
     const wrapPadding = isMobile ? 28 : 40;
     const yAxisW = isMobile ? 36 : 44;
