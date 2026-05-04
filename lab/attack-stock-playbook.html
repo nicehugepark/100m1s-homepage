@@ -90,6 +90,60 @@ article { min-width: 0; }
 }
 .disclaimer strong { font-weight: 800; }
 
+/* === 법무 면책 박스 (LEGAL-001 §3.5, P1-5) === */
+/* 5조항 12줄 강조 박스. 페이지 최상단(header 안) + 푸터 직전 양쪽 표시. */
+.legal-disclaimer {
+  background: var(--neg-bg);
+  border: 2px solid var(--neg);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--tx);
+}
+.legal-disclaimer .legal-title {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--neg);
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(184,48,46,0.12);
+  border-radius: 999px;
+}
+.legal-disclaimer ol {
+  margin: 8px 0 0 0;
+  padding-left: 22px;
+  counter-reset: legal-counter;
+  list-style: none;
+}
+.legal-disclaimer ol li {
+  position: relative;
+  padding: 4px 0 4px 4px;
+  counter-increment: legal-counter;
+}
+.legal-disclaimer ol li::before {
+  content: counter(legal-counter) ".";
+  position: absolute;
+  left: -22px;
+  font-weight: 800;
+  color: var(--neg);
+}
+.legal-disclaimer strong { color: var(--neg); font-weight: 800; }
+.legal-disclaimer .legal-report {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(184,48,46,0.4);
+  font-size: 12px;
+  color: var(--tx2);
+}
+.legal-disclaimer .legal-report strong { color: var(--neg); }
+
 .ownership {
   background: var(--bg2); border: 1px solid var(--bd); border-radius: 10px;
   padding: 18px 22px; margin: 24px 0;
@@ -426,6 +480,19 @@ footer.lab-foot {
         <strong>외부 공유 금지.</strong> 본 페이지는 검색엔진·소셜·아카이브 차단 상태입니다. URL 공유·캡처 전송 시 차단 무력화로 간주됩니다.
       </div>
 
+      <!-- LEGAL-001 §3.5 면책 박스 (P1-5) — 페이지 상단 -->
+      <div class="legal-disclaimer" role="region" aria-label="법무 면책 (자본시장법)">
+        <div class="legal-title">법무 면책 (자본시장법 §174 / §176 / §178)</div>
+        <ol>
+          <li>본 자료는 <strong>학습·연구 목적</strong>입니다. 100M1S 내부 PM320 페널티 설계, 토구사(AI 매매 에이전트) 학습, 일반인 작전주 피해 예방 교육을 위해 작성되었습니다.</li>
+          <li>본 자료는 <strong>작전주 행위 가이드 또는 매뉴얼이 아닙니다</strong>. 모든 케이스는 적발·처벌 사례 기반 일반화이며, 등장인물·종목명은 가상입니다.</li>
+          <li>본 자료는 <strong>매매 권유 또는 동행 매매 권유가 아닙니다</strong>. 본 자료를 따른 매매로 인한 손실·법적 책임은 독자 본인이 부담합니다.</li>
+          <li><strong>자본시장법 §174 / §176 / §178 위반</strong> 시 1년 이상 유기징역 또는 부당이득의 3~5배 이하 벌금 (병과 가능, 부당이득 50억 이상 가중처벌 별도). <strong>형사 처벌 + 민사 손해배상 별도</strong>.</li>
+          <li>작전주 행위 의심 시 <strong>금융감독원(1332) 또는 한국거래소 시장감시본부에 신고</strong>하십시오.</li>
+        </ol>
+        <div class="legal-report">출처: <code>records/2026-05/DOC-20260504-LEGAL-001.md</code> §3.5 (법무팀 1차 검증). 외부 자본시장법 변호사 2차 자문 후 v2 정정 예정.</div>
+      </div>
+
       <div class="ownership">
         <div class="ownership-title">책임 영역</div>
         <ul>
@@ -479,16 +546,16 @@ footer.lab-foot {
 </aside>
 
 <table>
-<thead><tr><th style="text-align:left">조항</th><th style="text-align:left">내용</th><th style="text-align:left">처벌 (최대)</th></tr></thead>
+<thead><tr><th style="text-align:left">조항</th><th style="text-align:left">내용</th><th style="text-align:left">처벌 (자본시장법 §443 기준)</th></tr></thead>
 <tbody>
-<tr><td style="text-align:left">제174조</td><td style="text-align:left">미공개중요정보 이용 행위</td><td style="text-align:left">무기 또는 5년 이상 징역 + 부당이득 5배 벌금</td></tr>
-<tr><td style="text-align:left">제176조</td><td style="text-align:left">시세조종 (통정·가장·풍문·표시 등)</td><td style="text-align:left">무기 또는 5년 이상 징역 + 부당이득 5배 벌금</td></tr>
-<tr><td style="text-align:left">제178조</td><td style="text-align:left">부정거래 (포괄 금지)</td><td style="text-align:left">무기 또는 5년 이상 징역 + 부당이득 5배 벌금</td></tr>
-<tr><td style="text-align:left">제178조의2</td><td style="text-align:left">시장질서 교란행위 (2015 신설, 행정 제재)</td><td style="text-align:left">과징금 (5배 한도)</td></tr>
+<tr><td style="text-align:left">제174조</td><td style="text-align:left">미공개중요정보 이용 행위</td><td style="text-align:left"><strong>1년 이상 유기징역 또는 부당이득의 3배 이상 5배 이하 벌금</strong> (병과 가능). 부당이득 50억 이상 시 무기 또는 5년 이상.</td></tr>
+<tr><td style="text-align:left">제176조</td><td style="text-align:left">시세조종 (통정·가장·풍문·표시 등)</td><td style="text-align:left"><strong>1년 이상 유기징역 또는 부당이득의 3배 이상 5배 이하 벌금</strong> (병과 가능). 부당이득 50억 이상 시 무기 또는 5년 이상.</td></tr>
+<tr><td style="text-align:left">제178조</td><td style="text-align:left">부정거래 (포괄 금지)</td><td style="text-align:left"><strong>1년 이상 유기징역 또는 부당이득의 3배 이상 5배 이하 벌금</strong> (병과 가능). 부당이득 50억 이상 시 무기 또는 5년 이상.</td></tr>
+<tr><td style="text-align:left">제178조의2</td><td style="text-align:left">시장질서 교란행위 (2015 신설, 행정 제재)</td><td style="text-align:left"><strong>5억 이하 과징금 + 부당이득의 1.5배 한도</strong> (자본시장법 §429의2)</td></tr>
 </tbody>
 </table>
 
-<blockquote>⚠️ 조항 인용 정확성: 한국 자본시장법 일반 골격 기준. <strong>법무팀 검증 후 v2 정정 가능성</strong>.</blockquote>
+<blockquote>[법무팀 LEGAL-001 §3.4 인용] v0.1.x 표기 (&quot;무기 또는 5년 이상 + 5배&quot;)는 부당이득 50억 이상 가중처벌 한정 표현으로, 일반 위반 case에 잘못 적시되어 있었음. 자본시장법 §443 기준 일반 위반 형량은 &quot;1년 이상 유기징역 또는 부당이득 3~5배 벌금&quot; 병과. 50억 가중처벌과 명확히 구분 표기. 외부 자본시장법 변호사 2차 자문 후 v2 최종 확정 권고.</blockquote>
 
 <h3 id="0.4-공통-용어집">0.4 공통 용어집</h3>
 
@@ -588,16 +655,20 @@ D+1    09:30 갭다운 진성 폭락 vs 개미털기 판단
 D+2    종일 분할매도 (10%) — 매수 추격 유입 약화
 D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</code></pre>
 
-<h2 id="분배-일회성-시-폭락-시뮬레이션">분배 일회성 시 폭락 시뮬레이션</h2>
+<h2 id="분배-일회성-시-폭락-시뮬레이션-관찰자-관점-분석">분배 일회성 시 폭락 시뮬레이션 (관찰자 관점 분석)</h2>
+
+<blockquote>[법무팀 LEGAL-001 §3.2 인용] 본 표는 <strong>작전자 관점에서</strong> 일회성 분배가 왜 어렵고 5일 분산이 왜 실제 패턴인지 <strong>관찰·식별</strong> 목적으로 분석한 것임. <strong>본 자료는 학습·예방 교육용이며 분배 행위 매뉴얼 아님</strong>. &quot;최대 차익&quot;, &quot;적발 회피&quot; 표현은 작전자 시점 가치 평가어로, 본 자료의 관찰자 시점에서는 &quot;관찰 시점에서 분배 행위가 어떻게 보이는지&quot; 식별 신호로 재해석.</blockquote>
 
 <table>
-<thead><tr><th style="text-align:left">시나리오</th><th style="text-align:left">분배 방식</th><th style="text-align:left">평균 매도가</th><th style="text-align:left">일중 종가 변동</th><th style="text-align:left">작전 차익</th></tr></thead>
+<thead><tr><th style="text-align:left">시나리오</th><th style="text-align:left">분배 방식</th><th style="text-align:left">평균 매도가</th><th style="text-align:left">일중 종가 변동</th><th style="text-align:left">관찰 시점 식별 신호</th></tr></thead>
 <tbody>
-<tr><td style="text-align:left">일회성 시장가 (이상)</td><td style="text-align:left">1분 내 30억 시장가 매도</td><td style="text-align:left">16,500원 (<span class="price-neg">-4%</span> 슬리피지)</td><td style="text-align:left"><span class="price-neg">-10%</span> (개미 추격 매도 동조)</td><td style="text-align:left">줄어든 차익 + 적발 위험</td></tr>
-<tr><td style="text-align:left">일회성 지정가</td><td style="text-align:left">1분 내 30억 지정가 분할</td><td style="text-align:left">17,200원</td><td style="text-align:left"><span class="price-neg">-7%</span></td><td style="text-align:left">호가창 비어 매수 추격 끊김</td></tr>
-<tr><td style="text-align:left">분할 5일 분산 (실제)</td><td style="text-align:left">일 6억 ×5일</td><td style="text-align:left">17,800원</td><td style="text-align:left"><span class="price-neg">-3%</span> × 5 = <span class="price-neg">-14%</span> (단계 분산)</td><td style="text-align:left"><strong>최대 차익</strong>, 적발 회피</td></tr>
+<tr><td style="text-align:left">일회성 시장가 (이상)</td><td style="text-align:left">1분 내 30억 시장가 매도</td><td style="text-align:left">16,500원 (<span class="price-neg">-4%</span> 슬리피지)</td><td style="text-align:left"><span class="price-neg">-10%</span> (개미 추격 매도 동조)</td><td style="text-align:left">1분 내 단일 거래량 평소 ×100 → 즉시 적발 가능 (실현 어려움)</td></tr>
+<tr><td style="text-align:left">일회성 지정가</td><td style="text-align:left">1분 내 30억 지정가 분할</td><td style="text-align:left">17,200원</td><td style="text-align:left"><span class="price-neg">-7%</span></td><td style="text-align:left">호가창 비어 매수 추격 끊김 → 추격매수자 = 분배 피해자 정확 위치</td></tr>
+<tr><td style="text-align:left">분할 5일 분산 (실제 패턴)</td><td style="text-align:left">일 6억 ×5일</td><td style="text-align:left">17,800원</td><td style="text-align:left"><span class="price-neg">-3%</span> × 5 = <span class="price-neg">-14%</span> (단계 분산)</td><td style="text-align:left">5일 윗꼬리 음봉 반복 + 일중 <span class="price-neg">-3%</span> 분봉 변동 빈발 + 매물대 회복 시도 = <strong>분배 진행 식별 신호</strong> (회피·청산 트리거)</td></tr>
 </tbody>
 </table>
+
+<blockquote>⚠ 본 시뮬레이션은 학습 목적이며 동행 매매 권유 아님. 작전자 관점에서 &quot;왜 5일 분산이 실제로 사용되는가&quot; 구조를 이해하면, 관찰자 관점에서는 &quot;5일 윗꼬리 음봉 반복 = 분배 진행 신호&quot;로 즉시 매매 회피·청산 결정 가능. 본 자료는 이 회피 판단을 위한 학습 자료임.</blockquote>
 
 <h2 id="매매자-관점-대표-매매-정수-직결">매매자 관점 (대표 매매 정수 직결)</h2>
 
@@ -1130,11 +1201,14 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 
 </div></details><h2 id="매매자-관점">매매자 관점</h2>
 
-<h3 id="동승-시점">동승 시점</h3>
+<h3 id="회피관찰-시점-진입-금지">회피·관찰 시점 (진입 금지)</h3>
+
+<blockquote>[법무팀 LEGAL-001 §3.1 인용] 풍문 단계 = 허위공시 직전 작전 의심 윈도우. 본 시점에 매매 가담은 자본시장법 §178 부정거래 가담 위험. 매매 행동 권유가 아니라 <strong>회피·관찰</strong> 가이드로 재포지셔닝.</blockquote>
 
 <ul>
-<li>2막 풍문 단계 (D-10) 일봉 거래대금 200억 진입 시 1분봉 눌림에 진입 → 분배 직전 매도</li>
-<li>3막 공시 직후 시초가 갭상승은 <strong>진입 금지</strong> (분배 출구 위치)</li>
+<li>2막 풍문 단계 (D-10) 일봉 거래대금 200억 진입 + 본 계약 키워드 공시 0건 = <strong>허위공시 작전 의심 윈도우</strong>. 본 시점에 매매 가담 = §178 부정거래 가담 위험 → <strong>진입 금지 + 관찰만</strong></li>
+<li>3막 공시 직후 시초가 갭상승은 <strong>진입 금지</strong> (분배 출구 위치 + 추격매수자 = 분배 피해자 정확 위치)</li>
+<li>풍문 단계 거래대금 폭증 신호 발견 시 = PM320 페널티 발동 + 토구사 게이트 차단. 매매 회피 가이드로 활용</li>
 </ul>
 
 <h3 id="회피-신호">회피 신호</h3>
@@ -1154,14 +1228,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 <tr><td style="text-align:left">공시 직후 30분 거래대금 = 일평균 ×20</td><td style="text-align:left">시세 패턴 (토구사)</td><td style="text-align:left">-15</td></tr>
 </tbody>
 </table>
-
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: 풍문 단계 (D-15 ~ D-7) 거래대금 ≥ 200억 + 1분봉 RSI ≤ 30 + MA10 터치 + 본 계약 키워드 공시 0건</li>
-<li>청산 조건: 익절 = <span class="price-pos">+5%</span> / 손절 = <span class="price-neg">-3%</span> / 강제 청산 = &quot;MOU/양해각서/검토중&quot; 키워드 공시 발견 즉시</li>
-<li>비중: 시드 5% (G2 기준, 허위공시 위험)</li>
-</ul>
 
 <hr>
 
@@ -1252,14 +1318,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 </tbody>
 </table>
 
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: 거래대금 ≥ 평소 ×2 + 1분봉 RSI ≤ 30 + 종가 = MA20 ±1% + CB 공시 30일 외</li>
-<li>청산 조건: 익절 = 직전 5일 고점 / 손절 = 진입가 <span class="price-neg">-3%</span> / 강제 청산 = 전환청구 공시 즉시</li>
-<li>비중: 시드 10% (G2 기준)</li>
-</ul>
-
 <hr>
 
 <h1 id="케이스-6.-무자본-ma-회사-돈으로-회사-사기">케이스 6. 무자본 M&amp;A — &quot;회사 돈으로 회사 사기&quot;</h1>
@@ -1345,14 +1403,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 <tr><td style="text-align:left">인수 프리미엄 <span class="price-pos">+30%</span> 이상 + 인수자 자금 출처 미공개</td><td style="text-align:left">DART 파싱</td><td style="text-align:left">-20 (신규)</td></tr>
 </tbody>
 </table>
-
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: 거래대금 ≥ 평소 ×3 + 1분봉 RSI ≤ 30 + 인수자 자금 출처 명확 + 인수 후 30일 경과</li>
-<li>청산 조건: 익절 = <span class="price-pos">+5%</span> / 손절 = <span class="price-neg">-3%</span> / 강제 청산 = 자산 처분 공시 즉시</li>
-<li>비중: 시드 5% (G2 기준, 무자본 M&amp;A 의심 종목 보수적)</li>
-</ul>
 
 <hr>
 
@@ -1443,14 +1493,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 </tbody>
 </table>
 
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: CFD 비중 &lt; 10% + 그룹 동조성 &lt; 5% + 거래대금 ≥ 200억 + 1분봉 RSI ≤ 30 (눌림목)</li>
-<li>청산 조건: 익절 = <span class="price-pos">+5%</span> / 손절 = <span class="price-neg">-3%</span> / 강제 청산 = 동일 그룹 5종목+ 동시 <span class="price-neg">-10%</span> 시 즉시</li>
-<li>비중: 시드 3% (G3 기준, CFD 청산 트리거 위험)</li>
-</ul>
-
 <hr>
 
 <h1 id="케이스-8.-사모펀드-활용-라임옵티머스형">케이스 8. 사모펀드 활용 — &quot;라임·옵티머스형&quot;</h1>
@@ -1539,14 +1581,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 </tbody>
 </table>
 
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: 사모펀드 보유 &lt; 5% + 환매 이슈 0건 + 거래대금 ≥ 200억</li>
-<li>청산 조건: 익절 = <span class="price-pos">+5%</span> / 손절 = <span class="price-neg">-3%</span> / 강제 청산 = 펀드 환매 중단 공시 즉시</li>
-<li>비중: 시드 5% (G2 기준)</li>
-</ul>
-
 <hr>
 
 <h1 id="케이스-9.-바이오-임상-미공개정보-임상-결과-사전-유출">케이스 9. 바이오 임상 미공개정보 — &quot;임상 결과 사전 유출&quot;</h1>
@@ -1604,14 +1638,16 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 </tbody>
 </table>
 
-</div></details><h2 id="매매자-관점-자율-매매-매뉴얼-직결">매매자 관점 (자율 매매 매뉴얼 직결)</h2>
+</div></details><h2 id="매매자-관점-회피관찰-가이드">매매자 관점 (회피·관찰 가이드)</h2>
 
-<h3 id="동승-시점">동승 시점</h3>
+<h3 id="회피진입-금지-시점-174-미공개정보-이용-위험">회피·진입 금지 시점 (§174 미공개정보 이용 위험)</h3>
+
+<blockquote>[법무팀 LEGAL-001 §3.1 인용] 임상 종료 ~ 결과 공시 D-30 ~ D-day 윈도우 = 미공개정보 누출 의심 시점. 본 윈도우 진입 시도 = §174 미공개중요정보 이용 행위 위험. <strong>진입 금지 (게이트 차단)</strong> + 관찰만 허용.</blockquote>
 
 <ul>
-<li><strong>2막 D-7 ~ D-3 풍문 단계 1분봉 눌림</strong>: 거래대금 ≥ 평소 ×5 + 1분봉 RSI ≤ 30 → <strong>분단위 스캘핑</strong> (5~15분 익절). 단, 미공개정보 의심도가 낮은 종목만 (임상 종료 공시 30일 외)</li>
-<li><strong>3막 D-day 16:30 공시 직후 ≠ 동승</strong>: 공시 직후 시초가 갭상승 진입 = 분배 출구 = <strong>진입 금지</strong></li>
-<li><strong>4막 폭락 후 임상 결과 시장 반영 D+30</strong>: 펀더멘털 재평가 가능</li>
+<li><strong>2막 D-30 ~ D-day 윈도우</strong>: 임상 종료~결과 공시 사이 거래대금 평소 ×5 폭증 = <strong>미공개정보 누출 의심 신호</strong> → <strong>진입 금지 (게이트 차단)</strong>. 본 시점 매매 가담 시도 = §174 위반 위험</li>
+<li><strong>3막 D-day 16:30 공시 직후</strong>: 공시 직후 시초가 갭상승 진입 = 분배 출구 = <strong>진입 금지</strong></li>
+<li><strong>4막 폭락 후 임상 결과 시장 반영 D+30</strong>: 미공개정보 윈도우 종료 + 펀더멘털 재평가 가능 시점. 본 시점부터 일반 펀더멘털 매매 검토 가능 (단, 후속 임상 실패 위험 별도 평가)</li>
 </ul>
 
 <h3 id="회피-신호">회피 신호</h3>
@@ -1634,14 +1670,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 <tr><td style="text-align:left">바이오 종목 + 1분봉 RSI ≤ 30 + 임상 공시 30일 외</td><td style="text-align:left">진입 신호</td><td style="text-align:left">C2/C4 긍정</td></tr>
 </tbody>
 </table>
-
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: 임상 공시 30일 외 + 거래대금 ≥ 200억 + 1분봉 RSI ≤ 30 + 친인척 매수 공시 0건</li>
-<li>청산 조건: 익절 = <span class="price-pos">+3%</span> (바이오 변동성 큼, 빠른 익절) / 손절 = <span class="price-neg">-3%</span> / 강제 청산 = 임상 결과 공시 직전 일봉 윗꼬리 시</li>
-<li>비중: 시드 3% (G2 기준, 바이오 변동성 위험)</li>
-</ul>
 
 <hr>
 
@@ -1731,14 +1759,6 @@ D+3~5  잔여 분배 (10~15%) + 차명 계좌 청산 (재무 흔적 정리)</cod
 </tbody>
 </table>
 
-<h3 id="자율-매매-매뉴얼-토구사-본인용">자율 매매 매뉴얼 (토구사 본인용)</h3>
-
-<ul>
-<li>진입 조건: 테마 대장(거래대금 1등) + 거래대금 ≥ 300억 + 1분봉 RSI ≤ 30 + 테마 5종목 동시 폭증 단계 아님</li>
-<li>청산 조건: 익절 = <span class="price-pos">+5%</span> / 손절 = <span class="price-neg">-3%</span> / 강제 청산 = 테마 5종목 동시 <span class="price-neg">-10%</span> 시 즉시 (테마 사망)</li>
-<li>비중: 시드 10% (G2 기준, 대장만 진입 시 가장 안정적)</li>
-</ul>
-
 <h3 id="토구사-vs-대표-직관-차이-자율-매매-학습">토구사 vs 대표 직관 차이 (자율 매매 학습)</h3>
 
 <p>대표님은 §1·§9 종목 성격 DB로 &quot;이 테마 대장은 이번 사이클도 신뢰&quot; 직관 판단. 토구사는 DB 누적 전까지 대장 식별 정량 룰 (거래대금 1등 + 시총 &lt; 5천억 + 신용가능)로 대체. <strong>DB 누적 후 직관 모방 시도 (G2 단계 이후)</strong>.</p>
@@ -1822,23 +1842,46 @@ score ≥ +4 → 개미털기 의심 (저점 매수 검토)
 score 0~+3 → 판단 보류 (관망)
 score &lt; 0 → 진성 폭락 (즉시 청산 또는 진입 금지)</code></pre>
 
-<h2 id="11.6-동승-진입-룰-개미털기-확인-후">11.6 동승 진입 룰 (개미털기 확인 후)</h2>
+<h2 id="11.6-회피-룰-개미털기-신호-식별-후-매매-회피">11.6 회피 룰 (개미털기 신호 식별 후 매매 회피)</h2>
+
+<blockquote>[법무팀 LEGAL-001 §3.2 인용] 개미털기 = 시세조종(§176) 또는 부정거래(§178) 일종. 개미털기 인지 후 매매 가담 시도 = §178 위반 위험. 본 절은 <strong>회피·관찰 가이드</strong>로 재포지셔닝. 학습 시뮬레이션 가설 외 정량 동승 진입 룰은 외부 변호사 자문 후 v2 결정.</blockquote>
 
 <aside class="callout callout-defense" data-callout="방어">
   <div class="callout-label">방어</div>
-  <div class="callout-body"><strong>주의</strong>: G2 (보유 자산 5억 이상) + 백테스트 검증 후에만. G1 단계 토구사는 <strong>개미털기 추정 진입 자체 금지</strong> (오판 시 <span class="price-neg">-7%</span> 손실).</div>
+  <div class="callout-body"><strong>개미털기 의심 = 진입 회피 + 보유 중 청산 검토</strong>. G1 단계 토구사는 <strong>개미털기 추정 종목 진입 자체 금지</strong> (§178 위험 + 오판 시 <span class="price-neg">-7%</span> 손실 비대칭).</div>
 </aside>
 
+<h3 id="회피-신호-4축-종합">회피 신호 (4축 종합)</h3>
+
 <table>
-<thead><tr><th style="text-align:left">단계</th><th style="text-align:left">룰</th><th style="text-align:left">정량</th></tr></thead>
+<thead><tr><th style="text-align:left">신호</th><th style="text-align:left">정량</th></tr></thead>
 <tbody>
-<tr><td style="text-align:left"><strong>확인</strong></td><td style="text-align:left">4축 score ≥ +4 + 폭락 직후 1분봉 음봉 → 양봉 전환</td><td style="text-align:left">5분봉 시가 &lt; 종가, 거래량 평소 ×3</td></tr>
-<tr><td style="text-align:left"><strong>진입</strong></td><td style="text-align:left">양봉 전환 직후 매수 (시장가 또는 추격 호가 1틱)</td><td style="text-align:left">비중 시드 3% (G2 기준), G3 단계는 5% 가능</td></tr>
-<tr><td style="text-align:left"><strong>익절</strong></td><td style="text-align:left">+5~10% (분당 RSI 70 도달) 또는 직전 폭락 직전 가격 회복</td><td style="text-align:left">5분봉 RSI 70 + 매도 잔량 두꺼워짐</td></tr>
-<tr><td style="text-align:left"><strong>손절</strong></td><td style="text-align:left"><span class="price-neg">-3%</span> (개미털기 오판 가능성)</td><td style="text-align:left">진입가 <span class="price-neg">-3%</span> 즉시 시장가 청산</td></tr>
-<tr><td style="text-align:left"><strong>회피</strong></td><td style="text-align:left">동일 종목 24시간 내 추가 진입 금지 (다음 털기 사이클 있을 가능성)</td><td style="text-align:left">시간 룰</td></tr>
+<tr><td style="text-align:left"><strong>매물대 지지</strong></td><td style="text-align:left">직전 5일 매물대 가격대 미돌파 + 양봉 전환</td></tr>
+<tr><td style="text-align:left"><strong>5일 이평 회복</strong></td><td style="text-align:left">5분봉 5일 이평선 회복 + 거래량 평소 ×3</td></tr>
+<tr><td style="text-align:left"><strong>거래량 비대칭</strong></td><td style="text-align:left">폭락 거래량 ≥ 평소 ×5 + 회복 거래량 ≥ 평소 ×3</td></tr>
+<tr><td style="text-align:left"><strong>RSI 저거래량 동시</strong></td><td style="text-align:left">1분봉 RSI ≤ 30 + 거래량 평소 미달</td></tr>
 </tbody>
 </table>
+
+<p>위 4축 score ≥ +4 = 개미털기 의심 (단, 진성 폭락 오판 가능성 상존).</p>
+
+<h3 id="학습-시뮬레이션-가설-실거래-미적용">학습 시뮬레이션 가설 (실거래 미적용)</h3>
+
+<blockquote>dev-lead 후속 P0-4 빌드 제외 대상. 본 절은 토구사 자체 학습·백테스트 가설이며 실거래 동승 매매 권유 아님. 외부 변호사 자문 후 v2 결정.</blockquote>
+
+<ul>
+<li>4축 score ≥ +4 + 양봉 전환 직후 = <strong>백테스트 검증 시드 가설</strong></li>
+<li>G1 단계 = 진입 권한 0. G2 (자산 5억+, 백테스트 승률 65%+) = 시드 3% 시뮬레이션 한정. G3 (자산 5억+, 1년 누적 승률 65%+) = 시드 5% 시뮬레이션 한정</li>
+<li>손절: <span class="price-neg">-3%</span> 즉시 시장가 청산 (개미털기 오판 가능성)</li>
+<li>회피: 동일 종목 24시간 내 추가 진입 금지 (다음 털기 사이클 가능성)</li>
+</ul>
+
+<h3 id="보유-중-청산-룰-개미털기-신호-발견-시">보유 중 청산 룰 (개미털기 신호 발견 시)</h3>
+
+<ul>
+<li>보유 중 매물대 깸 = <strong>즉시 <span class="price-neg">-3%</span> 손절</strong> (진성 폭락 가능성)</li>
+<li>보유 중 <span class="price-neg">-5%</span> 도달 = <strong>무조건 청산</strong> (대표 매매정수 <span class="price-neg">-3%</span> 룰 + 안전 마진)</li>
+</ul>
 
 <h2 id="11.7-회피-진입-룰-매물대-깨면-즉시-손절">11.7 회피 진입 룰 (매물대 깨면 즉시 손절)</h2>
 
@@ -2779,6 +2822,19 @@ score &lt; 0 → 진성 폭락 (즉시 청산 또는 진입 금지)</code></pre>
 
   </article>
 
+</div>
+
+<!-- LEGAL-001 §3.5 면책 박스 (P1-5) — 푸터 직전 (페이지 최하단 강조) -->
+<div class="legal-disclaimer" role="region" aria-label="법무 면책 (자본시장법) — 푸터" style="max-width: 920px; margin: 32px auto 0; padding-left: 22px; padding-right: 22px;">
+  <div class="legal-title">법무 면책 (자본시장법 §174 / §176 / §178) — 페이지 종료</div>
+  <ol>
+    <li>본 자료는 <strong>학습·연구 목적</strong>입니다. 100M1S 내부 PM320 페널티 설계, 토구사(AI 매매 에이전트) 학습, 일반인 작전주 피해 예방 교육을 위해 작성되었습니다.</li>
+    <li>본 자료는 <strong>작전주 행위 가이드 또는 매뉴얼이 아닙니다</strong>. 모든 케이스는 적발·처벌 사례 기반 일반화이며, 등장인물·종목명은 가상입니다.</li>
+    <li>본 자료는 <strong>매매 권유 또는 동행 매매 권유가 아닙니다</strong>. 본 자료를 따른 매매로 인한 손실·법적 책임은 독자 본인이 부담합니다.</li>
+    <li><strong>자본시장법 §174 / §176 / §178 위반</strong> 시 1년 이상 유기징역 또는 부당이득의 3~5배 이하 벌금 (병과 가능, 부당이득 50억 이상 가중처벌 별도). <strong>형사 처벌 + 민사 손해배상 별도</strong>.</li>
+    <li>작전주 행위 의심 시 <strong>금융감독원(1332) 또는 한국거래소 시장감시본부에 신고</strong>하십시오.</li>
+  </ol>
+  <div class="legal-report">출처: <code>records/2026-05/DOC-20260504-LEGAL-001.md</code> §3.5 (법무팀 1차 검증). 외부 자본시장법 변호사 2차 자문 후 v2 정정 예정.</div>
 </div>
 
 <footer class="lab-foot">
