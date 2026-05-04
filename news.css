@@ -971,7 +971,8 @@ a.cal-credit-row:hover,
 .theme-trend-legend-item .swatch {
   width: 10px; height: 3px; border-radius: 2px; flex-shrink: 0;
 }
-@media (max-width: 640px) {
+/* REQ-007 5/4 v190: theme-trend mobile breakpoint 640 → 880 (lut 정합). 두 chart 동일 layout 보장. */
+@media (max-width: 880px) {
   .theme-trend-legend { gap: 4px 8px; }
   .theme-trend-legend-item { font-size: 11px; padding: 4px 4px; }
   .theme-trend-legend-item .swatch { width: 12px; height: 4px; }
