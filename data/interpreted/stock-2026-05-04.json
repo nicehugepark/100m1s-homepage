@@ -1,8 +1,12 @@
 {
   "date": "2026-05-04",
-  "generated_at": "2026-05-04T16:24:41.001479",
+  "generated_at": "2026-05-04T16:36:51.756780",
   "data_source": "kiwoom",
   "macro_events": [
+    {
+      "title": "공급부족",
+      "summary": "반도체 공급 부족 + AI 수요 → 메모리 가격 상승 → SK하이닉스·반도체 섹터 강세"
+    },
     {
       "title": "반도체1000조",
       "summary": "AI 수요 + 메모리칩 수급 강세 → SK하이닉스 시총 1000조 돌파(140만원), 삼전 추종 → 반도체 섹터 주도"
@@ -28,20 +32,16 @@
       "summary": "SK하이닉스 신고가·시총 1000조 돌파 → 반도체 초호황 신호 → 반도체·정보기술 섹터 강세"
     },
     {
+      "title": "노조리스크",
+      "summary": "삼성전자 노조 파업 리스크 → 실적 부담·목표가 하향 → IT 장비 섹터 약세"
+    },
+    {
       "title": "증권주랠리",
       "summary": "코스피 신고가 돌파(6900선) → 투자심리 개선 → 증권주 28% 급등"
     },
     {
       "title": "증시랠리",
       "summary": "코스피 6760→6900선 돌파 대규모 랠리 → 시장 낙관론 확산으로 증권주 자금 쏠림 → 증권 섹터 28~29% 동반 급등"
-    },
-    {
-      "title": "반도체호황",
-      "summary": "SK하이닉스 급등으로 시총 1000조 달성 → 반도체 공급 부족 장기화 시장 공감대 형성 → 반도체·전자 섹터 초강세"
-    },
-    {
-      "title": "반도체공급",
-      "summary": "반도체 부품(HBM·PCB) 공급 부족 심화 → 가격 인상 시작 → 삼성전기 등 부품·소재 섹터 호재"
     }
   ],
   "narratives": [],
@@ -59,6 +59,12 @@
       "verified": true
     },
     {
+      "keyword": "반도체공급부족",
+      "summary": "메모리칩 공급 부족·AI수요 호황 → 반도체 섹터 일괄 재평가 → SK하이닉스 시총 1000조 돌파, 삼성전기 목표가 100만원 상향",
+      "source_count": 4,
+      "verified": true
+    },
+    {
       "keyword": "코스피신고가증권주",
       "summary": "코스피 6900선 돌파·신고가 경신 → 거래량·거래대금 급증 → 증권사 수수료 수혜 28~29% 급등",
       "source_count": 4,
@@ -68,12 +74,6 @@
       "keyword": "반도체부족",
       "summary": "글로벌 반도체 공급 부족 장기화 → 메모리 가격 상승 전망 → SK하이닉스·삼성전기 강세, 소재주 동반 상승",
       "source_count": 4,
-      "verified": true
-    },
-    {
-      "keyword": "반도체강세",
-      "summary": "SK하이닉스 신고가·시총 1000조 돌파 → 반도체 초호황 신호 → 반도체·정보기술 섹터 강세",
-      "source_count": 3,
       "verified": true
     }
   ],
@@ -8470,6 +8470,35 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "PS일렉트로닉스 제7회 무기명식 무보증 사모 교환사채 3,849,510,000원이 2026-04-23 이사회 결의에 따라 2026-05-04 납입 완료되었으며, 상장예정은 없음.",
+          "category": "발행결과",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504900675",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "증권발행결과(자율공시)              "
+        },
+        {
+          "title": "PS일렉트로닉스가 2026-04-23 이사회 결의 제6회 무기명식 무보증 사모 교환사채 1,952,755,200원을 2026-05-04 납입 완료(상장예정 없음).",
+          "category": "발행결과",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504900673",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "증권발행결과(자율공시)              "
+        },
+        {
+          "title": "PS일렉트로닉스 제5회 무기명식 무보증 사모 교환사채 11,871,890,800원이 2026-05-04 납입 완료(최초 이사회결의일 2026-04-23, 상장예정 없음).",
+          "category": "발행결과",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504900666",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "증권발행결과(자율공시)              "
+        }
+      ],
       "index_change_pct": 1.79,
       "index_multiple_current": 16.7,
       "index_multiple_eligible": true,
@@ -10688,6 +10717,17 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "미래에셋자산운용이 DB하이텍(000990) 보유 주식을 5,545,085주(12.75%)에서 5,867,265주(13.49%)로 322,180주(+0.74%p) 증가시킨 약식 대량보유상황보고서(보유목적: 단순투자), 보고의무발생일 2026-04-03·보고서작성기준일 2026-04-30, 발행주식총수 43,504,588주.",
+          "category": "지분변동",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260504000362",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "주식등의대량보유상황보고서(약식)"
+        }
+      ],
       "index_change_pct": 5.12,
       "index_multiple_current": 0.21,
       "index_multiple_eligible": true,
