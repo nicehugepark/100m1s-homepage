@@ -1,0 +1,192 @@
+/* admin Phase 1 — 100M1S 라이트 톤 (news.css 토큰 인라인 복사)
+   ref: REQ-002 P0#1 컬러 토큰 위반 정정. news.css import 미사용 (admin은 별도 영역). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #FAFBFE; --bg2: #F2F4F8; --sf: #FFFFFF; --bd: #E8ECF2;
+  --tx: #1A1D26; --tx2: #3D4351; --dm: #8B95A8;
+  --am: #C49930; --am2: #E8C063; --am3: #FBE9B5; --am4: #FFF6E5;
+  --ru: #A01528;
+  --pos: #1A6B2D; --pos-bg: #E8F5EC;
+  --neg: #B8302E; --neg-bg: #FFF0F0;
+  --neu: #6B7A99; --neu-bg: #F2F4F8;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html {
+  font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont,
+               "Segoe UI", "Noto Sans KR", sans-serif;
+  background: var(--bg); color: var(--tx);
+  -webkit-font-smoothing: antialiased;
+}
+body { min-height: 100vh; line-height: 1.55; font-size: 13px; }
+a { color: var(--am); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* P1 #7 — 외부 노출 X 경고 (--ru 좌측 strip + --am4 배경) */
+.topbar {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 10px; padding: 12px 18px;
+  background: var(--am4);
+  border-bottom: 1px solid var(--bd);
+  border-left: 3px solid var(--ru);
+}
+.topbar h1 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.topbar .phase { color: var(--tx2); font-weight: 500; margin-left: 6px; font-size: 13px; }
+.topbar .meta { font-size: 12px; color: var(--tx2); display: flex; gap: 14px; flex-wrap: wrap; }
+.topbar .warn {
+  color: var(--ru); font-weight: 600;
+  padding: 1px 6px; border: 1px solid var(--ru); border-radius: 3px;
+}
+
+.tabs {
+  display: flex; gap: 2px; padding: 0 12px;
+  border-bottom: 1px solid var(--bd);
+  background: var(--sf);
+  overflow-x: auto;
+}
+.tab {
+  background: transparent; color: var(--tx2);
+  border: 0; border-bottom: 2px solid transparent;
+  padding: 10px 14px; cursor: pointer; font-size: 13px;
+  white-space: nowrap; font-family: inherit;
+}
+.tab:hover { color: var(--tx); }
+.tab.active, .tab[aria-selected="true"] {
+  color: var(--am); border-bottom-color: var(--am);
+}
+
+main { padding: 16px 18px; max-width: 1400px; margin: 0 auto; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+.toolbar {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.toolbar input[type=search],
+.toolbar select {
+  background: var(--sf); color: var(--tx);
+  border: 1px solid var(--bd); border-radius: 6px;
+  padding: 7px 10px; font-size: 13px; font-family: inherit;
+}
+.toolbar input[type=search] { min-width: 280px; flex: 1 1 280px; }
+.toolbar input[type=search]:focus,
+.toolbar select:focus { outline: none; border-color: var(--am); }
+.toolbar .count { color: var(--tx2); margin-left: auto; font-size: 12px; }
+
+/* 표 스크롤 wrap (P0 #2 모바일 대응) */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.grid {
+  width: 100%; border-collapse: collapse; font-size: 12.5px;
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: 8px; overflow: hidden;
+  min-width: 540px;
+}
+.grid th, .grid td {
+  text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid var(--bd);
+  vertical-align: top;
+}
+.grid th {
+  background: var(--bg2); color: var(--tx2); font-weight: 600;
+  position: sticky; top: 0; z-index: 1;
+}
+.grid tr:last-child td { border-bottom: 0; }
+.grid tr:hover td { background: var(--am4); }
+
+.req-row .trigger {
+  display: block; color: var(--tx2); font-size: 11px;
+  margin-top: 2px; line-height: 1.4;
+}
+
+code {
+  background: var(--bg2); padding: 1px 4px; border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px; color: var(--tx);
+}
+
+.hint { color: var(--tx2); font-size: 12px; margin: 4px 0 12px; }
+
+.badge {
+  display: inline-block; padding: 1px 7px; border-radius: 10px;
+  font-size: 11px; line-height: 1.6; border: 1px solid var(--bd);
+  background: var(--sf); color: var(--tx2);
+}
+.badge.active { color: var(--pos); border-color: var(--pos); background: var(--pos-bg); }
+.badge.idle { color: var(--am); border-color: var(--am); background: var(--am3); }
+.badge.zombie { color: var(--ru); border-color: var(--ru); background: var(--neg-bg); }
+.badge.unknown { color: var(--neu); border-color: var(--neu); background: var(--neu-bg); }
+.badge.p0 { background: var(--neg-bg); color: var(--ru); border-color: var(--ru); font-weight: 600; }
+.badge.p1 { background: var(--am3); color: var(--am); border-color: var(--am); font-weight: 600; }
+.badge.p2 { background: var(--neu-bg); color: var(--neu); }
+
+.summary-cards {
+  display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.summary-cards .card {
+  background: var(--sf); border: 1px solid var(--bd);
+  border-radius: 8px; padding: 10px 14px; min-width: 110px;
+}
+.summary-cards .card .k {
+  color: var(--tx2); font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.summary-cards .card .v {
+  font-size: 20px; font-weight: 700; margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* P1 #5 — agent audit card grid + dot 색맹 대응 (dot + 텍스트 라벨 병기) */
+.audit-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.audit-card {
+  background: var(--sf); border: 1px solid var(--bd);
+  border-radius: 8px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.audit-card .dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--neu);
+}
+.audit-card .dot.active { background: var(--pos); }
+.audit-card .dot.idle { background: var(--am2); }
+.audit-card .dot.zombie { background: var(--ru); }
+.audit-card .dot.unknown { background: var(--neu); }
+.audit-card .info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.audit-card .name {
+  font-weight: 600; font-size: 13px; color: var(--tx);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.audit-card .sub {
+  font-size: 11px; color: var(--tx2); margin-top: 2px;
+}
+
+footer {
+  border-top: 1px solid var(--bd);
+  margin-top: 30px; padding: 10px 18px;
+  display: flex; gap: 18px; color: var(--tx2); font-size: 12px;
+  flex-wrap: wrap;
+}
+
+/* P0 #2 — 모바일 (≤640px) */
+@media (max-width: 640px) {
+  body { font-size: 12px; }
+  .topbar { padding: 10px 12px; flex-direction: column; align-items: flex-start; }
+  .topbar h1 { font-size: 15px; }
+  .tabs { padding: 0 4px; flex-wrap: wrap; }
+  .tab { padding: 8px 10px; font-size: 12px; }
+  main { padding: 12px; }
+  .toolbar input[type=search] { min-width: 0; width: 100%; }
+  .grid { min-width: 0; font-size: 12px; }
+  .grid th, .grid td { padding: 6px 8px; }
+  .summary-cards .card { min-width: 90px; padding: 8px 10px; }
+  .summary-cards .card .v { font-size: 17px; }
+  .audit-grid { grid-template-columns: 1fr; }
+  footer { padding: 10px 12px; }
+}
