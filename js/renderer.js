@@ -1098,13 +1098,14 @@ async function initThemeTrend() {
       })
       .slice(0, 12);
 
-    // REQ-006 5/4 v195 — 첫 데이터 일자 trim. 80px 시각 차이 root cause:
-    // theme polyline 첫 점 i=k>0 (해당 일자 데이터 없어 stroke 시작 우측 이동) vs lut line i=0.
-    // 두 차트 모두 firstDataIdx 일자부터 시작하도록 dates 윈도우를 통일.
+    // REQ-006 5/4 v196 — themes[0] (trade_amount desc 1순위, 가장 두드러진 polyline) 기준으로
+    // firstDataIdx trim. v195의 themes.some() 조건은 너무 느슨해 ti=2/3가 4/9에 데이터 있으면
+    // trim 미발동 → polyline ti=0 첫 점 cx ≠ 32. qa-lead 권고 A 채택. (대표 발화 17:44 KST)
     if (themes.length > 0 && dates.length > 0) {
+      const firstTheme = themes[0];
       let firstDataIdx = 0;
       for (let i = 0; i < dates.length; i++) {
-        if (themes.some(t => t.data.some(d => d.date === dates[i] && d.stock_count > 0))) {
+        if (firstTheme?.data?.some(d => d.date === dates[i] && d.stock_count > 0)) {
           firstDataIdx = i;
           break;
         }
@@ -1471,13 +1472,20 @@ async function initLimitUpTrend() {
           if (Array.isArray(themeData.dates) && themeData.dates.length > 0) {
             let tDates = themeData.dates.slice(-17);
             const tDateSet = new Set(tDates);
+            // theme renderer와 동일하게 trade_amount desc 정렬 후 [0] 기준으로 trim (v196)
             const tThemes = (themeData.themes || [])
               .map(t => ({ ...t, data: (t.data || []).filter(d => tDateSet.has(d.date)) }))
-              .filter(t => t.data.some(d => d.stock_count > 0));
+              .filter(t => t.data.some(d => d.stock_count > 0))
+              .sort((a, b) => {
+                const aLast = a.data[a.data.length - 1]?.trade_amount || 0;
+                const bLast = b.data[b.data.length - 1]?.trade_amount || 0;
+                return bLast - aLast;
+              });
             if (tThemes.length > 0) {
+              const tFirst = tThemes[0];
               let firstIdx = 0;
               for (let i = 0; i < tDates.length; i++) {
-                if (tThemes.some(t => t.data.some(d => d.date === tDates[i] && d.stock_count > 0))) {
+                if (tFirst?.data?.some(d => d.date === tDates[i] && d.stock_count > 0)) {
                   firstIdx = i; break;
                 }
               }
