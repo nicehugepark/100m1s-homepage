@@ -1084,7 +1084,7 @@ async function initThemeTrend() {
     const VISIBLE_DAYS = 6; // 화면에 보이는 영업일 수 (LUT와 통일 — 한 윈도우 6영업일, 대표 명시)
     const allDates = data.dates;
     if (allDates.length < 1) return;
-    const dates = allDates.slice(-7); // REQ-006 5/4 v191: 7영업일 격리 검증 (대표 발화 15:55 KST, layout 정합 격리용)
+    const dates = allDates.slice(-17); // REQ-006 5/4 v193: 17영업일 격리 (scroll 발생 조건 재현, 대표 발화 16:11 KST)
     const dateSet = new Set(dates);
     const needsScroll = dates.length > VISIBLE_DAYS;
 
@@ -1436,8 +1436,8 @@ async function initLimitUpTrend() {
 
     // 6영업일 윈도우 + 가로 스크롤 (theme-trend SoT 정합)
     const VISIBLE_DAYS = 6;
-    // REQ-006 5/4 v191: 7영업일 격리 검증 (대표 발화 15:55 KST, layout 정합 격리용)
-    const items = data.items.slice(-7);
+    // REQ-006 5/4 v193: 17영업일 격리 (scroll 발생 조건 재현, 대표 발화 16:11 KST)
+    const items = data.items.slice(-17);
     const dates = items.map(it => it.date);
     const counts = items.map(it => it.count);
     const maxCount = Math.max(1, ...counts);
