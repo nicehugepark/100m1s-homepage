@@ -1147,8 +1147,8 @@ async function initThemeTrend() {
     themes.forEach(t => t.data.forEach(d => { if (d.trade_amount > yMax) yMax = d.trade_amount; }));
     yMax = yMax * 1.1; // 10% headroom
 
-    // REQ-008 v178: chart svg 양 끝 20px padding 내장 — text 잘림 회피 본질 fix
-    const CHART_EDGE_PAD = 20;
+    // REQ-003 5/4 v184: chart svg 양 끝 32px padding (yAxis 시각 거리 충분 확보, lut와 정합)
+    const CHART_EDGE_PAD = 32;
     const plotInnerW = Math.max(1, chartW - 2 * CHART_EDGE_PAD);
     const slot = plotInnerW / Math.max(dates.length - 1, 1);
     function toX(i) { return CHART_EDGE_PAD + i * slot; }
@@ -1488,8 +1488,8 @@ async function initLimitUpTrend() {
     }
     // 좌표 사전 계산 (line, area 공유)
     const baseline = padTop + plotH;
-    // REQ-008 v178: chart svg 양 끝 20px padding 내장 (text 잘림 회피 본질 fix)
-    const LUT_EDGE_PAD = 20;
+    // REQ-003 5/4 v184: chart svg 양 끝 32px padding (theme 정합)
+    const LUT_EDGE_PAD = 32;
     const lutInnerW = Math.max(1, chartW - 2 * LUT_EDGE_PAD);
     const lutSlot = lutInnerW / Math.max(items.length - 1, 1);
     const pts = items.map((it, i) => {
