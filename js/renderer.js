@@ -1436,8 +1436,25 @@ async function initLimitUpTrend() {
 
     // 6영업일 윈도우 + 가로 스크롤 (theme-trend SoT 정합)
     const VISIBLE_DAYS = 6;
-    // REQ-006 5/4 v193: 17영업일 격리 (scroll 발생 조건 재현, 대표 발화 16:11 KST)
-    const items = data.items.slice(-17);
+    // REQ-006 5/4 v194: dates 윈도우 정합 — theme-trend.json의 data.dates를 SSOT로 사용 후
+    // 누락 일자 count=0 padding. design-lead root cause: theme(4/9~) vs lut(4/16~) 시작 좌표
+    // 80px 차이 → polyline 첫 점 i=1 vs lut line i=0 정확 일치. (대표 발화 16:11 KST)
+    let windowDates = null;
+    try {
+      const themeRes = await fetch('/data/themes/theme-trend.json');
+      if (themeRes.ok) {
+        const themeData = await themeRes.json();
+        if (Array.isArray(themeData.dates) && themeData.dates.length > 0) {
+          windowDates = themeData.dates.slice(-17);
+        }
+      }
+    } catch (_) { /* fallback below */ }
+    if (!windowDates) {
+      // theme-trend 실패 시 lut 자체 dates로 fallback
+      windowDates = data.items.slice(-17).map(it => it.date);
+    }
+    const itemMap = new Map(data.items.map(it => [it.date, it]));
+    const items = windowDates.map(d => itemMap.get(d) || { date: d, count: 0 });
     const dates = items.map(it => it.date);
     const counts = items.map(it => it.count);
     const maxCount = Math.max(1, ...counts);
