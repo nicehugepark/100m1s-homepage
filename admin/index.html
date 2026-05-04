@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="googlebot" content="noindex,nofollow">
+  <title>100M1S admin (internal)</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>100M1S admin <span class="phase">Phase 1</span></h1>
+    <div class="meta">
+      <span id="generated-at">생성 시각: -</span>
+      <span class="warn">외부 노출 X · 인덱싱 차단</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="requests">요청</button>
+    <button class="tab" data-tab="timeline">사이클</button>
+    <button class="tab" data-tab="agents">에이전트</button>
+    <button class="tab" data-tab="releases">릴리스</button>
+    <button class="tab" data-tab="flr">FLR</button>
+    <button class="tab" data-tab="people">참여자</button>
+    <button class="tab" data-tab="audit">audit</button>
+  </nav>
+
+  <main>
+    <section id="tab-requests" class="panel active">
+      <div class="toolbar">
+        <input id="req-search" type="search" placeholder="검색 (doc_id / 제목 / 태그 / 참여자)">
+        <select id="req-status">
+          <option value="">전체 status</option>
+        </select>
+        <span class="count" id="req-count"></span>
+      </div>
+      <table class="grid">
+        <thead><tr>
+          <th>doc_id</th><th>type</th><th>date</th><th>status</th><th>priority</th><th>title</th>
+        </tr></thead>
+        <tbody id="req-tbody"></tbody>
+      </table>
+    </section>
+
+    <section id="tab-timeline" class="panel">
+      <p class="hint">REQ status별 누적 (Phase 3에서 timeline graph 추가 예정)</p>
+      <div id="timeline-summary"></div>
+    </section>
+
+    <section id="tab-agents" class="panel">
+      <p class="hint">agents/ 디렉토리 카탈로그</p>
+      <table class="grid">
+        <thead><tr><th>name</th><th>AGENT.md</th><th>bytes</th><th>summary</th></tr></thead>
+        <tbody id="agents-tbody"></tbody>
+      </table>
+    </section>
+
+    <section id="tab-releases" class="panel">
+      <p class="hint">100m1s-homepage 레포 main commit log (최근 300건)</p>
+      <table class="grid">
+        <thead><tr><th>date</th><th>hash</th><th>author</th><th>subject</th></tr></thead>
+        <tbody id="releases-tbody"></tbody>
+      </table>
+    </section>
+
+    <section id="tab-flr" class="panel">
+      <div id="flr-summary"></div>
+      <table class="grid">
+        <thead><tr><th>doc_id</th><th>date</th><th>status</th><th>title</th></tr></thead>
+        <tbody id="flr-tbody"></tbody>
+      </table>
+    </section>
+
+    <section id="tab-people" class="panel">
+      <p class="hint">참여자별 record 카운트 (@human / @agent)</p>
+      <table class="grid">
+        <thead><tr><th>참여자</th><th>records</th></tr></thead>
+        <tbody id="people-tbody"></tbody>
+      </table>
+    </section>
+
+    <section id="tab-audit" class="panel">
+      <p class="hint">에이전트 활동 audit — active &lt;24h / idle &lt;72h / zombie ≥72h / unknown=records 미흔적</p>
+      <div id="audit-summary"></div>
+      <table class="grid">
+        <thead><tr><th>agent</th><th>state</th><th>last record</th></tr></thead>
+        <tbody id="audit-tbody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <span>build: <code id="build-version">data.json schema v?</code></span>
+    <span>data: <a href="./data.json" target="_blank">data.json</a></span>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
