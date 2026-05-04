@@ -13,9 +13,13 @@
   function setupTabs() {
     document.querySelectorAll(".tab").forEach((t) => {
       t.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach((x) => x.classList.remove("active"));
+        document.querySelectorAll(".tab").forEach((x) => {
+          x.classList.remove("active");
+          x.setAttribute("aria-selected", "false");
+        });
         document.querySelectorAll(".panel").forEach((x) => x.classList.remove("active"));
         t.classList.add("active");
+        t.setAttribute("aria-selected", "true");
         el("tab-" + t.dataset.tab).classList.add("active");
       });
     });
@@ -39,7 +43,7 @@
         if (stf && r.status !== stf) return false;
         if (!q) return true;
         const hay = [
-          r.doc_id, r.title, r.project,
+          r.doc_id, r.title, r.project, r.trigger,
           (r.tags || []).join(" "),
           (r.participants || []).join(" "),
           r.author,
@@ -48,15 +52,23 @@
       });
       filtered.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
       el("req-count").textContent = `${filtered.length} / ${reqs.length}`;
-      el("req-tbody").innerHTML = filtered.map((r) => `
-        <tr>
+      el("req-tbody").innerHTML = filtered.map((r) => {
+        const trig = r.trigger
+          ? `<span class="trigger">트리거: ${escape(r.trigger)}</span>`
+          : "";
+        const prio = r.priority
+          ? badge(r.priority, String(r.priority).toLowerCase())
+          : "";
+        return `
+        <tr class="req-row">
           <td><code>${escape(r.doc_id)}</code></td>
           <td>${escape(r.type)}</td>
           <td>${escape(r.date)}</td>
           <td>${escape(r.status || "-")}</td>
-          <td>${r.priority ? badge(r.priority, r.priority.toLowerCase()) : ""}</td>
-          <td>${escape(r.title || "")}</td>
-        </tr>`).join("");
+          <td>${prio}</td>
+          <td>${escape(r.title || "")}${trig}</td>
+        </tr>`;
+      }).join("");
     };
 
     el("req-search").addEventListener("input", draw);
@@ -145,17 +157,39 @@
   }
 
   function renderAudit() {
-    const audit = state.data.audit || { rows: [], counts: {} };
+    const audit = state.data.audit || { rows: [], counts: {}, thresholds: {} };
     const cards = Object.entries(audit.counts || {})
-      .map(([k, v]) => `<div class="card"><div class="k">${escape(k)}</div><div class="v">${v}</div></div>`)
-      .join("");
-    el("audit-summary").innerHTML = `<div class="summary-cards">${cards}</div>`;
-    el("audit-tbody").innerHTML = (audit.rows || []).map((r) => `
-      <tr>
-        <td><code>${escape(r.name)}</code></td>
-        <td>${badge(r.state, r.state)}</td>
-        <td>${escape((r.last_record_date || "").slice(0, 10) || "-")}</td>
-      </tr>`).join("");
+      .map(([k, v]) =>
+        `<div class="card"><div class="k">${escape(k)}</div><div class="v">${v}</div></div>`
+      ).join("");
+    const th = audit.thresholds || {};
+    const thHint = `임계값: idle ≥${th.idle_h ?? "?"}h · zombie ≥${th.zombie_h ?? "?"}h`;
+    el("audit-summary").innerHTML = `
+      <div class="summary-cards">${cards}</div>
+      <p class="hint">${thHint}</p>
+    `;
+
+    const rows = (audit.rows || []).slice().sort((a, b) => {
+      const order = { zombie: 0, idle: 1, unknown: 2, active: 3 };
+      const ao = order[a.state] ?? 9, bo = order[b.state] ?? 9;
+      if (ao !== bo) return ao - bo;
+      return (b.idle_h || 0) - (a.idle_h || 0);
+    });
+
+    el("audit-grid").innerHTML = rows.map((r) => {
+      const last = (r.last_seen || r.last_record_date || "").slice(0, 10);
+      const idleTxt = r.idle_h != null
+        ? `idle ${r.idle_h}h · last ${last || "-"}`
+        : "records 미흔적";
+      return `
+        <div class="audit-card" role="group" aria-label="${escape(r.name)} ${escape(r.state)}">
+          <span class="dot ${escape(r.state)}" aria-hidden="true"></span>
+          <div class="info">
+            <span class="name">${escape(r.name)}</span>
+            <span class="sub">${badge(r.state, r.state)} · ${escape(idleTxt)}</span>
+          </div>
+        </div>`;
+    }).join("");
   }
 
   async function load() {
