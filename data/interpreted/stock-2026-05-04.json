@@ -1,6 +1,6 @@
 {
   "date": "2026-05-04",
-  "generated_at": "2026-05-04T18:12:03.856288",
+  "generated_at": "2026-05-04T18:23:50.682194",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -14,10 +14,6 @@
     {
       "title": "신기록",
       "summary": "한국 증시 신기록: 코스피·삼성전자 신고가, SK하이닉스 시총 1000조 돌파 → 시장 심리 강화, 개인거래 활성화"
-    },
-    {
-      "title": "반도체공급부족",
-      "summary": "D램·HBM 공급 부족 장기화 → 반도체 가격 상승 기대 → SK하이닉스·삼성전기 등 반도체 업종 강세"
     },
     {
       "title": "코스피신고가증권주",
@@ -42,6 +38,10 @@
     {
       "title": "AI반도체",
       "summary": "AI 수요 확대 × 메모리 공급부족 → SK하이닉스·삼성전기 가격 인상·실적 개선"
+    },
+    {
+      "title": "반도체공급",
+      "summary": "반도체 공급 부족 장기화 → 가격 인상 + 수요 증가 → SK하이닉스 시총 1000조 돌파, 삼성전기 목표가 100만원 상향"
     }
   ],
   "narratives": [],
@@ -65,14 +65,14 @@
       "verified": true
     },
     {
-      "keyword": "반도체공급부족",
-      "summary": "AI 수요 증가 + 반도체 공급 부족 장기화 → 삼성전기·SK하이닉스 등 반도체·전기전자 섹터 급등(SK하이닉스 시총 1000조 돌파)",
+      "keyword": "코스피신고가증권주",
+      "summary": "코스피 6900선 돌파·신고가 경신 → 거래량·거래대금 급증 → 증권사 수수료 수혜 28~29% 급등",
       "source_count": 4,
       "verified": true
     },
     {
-      "keyword": "코스피신고가증권주",
-      "summary": "코스피 6900선 돌파·신고가 경신 → 거래량·거래대금 급증 → 증권사 수수료 수혜 28~29% 급등",
+      "keyword": "삼성전자노조리스크",
+      "summary": "삼성전자 노조 파업 리스크 → 생산성·실적 우려 → 목표가 하향 조정 → 전자 섹터 리스크 요인",
       "source_count": 4,
       "verified": true
     }
@@ -226,6 +226,12 @@
             "summary": "SK하이닉스 12% 급등하며 시총 1000조 돌파·140만원대 진입, AI 메모리 공급 부족 장기화로 메모리 반도체 섹터 자금 집중",
             "source_count": 6,
             "verdict": "weak"
+          },
+          {
+            "name": "AI 반도체 (HBM)",
+            "summary": "SK하이닉스 11~12% 급등하며 시총 1000조 돌파·143만원 신고가 → HBM 공급 부족 장기화 기대 → 메모리·후공정 수혜",
+            "source_count": 6,
+            "verdict": "unverified"
           },
           {
             "name": "AI 반도체/HBM",
@@ -386,6 +392,12 @@
           {
             "name": "데이터센터/원전",
             "summary": "덴마크 데이터센터 수요 폭증으로 전력망 한계, 유럽 원자력 부활 논의로 AI 전력 인프라 글로벌 병목 현실화",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "MLCC·전자부품 공급부족",
+            "summary": "삼성전기 목표가 100만원 상향·AI 수요+가격 인상 기대 → MLCC 공급 부족 장기화 → 수동소자·전자부품 재평가",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -552,6 +564,24 @@
           },
           {
             "name": "삼성전자 노조 리스크",
+            "summary": "DX노조 연대 이탈·파업 리스크 부각으로 씨티 목표가 30만원 하향, 삼성전자 디스카운트가 SK하이닉스 상대강도 확대로 연결.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "DX노조 연대 이탈·파업 리스크 부각으로 씨티 목표가 30만원 하향, 삼성전자 디스카운트가 SK하이닉스 상대강도 확대로 연결.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "DX노조 연대 이탈·파업 리스크 부각으로 씨티 목표가 30만원 하향, 삼성전자 디스카운트가 SK하이닉스 상대강도 확대로 연결.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
             "summary": "씨티 목표가 30만원 하향 등 노조 파업·실적 부담 우려 부각, 하이닉스 대비 상대 디스카운트 심화",
             "source_count": 2,
             "verdict": "weak"
@@ -729,6 +759,17 @@
             "summary": "씨티 목표가 30만원 하향, DX 부문 홀대 갈등에 동행노조 이탈로 노조 파업 리스크 가시화, 삼성전자 단기 디스카운트 요인",
             "source_count": 2,
             "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "AI 반도체",
+        "children": [
+          {
+            "name": "HBM/AI 메모리",
+            "summary": "SK하이닉스 11~12% 급등·시총 1000조 돌파, AI 메모리 공급부족 장기화 기대가 반도체·SK그룹 시총 동반 확장으로 전이.",
+            "source_count": 6,
+            "verdict": "weak"
           }
         ]
       },
@@ -744,37 +785,20 @@
         ]
       },
       {
-        "name": "방사성 의약품",
-        "children": [
-          {
-            "name": "전립선암 진단 신약",
-            "summary": "퓨쳐켐이 국내 최초 전립선암 진단제 '프로스타뷰' 식약처 품목허가 획득하며 16% 강세, 치료제 연계 시너지 부각",
-            "source_count": 4,
-            "verdict": "weak"
-          },
-          {
-            "name": "전립선암 진단 신약",
-            "summary": "퓨쳐켐이 국내 최초 전립선암 진단제 '프로스타뷰' 식약처 품목허가 획득하며 16% 강세, 치료제 연계 시너지 부각",
-            "source_count": 4,
-            "verdict": "pass"
-          },
-          {
-            "name": "전립선암 진단 신약",
-            "summary": "퓨쳐켐이 국내 최초 전립선암 진단제 '프로스타뷰' 식약처 품목허가 획득하며 16% 강세, 치료제 연계 시너지 부각",
-            "source_count": 4,
-            "verdict": "pass"
-          },
-          {
-            "name": "전립선암 진단",
-            "summary": "퓨쳐켐 '프로스타뷰' 국내 최초 전립선암 진단 신약 식약처 허가, 치료제 연계 시너지 기대로 16%대 강세",
-            "source_count": 4,
-            "verdict": "weak"
-          }
-        ]
-      },
-      {
         "name": "(독립)",
         "children": [
+          {
+            "name": "조선",
+            "summary": "한화오션·삼성중공업·HD현대중공업 동시 공시 클러스터, 조선 빅3 수주·실적 모멘텀이 매수세 집결로 작용.",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
+          {
+            "name": "조선·해운 호황",
+            "summary": "한화오션·삼성중공업·HD현대중공업 동시 공시 + 팬오션 1분기 영업익 24.4% 증가 LNG·탱커 쌍끌이 → 조선·해운 실적 모멘텀",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
           {
             "name": "2차전지 소재",
             "summary": "POSCO홀딩스 1분기 호실적·리튬 자회사 정상화로 목표가 줄상향, 엘앤에프·포스코퓨처엠 동반 강세",
@@ -820,6 +844,18 @@
           {
             "name": "전기차/완성차",
             "summary": "기아 4월 판매 27.7만대로 현대차 첫 추월·EV 견인, 현대차는 부품 수급 차질로 글로벌 판매 8% 감소 양극화",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "코스피 신고가 랠리",
+            "summary": "코스피 6900선 돌파·6936 마감(+5.12%)·외국인 매수에 환율 중동전쟁 이후 최저 → 외국인 자금 유입 가속",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "상장폐지 심의 (개선계획 제출)",
+            "summary": "이오플로우·투비소프트·제일엠앤에스·삼영이엔씨 개선계획 이행내역서 동시 제출 → 상폐 심의 이벤트 집중",
             "source_count": 4,
             "verdict": "unverified"
           },
@@ -994,6 +1030,54 @@
           {
             "name": "거래정지 해제",
             "summary": "엘컴텍·뉴온·파인디앤씨 주권매매거래 정지 해제로 단기 수급 이벤트 발생",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "환율 강세/외국인 순매수",
+            "summary": "외국인 매수 유입에 원화 환율이 중동전쟁 이후 최저, 코스피 6900선 돌파로 위험자산 선호 강화.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원으로 하향·DX노조 파업 공동대응 이탈 → 노노갈등 격화 → 삼성전자 단기 실적 부담",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원으로 하향·DX노조 파업 공동대응 이탈 → 노노갈등 격화 → 삼성전자 단기 실적 부담",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 리스크",
+            "summary": "씨티 목표가 30만원으로 하향·DX노조 파업 공동대응 이탈 → 노노갈등 격화 → 삼성전자 단기 실적 부담",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "2차전지 소재 (리튬·양극박)",
+            "summary": "POSCO홀딩스 자회사 정상화로 리튬 가치 재평가, JKL인베 삼아알미늄 700억 회수 2배 수익 → 2차전지 소재 재평가",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "기아 판매 모멘텀",
+            "summary": "기아 4월 글로벌 27.7만대(+1%)·EV 등에 업고 월판매 현대차 첫 추월, 반면 현대차 부품 수급으로 -8% → 기아 단독 강세",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "건설 재건축 수주",
+            "summary": "GS건설 서초진흥아파트 6800억 재건축 시공사 선정 → 도시정비 수주 모멘텀 회복",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "에이프릴바이오 ADC 집중",
+            "summary": "유한양행과 공동연구 조기 종료하고 ADC·AOC 개발 집중 선언 → 항체약물접합체 파이프라인 재평가",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -1358,6 +1442,18 @@
             "verdict": "unverified"
           },
           {
+            "name": "벌크선/해운",
+            "summary": "팬오션 1분기 영업이익 1409억(+24.4%) LNG·탱커선 쌍끌이로 해운 실적 모멘텀 부각.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "면세/관광 회복",
+            "summary": "호텔신라 면세 할인율 축소 수익성 개선·롯데관광개발 4월 매출 634억으로 외국인 인바운드 회복 시그널.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
             "name": "철강 실적 턴어라운드",
             "summary": "POSCO홀딩스 깜짝 실적으로 2년여 만에 50만원 회복, 철강 업황 개선 시그널",
             "source_count": 1,
@@ -1494,6 +1590,41 @@
             "summary": "제노코 차세대중형위성 2호 XTX 탑재로 위성 통신장비 기술 검증, 위성·방산 통신 부품 모멘텀",
             "source_count": 1,
             "verdict": "unverified"
+          },
+          {
+            "name": "관세 우려 (트럼프 자동차)",
+            "summary": "트럼프 신규 자동차 관세 위협에 유럽 시장 하락 출발 → 한국 자동차·부품 수출주 단기 리스크",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "방사성 의약품",
+        "children": [
+          {
+            "name": "전립선암 진단 신약",
+            "summary": "퓨쳐켐이 국내 최초 전립선암 진단제 '프로스타뷰' 식약처 품목허가 획득하며 16% 강세, 치료제 연계 시너지 부각",
+            "source_count": 4,
+            "verdict": "weak"
+          },
+          {
+            "name": "전립선암 진단 신약",
+            "summary": "퓨쳐켐이 국내 최초 전립선암 진단제 '프로스타뷰' 식약처 품목허가 획득하며 16% 강세, 치료제 연계 시너지 부각",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "전립선암 진단 신약",
+            "summary": "퓨쳐켐이 국내 최초 전립선암 진단제 '프로스타뷰' 식약처 품목허가 획득하며 16% 강세, 치료제 연계 시너지 부각",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "전립선암 진단",
+            "summary": "퓨쳐켐 '프로스타뷰' 국내 최초 전립선암 진단 신약 식약처 허가, 치료제 연계 시너지 기대로 16%대 강세",
+            "source_count": 4,
+            "verdict": "weak"
           }
         ]
       },
@@ -1547,6 +1678,18 @@
             "summary": "JKL인베 삼아알미늄 700억 회수·2배 수익, POSCO홀딩스 리튬 자회사 정상화로 소재 가치 재평가",
             "source_count": 3,
             "verdict": "unverified"
+          },
+          {
+            "name": "2차전지 소재",
+            "summary": "POSCO홀딩스 리튬 자회사 정상화·JKL 삼아알미늄 양극박 2배 회수로 소재주 재평가, 코스닥 에코프로비엠 강세 동반.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "2차전지 소재",
+            "summary": "POSCO홀딩스 리튬 자회사 정상화·JKL 삼아알미늄 양극박 2배 회수로 소재주 재평가, 코스닥 에코프로비엠 강세 동반.",
+            "source_count": 3,
+            "verdict": "pass"
           },
           {
             "name": "2차전지 소재 실적 회복",
@@ -1667,6 +1810,12 @@
             "summary": "LG화학 1Q 적자 폭 대폭 축소·목표가 줄상향에 8%대 급등, 화학·2차전지 소재 반등",
             "source_count": 1,
             "verdict": "unverified"
+          },
+          {
+            "name": "ESS/장수명 배터리",
+            "summary": "엠젠솔루션 화재 없는 수명 10배 LIC 양산 돌입, ESS·모빌리티향 차세대 에너지저장장치 확장 모멘텀.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1696,6 +1845,12 @@
             "summary": "퓨쳐켐 국내 최초 전립선암 진단제 식약처 품목허가 승인으로 16% 강세, 치료제 3상 연내 데이터 모멘텀 추가.",
             "source_count": 3,
             "verdict": "pass"
+          },
+          {
+            "name": "ADC/AOC 항암제",
+            "summary": "에이프릴바이오 유한양행 공동개발 조기종료 후 ADC·AOC 집중 선언, 차세대 항암 모달리티로 자원 재배치.",
+            "source_count": 3,
+            "verdict": "unverified"
           },
           {
             "name": "대웅 펙수클루 적응증 확대",
@@ -1985,6 +2140,12 @@
             "summary": "케이엔에스-스마트레이더시스템 AI 적용 자동화·방산 생산라인 구축 협력",
             "source_count": 2,
             "verdict": "unverified"
+          },
+          {
+            "name": "위성통신/방산우주",
+            "summary": "제노코 차세대중형위성 2호 XTX 탑재로 위성통신장비 레퍼런스 확보, 우주·방산 부품주 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -2036,6 +2197,12 @@
           {
             "name": "재건축 수주",
             "summary": "GS건설 서초진흥아파트 재건축 6800억 규모 수주, 강남권 정비사업 모멘텀 지속",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "재건축/도시정비",
+            "summary": "GS건설 서초진흥아파트 6793억 재건축 수주, 강남권 정비사업 모멘텀 재가동.",
             "source_count": 3,
             "verdict": "unverified"
           },
@@ -2113,6 +2280,12 @@
           {
             "name": "현대차·기아 판매",
             "summary": "기아 4월 국내 판매 현대차 첫 추월·EV 견인, 다만 미국 관세 선구매 기저효과로 합산 판매 2.1% 감소",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "현대차/기아 글로벌 판매",
+            "summary": "기아 EV로 4월 국내 첫 현대차 추월, 현대차 부품 차질로 글로벌 -8%, 미국 관세 선구매 기저효과로 -2.1%, 트럼프 자동차 관세 위협까지 겹침.",
             "source_count": 4,
             "verdict": "unverified"
           },
@@ -2555,6 +2728,17 @@
           {
             "name": "ESS/에너지저장장치",
             "summary": "엠젠솔루션 화재 없는 수명 10배 LIC 양산 돌입, AI 데이터센터 전력 수요 급증으로 ESS·모빌리티 배터리 시장 확대",
+            "source_count": 3,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "AI 부품",
+        "children": [
+          {
+            "name": "MLCC/적층세라믹",
+            "summary": "AI 수요 + 가격 인상 기대로 삼성전기 목표가 100만원 상향, MLCC 공급 부족 장기화 내러티브가 부품주 재평가로 확산.",
             "source_count": 3,
             "verdict": "unverified"
           }
