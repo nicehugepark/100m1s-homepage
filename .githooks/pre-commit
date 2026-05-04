@@ -1,0 +1,50 @@
+#!/bin/sh
+# REQ-008 Invariant 4 — UI 도메인 텍스트 화이트리스트 검사 pre-commit hook
+# 활성화: git config core.hooksPath .githooks (레포 클론 후 1회)
+
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+SCANNER="$REPO_ROOT/scripts/precommit/check_ui_domain_text.py"
+
+if [ ! -f "$SCANNER" ]; then
+    # 스캐너 미존재 시 통과 (인프라 미배치 환경 호환)
+    exit 0
+fi
+
+# Python 3 필요
+if ! command -v python3 >/dev/null 2>&1; then
+    echo "[pre-commit] python3 미설치 — UI 도메인 검사 스킵" >&2
+    exit 0
+fi
+
+# staged 변경에 renderer.js / news.css 포함 여부 확인 (없으면 빠른 통과)
+CHANGED=$(git diff --cached --name-only | grep -E "^(js/renderer\.js|news\.css)$" || true)
+if [ -z "$CHANGED" ]; then
+    exit 0
+fi
+
+# REQ-008 Invariant 5 단위 테스트 동시 실행 (있으면)
+INV5="$REPO_ROOT/scripts/tests/test_ui_invariants.py"
+if [ -f "$INV5" ]; then
+    if ! python3 "$INV5" >/dev/null 2>&1; then
+        echo ""
+        echo "[pre-commit] REQ-008 Invariant 5 — 색깔·UI 단위 테스트 FAIL"
+        python3 "$INV5" >&2 || true
+        echo ""
+        echo "한국 증시 관습(양수=빨강 #C53939, 음수=파랑 #1958C7) 위반."
+        echo "수정 후 재커밋 부탁."
+        exit 1
+    fi
+fi
+
+# Invariant 4 — 화이트리스트 스캐너 실행
+if ! python3 "$SCANNER"; then
+    echo ""
+    echo "[pre-commit] REQ-008 Invariant 4 — UI 도메인 텍스트 미등록 매치 발견."
+    echo "togusa(rules/_whitelist/ui-text.json) 또는 design-lead 협의 후 재커밋 부탁."
+    echo "긴급 우회(권장 안 함): git commit --no-verify"
+    exit 1
+fi
+
+exit 0
