@@ -1084,7 +1084,7 @@ async function initThemeTrend() {
     const VISIBLE_DAYS = 6; // 화면에 보이는 영업일 수 (LUT와 통일 — 한 윈도우 6영업일, 대표 명시)
     const allDates = data.dates;
     if (allDates.length < 1) return;
-    const dates = allDates.slice(-20); // 최대 20영업일
+    const dates = allDates.slice(-7); // REQ-004 5/4 v187: 최근 7영업일 — lut 정합 (chart layout 100% 동일 + 정보 단순화)
     const dateSet = new Set(dates);
     const needsScroll = dates.length > VISIBLE_DAYS;
 
@@ -1155,7 +1155,7 @@ async function initThemeTrend() {
     function toX(i) { return CHART_EDGE_PAD + i * slot; }
     function toY(v) { return PAD.top + plotH - (v / yMax) * plotH; }
     function fmtTril(v) { return (v / 1e12).toFixed(1) + '조'; }
-    function fmtDate(d) { return d.slice(5).replace('-', '/'); }
+    function fmtDate(d) { const m = parseInt(d.slice(5, 7), 10); const day = parseInt(d.slice(8, 10), 10); return `${m}/${day}`; } // REQ-004 5/4 v187: lut fmtMD 정합 (5/4 형식, 04/04 → 4/4)
 
     // Y축 별도 SVG (고정)
     let yAxisSvg = '<svg class="theme-trend-svg" viewBox="0 0 ' + yAxisW + ' ' + H + '" width="' + yAxisW + '" xmlns="http://www.w3.org/2000/svg">';
@@ -1436,7 +1436,8 @@ async function initLimitUpTrend() {
 
     // 6영업일 윈도우 + 가로 스크롤 (theme-trend SoT 정합)
     const VISIBLE_DAYS = 6;
-    const items = data.items;
+    // REQ-004 5/4 v187: 최근 7영업일 binding — theme 정합 (chart layout 100% 동일 + 정보 단순화)
+    const items = data.items.slice(-7);
     const dates = items.map(it => it.date);
     const counts = items.map(it => it.count);
     const maxCount = Math.max(1, ...counts);
