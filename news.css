@@ -1618,19 +1618,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .cal-feature-card.expanded .cal-chevron {
   display: none;
 }
-@media (prefers-color-scheme: dark) {
-  /* REQ-042/REQ-045 — 다크모드 접기 버튼 (대비 보강, AGENT.md §10) */
-  .cal-detail-toggle {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.3);
-    color: #F1F5F9;
-  }
-  .cal-detail-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.4);
-    color: #FFFFFF;
-  }
-}
+/* REQ-005 5/4 v188: 다크모드 .cal-detail-toggle 부분 적용 제거 — 본 페이지 라이트 고정인데 detail-toggle만 다크 적용 시 반투명 회귀 (대표 발화 15:25 KST). 라이트 default 유지. */
 
 /* REQ-030 §1 — 헤더 공시 배지 (SPEC-001 §III.4). 펼침 동기 제공.
    REQ-042 (대표 발화 2026-04-28 02:08 KST): 너무 밝은 회색 → 가독성 부족.
