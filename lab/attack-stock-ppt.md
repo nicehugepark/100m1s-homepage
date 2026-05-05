@@ -39,8 +39,8 @@ style: |
     background: var(--ppt-bg);
     color: var(--ppt-tx);
     font-family: 'Pretendard', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
-    padding: 40px 72px;
-    line-height: 1.6;
+    padding: 24px 48px;
+    line-height: 1.5;
     letter-spacing: -0.01em;
     position: relative;
   }
@@ -98,67 +98,68 @@ style: |
     margin: 40px 0 24px;
   }
 
-  /* === 본문 슬라이드 === */
+  /* === 본문 슬라이드 (v1.0 — 폰트 강제 평탄화 + 공백 축소) === */
   section h1 {
-    font-size: 64px;
+    font-size: 44px;
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;
     color: var(--ppt-tx);
-    margin: 0 0 16px;
-    padding-bottom: 12px;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--ppt-line-am);
     display: inline-block;
   }
   section h2 {
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--ppt-tx);
-    letter-spacing: -0.015em;
-    line-height: 1.35;
-    margin: 0 0 24px;
-  }
-  section h3 {
     font-size: 24px;
-    font-weight: 600;
-    color: var(--ppt-tx);
+    font-weight: 500;
+    color: var(--ppt-tx2);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
     margin: 0 0 12px;
   }
+  section h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ppt-tx);
+    margin: 0 0 8px;
+  }
   section p, section li {
-    font-size: 24px;
-    line-height: 1.55;
+    font-size: 19px;
+    line-height: 1.45;
     color: var(--ppt-tx);
     font-weight: 400;
+    margin: 0 0 8px;
   }
   section small, section .caption {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.4;
     color: var(--ppt-tx3);
     font-style: normal;
   }
   strong { color: var(--ppt-tx); font-weight: 700; }
   em { color: var(--ppt-tx2); font-style: normal; }
 
-  /* === 메타 라벨 (UPPERCASE + spacing, 16px FLOOR per DSN-001 §2.2) === */
+  /* === 메타 라벨 (v1.0 — 골드 절제, 진네이비 우선) === */
   .meta-label {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ppt-tx2);
-    margin: 0 0 8px;
+    margin: 0 0 4px;
     display: block;
   }
   .meta-value {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 500;
     color: var(--ppt-tx);
-    margin: 0 0 24px;
+    margin: 0 0 12px;
     display: block;
-    line-height: 1.4;
+    line-height: 1.35;
   }
   .case-no {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 600;
     color: var(--ppt-am);
     letter-spacing: 0.05em;
@@ -166,32 +167,38 @@ style: |
     display: block;
   }
   .meta-divider {
-    width: 48px;
+    width: 36px;
     height: 1px;
     background: var(--ppt-line);
-    margin: 16px 0 24px;
+    margin: 8px 0 12px;
   }
 
-  /* === 8 col grid 사례 슬라이드 === */
+  /* === 8 col grid 사례 슬라이드 (v1.0 — 본문 영역 ↑ + 세로 anchor top) === */
   section.case {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     grid-template-rows: 1fr auto;
-    column-gap: 32px;
-    row-gap: 16px;
+    column-gap: 24px;
+    row-gap: 8px;
+    align-items: start;
+    align-content: start;
   }
   section.case .meta-col {
     grid-column: 1 / 4;
     grid-row: 1;
     display: flex;
     flex-direction: column;
+    align-self: start;
   }
   section.case .body-col {
-    grid-column: 4 / 9;
+    grid-column: 4 / 11;
     grid-row: 1;
     display: flex;
     flex-direction: column;
+    align-self: start;
   }
+  section.case .body-col h1 { margin-top: 0; }
+  section.case .body-col h2 { margin-bottom: 8px; }
 
   /* === 챕터 divider === */
   section.divider {
@@ -228,12 +235,12 @@ style: |
     font-style: normal;
   }
 
-  /* === 양면 분석 (박스 폐기, 1px top line만) === */
+  /* === 양면 분석 (v1.0 — padding 압축 + line만) === */
   .twoside {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    margin: 16px 0 0;
+    gap: 24px;
+    margin: 8px 0 0;
   }
   .twoside .col-strategy,
   .twoside .col-followup {
@@ -241,15 +248,15 @@ style: |
     border: 0;
     border-top: 1px solid var(--ppt-line);
     border-radius: 0;
-    padding: 16px 0 0;
+    padding: 8px 0 0;
   }
   .twoside h3 {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ppt-tx2);
-    margin: 0 0 12px;
+    margin: 0 0 6px;
   }
   .twoside .col-strategy h3::before {
     content: "01 ";
@@ -262,27 +269,29 @@ style: |
     font-weight: 700;
   }
   .twoside p, .twoside li {
-    font-size: 20px;
-    line-height: 1.55;
+    font-size: 16px;
+    line-height: 1.4;
     color: var(--ppt-tx);
+    margin: 0 0 6px;
   }
 
-  /* === SVG/PNG 데이터 차트 컨테이너 (v0.9 1600×600 가시성↑ per DSN-001 §3.3) === */
+  /* === 차트 컨테이너 (v1.0 — 패딩 압축 + max-height 보호) === */
   .chart {
-    margin: 16px 0;
+    margin: 8px 0;
     border-top: 1px solid var(--ppt-line);
     border-bottom: 1px solid var(--ppt-line);
-    padding: 16px 0;
+    padding: 6px 0;
   }
   .chart svg, .chart img {
     width: 100%;
-    max-width: 1600px;
-    max-height: 600px;
+    max-width: 100%;
+    max-height: 320px;
     height: auto;
     display: block;
     margin: 0 auto;
     background: transparent;
     border-radius: 0;
+    object-fit: contain;
   }
   .chart .caption {
     font-size: 14px;
@@ -293,33 +302,33 @@ style: |
     font-style: normal;
   }
 
-  /* === 표 (KPMG/금융위 미니멀) === */
+  /* === 표 (v1.0 — 폰트 평탄 + 간격 압축) === */
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 20px;
+    font-size: 16px;
     background: transparent;
     border: 0;
     border-radius: 0;
-    margin: 24px 0;
+    margin: 12px 0;
   }
   th {
     background: transparent;
     color: var(--ppt-tx);
-    padding: 12px 8px;
+    padding: 8px 6px;
     text-align: left;
     font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     border-bottom: 1px solid var(--ppt-line-am);
   }
   td {
-    padding: 12px 8px;
+    padding: 6px 6px;
     border-bottom: 1px solid var(--ppt-line);
     color: var(--ppt-tx);
-    font-size: 20px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.35;
   }
   tr:last-child td { border-bottom: 0; }
 
@@ -378,20 +387,26 @@ style: |
     margin-right: 12px;
   }
 
-  /* === footer 표준화 (Marp footer 자동, 페이지번호는 paginate) === */
+  /* === footer (v1.0 — 진네이비 절제, 골드 페이지번호 폐기) === */
   footer {
-    color: var(--ppt-tx2);
-    font-size: 14px;
-    letter-spacing: 0.18em;
+    color: var(--ppt-tx3);
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     text-align: center;
     font-weight: 500;
   }
   section::after {
-    color: var(--ppt-am) !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.1em !important;
+    color: var(--ppt-tx2) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.08em !important;
+  }
+  blockquote {
+    margin: 8px 0 8px 16px !important;
+    padding: 0 0 0 12px !important;
+    font-size: 15px !important;
+    line-height: 1.4 !important;
   }
 ---
 
