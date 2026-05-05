@@ -42,7 +42,19 @@ html {
 body {
   min-height: 100vh;
   padding: 40px 20px;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 32px;
+}
+.slide-section-label {
+  font-size: 12px; font-weight: 800;
+  color: var(--ppt-am2);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 24px;
+  padding: 6px 14px;
+  background: var(--ppt-am-glow);
+  border: 1px solid rgba(232,192,99,0.3);
+  border-radius: 999px;
 }
 
 /* === Sticky 비공개 배지 (lab 정합) === */
@@ -380,8 +392,11 @@ body {
 <div class="lab-badge">
   <span class="dot"></span>
   <span><strong>비공개 연구 자료</strong> · 영구 비공개 · 외부 공유 금지</span>
-  <span style="opacity:0.85;font-weight:600;font-size:11px;">PPT PoC · DSN-003 · 케이스 5 장면 1</span>
+  <span style="opacity:0.85;font-weight:600;font-size:11px;">PPT v0.3 wireframe · DSN-003 · 케이스 1·2·5·11 장면 1 (4 sample)</span>
 </div>
+
+<!-- ===== Sample 1 / 4: 케이스 5 장면 1 (Q-046b PoC C, 기존 보존) ===== -->
+<span class="slide-section-label">Sample 1 / 4 · 케이스 5 장면 1 (CB 헐값 발행, D-180)</span>
 
 <div class="slide-frame">
   <!-- 워드마크 -->
@@ -544,10 +559,310 @@ body {
   <div class="slate">01</div>
 </div>
 
+<!-- ===== Sample 2 / 4: 케이스 1 장면 1 (통정매매 D-90 매집 시작) ===== -->
+<span class="slide-section-label">Sample 2 / 4 · 케이스 1 장면 1 (통정매매 D-90 매집 시작)</span>
+
+<div class="slide-frame">
+  <div class="brand-mark">100M1S</div>
+  <div class="scene-label">
+    <span class="scene-num">SCENE 01</span>
+    <span style="color:var(--ppt-dm);">·</span>
+    <span class="scene-time">D-90</span>
+  </div>
+  <h1 class="scene-title">매집 — <span class="accent">차명 5계좌 분할 매집</span></h1>
+  <p class="scene-subtitle">㈜A 시총 600억 코스닥 종목, K급 주포 + 차명 5계좌 (평균 3,000만원/계좌) — 작전 시드 1.5억 매집 시작</p>
+
+  <div class="scene-grid">
+    <div>
+      <div class="cite">
+        <p>D-90 K급 주포가 차명 5계좌로 ㈜A 분할 매집 시작. <strong style="color:var(--ppt-am2);">평균 매수가 3,000원, 90일간 50만주 분산</strong>.</p>
+        <p>거래대금 평소 50억 → 미세 변동 (작전 노출 0). 통정매매 ×0회 (매집 단계는 자기매매 X).</p>
+      </div>
+
+      <div class="character-row">
+        <div class="char-card villain">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12 L8 8 L12 12 L16 6 L20 12 L24 8 L28 12 L26 22 L6 22 Z"/>
+            <line x1="6" y1="22" x2="26" y2="22"/>
+            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+          </svg>
+          <div class="char-name">K급 주포</div>
+          <div class="char-role">작전 본진 (52, 자산 200억+)</div>
+          <div class="char-action">
+            5계좌 평균 매집
+            <small>차명 5계좌 = 거래원 분포 위장</small>
+          </div>
+        </div>
+
+        <div class="char-card host">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="8" width="20" height="20" rx="1"/>
+            <line x1="10" y1="14" x2="14" y2="14"/>
+            <line x1="18" y1="14" x2="22" y2="14"/>
+            <line x1="10" y1="20" x2="14" y2="20"/>
+            <path d="M14 28 L14 22 L18 22 L18 28"/>
+          </svg>
+          <div class="char-name">㈜A</div>
+          <div class="char-role">코스닥 (시총 600억)</div>
+          <div class="char-action">
+            매집 인지 X
+            <small>작전 종목 표적 = 저시총 + 거래대금 ↓</small>
+          </div>
+        </div>
+
+        <div class="char-card dupe">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="16" cy="11" r="4"/>
+            <path d="M7 26 C 7 20 11 18 16 18 C 21 18 25 20 25 26"/>
+            <line x1="22" y1="6" x2="26" y2="10"/>
+            <line x1="26" y1="6" x2="22" y2="10"/>
+          </svg>
+          <div class="char-name">호구 매매자</div>
+          <div class="char-role">관찰자 (신호 미인지)</div>
+          <div class="char-action">
+            거래대금 미변동 무관심
+            <small>매집 흔적 식별 X</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="numbers-box">
+      <div class="nb-title">▲ 핵심 수치</div>
+      <dl>
+        <div><dt>회사 시총</dt><dd>600억 <span class="neg-accent">코스닥</span></dd></div>
+        <div><dt>차명 계좌</dt><dd><span class="accent">5개</span></dd></div>
+        <div><dt>평균 매집가</dt><dd>3,000원</dd></div>
+        <div><dt>분할 매집 기간</dt><dd>90일 / 50만주</dd></div>
+        <div><dt>매집 시드</dt><dd style="font-size:14px;"><span class="accent">1.5억</span></dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-rail">
+      <div class="timeline-points">
+        <div class="tl-point current"><div class="tl-dot"></div><div class="tl-label">S01</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S02</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S03</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S04</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S05</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S06</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S07</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S08</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S09</div></div>
+      </div>
+    </div>
+    <div class="tl-anchors">
+      <span>D-90</span><span>D-30</span><span>D-7</span><span>D 0</span><span>D+5</span><span>D+30</span><span>D+60</span><span>D+90</span><span>D+90↑</span>
+    </div>
+  </div>
+  <div class="slate">01</div>
+</div>
+
+<!-- ===== Sample 3 / 4: 케이스 2 장면 1 (가장매매 매집 — HTS 8대 + 8 차명) ===== -->
+<span class="slide-section-label">Sample 3 / 4 · 케이스 2 장면 1 (가장매매 D-60 매집)</span>
+
+<div class="slide-frame">
+  <div class="brand-mark">100M1S</div>
+  <div class="scene-label">
+    <span class="scene-num">SCENE 01</span>
+    <span style="color:var(--ppt-dm);">·</span>
+    <span class="scene-time">D-60</span>
+  </div>
+  <h1 class="scene-title">매집 — <span class="accent">HTS 8대 + 8 차명계좌</span></h1>
+  <p class="scene-subtitle">㈜B 시총 200억 저시총 코스닥, J(38) 단독 작전 — 1인 다계좌 매집 (분산 매집 = 추적 회피)</p>
+
+  <div class="scene-grid">
+    <div>
+      <div class="cite">
+        <p>D-60 J가 8대 HTS + 8 차명계좌로 ㈜B 매집 시작. <strong style="color:var(--ppt-am2);">동일 IP 클러스터 = 사후 적발 영역</strong>.</p>
+        <p>"매매·자금·시점 모두 단독. 풍문 채널만 외주 — 텔레그램 운영자에 월 200만원."</p>
+      </div>
+
+      <div class="character-row">
+        <div class="char-card villain">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="16" cy="10" r="4"/>
+            <path d="M9 28 C 9 22 13 20 16 20 C 19 20 23 22 23 28"/>
+            <rect x="3" y="14" width="6" height="4" rx="1"/>
+            <rect x="23" y="14" width="6" height="4" rx="1"/>
+          </svg>
+          <div class="char-name">J (38, 단독)</div>
+          <div class="char-role">전직 증권맨</div>
+          <div class="char-action">
+            HTS 8대 동시 운영
+            <small>분산 매집 = 거래원 ID 회피</small>
+          </div>
+        </div>
+
+        <div class="char-card host">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="8" width="20" height="20" rx="1"/>
+            <line x1="10" y1="14" x2="22" y2="14"/>
+            <line x1="10" y1="18" x2="22" y2="18"/>
+            <line x1="10" y1="22" x2="22" y2="22"/>
+          </svg>
+          <div class="char-name">㈜B</div>
+          <div class="char-role">저시총 코스닥 (시총 200억)</div>
+          <div class="char-action">
+            거래대금 ↓ 표적
+            <small>1인 작전 가능 시총</small>
+          </div>
+        </div>
+
+        <div class="char-card dupe">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="16" cy="16" r="10"/>
+            <line x1="12" y1="14" x2="14" y2="14"/>
+            <line x1="18" y1="14" x2="20" y2="14"/>
+            <path d="M11 20 Q16 18 21 20"/>
+          </svg>
+          <div class="char-name">텔레그램 운영자</div>
+          <div class="char-role">외주 풍문책 (월 200만원)</div>
+          <div class="char-action">
+            본진과 분리
+            <small>풍문 채널만 외주, 매매 X</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="numbers-box">
+      <div class="nb-title">▲ 핵심 수치</div>
+      <dl>
+        <div><dt>회사 시총</dt><dd>200억 <span class="neg-accent">코스닥</span></dd></div>
+        <div><dt>HTS / 차명</dt><dd><span class="accent">8대 / 8계좌</span></dd></div>
+        <div><dt>5분봉 거래량</dt><dd>평소 ×8 위장</dd></div>
+        <div><dt>외주 풍문비</dt><dd>월 200만원</dd></div>
+        <div><dt>적발 신호</dt><dd style="font-size:14px;"><span class="neg-accent">동일 IP 클러스터</span></dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-rail">
+      <div class="timeline-points">
+        <div class="tl-point current"><div class="tl-dot"></div><div class="tl-label">S01</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S02</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S03</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S04</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S05</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S06</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S07</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S08</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S09</div></div>
+      </div>
+    </div>
+    <div class="tl-anchors">
+      <span>D-60</span><span>D-20</span><span>D-2</span><span>D 0</span><span>D+5</span><span>D+30</span><span>D+60</span><span>D+90</span><span>D+90↑</span>
+    </div>
+  </div>
+  <div class="slate">01</div>
+</div>
+
+<!-- ===== Sample 4 / 4: 케이스 11 장면 1 (감사 의견거절 D-15 사전 통보 분배) ===== -->
+<span class="slide-section-label">Sample 4 / 4 · 케이스 11 장면 1 (감사 의견거절 D-15 사전 통보 분배)</span>
+
+<div class="slide-frame" style="--scene-warning: 1;">
+  <div class="brand-mark">100M1S</div>
+  <div class="scene-label" style="background: var(--ppt-ru-glow); border-color: rgba(160,21,40,0.45);">
+    <span class="scene-num" style="color: var(--ppt-ru);">SCENE 05</span>
+    <span style="color:var(--ppt-dm);">·</span>
+    <span class="scene-time">D-15</span>
+  </div>
+  <h1 class="scene-title">분배 — <span class="accent" style="color: var(--ppt-neg);">감사 의견거절 사전 통보</span></h1>
+  <p class="scene-subtitle">㈜W 시총 800억, CEO U + CFO 매출 위장 (관계회사 +52% YoY) → D-15 외부 감사인 의견거절 검토 통보 → 차명 12계좌 사전 분배 절정</p>
+
+  <div class="scene-grid">
+    <div>
+      <div class="cite" style="border-left-color: var(--ppt-neg);">
+        <p>D-15 외부 감사인 → CEO U: <strong style="color:var(--ppt-neg);">"관계회사 매출 인식 부적정 + 재고자산 평가 부적정 = 의견거절 검토."</strong></p>
+        <p>D-15 ~ D-7 차명 12계좌 분할매도 시작. <strong style="color:var(--ppt-am2);">신용잔고 18억 → 92억 (+411%)</strong>. 매매자는 "조정 매수 기회" 인식 추격매수 → D+1 거래정지 = 영구 손실.</p>
+      </div>
+
+      <div class="character-row">
+        <div class="char-card villain">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 28 L4 12 L16 4 L28 12 L28 28 Z"/>
+            <line x1="10" y1="20" x2="22" y2="20"/>
+            <line x1="14" y1="14" x2="18" y2="14"/>
+          </svg>
+          <div class="char-name">CEO U + CFO</div>
+          <div class="char-role">매출 위장 본진</div>
+          <div class="char-action">
+            12계좌 사전 분배
+            <small>의견거절 사전 인지 → D-15~D-7 분배 절정</small>
+          </div>
+        </div>
+
+        <div class="char-card host">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4 L4 10 L4 18 C 4 24 9 28 16 28 C 23 28 28 24 28 18 L28 10 Z"/>
+            <path d="M11 16 L15 20 L22 12"/>
+          </svg>
+          <div class="char-name">외부 감사인</div>
+          <div class="char-role">독립 평가자 (검토 통보 단계)</div>
+          <div class="char-action">
+            의견거절 검토
+            <small>D-15 사전 통보 → D-day 16:30 공시</small>
+          </div>
+        </div>
+
+        <div class="char-card dupe">
+          <svg class="char-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="16" cy="11" r="4"/>
+            <path d="M7 26 C 7 20 11 18 16 18 C 21 18 25 20 25 26"/>
+            <line x1="22" y1="6" x2="26" y2="10"/>
+            <line x1="26" y1="6" x2="22" y2="10"/>
+          </svg>
+          <div class="char-name">호구 매매자 + 사모펀드</div>
+          <div class="char-role">조정 매수 기회 오인</div>
+          <div class="char-action">
+            추격매수 → 거래정지
+            <small>"매출 호재 일시적 조정" 인식</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="numbers-box" style="border-left-color: var(--ppt-neg);">
+      <div class="nb-title" style="color: var(--ppt-neg);">▼ 분배 절정 신호</div>
+      <dl>
+        <div><dt>회사 시총</dt><dd>800억 <span class="neg-accent">코스닥</span></dd></div>
+        <div><dt>매출 위장</dt><dd><span class="accent">+52%</span> <span class="neg-accent">실제 +0%</span></dd></div>
+        <div><dt>차명 계좌</dt><dd>12계좌 / 60만주</dd></div>
+        <div><dt>신용잔고</dt><dd>18억 → 92억 <span class="neg-accent">+411%</span></dd></div>
+        <div><dt>D+1 결과</dt><dd style="font-size:14px;"><span class="neg-accent">거래정지 + 관리종목</span></dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-rail">
+      <div class="timeline-points">
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S01</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S02</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S03</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S04</div></div>
+        <div class="tl-point current"><div class="tl-dot"></div><div class="tl-label">S05</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S06</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S07</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S08</div></div>
+        <div class="tl-point"><div class="tl-dot"></div><div class="tl-label">S09</div></div>
+      </div>
+    </div>
+    <div class="tl-anchors">
+      <span>D-180</span><span>D-90</span><span>D-30</span><span>D-15</span><span>D 0</span><span>D+1</span><span>D+30</span><span>D+90</span><span>D+90↑</span>
+    </div>
+  </div>
+  <div class="slate" style="background: linear-gradient(135deg, var(--ppt-bg) 0%, var(--ppt-bg) 50%, var(--ppt-neg) 50%, var(--ppt-neg) 60%, var(--ppt-bg) 60%, var(--ppt-bg) 70%, var(--ppt-neg) 70%, var(--ppt-neg) 80%, var(--ppt-bg) 80%);">05</div>
+</div>
+
 <!-- PoC 안내 (라이브 페이지에는 없음, 검토용) -->
 <div class="poc-hint">
-  <strong>PPT PoC — 옵션 C</strong><br>
-  본 슬라이드 비주얼을 Keynote/PowerPoint에 1:1 옮기면 케이스 5 장면 1 완성. 나머지 11장은 DOC-20260504-DSN-003 §4 wireframe 참고.
+  <strong>PPT v0.3 wireframe — 4 sample</strong><br>
+  케이스 1·2·5·11 장면 1 = Marp source <code>lab/attack-stock-ppt.md</code>의 슬라이드 2·3·6·9에 1:1 매칭. 나머지 8장은 DSN-003 §4 wireframe + EDU-002 §부록 G 매트릭스 인용.
 </div>
 
 </body>
