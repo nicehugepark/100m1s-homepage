@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1600" height="600" fill="#FFFFFF"/>
+<text x="80" y="50" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#0A2540">사례 9 임상 미공개 — §174 윈도우 타임라인 (가상 사례 mock)</text>
+
+<!-- §174 윈도우 음영 (D-30 ~ D+0) -->
+<rect x="160" y="240" width="780" height="120" fill="#FFE0E0" opacity="0.4"/>
+<text x="550" y="360" font-family="Pretendard, sans-serif" font-size="20" font-weight="700" fill="#A01528" text-anchor="middle">§174 미공개정보 윈도우 = 진입 차단 게이트</text>
+
+<!-- 타임라인 axis -->
+<line x1="160" y1="300" x2="1500" y2="300" stroke="#0A2540" stroke-width="2"/>
+
+<!-- 이벤트 마커 5개 -->
+<!-- D-30 임상 종료 -->
+<circle cx="160" cy="300" r="10" fill="#0A2540"/>
+<line x1="160" y1="290" x2="160" y2="180" stroke="#0A2540" stroke-width="1.5"/>
+<text x="160" y="170" font-family="Pretendard, sans-serif" font-size="20" font-weight="600" fill="#0A2540" text-anchor="middle">D-30</text>
+<text x="160" y="148" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">임상 종료</text>
+<text x="160" y="128" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">CTO 사전 인지</text>
+
+<!-- D-7 풍문 폭증 -->
+<circle cx="540" cy="300" r="10" fill="#A01528"/>
+<line x1="540" y1="290" x2="540" y2="180" stroke="#A01528" stroke-width="1.5"/>
+<text x="540" y="170" font-family="Pretendard, sans-serif" font-size="20" font-weight="600" fill="#A01528" text-anchor="middle">D-7</text>
+<text x="540" y="148" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">풍문 폭증</text>
+<text x="540" y="128" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">거래대금 ×14</text>
+
+<!-- D+0 공시 -->
+<circle cx="800" cy="300" r="12" fill="#C49930"/>
+<line x1="800" y1="290" x2="800" y2="180" stroke="#C49930" stroke-width="2"/>
+<text x="800" y="170" font-family="Pretendard, sans-serif" font-size="22" font-weight="700" fill="#C49930" text-anchor="middle">D+0</text>
+<text x="800" y="148" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">공시 16:30</text>
+<text x="800" y="128" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">장 마감 후</text>
+
+<!-- D+1 갭상승 -->
+<circle cx="940" cy="300" r="10" fill="#A01528"/>
+<line x1="940" y1="290" x2="940" y2="430" stroke="#A01528" stroke-width="1.5"/>
+<text x="940" y="450" font-family="Pretendard, sans-serif" font-size="20" font-weight="600" fill="#A01528" text-anchor="middle">D+1</text>
+<text x="940" y="475" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">갭상승 +30%</text>
+<text x="940" y="495" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">분배 시작</text>
+
+<!-- D+30 정상화 -->
+<circle cx="1500" cy="300" r="10" fill="#0A2540"/>
+<line x1="1500" y1="310" x2="1500" y2="430" stroke="#0A2540" stroke-width="1.5"/>
+<text x="1500" y="450" font-family="Pretendard, sans-serif" font-size="20" font-weight="600" fill="#0A2540" text-anchor="middle">D+30</text>
+<text x="1500" y="475" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">정상화</text>
+<text x="1500" y="495" font-family="Pretendard, sans-serif" font-size="18" font-weight="700" fill="#A01528" text-anchor="middle">-47%</text>
+
+<!-- 친인척 매수 표시 -->
+<rect x="220" y="380" width="280" height="60" fill="#FFFFFF" stroke="#A01528" stroke-width="1.5" rx="6"/>
+<text x="360" y="408" font-family="Pretendard, sans-serif" font-size="16" font-weight="600" fill="#A01528" text-anchor="middle">D-25 친인척 5명 매수</text>
+<text x="360" y="430" font-family="Pretendard, sans-serif" font-size="13" fill="#4A5C75" text-anchor="middle">시드 12억 / 차명 분산</text>
+
+<text x="80" y="585" font-family="Pretendard, sans-serif" font-size="14" fill="#6C757D" font-style="italic">출처 · 자본시장법 §174 미공개중요정보 이용 + 풍문 거래대금 ×14 패턴 · 가상 사례 mock</text>
+</svg>

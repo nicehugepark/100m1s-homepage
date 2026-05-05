@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" preserveAspectRatio="xMidYMid meet">
+<rect x="0" y="0" width="1600" height="600" fill="#FFFFFF"/>
+<text x="80" y="50" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#0A2540">사례 6 무자본 M&amp;A — 자금 흐름 그래프 (가상 사례 mock)</text>
+
+<!-- 인수자 G (top center) -->
+<rect x="660" y="100" width="280" height="100" fill="#FFFFFF" stroke="#0A2540" stroke-width="1.5" rx="8"/>
+<text x="800" y="138" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#0A2540" text-anchor="middle">인수자 G</text>
+<text x="800" y="166" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">자기자본 0</text>
+<text x="800" y="186" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">개인 사업자</text>
+
+<!-- 사채업자 X (left) -->
+<rect x="180" y="270" width="260" height="100" fill="#FFFFFF" stroke="#A01528" stroke-width="1.5" rx="8"/>
+<text x="310" y="308" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#A01528" text-anchor="middle">사채업자 X</text>
+<text x="310" y="336" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">단기 사채 200억</text>
+<text x="310" y="356" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">월 5% 고이자</text>
+
+<!-- 이사회 (right) -->
+<rect x="1160" y="270" width="260" height="100" fill="#FFFFFF" stroke="#0A2540" stroke-width="1.5" rx="8"/>
+<text x="1290" y="308" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#0A2540" text-anchor="middle">이사회 3명</text>
+<text x="1290" y="336" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">자산 처분 결의</text>
+<text x="1290" y="356" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">D+0 신사업 공시</text>
+
+<!-- 회사 (center) -->
+<rect x="660" y="270" width="280" height="100" fill="#FFFFFF" stroke="#0A2540" stroke-width="1.5" rx="8"/>
+<text x="800" y="308" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#0A2540" text-anchor="middle">회사 (피인수)</text>
+<text x="800" y="336" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">자산 500억</text>
+<text x="800" y="356" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">자기자본 200억</text>
+
+<!-- 사채 상환 (bottom) -->
+<rect x="500" y="430" width="280" height="100" fill="#FFFFFF" stroke="#A01528" stroke-width="1.5" rx="8"/>
+<text x="640" y="468" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#A01528" text-anchor="middle">사채 상환</text>
+<text x="640" y="496" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">회사 자산 → 사채 상환</text>
+<text x="640" y="516" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">무자본 인수 확정</text>
+
+<!-- 매매자 -51% -->
+<rect x="820" y="430" width="280" height="100" fill="#FFFFFF" stroke="#A01528" stroke-width="1.5" rx="8"/>
+<text x="960" y="468" font-family="Pretendard, sans-serif" font-size="22" font-weight="600" fill="#A01528" text-anchor="middle">매매자 함정</text>
+<text x="960" y="496" font-family="Pretendard, sans-serif" font-size="14" fill="#4A5C75" text-anchor="middle">D+30 분배 시작</text>
+<text x="960" y="516" font-family="Pretendard, sans-serif" font-size="22" font-weight="700" fill="#A01528" text-anchor="middle">-51% 폭락</text>
+
+<!-- 엣지 1: 사채업자 → 인수자 G (자금 200억) -->
+<line x1="370" y1="270" x2="700" y2="200" stroke="#C49930" stroke-width="2"/>
+<polygon points="690,196 706,200 692,206" fill="#C49930"/>
+<text x="500" y="225" font-family="Pretendard, sans-serif" font-size="13" fill="#A01528" font-weight="600">사채 200억</text>
+
+<!-- 엣지 2: 인수자 G → 회사 (인수) -->
+<line x1="800" y1="200" x2="800" y2="265" stroke="#C49930" stroke-width="2"/>
+<polygon points="794,255 800,270 806,255" fill="#C49930"/>
+<text x="820" y="240" font-family="Pretendard, sans-serif" font-size="13" fill="#0A2540" font-weight="600">경영권 인수</text>
+
+<!-- 엣지 3: 인수자 G → 이사회 (지명) -->
+<line x1="900" y1="200" x2="1160" y2="270" stroke="#C49930" stroke-width="2"/>
+<polygon points="1148,260 1163,272 1146,272" fill="#C49930"/>
+<text x="1075" y="225" font-family="Pretendard, sans-serif" font-size="13" fill="#0A2540" font-weight="600">이사 지명</text>
+
+<!-- 엣지 4: 회사 → 사채상환 (자산 처분) -->
+<line x1="700" y1="370" x2="640" y2="425" stroke="#A01528" stroke-width="2"/>
+<polygon points="635,415 638,432 648,422" fill="#A01528"/>
+<text x="540" y="400" font-family="Pretendard, sans-serif" font-size="13" fill="#A01528" font-weight="600">자산 매각 500억</text>
+
+<!-- 엣지 5: 이사회 → 사채상환 (결의) -->
+<line x1="1180" y1="370" x2="780" y2="475" stroke="#A01528" stroke-width="2" stroke-dasharray="4 2"/>
+<text x="950" y="395" font-family="Pretendard, sans-serif" font-size="13" fill="#A01528" font-weight="600">자산처분 결의</text>
+
+<!-- 엣지 6: 사채상환 → 매매자 -->
+<line x1="780" y1="480" x2="820" y2="480" stroke="#A01528" stroke-width="2"/>
+<polygon points="820,474 835,480 820,486" fill="#A01528"/>
+
+<text x="80" y="585" font-family="Pretendard, sans-serif" font-size="14" fill="#6C757D" font-style="italic">출처 · DART 타법인 출자 + 자산 양도 공시 결합 · 가상 사례 mock · 학습 시뮬레이션</text>
+</svg>

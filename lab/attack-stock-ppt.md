@@ -521,7 +521,7 @@ style: |
 ## 차명 12계좌 시드 360억 분할 매집 + 호재 갭상승 + 분할매도
 
 <div class="chart">
-<img src="./images/q046-v09-candle/case-01-candle.png" alt="candle-01" style="width:100%; display:block;">
+<img src="./images/q046-v11/case-01-candle.png" alt="candle-01-v11" style="width:100%; display:block;">
 <div class="caption">일봉 시퀀스 — D-90 매집 ~ D+30 청산 (가상 사례 mock · §176-1 + §443)</div>
 </div>
 
@@ -558,31 +558,21 @@ style: |
 
 # 12 분산 매집 + 호가 페인팅
 
-## 1막~4막 변칙 28건 핵심 추출
+## 12 차명 분산 매집 → 호재 갭상승 → -19% 폭락
 
-<div class="twoside">
-<div class="col-strategy">
-<h3>1막·2막 매집·띄움</h3>
-<p><strong>1막 (D-90~D-30)</strong>: 12 차명 일평균 17만주 분산 + 시간 60~90일 횡보 + 가격 17,000~19,000 5호가 분산 + 호가 페인팅. 거래대금 평소 ×0.8 → 시장 무관심. 단일 IP 다계좌 = 사후 적발.</p>
-<p><strong>2막 (D-30~D-7)</strong>: 통정매매 ×3/일 (당일 매수+매도 동일 차명 핑퐁) + VI 발동 ×3 + 거래대금 200억→1,000억 ×5 + 신용잔고 12억→240억 ×20. K 단톡방 신호 송신 시점.</p>
-</div>
-<div class="col-followup">
-<h3>3막·4막 분배·이탈</h3>
-<p><strong>3막 (D-7~D+0)</strong>: D-2 09:00 자율공시 → 09:00:01 K + 18 차명 분할매도. 09:15 매수=매도 잔량. 10:00 매도×3 매수 = 분배 절정. 평균 매도 77,000 (매수 18,000) → 차익 1,180억.</p>
-<p><strong>4막 (D+1~)</strong>: D+1 -13.9% / D+2 -17.2% / D+3 -18.5% / D+5 하한가 -19.9%. 신용잔고 240억→70억 (-71%) = 반대매매 연쇄. K2 D+60 후속 매집 = 새 사이클 (패턴 8).</p>
-</div>
-</div>
+<img src="./images/q046-v11/case-01-flow.png" alt="flow-01-v11" style="width:100%; display:block; margin: 8px 0;">
 
-<div class="twoside" style="margin-top: 16px;">
-<div class="col-strategy">
-<h3>행위주체</h3>
-<p><strong>K급 주포</strong> (50대, 사모펀드 매니저 출신): 시드 360억 + 12 차명 + 단톡방 36명. §443 무기/7년+ 영역.<br><strong>외주 알바 35명</strong>: D-25 풍문 ~ D+1 컷오프. K→N→알바 라인.<br><strong>자금책 X</strong> (40대): 360억 차명 분배 인프라. 동일 IP 12계좌 사후 적발.</p>
-</div>
-<div class="col-followup">
-<h3>적발 트리거</h3>
-<p>금감원 사후 적발 신호 = 단일 IP 12계좌 클러스터 + 통정 패턴 ×3/일 ×4주 + 자율공시 D+0~D+2 매도 집중. 적발 평균 D+180 (반년 후행).</p>
-</div>
-</div>
+<table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 16px;">
+<thead><tr style="border-bottom: 1.5px solid #0A2540;"><th style="text-align:left; padding: 6px 8px;">단계</th><th style="text-align:left; padding: 6px 8px;">핵심 변칙</th><th style="text-align:left; padding: 6px 8px;">정량</th></tr></thead>
+<tbody>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>1막 매집</strong></td><td style="padding: 4px 8px;">12 차명 분산</td><td style="padding: 4px 8px;">시드 360억 / 60일</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>2막 띄움</strong></td><td style="padding: 4px 8px;">통정매매 ×3/일</td><td style="padding: 4px 8px;">거래대금 ×5 / VI ×3</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>3막 분배</strong></td><td style="padding: 4px 8px;">호재 갭상승 분할매도</td><td style="padding: 4px 8px;">차익 +1,180억</td></tr>
+<tr><td style="padding: 4px 8px;"><strong>4막 이탈</strong></td><td style="padding: 4px 8px;">신용 반대매매</td><td style="padding: 4px 8px;">-19% / 5일 누적</td></tr>
+</tbody>
+</table>
+
+<div class="caption" style="margin-top: 8px;">행위주체 K급 주포(시드 360억) · 외주 알바 35명 · 자금책 X (D+180 사후 적발) · 가상 사례 mock</div>
 
 </div>
 
@@ -893,7 +883,7 @@ style: |
 ## 사모 CB 인수 + 전환청구 + 분배 차익 사이클
 
 <div class="chart">
-<img src="./images/q046-v09-candle/case-05-candle.png" alt="candle-05" style="width:100%; display:block;">
+<img src="./images/q046-v11/case-05-candle.png" alt="candle-05-v11" style="width:100%; display:block;">
 <div class="caption">일봉 시퀀스 — D-180 CB 발행 ~ D+60 종가=전환가 (가상 사례 mock · §178 부정거래 의심)</div>
 </div>
 
@@ -930,24 +920,21 @@ style: |
 
 # 10 변칙 + 30일 윈도우 + 5.X 리픽싱
 
-## CB 헐값 + 본주식 매집 + D-7 전환청구 분배
+## 전환가 시가 -19% → D-7 전환청구 → 30일 분배
 
-<div class="twoside">
-<div class="col-strategy">
-<h3>세력 전략 (10 변칙)</h3>
-<p>D-180 CB 헐값 발행 (전환가 5,000 vs 시가 6,200 = -19%) + 본주식 별도 매집 (D-90~D-30) + 풍문 송출 + D-7 전환청구 공시 (DART) + D+0 시작 분할매도 30일 (전환주식 출회) + D+60 종가 = 전환가 5,000원 (S 미실현 차익 확정).</p>
-</div>
-<div class="col-followup">
-<h3>매매자 동행</h3>
-<p><strong>진입 차단</strong>: CB 발행 30일 윈도우 (DART 공시) = 게이트.<br><strong>즉시 청산</strong>: DART 전환청구 공시 = 30일 후 본주식 출회 = 시장가 청산.<br><strong>진입 후보</strong>: 거래대금 ×2 + RSI ≤ 30 + CB 공시 30일 외 + 풍문 채널 0건.</p>
-</div>
-</div>
+<img src="./images/q046-v11/case-05-flow.png" alt="flow-05-v11" style="width:100%; display:block; margin: 8px 0;">
 
-<blockquote style="margin-top: 16px; border-left: 3px solid #C49930; padding-left: 16px;">
-<strong>매매 원칙</strong>: 전환가 ≤ 시가 ×0.85 + DART 발행 30일 = -20 페널티 + 영구 차단. 다음 페이지 5.X = 리픽싱 + 풋옵션 + 신규 CB 인수 무한 사이클. 본 자료의 모든 가격·거래량·인물은 학습 목적 가상 시뮬레이션
-</blockquote>
+<table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 16px;">
+<thead><tr style="border-bottom: 1.5px solid #0A2540;"><th style="text-align:left; padding: 6px 8px;">단계</th><th style="text-align:left; padding: 6px 8px;">핵심 변칙</th><th style="text-align:left; padding: 6px 8px;">정량</th></tr></thead>
+<tbody>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>1막 발행</strong></td><td style="padding: 4px 8px;">전환가 시가 -19%</td><td style="padding: 4px 8px;">200억 / ₩7,000 / D-180</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>2막 매집</strong></td><td style="padding: 4px 8px;">본주식 매집 + 풍문</td><td style="padding: 4px 8px;">평단 ₩7,200 / 83일</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>3막 청구</strong></td><td style="padding: 4px 8px;">DART 전환청구 + 분배</td><td style="padding: 4px 8px;">물량 +200억주 / 30일</td></tr>
+<tr><td style="padding: 4px 8px;"><strong>4막 사이클</strong></td><td style="padding: 4px 8px;">풋옵션 + 신규 CB</td><td style="padding: 4px 8px;">차익 +35% / 무한</td></tr>
+</tbody>
+</table>
 
-<div class="caption" style="margin-top: 12px;">자본시장법 §178 + §176 (전환청구 공시 후 분할매도 = 시세조종 유사) · §443 7년+ 영역</div>
+<div class="caption" style="margin-top: 8px;">진입 차단 게이트 = CB 발행 30일 윈도우 + 전환청구 공시 = §178 부정거래 직격 · 가상 사례 mock</div>
 
 </div>
 
@@ -1014,7 +1001,7 @@ style: |
 ## 자기자본 0 인수 + 신사업 공시 + 자산 노출
 
 <div class="chart">
-<img src="./images/q046-v09-candle/case-06-candle.png" alt="candle-06" style="width:100%; display:block;">
+<img src="./images/q046-v11/case-06-candle.png" alt="candle-06-v11" style="width:100%; display:block;">
 <div class="caption">일봉 시퀀스 — D+0 인수 공시 +30% → D+30 자산처분 공시 -51% (가상 사례 mock · 무자본 확정 게이트)</div>
 </div>
 
@@ -1051,22 +1038,21 @@ style: |
 
 # 9 변칙 + 30일 자산처분 트리거
 
-## 자기자본 0 + 회사 자산 500억 사채 상환
+## 자기자본 0 + 회사 자산 500억 = 무자본 확정
 
-<div class="twoside">
-<div class="col-strategy">
-<h3>인수·분배 단계</h3>
-<p><strong>인수 (D-90~D+0)</strong>: 사채 200억 차입 + 회사 자산 담보 = 인수 자금 사실상 회사 부담. DART "타법인 출자 결정" 공시 후 +30% 갭상승. 시장은 "신규 인수자 호재" 인식.</p>
-<p><strong>분배 (D+0~D+30)</strong>: 인수 직후 본주식 매집 + 풍문 부양. D+15 분배 시작 (조용). 평균 매도 22,500 (매집 12,000) → 차익 ~50억.</p>
-</div>
-<div class="col-followup">
-<h3>자산처분 단계 + 행위주체</h3>
-<p><strong>D+30 트리거</strong>: 회사 자산 500억 사채 상환 = 무자본 확정. DART "자산 양도" 공시 후 -51% 폭락. 시장 인지 0 → -51%까지 보유 = 매매자 함정.</p>
-<p><strong>인수자 G</strong> (40대, 사채 브로커): 자기자본 0 + 사채 200억 + 회사 자산 500억.<br><strong>이사회 우호 3명</strong>: 자산 처분 결의.<br><strong>사채업자 X</strong>: 회사 자산 담보 → 회수.</p>
-</div>
-</div>
+<img src="./images/q046-v11/case-06-flow.png" alt="flow-06-v11" style="width:100%; display:block; margin: 8px 0;">
 
-<div class="caption" style="margin-top: 12px;">자본시장법 §178 부정거래 + §443 가중처벌 + 특경법 사기죄 결합. 본 자료의 모든 가격·거래량·인물은 학습 목적 가상 시뮬레이션</div>
+<table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 16px;">
+<thead><tr style="border-bottom: 1.5px solid #0A2540;"><th style="text-align:left; padding: 6px 8px;">행위주체</th><th style="text-align:left; padding: 6px 8px;">행위</th><th style="text-align:left; padding: 6px 8px;">정량</th></tr></thead>
+<tbody>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>인수자 G</strong></td><td style="padding: 4px 8px;">자기자본 0 인수</td><td style="padding: 4px 8px;">사채 200억 차입</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>이사회 3명</strong></td><td style="padding: 4px 8px;">D+0 자산처분 결의</td><td style="padding: 4px 8px;">신사업 공시 위장</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>회사 자산</strong></td><td style="padding: 4px 8px;">D+30 자산 매각</td><td style="padding: 4px 8px;">500억 → 사채 상환</td></tr>
+<tr><td style="padding: 4px 8px;"><strong>매매자</strong></td><td style="padding: 4px 8px;">D+30 분배 시작</td><td style="padding: 4px 8px;">-51% 폭락</td></tr>
+</tbody>
+</table>
+
+<div class="caption" style="margin-top: 8px;">진입 차단 게이트 = 인수 공시 후 30일 윈도우 + 자산처분 결합 패턴 = §178 부정거래 직격 · 가상 사례 mock</div>
 
 </div>
 
@@ -1214,7 +1200,7 @@ style: |
 ## 친인척 5명 사전 인지 + 풍문 거래대금 ×14
 
 <div class="chart">
-<img src="./images/q046-v09-candle/case-09-candle.png" alt="candle-09" style="width:100%; display:block;">
+<img src="./images/q046-v11/case-09-candle.png" alt="candle-09-v11" style="width:100%; display:block;">
 <div class="caption">일봉 시퀀스 — D-30 임상 종료 ~ D+0 결과 공시 (가상 사례 mock · §174 윈도우 진입 차단)</div>
 </div>
 
@@ -1251,23 +1237,21 @@ style: |
 
 # 10 변칙 + §174 윈도우 거래대금 ×5
 
-## CTO 사전 인지 → 친인척 매수 → 풍문 → 분배
+## CTO 인지 → 친인척 5명 매수 → §174 윈도우 30일
 
-<div class="twoside">
-<div class="col-strategy">
-<h3>3단계 시퀀스</h3>
-<p><strong>D-30 임상 종료</strong>: CTO 인지 → 친인척 5명 정보 전달 → 매수 시작. 거래대금 평소 ×2 → ×5 (D-7) → ×14 (D-3) 단계 폭증. 일반 매매자 인지 0.</p>
-<p><strong>D-7 풍문</strong>: 카페·텔레그램 "임상 성공 가능성" 게시 → 추격매수 유입 = 친인척 분배 출구 형성. 풍문→추격→분배 표준 시퀀스.</p>
-<p><strong>D+0 16:30 + D+1</strong>: 장 마감 후 공시 → 익일 갭상승 +30% 분배. 친인척 차명 분할매도 (D+1 09~11). 1년 후 금감원 윈도우 매수자 분석 → CTO 클러스터 적발.</p>
-</div>
-<div class="col-followup">
-<h3>행위주체</h3>
-<p><strong>CTO</strong> (50대, 임상 책임자): 임상 결과 사전 인지 + §174 위반.<br><strong>친인척 5명</strong> (CTO 본인 X — 자녀·배우자·형제): 차명계좌 활용 매수.<br><strong>외부 풍문 알바</strong>: D-7 카페 게시 = 분배 출구 형성.</p>
-<p><strong>적발 트리거</strong>: 금감원 임상 종료~공시 윈도우 매수자 분석 + CTO 가족관계 매핑 + 동일 IP 클러스터.</p>
-</div>
-</div>
+<img src="./images/q046-v11/case-09-flow.png" alt="flow-09-v11" style="width:100%; display:block; margin: 8px 0;">
 
-<div class="caption" style="margin-top: 12px;">자본시장법 §174 미공개중요정보 이용 + §443 가중처벌. 본 자료의 모든 가격·거래량·인물은 학습 목적 가상 시뮬레이션</div>
+<table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 16px;">
+<thead><tr style="border-bottom: 1.5px solid #0A2540;"><th style="text-align:left; padding: 6px 8px;">시점</th><th style="text-align:left; padding: 6px 8px;">이벤트</th><th style="text-align:left; padding: 6px 8px;">정량</th></tr></thead>
+<tbody>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>D-30 임상 종료</strong></td><td style="padding: 4px 8px;">CTO 사전 인지</td><td style="padding: 4px 8px;">친인척 5명 매수 시작</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>D-7 풍문 폭증</strong></td><td style="padding: 4px 8px;">카페·텔레그램 게시</td><td style="padding: 4px 8px;">거래대금 ×14</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>D+0 16:30</strong></td><td style="padding: 4px 8px;">장 마감 후 공시</td><td style="padding: 4px 8px;">익일 갭상승 +30%</td></tr>
+<tr><td style="padding: 4px 8px;"><strong>D+30 정상화</strong></td><td style="padding: 4px 8px;">분배 종료</td><td style="padding: 4px 8px;">-47% 폭락</td></tr>
+</tbody>
+</table>
+
+<div class="caption" style="margin-top: 8px;">진입 차단 게이트 = §174 미공개정보 윈도우 30일 = 본인 §174 가담 위험 · 가상 사례 mock · 학습 시뮬레이션</div>
 
 </div>
 
@@ -1375,7 +1359,7 @@ style: |
 ## 매출 위장 + 사전 통보 분배 + 의견거절 + 거래정지
 
 <div class="chart">
-<img src="./images/q046-v09-candle/case-11-candle.png" alt="candle-11" style="width:100%; display:block;">
+<img src="./images/q046-v11/case-11-candle.png" alt="candle-11-v11" style="width:100%; display:block;">
 <div class="caption">일봉 시퀀스 — D-180 매출 위장 → D-15 사전 통보 → D+0 의견거절 → 거래정지 (가상 사례 mock)</div>
 </div>
 
@@ -1412,23 +1396,21 @@ style: |
 
 # 8 변칙 + 사전 통보 분배 + 거래정지
 
-## D-180 매출 위장 → D-15 사전 통보 → D+0 의견거절
+## D-15 사전 통보 → D+0 의견거절 → 거래정지 영구
 
-<div class="twoside">
-<div class="col-strategy">
-<h3>3단계 시퀀스</h3>
-<p><strong>D-180 매출 위장</strong>: 관계회사 거래로 매출 인식 + 재고자산 평가 부적정. 일반 매매자 인지 0. 매출 호재 풍문 송출 → 매집.</p>
-<p><strong>D-15 감사 사전 통보</strong>: 감사인 "의견거절" 검토 단계 → CEO + CFO 사전 통보. CEO 본주식 분할매도 시작 (조용). D-15~D-1 = 15일 사전 통보 분배 윈도우.</p>
-<p><strong>D+0 16:30 + D+1</strong>: DART 감사보고서 공시 → 한국거래소 거래정지 즉시. 익일부터 거래 불가 → 영구 차단. 일반 매매자 = D+0 종가 8,750원 (-30% 하한가) 보유 → 거래정지 → 상장폐지 심사 → 0원 손실.</p>
-</div>
-<div class="col-followup">
-<h3>행위주체</h3>
-<p><strong>CEO U</strong> (60대): D-180 매출 위장 결의 + D-15 사전 통보 인지 + 본주식 분할매도.<br><strong>CFO</strong>: 회계 부정 + 사전 통보 정보 공유.<br><strong>외부 감사인</strong>: D-15 의견거절 검토 통보 (정상 절차).</p>
-<p><strong>적발 트리거</strong>: D-15~D-1 거래량 폭증 + CEO 본인·차명계좌 분배 + 거래정지 후 금감원 조사 → 매출 위장 발견.</p>
-</div>
-</div>
+<img src="./images/q046-v11/case-11-flow.png" alt="flow-11-v11" style="width:100%; display:block; margin: 8px 0;">
 
-<div class="caption" style="margin-top: 12px;">자본시장법 §174 사전 통보 분배 의심 + DART 감사보고서 + 한국거래소 거래정지 결합. 본 자료의 모든 가격·거래량·인물은 학습 목적 가상 시뮬레이션</div>
+<table style="width:100%; border-collapse: collapse; margin-top: 8px; font-size: 16px;">
+<thead><tr style="border-bottom: 1.5px solid #0A2540;"><th style="text-align:left; padding: 6px 8px;">단계</th><th style="text-align:left; padding: 6px 8px;">핵심 변칙</th><th style="text-align:left; padding: 6px 8px;">정량</th></tr></thead>
+<tbody>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>1막 매출 위장</strong></td><td style="padding: 4px 8px;">관계사 순환거래</td><td style="padding: 4px 8px;">매출 +800억 / 150일</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>2막 사전 통보</strong></td><td style="padding: 4px 8px;">감사 의견거절 통보</td><td style="padding: 4px 8px;">CEO 분할매도 / 15일</td></tr>
+<tr style="border-bottom: 1px solid #DEE2E6;"><td style="padding: 4px 8px;"><strong>3막 의견거절</strong></td><td style="padding: 4px 8px;">감사보고서 D-day 공시</td><td style="padding: 4px 8px;">D+0 16:30 신뢰 붕괴</td></tr>
+<tr><td style="padding: 4px 8px;"><strong>4막 거래정지</strong></td><td style="padding: 4px 8px;">D+1 거래소 정지</td><td style="padding: 4px 8px;">0원 손실 (영구 차단)</td></tr>
+</tbody>
+</table>
+
+<div class="caption" style="margin-top: 8px;">진입 차단 게이트 = 감사 의견 한정·의견거절·부적정 = 영구 차단 + 거래정지 = 시간외 호가만 · 가상 사례 mock · 학습 시뮬레이션</div>
 
 </div>
 
@@ -1808,6 +1790,23 @@ style: |
 <p style="margin-top: 16px; font-size: 13px; color: var(--ppt-tx3); letter-spacing: 0.1em; text-transform: uppercase;">의심 사례 신고 · 한국거래소 1577-0088 · 금감원 1332</p>
 
 </div>
+
+---
+
+<!-- _class: lead -->
+<!-- _paginate: false -->
+
+<div class="lead-divider"></div>
+
+# Far. One Step.
+
+## 멀리, 한 걸음.
+
+<div class="lead-rule"></div>
+
+<p style="font-size: 24px; color: rgba(255, 255, 255, 0.85); margin-top: 24px;">100M1S · RESEARCH · 2026-05</p>
+
+<p class="meta" style="margin-top: 60px;">© 2026 100M1S · 비공개 연구자료 · 외부 유포 금지</p>
 
 <!-- ================================================================================ -->
 <!-- LEGAL P0-4 EXCLUDE BLOCK — source-only mirror (slide 본문 인용 0건)              -->
