@@ -33,138 +33,150 @@ style: |
     background: var(--ppt-bg);
     color: var(--ppt-tx);
     font-family: 'Pretendard', -apple-system, 'Segoe UI', sans-serif;
-    padding: 56px 64px 64px;
+    padding: 36px 48px 36px;
     position: relative;
   }
-  section::before {
-    content: "비공개 연구자료 100M1S";
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    font-size: 110px; font-weight: 900; letter-spacing: 4px;
-    color: var(--ppt-id-soft);
-    pointer-events: none;
-    white-space: nowrap;
-    z-index: 0;
+  /* === v0.4.3 Fix 1: 강의 일러스트 PNG 컨테인 (레이아웃 벗어남 방지) ===
+     1280×720 본문 가용 영역 ~580px. 콘텐츠 많은 case 슬라이드는 보수적. */
+  section img {
+    max-width: 75%;
+    max-height: 180px;
+    object-fit: contain;
+    display: block;
+    margin: 6px auto;
   }
+  /* 표지(_class: lead) 슬라이드는 일러스트 크게 허용 */
+  section.lead img {
+    max-height: 220px;
+    max-width: 78%;
+  }
+  /* === v0.4.3 Fix 2: 사선 거대 워터마크 폐기 (촌스러움 핵심 원인) ===
+     기존 section::before 워터마크는 robots/noindex/sw.js로 외부 노출 차단 충분.
+     내부 비공개 PoC 라벨은 footer + LEGAL 슬라이드로 충분.                    */
   section > * { position: relative; z-index: 2; }
   header {
     background: var(--ppt-mn); color: #fff;
-    padding: 6px 16px; font-size: 12px; font-weight: 800;
+    padding: 6px 16px; font-size: 12px; font-weight: 700;
     letter-spacing: 0.5px; text-align: center;
   }
   footer {
-    color: var(--ppt-dm); font-size: 11px; letter-spacing: 0.5px;
+    color: var(--ppt-dm); font-size: 12px; letter-spacing: 0.4px;
   }
+  /* === v0.4.3 Fix 5: 폰트 가시성 (발표 환경 1280×720 뒷줄 가독성)
+     v0.4.2 → v0.4.3 +30~40% 상향. 콘텐츠 양과 본문 가용 580px 균형. */
   h1 {
-    font-size: 48px; font-weight: 900; letter-spacing: -1.4px; line-height: 1.15;
-    color: var(--ppt-tx); margin-bottom: 12px;
+    font-size: 38px; font-weight: 900; letter-spacing: -1.0px; line-height: 1.15;
+    color: var(--ppt-tx); margin-bottom: 8px;
   }
+  /* 표지(_class: lead) 슬라이드는 임팩트 위해 h1 크게 */
+  section.lead h1 { font-size: 52px; line-height: 1.1; }
   h1 .accent, h1 strong { color: var(--ppt-am); }
   h2 {
-    font-size: 28px; font-weight: 800; letter-spacing: -0.6px;
-    color: var(--ppt-mn); margin-bottom: 16px;
+    font-size: 26px; font-weight: 800; letter-spacing: -0.4px;
+    color: var(--ppt-mn); margin-bottom: 10px;
   }
-  h3 { font-size: 18px; font-weight: 700; color: var(--ppt-tx2); margin-bottom: 8px; }
-  p, li { font-size: 16px; line-height: 1.6; color: var(--ppt-tx); }
-  small, .meta { font-size: 12px; color: var(--ppt-dm); }
+  section.lead h2 { font-size: 24px; }
+  h3 { font-size: 20px; font-weight: 700; color: var(--ppt-tx2); margin-bottom: 6px; }
+  p, li { font-size: 19px; line-height: 1.5; color: var(--ppt-tx); }
+  small, .meta { font-size: 13px; color: var(--ppt-dm); }
   strong { color: var(--ppt-am); font-weight: 800; }
   em { color: var(--ppt-tx2); font-style: normal; }
   blockquote {
     background: var(--ppt-bg2);
     border-left: 4px solid var(--ppt-mn);
-    padding: 18px 22px; margin: 12px 0;
-    font-size: 16px; line-height: 1.7;
+    padding: 10px 16px; margin: 6px 0;
+    font-size: 17px; line-height: 1.45;
     border-radius: 0 8px 8px 0;
     color: var(--ppt-tx);
   }
   table {
-    width: 100%; border-collapse: collapse; font-size: 13px;
+    width: 100%; border-collapse: collapse; font-size: 15px;
     background: var(--ppt-bg); border: 1px solid var(--ppt-bd); border-radius: 10px;
     overflow: hidden;
   }
   th {
     background: var(--ppt-mn); color: #FFFFFF;
-    padding: 8px 12px; text-align: left; font-weight: 800;
-    font-size: 12px; letter-spacing: 0.5px;
+    padding: 7px 10px; text-align: left; font-weight: 800;
+    font-size: 14px; letter-spacing: 0.4px;
     border-bottom: 1px solid var(--ppt-bd);
   }
   td {
-    padding: 8px 12px; border-bottom: 1px solid var(--ppt-bd);
-    color: var(--ppt-tx); font-size: 13px; line-height: 1.5;
+    padding: 6px 10px; border-bottom: 1px solid var(--ppt-bd);
+    color: var(--ppt-tx); font-size: 15px; line-height: 1.4;
   }
   tr:nth-child(even) td { background: var(--ppt-bg2); }
   tr:last-child td { border-bottom: none; }
   code {
     background: var(--ppt-bg2); color: var(--ppt-am);
-    padding: 2px 6px; border-radius: 4px; font-size: 13px;
+    padding: 2px 6px; border-radius: 4px; font-size: 15px;
     font-family: 'SF Mono', 'JetBrains Mono', Consolas, monospace;
   }
-  /* === Phase Label (강의 단계 칩) === */
+  /* === Phase Label (강의 단계 칩) — v0.4.3 Fix 4: 단순화 === */
   .phase-label {
     display: inline-block;
-    padding: 4px 12px;
-    background: var(--ppt-mn);
-    border-radius: 999px;
-    font-size: 14px; font-weight: 800;
-    color: #FFFFFF;
-    letter-spacing: 1px;
-    margin-bottom: 14px;
+    padding: 3px 10px 3px 12px;
+    background: transparent;
+    border-left: 3px solid var(--ppt-mn);
+    border-radius: 0;
+    font-size: 14px; font-weight: 700;
+    color: var(--ppt-mn);
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
   }
   /* === 양면 분석 박스 === */
   .twoside {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 14px 0;
+    gap: 8px;
+    margin: 6px 0;
   }
   .twoside .adversary {
     background: var(--ppt-am-soft);
     border-left: 4px solid var(--ppt-am);
-    padding: 14px 16px; border-radius: 0 8px 8px 0;
-    font-size: 14px; line-height: 1.55;
+    padding: 8px 11px; border-radius: 0 8px 8px 0;
+    font-size: 15px; line-height: 1.4;
   }
   .twoside .defense {
     background: var(--ppt-mn-soft);
     border-left: 4px solid var(--ppt-mn);
-    padding: 14px 16px; border-radius: 0 8px 8px 0;
-    font-size: 14px; line-height: 1.55;
+    padding: 8px 11px; border-radius: 0 8px 8px 0;
+    font-size: 15px; line-height: 1.4;
   }
   .twoside .label {
-    font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
-    text-transform: uppercase; margin-bottom: 6px; display: block;
+    font-size: 13px; font-weight: 800; letter-spacing: 1.0px;
+    text-transform: uppercase; margin-bottom: 4px; display: block;
   }
   .twoside .adversary .label { color: var(--ppt-am); }
   .twoside .defense .label { color: var(--ppt-mn); }
   .principle-line {
     background: var(--ppt-id-soft);
     border-left: 4px solid var(--ppt-id);
-    padding: 12px 16px; border-radius: 0 8px 8px 0;
-    font-size: 14px; line-height: 1.55;
-    margin: 8px 0 12px;
+    padding: 7px 11px; border-radius: 0 8px 8px 0;
+    font-size: 15px; line-height: 1.4;
+    margin: 5px 0 6px;
     color: var(--ppt-tx);
   }
   .principle-line .label {
-    font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--ppt-id); margin-bottom: 4px; display: block;
+    font-size: 13px; font-weight: 800; letter-spacing: 1.0px;
+    text-transform: uppercase; color: var(--ppt-id); margin-bottom: 3px; display: block;
   }
   /* === 핵심 수치 카드 === */
   .num-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 6px 0;
   }
   .num-card {
     background: var(--ppt-bg);
     border: 1px solid var(--ppt-bd);
     border-left: 3px solid var(--ppt-mn);
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 6px 10px;
   }
   .num-card .nb-label {
-    font-size: 11px; color: var(--ppt-dm); font-weight: 600;
-    letter-spacing: 0.5px; margin-bottom: 4px;
+    font-size: 12px; color: var(--ppt-dm); font-weight: 600;
+    letter-spacing: 0.4px; margin-bottom: 2px;
   }
   .num-card .nb-value {
-    font-size: 18px; font-weight: 800; color: var(--ppt-tx);
+    font-size: 17px; font-weight: 800; color: var(--ppt-tx);
     font-feature-settings: 'tnum';
   }
   .num-card .nb-value .pos { color: var(--ppt-pos); }
@@ -172,11 +184,11 @@ style: |
   .num-card .nb-value .am { color: var(--ppt-am); }
   /* === 시간선 (하단 footer 위) === */
   .timeline {
-    margin-top: 14px;
+    margin-top: 12px;
     font-family: 'SF Mono', 'JetBrains Mono', Consolas, monospace;
-    font-size: 11px; color: var(--ppt-dm); letter-spacing: 0.5px;
+    font-size: 13px; color: var(--ppt-dm); letter-spacing: 0.4px;
     border-top: 1px solid var(--ppt-bd);
-    padding-top: 8px;
+    padding-top: 6px;
     display: flex; justify-content: space-between;
   }
   .timeline .here { color: var(--ppt-am); font-weight: 800; }
@@ -186,8 +198,8 @@ style: |
   .matrix-cell-weak   { color: var(--ppt-dm); }
   /* === 100M1S 워드마크 === */
   .brand {
-    position: absolute; right: 32px; top: 32px;
-    font-size: 11px; font-weight: 900; letter-spacing: 2px;
+    position: absolute; right: 28px; top: 24px;
+    font-size: 12px; font-weight: 900; letter-spacing: 1.8px;
     color: var(--ppt-id); text-transform: uppercase;
   }
   /* === SVG 인라인 컨테이너 === */
@@ -252,21 +264,6 @@ style: |
 ![강의 일러스트 case-02](./images/q046-v04/case-02.png)
 
 </div>
-
-| 사례 | P1 매집 | P2 매집후털기 | P3 띄움 | P4 띄움후털기 | P5 분배 | P6 재매집 | P7 다시분배 | P8 세력난입 | P9 이탈경합 |
-|---|---|---|---|---|---|---|---|---|---|
-| **1 통정매매** | ✓✓ | ✓ | ✓✓ | ✓ | ✓✓ | ✓ | — | ✓ | ✓ |
-| **2 가장매매** | ✓✓ | — | ✓✓ | — | ✓✓ | — | — | ✓ | ✓ |
-| **3 풍문 유포형** | ✓ | — | ✓✓ | — | ✓✓ | ✓ | — | ✓ | ✓ |
-| **4 허위공시** | ✓ | — | ✓✓ | — | ✓✓ | — | — | — | ✓ |
-| **5 CB/BW 헐값** | ✓✓ | — | ✓ | ✓ | ✓✓ | — | — | — | ✓ |
-| **5.X CB 고급** | ✓ | ✓ | — | — | ✓ | ✓ | ✓ | — | ✓ |
-| **6 무자본 M&A** | ✓✓ | — | ✓ | — | ✓✓ | — | — | — | ✓ |
-| **7 CFD SG증권** | ✓✓ | — | ✓✓ | — | ✓✓ | — | — | — | ✓ |
-| **8 라임 사모펀드** | ✓✓ | — | ✓ | — | ✓✓ | — | — | — | ✓ |
-| **9 바이오 임상** | ✓✓ | — | ✓✓ | — | ✓✓ | — | — | — | ✓ |
-| **10 테마 그룹** | ✓ | — | ✓✓ | ✓ | ✓✓ | — | — | ✓ | ✓ |
-| **11 회계감사 의견거절** | ✓✓ | — | ✓ | — | ✓✓ | — | — | — | ✓ |
 
 **매매 정수**: P3 띄움 = 눌림매매·돌파매매 진입 핵심 / P5 분배 = 진입 절대 금지 + 청산만 / P9 이탈경합 = 5호가 양방향 두께 = 진입 보류
 
