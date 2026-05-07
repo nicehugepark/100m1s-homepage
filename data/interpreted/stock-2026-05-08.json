@@ -1,6 +1,6 @@
 {
   "date": "2026-05-08",
-  "generated_at": "2026-05-08T00:15:16.235083",
+  "generated_at": "2026-05-08T00:28:57.810609",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -212,7 +212,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "024840",
@@ -420,7 +420,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "178320",
@@ -687,9 +687,7 @@
           "l": 60300,
           "c": 68100
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "050890",
@@ -965,7 +963,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "078150",
@@ -1172,7 +1170,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "138080",
@@ -1402,7 +1400,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "247540",
@@ -1417,18 +1415,12 @@
       "industry": "일차전지 및 이차전지 제조업",
       "sector": "양극활물질",
       "themes": [
-        "2차전지",
         "전기차",
         "AI 인프라",
-        "실적"
+        "실적",
+        "2차전지"
       ],
       "theme_paths": [
-        {
-          "name": "2차전지",
-          "path": [
-            "2차전지"
-          ]
-        },
         {
           "name": "전기차",
           "path": [
@@ -1446,6 +1438,12 @@
           "name": "실적",
           "path": [
             "실적"
+          ]
+        },
+        {
+          "name": "2차전지",
+          "path": [
+            "2차전지"
           ]
         }
       ],
@@ -1689,9 +1687,7 @@
           "l": 225500,
           "c": 235500
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "006910",
@@ -1896,8 +1892,8 @@
           "c": 15600
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "017550",
@@ -2088,7 +2084,9 @@
           "l": 3235,
           "c": 3860
         }
-      ]
+      ],
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "222800",
@@ -2357,7 +2355,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자주의"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "059120",
@@ -2606,7 +2604,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "단기과열"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "264850",
@@ -2803,8 +2803,8 @@
           "c": 8120
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "950160",
@@ -3056,7 +3056,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "054920",
@@ -3303,7 +3303,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "041440",
@@ -3495,8 +3495,8 @@
           "c": 10430
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "037030",
@@ -3511,21 +3511,21 @@
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "전력변환장치",
       "themes": [
-        "전력설비",
-        "AI데이터센터"
+        "AI데이터센터",
+        "전력설비"
       ],
       "theme_paths": [
-        {
-          "name": "전력설비",
-          "path": [
-            "전력설비"
-          ]
-        },
         {
           "name": "AI데이터센터",
           "path": [
             "AI",
             "AI데이터센터"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
           ]
         }
       ],
@@ -3722,7 +3722,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자주의"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "092790",
@@ -3911,7 +3913,9 @@
           "l": 18940,
           "c": 21050
         }
-      ]
+      ],
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "006345",
@@ -4129,7 +4133,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "우선주"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "101170",
@@ -4329,8 +4335,8 @@
           "c": 14590
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "079900",
@@ -4519,7 +4525,9 @@
           "l": 65300,
           "c": 68400
         }
-      ]
+      ],
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "028670",
@@ -4806,7 +4814,9 @@
           "l": 5650,
           "c": 6030
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "037440",
@@ -5026,9 +5036,7 @@
           "l": 6010,
           "c": 7460
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "083650",
@@ -5281,7 +5289,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "000880",
@@ -6098,7 +6106,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "013310",
@@ -6288,8 +6296,8 @@
           "c": 4270
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "125490",
@@ -6479,8 +6487,8 @@
           "c": 16830
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "230240",
@@ -6670,8 +6678,8 @@
           "c": 37950
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "007810",
@@ -6912,7 +6920,11 @@
             }
           ]
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "327260",
@@ -7157,7 +7169,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "150900",
@@ -7362,9 +7374,7 @@
           "l": 5370,
           "c": 5560
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "053260",
@@ -7560,9 +7570,7 @@
           "l": 6510,
           "c": 6640
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     }
   ]
 }
