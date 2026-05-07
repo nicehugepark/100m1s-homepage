@@ -2042,8 +2042,8 @@ async function initThemeTree(dateOverride) {
         const tc = document.getElementById('theme-tree-container');
         if (tc) {
           const _prev = _findPrevTradingIso(_todayIso);
-          const _hdr = `<div class="theme-tree-header" role="button" tabindex="0" aria-label="테마트리 섹션으로 이동" data-scroll-to-section="theme-tree"><div class="theme-tree-title">테마트리</div><div class="theme-tree-sub">장 시작 전 — 09:00 이후 갱신</div></div>`;
-          renderPreMarketThemeSection(tc, _todayIso, _prev, _hdr, async (prevBox, prevIso) => {
+          // 정적 헤더(news.html .theme-tree-header) 신뢰 — 동적 _hdr 추가 시 중복 (대표 catch 2026-05-08 06:06)
+          renderPreMarketThemeSection(tc, _todayIso, _prev, '', async (prevBox, prevIso) => {
             // 전일 테마트리 토글 — bypass 플래그 + 전일 dateOverride로 재진입
             window.__themeTreeBypassPreMarket = true;
             try {
