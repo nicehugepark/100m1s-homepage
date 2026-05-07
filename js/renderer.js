@@ -1216,9 +1216,138 @@ function showShareToast(msg) {
   toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// design-theme-tree-time-state-v1 — PRE_MARKET 시점 분기 (Option A, 종목카드 동형).
+// 테마트리 + 거래대금 추이 섹션도 거래일 09:00 미만 시 빈 상태 + 카운트다운 + 전일 토글 표시.
+// theme-tree.json date=5/8 + nodes=5/7 misleading 봉쇄. (대표 04:45 catch)
+function _findPrevTradingIso(iso) {
+  try {
+    const dt = new Date(iso + 'T00:00:00');
+    for (let i = 0; i < 10; i++) {
+      dt.setDate(dt.getDate() - 1);
+      const y = dt.getFullYear();
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const dd = String(dt.getDate()).padStart(2, '0');
+      const ps = `${y}-${m}-${dd}`;
+      if (typeof isMarketClosed === 'function' && !isMarketClosed(ps)) return ps;
+    }
+  } catch (_) { /* graceful */ }
+  return null;
+}
+
+let _themeSectionPreMarketTimer = null;
+let _themeSectionPreMarketVisHandler = null;
+function _stopThemeSectionPreMarketTimer() {
+  if (_themeSectionPreMarketTimer) { clearInterval(_themeSectionPreMarketTimer); _themeSectionPreMarketTimer = null; }
+  if (_themeSectionPreMarketVisHandler) {
+    document.removeEventListener('visibilitychange', _themeSectionPreMarketVisHandler);
+    _themeSectionPreMarketVisHandler = null;
+  }
+}
+
+// container = 빈 상태 영역 root (theme-tree-container 또는 theme-trend),
+// headerHtml = 섹션 헤더 (테마트리 / 거래대금 추이 등 호출자 결정),
+// onShowPrev = 전일 토글 시 호출 callback (호출자가 실제 데이터 렌더 책임)
+function renderPreMarketThemeSection(container, todayIso, prevIso, headerHtml, onShowPrev) {
+  if (!container) return;
+  _stopThemeSectionPreMarketTimer();
+  const prevLabel = prevIso && typeof formatKoDate === 'function' ? formatKoDate(prevIso) : (prevIso || '');
+  container.innerHTML = `
+    ${headerHtml || ''}
+    <div class="cal-pre-market-empty theme-pre-market-empty" role="status" aria-live="polite">
+      <svg class="cal-pre-market-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <polyline points="12 7 12 12 15 14"></polyline>
+      </svg>
+      <div class="cal-pre-market-title">장 시작 전</div>
+      <div class="cal-pre-market-sub">09:00에 신규 데이터가 표출됩니다</div>
+      <div class="cal-pre-market-countdown" data-cd-theme="1">${_formatCountdownToOpen()}</div>
+      ${prevIso ? `<button type="button" class="cal-pre-market-toggle" data-pre-theme-toggle="1" aria-expanded="false">전일(${prevLabel}) 보기 ▾</button>` : ''}
+      <div class="cal-pre-market-prev theme-pre-market-prev" data-pre-theme-prev hidden></div>
+    </div>
+  `;
+  const cdEl = container.querySelector('[data-cd-theme]');
+  const tick = () => {
+    if (!cdEl || !document.body.contains(cdEl)) { _stopThemeSectionPreMarketTimer(); return; }
+    cdEl.textContent = _formatCountdownToOpen();
+    const nowH = new Date();
+    if (nowH.getHours() >= 9 && (typeof getMarketState !== 'function' || getMarketState() !== 'PRE_MARKET')) {
+      _stopThemeSectionPreMarketTimer();
+      // 09:00 도달 시 호출자가 알아서 다시 init할 수 있도록 reload-light 시그널만
+      try { window.dispatchEvent(new CustomEvent('themeSectionPreMarketEnd')); } catch (_) {}
+    }
+  };
+  _themeSectionPreMarketTimer = setInterval(tick, 1000);
+  _themeSectionPreMarketVisHandler = () => {
+    if (document.hidden) {
+      if (_themeSectionPreMarketTimer) { clearInterval(_themeSectionPreMarketTimer); _themeSectionPreMarketTimer = null; }
+    } else if (!_themeSectionPreMarketTimer) {
+      tick();
+      _themeSectionPreMarketTimer = setInterval(tick, 1000);
+    }
+  };
+  document.addEventListener('visibilitychange', _themeSectionPreMarketVisHandler);
+
+  const toggleBtn = container.querySelector('[data-pre-theme-toggle]');
+  const prevBox = container.querySelector('[data-pre-theme-prev]');
+  if (toggleBtn && prevBox && prevIso && typeof onShowPrev === 'function') {
+    toggleBtn.addEventListener('click', async () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.textContent = `전일(${prevLabel}) 보기 ▾`;
+        prevBox.hidden = true;
+        prevBox.innerHTML = '';
+      } else {
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.textContent = `전일(${prevLabel}) 접기 ▴`;
+        prevBox.hidden = false;
+        prevBox.setAttribute('data-stale', 'true');
+        try { await onShowPrev(prevBox, prevIso); }
+        catch (e) { prevBox.textContent = '전일 데이터 로드 실패'; }
+      }
+    });
+  }
+}
+
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
   try {
+    // design-theme-tree-time-state-v1 — PRE_MARKET 시점 분기.
+    // 거래일 09:00 미만 시 빈 상태 + 카운트다운 + 전일 토글. theme-trend.json dates 마지막 element가
+    // 5/8 placeholder인 경우 misleading polyline 차단.
+    try {
+      const _container0 = document.getElementById('theme-trend');
+      const _state0 = (typeof getMarketState === 'function') ? getMarketState() : null;
+      if (_container0 && _state0 === 'PRE_MARKET' && !window.__themeTrendBypassPreMarket) {
+        const _now = new Date();
+        const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
+        const _prev = _findPrevTradingIso(_todayIso);
+        const _hdr = `<div class="theme-trend-header" role="button" tabindex="0" aria-label="테마별 거래대금 추이 섹션으로 이동" data-scroll-to-section="theme-trend"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">장 시작 전 — 09:00 이후 갱신</div></div>`;
+        renderPreMarketThemeSection(_container0, _todayIso, _prev, _hdr, async (prevBox /*, prevIso */) => {
+          // 전일 토글 시 기존 trend 차트 그대로 렌더 (PRE_MARKET 분기 우회)
+          window.__themeTrendBypassPreMarket = true;
+          try {
+            const tmp = document.createElement('div');
+            tmp.id = 'theme-trend-tmp-prev';
+            const orig = document.getElementById('theme-trend');
+            const origId = orig ? orig.id : null;
+            if (orig) orig.id = '_theme-trend-saved';
+            tmp.id = 'theme-trend';
+            document.body.appendChild(tmp);
+            try {
+              await initThemeTrend();
+              prevBox.innerHTML = tmp.innerHTML;
+            } finally {
+              tmp.remove();
+              if (orig && origId) orig.id = origId;
+              window.__themeTrendBypassPreMarket = false;
+            }
+          } catch (e) { prevBox.textContent = '전일 추이 로드 실패'; window.__themeTrendBypassPreMarket = false; }
+        });
+        return;
+      }
+    } catch (_) { /* getMarketState 미정의 시 graceful */ }
+
     const res = await fetch('/data/themes/theme-trend.json');
     if (!res.ok) return;
     const data = await res.json();
@@ -1231,16 +1360,24 @@ async function initThemeTrend() {
     let dates = allDates.slice(-17); // REQ-006 5/4 v195: 17영업일 윈도우 후 첫 데이터 일자로 trim (대표 발화 17:27 KST)
     let dateSet = new Set(dates);
 
-    // 모든 테마 표시 (데이터 있는 것만, 표시 기간 내 데이터 필터)
-    let themes = data.themes
-      .map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }))
+    // design-time-state-stale-label §3.3 + 대표 catch (5/8 04:48): 33 root 모두 legend 표시.
+    // 활성 (stock_count > 0 한 번이라도) = polyline 그리고 legend full color.
+    // 비활성 = polyline skip + legend dim (--g40 + opacity 0.4).
+    // 정렬: 활성 themes는 마지막 trade_amount desc, 비활성은 이름순으로 뒤에.
+    const allRoots = (data.themes || []).map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }));
+    const activeRoots = allRoots
       .filter(t => t.data.length >= 1 && t.data.some(d => d.stock_count > 0))
       .sort((a, b) => {
         const aLast = a.data[a.data.length - 1]?.trade_amount || 0;
         const bLast = b.data[b.data.length - 1]?.trade_amount || 0;
         return bLast - aLast;
-      })
-      .slice(0, 12);
+      });
+    const inactiveRoots = allRoots
+      .filter(t => !(t.data.length >= 1 && t.data.some(d => d.stock_count > 0)))
+      .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    // polyline 자체는 가독성을 위해 활성 상위 12개만 그림 (legend는 33개 모두 표시).
+    let themes = activeRoots.slice(0, 12);
+    const legendThemes = [...activeRoots, ...inactiveRoots]; // 전체 33 root
 
     // REQ-006 5/4 v196 — themes[0] (trade_amount desc 1순위, 가장 두드러진 polyline) 기준으로
     // firstDataIdx trim. v195의 themes.some() 조건은 너무 느슨해 ti=2/3가 4/9에 데이터 있으면
@@ -1383,10 +1520,18 @@ async function initThemeTrend() {
     // REQ-005-2026-05-04 v183: cover rect 제거 (자연 mask는 .trend-y-axis absolute z-index:2가 담당)
     svg += '</svg>';
 
-    // 레전드
+    // 레전드 — design §3.3 정합: 활성 + 비활성 33 root 모두 표시.
+    // 활성(상위 12개 polyline) = legend interactive + full color.
+    // 비활성 = legend dim, swatch opacity 0.4, --g40, click 무반응.
     let legend = '<div class="theme-trend-legend">';
+    const _activeNameSet = new Set(themes.map(t => t.name));
     themes.forEach((t, i) => {
       legend += '<span class="theme-trend-legend-item" data-legend-idx="' + i + '"><span class="swatch" style="background:' + COLORS[i % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
+    });
+    // 비활성 root (stock_count = 0 throughout window)
+    legendThemes.forEach((t) => {
+      if (_activeNameSet.has(t.name)) return;
+      legend += '<span class="theme-trend-legend-item is-inactive" aria-disabled="true" title="해당 윈도우 내 활성 종목 없음"><span class="swatch" style="background:#9CA3AF"></span>' + escapeHtml(t.name) + '</span>';
     });
     legend += '</div>';
 
@@ -1920,6 +2065,42 @@ async function initThemeTree(dateOverride) {
       }
       return;
     }
+    // design-theme-tree-time-state-v1 — PRE_MARKET 시점 분기 (catch).
+    // theme-tree.json date(예 5/8) + nodes(5/7) misleading 차단. 종목카드 동형.
+    try {
+      const _now = new Date();
+      const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
+      const _state = (typeof getMarketState === 'function') ? getMarketState(dateOverride || _todayIso) : null;
+      const _isToday = !dateOverride || dateOverride === _todayIso;
+      if (_state === 'PRE_MARKET' && _isToday && !window.__themeTreeBypassPreMarket) {
+        const tc = document.getElementById('theme-tree-container');
+        if (tc) {
+          const _prev = _findPrevTradingIso(_todayIso);
+          const _hdr = `<div class="theme-tree-header" role="button" tabindex="0" aria-label="테마트리 섹션으로 이동" data-scroll-to-section="theme-tree"><div class="theme-tree-title">테마트리</div><div class="theme-tree-sub">장 시작 전 — 09:00 이후 갱신</div></div>`;
+          renderPreMarketThemeSection(tc, _todayIso, _prev, _hdr, async (prevBox, prevIso) => {
+            // 전일 테마트리 토글 — bypass 플래그 + 전일 dateOverride로 재진입
+            window.__themeTreeBypassPreMarket = true;
+            try {
+              const tmp = document.createElement('div');
+              const orig = document.getElementById('theme-tree-container');
+              const origId = orig ? orig.id : null;
+              if (orig) orig.id = '_theme-tree-container-saved';
+              tmp.id = 'theme-tree-container';
+              document.body.appendChild(tmp);
+              try {
+                await initThemeTree(prevIso);
+                prevBox.innerHTML = tmp.innerHTML;
+              } finally {
+                tmp.remove();
+                if (orig && origId) orig.id = origId;
+                window.__themeTreeBypassPreMarket = false;
+              }
+            } catch (e) { prevBox.textContent = '전일 테마트리 로드 실패'; window.__themeTreeBypassPreMarket = false; }
+          });
+        }
+        return;
+      }
+    } catch (_) { /* getMarketState 미정의 시 graceful */ }
     // theme-tree.json 캐시 (최초 1회만 fetch)
     if (!_themeTreeCache) {
       const res = await fetch('/data/themes/theme-tree.json');
