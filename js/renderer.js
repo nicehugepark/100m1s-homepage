@@ -1507,26 +1507,18 @@ async function initThemeTrend() {
       '<div class="theme-trend-header" role="button" tabindex="0" aria-label="테마별 거래대금 추이 섹션으로 이동" data-scroll-to-section="theme-trend"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + dates.length + '영업일 · ' + dateRange + '</div></div>' +
       '<div class="theme-trend-wrap">' +
         '<div class="trend-y-axis">' + yAxisSvg + '</div>' +
-        (needsScroll ? '<div class="trend-fade-left"></div>' : '') +
         '<div class="trend-scroll-area">' + svg + '</div>' +
         legend +
         '<div id="trend-detail" class="trend-detail"></div>' +
         '<div class="theme-trend-tooltip" id="tt-trend"></div>' +
       '</div>';
 
-    // -- 횡스크롤 초기화 --
+    // -- 횡스크롤 초기화 (대표 catch 5/8: trend-fade-left 흰박스 제거, yaxis-col 자연 mask로 충분) --
     const scrollArea = container.querySelector('.trend-scroll-area');
-    const fadeLeft = container.querySelector('.trend-fade-left');
     if (scrollArea && needsScroll) {
       requestAnimationFrame(() => {
         scrollArea.scrollLeft = scrollArea.scrollWidth;
-        if (fadeLeft) fadeLeft.style.opacity = scrollArea.scrollLeft > 8 ? '1' : '0';
       });
-      if (fadeLeft) {
-        scrollArea.addEventListener('scroll', () => {
-          fadeLeft.style.opacity = scrollArea.scrollLeft > 8 ? '1' : '0';
-        }, { passive: true });
-      }
     }
 
     // -- 레전드 토글 (단일 선택) --

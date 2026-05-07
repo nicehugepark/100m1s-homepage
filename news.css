@@ -1030,11 +1030,7 @@ a.cal-credit-row:hover,
 .trend-scroll-area::-webkit-scrollbar-track { background: transparent; }
 .trend-scroll-area::-webkit-scrollbar-thumb { background: rgba(196,153,48,0.35); border-radius: 2px; }
 .trend-scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(196,153,48,0.6); }
-.trend-fade-left {
-  position: absolute; top: 16px; left: 64px; width: 32px; height: calc(100% - 36px);
-  background: var(--sf);
-  pointer-events: none; z-index: 3; opacity: 0; transition: opacity var(--t-fast);
-}
+/* 5/8 대표 catch: .trend-fade-left 룰 폐기 — 모바일 좌측 스크롤 시 흰박스 라인 가림. yaxis-col 자연 mask로 충분 */
 .theme-trend-legend {
   display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
   position: relative; z-index: 4; max-width: 100%;
@@ -1056,7 +1052,6 @@ a.cal-credit-row:hover,
   .theme-trend-wrap { padding: 12px; overflow: visible; }
   .trend-y-axis { top: 12px; left: 12px; width: 36px; height: calc(100% - 24px); }
   .trend-scroll-area { margin-left: 36px; }
-  .trend-fade-left { top: 12px; left: 48px; height: calc(100% - 28px); }
 }
 .theme-trend-tooltip {
   position: absolute; pointer-events: none;
