@@ -823,23 +823,99 @@ a.cal-credit-row:hover,
   .lut-line { transition: none; }
 }
 
-/* #4 데이터 정합 안전망 라벨 — daily_20 마지막 봉 일자 < 카드 일자 시 표시 */
-/* REQ-004 v181: absolute overlay — candles20 영역 안 우상단에 위치하여 layout 침범 회피 */
-.cal-feature-candles20-stale {
-  position: absolute;
-  top: 0;
-  right: 2px;
-  font-size: 8px;
+/* design-news-time-state-v1 (catch 2) — stale 라벨 자연 봉쇄 + 잔존 케이스만 정합 표출.
+   PRE_MARKET 빈 상태 분기로 09:00 미만 노출 0. OPEN/POST_MARKET/HOLIDAY에서 daily_20.last < date인
+   잔존 케이스만 cal-feature-meta sibling으로 static 배치. font-size 8px → 11px (모바일 가독성). */
+.cal-feature-stale-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.3;
   color: var(--dm);
-  font-family: 'SF Mono', monospace;
-  letter-spacing: 0.02em;
-  background: rgba(255,255,255,0.85);
-  padding: 0 3px;
-  border-radius: 2px;
-  pointer-events: none;
+  font-family: 'SF Mono', 'Menlo', monospace;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
-.cal-feature-candles20-stale::before { content: '\203B  '; }
+.cal-feature-stale-note::before { content: '\203B  '; opacity: 0.7; }
+@media (max-width: 880px) {
+  .cal-feature-stale-note { font-size: 10px; }
+}
+
+/* design-news-time-state-v1 (catch 1) — PRE_MARKET 빈 상태 (Option A).
+   카드 list 미렌더 + 시계 아이콘 + 카운트다운 + 보조 토글. 다크 누아르 톤 유지 (var --am 햇살). */
+.cal-pre-market-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  text-align: center;
+  gap: 6px;
+}
+.cal-pre-market-icon {
+  color: var(--am);
+  margin-bottom: 4px;
+}
+.cal-pre-market-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--tx);
+}
+.cal-pre-market-sub {
+  font-size: 13px;
+  color: var(--dm);
+}
+.cal-pre-market-countdown {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'SF Mono', 'Menlo', monospace;
+  letter-spacing: 0.04em;
+  color: var(--am);
+  font-variant-numeric: tabular-nums;
+}
+.cal-pre-market-toggle {
+  margin-top: 16px;
+  background: transparent;
+  border: 1px solid var(--bd, rgba(0,0,0,0.12));
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--tx2, var(--dm));
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.cal-pre-market-toggle:hover,
+.cal-pre-market-toggle:focus-visible {
+  background: rgba(0,0,0,0.04);
+  border-color: var(--am);
+  outline: none;
+}
+.cal-pre-market-prev {
+  width: 100%;
+  margin-top: 12px;
+  text-align: left;
+  opacity: 0.78;
+}
+.cal-pre-market-prev[data-stale="true"]::before {
+  content: '\203B  전일 데이터 (참고)';
+  display: block;
+  font-size: 11px;
+  color: var(--dm);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 880px) {
+  .cal-pre-market-empty { padding: 36px 12px; }
+  .cal-pre-market-icon { width: 32px; height: 32px; }
+  .cal-pre-market-title { font-size: 14px; }
+  .cal-pre-market-sub { font-size: 12px; }
+  .cal-pre-market-countdown { font-size: 18px; }
+  .cal-pre-market-toggle { font-size: 11px; padding: 7px 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-pre-market-toggle { transition: none; }
+}
 
 /* ───── 테마 트리 (Indented Tree + Inline Bar) ───── */
 .theme-tree { margin-top: 0; }

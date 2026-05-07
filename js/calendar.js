@@ -51,6 +51,21 @@ function isMarketClosed(iso) {
   return iso in holidayData.market_closed;
 }
 
+// design-news-time-state-v1 — 시점 4구간 분기 SSOT.
+// 본 함수가 PRE_MARKET / OPEN / POST_MARKET / HOLIDAY 단일 출처. renderer.js의
+// (hour < 16) 휴리스틱은 04:14에도 true가 되는 결함 → 폐기.
+// PRE_MARKET = 거래일 09:00 미만 / OPEN = 09:00~15:30 / POST_MARKET = 15:30 이후
+// HOLIDAY = isMarketClosed (주말 + KRX 휴장일)
+function getMarketState(iso, now) {
+  const _now = now || new Date();
+  const todayIso = iso || ymd(_now.getFullYear(), _now.getMonth() + 1, _now.getDate());
+  if (isMarketClosed(todayIso)) return 'HOLIDAY';
+  const hm = _now.getHours() * 60 + _now.getMinutes();
+  if (hm < 9 * 60) return 'PRE_MARKET';
+  if (hm < 15 * 60 + 30) return 'OPEN';
+  return 'POST_MARKET';
+}
+
 function formatKoDate(iso) {
   const [y, m, d] = iso.split('-').map(Number);
   const dow = ['일','월','화','수','목','금','토'][new Date(y, m - 1, d).getDay()];

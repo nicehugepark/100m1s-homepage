@@ -83,7 +83,147 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
     .finally(() => { window.__koreaHolidaysLoading = false; });
 }
 
+// design-news-time-state-v1 — PRE_MARKET 빈 상태 (Option A).
+// 거래일 09:00 미만 시 카드 list 미렌더 + 시계 아이콘 + 카운트다운 + 보조 토글 (전일 데이터 보기).
+// stale 라벨 자연 봉쇄 (catch 2): PRE_MARKET 진입 시 데이터 자체가 안 보이므로 라벨 노출 0.
+// 사용자 명시 토글 시에만 카드 list 렌더 + data-stale="true" attribute 부착.
+function _formatCountdownToOpen(now) {
+  const _now = now || new Date();
+  const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 9, 0, 0, 0);
+  let diff = Math.max(0, target.getTime() - _now.getTime());
+  const totalSec = Math.floor(diff / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+let _preMarketTimer = null;
+let _preMarketVisHandler = null;
+
+function _stopPreMarketTimer() {
+  if (_preMarketTimer) { clearInterval(_preMarketTimer); _preMarketTimer = null; }
+  if (_preMarketVisHandler) {
+    document.removeEventListener('visibilitychange', _preMarketVisHandler);
+    _preMarketVisHandler = null;
+  }
+}
+
+function renderPreMarketEmpty(container, date, prevDate, prevData) {
+  _stopPreMarketTimer();
+  const prevLabel = prevDate ? formatKoDate(prevDate) : '';
+  const inner = container || document.getElementById('cal-content');
+  if (!inner) return;
+  inner.innerHTML = `
+    <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
+      <div class="cal-content-date">${formatKoDate(date)}</div>
+      <div class="cal-content-meta">장 시작 전</div>
+    </div>
+    <div class="cal-pre-market-empty" role="status" aria-live="polite">
+      <svg class="cal-pre-market-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <polyline points="12 7 12 12 15 14"></polyline>
+      </svg>
+      <div class="cal-pre-market-title">장 시작 전</div>
+      <div class="cal-pre-market-sub">09:00에 신규 데이터가 표출됩니다</div>
+      <div class="cal-pre-market-countdown" data-cd="1">${_formatCountdownToOpen()}</div>
+      ${prevDate ? `<button type="button" class="cal-pre-market-toggle" data-pre-toggle="1" aria-expanded="false">전일(${prevLabel}) 데이터 보기 ▾</button>` : ''}
+      <div class="cal-pre-market-prev" data-pre-prev hidden></div>
+    </div>
+  `;
+  // 카운트다운 1초 단위 + Page Visibility API
+  const cdEl = inner.querySelector('[data-cd]');
+  const tick = () => {
+    if (!cdEl || !document.body.contains(cdEl)) { _stopPreMarketTimer(); return; }
+    cdEl.textContent = _formatCountdownToOpen();
+    // 09:00 도달 시 자동 OPEN 전환 (한 번만)
+    const nowH = new Date();
+    if (nowH.getHours() >= 9 && getMarketState() !== 'PRE_MARKET') {
+      _stopPreMarketTimer();
+      // _refreshDataAsync 동등 — calendar.js의 onCalCellClick으로 재렌더
+      try { onCalCellClick(date, false); } catch (_) {}
+    }
+  };
+  _preMarketTimer = setInterval(tick, 1000);
+  _preMarketVisHandler = () => {
+    if (document.hidden) {
+      if (_preMarketTimer) { clearInterval(_preMarketTimer); _preMarketTimer = null; }
+    } else if (!_preMarketTimer) {
+      tick();
+      _preMarketTimer = setInterval(tick, 1000);
+    }
+  };
+  document.addEventListener('visibilitychange', _preMarketVisHandler);
+
+  // 보조 토글 — 전일 데이터 표출 (data-stale="true")
+  const toggleBtn = inner.querySelector('[data-pre-toggle]');
+  const prevBox = inner.querySelector('[data-pre-prev]');
+  if (toggleBtn && prevBox && prevDate) {
+    toggleBtn.addEventListener('click', async () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.textContent = `전일(${prevLabel}) 데이터 보기 ▾`;
+        prevBox.hidden = true;
+        prevBox.innerHTML = '';
+      } else {
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.textContent = `전일(${prevLabel}) 데이터 접기 ▴`;
+        prevBox.hidden = false;
+        prevBox.setAttribute('data-stale', 'true');
+        const data = prevData || (typeof loadCalDayData === 'function' ? await loadCalDayData(prevDate) : null);
+        if (data) {
+          // 임시 컨테이너에 prevDate로 렌더 후 prevBox로 이전 (재진입 방지)
+          const tmp = document.createElement('div');
+          tmp.id = 'cal-content-tmp-prev';
+          // renderCalExpandContent는 cal-content를 hardcoded read하므로 일시 swap
+          const origInner = document.getElementById('cal-content');
+          const origId = origInner ? origInner.id : null;
+          if (origInner) origInner.id = '_cal-content-saved';
+          tmp.id = 'cal-content';
+          document.body.appendChild(tmp);
+          try {
+            // PRE_MARKET 재진입 회피 — 전일은 항상 hasAny path 또는 closed/empty path
+            renderCalExpandContent(prevDate, data);
+            prevBox.innerHTML = tmp.innerHTML;
+          } catch (e) { prevBox.textContent = '전일 데이터 로드 실패'; }
+          tmp.remove();
+          if (origInner && origId) origInner.id = origId;
+        } else {
+          prevBox.textContent = '전일 데이터 없음';
+        }
+      }
+    });
+  }
+}
+
 function renderCalExpandContent(date, data) {
+  // design-news-time-state-v1 (catch 1) — 시점 분기 PRE_MARKET 빈 상태.
+  // 본 함수 진입점에서 getMarketState로 분기. 거래일 09:00 미만 시 카드 list 미렌더.
+  // 09:00 이후 OPEN/POST_MARKET 또는 비거래일 HOLIDAY는 기존 로직 유지.
+  try {
+    const state = (typeof getMarketState === 'function') ? getMarketState(date) : null;
+    const _now = new Date();
+    const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
+    if (state === 'PRE_MARKET' && date === _todayIso) {
+      const prevDate = (typeof getNextTradingDate === 'function') ? null : null;
+      // 전일 거래일 = date 하루씩 뒤로 가며 첫 비휴장일
+      let prev = null;
+      const dt = new Date(date + 'T00:00:00');
+      for (let i = 0; i < 10; i++) {
+        dt.setDate(dt.getDate() - 1);
+        const iso = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        if (typeof isMarketClosed === 'function' && !isMarketClosed(iso)) { prev = iso; break; }
+      }
+      const inner = document.getElementById('cal-content');
+      renderPreMarketEmpty(inner, date, prev, null);
+      return;
+    } else {
+      // 다른 시점 진입 시 PRE_MARKET 타이머 정리
+      _stopPreMarketTimer();
+    }
+  } catch (_) { /* getMarketState 미정의 시 graceful */ }
+
   const inner = document.getElementById('cal-content');
   const _baseStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
   // REQ-082 Phase 2 §본질 fix (FLR-20260429-FLR-001 §본질) — REQ-080 §1 union 정책을 frontend에서도 적용.
@@ -666,16 +806,19 @@ function renderCalExpandContent(date, data) {
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       // REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측, 모바일은 CSS로 sparkline 숨김 + candles20만).
       const d20 = it.interp?.daily_20;
-      // #4 안전망: daily_20 마지막 봉 일자 < 카드 일자 시 라벨 노출 (design-lead 명세 (A) 라벨)
+      // #4 안전망: daily_20 마지막 봉 일자 < 카드 일자 시 라벨 노출 (design-news-time-state-v1, catch 2)
+      // 위치 변경: candles20 내부 absolute → cal-feature-meta sibling으로 이동 (PRE_MARKET 자연 봉쇄 + 11px 가독성).
+      // 텍스트 정정: "데이터 05/07" → "5/7 종가 기준" (의미 명료).
       let candles20Html;
+      let staleMetaHtml = '';
       if (Array.isArray(d20) && d20.length >= 5) {
         const lastBarDate = d20[d20.length - 1]?.date;
         const isStale = lastBarDate && date && lastBarDate < date;
-        const staleLabel = isStale
-          ? `<div class="cal-feature-candles20-stale">데이터 ${lastBarDate.slice(5).replace('-', '/')}</div>`
-          : '';
-        // REQ-004 v182: staleLabel을 candles20 자식으로 (absolute overlay 기준점 정합)
-        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}${staleLabel}</div>`;
+        if (isStale) {
+          const md = lastBarDate.slice(5).replace('-', '/').replace(/^0/, '');
+          staleMetaHtml = `<div class="cal-feature-stale-note" aria-label="가격 데이터 시점">${md} 종가 기준</div>`;
+        }
+        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
       } else {
         candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
       }
@@ -748,6 +891,7 @@ function renderCalExpandContent(date, data) {
                 <span class="cal-feature-name">${escapeHtml(it.name)}</span>
               </div>
               ${metaRow}
+              ${staleMetaHtml}
             </div>
           </div>
           ${rangeHtml}
