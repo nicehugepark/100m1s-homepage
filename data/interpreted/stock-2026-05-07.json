@@ -1,6 +1,6 @@
 {
   "date": "2026-05-07",
-  "generated_at": "2026-05-07T20:01:48.784101",
+  "generated_at": "2026-05-07T20:15:44.668704",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -3756,6 +3756,20 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "드림시큐리티 보통주가 투자경고종목 지정해제 및 재지정 예고 후 ① 2026-05-07 종가가 지정 전일(04-16) 종가보다 높고 ② 해제 전일(04-30) 종가보다 높으며 ③ 2026-05-07(T) 종가가 05-04(T-2) 대비 40% 이상 상승하여 2026-05-08 투자경고종목으로 재지정됨. 지정일 이후 2일간 40% 이상 상승하고 05-07 종가보다 높을 경우 1회 매매거래 정지 가능, 해제 최초 판단일 2026-05-21(예정).",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000833",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "투자경고종목지정(재지정)",
+          "period_start": "2026-05-08",
+          "condition": "지정일 이후 2일간 40% 이상 상승 + 지정 전일(05-07) 종가 초과 시 1회 매매거래정지 가능; 해제요건은 T 종가가 T-5 대비 60%↑·T-15 대비 100%↑·최근 15일 최고가 모두 해당 시 미해제",
+          "regulation_period": "2026-05-08 지정 ~ 해제 최초 판단일 2026-05-21(예정), 미해당 시 1일씩 순연"
+        }
+      ],
       "index_change_pct": -0.91,
       "index_multiple_current": -10.98,
       "index_multiple_eligible": false,
@@ -3910,6 +3924,40 @@
           "c": 4130
         }
       ],
+      "status_badges": [
+        {
+          "label": "투자경고",
+          "severity": "warning",
+          "start": "2026-05-08",
+          "summary": "드림시큐리티 보통주가 투자경고종목 지정해제 및 재지정 예고 후 ① 2026-05-07 종가가 지정 전일(04-16) 종가보다 높고 ② 해제 전일(04-30) 종가보다 높으며 ③ 2026-05-07(T) 종가가 05-04(T-2) 대비 40% 이상 상승하여 2026-05-08 투자경고종목으로 재지정됨. 지정일 이후 2026-05-08 ~ 2026-05-09 (2일간) 40% 이상 상승하고 05-07 종가보다 높을 경우 1회 매매거래 정지 가능, 해제 최초 판단일 2026-05-21(예정).",
+          "condition": "지정일 이후 2일간 40% 이상 상승 + 지정 전일(05-07) 종가 초과 시 1회 매매거래정지 가능; 해제요건은 T 종가가 T-5 대비 60%↑·T-15 대비 100%↑·최근 15일 최고가 모두 해당 시 미해제",
+          "regulation": "2026-05-08 지정 ~ 해제 최초 판단일 2026-05-21(예정), 미해당 시 1일씩 순연",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "single_price": false,
+          "source": "disclosure",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-04-21)",
+              "base_price": 4290,
+              "threshold": 4290,
+              "current": 4130,
+              "triggered": false
+            }
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000833",
+          "disclosure_title": "투자경고종목지정(재지정)"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 3750,
@@ -3987,6 +4035,21 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "KBI메탈 보통주가 투자경고종목 지정 이후 2일간 40% 이상 급등하여 2026-05-08(1일간) 매매거래가 정지됨. 투자경고종목 지정 중 매매거래정지는 금번 1회에 한함.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000830",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "매매거래 정지 및 재개(투자경고종목 지정중)",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-08",
+          "condition": "투자경고종목 지정 이후 주가가 2일간 40%이상 급등",
+          "regulation_period": "2026-05-08(1일간)"
+        }
+      ],
       "index_change_pct": -0.91,
       "index_multiple_current": -8.8,
       "index_multiple_eligible": false,
@@ -4143,29 +4206,28 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-04-28) 대비 +60%↑",
-              "base_price": 3020,
-              "threshold": 4832,
-              "current": 9300,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-08",
-          "period_end": "2026-05-11",
+          "label": "투자경고",
+          "severity": "warning",
           "start": "2026-05-08",
-          "end": "2026-05-11",
+          "end": "2026-05-08",
+          "summary": "KBI메탈 보통주가 투자경고종목 지정 이후 2026-05-08 ~ 2026-05-09 (2일간) 40% 이상 급등하여 2026-05-08(1일간) 매매거래가 정지됨. 투자경고종목 지정 중 매매거래정지는 금번 1회에 한함.",
+          "condition": "투자경고종목 지정 이후 주가가 2일간 40%이상 급등",
+          "regulation": "2026-05-08(1일간)",
           "view_date": "2026-05-07",
           "next_trading_day": "2026-05-08",
-          "next_trading_day_for_predicted": "2026-05-08",
-          "next_trading_day_source": "verified",
           "single_price": false,
-          "effect_badges": []
+          "source": "disclosure",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000830",
+          "disclosure_title": "매매거래 정지 및 재개(투자경고종목 지정중)"
         }
       ],
       "intraday": {
@@ -6559,6 +6621,34 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "아진엑스텍 보통주가 2026-05-07 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000839",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-08",
+          "condition": "판단일 종가 5일 전 대비 60% 이상 상승 + 최근 15일 종가 중 최고가 + 5일 전 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation_period": "2026-05-08~2026-05-21 (매매거래일 기준 순연 판단)"
+        },
+        {
+          "title": "아진엑스텍(KR7059120006)이 코스닥시장 업무규정 제23조의2에 따라 단기과열종목으로 지정되어 2026-05-08부터 2026-05-12까지 3거래일간 30분 단위 단일가매매방식이 적용됨. 종료일 종가가 지정일 전일 종가 대비 20% 이상 높으면 3거래일 연장(1회 한정).",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000883",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "단기과열종목(3거래일 단일가매매) 지정",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-12",
+          "condition": "종료일(2026-05-12) 종가가 지정일 전일 종가보다 20% 이상 높을 경우 단일가매매 기간 3거래일 연장(1회 한정)",
+          "regulation_period": "2026-05-08~2026-05-12"
+        }
+      ],
       "index_change_pct": -0.91,
       "index_multiple_current": -8.48,
       "index_multiple_eligible": false,
@@ -6715,29 +6805,60 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-04-28) 대비 +60%↑",
-              "base_price": 7730,
-              "threshold": 12368,
-              "current": 12560,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-08",
-          "period_end": "2026-05-11",
+          "label": "투자경고 예고",
+          "severity": "warning",
           "start": "2026-05-08",
-          "end": "2026-05-11",
+          "end": "2026-05-08",
+          "summary": "아진엑스텍 보통주가 2026-05-07 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "condition": "판단일 종가 5일 전 대비 60% 이상 상승 + 최근 15일 종가 중 최고가 + 5일 전 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation": "2026-05-08~2026-05-21 (매매거래일 기준 순연 판단)",
           "view_date": "2026-05-07",
           "next_trading_day": "2026-05-08",
-          "next_trading_day_for_predicted": "2026-05-08",
-          "next_trading_day_source": "verified",
           "single_price": false,
-          "effect_badges": []
+          "source": "disclosure",
+          "entry_threshold_price": 12368,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-22",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-05-06)",
+              "base_price": 13060,
+              "threshold": 13060,
+              "current": 12560,
+              "triggered": false
+            }
+          ],
+          "reason_text": "아진엑스텍 보통주가 2026-05-07 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "prev_stage": "단기과열",
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000839",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
+        },
+        {
+          "label": "단기과열",
+          "severity": "hot",
+          "start": "2026-05-08",
+          "end": "2026-05-12",
+          "summary": "아진엑스텍(KR7059120006)이 코스닥시장 업무규정 제23조의2에 따라 단기과열종목으로 지정되어 2026-05-08부터 2026-05-12까지 3거래일간 30분 단위 단일가매매방식이 적용됨. 종료일 종가가 지정일 전일 종가 대비 20% 이상 높으면 3거래일 연장(1회 한정).",
+          "condition": "종료일(2026-05-12) 종가가 지정일 전일 종가보다 20% 이상 높을 경우 단일가매매 기간 3거래일 연장(1회 한정)",
+          "regulation": "2026-05-08~2026-05-12",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "single_price": true,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000883",
+          "disclosure_title": "단기과열종목(3거래일 단일가매매) 지정"
         }
       ],
       "intraday": {
@@ -6786,6 +6907,8 @@
           12560
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "투자경고",
       "togusa_verdict": "neutral",
       "theme_leader": false,
       "hugepark_grade": "관찰",
@@ -8173,6 +8296,21 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "파워넷이 2026-05-08(1일간) 단일계좌 거래량 상위종목 사유로 투자주의종목으로 지정됨. 기타법인 구분에서 순매도 559,375주(상장주식수 25,512,992주 대비 2.19%)가 발생. 직전 5일간 동일 사유 지정 1회, 15일간 1회 (KRX 규정 기준).",
+          "category": "투자주의",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000845",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]단일계좌 거래량 상위종목",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-08",
+          "condition": "특정 계좌 순매수(순매도) 수량이 상장주식수 대비 2% 이상 + 당일 종가 전일 대비 5% 이상 상승(하락) (KRX 규정 기준)",
+          "regulation_period": "2026-05-08(1일간)"
+        }
+      ],
       "index_change_pct": -0.91,
       "index_multiple_current": 16.59,
       "index_multiple_eligible": false,
@@ -8325,6 +8463,33 @@
           "h": 10400,
           "l": 7960,
           "c": 8210
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의",
+          "severity": "caution",
+          "start": "2026-05-08",
+          "end": "2026-05-08",
+          "summary": "파워넷이 2026-05-08(1일간) 단일계좌 거래량 상위종목 사유로 투자주의종목으로 지정됨. 기타법인 구분에서 순매도 559,375주(상장주식수 25,512,992주 대비 2.19%)가 발생. 직전 2026-05-08 ~ 2026-05-12 (5일간) 동일 사유 지정 1회, 2026-05-08 ~ 2026-05-22 (15일간) 1회 (KRX 규정 기준).",
+          "condition": "특정 계좌 순매수(순매도) 수량이 상장주식수 대비 2% 이상 + 당일 종가 전일 대비 5% 이상 상승(하락) (KRX 규정 기준)",
+          "regulation": "2026-05-08(1일간)",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "single_price": false,
+          "source": "disclosure",
+          "thresholds": [
+            {
+              "desc": "전일(2026-05-06) 대비 5%↑",
+              "base_price": 9670,
+              "threshold": 10153,
+              "current": 8210,
+              "triggered": false
+            }
+          ],
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000845",
+          "disclosure_title": "[투자주의]단일계좌 거래량 상위종목"
         }
       ],
       "intraday": {
@@ -11902,6 +12067,21 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "코리아써키트 보통주가 2026-05-07 종가의 최근 1년간 초과 주가상승률 200% 이상이면서 초장기상승·불건전요건에 해당하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000994",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-08",
+          "condition": "판단일 종가 1년간 초과 주가상승률 200% 이상 + 최근 15일 종가 중 최고가 + 최근 15일간 매수관여율 상위 10개 계좌 관여율 기준 해당 일수 4일 이상",
+          "regulation_period": "2026-05-08 ~ 2026-05-21 (매매거래일 기준 순연 판단)"
+        }
+      ],
       "index_change_pct": 1.43,
       "index_multiple_current": 5.38,
       "index_multiple_eligible": true,
@@ -12056,6 +12236,48 @@
           "c": 102200
         }
       ],
+      "status_badges": [
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-05-08",
+          "end": "2026-05-08",
+          "summary": "코리아써키트 보통주가 2026-05-07 종가의 최근 1년간 초과 주가상승률 200% 이상이면서 초장기상승·불건전요건에 해당하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "condition": "판단일 종가 1년간 초과 주가상승률 200% 이상 + 최근 15일 종가 중 최고가 + 최근 15일간 매수관여율 상위 10개 계좌 관여율 기준 해당 일수 4일 이상",
+          "regulation": "2026-05-08 ~ 2026-05-21 (매매거래일 기준 순연 판단)",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 153600,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-22",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-05-06)",
+              "base_price": 101800,
+              "threshold": 101800,
+              "current": 102200,
+              "triggered": true
+            }
+          ],
+          "reason_text": "코리아써키트 보통주가 2026-05-07 종가의 최근 1년간 초과 주가상승률 200% 이상이면서 초장기상승·불건전요건에 해당하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000994",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 10,
         "open": 96800,
@@ -12102,6 +12324,8 @@
           102200
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "투자경고",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -13208,6 +13432,21 @@
         }
       ],
       "fallback": false,
+      "disclosures": [
+        {
+          "title": "젠큐릭스 보통주가 2026-05-07 종가가 5일 전 종가 대비 60% 이상 상승하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000836",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-08",
+          "condition": "판단일(T) 종가가 T-5 종가 대비 60% 이상 상승 + T 종가가 최근 15일 종가 중 최고가 + T-5 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation_period": "2026-05-08~2026-05-21 (매매거래일 기준 순연 판단)"
+        }
+      ],
       "index_change_pct": -0.91,
       "index_multiple_current": -32.97,
       "index_multiple_eligible": false,
@@ -13364,29 +13603,44 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-05-08",
+          "end": "2026-05-08",
+          "summary": "젠큐릭스 보통주가 2026-05-07 종가가 5일 전 종가 대비 60% 이상 상승하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "condition": "판단일(T) 종가가 T-5 종가 대비 60% 이상 상승 + T 종가가 최근 15일 종가 중 최고가 + T-5 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation": "2026-05-08~2026-05-21 (매매거래일 기준 순연 판단)",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 3760,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-22",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
           "thresholds": [
             {
-              "desc": "5일 전(2026-04-28) 대비 +60%↑",
-              "base_price": 2350,
-              "threshold": 3760,
+              "desc": "최근 15일 최고가(2026-05-06)",
+              "base_price": 2950,
+              "threshold": 2950,
               "current": 3835,
               "triggered": true
             }
           ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-08",
-          "period_end": "2026-05-11",
-          "start": "2026-05-08",
-          "end": "2026-05-11",
-          "view_date": "2026-05-07",
-          "next_trading_day": "2026-05-08",
-          "next_trading_day_for_predicted": "2026-05-08",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
+          "reason_text": "젠큐릭스 보통주가 2026-05-07 종가가 5일 전 종가 대비 60% 이상 상승하여 2026-05-08(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-08, 미해당 시 2026-05-21까지 매매거래일 기준 순연 판단.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260507000836",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
         },
         {
           "label": "상한가",
