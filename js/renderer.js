@@ -1483,19 +1483,16 @@ async function initThemeTrend() {
     // REQ-005-2026-05-04 v183: cover rect 제거 (자연 mask는 .trend-y-axis absolute z-index:2가 담당)
     svg += '</svg>';
 
-    // 레전드 — 대표 명세 (5/8 04:52 정정): 20영업일 union root 전체 표시.
-    // 상위 12개 (themes 인덱스 0~11) = polyline 그려짐 + legend full color + click toggle.
-    // 13위~ (legend overflow) = legend dim (polyline 없음 + click 무반응 — pointer-events: none).
-    // 정렬은 unionRoots 전체에 이미 누적 trade_amount desc 적용됨.
+    // 레전드 — 대표 catch (5/8 06:50 단순화): 상위 12개만 표시.
+    // is-overflow dim 정책 폐기. 13위~ legend는 hide (단계 2 = 차트 가로 스크롤 + viewport 동적 sync 별도 사이클).
+    // 정렬은 unionRoots 전체에 이미 누적 trade_amount desc 적용됨 → 상위 12 = themes 배열.
     let legend = '<div class="theme-trend-legend">';
     legendThemes.forEach((t, idx) => {
       if (idx < themes.length) {
         // polyline 표시 — themes 배열 인덱스와 일치
         legend += '<span class="theme-trend-legend-item" data-legend-idx="' + idx + '"><span class="swatch" style="background:' + COLORS[idx % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
-      } else {
-        // polyline 비표시 (overflow) — legend dim
-        legend += '<span class="theme-trend-legend-item is-overflow" aria-disabled="true" title="상위 ' + themes.length + '개만 차트 표시"><span class="swatch" style="background:#9CA3AF"></span>' + escapeHtml(t.name) + '</span>';
       }
+      // 13위~ legend = 표시하지 않음 (대표 catch 06:50 — is-overflow dim 폐기)
     });
     legend += '</div>';
 

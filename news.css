@@ -1074,17 +1074,8 @@ a.cal-credit-row:hover,
   content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
   height: 2px; background: #C49930; border-radius: 1px;
 }
-/* 대표 catch (5/8 04:52 정정): 20영업일 union legend.
-   상위 12개 = polyline + interactive. 13위~ overflow = dim + 클릭 무반응. */
-.theme-trend-legend-item.is-overflow {
-  opacity: 0.4;
-  color: var(--g40, #9CA3AF);
-  cursor: default;
-  pointer-events: none;
-}
-.theme-trend-legend-item.is-overflow .swatch {
-  opacity: 0.4;
-}
+/* 대표 catch (5/8 06:50): is-overflow dim 정책 폐기 — legend 상위 12개만 표시.
+   단계 2 (차트 가로 스크롤 + viewport 동적 legend sync) 별도 사이클. */
 /* design-theme-tree-time-state-v1 — PRE_MARKET 빈 상태가 테마트리/추이 컨테이너 안에서도 동일 톤 유지. */
 .theme-pre-market-empty {
   /* cal-pre-market-empty 토큰 100% 재사용. wrap 패딩 컨테이너에 따라 자연 적용. */
