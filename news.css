@@ -1070,9 +1070,14 @@ a.cal-credit-row:hover,
 .theme-trend-legend-item { min-height: 36px; padding: 6px 10px; border-radius: 9999px; transition: color 0.15s; }
 .theme-trend-legend-item.dimmed { color: var(--dm); }
 /* 단계 2 (대표 07:17 명령, design 07:20 명세) — viewport-aware legend sync.
-   §3 viewport-inactive = display:none (layout thrashing 회피, reorder X).
-   polyline opacity 0.08 inline 처리 (renderer.js updateViewportLegend). */
-.theme-trend-legend-item.viewport-inactive { display: none; }
+   5/8 07:42 정정 (대표 verbatim): "윈도우에 보이는 애들만 활성화 나머진 비활성화"
+   = 33 root 모두 legend 표시 (display:none X) + viewport 외 = dim (opacity + pointer-events).
+   polyline opacity 0.08 inline 처리 (renderer.js updateViewportLegend) — 모바일/데스크탑 동일. */
+.theme-trend-legend-item.viewport-inactive {
+  opacity: 0.4;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
 .theme-trend-legend-empty-hint {
   display: inline-flex; align-items: center; min-height: 36px; padding: 6px 10px;
   font-size: 11px; font-weight: 500; color: var(--dm);

@@ -1333,18 +1333,18 @@ async function initThemeTrend() {
     let dates = allDates.slice(-20);
     let dateSet = new Set(dates);
 
-    // 대표 명세 (5/8 04:52 정정): legend = 20영업일 동안 등장한 root 노드 union (활성만).
+    // 대표 명세 (5/8 07:42 재정정 verbatim): "테마트리 최상위 노드가 다 나와서 윈도우에 보이는 애들만 활성화 나머진 비활성화"
+    // = legend = 20일 union root 모두 (~33개) 표시 / polyline도 모두 그리기 / viewport 외 = dim (display:none X).
     // 정렬 = 20영업일 누적 trade_amount desc.
-    // 종전 33-root inactive dim 정책(5/8 04:48 commit a3555362) 폐기 — 대표 정정 명세 우선.
-    // polyline은 가독성을 위해 상위 12개만 그림. legend는 union 전체 표시.
+    // 종전 cap 12 폐기 (대표 catch — "레전드가 한참 모자라 보이는데"). polyline ↔ legend 1:1.
     const allRoots = (data.themes || []).map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }));
     const cumAmtOf = (t) => (t.data || []).reduce((s, d) => s + ((d.stock_count || 0) > 0 ? (d.trade_amount || 0) : 0), 0);
     const unionRoots = allRoots
       .filter(t => t.data.some(d => (d.stock_count || 0) > 0)) // 20영업일 동안 어느 일자라도 활성
       .map(t => ({ ...t, _cumAmt: cumAmtOf(t) }))
       .sort((a, b) => (b._cumAmt || 0) - (a._cumAmt || 0));
-    let themes = unionRoots.slice(0, 12); // polyline 가독성 상한
-    const legendThemes = unionRoots; // 20영업일 union 전체
+    let themes = unionRoots; // cap 폐기 — viewport 활성/비활성 dim 정책으로 가독성 확보
+    const legendThemes = unionRoots; // 20영업일 union 전체 (themes와 동일, 1:1)
 
     // REQ-006 5/4 v196 — themes[0] (trade_amount desc 1순위, 가장 두드러진 polyline) 기준으로
     // firstDataIdx trim. v195의 themes.some() 조건은 너무 느슨해 ti=2/3가 4/9에 데이터 있으면
@@ -1387,7 +1387,13 @@ async function initThemeTrend() {
       return;
     }
 
-    const COLORS = ['#C49930','#5B8DEF','#E06B6B','#4BC9A0','#A97BDB','#E8963E','#6BB5E0','#D46BAD','#7B9E3D','#E0886B','#6B8FD4','#B86BD4'];
+    // COLORS palette = 36색 (33+ 보장, 5/8 07:42 cap 폐기 정합 — viewport union root ~30~33 모두 1:1).
+    // 12색 base palette 확장 — 채도/명도 변주로 인접 hue 충돌 회피. dark theme bg(#0E1116)에서 명도 확보.
+    const COLORS = [
+      '#C49930','#5B8DEF','#E06B6B','#4BC9A0','#A97BDB','#E8963E','#6BB5E0','#D46BAD','#7B9E3D','#E0886B','#6B8FD4','#B86BD4',
+      '#F0C674','#7FB3F0','#F08A8A','#7DD9B5','#C49AE5','#F0AD60','#8FCEEB','#E89AC9','#9BBE5C','#F0A88A','#8FA8E0','#CC8FE0',
+      '#A87E1F','#3F6FCF','#C04A4A','#2E9E80','#8855B5','#C77518','#4A95C0','#B5478C','#5C7E1F','#C0664A','#4A6FB0','#9B4AB0'
+    ];
 
     // SVG 치수 — 반응형 (모바일 vs 데스크탑)
     // REQ-007 5/4 v190: isMobile breakpoint 640→880 (CSS @media + lut 정합)
@@ -1487,16 +1493,12 @@ async function initThemeTrend() {
     // REQ-005-2026-05-04 v183: cover rect 제거 (자연 mask는 .trend-y-axis absolute z-index:2가 담당)
     svg += '</svg>';
 
-    // 레전드 — 대표 catch (5/8 06:50 단순화): 상위 12개만 표시.
-    // is-overflow dim 정책 폐기. 13위~ legend는 hide (단계 2 = 차트 가로 스크롤 + viewport 동적 sync 별도 사이클).
-    // 정렬은 unionRoots 전체에 이미 누적 trade_amount desc 적용됨 → 상위 12 = themes 배열.
+    // 레전드 — 대표 명세 (5/8 07:42 verbatim): 33 root 모두 표시. viewport 활성 = 정상, viewport 외 = dim.
+    // legend ↔ polyline 1:1 (themes === legendThemes === unionRoots 전체).
+    // viewport-inactive 정책: news.css에서 opacity 0.4 + pointer-events none (display:none X — 33개 가시성 유지).
     let legend = '<div class="theme-trend-legend">';
     legendThemes.forEach((t, idx) => {
-      if (idx < themes.length) {
-        // polyline 표시 — themes 배열 인덱스와 일치
-        legend += '<span class="theme-trend-legend-item" data-legend-idx="' + idx + '"><span class="swatch" style="background:' + COLORS[idx % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
-      }
-      // 13위~ legend = 표시하지 않음 (대표 catch 06:50 — is-overflow dim 폐기)
+      legend += '<span class="theme-trend-legend-item" data-legend-idx="' + idx + '"><span class="swatch" style="background:' + COLORS[idx % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
     });
     legend += '</div>';
 
