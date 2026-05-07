@@ -1357,27 +1357,23 @@ async function initThemeTrend() {
     const VISIBLE_DAYS = 6; // 화면에 보이는 영업일 수 (LUT와 통일 — 한 윈도우 6영업일, 대표 명시)
     const allDates = data.dates;
     if (allDates.length < 1) return;
-    let dates = allDates.slice(-17); // REQ-006 5/4 v195: 17영업일 윈도우 후 첫 데이터 일자로 trim (대표 발화 17:27 KST)
+    // 대표 catch (5/8 04:52): theme-trend window = 최근 20영업일 (limit-up-trend 정합).
+    // 종전 slice(-17) 결함 (REQ-006 5/4 v195) → slice(-20) 영구 정정.
+    let dates = allDates.slice(-20);
     let dateSet = new Set(dates);
 
-    // design-time-state-stale-label §3.3 + 대표 catch (5/8 04:48): 33 root 모두 legend 표시.
-    // 활성 (stock_count > 0 한 번이라도) = polyline 그리고 legend full color.
-    // 비활성 = polyline skip + legend dim (--g40 + opacity 0.4).
-    // 정렬: 활성 themes는 마지막 trade_amount desc, 비활성은 이름순으로 뒤에.
+    // 대표 명세 (5/8 04:52 정정): legend = 20영업일 동안 등장한 root 노드 union (활성만).
+    // 정렬 = 20영업일 누적 trade_amount desc.
+    // 종전 33-root inactive dim 정책(5/8 04:48 commit a3555362) 폐기 — 대표 정정 명세 우선.
+    // polyline은 가독성을 위해 상위 12개만 그림. legend는 union 전체 표시.
     const allRoots = (data.themes || []).map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }));
-    const activeRoots = allRoots
-      .filter(t => t.data.length >= 1 && t.data.some(d => d.stock_count > 0))
-      .sort((a, b) => {
-        const aLast = a.data[a.data.length - 1]?.trade_amount || 0;
-        const bLast = b.data[b.data.length - 1]?.trade_amount || 0;
-        return bLast - aLast;
-      });
-    const inactiveRoots = allRoots
-      .filter(t => !(t.data.length >= 1 && t.data.some(d => d.stock_count > 0)))
-      .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-    // polyline 자체는 가독성을 위해 활성 상위 12개만 그림 (legend는 33개 모두 표시).
-    let themes = activeRoots.slice(0, 12);
-    const legendThemes = [...activeRoots, ...inactiveRoots]; // 전체 33 root
+    const cumAmtOf = (t) => (t.data || []).reduce((s, d) => s + ((d.stock_count || 0) > 0 ? (d.trade_amount || 0) : 0), 0);
+    const unionRoots = allRoots
+      .filter(t => t.data.some(d => (d.stock_count || 0) > 0)) // 20영업일 동안 어느 일자라도 활성
+      .map(t => ({ ...t, _cumAmt: cumAmtOf(t) }))
+      .sort((a, b) => (b._cumAmt || 0) - (a._cumAmt || 0));
+    let themes = unionRoots.slice(0, 12); // polyline 가독성 상한
+    const legendThemes = unionRoots; // 20영업일 union 전체
 
     // REQ-006 5/4 v196 — themes[0] (trade_amount desc 1순위, 가장 두드러진 polyline) 기준으로
     // firstDataIdx trim. v195의 themes.some() 조건은 너무 느슨해 ti=2/3가 4/9에 데이터 있으면
@@ -1520,18 +1516,19 @@ async function initThemeTrend() {
     // REQ-005-2026-05-04 v183: cover rect 제거 (자연 mask는 .trend-y-axis absolute z-index:2가 담당)
     svg += '</svg>';
 
-    // 레전드 — design §3.3 정합: 활성 + 비활성 33 root 모두 표시.
-    // 활성(상위 12개 polyline) = legend interactive + full color.
-    // 비활성 = legend dim, swatch opacity 0.4, --g40, click 무반응.
+    // 레전드 — 대표 명세 (5/8 04:52 정정): 20영업일 union root 전체 표시.
+    // 상위 12개 (themes 인덱스 0~11) = polyline 그려짐 + legend full color + click toggle.
+    // 13위~ (legend overflow) = legend dim (polyline 없음 + click 무반응 — pointer-events: none).
+    // 정렬은 unionRoots 전체에 이미 누적 trade_amount desc 적용됨.
     let legend = '<div class="theme-trend-legend">';
-    const _activeNameSet = new Set(themes.map(t => t.name));
-    themes.forEach((t, i) => {
-      legend += '<span class="theme-trend-legend-item" data-legend-idx="' + i + '"><span class="swatch" style="background:' + COLORS[i % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
-    });
-    // 비활성 root (stock_count = 0 throughout window)
-    legendThemes.forEach((t) => {
-      if (_activeNameSet.has(t.name)) return;
-      legend += '<span class="theme-trend-legend-item is-inactive" aria-disabled="true" title="해당 윈도우 내 활성 종목 없음"><span class="swatch" style="background:#9CA3AF"></span>' + escapeHtml(t.name) + '</span>';
+    legendThemes.forEach((t, idx) => {
+      if (idx < themes.length) {
+        // polyline 표시 — themes 배열 인덱스와 일치
+        legend += '<span class="theme-trend-legend-item" data-legend-idx="' + idx + '"><span class="swatch" style="background:' + COLORS[idx % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
+      } else {
+        // polyline 비표시 (overflow) — legend dim
+        legend += '<span class="theme-trend-legend-item is-overflow" aria-disabled="true" title="상위 ' + themes.length + '개만 차트 표시"><span class="swatch" style="background:#9CA3AF"></span>' + escapeHtml(t.name) + '</span>';
+      }
     });
     legend += '</div>';
 

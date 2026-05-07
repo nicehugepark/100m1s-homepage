@@ -1074,15 +1074,15 @@ a.cal-credit-row:hover,
   content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
   height: 2px; background: #C49930; border-radius: 1px;
 }
-/* design-time-state-stale-label §3.3 + 대표 catch (5/8 04:48):
-   비활성 root (윈도우 내 stock_count = 0) legend dim — opacity 0.4 + --g40 톤 + 클릭 무반응. */
-.theme-trend-legend-item.is-inactive {
+/* 대표 catch (5/8 04:52 정정): 20영업일 union legend.
+   상위 12개 = polyline + interactive. 13위~ overflow = dim + 클릭 무반응. */
+.theme-trend-legend-item.is-overflow {
   opacity: 0.4;
   color: var(--g40, #9CA3AF);
   cursor: default;
   pointer-events: none;
 }
-.theme-trend-legend-item.is-inactive .swatch {
+.theme-trend-legend-item.is-overflow .swatch {
   opacity: 0.4;
 }
 /* design-theme-tree-time-state-v1 — PRE_MARKET 빈 상태가 테마트리/추이 컨테이너 안에서도 동일 톤 유지. */
