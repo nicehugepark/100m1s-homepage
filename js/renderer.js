@@ -1312,42 +1312,9 @@ function renderPreMarketThemeSection(container, todayIso, prevIso, headerHtml, o
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
   try {
-    // design-theme-tree-time-state-v1 — PRE_MARKET 시점 분기.
-    // 거래일 09:00 미만 시 빈 상태 + 카운트다운 + 전일 토글. theme-trend.json dates 마지막 element가
-    // 5/8 placeholder인 경우 misleading polyline 차단.
-    try {
-      const _container0 = document.getElementById('theme-trend');
-      const _state0 = (typeof getMarketState === 'function') ? getMarketState() : null;
-      if (_container0 && _state0 === 'PRE_MARKET' && !window.__themeTrendBypassPreMarket) {
-        const _now = new Date();
-        const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
-        const _prev = _findPrevTradingIso(_todayIso);
-        const _hdr = `<div class="theme-trend-header" role="button" tabindex="0" aria-label="테마별 거래대금 추이 섹션으로 이동" data-scroll-to-section="theme-trend"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">장 시작 전 — 09:00 이후 갱신</div></div>`;
-        renderPreMarketThemeSection(_container0, _todayIso, _prev, _hdr, async (prevBox /*, prevIso */) => {
-          // 전일 토글 시 기존 trend 차트 그대로 렌더 (PRE_MARKET 분기 우회)
-          window.__themeTrendBypassPreMarket = true;
-          try {
-            const tmp = document.createElement('div');
-            tmp.id = 'theme-trend-tmp-prev';
-            const orig = document.getElementById('theme-trend');
-            const origId = orig ? orig.id : null;
-            if (orig) orig.id = '_theme-trend-saved';
-            tmp.id = 'theme-trend';
-            document.body.appendChild(tmp);
-            try {
-              await initThemeTrend();
-              prevBox.innerHTML = tmp.innerHTML;
-            } finally {
-              tmp.remove();
-              if (orig && origId) orig.id = origId;
-              window.__themeTrendBypassPreMarket = false;
-            }
-          } catch (e) { prevBox.textContent = '전일 추이 로드 실패'; window.__themeTrendBypassPreMarket = false; }
-        });
-        return;
-      }
-    } catch (_) { /* getMarketState 미정의 시 graceful */ }
-
+    // 대표 catch (5/8 04:58): 거래대금 추이는 트렌드 차트 — 장 개시 여부/휴장 무관 항상 표시.
+    // 종전 a3555362(5/8 04:48) PRE_MARKET 분기는 잘못된 적용 → rollback (대표 정합).
+    // PRE_MARKET 분기는 일자별 카드성 데이터(테마트리 initThemeTree)에만 유지.
     const res = await fetch('/data/themes/theme-trend.json');
     if (!res.ok) return;
     const data = await res.json();
@@ -1756,7 +1723,8 @@ async function initLimitUpTrend() {
         if (themeRes.ok) {
           const themeData = await themeRes.json();
           if (Array.isArray(themeData.dates) && themeData.dates.length > 0) {
-            let tDates = themeData.dates.slice(-17);
+            // 대표 catch (5/8 04:58): theme-trend과 정합 — 20영업일 (종전 17은 잔존 결함)
+            let tDates = themeData.dates.slice(-20);
             const tDateSet = new Set(tDates);
             // theme renderer와 동일하게 trade_amount desc 정렬 후 [0] 기준으로 trim (v196)
             const tThemes = (themeData.themes || [])
@@ -1784,7 +1752,8 @@ async function initLimitUpTrend() {
     }
     if (!windowDates) {
       // theme-trend.json fetch 실패 시 최종 fallback — lut 자체 items
-      windowDates = data.items.slice(-17).map(it => it.date);
+      // 대표 catch (5/8 04:58): theme-trend 정합 — 20영업일
+      windowDates = data.items.slice(-20).map(it => it.date);
     }
     const itemMap = new Map(data.items.map(it => [it.date, it]));
     const items = windowDates.map(d => itemMap.get(d) || { date: d, count: 0 });
