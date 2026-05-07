@@ -1,6 +1,6 @@
 {
   "date": "2026-05-07",
-  "generated_at": "2026-05-07T12:22:43.448592",
+  "generated_at": "2026-05-07T12:41:26.869290",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -25,7 +25,38 @@
     }
   ],
   "narratives": [],
-  "themes_macro_summary": [],
+  "themes_macro_summary": [
+    {
+      "keyword": "K뷰티수출",
+      "summary": "K-뷰티 미군기지·중국 발주 확대 → 한류 수출 수요 증가 → 뷰티·소비재 섹터 매출 기대",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "전기차국산화",
+      "summary": "현대모비스·LG 전기차 핵심부품 독자 개발 → 국산화 추진 강화 → 자동차부품·전기차 관련주 수혜",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "회계부정강화",
+      "summary": "회계부정 적발·검찰 고발 확대 → 기업 거버넌스 감시 강화 → 투명성 우수주 선호 기대",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "삼성시총",
+      "summary": "삼성전자 시가총액 1조달러 돌파 → 한국 대형주 시장심리 강화 → 반도체·대형주 동반 강세",
+      "source_count": 1,
+      "verified": false
+    },
+    {
+      "keyword": "닛케이신고",
+      "summary": "일본 닛케이 사상 최고 신기록 달성 → 아시아 경기 강세 신호 → 한국 수출주·반도체 연동 강세",
+      "source_count": 1,
+      "verified": false
+    }
+  ],
   "themes_tree": {
     "date": "2026-05-07",
     "roots": [
@@ -39,6 +70,18 @@
             "verdict": "pass"
           },
           {
+            "name": "호르무즈 해협 리스크",
+            "summary": "미·이란 교전 재개와 UAE 공격으로 호르무즈 해협 운항 위험 부상→유가 변동성·해운 운임 상승→정유·해운·방산 수혜",
+            "source_count": 6,
+            "verdict": "pass"
+          },
+          {
+            "name": "유가 상승 수혜",
+            "summary": "이란-UAE 충돌로 유가 고공행진 지속→정유·E&P 마진 확대→정유주 수혜",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
             "name": "유가 상승 수혜",
             "summary": "이란-UAE 충돌로 유가 고공행진 지속→정유·E&P 마진 확대→정유주 수혜",
             "source_count": 3,
@@ -47,8 +90,36 @@
         ]
       },
       {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "삼성전자 시총 1조달러",
+            "summary": "삼성전자가 아시아 두 번째 시총 1조달러 클럽 진입하며 7000피 견인, AI 메모리 수요 기대로 반도체 대형주 재평가 자금 유입.",
+            "source_count": 4,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "유통",
+        "children": [
+          {
+            "name": "현대백화점 저평가 리레이팅",
+            "summary": "외국인 매출 급증과 글로벌 최저 PER 부각으로 현대백화점이 7% 급등, 목표주가 상향과 자사주 소각 모멘텀이 유통주 재평가 흐름 형성.",
+            "source_count": 4,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
         "name": "AI 인프라",
         "children": [
+          {
+            "name": "AI 반도체",
+            "summary": "인텔-애플 칩 협력 보도로 인텔 14% 급등·SK하이닉스 사상 최고가 갱신→AI 반도체 수요 모멘텀 재확인→메모리·파운드리 수혜",
+            "source_count": 3,
+            "verdict": "pass"
+          },
           {
             "name": "AI 반도체",
             "summary": "인텔-애플 칩 협력 보도로 인텔 14% 급등·SK하이닉스 사상 최고가 갱신→AI 반도체 수요 모멘텀 재확인→메모리·파운드리 수혜",
@@ -65,12 +136,101 @@
             "summary": "호주 추가 금리 인상·이란發 유가 충격에 중앙은행 긴축 장기화 경고→경기침체 우려·위험자산 회피→방어주·달러 강세 수혜",
             "source_count": 3,
             "verdict": "weak"
+          },
+          {
+            "name": "글로벌 긴축 우려",
+            "summary": "호주 추가 금리 인상·이란發 유가 충격에 중앙은행 긴축 장기화 경고→경기침체 우려·위험자산 회피→방어주·달러 강세 수혜",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "건설/플랜트",
+        "children": [
+          {
+            "name": "미·이란 종전 기대 재건주",
+            "summary": "미·이란 종전 기대감으로 중동 재건 모멘텀 부각, 삼성E&A·GS건설 등 해외 플랜트·건설주에 매수세 집중.",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "로봇",
+        "children": [
+          {
+            "name": "현대차 휴머노이드 로보틱스",
+            "summary": "현대차 '아틀라스' 개발형 모델 영상 공개로 휴머노이드 로보틱스 기대감 부상, 아이엘로보틱스·에스오에스랩 등 로봇·센서 밸류체인 동반 강세.",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "AI",
+        "children": [
+          {
+            "name": "AI 의료 인프라",
+            "summary": "아크릴이 과기정통부 생성AI 인재 양성 의료 허브 선정, 로킷헬스케어 중동 AI 플랫폼 계약 등 AI×헬스케어 정책·수출 모멘텀 동반 발생.",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "교육",
+        "children": [
+          {
+            "name": "사교육 실적 서프라이즈",
+            "summary": "디지털대성 1분기 영업익 96%·순익 206% 급증 등 사교육주 실적 서프라이즈, 의대 증원 반사이익 기대 누적.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "글로벌 증시",
+        "children": [
+          {
+            "name": "일본 증시 사상 최고",
+            "summary": "닛케이225가 62000 돌파하며 소프트뱅크 16% 급등 등 일본 테크 랠리, 한국 반도체·AI 동조 매수세 확산.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "전기차",
+        "children": [
+          {
+            "name": "현대차 전기차 부품 내재화",
+            "summary": "현대모비스가 160kW급 PE시스템 독자 개발해 상반기 내 소형까지 라인업 완성, 전기차 핵심부품 내재화 모멘텀으로 부품주 수혜 기대.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "내수 수출주",
+        "children": [
+          {
+            "name": "K-푸드 글로벌 확장",
+            "summary": "삼양식품 '불닭' 영문 상표권 진전→해외 매출 보호 강화→K-라면·식품 수출주 모멘텀",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "건자재",
         "children": [
+          {
+            "name": "부동산 규제 반사이익",
+            "summary": "다주택자 규제로 리모델링 수요 확대→LX하우시스 1분기 이익 급증→인테리어·건자재주 수혜",
+            "source_count": 1,
+            "verdict": "weak"
+          },
           {
             "name": "부동산 규제 반사이익",
             "summary": "다주택자 규제로 리모델링 수요 확대→LX하우시스 1분기 이익 급증→인테리어·건자재주 수혜",
@@ -87,12 +247,35 @@
             "summary": "LG화학 상저하고 흐름 기대·목표주가 상향→2차전지 소재 수요 회복 신호→양극재·분리막 수혜",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "2차전지 소재",
+            "summary": "LG화학 상저하고 흐름 기대·목표주가 상향→2차전지 소재 수요 회복 신호→양극재·분리막 수혜",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "금융주",
+        "children": [
+          {
+            "name": "인터넷전문은행",
+            "summary": "케이뱅크 상장 후 첫 실적 서프라이즈→디지털 금융 수익성 확인→인뱅·핀테크 재평가",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "에너지 인프라",
         "children": [
+          {
+            "name": "원전·중공업",
+            "summary": "효성중공업 사상 최고가 422만원 돌파→전력 인프라·원전 기자재 수요 확인→중전기·원전주 모멘텀",
+            "source_count": 1,
+            "verdict": "weak"
+          },
           {
             "name": "원전·중공업",
             "summary": "효성중공업 사상 최고가 422만원 돌파→전력 인프라·원전 기자재 수요 확인→중전기·원전주 모멘텀",
@@ -105,15 +288,1719 @@
   },
   "stocks": [
     {
+      "code": "203650",
+      "name": "드림시큐리티",
+      "rank": 1,
+      "trade_amount": 435962032310,
+      "change_pct": 13.32,
+      "close_price": 4255,
+      "open_price": 3750,
+      "high_price": 4675,
+      "low_price": 3725,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "정보보안솔루션",
+      "themes": [
+        "양자"
+      ],
+      "theme_paths": [
+        {
+          "name": "양자",
+          "path": [
+            "양자"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-21",
+        "rank": 11,
+        "change_pct": 3.99,
+        "trade_amount": 284045888400
+      },
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "news": [
+        {
+          "title": "[급등락주 짚어보기] 상폐 극복 삼천리자전거·양자암호 공포에 드림시큐리티 등 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2577440",
+          "source": "이투데이",
+          "published_at": "2026-04-20T09:41:00",
+          "causal_chain": "양자암호 관련 공포(보안 위협 이슈) 부각 → 양자암호·보안 솔루션 기업으로서 드림시큐리티 주가 급등.",
+          "macro_event": "양자암호 공포(양자컴퓨팅 보안 위협) 이슈 부각",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -14.64,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 4675,
+        "high_date": "2026-05-07",
+        "high_pct": -8.98,
+        "low": 1400,
+        "low_date": "2026-03-09",
+        "low_pct": 203.93,
+        "current": 4255
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-25",
+          "o": 1613,
+          "h": 1702,
+          "l": 1589,
+          "c": 1702
+        },
+        {
+          "date": "2026-03-26",
+          "o": 1711,
+          "h": 1712,
+          "l": 1610,
+          "c": 1615
+        },
+        {
+          "date": "2026-03-27",
+          "o": 1580,
+          "h": 1708,
+          "l": 1570,
+          "c": 1680
+        },
+        {
+          "date": "2026-03-30",
+          "o": 1680,
+          "h": 1680,
+          "l": 1594,
+          "c": 1620
+        },
+        {
+          "date": "2026-03-31",
+          "o": 1620,
+          "h": 1630,
+          "l": 1568,
+          "c": 1578
+        },
+        {
+          "date": "2026-04-01",
+          "o": 1600,
+          "h": 1655,
+          "l": 1600,
+          "c": 1645
+        },
+        {
+          "date": "2026-04-02",
+          "o": 1661,
+          "h": 1690,
+          "l": 1546,
+          "c": 1560
+        },
+        {
+          "date": "2026-04-03",
+          "o": 1595,
+          "h": 1629,
+          "l": 1560,
+          "c": 1593
+        },
+        {
+          "date": "2026-04-06",
+          "o": 1615,
+          "h": 1632,
+          "l": 1566,
+          "c": 1573
+        },
+        {
+          "date": "2026-04-07",
+          "o": 1620,
+          "h": 1620,
+          "l": 1557,
+          "c": 1577
+        },
+        {
+          "date": "2026-04-08",
+          "o": 1596,
+          "h": 1690,
+          "l": 1596,
+          "c": 1653
+        },
+        {
+          "date": "2026-04-09",
+          "o": 1655,
+          "h": 1661,
+          "l": 1607,
+          "c": 1623
+        },
+        {
+          "date": "2026-04-10",
+          "o": 1624,
+          "h": 1928,
+          "l": 1624,
+          "c": 1846
+        },
+        {
+          "date": "2026-04-13",
+          "o": 1848,
+          "h": 2170,
+          "l": 1800,
+          "c": 1992
+        },
+        {
+          "date": "2026-04-14",
+          "o": 2070,
+          "h": 2235,
+          "l": 2000,
+          "c": 2100
+        },
+        {
+          "date": "2026-04-15",
+          "o": 2505,
+          "h": 2730,
+          "l": 2425,
+          "c": 2730
+        },
+        {
+          "date": "2026-04-16",
+          "o": 3545,
+          "h": 3545,
+          "l": 3235,
+          "c": 3545
+        },
+        {
+          "date": "2026-04-17",
+          "o": 3405,
+          "h": 3405,
+          "l": 2625,
+          "c": 2985
+        },
+        {
+          "date": "2026-04-20",
+          "o": 3175,
+          "h": 3880,
+          "l": 3000,
+          "c": 3880
+        },
+        {
+          "date": "2026-04-21",
+          "o": 4170,
+          "h": 4290,
+          "l": 3405,
+          "c": 3800
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "178320",
+      "name": "서진시스템",
+      "rank": 2,
+      "trade_amount": 322280866500,
+      "change_pct": 14.45,
+      "close_price": 68100,
+      "open_price": 60300,
+      "high_price": 71700,
+      "low_price": 60300,
+      "industry": "기타 전기장비 제조업",
+      "sector": "통신장비부품,휴대폰부품(메탈케이스 등)",
+      "themes": [
+        "2차전지 장비 수혜",
+        "2차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "2차전지 장비 수혜",
+          "path": [
+            "2차전지",
+            "2차전지 장비 수혜"
+          ]
+        }
+      ],
+      "pick_count": 4,
+      "prev_pick": {
+        "date": "2026-05-04",
+        "rank": 24,
+        "change_pct": 6.39,
+        "trade_amount": 127461519100
+      },
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "news": [
+        {
+          "title": "신한證·하나證·SKS PE, 서진시스템 2대주주로 잔류… 5월 중 마무리",
+          "url": "https://biz.chosun.com/stock/market_trend/2026/04/30/VA2E37VF6BEPNPJ54VDBHNX6WY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-30T08:00:00",
+          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
+          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[MM] 신한證·하나證·SKS PE, 서진시스템 2대주주로 잔류… 5월 중 마무리",
+          "url": "https://biz.chosun.com/moneymove/mmna/2026/04/30/7YJM7A4IQRDH3LUN3EW46CG6KA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-30T07:07:58",
+          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
+          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "서진시스템, 1206억 규모 ESS 장비 공급 계약",
+          "url": "https://www.hankyung.com/article/2026042818156",
+          "source": "한경",
+          "published_at": "2026-04-28T04:51:40",
+          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
+          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "서진시스템, 1206억 규모 ESS 장비 공급계약",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03371846645420712",
+          "source": "이데일리",
+          "published_at": "2026-04-28T01:36:25",
+          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
+          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "서진시스템, 전공정 내재화로 ESS·반도체 대응…비중국 반사수혜 기대-삼성",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03640806645414808",
+          "source": "이데일리",
+          "published_at": "2026-04-10T05:27:54",
+          "causal_chain": "글로벌 ESS 수요 확대 + 미중갈등에 따른 비중국 공급망 재편 → 서진시스템이 메탈케이스·함체 등 전공정 내재화 역량으로 ESS 장비를 대형 수주(1206억, 매출의 11.31%) → ESS·반도체 부품 매출 기저 확대.",
+          "macro_event": "ESS(에너지저장장치) 수요 확대에 따른 1206억원 규모 장비 공급계약 체결 (지난해 매출의 11.31%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -15.88,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 71700,
+        "high_date": "2026-05-07",
+        "high_pct": -5.02,
+        "low": 18410,
+        "low_date": "2025-08-20",
+        "low_pct": 269.91,
+        "current": 68100
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-06",
+          "o": 45300,
+          "h": 47250,
+          "l": 44850,
+          "c": 45750
+        },
+        {
+          "date": "2026-04-07",
+          "o": 46300,
+          "h": 47050,
+          "l": 42050,
+          "c": 42600
+        },
+        {
+          "date": "2026-04-08",
+          "o": 44700,
+          "h": 45600,
+          "l": 43400,
+          "c": 44350
+        },
+        {
+          "date": "2026-04-09",
+          "o": 44000,
+          "h": 45800,
+          "l": 43450,
+          "c": 43800
+        },
+        {
+          "date": "2026-04-10",
+          "o": 44550,
+          "h": 46350,
+          "l": 44000,
+          "c": 45250
+        },
+        {
+          "date": "2026-04-13",
+          "o": 44550,
+          "h": 49000,
+          "l": 44100,
+          "c": 47700
+        },
+        {
+          "date": "2026-04-14",
+          "o": 48100,
+          "h": 52000,
+          "l": 46500,
+          "c": 49950
+        },
+        {
+          "date": "2026-04-15",
+          "o": 51200,
+          "h": 51800,
+          "l": 49100,
+          "c": 51300
+        },
+        {
+          "date": "2026-04-16",
+          "o": 52000,
+          "h": 53700,
+          "l": 48150,
+          "c": 50200
+        },
+        {
+          "date": "2026-04-17",
+          "o": 50100,
+          "h": 52100,
+          "l": 48500,
+          "c": 50200
+        },
+        {
+          "date": "2026-04-20",
+          "o": 50200,
+          "h": 53300,
+          "l": 49500,
+          "c": 51800
+        },
+        {
+          "date": "2026-04-21",
+          "o": 53200,
+          "h": 54200,
+          "l": 49350,
+          "c": 50600
+        },
+        {
+          "date": "2026-04-22",
+          "o": 50400,
+          "h": 53200,
+          "l": 48500,
+          "c": 53200
+        },
+        {
+          "date": "2026-04-23",
+          "o": 55900,
+          "h": 57700,
+          "l": 52000,
+          "c": 55800
+        },
+        {
+          "date": "2026-04-24",
+          "o": 55800,
+          "h": 57500,
+          "l": 53700,
+          "c": 53800
+        },
+        {
+          "date": "2026-04-27",
+          "o": 53800,
+          "h": 53800,
+          "l": 50100,
+          "c": 50300
+        },
+        {
+          "date": "2026-04-28",
+          "o": 50300,
+          "h": 52700,
+          "l": 49250,
+          "c": 51300
+        },
+        {
+          "date": "2026-04-29",
+          "o": 51400,
+          "h": 58700,
+          "l": 51000,
+          "c": 56700
+        },
+        {
+          "date": "2026-04-30",
+          "o": 56800,
+          "h": 61000,
+          "l": 55400,
+          "c": 59500
+        },
+        {
+          "date": "2026-05-04",
+          "o": 60600,
+          "h": 62800,
+          "l": 59300,
+          "c": 61900
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "024840",
+      "name": "KBI메탈",
+      "rank": 3,
+      "trade_amount": 319781391660,
+      "change_pct": 18.12,
+      "close_price": 10170,
+      "open_price": 9610,
+      "high_price": 10740,
+      "low_price": 7390,
+      "industry": "1차 비철금속 제조업",
+      "sector": "동ROD, 모터코어",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 4,
+      "prev_pick": {
+        "date": "2026-05-04",
+        "rank": 48,
+        "change_pct": 30.0,
+        "trade_amount": 42373065930
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -19.91,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 10740,
+        "high_date": "2026-05-07",
+        "high_pct": -5.31,
+        "low": 1620,
+        "low_date": "2025-11-25",
+        "low_pct": 527.78,
+        "current": 10170
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-06",
+          "o": 2185,
+          "h": 2520,
+          "l": 2175,
+          "c": 2470
+        },
+        {
+          "date": "2026-04-07",
+          "o": 2510,
+          "h": 2515,
+          "l": 2365,
+          "c": 2395
+        },
+        {
+          "date": "2026-04-08",
+          "o": 2480,
+          "h": 2505,
+          "l": 2395,
+          "c": 2490
+        },
+        {
+          "date": "2026-04-09",
+          "o": 2510,
+          "h": 2510,
+          "l": 2370,
+          "c": 2420
+        },
+        {
+          "date": "2026-04-10",
+          "o": 2450,
+          "h": 2580,
+          "l": 2450,
+          "c": 2480
+        },
+        {
+          "date": "2026-04-13",
+          "o": 2455,
+          "h": 2615,
+          "l": 2415,
+          "c": 2490
+        },
+        {
+          "date": "2026-04-14",
+          "o": 2545,
+          "h": 2560,
+          "l": 2500,
+          "c": 2500
+        },
+        {
+          "date": "2026-04-15",
+          "o": 2515,
+          "h": 3075,
+          "l": 2505,
+          "c": 2885
+        },
+        {
+          "date": "2026-04-16",
+          "o": 2975,
+          "h": 3000,
+          "l": 2745,
+          "c": 2785
+        },
+        {
+          "date": "2026-04-17",
+          "o": 2775,
+          "h": 2775,
+          "l": 2590,
+          "c": 2670
+        },
+        {
+          "date": "2026-04-20",
+          "o": 2680,
+          "h": 2860,
+          "l": 2615,
+          "c": 2640
+        },
+        {
+          "date": "2026-04-21",
+          "o": 2670,
+          "h": 2720,
+          "l": 2585,
+          "c": 2650
+        },
+        {
+          "date": "2026-04-22",
+          "o": 2650,
+          "h": 2780,
+          "l": 2635,
+          "c": 2640
+        },
+        {
+          "date": "2026-04-23",
+          "o": 2785,
+          "h": 3260,
+          "l": 2725,
+          "c": 2740
+        },
+        {
+          "date": "2026-04-24",
+          "o": 2770,
+          "h": 2865,
+          "l": 2690,
+          "c": 2715
+        },
+        {
+          "date": "2026-04-27",
+          "o": 2800,
+          "h": 3330,
+          "l": 2800,
+          "c": 3080
+        },
+        {
+          "date": "2026-04-28",
+          "o": 3150,
+          "h": 3160,
+          "l": 2910,
+          "c": 3020
+        },
+        {
+          "date": "2026-04-29",
+          "o": 3145,
+          "h": 3925,
+          "l": 3120,
+          "c": 3925
+        },
+        {
+          "date": "2026-04-30",
+          "o": 4045,
+          "h": 5100,
+          "l": 4040,
+          "c": 5100
+        },
+        {
+          "date": "2026-05-04",
+          "o": 5770,
+          "h": 6630,
+          "l": 5750,
+          "c": 6630
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-27) 대비 +60%↑",
+              "base_price": 3080,
+              "threshold": 4928,
+              "current": 10170,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-11",
+          "start": "2026-05-08",
+          "end": "2026-05-11",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "next_trading_day_for_predicted": "2026-05-08",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자경고"
+    },
+    {
+      "code": "050890",
+      "name": "쏠리드",
+      "rank": 4,
+      "trade_amount": 303737024530,
+      "change_pct": 3.42,
+      "close_price": 19070,
+      "open_price": 18460,
+      "high_price": 20900,
+      "low_price": 18120,
+      "industry": "통신 및 방송 장비 제조업",
+      "sector": "이동통신중계기,위성DMB용중계기",
+      "themes": [
+        "AI데이터센터",
+        "6G",
+        "양자"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "6G",
+          "path": [
+            "6G"
+          ]
+        },
+        {
+          "name": "양자",
+          "path": [
+            "양자"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-15",
+        "rank": 3,
+        "change_pct": 16.94,
+        "trade_amount": 560022513090
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "30일 코스닥 시장 공매도 수량 상위 종목. 유니슨, 쏠리드 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/05/04/GI4WMZBRGE3GIMTDGY4WENBSGQ/",
+          "source": "조선비즈",
+          "published_at": "2026-05-03T23:01:11",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "쏠리드·노타·LIG아큐버…AI 덕분에 뜨는 통신장비주",
+          "url": "https://www.hankyung.com/article/202604282331i",
+          "source": "한경",
+          "published_at": "2026-04-28T04:54:53",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "14일 코스닥 시장 공매도 수량 상위 종목. 쏠리드, SFA반도체 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/15/GUZGGZRRGJSWMYTBMYYDCNDEHE/",
+          "source": "조선비즈",
+          "published_at": "2026-04-14T23:01:18",
+          "causal_chain": "공매도 수량 증가의 구체적 원인이 뉴스에 명시되지 않아 인과관계 분석 불가",
+          "macro_event": "",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "13일 코스닥 시장 공매도 수량 상위 종목. 쏠리드, 우리기술 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/14/GRSWIMTGMMYTCYZTGIYWINRXMU/",
+          "source": "조선비즈",
+          "published_at": "2026-04-13T23:01:15",
+          "causal_chain": "코스닥 시장 공매도 수량 증가 → 기술적 약세 신호 → 매도 압력",
+          "macro_event": "코스닥 공매도 수량 증가 현상",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "쏠리드, 6G 국책과제 ‘AI 기반 무선 인터페이스’ 주관기관 선정",
+          "url": "https://www.etoday.co.kr/news/view/2574617",
+          "source": "이투데이",
+          "published_at": "2026-04-10T01:34:00",
+          "causal_chain": "한국 정부의 6G 국책과제 본격화 → 쏠리드가 AI 기반 무선 인터페이스 주관기관으로 선정 → 6G 핵심 기술 개발 주도·정부 지원 수취·상용화 시 주요 공급사 지위 확보.",
+          "macro_event": "한국 정부, 6G 국책과제 'AI 기반 무선 인터페이스' 주관기관으로 쏠리드 선정",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -3.76,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 20900,
+        "high_date": "2026-05-07",
+        "high_pct": -8.76,
+        "low": 5980,
+        "low_date": "2025-05-19",
+        "low_pct": 218.9,
+        "current": 19070
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-25",
+          "o": 13650,
+          "h": 16460,
+          "l": 13420,
+          "c": 15910
+        },
+        {
+          "date": "2026-03-26",
+          "o": 15390,
+          "h": 15610,
+          "l": 14020,
+          "c": 14340
+        },
+        {
+          "date": "2026-03-27",
+          "o": 13700,
+          "h": 14680,
+          "l": 13660,
+          "c": 14070
+        },
+        {
+          "date": "2026-03-30",
+          "o": 13640,
+          "h": 13900,
+          "l": 12590,
+          "c": 13440
+        },
+        {
+          "date": "2026-03-31",
+          "o": 13260,
+          "h": 13820,
+          "l": 12470,
+          "c": 12630
+        },
+        {
+          "date": "2026-04-01",
+          "o": 13370,
+          "h": 15230,
+          "l": 13290,
+          "c": 14570
+        },
+        {
+          "date": "2026-04-02",
+          "o": 14820,
+          "h": 15560,
+          "l": 14370,
+          "c": 15070
+        },
+        {
+          "date": "2026-04-03",
+          "o": 15700,
+          "h": 17420,
+          "l": 15480,
+          "c": 16300
+        },
+        {
+          "date": "2026-04-06",
+          "o": 16390,
+          "h": 16880,
+          "l": 15020,
+          "c": 15640
+        },
+        {
+          "date": "2026-04-07",
+          "o": 15790,
+          "h": 15800,
+          "l": 14150,
+          "c": 14420
+        },
+        {
+          "date": "2026-04-08",
+          "o": 15140,
+          "h": 15540,
+          "l": 14430,
+          "c": 15100
+        },
+        {
+          "date": "2026-04-09",
+          "o": 15000,
+          "h": 15170,
+          "l": 13940,
+          "c": 14220
+        },
+        {
+          "date": "2026-04-10",
+          "o": 14520,
+          "h": 18050,
+          "l": 14400,
+          "c": 17080
+        },
+        {
+          "date": "2026-04-13",
+          "o": 16710,
+          "h": 18470,
+          "l": 16580,
+          "c": 17350
+        },
+        {
+          "date": "2026-04-14",
+          "o": 17740,
+          "h": 17990,
+          "l": 16260,
+          "c": 16880
+        },
+        {
+          "date": "2026-04-15",
+          "o": 17240,
+          "h": 20000,
+          "l": 17170,
+          "c": 18160
+        },
+        {
+          "date": "2026-04-16",
+          "o": 18420,
+          "h": 18880,
+          "l": 16230,
+          "c": 16670
+        },
+        {
+          "date": "2026-04-17",
+          "o": 17270,
+          "h": 17540,
+          "l": 16750,
+          "c": 16870
+        },
+        {
+          "date": "2026-04-20",
+          "o": 16650,
+          "h": 18250,
+          "l": 16480,
+          "c": 17070
+        },
+        {
+          "date": "2026-04-21",
+          "o": 17150,
+          "h": 17560,
+          "l": 16260,
+          "c": 16580
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "138080",
+      "name": "오이솔루션",
+      "rank": 5,
+      "trade_amount": 261044950400,
+      "change_pct": 25.34,
+      "close_price": 55900,
+      "open_price": 44900,
+      "high_price": 57900,
+      "low_price": 43000,
+      "industry": "통신 및 방송 장비 제조업",
+      "sector": "광트랜시버",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "오이솔루션, AI EXPO 2026서 차세대 광통신 기술 공개",
+          "url": "https://www.asiae.co.kr/article/2026050614394083348",
+          "source": "아시아경제",
+          "published_at": "2026-05-06T05:39:40",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "증권가 \"올해 실적 턴어라운드 가속화\"…오이솔루션 5%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02522326645415792",
+          "source": "이데일리",
+          "published_at": "2026-04-13T00:32:09",
+          "causal_chain": "증권가의 실적 턴어라운드 가속화 전망 → 실적 개선 기대 → 투자자 매수 심화 → 주가 상승",
+          "macro_event": "증권가의 오이솔루션 올해 실적 턴어라운드 가속화 전망",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -27.85,
+      "index_multiple_eligible": false,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "078150",
+      "name": "HB테크놀러지",
+      "rank": 6,
+      "trade_amount": 225796761270,
+      "change_pct": 5.22,
+      "close_price": 4230,
+      "open_price": 4670,
+      "high_price": 4980,
+      "low_price": 4150,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "TFT-LCD검사장비",
+      "themes": [
+        "디스플레이"
+      ],
+      "theme_paths": [
+        {
+          "name": "디스플레이",
+          "path": [
+            "디스플레이"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-27",
+        "rank": 49,
+        "change_pct": 9.44,
+        "trade_amount": 50286687100
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "16일 코스닥 시장 공매도 수량 상위 종목. 우리기술, HB테크놀러지 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/17/GAYGIZJYGVSTGNZZMRSDGNLFMQ/",
+          "source": "조선비즈",
+          "published_at": "2026-04-16T23:01:19",
+          "causal_chain": "본문 미제공으로 인과 연쇄 분석 불가",
+          "macro_event": "",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -5.74,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 4980,
+        "high_date": "2026-05-07",
+        "high_pct": -15.06,
+        "low": 1701,
+        "low_date": "2026-03-04",
+        "low_pct": 148.68,
+        "current": 4230
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-31",
+          "o": 2070,
+          "h": 2090,
+          "l": 1990,
+          "c": 2005
+        },
+        {
+          "date": "2026-04-01",
+          "o": 2090,
+          "h": 2210,
+          "l": 2080,
+          "c": 2200
+        },
+        {
+          "date": "2026-04-02",
+          "o": 2225,
+          "h": 2235,
+          "l": 2035,
+          "c": 2075
+        },
+        {
+          "date": "2026-04-03",
+          "o": 2130,
+          "h": 2210,
+          "l": 2115,
+          "c": 2135
+        },
+        {
+          "date": "2026-04-06",
+          "o": 2140,
+          "h": 2210,
+          "l": 2120,
+          "c": 2170
+        },
+        {
+          "date": "2026-04-07",
+          "o": 2220,
+          "h": 2220,
+          "l": 2070,
+          "c": 2105
+        },
+        {
+          "date": "2026-04-08",
+          "o": 2180,
+          "h": 2315,
+          "l": 2175,
+          "c": 2310
+        },
+        {
+          "date": "2026-04-09",
+          "o": 2310,
+          "h": 2310,
+          "l": 2210,
+          "c": 2230
+        },
+        {
+          "date": "2026-04-10",
+          "o": 2270,
+          "h": 2460,
+          "l": 2260,
+          "c": 2370
+        },
+        {
+          "date": "2026-04-13",
+          "o": 2340,
+          "h": 2510,
+          "l": 2300,
+          "c": 2445
+        },
+        {
+          "date": "2026-04-14",
+          "o": 2530,
+          "h": 2560,
+          "l": 2435,
+          "c": 2450
+        },
+        {
+          "date": "2026-04-15",
+          "o": 2515,
+          "h": 2545,
+          "l": 2420,
+          "c": 2450
+        },
+        {
+          "date": "2026-04-16",
+          "o": 2450,
+          "h": 2850,
+          "l": 2375,
+          "c": 2645
+        },
+        {
+          "date": "2026-04-17",
+          "o": 2645,
+          "h": 2685,
+          "l": 2555,
+          "c": 2600
+        },
+        {
+          "date": "2026-04-20",
+          "o": 2620,
+          "h": 2745,
+          "l": 2560,
+          "c": 2670
+        },
+        {
+          "date": "2026-04-21",
+          "o": 2680,
+          "h": 2735,
+          "l": 2620,
+          "c": 2655
+        },
+        {
+          "date": "2026-04-22",
+          "o": 2635,
+          "h": 2675,
+          "l": 2560,
+          "c": 2640
+        },
+        {
+          "date": "2026-04-23",
+          "o": 2670,
+          "h": 2685,
+          "l": 2540,
+          "c": 2600
+        },
+        {
+          "date": "2026-04-24",
+          "o": 2600,
+          "h": 2780,
+          "l": 2600,
+          "c": 2755
+        },
+        {
+          "date": "2026-04-27",
+          "o": 2810,
+          "h": 3140,
+          "l": 2800,
+          "c": 3005
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "006910",
+      "name": "보성파워텍",
+      "rank": 7,
+      "trade_amount": 217353645760,
+      "change_pct": -2.53,
+      "close_price": 15430,
+      "open_price": 16160,
+      "high_price": 18200,
+      "low_price": 15090,
+      "industry": "구조용 금속제품, 탱크 및 증기발생기 제조업",
+      "sector": "송배전용자재",
+      "themes": [
+        "전력설비",
+        "건설자재",
+        "철강"
+      ],
+      "theme_paths": [
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
+        {
+          "name": "건설자재",
+          "path": [
+            "건설",
+            "건설자재"
+          ]
+        },
+        {
+          "name": "철강",
+          "path": [
+            "철강"
+          ]
+        }
+      ],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-05-04",
+        "rank": 5,
+        "change_pct": 24.83,
+        "trade_amount": 649949455750
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": 2.78,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 18200,
+        "high_date": "2026-05-07",
+        "high_pct": -15.22,
+        "low": 2850,
+        "low_date": "2025-05-13",
+        "low_pct": 441.4,
+        "current": 15430
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-06",
+          "o": 9720,
+          "h": 10000,
+          "l": 9220,
+          "c": 9330
+        },
+        {
+          "date": "2026-04-07",
+          "o": 9450,
+          "h": 9540,
+          "l": 8900,
+          "c": 9010
+        },
+        {
+          "date": "2026-04-08",
+          "o": 9500,
+          "h": 10420,
+          "l": 9420,
+          "c": 10230
+        },
+        {
+          "date": "2026-04-09",
+          "o": 10230,
+          "h": 10230,
+          "l": 9570,
+          "c": 9680
+        },
+        {
+          "date": "2026-04-10",
+          "o": 9910,
+          "h": 9920,
+          "l": 9570,
+          "c": 9750
+        },
+        {
+          "date": "2026-04-13",
+          "o": 9450,
+          "h": 9710,
+          "l": 9300,
+          "c": 9640
+        },
+        {
+          "date": "2026-04-14",
+          "o": 9900,
+          "h": 10310,
+          "l": 9720,
+          "c": 10030
+        },
+        {
+          "date": "2026-04-15",
+          "o": 10220,
+          "h": 10850,
+          "l": 10160,
+          "c": 10400
+        },
+        {
+          "date": "2026-04-16",
+          "o": 10710,
+          "h": 11350,
+          "l": 10500,
+          "c": 10670
+        },
+        {
+          "date": "2026-04-17",
+          "o": 10740,
+          "h": 10750,
+          "l": 10200,
+          "c": 10280
+        },
+        {
+          "date": "2026-04-20",
+          "o": 10290,
+          "h": 10520,
+          "l": 10030,
+          "c": 10080
+        },
+        {
+          "date": "2026-04-21",
+          "o": 10180,
+          "h": 10470,
+          "l": 10000,
+          "c": 10150
+        },
+        {
+          "date": "2026-04-22",
+          "o": 10070,
+          "h": 10090,
+          "l": 9800,
+          "c": 10030
+        },
+        {
+          "date": "2026-04-23",
+          "o": 10500,
+          "h": 12650,
+          "l": 10450,
+          "c": 11870
+        },
+        {
+          "date": "2026-04-24",
+          "o": 11870,
+          "h": 12300,
+          "l": 11510,
+          "c": 12110
+        },
+        {
+          "date": "2026-04-27",
+          "o": 12390,
+          "h": 12410,
+          "l": 11610,
+          "c": 12190
+        },
+        {
+          "date": "2026-04-28",
+          "o": 12200,
+          "h": 12480,
+          "l": 11900,
+          "c": 12040
+        },
+        {
+          "date": "2026-04-29",
+          "o": 11990,
+          "h": 12930,
+          "l": 11770,
+          "c": 12430
+        },
+        {
+          "date": "2026-04-30",
+          "o": 12440,
+          "h": 13050,
+          "l": 12000,
+          "c": 12080
+        },
+        {
+          "date": "2026-05-04",
+          "o": 12290,
+          "h": 13900,
+          "l": 12200,
+          "c": 13790
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "247540",
+      "name": "에코프로비엠",
+      "rank": 8,
+      "trade_amount": 190748115000,
+      "change_pct": 1.75,
+      "close_price": 232500,
+      "open_price": 229500,
+      "high_price": 243500,
+      "low_price": 225500,
+      "industry": "일차전지 및 이차전지 제조업",
+      "sector": "양극활물질",
+      "themes": [
+        "2차전지"
+      ],
+      "theme_paths": [
+        {
+          "name": "2차전지",
+          "path": [
+            "2차전지"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-21",
+        "rank": 14,
+        "change_pct": 5.0,
+        "trade_amount": 212274027000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "코스닥 마감, 1,213.74P (1.79%↑) 에코프로비엠, 레인보우로보틱스등 상승세",
+          "url": "https://www.mk.co.kr/news/stock/12035146",
+          "source": "매경",
+          "published_at": "2026-05-04T06:35:53",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "30일 코스닥 시장 공매도 금액 상위 종목. 에코프로, 에코프로비엠 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/05/04/MNSGKYJQGEZWKYJZG5QTKYTGGE/",
+          "source": "조선비즈",
+          "published_at": "2026-05-03T23:01:12",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "29일 코스닥 시장 공매도 금액 상위 종목. 에코프로, 에코프로비엠 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/30/GEZWKYRVGJSDGOJVMZTDOZRQGU/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T23:01:13",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "IBK투자證 “에코프로비엠, 수요 회복에 2분기 매출 성장 전망⋯목표가 22만원”",
+          "url": "https://www.etoday.co.kr/news/view/2580612",
+          "source": "이투데이",
+          "published_at": "2026-04-29T22:58:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "에코프로비엠, 삼성SDI향 수요 회복 수혜…목표가↑-NH",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02840486645421368",
+          "source": "이데일리",
+          "published_at": "2026-04-29T22:41:03",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -1.92,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 260000,
+        "high_date": "2026-01-29",
+        "high_pct": -10.58,
+        "low": 81100,
+        "low_date": "2025-05-27",
+        "low_pct": 186.68,
+        "current": 232500
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-25",
+          "o": 193400,
+          "h": 204000,
+          "l": 193200,
+          "c": 203000
+        },
+        {
+          "date": "2026-03-26",
+          "o": 202000,
+          "h": 207000,
+          "l": 197400,
+          "c": 198900
+        },
+        {
+          "date": "2026-03-27",
+          "o": 193900,
+          "h": 206000,
+          "l": 188700,
+          "c": 202500
+        },
+        {
+          "date": "2026-03-30",
+          "o": 196500,
+          "h": 206000,
+          "l": 196300,
+          "c": 203500
+        },
+        {
+          "date": "2026-03-31",
+          "o": 205000,
+          "h": 205500,
+          "l": 192200,
+          "c": 192200
+        },
+        {
+          "date": "2026-04-01",
+          "o": 202000,
+          "h": 204000,
+          "l": 197500,
+          "c": 202000
+        },
+        {
+          "date": "2026-04-02",
+          "o": 202500,
+          "h": 211000,
+          "l": 193700,
+          "c": 196900
+        },
+        {
+          "date": "2026-04-03",
+          "o": 199500,
+          "h": 200500,
+          "l": 190000,
+          "c": 192600
+        },
+        {
+          "date": "2026-04-06",
+          "o": 192600,
+          "h": 204000,
+          "l": 192600,
+          "c": 199900
+        },
+        {
+          "date": "2026-04-07",
+          "o": 199700,
+          "h": 211000,
+          "l": 198700,
+          "c": 201500
+        },
+        {
+          "date": "2026-04-08",
+          "o": 212500,
+          "h": 214500,
+          "l": 205000,
+          "c": 208500
+        },
+        {
+          "date": "2026-04-09",
+          "o": 207500,
+          "h": 209750,
+          "l": 200000,
+          "c": 206000
+        },
+        {
+          "date": "2026-04-10",
+          "o": 207000,
+          "h": 207000,
+          "l": 201500,
+          "c": 201500
+        },
+        {
+          "date": "2026-04-13",
+          "o": 201500,
+          "h": 204500,
+          "l": 199000,
+          "c": 199000
+        },
+        {
+          "date": "2026-04-14",
+          "o": 203500,
+          "h": 204500,
+          "l": 197700,
+          "c": 197800
+        },
+        {
+          "date": "2026-04-15",
+          "o": 202000,
+          "h": 206000,
+          "l": 200000,
+          "c": 202500
+        },
+        {
+          "date": "2026-04-16",
+          "o": 207000,
+          "h": 209500,
+          "l": 203000,
+          "c": 205000
+        },
+        {
+          "date": "2026-04-17",
+          "o": 205500,
+          "h": 211500,
+          "l": 204000,
+          "c": 208000
+        },
+        {
+          "date": "2026-04-20",
+          "o": 208000,
+          "h": 213000,
+          "l": 204500,
+          "c": 210000
+        },
+        {
+          "date": "2026-04-21",
+          "o": 214000,
+          "h": 220500,
+          "l": 211000,
+          "c": 220500
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
       "code": "017550",
       "name": "수산세보틱스",
-      "rank": 1,
-      "trade_amount": 163408045255,
-      "change_pct": 29.86,
-      "close_price": 4045,
-      "open_price": null,
+      "rank": 9,
+      "trade_amount": 182847819960,
+      "change_pct": 25.68,
+      "close_price": 3915,
+      "open_price": 3415,
       "high_price": 4045,
-      "low_price": 4045,
+      "low_price": 3235,
       "industry": "특수 목적용 기계 제조업",
       "sector": "유압브레이커,트럭크레인,플라즈마 파암장비,특장차,산업기계,건설기계 제조,도매",
       "themes": [],
@@ -125,21 +2012,21 @@
         "change_pct": 18.44,
         "trade_amount": 93716415090
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [],
       "fallback": true,
       "index_change_pct": -0.3,
-      "index_multiple_current": -99.53,
+      "index_multiple_current": -85.6,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4045,
         "high_date": "2026-05-07",
-        "high_pct": 0.0,
+        "high_pct": -3.21,
         "low": 1630,
         "low_date": "2026-01-09",
-        "low_pct": 148.16,
-        "current": 4045
+        "low_pct": 140.18,
+        "current": 3915
       },
       "daily_20": [
         {
@@ -308,12 +2195,607 @@
           ],
           "next_trading_day": "2026-05-08"
         }
-      ]
+      ],
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "222800",
+      "name": "심텍",
+      "rank": 10,
+      "trade_amount": 165934467000,
+      "change_pct": 14.82,
+      "close_price": 107700,
+      "open_price": 102400,
+      "high_price": 111200,
+      "low_price": 99500,
+      "industry": "전자부품 제조업",
+      "sector": "반도체용 인쇄회로기판",
+      "themes": [
+        "반도체",
+        "FC-BGA"
+      ],
+      "theme_paths": [
+        {
+          "name": "FC-BGA",
+          "path": [
+            "반도체",
+            "FC-BGA"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-24",
+        "rank": 47,
+        "change_pct": 4.96,
+        "trade_amount": 64715199500
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "증권가, 목표가 줄상향…심텍 12% 급등[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04063926645446624",
+          "source": "이데일리",
+          "published_at": "2026-05-07T00:28:39",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -16.29,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 111200,
+        "high_date": "2026-05-07",
+        "high_pct": -3.15,
+        "low": 15600,
+        "low_date": "2025-05-12",
+        "low_pct": 590.38,
+        "current": 107700
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-30",
+          "o": 52600,
+          "h": 52700,
+          "l": 50100,
+          "c": 51500
+        },
+        {
+          "date": "2026-03-31",
+          "o": 49500,
+          "h": 50500,
+          "l": 47050,
+          "c": 47450
+        },
+        {
+          "date": "2026-04-01",
+          "o": 51200,
+          "h": 53400,
+          "l": 50400,
+          "c": 52900
+        },
+        {
+          "date": "2026-04-02",
+          "o": 54100,
+          "h": 54100,
+          "l": 48250,
+          "c": 48950
+        },
+        {
+          "date": "2026-04-03",
+          "o": 50500,
+          "h": 50800,
+          "l": 48900,
+          "c": 49550
+        },
+        {
+          "date": "2026-04-06",
+          "o": 52000,
+          "h": 57600,
+          "l": 51800,
+          "c": 54500
+        },
+        {
+          "date": "2026-04-07",
+          "o": 58000,
+          "h": 58800,
+          "l": 55900,
+          "c": 57900
+        },
+        {
+          "date": "2026-04-08",
+          "o": 61500,
+          "h": 68000,
+          "l": 60500,
+          "c": 68000
+        },
+        {
+          "date": "2026-04-09",
+          "o": 66100,
+          "h": 70700,
+          "l": 65700,
+          "c": 68400
+        },
+        {
+          "date": "2026-04-10",
+          "o": 70900,
+          "h": 71700,
+          "l": 67200,
+          "c": 68100
+        },
+        {
+          "date": "2026-04-13",
+          "o": 67000,
+          "h": 69000,
+          "l": 65600,
+          "c": 66400
+        },
+        {
+          "date": "2026-04-14",
+          "o": 68500,
+          "h": 69500,
+          "l": 65800,
+          "c": 66300
+        },
+        {
+          "date": "2026-04-15",
+          "o": 68800,
+          "h": 73200,
+          "l": 64700,
+          "c": 71100
+        },
+        {
+          "date": "2026-04-16",
+          "o": 69900,
+          "h": 77600,
+          "l": 69700,
+          "c": 76100
+        },
+        {
+          "date": "2026-04-17",
+          "o": 74500,
+          "h": 77100,
+          "l": 73400,
+          "c": 76200
+        },
+        {
+          "date": "2026-04-20",
+          "o": 76200,
+          "h": 79800,
+          "l": 74700,
+          "c": 78300
+        },
+        {
+          "date": "2026-04-21",
+          "o": 80500,
+          "h": 82400,
+          "l": 77600,
+          "c": 79400
+        },
+        {
+          "date": "2026-04-22",
+          "o": 81000,
+          "h": 87700,
+          "l": 78200,
+          "c": 86600
+        },
+        {
+          "date": "2026-04-23",
+          "o": 86600,
+          "h": 86600,
+          "l": 81600,
+          "c": 84700
+        },
+        {
+          "date": "2026-04-24",
+          "o": 85200,
+          "h": 90400,
+          "l": 84900,
+          "c": 88400
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자주의"
+    },
+    {
+      "code": "950160",
+      "name": "코오롱티슈진",
+      "rank": 11,
+      "trade_amount": 109553904000,
+      "change_pct": 4.25,
+      "close_price": 108000,
+      "open_price": 108400,
+      "high_price": 123000,
+      "low_price": 107000,
+      "industry": "기초 의약물질 제조업",
+      "sector": "골관절염 치료제",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "[MK 골든크로스 돌파종목 : 한샘(009240) & 코오롱티슈진(950160)]",
+          "url": "https://www.mk.co.kr/news/stock/12030498",
+          "source": "매경",
+          "published_at": "2026-04-29T01:08:47",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "코오롱티슈진, TG-C 17년 안전성 입증…비만 환자서도 효능 확인",
+          "url": "https://www.sedaily.com/article/20037402",
+          "source": "서울경제",
+          "published_at": "2026-04-27T00:42:30",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "코오롱티슈진 'TG-C' 17년 추적결과 \"단 한건의 암 발생도 없어\"",
+          "url": "https://www.hankyung.com/article/202604278095i",
+          "source": "한경",
+          "published_at": "2026-04-26T23:33:40",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[속보] 코스피 장중 6000선 회복…중동전쟁 발발 이후 31거래일만",
+          "url": "https://www.hankyung.com/article/2026041490106",
+          "source": "한경",
+          "published_at": "2026-04-14T01:19:20",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -4.67,
+      "index_multiple_eligible": false,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "041440",
+      "name": "현대에버다임",
+      "rank": 12,
+      "trade_amount": 108917820200,
+      "change_pct": 15.93,
+      "close_price": 10550,
+      "open_price": 9420,
+      "high_price": 11320,
+      "low_price": 9220,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "콘크리트펌프트럭, 중장비개량사업",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -17.51,
+      "index_multiple_eligible": false,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "054920",
+      "name": "한컴위드",
+      "rank": 13,
+      "trade_amount": 104480422750,
+      "change_pct": -0.51,
+      "close_price": 7810,
+      "open_price": 7640,
+      "high_price": 8980,
+      "low_price": 7560,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "전자상거래 보안 솔루션",
+      "themes": [
+        "스테이블코인",
+        "토큰화 RWA",
+        "가상자산"
+      ],
+      "theme_paths": [
+        {
+          "name": "스테이블코인",
+          "path": [
+            "가상자산",
+            "스테이블코인"
+          ]
+        },
+        {
+          "name": "토큰화 RWA",
+          "path": [
+            "가상자산",
+            "토큰화 RWA"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-28",
+        "rank": 49,
+        "change_pct": 0.77,
+        "trade_amount": 56761075200
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "한컴위드, 165억 규모 한글과컴퓨터 주식 취득 결정",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=06346806645421368",
+          "source": "이데일리",
+          "published_at": "2026-04-30T08:02:09",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한컴위드, 금 토큰화 스테이블코인 플랫폼 ‘온토리움’ 출시",
+          "url": "https://www.mk.co.kr/news/it/12022766",
+          "source": "매경",
+          "published_at": "2026-04-21T04:33:54",
+          "causal_chain": "글로벌 스테이블코인/RWA 시장 성장 + 원화 스테이블코인 국내 법제화 흐름 → 한컴위드의 기존 금거래소(매출 7500억원) 운영 노하우를 블록체인 기술로 토큰화 플랫폼 전환 → 온토리움/아쿠아 신규 사업 매출 + 기존 금거래소 시너지로 신사업 기반 매출 성장.",
+          "macro_event": "한컴위드, 실물 금 기반 스테이블코인 플랫폼 온토리움 글로벌 출시",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한컴위드, PQC 차세대 보안 기술 부각…양자보안 시장 핵심 플레이어 주목",
+          "url": "https://www.asiae.co.kr/article/2026042013463608168",
+          "source": "아시아경제",
+          "published_at": "2026-04-20T04:46:36",
+          "causal_chain": "글로벌 스테이블코인/RWA 시장 성장 + 원화 스테이블코인 국내 법제화 흐름 → 한컴위드의 기존 금거래소(매출 7500억원) 운영 노하우를 블록체인 기술로 토큰화 플랫폼 전환 → 온토리움/아쿠아 신규 사업 매출 + 기존 금거래소 시너지로 신사업 기반 매출 성장.",
+          "macro_event": "한컴위드, 실물 금 기반 스테이블코인 플랫폼 온토리움 글로벌 출시",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": 0.56,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 8980,
+        "high_date": "2026-05-07",
+        "high_pct": -13.03,
+        "low": 2505,
+        "low_date": "2025-05-19",
+        "low_pct": 211.78,
+        "current": 7810
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-31",
+          "o": 4680,
+          "h": 6010,
+          "l": 4535,
+          "c": 4995
+        },
+        {
+          "date": "2026-04-01",
+          "o": 5080,
+          "h": 5390,
+          "l": 5050,
+          "c": 5230
+        },
+        {
+          "date": "2026-04-02",
+          "o": 5420,
+          "h": 5450,
+          "l": 4720,
+          "c": 4850
+        },
+        {
+          "date": "2026-04-03",
+          "o": 4895,
+          "h": 5020,
+          "l": 4775,
+          "c": 4790
+        },
+        {
+          "date": "2026-04-06",
+          "o": 4740,
+          "h": 4945,
+          "l": 4665,
+          "c": 4700
+        },
+        {
+          "date": "2026-04-07",
+          "o": 4725,
+          "h": 4820,
+          "l": 4470,
+          "c": 4550
+        },
+        {
+          "date": "2026-04-08",
+          "o": 4700,
+          "h": 4890,
+          "l": 4680,
+          "c": 4870
+        },
+        {
+          "date": "2026-04-09",
+          "o": 4855,
+          "h": 4860,
+          "l": 4665,
+          "c": 4700
+        },
+        {
+          "date": "2026-04-10",
+          "o": 4750,
+          "h": 5030,
+          "l": 4705,
+          "c": 5000
+        },
+        {
+          "date": "2026-04-13",
+          "o": 4960,
+          "h": 5140,
+          "l": 4860,
+          "c": 4990
+        },
+        {
+          "date": "2026-04-14",
+          "o": 5110,
+          "h": 5390,
+          "l": 5030,
+          "c": 5350
+        },
+        {
+          "date": "2026-04-15",
+          "o": 5690,
+          "h": 6780,
+          "l": 5530,
+          "c": 6410
+        },
+        {
+          "date": "2026-04-16",
+          "o": 7280,
+          "h": 7800,
+          "l": 6560,
+          "c": 6680
+        },
+        {
+          "date": "2026-04-17",
+          "o": 6690,
+          "h": 6700,
+          "l": 6040,
+          "c": 6140
+        },
+        {
+          "date": "2026-04-20",
+          "o": 6300,
+          "h": 7980,
+          "l": 6140,
+          "c": 7090
+        },
+        {
+          "date": "2026-04-21",
+          "o": 6870,
+          "h": 6870,
+          "l": 6320,
+          "c": 6500
+        },
+        {
+          "date": "2026-04-22",
+          "o": 6400,
+          "h": 6600,
+          "l": 6280,
+          "c": 6510
+        },
+        {
+          "date": "2026-04-23",
+          "o": 6560,
+          "h": 7070,
+          "l": 6560,
+          "c": 7070
+        },
+        {
+          "date": "2026-04-24",
+          "o": 7120,
+          "h": 7400,
+          "l": 6800,
+          "c": 6810
+        },
+        {
+          "date": "2026-04-27",
+          "o": 6900,
+          "h": 8050,
+          "l": 6750,
+          "c": 7870
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "006345",
+      "name": "대원전선우",
+      "rank": 14,
+      "trade_amount": 95889721590,
+      "change_pct": 29.95,
+      "close_price": 16790,
+      "open_price": 15000,
+      "high_price": 16790,
+      "low_price": 11500,
+      "industry": null,
+      "sector": null,
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
     },
     {
       "code": "072950",
       "name": "빛샘전자",
-      "rank": 2,
+      "rank": 15,
       "trade_amount": 90726581280,
       "change_pct": 29.93,
       "close_price": 17060,
@@ -516,22 +2998,233 @@
         }
       ],
       "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
+      "code": "037030",
+      "name": "파워넷",
+      "rank": 16,
+      "trade_amount": 87977215120,
+      "change_pct": -16.13,
+      "close_price": 8110,
+      "open_price": 10070,
+      "high_price": 10400,
+      "low_price": 7960,
+      "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
+      "sector": "전력변환장치",
+      "themes": [
+        "AI데이터센터",
+        "전력설비"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        }
+      ],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-05-04",
+        "rank": 34,
+        "change_pct": 29.84,
+        "trade_amount": 80483680560
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": 17.73,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 10400,
+        "high_date": "2026-05-07",
+        "high_pct": -22.02,
+        "low": 2185,
+        "low_date": "2025-05-12",
+        "low_pct": 271.17,
+        "current": 8110
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-06",
+          "o": 5410,
+          "h": 5750,
+          "l": 5170,
+          "c": 5250
+        },
+        {
+          "date": "2026-04-07",
+          "o": 5500,
+          "h": 6340,
+          "l": 5310,
+          "c": 5680
+        },
+        {
+          "date": "2026-04-08",
+          "o": 5900,
+          "h": 6680,
+          "l": 5730,
+          "c": 6080
+        },
+        {
+          "date": "2026-04-09",
+          "o": 6040,
+          "h": 6580,
+          "l": 5920,
+          "c": 6150
+        },
+        {
+          "date": "2026-04-10",
+          "o": 6390,
+          "h": 7140,
+          "l": 6180,
+          "c": 6550
+        },
+        {
+          "date": "2026-04-13",
+          "o": 6550,
+          "h": 7300,
+          "l": 6470,
+          "c": 7000
+        },
+        {
+          "date": "2026-04-14",
+          "o": 7100,
+          "h": 9100,
+          "l": 7100,
+          "c": 8470
+        },
+        {
+          "date": "2026-04-15",
+          "o": 8710,
+          "h": 9080,
+          "l": 8260,
+          "c": 8540
+        },
+        {
+          "date": "2026-04-16",
+          "o": 8540,
+          "h": 8550,
+          "l": 7130,
+          "c": 7380
+        },
+        {
+          "date": "2026-04-17",
+          "o": 7350,
+          "h": 7490,
+          "l": 6950,
+          "c": 7010
+        },
+        {
+          "date": "2026-04-20",
+          "o": 7010,
+          "h": 7120,
+          "l": 6560,
+          "c": 6680
+        },
+        {
+          "date": "2026-04-21",
+          "o": 6740,
+          "h": 6790,
+          "l": 6280,
+          "c": 6440
+        },
+        {
+          "date": "2026-04-22",
+          "o": 6440,
+          "h": 6850,
+          "l": 6290,
+          "c": 6720
+        },
+        {
+          "date": "2026-04-23",
+          "o": 6870,
+          "h": 6900,
+          "l": 6000,
+          "c": 6220
+        },
+        {
+          "date": "2026-04-24",
+          "o": 6210,
+          "h": 6480,
+          "l": 5980,
+          "c": 5990
+        },
+        {
+          "date": "2026-04-27",
+          "o": 6050,
+          "h": 6480,
+          "l": 6050,
+          "c": 6330
+        },
+        {
+          "date": "2026-04-28",
+          "o": 6460,
+          "h": 6460,
+          "l": 5870,
+          "c": 5890
+        },
+        {
+          "date": "2026-04-29",
+          "o": 5900,
+          "h": 6100,
+          "l": 5740,
+          "c": 5880
+        },
+        {
+          "date": "2026-04-30",
+          "o": 5940,
+          "h": 6010,
+          "l": 5680,
+          "c": 5730
+        },
+        {
+          "date": "2026-05-04",
+          "o": 5840,
+          "h": 7440,
+          "l": 5820,
+          "c": 7440
+        }
+      ],
+      "credit_risk": true,
       "credit_reason": "신용거래 제한 종목"
     },
     {
       "code": "037440",
       "name": "희림",
-      "rank": 3,
-      "trade_amount": 73718988920,
+      "rank": 17,
+      "trade_amount": 74159472080,
       "change_pct": 29.97,
       "close_price": 7460,
-      "open_price": null,
+      "open_price": 6200,
       "high_price": 7460,
-      "low_price": 7460,
+      "low_price": 6010,
       "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
       "sector": "설계 및 감리용역",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "건설"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-21",
@@ -539,8 +3232,8 @@
         "change_pct": 11.84,
         "trade_amount": 73284034920
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "희림-메가존클라우드, 생성형 AI 기반 ‘건축 법규 검토 시스템’ 개발",
@@ -755,12 +3448,699 @@
         }
       ],
       "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "079900",
+      "name": "전진건설로봇",
+      "rank": 18,
+      "trade_amount": 67192568000,
+      "change_pct": 8.45,
+      "close_price": 68000,
+      "open_price": 68600,
+      "high_price": 73500,
+      "low_price": 65300,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "콘크리트 펌프카",
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "건설"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-08",
+        "rank": 6,
+        "change_pct": 26.38,
+        "trade_amount": 190756811000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -0.3,
+      "index_multiple_current": -28.17,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 74350,
+        "high_date": "2026-04-08",
+        "high_pct": -8.54,
+        "low": 40200,
+        "low_date": "2025-11-19",
+        "low_pct": 69.15,
+        "current": 68000
+      },
+      "daily_20": [
+        {
+          "date": "2026-03-25",
+          "o": 56100,
+          "h": 57400,
+          "l": 55100,
+          "c": 55700
+        },
+        {
+          "date": "2026-03-26",
+          "o": 55000,
+          "h": 55500,
+          "l": 51800,
+          "c": 52600
+        },
+        {
+          "date": "2026-03-27",
+          "o": 51900,
+          "h": 54100,
+          "l": 51300,
+          "c": 53600
+        },
+        {
+          "date": "2026-03-30",
+          "o": 51000,
+          "h": 54000,
+          "l": 51000,
+          "c": 53500
+        },
+        {
+          "date": "2026-03-31",
+          "o": 53200,
+          "h": 55600,
+          "l": 52500,
+          "c": 52700
+        },
+        {
+          "date": "2026-04-01",
+          "o": 55200,
+          "h": 58500,
+          "l": 54200,
+          "c": 58000
+        },
+        {
+          "date": "2026-04-02",
+          "o": 59500,
+          "h": 59500,
+          "l": 53300,
+          "c": 53700
+        },
+        {
+          "date": "2026-04-03",
+          "o": 55100,
+          "h": 55500,
+          "l": 53500,
+          "c": 54700
+        },
+        {
+          "date": "2026-04-06",
+          "o": 55600,
+          "h": 56100,
+          "l": 54700,
+          "c": 55200
+        },
+        {
+          "date": "2026-04-07",
+          "o": 57300,
+          "h": 58400,
+          "l": 55700,
+          "c": 58000
+        },
+        {
+          "date": "2026-04-08",
+          "o": 64200,
+          "h": 74350,
+          "l": 61550,
+          "c": 73000
+        },
+        {
+          "date": "2026-04-09",
+          "o": 68400,
+          "h": 70400,
+          "l": 66600,
+          "c": 68000
+        },
+        {
+          "date": "2026-04-10",
+          "o": 71800,
+          "h": 72300,
+          "l": 67500,
+          "c": 67800
+        },
+        {
+          "date": "2026-04-13",
+          "o": 64700,
+          "h": 67400,
+          "l": 63500,
+          "c": 66800
+        },
+        {
+          "date": "2026-04-14",
+          "o": 68200,
+          "h": 69100,
+          "l": 66500,
+          "c": 67800
+        },
+        {
+          "date": "2026-04-15",
+          "o": 68900,
+          "h": 70600,
+          "l": 67600,
+          "c": 68200
+        },
+        {
+          "date": "2026-04-16",
+          "o": 67900,
+          "h": 67900,
+          "l": 65800,
+          "c": 67300
+        },
+        {
+          "date": "2026-04-17",
+          "o": 67600,
+          "h": 69300,
+          "l": 66200,
+          "c": 68700
+        },
+        {
+          "date": "2026-04-20",
+          "o": 67100,
+          "h": 68000,
+          "l": 66400,
+          "c": 66600
+        },
+        {
+          "date": "2026-04-21",
+          "o": 67400,
+          "h": 69800,
+          "l": 67000,
+          "c": 68800
+        }
+      ]
+    },
+    {
+      "code": "083650",
+      "name": "비에이치아이",
+      "rank": 19,
+      "trade_amount": 62957462400,
+      "change_pct": 2.02,
+      "close_price": 100800,
+      "open_price": 100600,
+      "high_price": 105900,
+      "low_price": 99900,
+      "industry": "일반 목적용 기계 제조업",
+      "sector": "보일러,열교환기등",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "비에이치아이, ‘우량기업부’ 승격…\"기업규모·재무요건·건전성 최상위\"",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=01931926645445640",
+          "source": "이데일리",
+          "published_at": "2026-05-04T01:21:22",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "비에이치아이 \"원자력연차대회 참가해 페르미와 미팅\"",
+          "url": "https://www.hankyung.com/article/2026042441056",
+          "source": "한경",
+          "published_at": "2026-04-24T01:34:48",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "비에이치아이, ‘2026 한국원자력연차대회’ 참가",
+          "url": "https://www.sedaily.com/article/20036577",
+          "source": "서울경제",
+          "published_at": "2026-04-24T00:21:22",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.91,
+      "index_multiple_current": -2.22,
+      "index_multiple_eligible": false,
+      "credit_risk": true,
       "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "028670",
+      "name": "팬오션",
+      "rank": 20,
+      "trade_amount": 61438368180,
+      "change_pct": 7.12,
+      "close_price": 6020,
+      "open_price": 5670,
+      "high_price": 6170,
+      "low_price": 5650,
+      "industry": "해상 운송업",
+      "sector": "해상화물운송(외항,운수보관)",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "[클릭 e종목]\"팬오션, 실적 개선 지속 전망…목표가↑\"",
+          "url": "https://www.asiae.co.kr/article/2026050616194252861",
+          "source": "아시아경제",
+          "published_at": "2026-05-06T21:00:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "팬오션 1분기 영업익 24.4%↑…LNG·탱커선 쌍끌이",
+          "url": "https://www.mk.co.kr/news/business/12035170",
+          "source": "매경",
+          "published_at": "2026-05-04T06:57:24",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[MM] 하림 2세 김준영, 그룹 M&A 전면에…홈플익스·팬오션 딜로 승계 시험대",
+          "url": "https://biz.chosun.com/moneymove/mmna/2026/05/04/Q6HY2CZ6LZBOFBXRWULVYXH25M/",
+          "source": "조선비즈",
+          "published_at": "2026-05-04T06:32:42",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "팬오션, 1분기 영업이익 1409억원… 전년比 24%↑",
+          "url": "https://biz.chosun.com/industry/company/2026/05/04/TEZTLASP2RDDHM4LLZIFMMA2Z4/",
+          "source": "조선비즈",
+          "published_at": "2026-05-04T06:10:37",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "팬오션, 운임상승 요인 지속…목표주가 7100원으로 상향-상상인",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02633846645416776",
+          "source": "이데일리",
+          "published_at": "2026-04-15T22:49:59",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.3,
+      "index_multiple_current": -23.73,
+      "index_multiple_eligible": false
+    },
+    {
+      "code": "004800",
+      "name": "효성",
+      "rank": 21,
+      "trade_amount": 50225130000,
+      "change_pct": 4.45,
+      "close_price": 270000,
+      "open_price": 305000,
+      "high_price": 318000,
+      "low_price": 264000,
+      "industry": "기타 금융업",
+      "sector": "스판덱스,합성원사,나일론,폴리에스터,타이어코드지,PET병,수지제품,중전기제품(변압기,차단기),사무용기계,컴퓨터 제조/건축공사",
+      "themes": [
+        "금융",
+        "AI데이터센터",
+        "AI 인프라",
+        "전력설비",
+        "지주 NAV 재평가"
+      ],
+      "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        },
+        {
+          "name": "지주 NAV 재평가",
+          "path": [
+            "저PBR",
+            "지주 NAV 재평가"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-28",
+        "rank": 33,
+        "change_pct": 12.71,
+        "trade_amount": 80455837000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "\"아! 그때 살 걸\" 황제주 쏟아졌다…효성重 '422만원' 최고가",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02450166645445968",
+          "source": "이데일리",
+          "published_at": "2026-05-05T01:16:34",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "‘슈퍼 황제주’ 효성重, SKT·아모레 ‘액분 공식’ 따를까",
+          "url": "https://www.sedaily.com/article/20039781",
+          "source": "서울경제",
+          "published_at": "2026-05-03T08:49:04",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "효성重, 美 최대 송배전 전시회서 AI 데이터센터 전력망 기술 선봬",
+          "url": "https://biz.chosun.com/industry/company/2026/04/30/NGICRS4E6NC6XKLKSZ6M5NLR5I/",
+          "source": "조선비즈",
+          "published_at": "2026-04-30T00:49:27",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "자회사 랠리 타고 지분가치 부각…SK스퀘어·효성 ‘불기둥’ [코주부]",
+          "url": "https://www.sedaily.com/article/20037542",
+          "source": "서울경제",
+          "published_at": "2026-04-27T04:56:14",
+          "causal_chain": "AI 시대 도래 → 고전력 소비 데이터센터 급증 및 북미 전력망 투자 확대 → 초고압 변압기·차단기 수주 폭증(1분기 4.2조원) + SST 기술로 차세대 솔루션 선도 → 효성중공업의 본업 실적 개선 및 기업가치 상승 → 효성(지주)의 자회사 지분가치 재평가로 주가 랠리",
+          "macro_event": "AI 데이터센터 급증으로 북미 전력망 고도화 투자 가속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "Today's Pick : \"폭발적인 수주\" 효성重, 500만원 전망까지 나왔다",
+          "url": "https://www.hankyung.com/article/202604277959i",
+          "source": "한경",
+          "published_at": "2026-04-26T23:30:09",
+          "causal_chain": "AI 시대 도래 → 고전력 소비 데이터센터 급증 및 북미 전력망 투자 확대 → 초고압 변압기·차단기 수주 폭증(1분기 4.2조원) + SST 기술로 차세대 솔루션 선도 → 효성중공업의 본업 실적 개선 및 기업가치 상승 → 효성(지주)의 자회사 지분가치 재평가로 주가 랠리",
+          "macro_event": "AI 데이터센터 급증으로 북미 전력망 고도화 투자 가속",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -0.3,
+      "index_multiple_current": -14.83,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 318000,
+        "high_date": "2026-05-07",
+        "high_pct": -15.09,
+        "low": 51900,
+        "low_date": "2025-05-09",
+        "low_pct": 420.23,
+        "current": 270000
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-01",
+          "o": 132100,
+          "h": 138900,
+          "l": 132100,
+          "c": 138100
+        },
+        {
+          "date": "2026-04-02",
+          "o": 140500,
+          "h": 142400,
+          "l": 129600,
+          "c": 131200
+        },
+        {
+          "date": "2026-04-03",
+          "o": 134100,
+          "h": 140000,
+          "l": 132600,
+          "c": 138000
+        },
+        {
+          "date": "2026-04-06",
+          "o": 137800,
+          "h": 140900,
+          "l": 136800,
+          "c": 138100
+        },
+        {
+          "date": "2026-04-07",
+          "o": 140400,
+          "h": 144100,
+          "l": 136700,
+          "c": 141000
+        },
+        {
+          "date": "2026-04-08",
+          "o": 146000,
+          "h": 154900,
+          "l": 143800,
+          "c": 152100
+        },
+        {
+          "date": "2026-04-09",
+          "o": 149500,
+          "h": 151500,
+          "l": 146700,
+          "c": 149600
+        },
+        {
+          "date": "2026-04-10",
+          "o": 152000,
+          "h": 154000,
+          "l": 147100,
+          "c": 149300
+        },
+        {
+          "date": "2026-04-13",
+          "o": 144700,
+          "h": 149200,
+          "l": 143900,
+          "c": 148700
+        },
+        {
+          "date": "2026-04-14",
+          "o": 153000,
+          "h": 158300,
+          "l": 152100,
+          "c": 152600
+        },
+        {
+          "date": "2026-04-15",
+          "o": 156800,
+          "h": 157600,
+          "l": 154400,
+          "c": 156000
+        },
+        {
+          "date": "2026-04-16",
+          "o": 158000,
+          "h": 160800,
+          "l": 150000,
+          "c": 157200
+        },
+        {
+          "date": "2026-04-17",
+          "o": 157300,
+          "h": 159600,
+          "l": 156300,
+          "c": 159600
+        },
+        {
+          "date": "2026-04-20",
+          "o": 157600,
+          "h": 161700,
+          "l": 156800,
+          "c": 159600
+        },
+        {
+          "date": "2026-04-21",
+          "o": 161000,
+          "h": 167400,
+          "l": 159700,
+          "c": 163800
+        },
+        {
+          "date": "2026-04-22",
+          "o": 163600,
+          "h": 163700,
+          "l": 158000,
+          "c": 160000
+        },
+        {
+          "date": "2026-04-23",
+          "o": 162900,
+          "h": 167300,
+          "l": 160600,
+          "c": 163900
+        },
+        {
+          "date": "2026-04-24",
+          "o": 165500,
+          "h": 173500,
+          "l": 163400,
+          "c": 171000
+        },
+        {
+          "date": "2026-04-27",
+          "o": 177000,
+          "h": 205000,
+          "l": 175700,
+          "c": 204500
+        },
+        {
+          "date": "2026-04-28",
+          "o": 265500,
+          "h": 265500,
+          "l": 216500,
+          "c": 219500
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-04-22) 대비 +60%↑",
+              "base_price": 160000,
+              "threshold": 256000,
+              "current": 270000,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-08",
+          "period_end": "2026-05-11",
+          "start": "2026-05-08",
+          "end": "2026-05-11",
+          "view_date": "2026-05-07",
+          "next_trading_day": "2026-05-08",
+          "next_trading_day_for_predicted": "2026-05-08",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ]
     },
     {
       "code": "223250",
       "name": "드림씨아이에스",
-      "rank": 4,
+      "rank": 22,
       "trade_amount": 9592225000,
       "change_pct": 29.8,
       "close_price": 6250,
@@ -807,12 +4187,15 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "229000",
       "name": "젠큐릭스",
-      "rank": 5,
+      "rank": 23,
       "trade_amount": 5275947560,
       "change_pct": 30.0,
       "close_price": 3835,
@@ -821,8 +4204,17 @@
       "low_price": 3835,
       "industry": "의료용품 및 기타 의약 관련제품 제조업",
       "sector": "유방암 예후진단 및 폐암/대장암 동반진단 제품/검사서비스",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -833,7 +4225,7 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04346006645446624",
           "source": "이데일리",
           "published_at": "2026-05-07T00:54:37",
-          "causal_chain": null,
+          "causal_chain": "본문은 젠큐릭스의 암 진단키트 유럽 수출 개시 및 GBCC 2026에서 ddPCR 기반 유방암 핵심 변이(ESR1·PIK3CA) 고감도 검출 기술 발표라는 자사 R&D·사업 마일스톤으로, 외부 매크로 이벤트와의 인과 사슬은 식별되지 않는다.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -875,7 +4267,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     }
   ]
 }
