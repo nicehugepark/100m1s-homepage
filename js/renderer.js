@@ -1321,7 +1321,11 @@ async function initThemeTrend() {
     const container = document.getElementById('theme-trend');
     if (!container || !data.themes || !data.dates) return;
 
-    const VISIBLE_DAYS = 6; // 화면에 보이는 영업일 수 (LUT와 통일 — 한 윈도우 6영업일, 대표 명시)
+    // 단계 2 (대표 07:17 명령, design-trend-chart-viewport-legend 07:20 명세):
+    // VISIBLE_DAYS 분기 — 모바일 7 / 데스크탑 10. isMobile은 L1390 → 여기로 이전 (FIXED_SLOT/VISIBLE_DAYS 정합 우선 계산).
+    // REQ-007 5/4 v190 정합: 880px breakpoint (lut-trend 정합).
+    const isMobile = window.innerWidth < 880;
+    const VISIBLE_DAYS = isMobile ? 7 : 10;
     const allDates = data.dates;
     if (allDates.length < 1) return;
     // 대표 catch (5/8 04:52): theme-trend window = 최근 20영업일 (limit-up-trend 정합).
@@ -1387,7 +1391,7 @@ async function initThemeTrend() {
 
     // SVG 치수 — 반응형 (모바일 vs 데스크탑)
     // REQ-007 5/4 v190: isMobile breakpoint 640→880 (CSS @media + lut 정합)
-    const isMobile = window.innerWidth < 880;
+    // 단계 2: isMobile은 L1324 직전으로 이전됨 (VISIBLE_DAYS 분기 우선 계산). 여기서 재선언 불가.
     const yAxisW = isMobile ? 36 : 44;
     const H = isMobile ? 180 : 180; // REQ-003: desktop 160→180 (lut-trend 정합, viewBox 비율 정합)
     const PAD = isMobile
@@ -1564,8 +1568,67 @@ async function initThemeTrend() {
         // 이미 선택된 테마를 다시 클릭하면 전체 표시로 복귀
         selectedIdx = (selectedIdx === idx) ? -1 : idx;
         applyLegendFilter();
+        // 수동 선택 변경 시 viewport 필터 재평가 (수동 우선 정책)
+        updateViewportLegend();
       });
     });
+
+    // ─── 단계 2: viewport-aware legend sync (대표 07:17 명령, design 07:20 명세) ───
+    // §2 viewport idx = round((scrollLeft - 32) / FIXED_SLOT), §3 rAF debounce, §4 polyline opacity 0.08
+    // 잠재 결함: selectedIdx !== -1 (수동 선택) 시 viewport 필터 비활성. 수동 우선 정책 (design 권고).
+    function computeViewportRange() {
+      if (!scrollArea) return { firstIdx: 0, lastIdx: dates.length - 1 };
+      const firstIdx = Math.max(0, Math.round((scrollArea.scrollLeft - 32) / FIXED_SLOT));
+      const lastIdx = Math.min(dates.length - 1, firstIdx + VISIBLE_DAYS - 1);
+      return { firstIdx, lastIdx };
+    }
+    const legendContainer = container.querySelector('.theme-trend-legend');
+    function updateViewportLegend() {
+      // 수동 선택 시 viewport 필터 비활성 — applyLegendFilter가 단일 root만 표시 (수동 우선)
+      if (selectedIdx !== -1) {
+        // viewport-inactive 클래스 + polyline opacity 정리 (수동 선택만 표시되도록)
+        legendItems.forEach(li => li.classList.remove('viewport-inactive'));
+        svgEl.querySelectorAll('polyline[data-theme-idx]').forEach(pl => { pl.style.opacity = ''; });
+        legendContainer && legendContainer.querySelector('.theme-trend-legend-empty-hint')?.remove();
+        return;
+      }
+      const { firstIdx, lastIdx } = computeViewportRange();
+      const viewportDates = new Set(dates.slice(firstIdx, lastIdx + 1));
+      legendItems.forEach(li => {
+        const idx = parseInt(li.dataset.legendIdx);
+        const theme = themes[idx];
+        // §2 옵션 A: viewport 일자 중 어느 하나라도 stock_count > 0 → 활성
+        const isActive = !!(theme && theme.data && theme.data.some(d => viewportDates.has(d.date) && (d.stock_count || 0) > 0));
+        li.classList.toggle('viewport-inactive', !isActive);
+        // §4 viewport-inactive polyline opacity 0.08 (완전 hide X, 컨텍스트 단서)
+        const polyline = svgEl.querySelector(`polyline[data-theme-idx="${idx}"]`);
+        if (polyline) polyline.style.opacity = isActive ? '' : '0.08';
+        // 단일 dot (points.length === 1) — circle.tt-hit.tt-dot 합쳐진 경우도 흐리게
+        const singleDot = svgEl.querySelector(`circle.tt-hit.tt-dot[data-theme-idx="${idx}"]`);
+        if (singleDot && !polyline) singleDot.style.opacity = isActive ? '' : '0.08';
+      });
+      // §3 fallback: viewport 활성 root 0개 시 hint
+      if (!legendContainer) return;
+      const activeCount = legendContainer.querySelectorAll('.theme-trend-legend-item:not(.viewport-inactive)').length;
+      const existingHint = legendContainer.querySelector('.theme-trend-legend-empty-hint');
+      if (activeCount === 0) {
+        if (!existingHint) {
+          const hint = document.createElement('span');
+          hint.className = 'theme-trend-legend-empty-hint';
+          hint.textContent = '이 기간에 활성 테마 없음 ← 좌측 스크롤';
+          legendContainer.appendChild(hint);
+        }
+      } else if (existingHint) {
+        existingHint.remove();
+      }
+    }
+    if (scrollArea && needsScroll) {
+      scrollArea.addEventListener('scroll', () => {
+        requestAnimationFrame(updateViewportLegend);
+      }, { passive: true });
+    }
+    // 초기 진입 1회 (rAF) — 우측 정렬 후 viewport 평가
+    requestAnimationFrame(updateViewportLegend);
 
     // -- 포인트 클릭 → 종목 테이블 --
     const detailDiv = document.getElementById('trend-detail');
