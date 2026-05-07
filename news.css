@@ -1025,6 +1025,9 @@ a.cal-credit-row:hover,
   margin-left: 44px; overflow-x: auto; overflow-y: hidden;
   -webkit-overflow-scrolling: touch; scrollbar-width: thin;
   scrollbar-color: rgba(196,153,48,0.4) transparent;
+  /* 5/8 fix (qa D6): 데스크탑 viewport = VISIBLE_DAYS(10) × FIXED_SLOT(80) + 2×EDGE_PAD(32) = 864px.
+     20일 SVG (1664px)에서 mask 처리 → 정확히 10일만 가시. 가로 스크롤로 7~16일 추가 접근. */
+  max-width: 864px;
 }
 .trend-scroll-area::-webkit-scrollbar { height: 4px; }
 .trend-scroll-area::-webkit-scrollbar-track { background: transparent; }
@@ -1044,14 +1047,29 @@ a.cal-credit-row:hover,
   width: 10px; height: 3px; border-radius: 2px; flex-shrink: 0;
 }
 /* REQ-007 5/4 v190: theme-trend mobile breakpoint 640 → 880 (lut 정합). 두 chart 동일 layout 보장. */
+/* 5/8 fix (qa D5): 모바일 33 root → 1행 가로 스크롤 (wrap 폐기, 8행 도배 회피) */
 @media (max-width: 880px) {
-  .theme-trend-legend { gap: 4px 8px; }
-  .theme-trend-legend-item { font-size: 11px; padding: 4px 4px; }
+  .theme-trend-legend {
+    gap: 6px 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(196,153,48,0.4) transparent;
+    padding-bottom: 4px;
+  }
+  .theme-trend-legend::-webkit-scrollbar { height: 3px; }
+  .theme-trend-legend::-webkit-scrollbar-track { background: transparent; }
+  .theme-trend-legend::-webkit-scrollbar-thumb { background: rgba(196,153,48,0.35); border-radius: 2px; }
+  .theme-trend-legend-item { font-size: 11px; padding: 8px 10px; min-height: 44px; flex-shrink: 0; }
   .theme-trend-legend-item .swatch { width: 12px; height: 4px; }
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
   .theme-trend-wrap { padding: 12px; overflow: visible; }
   .trend-y-axis { top: 12px; left: 12px; width: 36px; height: calc(100% - 24px); }
-  .trend-scroll-area { margin-left: 36px; }
+  /* 5/8 fix (qa D3): 모바일 viewport = VISIBLE_DAYS(7) × FIXED_SLOT(53) + 2×EDGE_PAD(32) = 435px.
+     모바일 폭(320~414px) 내 자연 cropping + max-width로 안전망. */
+  .trend-scroll-area { margin-left: 36px; max-width: 435px; }
 }
 .theme-trend-tooltip {
   position: absolute; pointer-events: none;
@@ -1062,8 +1080,12 @@ a.cal-credit-row:hover,
   z-index: 51; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .theme-trend-tooltip.show { opacity: 1; }
-.theme-trend-legend-item { min-height: 36px; padding: 6px 10px; border-radius: 9999px; transition: color 0.15s; }
-.theme-trend-legend-item.dimmed { color: var(--dm); }
+/* 5/8 fix (qa D10 WCAG 2.5.5): min-height 36 → 44 (44x44 터치 타깃 충족) */
+.theme-trend-legend-item { min-height: 44px; padding: 10px 12px; border-radius: 9999px; transition: color 0.15s, opacity 0.15s; }
+.theme-trend-legend-item.dimmed { color: var(--dm); opacity: 0.5; }
+/* 5/8 fix (qa D8): selectedIdx 활성 시 강조 — 진폭 명시 (.selected는 swatch::after underline + label 강조) */
+.theme-trend-legend-item.selected { color: var(--tx); font-weight: 700; background: rgba(196,153,48,0.08); }
+/* 5/8 fix (qa D7): polyline data-selected = stroke 강화. CSS는 stroke-width 직접 못잡음 (SVG attr 우선) → JS inline opacity로 대체. */
 /* 단계 2 (대표 07:17 명령, design 07:20 명세) — viewport-aware legend sync.
    5/8 07:42 정정 (대표 verbatim): "윈도우에 보이는 애들만 활성화 나머진 비활성화"
    = 33 root 모두 legend 표시 (display:none X) + viewport 외 = dim (opacity + pointer-events).

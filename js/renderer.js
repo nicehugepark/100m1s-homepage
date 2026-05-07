@@ -1529,11 +1529,13 @@ async function initThemeTrend() {
     function applyLegendFilter() {
       const none = selectedIdx === -1;
       // SVG 요소 opacity — 비활성 포인트는 완전 숨김 + 클릭 차단
+      // 5/8 fix (qa D7/D8): selectedIdx 활성 polyline 강조 (opacity 1 + stroke-width +0.6) / 비활성 0.15
       svgEl.querySelectorAll('[data-theme-idx]').forEach(el => {
         const idx = parseInt(el.dataset.themeIdx);
         const active = none || idx === selectedIdx;
         const isDot = el.classList.contains('tt-dot');
         const isHit = el.classList.contains('tt-hit');
+        const isPolyline = el.tagName === 'polyline';
         if (isDot) {
           // 시각 dot (단일 포인트는 tt-hit+tt-dot 동시): 비활성이면 완전 숨김
           el.style.opacity = active ? '' : '0';
@@ -1543,6 +1545,20 @@ async function initThemeTrend() {
         if (isHit) {
           // 히트 서클: 비활성이면 이벤트 차단
           el.style.pointerEvents = active ? '' : 'none';
+          return;
+        }
+        // polyline: selectedIdx 단일 선택 시 active = 강조(opacity 1), 비active = 0.15. 전체 표시 시 default 복원
+        if (isPolyline) {
+          if (none) {
+            el.style.opacity = '';
+            el.removeAttribute('data-selected');
+          } else if (active) {
+            el.style.opacity = '1';
+            el.setAttribute('data-selected', '1');
+          } else {
+            el.style.opacity = '0.15';
+            el.removeAttribute('data-selected');
+          }
           return;
         }
         el.style.opacity = active ? '' : '0.1';
