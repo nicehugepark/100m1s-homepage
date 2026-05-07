@@ -1,6 +1,6 @@
 {
   "date": "2026-05-07",
-  "generated_at": "2026-05-07T23:03:18.383357",
+  "generated_at": "2026-05-07T23:14:49.542983",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -6308,7 +6308,9 @@
       },
       "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "222800",
@@ -7190,7 +7192,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "072950",
@@ -8290,7 +8294,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "037030",
@@ -9326,7 +9332,9 @@
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "079900",
@@ -12150,8 +12158,27 @@
       "low_price": 90000,
       "industry": "전자부품 제조업",
       "sector": "인쇄회로기판,Module 제조/부동산(건물) 임대",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "FC-BGA",
+        "테스트소켓"
+      ],
+      "theme_paths": [
+        {
+          "name": "FC-BGA",
+          "path": [
+            "반도체",
+            "FC-BGA"
+          ]
+        },
+        {
+          "name": "테스트소켓",
+          "path": [
+            "반도체",
+            "테스트소켓"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-05-06",
