@@ -1109,8 +1109,9 @@ a.cal-credit-row:hover,
 .theme-pre-market-prev {
   padding-top: 8px;
 }
-.trend-detail { margin-top: 12px; overflow: hidden; transition: max-height 0.2s ease-out; max-height: 0; position: relative; z-index: 4; }
-.trend-detail.open { max-height: 400px; }
+/* 5/8 fix (대표 catch 19:15 P1): drill-down 종목 list 동적 size + 스크롤. 13~15종 표시 시 max-height: 400px 잘림 결함 → 70vh 확장 + overflow-y: auto. */
+.trend-detail { margin-top: 12px; overflow-x: hidden; overflow-y: hidden; transition: max-height 0.2s ease-out; max-height: 0; position: relative; z-index: 4; -webkit-overflow-scrolling: touch; }
+.trend-detail.open { max-height: 70vh; overflow-y: auto; }
 .trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; margin-bottom: 8px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
