@@ -1,6 +1,6 @@
 {
   "date": "2026-05-08",
-  "generated_at": "2026-05-08T09:26:18.227722",
+  "generated_at": "2026-05-08T09:37:39.110477",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -32,16 +32,16 @@
       "summary": "에이피알 해외 시장 성장세 지속 → 한국 수출 제조사 고성장 확대 → 글로벌 확장 기업군 장기 강세"
     },
     {
+      "title": "임상3상생략",
+      "summary": "에이프로젠, FDA 사전심사서 임상 3상 생략 판단 확보 → 글로벌 신약허가 본격화 → 바이오신약 섹터 실적 모멘텀"
+    },
+    {
       "title": "중동유가",
       "summary": "중동 긴장으로 홍해 해상운송 차질 → 국내 원유 수입 증가 → 에너지·해운 섹터 강세"
     },
     {
       "title": "파업영향",
       "summary": "삼성전자 노조 파업 장기화 → 반도체 생산 차질 우려 → 반도체 수급 불안"
-    },
-    {
-      "title": "삼성파업",
-      "summary": "삼성전자 노조 파업 장기화 → 반도체 수출 경쟁력 악화 → 산업단지·반도체 섹터 약세"
     }
   ],
   "narratives": [],
@@ -384,11 +384,26 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "광섬유",
       "themes": [
+        "케이블",
+        "AI 인프라",
         "광통신",
         "AI데이터센터",
         "전력설비"
       ],
       "theme_paths": [
+        {
+          "name": "케이블",
+          "path": [
+            "케이블"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
         {
           "name": "광통신",
           "path": [
@@ -425,8 +440,8 @@
           "url": "https://www.etoday.co.kr/news/view/2582565",
           "source": "이투데이",
           "published_at": "2026-05-07T23:17:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터 투자 확대 → 데이터센터 內 전력 인프라 및 광통신 케이블 수요 동반 증가 → 대한광통신이 美 인캡아메리카 인수를 마무리하며 미국 현지 전력·광통신 공급망에 직접 진입 → 본업(광섬유·케이블) 매출 외형 확장 및 AI 인프라 직접 수혜.",
+          "macro_event": "AI 데이터센터 캐파 확장에 따른 전력·광통신 인프라 수요 가속",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -440,8 +455,8 @@
           "url": "https://www.asiae.co.kr/article/2026050609191566696",
           "source": "아시아경제",
           "published_at": "2026-05-06T00:19:14",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터 투자 확대 → 데이터센터 內 전력 인프라 및 광통신 케이블 수요 동반 증가 → 대한광통신이 美 인캡아메리카 인수를 마무리하며 미국 현지 전력·광통신 공급망에 직접 진입 → 본업(광섬유·케이블) 매출 외형 확장 및 AI 인프라 직접 수혜.",
+          "macro_event": "AI 데이터센터 캐파 확장에 따른 전력·광통신 인프라 수요 가속",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -455,8 +470,8 @@
           "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/30/GQ3DONLCGU3TSZLGGEYTCODFME/",
           "source": "조선비즈",
           "published_at": "2026-04-29T23:01:12",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터 투자 확대 → 데이터센터 內 전력 인프라 및 광통신 케이블 수요 동반 증가 → 대한광통신이 美 인캡아메리카 인수를 마무리하며 미국 현지 전력·광통신 공급망에 직접 진입 → 본업(광섬유·케이블) 매출 외형 확장 및 AI 인프라 직접 수혜.",
+          "macro_event": "AI 데이터센터 캐파 확장에 따른 전력·광통신 인프라 수요 가속",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -482,8 +497,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 10.67,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 10.27,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 24450,
@@ -495,13 +510,6 @@
         "current": 24150
       },
       "daily_20": [
-        {
-          "date": "2026-04-08",
-          "o": 13900,
-          "h": 15190,
-          "l": 12830,
-          "c": 14690
-        },
         {
           "date": "2026-04-09",
           "o": 14650,
@@ -634,6 +642,13 @@
           "h": 22000,
           "l": 18770,
           "c": 21800
+        },
+        {
+          "date": "2026-05-08",
+          "o": 21350,
+          "h": 24450,
+          "l": 20600,
+          "c": 23300
         }
       ],
       "status_badges": [
@@ -663,8 +678,19 @@
           "effect_badges": []
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 21350,
+        "base": 21800,
+        "prices": [
+          21350,
+          23900,
+          23900,
+          23100
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "203650",
@@ -716,7 +742,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -876,7 +902,9 @@
         "base": 4130,
         "prices": [
           3850,
-          3950
+          3900,
+          3875,
+          3820
         ]
       },
       "credit_risk": true,
@@ -910,7 +938,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -1208,7 +1236,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -1368,7 +1396,9 @@
         "base": 68100,
         "prices": [
           68100,
-          66700
+          67800,
+          67400,
+          66600
         ]
       },
       "credit_risk": true,
@@ -1496,7 +1526,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -1656,7 +1686,9 @@
         "base": 18850,
         "prices": [
           18510,
-          18930
+          19770,
+          19720,
+          19260
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1728,8 +1760,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 12.78,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 12.3,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 5150,
@@ -1915,7 +1947,9 @@
         "base": 4530,
         "prices": [
           4300,
-          4925
+          5150,
+          4940,
+          4985
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1995,7 +2029,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -2155,7 +2189,9 @@
         "base": 54000,
         "prices": [
           52800,
-          52400
+          54500,
+          53800,
+          52600
         ]
       },
       "credit_risk": true,
@@ -2296,7 +2332,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -2456,7 +2492,9 @@
         "base": 235500,
         "prices": [
           235500,
-          238000
+          234500,
+          238500,
+          236500
         ]
       },
       "credit_risk": true,
@@ -2514,7 +2552,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -2674,7 +2712,9 @@
         "base": 15600,
         "prices": [
           15130,
-          14790
+          14770,
+          14700,
+          14610
         ]
       },
       "credit_risk": true,
@@ -2721,7 +2761,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -2881,7 +2921,9 @@
         "base": 3860,
         "prices": [
           3605,
-          3510
+          3575,
+          3535,
+          3480
         ]
       },
       "credit_risk": true,
@@ -2996,7 +3038,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -3156,7 +3198,9 @@
         "base": 106500,
         "prices": [
           103900,
-          113000
+          114900,
+          116400,
+          117900
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -3197,7 +3241,7 @@
       "bullish_streak": 2,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -3409,6 +3453,15 @@
           ]
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 12190,
+        "base": 12560,
+        "prices": [
+          12190,
+          12600
+        ]
+      },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
@@ -3514,8 +3567,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 13.36,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 12.85,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 934000,
@@ -3527,13 +3580,6 @@
         "current": 791000
       },
       "daily_20": [
-        {
-          "date": "2026-04-08",
-          "o": 584000,
-          "h": 613000,
-          "l": 576000,
-          "c": 606000
-        },
         {
           "date": "2026-04-09",
           "o": 615000,
@@ -3666,10 +3712,28 @@
           "h": 735000,
           "l": 690000,
           "c": 697000
+        },
+        {
+          "date": "2026-05-08",
+          "o": 715000,
+          "h": 808000,
+          "l": 711000,
+          "c": 794000
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 715000,
+        "base": 696978,
+        "prices": [
+          715000,
+          791000,
+          790000,
+          795000
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "264850",
@@ -3712,8 +3776,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 4.51,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 4.34,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 9450,
@@ -3872,7 +3936,9 @@
         "base": 8120,
         "prices": [
           8500,
-          8710
+          8490,
+          8400,
+          8490
         ]
       },
       "togusa_verdict": "neutral",
@@ -3976,7 +4042,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -4136,7 +4202,9 @@
         "base": 114600,
         "prices": [
           114900,
-          123000
+          123000,
+          124700,
+          126300
         ]
       },
       "credit_risk": true,
@@ -4235,7 +4303,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -4395,7 +4463,9 @@
         "base": 8170,
         "prices": [
           7850,
-          7880
+          7980,
+          7940,
+          7820
         ]
       },
       "togusa_verdict": "neutral",
@@ -4438,7 +4508,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -4598,7 +4668,9 @@
         "base": 10430,
         "prices": [
           9980,
-          9900
+          9900,
+          9930,
+          9960
         ]
       },
       "togusa_verdict": "neutral",
@@ -4649,7 +4721,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -4836,7 +4908,9 @@
         "base": 8210,
         "prices": [
           8090,
-          8150
+          8360,
+          8200,
+          8100
         ]
       },
       "credit_risk": true,
@@ -4913,8 +4987,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 13.42,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 12.9,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 50400,
@@ -4926,13 +5000,6 @@
         "current": 35200
       },
       "daily_20": [
-        {
-          "date": "2026-04-08",
-          "o": 26850,
-          "h": 29900,
-          "l": 26550,
-          "c": 29200
-        },
         {
           "date": "2026-04-09",
           "o": 31150,
@@ -5065,10 +5132,28 @@
           "h": 32600,
           "l": 30800,
           "c": 31000
+        },
+        {
+          "date": "2026-05-08",
+          "o": 34450,
+          "h": 37650,
+          "l": 33450,
+          "c": 37550
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 34450,
+        "base": 31000,
+        "prices": [
+          34450,
+          35300,
+          36650,
+          37550
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "092790",
@@ -5104,7 +5189,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -5264,7 +5349,9 @@
         "base": 21050,
         "prices": [
           20150,
-          20000
+          19990,
+          20000,
+          20150
         ]
       },
       "credit_risk": true,
@@ -5309,7 +5396,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -5496,6 +5583,8 @@
         "base": 16790,
         "prices": [
           19140,
+          21300,
+          21800,
           21800
         ]
       },
@@ -5588,8 +5677,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.17,
-      "index_multiple_current": -2.68,
+      "index_change_pct": -1.32,
+      "index_multiple_current": -4.41,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 543000,
@@ -5601,13 +5690,6 @@
         "current": 482000
       },
       "daily_20": [
-        {
-          "date": "2026-04-08",
-          "o": 393500,
-          "h": 416000,
-          "l": 387000,
-          "c": 415500
-        },
         {
           "date": "2026-04-09",
           "o": 421500,
@@ -5740,8 +5822,26 @@
           "h": 481000,
           "l": 447500,
           "c": 455500
+        },
+        {
+          "date": "2026-05-08",
+          "o": 490000,
+          "h": 513000,
+          "l": 481000,
+          "c": 500000
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 490000,
+        "base": 455490,
+        "prices": [
+          490000,
+          482000,
+          489000,
+          501000
+        ]
+      }
     },
     {
       "code": "101170",
@@ -5787,7 +5887,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -5947,7 +6047,9 @@
         "base": 14590,
         "prices": [
           15140,
-          15340
+          14970,
+          15250,
+          15300
         ]
       },
       "togusa_verdict": "neutral",
@@ -5990,7 +6092,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -6150,7 +6252,9 @@
         "base": 68400,
         "prices": [
           65700,
-          65000
+          65300,
+          65400,
+          65500
         ]
       },
       "togusa_verdict": "neutral",
@@ -6291,7 +6395,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -6451,7 +6555,9 @@
         "base": 6030,
         "prices": [
           5970,
-          6040
+          6150,
+          6210,
+          6240
         ]
       },
       "togusa_verdict": "neutral",
@@ -6523,7 +6629,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -6683,7 +6789,9 @@
         "base": 7460,
         "prices": [
           6990,
-          7170
+          7210,
+          7290,
+          7220
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -6786,7 +6894,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -6946,7 +7054,9 @@
         "base": 100300,
         "prices": [
           98500,
-          97400
+          97300,
+          96800,
+          96300
         ]
       },
       "togusa_verdict": "neutral",
@@ -6995,72 +7105,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "불꽃야구→육성선수→정식선수, 꿈이 이뤄졌다...퓨처스 ERA 1위 한화 사이드암, 드디어 1군 콜업 기회 올까",
-          "url": "https://biz.chosun.com/sports/baseball/2026/05/08/GVQTOY3FG43WGMBQGEYDCMJUGY/",
-          "source": "조선비즈",
-          "published_at": "2026-05-07T23:10:00",
-          "causal_chain": "한화가 해리스 전 태평양사령관과 간담회를 통해 미국 방산 시장 진출을 가속화하고, 증권사는 자회사 기업가치 상승과 주주환원 확대를 근거로 목표주가를 상향 조정 → 방산 해외 수주 기대 + 지주사 NAV 재평가 동시 부각.",
-          "macro_event": "한화 미국 방산 시장 진출 가속화 (해리스 전 태평양사령관 간담회)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "수술대 오르는 문동주, 위기의 한화…'5이닝 1피안타 KKK 무실점' 황준서가 보여준 희망 [오!쎈 퓨처스]",
-          "url": "https://biz.chosun.com/sports/baseball/2026/05/08/ME2WKNDFMM4TAMLEGU4DONJVGE/",
-          "source": "조선비즈",
-          "published_at": "2026-05-07T16:05:00",
-          "causal_chain": "한화가 해리스 전 태평양사령관과 간담회를 통해 미국 방산 시장 진출을 가속화하고, 증권사는 자회사 기업가치 상승과 주주환원 확대를 근거로 목표주가를 상향 조정 → 방산 해외 수주 기대 + 지주사 NAV 재평가 동시 부각.",
-          "macro_event": "한화 미국 방산 시장 진출 가속화 (해리스 전 태평양사령관 간담회)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "사구→사구→안타→안타→볼넷, 돌아온 김서현 0아웃 4실점...난감한 한화 이겨도 웃을 수 없다 [오!쎈 광주]",
-          "url": "https://biz.chosun.com/sports/baseball/2026/05/07/MEYTKZBWGY4TIMBXGZSTOMZXHE/",
-          "source": "조선비즈",
-          "published_at": "2026-05-07T14:10:00",
-          "causal_chain": "한화가 해리스 전 태평양사령관과 간담회를 통해 미국 방산 시장 진출을 가속화하고, 증권사는 자회사 기업가치 상승과 주주환원 확대를 근거로 목표주가를 상향 조정 → 방산 해외 수주 기대 + 지주사 NAV 재평가 동시 부각.",
-          "macro_event": "한화 미국 방산 시장 진출 가속화 (해리스 전 태평양사령관 간담회)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[사진] 승리 기쁨 나누는 한화 선수들",
-          "url": "https://biz.chosun.com/sports/sports_photo/2026/05/07/MM4DGMJQGQYTAMBRG5RDKNBXGA/",
-          "source": "조선비즈",
-          "published_at": "2026-05-07T13:05:00",
-          "causal_chain": "한화가 해리스 전 태평양사령관과 간담회를 통해 미국 방산 시장 진출을 가속화하고, 증권사는 자회사 기업가치 상승과 주주환원 확대를 근거로 목표주가를 상향 조정 → 방산 해외 수주 기대 + 지주사 NAV 재평가 동시 부각.",
-          "macro_event": "한화 미국 방산 시장 진출 가속화 (해리스 전 태평양사령관 간담회)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "정우주 제구난 2회 강판→4홈런 19안타 불방망이로 메웠다....한화 11-8 승리, KIA 양현종 6실점 [광주 리뷰]",
-          "url": "https://biz.chosun.com/sports/baseball/2026/05/07/GBSDMMJUGFSTAZRUMM3DKMRWGA/",
-          "source": "조선비즈",
-          "published_at": "2026-05-07T13:00:00",
-          "causal_chain": "한화가 해리스 전 태평양사령관과 간담회를 통해 미국 방산 시장 진출을 가속화하고, 증권사는 자회사 기업가치 상승과 주주환원 확대를 근거로 목표주가를 상향 조정 → 방산 해외 수주 기대 + 지주사 NAV 재평가 동시 부각.",
-          "macro_event": "한화 미국 방산 시장 진출 가속화 (해리스 전 태평양사령관 간담회)",
+          "title": "카카오, AI서비스 성과 확인돼야...목표가 7만원 ↓ -한화證",
+          "url": "https://www.fnnews.com/news/202605080832487423",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-05-08T09:34:27.008921",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -7070,8 +7120,8 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
-      "index_change_pct": -2.17,
+      "fallback": false,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -7231,14 +7281,18 @@
         "base": 139500,
         "prices": [
           138400,
-          136900
+          136600,
+          137100,
+          137700
         ]
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "004800",
@@ -7381,7 +7435,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -7541,7 +7595,9 @@
         "base": 276000,
         "prices": [
           269000,
-          264500
+          263000,
+          264000,
+          265000
         ]
       },
       "credit_risk": true,
@@ -7632,7 +7688,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -7792,7 +7848,9 @@
         "base": 10600,
         "prices": [
           11090,
-          11140
+          10860,
+          11020,
+          11070
         ]
       },
       "credit_risk": true,
@@ -7835,7 +7893,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -7995,7 +8053,9 @@
         "base": 4270,
         "prices": [
           4360,
-          4115
+          4130,
+          4155,
+          4180
         ]
       },
       "togusa_verdict": "neutral",
@@ -8038,7 +8098,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -8198,7 +8258,9 @@
         "base": 16830,
         "prices": [
           17220,
-          18010
+          18070,
+          18020,
+          18080
         ]
       },
       "togusa_verdict": "neutral",
@@ -8241,7 +8303,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -8401,7 +8463,9 @@
         "base": 37950,
         "prices": [
           37700,
-          36950
+          38200,
+          37350,
+          36700
         ]
       },
       "credit_risk": true,
@@ -8456,7 +8520,7 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.17,
+      "index_change_pct": -1.32,
       "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -8658,7 +8722,9 @@
         "base": 102200,
         "prices": [
           97600,
-          98800
+          99000,
+          101200,
+          103200
         ]
       },
       "credit_risk": true,
@@ -8757,7 +8823,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -8917,7 +8983,9 @@
         "base": 119500,
         "prices": [
           116900,
-          114700
+          115900,
+          115900,
+          113000
         ]
       },
       "credit_risk": true,
@@ -8976,7 +9044,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -9136,6 +9204,8 @@
         "base": 5560,
         "prices": [
           5600,
+          5510,
+          5590,
           5550
         ]
       },
@@ -9193,7 +9263,7 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
+      "index_change_pct": 1.05,
       "index_multiple_current": 0.0,
       "index_multiple_eligible": false,
       "range_240d": {
@@ -9353,7 +9423,9 @@
         "base": 6640,
         "prices": [
           6540,
-          6200
+          6190,
+          6190,
+          6260
         ]
       },
       "togusa_verdict": "neutral",
@@ -9423,7 +9495,7 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/04/17/6DO64DDGWVEWPJW467NDFZVFOQ/",
           "source": "조선비즈",
           "published_at": "2026-04-17T08:29:23",
-          "causal_chain": null,
+          "causal_chain": "",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -9435,8 +9507,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 29.61,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 28.49,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 176400,
@@ -9621,12 +9693,16 @@
         "base": 39951,
         "prices": [
           51900,
+          51900,
+          51900,
           51900
         ]
       },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "주의",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "222040",
@@ -9710,8 +9786,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.01,
-      "index_multiple_current": 29.53,
+      "index_change_pct": 1.05,
+      "index_multiple_current": 28.41,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 6790,
@@ -9895,6 +9971,8 @@
         "open": 6790,
         "base": 5230,
         "prices": [
+          6790,
+          6790,
           6790,
           6790
         ]
