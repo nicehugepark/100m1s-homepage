@@ -1,6 +1,6 @@
 {
   "date": "2026-05-08",
-  "generated_at": "2026-05-08T19:59:59.732670",
+  "generated_at": "2026-05-08T20:15:19.199455",
   "data_source": "heroshik_strict",
   "macro_events": [
     {
@@ -4598,6 +4598,33 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "HB테크놀러지 보통주가 2026-05-08 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-05-11(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-11, 미해당 시 매매거래일 기준 2026-05-22까지 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001170",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-05-11",
+          "period_end": "2026-05-11",
+          "condition": "판단일(T) 종가가 5일 전날(T-5) 종가 대비 60% 이상 상승 + 당일 포함 최근 15일 종가 중 최고 + T-5 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation_period": "2026-05-11 ~ 2026-05-22 (매매거래일 기준 순연 판단)"
+        },
+        {
+          "title": "HB테크놀러지(KR7078150000)가 2026-05-11 단기과열종목 지정예고됨. 예고일부터 10거래일 이내 어느 특정일에 ①주가상승률(직전 40거래일 종가 평균의 130% 이상) ②거래회전율(2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(2거래일 평균이 직전 40거래일 평균의 150% 이상) 3요건 모두 충족하고 해당일 종가가 직전 거래일·예고일 전일 종가 대비 상승 시 다음 매매거래일부터 3거래일간 30분 단위 단일가매매 적용.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001221",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-05-11",
+          "condition": "당일 종가가 직전 40거래일 종가 평균의 130% 이상 + 최근 2거래일 일별 거래회전율 평균이 직전 40거래일 일별 거래회전율 평균의 600% 이상 + 최근 2거래일 일별 주가변동성 평균이 직전 40거래일 일별 주가변동성 평균의 150% 이상 (3요건 모두 충족 + 해당일 종가가 직전 거래일 종가 및 지정예고일 전일 종가 대비 상승)",
+          "regulation_period": "지정예고일(2026-05-11)부터 10거래일 이내"
+        }
+      ],
       "index_change_pct": 0.71,
       "index_multiple_current": 9.32,
       "index_multiple_eligible": true,
@@ -4754,29 +4781,53 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-04-29) 대비 +60%↑",
-              "base_price": 2900,
-              "threshold": 4640,
-              "current": 5290,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-11",
-          "period_end": "2026-05-12",
+          "label": "투자경고 예고",
+          "severity": "warning",
           "start": "2026-05-11",
-          "end": "2026-05-12",
+          "end": "2026-05-11",
+          "summary": "HB테크놀러지 보통주가 2026-05-08 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-05-11(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-11, 미해당 시 매매거래일 기준 2026-05-22까지 순연 판단.",
+          "condition": "판단일(T) 종가가 5일 전날(T-5) 종가 대비 60% 이상 상승 + 당일 포함 최근 15일 종가 중 최고 + T-5 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation": "2026-05-11 ~ 2026-05-22 (매매거래일 기준 순연 판단)",
           "view_date": "2026-05-08",
           "next_trading_day": "2026-05-11",
-          "next_trading_day_for_predicted": "2026-05-11",
-          "next_trading_day_source": "verified",
           "single_price": false,
-          "effect_badges": []
+          "source": "disclosure",
+          "entry_threshold_price": 4640,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-05-26",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "HB테크놀러지 보통주가 2026-05-08 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-05-11(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-11, 미해당 시 매매거래일 기준 2026-05-22까지 순연 판단.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001170",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
+        },
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-05-11",
+          "summary": "HB테크놀러지(KR7078150000)가 2026-05-11 단기과열종목 지정예고됨. 예고일부터 10거래일 이내 어느 특정일에 ①주가상승률(직전 40거래일 종가 평균의 130% 이상) ②거래회전율(2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(2거래일 평균이 직전 40거래일 평균의 150% 이상) 3요건 모두 충족하고 해당일 종가가 직전 거래일·예고일 전일 종가 대비 상승 시 다음 매매거래일부터 3거래일간 30분 단위 단일가매매 적용.",
+          "condition": "당일 종가가 직전 40거래일 종가 평균의 130% 이상 + 최근 2거래일 일별 거래회전율 평균이 직전 40거래일 일별 거래회전율 평균의 600% 이상 + 최근 2거래일 일별 주가변동성 평균이 직전 40거래일 일별 주가변동성 평균의 150% 이상 (3요건 모두 충족 + 해당일 종가가 직전 거래일 종가 및 지정예고일 전일 종가 대비 상승)",
+          "regulation": "지정예고일(2026-05-11)부터 10거래일 이내",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
+          "reason_text": "HB테크놀러지(KR7078150000)가 2026-05-11 단기과열종목 지정예고됨. 예고일부터 10거래일 이내 어느 특정일에 ①주가상승률(직전 40거래일 종가 평균의 130% 이상) ②거래회전율(2거래일 평균이 직전 40거래일 평균의 600% 이상) ③주가변동성(2거래일 평균이 직전 40거래일 평균의 150% 이상) 3요건 모두 충족하고 해당일 종가가 직전 거래일·예고일 전일 종가 대비 상승 시 다음 매매거래일부터 3거래일간 30분 단위 단일가매매 적용.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 5/11 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001221",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
         }
       ],
       "intraday": {
@@ -4825,6 +4876,8 @@
           4830
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "투자경고",
       "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰"
@@ -4909,6 +4962,21 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "두산퓨얼셀 보통주가 2026-05-08 종가가 5일 전일 종가보다 45% 이상 상승하여 2026-05-11(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-11, 미해당 시 2026-05-22까지 매매거래일 기준 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001208",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-05-11",
+          "period_end": "2026-05-11",
+          "condition": "판단일 종가가 5일 전일 종가 대비 45% 이상 상승 + 최근 15일 종가 중 최고가 + 특정계좌(군) 매수관여 요건",
+          "regulation_period": "2026-05-11~2026-05-22 (매매거래일 기준 순연 판단)"
+        }
+      ],
       "index_change_pct": 0.11,
       "index_multiple_current": 120.45,
       "index_multiple_eligible": true,
@@ -5061,6 +5129,48 @@
           "h": 89900,
           "l": 74900,
           "c": 86300
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-05-11",
+          "end": "2026-05-11",
+          "summary": "두산퓨얼셀 보통주가 2026-05-08 종가가 5일 전일 종가보다 45% 이상 상승하여 2026-05-11(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-11, 미해당 시 2026-05-22까지 매매거래일 기준 순연 판단.",
+          "condition": "판단일 종가가 5일 전일 종가 대비 45% 이상 상승 + 최근 15일 종가 중 최고가 + 특정계좌(군) 매수관여 요건",
+          "regulation": "2026-05-11~2026-05-22 (매매거래일 기준 순연 판단)",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 87800,
+          "entry_threshold_via": "warn_surge_15d_100pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 3배 동시 충족 시",
+          "entry_window_end": "2026-05-26",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-05-06)",
+              "base_price": 78500,
+              "threshold": 78500,
+              "current": 89900,
+              "triggered": true
+            }
+          ],
+          "reason_text": "두산퓨얼셀 보통주가 2026-05-08 종가가 5일 전일 종가보다 45% 이상 상승하여 2026-05-11(1일간) 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 최초 판단일 2026-05-11, 미해당 시 2026-05-22까지 매매거래일 기준 순연 판단.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001208",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
         }
       ],
       "intraday": {
@@ -8103,6 +8213,30 @@
           "raw_title": "동일인등출자계열회사와의상품ㆍ용역거래",
           "period_start": "2026-07-01",
           "period_end": "2026-09-30"
+        },
+        {
+          "title": "가온전선 보통주가 투자경고종목 지정 이후에도 주가가 급등(2026-05-08 종가가 5일전 종가 대비 60% 이상 상승, 최근 15일 종가중 최고가, 5일 주가상승률이 업종지수 상승률의 5배 이상)하여 2026-05-11 투자위험종목으로 지정됨. 지정 효과로 위탁증거금 100% 납부·신용융자 매수 금지·대용증권 불인정이 적용되며, 해제 최초 판단일은 2026-05-26 예정.",
+          "category": "투자위험",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001206",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "투자위험종목 지정",
+          "period_start": "2026-05-11",
+          "condition": "2026-05-08 종가가 5일전 종가 대비 60% 이상 상승 + 최근 15일 종가중 최고가 + 5일간 주가상승률이 업종지수 상승률의 5배 이상",
+          "regulation_period": "2026-05-11 지정 이후 최초 해제 판단일 2026-05-26 예정"
+        },
+        {
+          "title": "가온전선 보통주가 투자위험종목으로 최초지정되어 2026-05-11 1거래일간 매매거래가 정지됨. 근거규정은 시장감시규정 제5조의3 및 같은 규정 시행세칙 제3조의6.",
+          "category": "투자위험",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001204",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "매매거래 정지 및 재개(투자위험종목 최초지정)",
+          "period_start": "2026-05-11",
+          "period_end": "2026-05-11",
+          "regulation_period": "2026-05-11(1일간) 매매거래정지"
         }
       ],
       "index_change_pct": 0.11,
@@ -8261,29 +8395,43 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
+          "label": "투자위험",
+          "severity": "danger",
+          "start": "2026-05-11",
+          "summary": "가온전선 보통주가 투자경고종목 지정 이후에도 주가가 급등(2026-05-08 종가가 5일전 종가 대비 60% 이상 상승, 최근 15일 종가중 최고가, 5일 주가상승률이 업종지수 상승률의 5배 이상)하여 2026-05-11 투자위험종목으로 지정됨. 지정 효과로 위탁증거금 100% 납부·신용융자 매수 금지·대용증권 불인정이 적용되며, 해제 최초 판단일은 2026-05-26 예정.",
+          "condition": "2026-05-08 종가가 5일전 종가 대비 60% 이상 상승 + 최근 15일 종가중 최고가 + 5일간 주가상승률이 업종지수 상승률의 5배 이상",
+          "regulation": "2026-05-11 지정 이후 최초 해제 판단일 2026-05-26 예정",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
           "thresholds": [
             {
-              "desc": "5일 전(2026-04-29) 대비 +60%↑",
-              "base_price": 217000,
-              "threshold": 347200,
+              "desc": "최근 15일 최고가(2026-05-06)",
+              "base_price": 375000,
+              "threshold": 375000,
               "current": 477000,
               "triggered": true
             }
           ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-11",
-          "period_end": "2026-05-12",
-          "start": "2026-05-11",
-          "end": "2026-05-12",
-          "view_date": "2026-05-08",
-          "next_trading_day": "2026-05-11",
-          "next_trading_day_for_predicted": "2026-05-11",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자위험",
+              "source_kind": "disclosure"
+            },
+            {
+              "effect": "trade-halt",
+              "when": "tomorrow",
+              "severity": "danger",
+              "source_label": "투자위험",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001206",
+          "disclosure_title": "투자위험종목 지정"
         },
         {
           "label": "상한가",
@@ -10940,6 +11088,20 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "한국피아이엠 보통주가 2026-05-08 종가의 최근 1년간 초과 주가상승률 200% 이상, 최근 15일 종가 중 최고가, 매수관여율 상위 10개 계좌 관여율 기준 해당일수 4일 이상에 해당하여 2026-05-11 투자경고종목으로 지정되며, 신용융자 매수 금지·위탁증거금 100% 납부·대용증권 불인정이 적용되고 지정 후 2일간 40% 이상 상승 시 1회 매매거래정지 가능. 해제 최초 판단일은 2026-05-22(예정).",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001159",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "투자경고종목지정",
+          "period_start": "2026-05-11",
+          "condition": "지정 후 2일간 40% 이상 상승하고 지정 전일 종가보다 높을 경우 1회 매매거래정지 가능",
+          "regulation_period": "2026-05-11 지정, 해제 최초 판단일 2026-05-22(예정) 이후 순연 판단"
+        }
+      ],
       "index_change_pct": 0.71,
       "index_multiple_current": 19.32,
       "index_multiple_eligible": true,
@@ -11092,6 +11254,40 @@
           "h": 143900,
           "l": 126200,
           "c": 137600
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자경고",
+          "severity": "warning",
+          "start": "2026-05-11",
+          "summary": "한국피아이엠 보통주가 2026-05-08 종가의 최근 1년간 초과 주가상승률 200% 이상, 최근 15일 종가 중 최고가, 매수관여율 상위 10개 계좌 관여율 기준 해당일수 4일 이상에 해당하여 2026-05-11 투자경고종목으로 지정되며, 신용융자 매수 금지·위탁증거금 100% 납부·대용증권 불인정이 적용되고 지정 후 2026-05-11 ~ 2026-05-12 (2일간) 40% 이상 상승 시 1회 매매거래정지 가능. 해제 최초 판단일은 2026-05-22(예정).",
+          "condition": "지정 후 2일간 40% 이상 상승하고 지정 전일 종가보다 높을 경우 1회 매매거래정지 가능",
+          "regulation": "2026-05-11 지정, 해제 최초 판단일 2026-05-22(예정) 이후 순연 판단",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
+          "thresholds": [
+            {
+              "desc": "지정일(2026-05-08) +2일 종가 대비 40%↑",
+              "base_price": 143900,
+              "threshold": 201460,
+              "current": 143900,
+              "triggered": false
+            }
+          ],
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001159",
+          "disclosure_title": "투자경고종목지정"
         }
       ],
       "intraday": {
@@ -11944,6 +12140,18 @@
           "is_cb": false,
           "source": "DART",
           "raw_title": "전환청구권행사              "
+        },
+        {
+          "title": "해성옵틱스 보통주가 투자경고종목 지정예고 후 ① 2026-05-08 종가가 5일전 종가보다 60% 이상 상승, ② 2026-05-08 종가가 최근 15일 종가 중 최고가, ③ 5일간 주가상승률이 종합주가지수 상승률의 5배 이상에 해당하여 2026-05-11 투자경고종목으로 지정됨. 해제 최초 판단일은 2026-05-22(예정)이며 미해당 시 순연 판단.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001161",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "투자경고종목지정",
+          "period_start": "2026-05-11",
+          "condition": "지정예고 후 종가 5일전 대비 60% 이상 상승 + 최근 15일 종가 중 최고가 + 5일 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation_period": "2026-05-11 지정, 최초 해제 판단일 2026-05-22(예정), 미해당 시 순연 판단"
         }
       ],
       "index_change_pct": 0.71,
@@ -12102,29 +12310,36 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
+          "label": "투자경고",
+          "severity": "warning",
+          "start": "2026-05-11",
+          "summary": "해성옵틱스 보통주가 투자경고종목 지정예고 후 ① 2026-05-08 종가가 5일전 종가보다 60% 이상 상승, ② 2026-05-08 종가가 최근 15일 종가 중 최고가, ③ 2026-05-11 ~ 2026-05-15 (5일간) 주가상승률이 종합주가지수 상승률의 5배 이상에 해당하여 2026-05-11 투자경고종목으로 지정됨. 해제 최초 판단일은 2026-05-22(예정)이며 미해당 시 순연 판단.",
+          "condition": "지정예고 후 종가 5일전 대비 60% 이상 상승 + 최근 15일 종가 중 최고가 + 5일 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation": "2026-05-11 지정, 최초 해제 판단일 2026-05-22(예정), 미해당 시 순연 판단",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
           "thresholds": [
             {
-              "desc": "5일 전(2026-04-29) 대비 +60%↑",
-              "base_price": 1457,
-              "threshold": 2331,
+              "desc": "최근 15일 최고가(2026-05-06)",
+              "base_price": 2450,
+              "threshold": 2450,
               "current": 2930,
               "triggered": true
             }
           ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-11",
-          "period_end": "2026-05-12",
-          "start": "2026-05-11",
-          "end": "2026-05-12",
-          "view_date": "2026-05-08",
-          "next_trading_day": "2026-05-11",
-          "next_trading_day_for_predicted": "2026-05-11",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001161",
+          "disclosure_title": "투자경고종목지정"
         }
       ],
       "intraday": {
@@ -13040,6 +13255,20 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "아진산업(KR7013310008)이 코스닥시장 업무규정 제23조의2에 따라 2026-05-11 단기과열종목 지정예고 대상으로 공시됨. 예고일부터 10거래일 이내 ①주가상승률 130%↑ ②거래회전율 600%↑ ③주가변동성 150%↑ 3요건 동시 충족 + 당일 종가가 직전 거래일 및 예고일 전일 종가 대비 상승 시 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됨.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001223",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-05-11",
+          "condition": "예고일부터 10거래일 이내 ①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 일별 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 일별 주가변동성 평균이 직전 40거래일 평균의 150% 이상 + 당일 종가가 직전 거래일 종가 및 지정예고일 전일 종가 대비 상승",
+          "regulation_period": "2026-05-11부터 10거래일 이내 요건 충족 시 그 다음 매매거래일부터 3거래일간 30분 단위 단일가매매"
+        }
+      ],
       "index_change_pct": 0.71,
       "index_multiple_current": 20.62,
       "index_multiple_eligible": true,
@@ -13192,6 +13421,27 @@
           "h": 4895,
           "l": 4100,
           "c": 4335
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-05-11",
+          "summary": "아진산업(KR7013310008)이 코스닥시장 업무규정 제23조의2에 따라 2026-05-11 단기과열종목 지정예고 대상으로 공시됨. 예고일부터 10거래일 이내 ①주가상승률 130%↑ ②거래회전율 600%↑ ③주가변동성 150%↑ 3요건 동시 충족 + 당일 종가가 직전 거래일 및 예고일 전일 종가 대비 상승 시 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됨.",
+          "condition": "예고일부터 10거래일 이내 ①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 일별 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 일별 주가변동성 평균이 직전 40거래일 평균의 150% 이상 + 당일 종가가 직전 거래일 종가 및 지정예고일 전일 종가 대비 상승",
+          "regulation": "2026-05-11부터 10거래일 이내 요건 충족 시 그 다음 매매거래일부터 3거래일간 30분 단위 단일가매매",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-26",
+          "reason_text": "아진산업(KR7013310008)이 코스닥시장 업무규정 제23조의2에 따라 2026-05-11 단기과열종목 지정예고 대상으로 공시됨. 예고일부터 10거래일 이내 ①주가상승률 130%↑ ②거래회전율 600%↑ ③주가변동성 150%↑ 3요건 동시 충족 + 당일 종가가 직전 거래일 및 예고일 전일 종가 대비 상승 시 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됨.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 5/11 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001223",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
         }
       ],
       "intraday": {
@@ -13576,6 +13826,20 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "나우로보틱스(KR7459510004) 코스닥 단기과열종목 지정예고: 2026-05-11 예고일부터 10거래일 이내 ①주가상승률(당일종가 직전40거래일 평균 130% 이상) ②거래회전율(최근2일 평균 직전40일 평균의 600% 이상) ③주가변동성(최근2일 평균 직전40일 평균의 150% 이상) 3요건 모두 충족 + 종가 상승 시 다음 매매거래일부터 단기과열종목 지정(3거래일 단일가매매).",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001218",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-05-11",
+          "condition": "예고일부터 10거래일 이내 ①당일종가 직전40거래일 평균 130% 이상 ②최근2거래일 거래회전율 평균 직전40거래일 평균의 600% 이상 ③최근2거래일 주가변동성 평균 직전40거래일 평균의 150% 이상 모두 충족 + 해당일 종가가 직전 거래일 종가 및 지정예고일 전일 종가 대비 상승",
+          "regulation_period": "지정예고일 2026-05-11부터 10거래일 이내"
+        }
+      ],
       "index_change_pct": 0.71,
       "index_multiple_current": 28.63,
       "index_multiple_eligible": true,
@@ -13728,6 +13992,27 @@
           "h": 37000,
           "l": 30500,
           "c": 31500
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-05-11",
+          "summary": "나우로보틱스(KR7459510004) 코스닥 단기과열종목 지정예고: 2026-05-11 예고일부터 10거래일 이내 ①주가상승률(당일종가 직전40거래일 평균 130% 이상) ②거래회전율(최근2일 평균 직전40일 평균의 600% 이상) ③주가변동성(최근2일 평균 직전40일 평균의 150% 이상) 3요건 모두 충족 + 종가 상승 시 다음 매매거래일부터 단기과열종목 지정(3거래일 단일가매매).",
+          "condition": "예고일부터 10거래일 이내 ①당일종가 직전40거래일 평균 130% 이상 ②최근2거래일 거래회전율 평균 직전40거래일 평균의 600% 이상 ③최근2거래일 주가변동성 평균 직전40거래일 평균의 150% 이상 모두 충족 + 해당일 종가가 직전 거래일 종가 및 지정예고일 전일 종가 대비 상승",
+          "regulation": "지정예고일 2026-05-11부터 10거래일 이내",
+          "view_date": "2026-05-08",
+          "next_trading_day": "2026-05-11",
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-05-26",
+          "reason_text": "나우로보틱스(KR7459510004) 코스닥 단기과열종목 지정예고: 2026-05-11 예고일부터 10거래일 이내 ①주가상승률(당일종가 직전40거래일 평균 130% 이상) ②거래회전율(최근2일 평균 직전40일 평균의 600% 이상) ③주가변동성(최근2일 평균 직전40일 평균의 150% 이상) 3요건 모두 충족 + 종가 상승 시 다음 매매거래일부터 단기과열종목 지정(3거래일 단일가매매).",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 5/11 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260508001218",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
         }
       ],
       "intraday": {
