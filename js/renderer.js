@@ -1596,9 +1596,10 @@ async function initThemeTrend() {
     function updateViewportLegend() {
       // 수동 선택 시 viewport 필터 비활성 — applyLegendFilter가 단일 root만 표시 (수동 우선)
       if (selectedIdx !== -1) {
-        // viewport-inactive 클래스 + polyline opacity 정리 (수동 선택만 표시되도록)
+        // viewport-inactive 클래스만 정리. polyline opacity는 applyLegendFilter가 설정한 값(1/0.15) 보존.
+        // 5/8 10:02 fix (대표 catch 회귀): 이전 코드 pl.style.opacity = '' 가 applyLegendFilter inline 값을 덮어써서
+        // 강조 효과 무력화 → 모든 polyline SVG attribute opacity=0.8 으로 회귀. 본 라인 제거로 selectedIdx 강조 복원.
         legendItems.forEach(li => li.classList.remove('viewport-inactive'));
-        svgEl.querySelectorAll('polyline[data-theme-idx]').forEach(pl => { pl.style.opacity = ''; });
         legendContainer && legendContainer.querySelector('.theme-trend-legend-empty-hint')?.remove();
         return;
       }
