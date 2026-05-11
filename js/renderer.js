@@ -801,8 +801,14 @@ function renderCalExpandContent(date, data) {
         ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
+      // Q-MOBILE-SPARKLINE-FIX-A (2026-05-12) — 신규 상장 종목(daily_20 부재 + intraday 존재) 모바일 sparkline 노출.
+      // has-intraday-fallback class 부착 시 news.css 모바일 분기에서 display:inline-block 유지.
+      // 대표 catch (00:46): 5/12 439960 코스모로보틱스. data-loader.js:233 주석 알려진 결함 본 fix로 해소.
+      const _d20Empty = !Array.isArray(it.interp?.daily_20) || it.interp.daily_20.length < 5;
+      const _hasIntradayFallback = _d20Empty && it.interp?.intraday;
+      const _sparkClass = _hasIntradayFallback ? 'cal-feature-sparkline has-intraday-fallback' : 'cal-feature-sparkline';
       const sparkHtml = it.interp?.intraday
-        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
+        ? `<div class="${_sparkClass}">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       // REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측, 모바일은 CSS로 sparkline 숨김 + candles20만).
       const d20 = it.interp?.daily_20;

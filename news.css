@@ -210,6 +210,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   /* REQ-pm320-ux-cycle #3 — 모바일 카드 head 폭 부족, 당일 분봉 sparkline 숨기고
      20영업일 일봉(매매 결단에 더 직결)만 노출. design-lead 권고 */
   .cal-feature-sparkline { display: none; }
+  /* Q-MOBILE-SPARKLINE-FIX-A (2026-05-12) — 신규 상장(daily_20 부재) 종목은 sparkline 유지.
+     candles20-empty 회색 박스 + sparkline display:none = 모바일 정보 100% 손실. renderer.js:805에서
+     has-intraday-fallback class 부착 시 본 분기로 sparkline 노출. data-loader.js:233 주석 catch 본 fix로 해소. */
+  .cal-feature-sparkline.has-intraday-fallback { display: inline-block !important; }
 }
 /* REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측). */
 /* REQ-004 v181: position relative — staleLabel을 absolute overlay로 layout 침범 회피 */
@@ -219,6 +223,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 @media (max-width: 640px) {
   .cal-feature-candles20 { width: 78px; height: 26px; }
   .cal-candles20-empty { width: 78px; height: 26px; }
+  /* Q-MOBILE-SPARKLINE-FIX-A — 신규 상장 종목 모바일에서 회색 빈 박스는 정보 0 → 숨김.
+     sparkline(.has-intraday-fallback)이 대체 노출. */
+  .cal-candles20-empty { display: none; }
 }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
