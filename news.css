@@ -210,11 +210,6 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   /* REQ-pm320-ux-cycle #3 — 모바일 카드 head 폭 부족, 당일 분봉 sparkline 숨기고
      20영업일 일봉(매매 결단에 더 직결)만 노출. design-lead 권고 */
   .cal-feature-sparkline { display: none; }
-  /* Q-MOBILE-LAYOUT-ALIGN (2026-05-12 04:28) — 대표 catch + audit 권고 A.
-     c+a 결정 (03:13) 폐기: 모바일은 일봉만, 분봉은 데스크탑 한정.
-     신규 상장 종목도 정상 종목과 동일 layout (sparkline 숨김 + candles20 78×26px).
-     renderer.js의 has-intraday-fallback class 부착은 유지 (데스크탑 분기 활용). */
-  .cal-feature-sparkline.has-intraday-fallback { display: none; }
 }
 /* REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측). */
 /* REQ-004 v181: position relative — staleLabel을 absolute overlay로 layout 침범 회피 */
@@ -228,10 +223,6 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
      renderer.js가 daily_20 부재 시 range_240d + intraday.open 으로 1건 합성 일봉을 buildCandles20에 전달.
      합성도 실패한 희귀 케이스(range_240d 부재)에서만 candles20-empty 노출되므로 mobile 숨김 유지. */
   .cal-candles20-empty { display: none; }
-  /* Q-MOBILE-LAYOUT-ALIGN (2026-05-12 04:28) — 대표 catch + audit 권고 A.
-     c+a 결정 (03:13) 폐기: 신규 상장 합성 1건도 정상 종목과 동일 width 78×26px.
-     has-single-day class는 유지 (renderer.js 부착, 미래 visual 분기 활용 여지). */
-  .cal-feature-candles20.has-single-day { width: 78px; height: 26px; }
 }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
