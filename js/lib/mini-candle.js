@@ -9,8 +9,10 @@
   // 양봉(close>open) #C53939, 음봉 #1958C7, 동가 #94A3B8 (한국 증시 관습).
   // 데스크탑 110×32, 모바일은 CSS viewBox preserveAspectRatio로 78×26 자동 축소.
   // daily_20 = [{date, o, h, l, c}] 정시 정렬(ASC).
+  // Q-MOBILE-CANDLES-FIX-A (2026-05-12) — 신규 상장 1건 합성 일봉 허용 위해 하한 < 5 → < 1.
+  // renderer.js가 range_240d + intraday.open으로 1건 합성을 전달. 정상 5건+ 종목은 동작 동일.
   function buildCandles20(daily20) {
-    if (!Array.isArray(daily20) || daily20.length < 5) return '';
+    if (!Array.isArray(daily20) || daily20.length < 1) return '';
     const N = daily20.length;
     const W = 110, H = 32, PAD_X = 4, PAD_Y = 2;
     const slot = (W - 2 * PAD_X) / N;

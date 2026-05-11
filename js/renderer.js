@@ -801,14 +801,8 @@ function renderCalExpandContent(date, data) {
         ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
-      // Q-MOBILE-SPARKLINE-FIX-A (2026-05-12) — 신규 상장 종목(daily_20 부재 + intraday 존재) 모바일 sparkline 노출.
-      // has-intraday-fallback class 부착 시 news.css 모바일 분기에서 display:inline-block 유지.
-      // 대표 catch (00:46): 5/12 439960 코스모로보틱스. data-loader.js:233 주석 알려진 결함 본 fix로 해소.
-      const _d20Empty = !Array.isArray(it.interp?.daily_20) || it.interp.daily_20.length < 5;
-      const _hasIntradayFallback = _d20Empty && it.interp?.intraday;
-      const _sparkClass = _hasIntradayFallback ? 'cal-feature-sparkline has-intraday-fallback' : 'cal-feature-sparkline';
       const sparkHtml = it.interp?.intraday
-        ? `<div class="${_sparkClass}">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
+        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       // REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측, 모바일은 CSS로 sparkline 숨김 + candles20만).
       const d20 = it.interp?.daily_20;
@@ -826,7 +820,31 @@ function renderCalExpandContent(date, data) {
         }
         candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
       } else {
-        candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+        // Q-MOBILE-CANDLES-FIX-A (2026-05-12) — 신규 상장 1건 합성 일봉.
+        // 조건: daily_20 부재/0건 AND range_240d.high_date === 카드 일자 (당일 신규 상장) AND intraday.open 존재.
+        // 합성: o = intraday.open (시초가), h = range_240d.high, l = range_240d.low, c = range_240d.current.
+        // 대표 catch (2026-05-12 00:46, 00:59, 01:00): 5/12 439960 모바일 캔들 차트 필요 (sparkline 아님).
+        // audit dev-audit-mobile-candles-correct (01:01) option A 권고.
+        const r240Synth = it.interp?.range_240d;
+        const intraSynth = it.interp?.intraday;
+        const isFreshListing = r240Synth && intraSynth
+          && Number.isFinite(intraSynth.open) && intraSynth.open > 0
+          && Number.isFinite(r240Synth.high) && r240Synth.high > 0
+          && Number.isFinite(r240Synth.low) && r240Synth.low > 0
+          && Number.isFinite(r240Synth.current) && r240Synth.current > 0
+          && r240Synth.high_date === date;
+        if (isFreshListing) {
+          const d20Synth = [{
+            date,
+            o: intraSynth.open,
+            h: r240Synth.high,
+            l: r240Synth.low,
+            c: r240Synth.current,
+          }];
+          candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20Synth)}</div>`;
+        } else {
+          candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+        }
       }
 
       // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B / 레이아웃 v2 — 4행 분해)
