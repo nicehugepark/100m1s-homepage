@@ -21,3 +21,7 @@ data/themes.db
 data/themes.db-shm
 data/themes.db-wal
 data/stocks.db.bak.*
+
+# DB 백업 파일 (recover/cascade/heroshik/revert 패턴, 57MB+/건, commit 금지)
+data/.backup-*
+data/stocks.db.backup_*
