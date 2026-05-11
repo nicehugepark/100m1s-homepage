@@ -811,7 +811,9 @@ function renderCalExpandContent(date, data) {
       // 텍스트 정정: "데이터 05/07" → "5/7 종가 기준" (의미 명료).
       let candles20Html;
       let staleMetaHtml = '';
-      if (Array.isArray(d20) && d20.length >= 5) {
+      // Q-20260512-FRESH-LISTING-DATA — 자연 데이터 1건 이상이면 그대로 렌더.
+      // 신규 상장(코스모로보틱스 5/11)은 build_daily가 1건 적재 → 자연 노출 (합성 폐기).
+      if (Array.isArray(d20) && d20.length >= 1) {
         const lastBarDate = d20[d20.length - 1]?.date;
         const isStale = lastBarDate && date && lastBarDate < date;
         if (isStale) {
@@ -820,31 +822,7 @@ function renderCalExpandContent(date, data) {
         }
         candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
       } else {
-        // Q-MOBILE-CANDLES-FIX-A (2026-05-12) — 신규 상장 1건 합성 일봉.
-        // 조건: daily_20 부재/0건 AND range_240d.high_date === 카드 일자 (당일 신규 상장) AND intraday.open 존재.
-        // 합성: o = intraday.open (시초가), h = range_240d.high, l = range_240d.low, c = range_240d.current.
-        // 대표 catch (2026-05-12 00:46, 00:59, 01:00): 5/12 439960 모바일 캔들 차트 필요 (sparkline 아님).
-        // audit dev-audit-mobile-candles-correct (01:01) option A 권고.
-        const r240Synth = it.interp?.range_240d;
-        const intraSynth = it.interp?.intraday;
-        const isFreshListing = r240Synth && intraSynth
-          && Number.isFinite(intraSynth.open) && intraSynth.open > 0
-          && Number.isFinite(r240Synth.high) && r240Synth.high > 0
-          && Number.isFinite(r240Synth.low) && r240Synth.low > 0
-          && Number.isFinite(r240Synth.current) && r240Synth.current > 0
-          && r240Synth.high_date === date;
-        if (isFreshListing) {
-          const d20Synth = [{
-            date,
-            o: intraSynth.open,
-            h: r240Synth.high,
-            l: r240Synth.low,
-            c: r240Synth.current,
-          }];
-          candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20Synth)}</div>`;
-        } else {
-          candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
-        }
+        candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
       }
 
       // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B / 레이아웃 v2 — 4행 분해)
