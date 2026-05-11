@@ -1,6 +1,6 @@
 {
   "date": "2026-05-11",
-  "generated_at": "2026-05-11T17:25:52.561766",
+  "generated_at": "2026-05-11T17:37:38.025522",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -59,12 +59,6 @@
       "verified": true
     },
     {
-      "keyword": "유가상승",
-      "summary": "유가 105달러 돌파+중동지정학 긴장 → 에너지·건설·해운 수주 기대 → 에너지·건설·운송섹터 강세",
-      "source_count": 3,
-      "verified": true
-    },
-    {
       "keyword": "바이오신약",
       "summary": "글로벌 신약개발(GLP-1·CAR-T·줄기세포) → 국내기업 기술확보 → 바이오제약·의약외품·뷰티섹터 성장기대",
       "source_count": 3,
@@ -73,6 +67,12 @@
     {
       "keyword": "1Q실적",
       "summary": "1분기 기업 실적 호조(증권·화학·석유 80%↑) → 경기 회복·투자심리 개선 신호 → 금융·에너지·화학 섹터 수익성 확장",
+      "source_count": 3,
+      "verified": true
+    },
+    {
+      "keyword": "증시호황",
+      "summary": "증시 호황 → 거래량 폭증 → 증권업 1분기 실적 역대 최대, 영업익 100~160% 증가",
       "source_count": 3,
       "verified": true
     }
@@ -98,6 +98,23 @@
         ]
       },
       {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "AI 인프라",
+            "summary": "JPMorgan KOSPI AI 랠리 25%+ 추가 상승 전망 + SK하이닉스·삼성전자 신고가 경신으로 AI 인프라 투자 사이클 지속 신호",
+            "source_count": 5,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노사 갈등",
+            "summary": "노조 미가입자 파일 의혹 압수수색 + 노사 사후조정 막판 재협상으로 삼성전자 거버넌스·인건비 변수 부각",
+            "source_count": 3,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
         "name": "AI 인프라",
         "children": [
           {
@@ -117,6 +134,29 @@
             "summary": "SK하이닉스 신고가 및 목표가 상향 vs 하향 의견 혼재, AI 인프라 투자 사이클 지속 전망으로 메모리·부품주 자금 유입.",
             "source_count": 4,
             "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "금융",
+        "children": [
+          {
+            "name": "증권사 실적 서프라이즈",
+            "summary": "증시 호황으로 삼성증권·대신증권 1분기 순이익 역대 최대 기록하며 증권업종 실적 모멘텀 부각",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "퇴직연금 IRP 경쟁",
+            "summary": "키움·NH투자증권 IRP 오픈런·디폴트옵션 이벤트 동시 출시로 퇴직연금 자금 유치 경쟁 본격화",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "증권사 실적",
+            "summary": "삼성증권 1분기 순이익 81.5%↑, 대신증권 영업익 164.2%↑로 증시 호황 속 증권주 실적 퀀텀점프.",
+            "source_count": 2,
+            "verdict": "pass"
           }
         ]
       },
@@ -163,6 +203,12 @@
             "summary": "트럼프의 이란 평화제안 거부로 브렌트유 105달러 돌파, 원유·정유·에너지 관련주 수혜 기대.",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "중동 지정학 리스크",
+            "summary": "트럼프 이란 평화 제안 거부로 브렌트유 $105 돌파, 유가 급등 → 정유·방산 수혜, 항공·화학 부담",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
@@ -271,6 +317,35 @@
         ]
       },
       {
+        "name": "바이오",
+        "children": [
+          {
+            "name": "HLB CAR-T 치료제",
+            "summary": "진양곤 HLB 의장 HLB이노베이션 지분 추가 매수로 美 자회사 CAR-T(카티) 신약 기대감 부각",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "줄기세포 치료제",
+            "summary": "와이투솔루션 자회사 룩사가 ARVO에서 뇌·안과 줄기세포 치료 전략 공개 및 시력 개선 효과 확인으로 줄기세포 테마 부각.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "미용 의료기기",
+            "summary": "파마리서치 리쥬란 광고 확대로 브랜드 투자 재평가 부각, 미용 의료기기 마케팅 사이클 진입",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "비만치료제",
+            "summary": "인벤티지랩이 경구 세마글루타이드 한국 특허 등록으로 비만치료제(GLP-1) 관련주 부각.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
         "name": "소비/서비스",
         "children": [
           {
@@ -288,23 +363,6 @@
         ]
       },
       {
-        "name": "바이오",
-        "children": [
-          {
-            "name": "줄기세포 치료제",
-            "summary": "와이투솔루션 자회사 룩사가 ARVO에서 뇌·안과 줄기세포 치료 전략 공개 및 시력 개선 효과 확인으로 줄기세포 테마 부각.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "비만치료제",
-            "summary": "인벤티지랩이 경구 세마글루타이드 한국 특허 등록으로 비만치료제(GLP-1) 관련주 부각.",
-            "source_count": 1,
-            "verdict": "weak"
-          }
-        ]
-      },
-      {
         "name": "미디어",
         "children": [
           {
@@ -316,13 +374,24 @@
         ]
       },
       {
-        "name": "금융",
+        "name": "건설",
         "children": [
           {
-            "name": "증권사 실적",
-            "summary": "삼성증권 1분기 순이익 81.5%↑, 대신증권 영업익 164.2%↑로 증시 호황 속 증권주 실적 퀀텀점프.",
+            "name": "부동산 PF 증권사 동맹",
+            "summary": "한화 건설부문이 키움·한투·삼성증권과 부동산 개발사업 MOU 체결로 개발-금융 결합형 PF 모델 부각",
             "source_count": 2,
-            "verdict": "pass"
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "리스크",
+        "children": [
+          {
+            "name": "유일에너테크 부도",
+            "summary": "유일에너테크 2.7억 만기어음 부도로 주권매매거래 정지 연장, 2차전지 장비 중소형주 신용 리스크 환기",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
