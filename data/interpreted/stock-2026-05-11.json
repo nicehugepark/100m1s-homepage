@@ -1,6 +1,6 @@
 {
   "date": "2026-05-11",
-  "generated_at": "2026-05-11T18:25:57.907576",
+  "generated_at": "2026-05-11T18:37:59.090502",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -14,6 +14,10 @@
     {
       "title": "노조파업",
       "summary": "삼성전자·카카오 노조 파업 임박 → 반도체·IT 생산차질·운영 리스크 → 관련 섹터 변동성 확대"
+    },
+    {
+      "title": "증권사호황",
+      "summary": "1분기 강보합 장세→증권사 수수료 급증→금융섹터 수익 사이클 개시"
     },
     {
       "title": "AI랠리",
@@ -38,14 +42,22 @@
     {
       "title": "증시호황",
       "summary": "증시 호황 → 거래량 폭증 → 증권업 1분기 실적 역대 최대, 영업익 100~160% 증가"
-    },
-    {
-      "title": "불장호황",
-      "summary": "한국 증시 불장 장세 → 증권사 수수료·개인투자자 수익률 급증 → 금융·증권 섹터 1분기 사상 최대 실적"
     }
   ],
   "narratives": [],
   "themes_macro_summary": [
+    {
+      "keyword": "불장금융",
+      "summary": "증시 호황(불장) → 증권사 수수료·딜링 수익 급증 → 삼성증권·대신증권 사상 최대 실적",
+      "source_count": 8,
+      "verified": true
+    },
+    {
+      "keyword": "반도체신고가",
+      "summary": "SK하이닉스·삼성전자 신고가 갱신 → 반도체 섹터 강세 → 코스피 역사적 고점 도전",
+      "source_count": 5,
+      "verified": true
+    },
     {
       "keyword": "노조파업",
       "summary": "삼성전자·카카오 노조 파업 임박 → 반도체·IT 생산차질·운영 리스크 → 관련 섹터 변동성 확대",
@@ -61,18 +73,6 @@
     {
       "keyword": "AI칩수급",
       "summary": "글로벌 AI투자 지속+메모리칩 부족 → SK하이닉스·LG이노텍 목표가 상향·신고가 → 반도체섹터 슈퍼사이클",
-      "source_count": 3,
-      "verified": true
-    },
-    {
-      "keyword": "유가상승",
-      "summary": "이란 핵협상 악화·트럼프 정책 → 유가 105달러 상방 → 중동 인프라 재건·에너지 수주 기대 → 건설·에너지 섹터",
-      "source_count": 3,
-      "verified": true
-    },
-    {
-      "keyword": "바이오신약",
-      "summary": "글로벌 신약개발(GLP-1·CAR-T·줄기세포) → 국내기업 기술확보 → 바이오제약·의약외품·뷰티섹터 성장기대",
       "source_count": 3,
       "verified": true
     }
@@ -121,6 +121,12 @@
           {
             "name": "증권사 1분기 어닝 서프라이즈",
             "summary": "코스피 불장에 거래대금 급증으로 삼성증권·대신증권 1Q 순이익 역대 최대 → 증권주 실적 모멘텀 확산.",
+            "source_count": 6,
+            "verdict": "unverified"
+          },
+          {
+            "name": "증권사 호실적",
+            "summary": "증시 호황으로 삼성·대신증권 등 1분기 어닝 서프라이즈 발표→증권 섹터 실적 모멘텀 강화",
             "source_count": 6,
             "verdict": "unverified"
           },
@@ -202,9 +208,21 @@
             "verdict": "unverified"
           },
           {
+            "name": "반도체 신고가",
+            "summary": "SK하이닉스·삼성전자 역사적 신고가 돌파 및 코스피 8000 근접→AI 메모리 수요 기반 반도체 대형주 자금 집중",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
             "name": "AI 반도체 모멘텀",
             "summary": "SK하이닉스 목표가 210만원·신고가, LG이노텍 95만원 상향 등 AI 부품주 재평가 → HBM·AI 부품 밸류체인 강세.",
             "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "AI 부품주",
+            "summary": "SK하이닉스 목표가 210만원·LG이노텍 95만원 상향 등 AI 부품 밸류에이션 재평가→반도체·전자부품 수혜",
+            "source_count": 2,
             "verdict": "unverified"
           }
         ]
@@ -457,6 +475,12 @@
           },
           {
             "name": "줄기세포 치료제",
+            "summary": "와이투솔루션 뇌·안과 줄기세포 치료 전략 공개, 이엔셀 삼성서울병원과 TIL 항암제 협력→세포·유전자치료 바이오 모멘텀",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "줄기세포 치료제",
             "summary": "와이투솔루션 자회사 룩사가 ARVO에서 뇌·안과 줄기세포 치료 전략 공개 및 시력 개선 효과 확인으로 줄기세포 테마 부각.",
             "source_count": 2,
             "verdict": "weak"
@@ -494,6 +518,12 @@
           {
             "name": "줄기세포·세포치료제",
             "summary": "와이투솔루션 뇌·안과 줄기세포 전략 공개 + 이엔셀 삼성서울병원 TIL 치료제 협력 → 세포치료제 파이프라인 모멘텀.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "CAR-T 항암제",
+            "summary": "진양곤 HLB 의장 HLB이노베이션 지분 확대, 美 자회사 CAR-T 치료제 성과 기대감→항암 세포치료제 테마 자금 유입",
             "source_count": 2,
             "verdict": "unverified"
           },
@@ -561,6 +591,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "삼성전자 노사 리스크",
+            "summary": "삼성전자 파업·노조 미가입자 파일 의혹 압수수색·정부 개입 검토→삼성그룹 지배구조·노사 리스크 부각",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
             "name": "한화솔루션 유증 리스크",
             "summary": "금감원 한화솔루션 유상증자 미흡 시 무한 정정요구 압박으로 한화그룹 자금조달 불확실성.",
             "source_count": 1,
@@ -574,6 +610,17 @@
           {
             "name": "전환사채 대규모 발행",
             "summary": "대성하이텍 100억·옵트론텍 250억 CB 발행 vs 덕우전자 150억 CB 소각 → 메자닌 수급 양면 신호.",
+            "source_count": 3,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "화장품",
+        "children": [
+          {
+            "name": "K-뷰티 실적",
+            "summary": "클리오 1분기 영업익 404% 급증·파마리서치 리쥬란 광고 확대·한국콜마 호실적→K-뷰티 실적주 재평가",
             "source_count": 3,
             "verdict": "unverified"
           }
@@ -608,6 +655,12 @@
           {
             "name": "광고대행사 호실적",
             "summary": "이노션 1Q 영업익 397억으로 제일기획 추월 → 광고대행 업종 수익성 재평가.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "광고대행 실적",
+            "summary": "이노션 1분기 영업익 397억으로 제일기획 추월·역대 최대→광고·마케팅 대행 섹터 실적 모멘텀",
             "source_count": 2,
             "verdict": "unverified"
           },
@@ -693,6 +746,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "교육주 N수생",
+            "summary": "올해 N수생 증가로 디지털대성 2분기 실적 호조 전망→입시 교육 섹터 실적 모멘텀",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
             "name": "교육주 N수생 수혜",
             "summary": "2026년 N수생 증가 전망으로 디지털대성 2분기 실적 호조 기대, 입시·교육 콘텐츠 수혜.",
             "source_count": 1,
@@ -707,6 +766,45 @@
             "name": "유일에너테크 부도 리스크",
             "summary": "유일에너테크 2.7억 만기어음 부도 발생 및 매매거래정지 연장으로 2차전지 장비주 신용 리스크 전이 우려.",
             "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "수급이슈",
+        "children": [
+          {
+            "name": "전환사채 발행",
+            "summary": "대성하이텍 100억·옵트론텍 250억 전환사채 발행→오버행 우려 종목 수급 변동",
+            "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "기계",
+        "children": [
+          {
+            "name": "농기계 수출",
+            "summary": "TYM 1분기 영업익 131% 증가 350억→북미 농기계 수출 회복 모멘텀",
+            "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "화학",
+        "children": [
+          {
+            "name": "석유화학 흑자전환",
+            "summary": "롯데케미칼 1분기 영업익 735억 흑자전환·한국석유공업 영업익 335% 증가→석유화학 업황 저점 반등",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "롯데케미칼 흑자전환",
+            "summary": "롯데케미칼 1분기 영업이익 735억원 흑자전환으로 석유화학 업황 바닥 통과 신호.",
+            "source_count": 1,
             "verdict": "unverified"
           }
         ]
@@ -823,6 +921,18 @@
             "summary": "한전기술-LS전선 부유식 해상풍력 통합 솔루션 동맹 → 풍력·해저케이블 밸류체인 협업 가속.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "부유식 해상풍력",
+            "summary": "한전기술-LS전선 부유식 해상풍력 통합 솔루션 동맹→해상풍력 EPC·해저케이블 밸류체인 수혜",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "부유식 해상풍력",
+            "summary": "한전기술-LS전선 부유식 해상풍력 통합 솔루션 동맹→해상풍력 EPC·해저케이블 밸류체인 수혜",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
@@ -844,6 +954,12 @@
           {
             "name": "STO 토큰증권",
             "summary": "DB증권, 부산시 블록체인 특화사업 STO 플랫폼 우협 선정 → 토큰증권 인프라 진입 가속.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "STO 토큰증권",
+            "summary": "DB증권 부산시 블록체인 특화사업 STO 플랫폼 우협대상자 선정→토큰증권 제도화 수혜",
             "source_count": 1,
             "verdict": "unverified"
           }
@@ -887,6 +1003,12 @@
             "summary": "인텔리안테크 우주·방산 안테나 사상 최대 실적 가시화 → 위성통신·방산 안테나 모멘텀.",
             "source_count": 1,
             "verdict": "unverified"
+          },
+          {
+            "name": "우주·방산",
+            "summary": "인텔리안테크 우주-방산 안테나 사상 최대 실적 가시화→위성통신·방산 부품 모멘텀",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -898,6 +1020,12 @@
             "summary": "현대차가 병원 로봇시장 진출 및 AI 약 배송 첫 실증 성과로 의료 로봇·물류 자동화 테마 부각.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "현대차 로봇·AI",
+            "summary": "현대차 병원 AI 약 배송 로봇 첫 실증 성과→서비스 로봇·헬스케어 자동화 테마",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -946,17 +1074,6 @@
         ]
       },
       {
-        "name": "화학",
-        "children": [
-          {
-            "name": "롯데케미칼 흑자전환",
-            "summary": "롯데케미칼 1분기 영업이익 735억원 흑자전환으로 석유화학 업황 바닥 통과 신호.",
-            "source_count": 1,
-            "verdict": "unverified"
-          }
-        ]
-      },
-      {
         "name": "금융 인프라",
         "children": [
           {
@@ -984,6 +1101,28 @@
           {
             "name": "한화솔루션 유증 압박",
             "summary": "금감원이 한화솔루션 유증에 무한 정정요구 경고 → 단기 수급 부담 + 태양광 섹터 영향.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "금융규제",
+        "children": [
+          {
+            "name": "한화솔루션 유증 리스크",
+            "summary": "금감원 한화솔루션 유상증자 정정요구 압박→대규모 유증 종목 투자심리 위축, 한화 계열 수급 변동",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "플랜트",
+        "children": [
+          {
+            "name": "중동 에너지 수주",
+            "summary": "파인테크닉스 중동 국영 에너지 기업 공급망 확보→중동 발 에너지·플랜트 수주 모멘텀",
             "source_count": 1,
             "verdict": "unverified"
           }
