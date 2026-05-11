@@ -801,8 +801,13 @@ function renderCalExpandContent(date, data) {
         ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
       // 테마 칩은 링크 아래 별도 줄
+      // Q-MOBILE-A1-BOTH (2026-05-12 03:13) — daily_20 부재 + intraday.prices 존재 시 has-intraday-fallback class.
+      // 모바일에서 sparkline 재노출 (CSS .cal-feature-sparkline.has-intraday-fallback 분기). 대표 c+a 결정 (분봉 series + 일봉 1건 둘 다).
+      const _d20Avail = Array.isArray(it.interp?.daily_20) && it.interp.daily_20.length >= 5;
+      const _intraAvail = it.interp?.intraday && Array.isArray(it.interp.intraday.prices) && it.interp.intraday.prices.length > 0;
+      const _sparkFallbackCls = (!_d20Avail && _intraAvail) ? ' has-intraday-fallback' : '';
       const sparkHtml = it.interp?.intraday
-        ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
+        ? `<div class="cal-feature-sparkline${_sparkFallbackCls}">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
         : '<div class="cal-feature-sparkline cal-spark-empty"></div>';
       // REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측, 모바일은 CSS로 sparkline 숨김 + candles20만).
       const d20 = it.interp?.daily_20;
@@ -841,7 +846,9 @@ function renderCalExpandContent(date, data) {
             l: r240Synth.low,
             c: r240Synth.current,
           }];
-          candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20Synth)}</div>`;
+          // Q-MOBILE-A1-BOTH (2026-05-12 03:13) — has-single-day class 부착.
+          // 모바일 width 78px → 36px 축소 (sparkline 48px 동반 노출 head 정합).
+          candles20Html = `<div class="cal-feature-candles20 has-single-day" aria-label="20영업일 일봉">${buildCandles20(d20Synth)}</div>`;
         } else {
           candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
         }
