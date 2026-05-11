@@ -1,8 +1,12 @@
 {
   "date": "2026-05-11",
-  "generated_at": "2026-05-11T18:02:00.954946",
+  "generated_at": "2026-05-11T18:13:49.062911",
   "data_source": "kiwoom",
   "macro_events": [
+    {
+      "title": "노조파업",
+      "summary": "삼성전자·카카오 노조 파업 임박 → 반도체·IT 생산차질·운영 리스크 → 관련 섹터 변동성 확대"
+    },
     {
       "title": "AI랠리",
       "summary": "AI 수요 급증 → 반도체·SW 기업 실적 개선 → KOSPI 역사적 신고가 경신 (JPMorgan '25% 추가 상승 가능')"
@@ -38,10 +42,6 @@
     {
       "title": "국채청약",
       "summary": "국채 청약 4개월 연속 초과 수요 → 금리 정상화 신호 → 채권·금융 섹터 자산배분 전환"
-    },
-    {
-      "title": "삼성노조",
-      "summary": "삼성전자 노조 임금협약 결렬 → 생산 차질·비용 증가 리스크 → 반도체·기술 섹터 2분기 실적 부담"
     }
   ],
   "narratives": [],
@@ -104,25 +104,14 @@
         ]
       },
       {
-        "name": "반도체",
-        "children": [
-          {
-            "name": "AI 인프라",
-            "summary": "JPMorgan KOSPI AI 랠리 25%+ 추가 상승 전망 + SK하이닉스·삼성전자 신고가 경신으로 AI 인프라 투자 사이클 지속 신호",
-            "source_count": 5,
-            "verdict": "weak"
-          },
-          {
-            "name": "AI 인프라",
-            "summary": "JPMorgan AI 랠리 25% 추가 상승 전망 + SK하이닉스·삼성전자 신고가→AI 메모리 수요 지속→반도체·HBM·AI 부품주",
-            "source_count": 5,
-            "verdict": "weak"
-          }
-        ]
-      },
-      {
         "name": "금융",
         "children": [
+          {
+            "name": "증권사 어닝 서프라이즈",
+            "summary": "1분기 증시 호황으로 삼성증권·대신증권 등 증권사 순이익 사상 최대치 기록하며 증권주 재평가 흐름.",
+            "source_count": 6,
+            "verdict": "unverified"
+          },
           {
             "name": "증권사 호실적",
             "summary": "증시 호황으로 삼성·대신증권 1분기 사상 최대 실적 발표→증권주 재평가→증권 섹터 자금 유입",
@@ -152,6 +141,35 @@
             "summary": "삼성증권 1분기 순이익 81.5%↑, 대신증권 영업익 164.2%↑로 증시 호황 속 증권주 실적 퀀텀점프.",
             "source_count": 2,
             "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "AI 인프라",
+            "summary": "JPMorgan KOSPI AI 랠리 25%+ 추가 상승 전망 + SK하이닉스·삼성전자 신고가 경신으로 AI 인프라 투자 사이클 지속 신호",
+            "source_count": 5,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 인프라",
+            "summary": "JPMorgan AI 랠리 25% 추가 상승 전망 + SK하이닉스·삼성전자 신고가→AI 메모리 수요 지속→반도체·HBM·AI 부품주",
+            "source_count": 5,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 반도체 인프라",
+            "summary": "JPMorgan KOSPI AI 랠리 25%+ 추가 상승 전망과 SK하이닉스·LG이노텍 목표가 상향으로 AI 인프라 투자 사이클 확장 기대.",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
+          {
+            "name": "삼성전자 노사 리스크",
+            "summary": "삼성전자 노조 파업 우려에 정부 개입 검토·경찰 압수수색 등 노사 갈등 격화로 반도체 공급망 리스크 부각.",
+            "source_count": 4,
+            "verdict": "unverified"
           }
         ]
       },
@@ -368,6 +386,12 @@
             "verdict": "pass"
           },
           {
+            "name": "HLB 카티 치료제",
+            "summary": "진양곤 의장 HLB이노베이션 지분 확대로 미국 자회사 CAR-T 항암제 임상 성과 기대감 확산.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
             "name": "줄기세포 치료제",
             "summary": "와이투솔루션 자회사 룩사가 ARVO에서 뇌·안과 줄기세포 치료 전략 공개 및 시력 개선 효과 확인으로 줄기세포 테마 부각.",
             "source_count": 2,
@@ -380,10 +404,39 @@
             "verdict": "unverified"
           },
           {
+            "name": "줄기세포 치료제",
+            "summary": "와이투솔루션 뇌·안과 줄기세포 치료 전략 공개와 이엔셀 삼성서울병원 TIL 치료제 협력으로 세포치료제 모멘텀.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
             "name": "비만치료제",
             "summary": "인벤티지랩이 경구 세마글루타이드 한국 특허 등록으로 비만치료제(GLP-1) 관련주 부각.",
             "source_count": 1,
             "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "헬스케어",
+        "children": [
+          {
+            "name": "미용 의료기기",
+            "summary": "파마리서치 '리쥬란' 광고 확대로 브랜드 투자 재평가, 한국콜마 호실적 등 K뷰티·미용의료 수요 견조.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "미용 의료기기·에스테틱",
+            "summary": "파마리서치 '리쥬란' 광고 확대 브랜드 투자 재평가→에스테틱·스킨부스터 수요 지속",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "의료 로봇·AI 헬스케어",
+            "summary": "현대차 병원 AI 약 배송 로봇 첫 실증 성과→의료 자동화·서비스 로봇 시장 진입",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -431,6 +484,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "압구정 재건축",
+            "summary": "DL이앤씨 압구정5구역 특화설계안 공개로 강남 노른자 재건축 수주전 점화, 건설사 디벨로퍼 MOU 동반 부각.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
             "name": "재건축·압구정",
             "summary": "DL이앤씨 압구정5구역 특화설계안 공개→강남 재건축 시공권 경쟁 가시화→건설·시공사 수혜",
             "source_count": 1,
@@ -446,22 +505,11 @@
             "summary": "트럼프 이란 평화제안 거부로 브렌트유 $105 돌파→중동 리스크 재점화→정유·석유·방산 수혜",
             "source_count": 2,
             "verdict": "unverified"
-          }
-        ]
-      },
-      {
-        "name": "헬스케어",
-        "children": [
-          {
-            "name": "미용 의료기기·에스테틱",
-            "summary": "파마리서치 '리쥬란' 광고 확대 브랜드 투자 재평가→에스테틱·스킨부스터 수요 지속",
-            "source_count": 2,
-            "verdict": "unverified"
           },
           {
-            "name": "의료 로봇·AI 헬스케어",
-            "summary": "현대차 병원 AI 약 배송 로봇 첫 실증 성과→의료 자동화·서비스 로봇 시장 진입",
-            "source_count": 1,
+            "name": "이란 지정학 리스크 유가",
+            "summary": "트럼프의 이란 평화제안 거부로 브렌트유 105달러 돌파, 중동 긴장 고조로 정유·석유주 단기 수혜.",
+            "source_count": 2,
             "verdict": "unverified"
           }
         ]
@@ -472,6 +520,23 @@
           {
             "name": "교육·N수생",
             "summary": "유안타증권, 디지털대성 2분기 N수생 증가로 호실적 전망→재수·입시 교육 수요 확대",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "교육주 N수생 수혜",
+            "summary": "2026년 N수생 증가 전망으로 디지털대성 2분기 실적 호조 기대, 입시·교육 콘텐츠 수혜.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "재무리스크",
+        "children": [
+          {
+            "name": "유일에너테크 부도 리스크",
+            "summary": "유일에너테크 2.7억 만기어음 부도 발생 및 매매거래정지 연장으로 2차전지 장비주 신용 리스크 전이 우려.",
             "source_count": 2,
             "verdict": "unverified"
           }
@@ -559,6 +624,18 @@
             "summary": "한전기술·LS전선 부유식 해상풍력 통합 솔루션 동맹→해상풍력 EPC·해저케이블 밸류체인 가동",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "부유식 해상풍력",
+            "summary": "한전기술-LS전선 부유식 해상풍력 통합 솔루션 동맹 구축으로 해상풍력 밸류체인 결집.",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "부유식 해상풍력",
+            "summary": "한전기술-LS전선 부유식 해상풍력 통합 솔루션 동맹 구축으로 해상풍력 밸류체인 결집.",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
@@ -597,6 +674,12 @@
           {
             "name": "우주·방산 위성통신",
             "summary": "인텔리안테크 우주·방산 안테나 사상 최대 실적 가시화→위성통신 안테나·방산 수출 모멘텀",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "우주방산 안테나",
+            "summary": "인텔리안테크 우주-방산 안테나 사상 최대 실적 가시화로 위성통신·방산 안테나 수요 확대.",
             "source_count": 1,
             "verdict": "unverified"
           }
@@ -641,6 +724,28 @@
           {
             "name": "주주환원·자사주 소각",
             "summary": "덕우전자 전환사채 150억 소각으로 주주친화 정책 강화→밸류업·주주환원 모멘텀 지속",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "디지털자산",
+        "children": [
+          {
+            "name": "STO 블록체인 플랫폼",
+            "summary": "DB증권 부산시 블록체인 STO 플랫폼 우선협상대상자 선정으로 토큰증권 제도화 모멘텀 재부각.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "화학",
+        "children": [
+          {
+            "name": "롯데케미칼 흑자전환",
+            "summary": "롯데케미칼 1분기 영업이익 735억원 흑자전환으로 석유화학 업황 바닥 통과 신호.",
             "source_count": 1,
             "verdict": "unverified"
           }
