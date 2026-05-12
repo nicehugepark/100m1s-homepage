@@ -1,6 +1,6 @@
 {
   "date": "2026-05-13",
-  "generated_at": "2026-05-13T00:48:03.886348",
+  "generated_at": "2026-05-13T01:04:23.540343",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -378,7 +378,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "319400",
@@ -617,7 +617,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "단기과열"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "090710",
@@ -834,7 +834,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "277810",
@@ -1103,7 +1103,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "007610",
@@ -1118,20 +1118,20 @@
       "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "sector": "수배전반,중전기기 제조,도매/전기공사",
       "themes": [
-        "전력설비",
-        "실적"
+        "실적",
+        "전력설비"
       ],
       "theme_paths": [
-        {
-          "name": "전력설비",
-          "path": [
-            "전력설비"
-          ]
-        },
         {
           "name": "실적",
           "path": [
             "실적"
+          ]
+        },
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
           ]
         }
       ],
@@ -1317,7 +1317,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "439960",
@@ -1332,12 +1332,19 @@
       "industry": "의료용 기기 제조업",
       "sector": "웨어러블 로봇",
       "themes": [
-        "바이오",
-        "신규상장",
         "의료용 로봇",
-        "로봇"
+        "바이오",
+        "로봇",
+        "신규상장"
       ],
       "theme_paths": [
+        {
+          "name": "의료용 로봇",
+          "path": [
+            "로봇",
+            "의료용 로봇"
+          ]
+        },
         {
           "name": "바이오",
           "path": [
@@ -1348,13 +1355,6 @@
           "name": "신규상장",
           "path": [
             "신규상장"
-          ]
-        },
-        {
-          "name": "의료용 로봇",
-          "path": [
-            "로봇",
-            "의료용 로봇"
           ]
         }
       ],
@@ -1421,7 +1421,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "348340",
@@ -1680,7 +1680,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "483650",
@@ -1952,7 +1952,11 @@
           "l": 215000,
           "c": 247000
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "064400",
@@ -2189,7 +2193,9 @@
           "l": 70000,
           "c": 73000
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "000500",
@@ -2204,20 +2210,14 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "전력선,통신케이블 제조,도매,수출입",
       "themes": [
-        "케이블",
         "AI데이터센터",
         "AI 인프라",
         "AI",
         "전력설비",
-        "스마트그리드"
+        "스마트그리드",
+        "케이블"
       ],
       "theme_paths": [
-        {
-          "name": "케이블",
-          "path": [
-            "케이블"
-          ]
-        },
         {
           "name": "AI데이터센터",
           "path": [
@@ -2237,6 +2237,12 @@
           "path": [
             "전력설비",
             "스마트그리드"
+          ]
+        },
+        {
+          "name": "케이블",
+          "path": [
+            "케이블"
           ]
         }
       ],
@@ -2437,7 +2443,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자위험"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "218410",
@@ -2649,9 +2655,7 @@
           "l": 107500,
           "c": 112500
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "012200",
@@ -2859,7 +2863,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "012860",
@@ -3050,7 +3054,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "403870",
@@ -3281,7 +3287,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "332570",
@@ -3556,9 +3562,7 @@
           "l": 11300,
           "c": 12120
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "투자주의"
+      ]
     },
     {
       "code": "389500",
@@ -3809,7 +3813,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "004710",
@@ -4132,7 +4136,9 @@
             }
           ]
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "950160",
@@ -4384,7 +4390,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "058610",
@@ -4575,7 +4581,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "006345",
@@ -4793,7 +4801,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "우선주"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "353200",
@@ -5043,7 +5053,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자주의"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "005387",
@@ -5232,7 +5242,11 @@
           "l": 260000,
           "c": 266500
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "011210",
@@ -5711,7 +5725,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "087010",
@@ -5943,7 +5959,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "095610",
@@ -6152,7 +6168,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "000880",
@@ -6609,7 +6625,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "131970",
@@ -6836,7 +6854,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "066575",
@@ -7020,7 +7040,7 @@
       "name": "노브랜드",
       "rank": 31,
       "trade_amount": 75624438550,
-      "change_pct": 6.3,
+      "change_pct": 0.0,
       "close_price": 5150,
       "open_price": 5030,
       "high_price": 6060,
@@ -7102,7 +7122,7 @@
       ],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": -2.72,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6140,
@@ -7114,20 +7134,6 @@
         "current": 5150
       },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 3925,
-          "h": 3975,
-          "l": 3880,
-          "c": 3960
-        },
-        {
-          "date": "2026-04-13",
-          "o": 3960,
-          "h": 4770,
-          "l": 3900,
-          "c": 4335
-        },
         {
           "date": "2026-04-14",
           "o": 4300,
@@ -7248,22 +7254,34 @@
           "c": 4845
         },
         {
+          "date": "2026-05-11",
+          "o": 4850,
+          "h": 5150,
+          "l": 4700,
+          "c": 4900
+        },
+        {
+          "date": "2026-05-12",
+          "o": 5030,
+          "h": 6060,
+          "l": 4725,
+          "c": 5150
+        },
+        {
           "date": "2026-05-13",
           "o": 5030,
           "h": 6060,
           "l": 4725,
           "c": 5150
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "307180",
       "name": "아이엘",
       "rank": 32,
       "trade_amount": 70783421720,
-      "change_pct": 8.62,
+      "change_pct": 0.0,
       "close_price": 8690,
       "open_price": 8000,
       "high_price": 9600,
@@ -7393,23 +7411,18 @@
       ],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": -3.72,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 9800,
+        "high_date": "2026-02-27",
+        "high_pct": -11.33,
+        "low": 2400,
+        "low_date": "2025-10-01",
+        "low_pct": 262.08,
+        "current": 8690
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 5100,
-          "h": 5160,
-          "l": 4955,
-          "c": 5040
-        },
-        {
-          "date": "2026-04-13",
-          "o": 4975,
-          "h": 4975,
-          "l": 4810,
-          "c": 4825
-        },
         {
           "date": "2026-04-14",
           "o": 4935,
@@ -7530,6 +7543,20 @@
           "c": 8000
         },
         {
+          "date": "2026-05-11",
+          "o": 8230,
+          "h": 8300,
+          "l": 7510,
+          "c": 7890
+        },
+        {
+          "date": "2026-05-12",
+          "o": 8000,
+          "h": 9600,
+          "l": 7570,
+          "c": 8690
+        },
+        {
           "date": "2026-05-13",
           "o": 8000,
           "h": 9600,
@@ -7538,14 +7565,14 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "142280",
       "name": "녹십자엠에스",
       "rank": 33,
       "trade_amount": 64597259865,
-      "change_pct": 19.02,
+      "change_pct": 0.0,
       "close_price": 4755,
       "open_price": 4020,
       "high_price": 5220,
@@ -7570,23 +7597,18 @@
       "news": [],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": -8.2,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 5220,
+        "high_date": "2026-05-12",
+        "high_pct": -8.91,
+        "low": 3200,
+        "low_date": "2026-03-04",
+        "low_pct": 48.59,
+        "current": 4755
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 3680,
-          "h": 3735,
-          "l": 3640,
-          "c": 3695
-        },
-        {
-          "date": "2026-04-13",
-          "o": 3695,
-          "h": 3730,
-          "l": 3690,
-          "c": 3725
-        },
         {
           "date": "2026-04-14",
           "o": 3785,
@@ -7707,6 +7729,20 @@
           "c": 3995
         },
         {
+          "date": "2026-05-11",
+          "o": 3995,
+          "h": 4265,
+          "l": 3980,
+          "c": 4020
+        },
+        {
+          "date": "2026-05-12",
+          "o": 4020,
+          "h": 5220,
+          "l": 3920,
+          "c": 4755
+        },
+        {
           "date": "2026-05-13",
           "o": 4020,
           "h": 5220,
@@ -7714,15 +7750,15 @@
           "c": 4755
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "010690",
       "name": "화신",
       "rank": 34,
       "trade_amount": 62037596970,
-      "change_pct": 18.46,
+      "change_pct": 0.0,
       "close_price": 15270,
       "open_price": 15140,
       "high_price": 16380,
@@ -7747,23 +7783,18 @@
       "news": [],
       "fallback": true,
       "index_change_pct": -2.29,
-      "index_multiple_current": -8.06,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 16380,
+        "high_date": "2026-05-12",
+        "high_pct": -6.78,
+        "low": 7500,
+        "low_date": "2025-11-25",
+        "low_pct": 103.6,
+        "current": 15270
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 11520,
-          "h": 11520,
-          "l": 10910,
-          "c": 11060
-        },
-        {
-          "date": "2026-04-13",
-          "o": 10840,
-          "h": 10880,
-          "l": 10640,
-          "c": 10670
-        },
         {
           "date": "2026-04-14",
           "o": 10970,
@@ -7884,28 +7915,57 @@
           "c": 12890
         },
         {
+          "date": "2026-05-11",
+          "o": 13540,
+          "h": 14160,
+          "l": 12960,
+          "c": 13560
+        },
+        {
+          "date": "2026-05-12",
+          "o": 15140,
+          "h": 16380,
+          "l": 14000,
+          "c": 15270
+        },
+        {
           "date": "2026-05-13",
           "o": 15140,
           "h": 16380,
           "l": 14000,
           "c": 15270
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "397030",
       "name": "에이프릴바이오",
       "rank": 35,
       "trade_amount": 61070408100,
-      "change_pct": 10.73,
+      "change_pct": 0.0,
       "close_price": 73300,
       "open_price": 66500,
       "high_price": 76700,
       "low_price": 65800,
       "industry": "자연과학 및 공학 연구개발업",
       "sector": "항체의약품 및 재조합 단백질 의약품",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "바이오",
+        "ADC 신약"
+      ],
+      "theme_paths": [
+        {
+          "name": "ADC 신약",
+          "path": [
+            "바이오",
+            "ADC 신약"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -7916,8 +7976,8 @@
           "url": "https://biz.chosun.com/science-chosun/bio/2026/05/04/QTYTRYY3URCQRBYPY3KMPM6RWY/",
           "source": "조선비즈",
           "published_at": "2026-05-04T08:49:35",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "유한양행 공동 항암 표적 연구 조기 종료 → 상업성 높은 ADC·AOC 신규 모달리티 중심 R&D 재편 → REMAP 플랫폼 POC 공개·글로벌 파트너링 추진으로 항체의약품 본업 직접 모멘텀 형성.",
+          "macro_event": "유한양행과의 공동 연구개발 계약 조기 종료 후 ADC·AOC 신규 모달리티 중심으로 전략 재편",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -7931,8 +7991,8 @@
           "url": "https://www.mk.co.kr/news/it/12035212",
           "source": "매경",
           "published_at": "2026-05-04T07:51:14",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "유한양행 공동 항암 표적 연구 조기 종료 → 상업성 높은 ADC·AOC 신규 모달리티 중심 R&D 재편 → REMAP 플랫폼 POC 공개·글로벌 파트너링 추진으로 항체의약품 본업 직접 모멘텀 형성.",
+          "macro_event": "유한양행과의 공동 연구개발 계약 조기 종료 후 ADC·AOC 신규 모달리티 중심으로 전략 재편",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -7946,8 +8006,8 @@
           "url": "https://www.mk.co.kr/news/stock/12018534",
           "source": "매경",
           "published_at": "2026-04-16T00:58:48",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "유한양행 공동 항암 표적 연구 조기 종료 → 상업성 높은 ADC·AOC 신규 모달리티 중심 R&D 재편 → REMAP 플랫폼 POC 공개·글로벌 파트너링 추진으로 항체의약품 본업 직접 모멘텀 형성.",
+          "macro_event": "유한양행과의 공동 연구개발 계약 조기 종료 후 ADC·AOC 신규 모달리티 중심으로 전략 재편",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -7961,8 +8021,8 @@
           "url": "https://www.etoday.co.kr/news/view/2575392",
           "source": "이투데이",
           "published_at": "2026-04-13T22:59:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "유한양행 공동 항암 표적 연구 조기 종료 → 상업성 높은 ADC·AOC 신규 모달리티 중심 R&D 재편 → REMAP 플랫폼 POC 공개·글로벌 파트너링 추진으로 항체의약품 본업 직접 모멘텀 형성.",
+          "macro_event": "유한양행과의 공동 연구개발 계약 조기 종료 후 ADC·AOC 신규 모달리티 중심으로 전략 재편",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -7974,23 +8034,18 @@
       ],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": -4.63,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 76700,
+        "high_date": "2026-05-12",
+        "high_pct": -4.43,
+        "low": 16160,
+        "low_date": "2025-07-01",
+        "low_pct": 353.59,
+        "current": 73300
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 54000,
-          "h": 55300,
-          "l": 52100,
-          "c": 54900
-        },
-        {
-          "date": "2026-04-13",
-          "o": 52500,
-          "h": 53100,
-          "l": 51600,
-          "c": 52900
-        },
         {
           "date": "2026-04-14",
           "o": 55300,
@@ -8111,6 +8166,20 @@
           "c": 66200
         },
         {
+          "date": "2026-05-11",
+          "o": 64400,
+          "h": 69200,
+          "l": 62100,
+          "c": 67800
+        },
+        {
+          "date": "2026-05-12",
+          "o": 66500,
+          "h": 76700,
+          "l": 65800,
+          "c": 73300
+        },
+        {
           "date": "2026-05-13",
           "o": 66500,
           "h": 76700,
@@ -8119,14 +8188,14 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "101330",
       "name": "모베이스",
       "rank": 37,
       "trade_amount": 56895652900,
-      "change_pct": 19.43,
+      "change_pct": 0.0,
       "close_price": 5900,
       "open_price": 4995,
       "high_price": 6290,
@@ -8151,23 +8220,18 @@
       "news": [],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": -8.38,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 9140,
+        "high_date": "2026-01-16",
+        "high_pct": -35.45,
+        "low": 2880,
+        "low_date": "2025-11-07",
+        "low_pct": 104.86,
+        "current": 5900
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 4615,
-          "h": 4740,
-          "l": 4550,
-          "c": 4650
-        },
-        {
-          "date": "2026-04-13",
-          "o": 4555,
-          "h": 4720,
-          "l": 4485,
-          "c": 4675
-        },
         {
           "date": "2026-04-14",
           "o": 4705,
@@ -8288,6 +8352,20 @@
           "c": 4940
         },
         {
+          "date": "2026-05-11",
+          "o": 4940,
+          "h": 5030,
+          "l": 4760,
+          "c": 4870
+        },
+        {
+          "date": "2026-05-12",
+          "o": 4995,
+          "h": 6290,
+          "l": 4995,
+          "c": 5900
+        },
+        {
           "date": "2026-05-13",
           "o": 4995,
           "h": 6290,
@@ -8295,8 +8373,8 @@
           "c": 5900
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "234340",
@@ -8587,7 +8665,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "048770",
@@ -8778,14 +8856,16 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "단기과열"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "140860",
       "name": "파크시스템스",
       "rank": 40,
       "trade_amount": 50912757000,
-      "change_pct": -2.29,
+      "change_pct": 0.0,
       "close_price": 298500,
       "open_price": 319000,
       "high_price": 350500,
@@ -8801,23 +8881,18 @@
       "news": [],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": 0.99,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 350500,
+        "high_date": "2026-05-12",
+        "high_pct": -14.84,
+        "low": 205000,
+        "low_date": "2025-12-30",
+        "low_pct": 45.61,
+        "current": 298500
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 233500,
-          "h": 255000,
-          "l": 231500,
-          "c": 246000
-        },
-        {
-          "date": "2026-04-13",
-          "o": 241000,
-          "h": 260500,
-          "l": 240000,
-          "c": 255500
-        },
         {
           "date": "2026-04-14",
           "o": 260000,
@@ -8938,22 +9013,34 @@
           "c": 305500
         },
         {
+          "date": "2026-05-11",
+          "o": 309500,
+          "h": 322000,
+          "l": 299500,
+          "c": 316000
+        },
+        {
+          "date": "2026-05-12",
+          "o": 319000,
+          "h": 350500,
+          "l": 298500,
+          "c": 298500
+        },
+        {
           "date": "2026-05-13",
           "o": 319000,
           "h": 350500,
           "l": 298500,
           "c": 298500
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "010100",
       "name": "한국무브넥스",
       "rank": 41,
       "trade_amount": 50807605240,
-      "change_pct": 10.8,
+      "change_pct": 0.0,
       "close_price": 5180,
       "open_price": 4615,
       "high_price": 5730,
@@ -8978,23 +9065,18 @@
       "news": [],
       "fallback": true,
       "index_change_pct": -2.29,
-      "index_multiple_current": -4.72,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 7950,
+        "high_date": "2026-01-22",
+        "high_pct": -34.84,
+        "low": 3530,
+        "low_date": "2025-11-05",
+        "low_pct": 46.74,
+        "current": 5180
+      },
       "daily_20": [
-        {
-          "date": "2026-04-10",
-          "o": 4355,
-          "h": 4425,
-          "l": 4315,
-          "c": 4425
-        },
-        {
-          "date": "2026-04-13",
-          "o": 4310,
-          "h": 4430,
-          "l": 4270,
-          "c": 4415
-        },
         {
           "date": "2026-04-14",
           "o": 4445,
@@ -9115,13 +9197,29 @@
           "c": 4675
         },
         {
+          "date": "2026-05-11",
+          "o": 4700,
+          "h": 4730,
+          "l": 4525,
+          "c": 4540
+        },
+        {
+          "date": "2026-05-12",
+          "o": 4615,
+          "h": 5730,
+          "l": 4615,
+          "c": 5180
+        },
+        {
           "date": "2026-05-13",
           "o": 4615,
           "h": 5730,
           "l": 4615,
           "c": 5180
         }
-      ]
+      ],
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "295310",
@@ -9311,15 +9409,15 @@
           "c": 98200
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "320000",
       "name": "한울반도체",
       "rank": 43,
       "trade_amount": 48752275550,
-      "change_pct": 2.85,
+      "change_pct": 0.0,
       "close_price": 13330,
       "open_price": 13260,
       "high_price": 16600,
@@ -9432,11 +9530,11 @@
       ],
       "fallback": true,
       "index_change_pct": -2.32,
-      "index_multiple_current": -1.23,
+      "index_multiple_current": -0.0,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 16600,
-        "high_date": "2026-05-13",
+        "high_date": "2026-05-12",
         "high_pct": -19.7,
         "low": 7080,
         "low_date": "2026-04-06",
@@ -9444,13 +9542,6 @@
         "current": 13330
       },
       "daily_20": [
-        {
-          "date": "2026-04-13",
-          "o": 8426,
-          "h": 8426,
-          "l": 7305,
-          "c": 7670
-        },
         {
           "date": "2026-04-14",
           "o": 7690,
@@ -9578,6 +9669,13 @@
           "c": 12960
         },
         {
+          "date": "2026-05-12",
+          "o": 13260,
+          "h": 16600,
+          "l": 12980,
+          "c": 13330
+        },
+        {
           "date": "2026-05-13",
           "o": 13260,
           "h": 16600,
@@ -9592,7 +9690,7 @@
           "source": "predicted",
           "thresholds": [
             {
-              "desc": "5일 전(2026-05-04) 대비 +60%↑",
+              "desc": "5일 전(2026-05-06) 대비 +60%↑",
               "base_price": 7670,
               "threshold": 12272,
               "current": 13330,
@@ -9613,7 +9711,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     }
   ]
 }
