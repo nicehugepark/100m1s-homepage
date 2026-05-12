@@ -185,7 +185,7 @@ def merge_into_daily(daily: dict, snapshot: dict) -> None:
                 ex["high"] = max(ex.get("high", 0), st["high"])
             if st.get("low") and st["low"] > 0:
                 ex["low"] = min(ex.get("low", st["low"]), st["low"])
-            if st.get("open") and not ex.get("open"):
+            if st.get("open"):
                 ex["open"] = st["open"]
         else:
             accum[ticker] = {
