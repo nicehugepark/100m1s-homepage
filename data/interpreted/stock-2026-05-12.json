@@ -1,8 +1,12 @@
 {
   "date": "2026-05-12",
-  "generated_at": "2026-05-12T23:16:26.234665",
+  "generated_at": "2026-05-12T23:32:15.101010",
   "data_source": "kiwoom",
   "macro_events": [
+    {
+      "title": "토큰증권",
+      "summary": "토큰증권 인프라 구축(다올투자증권-코스콤 MOU)→디지털증권 시장 개설→핀테크·증권업 중장기 구조 변화"
+    },
     {
       "title": "메모리",
       "summary": "삼성전자 낸드플래시 철수 → 공급 절벽 → 가격 300% 폭등 → SK하이닉스 등 메모리칩 제조업 실적 개선"
@@ -10,10 +14,6 @@
     {
       "title": "명품소비",
       "summary": "코스피 강세 → 개인자산 증가 → 백화점·명품 소비 회복 → 롯데쇼핑 턴어라운드"
-    },
-    {
-      "title": "외국인자금",
-      "summary": "삼성증권-IBKR 외국인통합계좌 출범 → 해외 투자자 진입장벽 완화 → 한국주식 외국인 자금 유입 확대 기대"
     },
     {
       "title": "원전수주",
@@ -28,8 +28,20 @@
       "summary": "유가 상승·정제마진 개선 → 석유정제 섹터 회복 → S-Oil 목표가 상향"
     },
     {
+      "title": "외국인자금",
+      "summary": "삼성증권 외국인통합계좌 개시(IBKR 협력)→외국인 거래 진입장벽 완화→한국증시 외국인자금 유입 가속화"
+    },
+    {
       "title": "지정학리스크",
       "summary": "미-이란 협상 교착·중동 긴장 고조 → 유가 100달러 상승·원화 약세 → 에너지·수출 섹터 구조적 비용 증가"
+    },
+    {
+      "title": "유가환율",
+      "summary": "미-이란 휴전 협상 교착→유가 $100 돌파·원-달러 환율 17.5원 급등→정유·화학·수출기업 원가상승 및 마진율 악화 우려"
+    },
+    {
+      "title": "미국물가",
+      "summary": "미국 물가 3.8%(2023년5월 이후 최고)→연방준비제도 금리인상 가능성→글로벌 금리사이클 전환→한국 금융시장 금리상승 전파"
     }
   ],
   "narratives": [],
@@ -12395,7 +12407,9 @@
         ]
       },
       "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "095610",
@@ -13181,10 +13195,19 @@
       "industry": "기타 화학제품 제조업",
       "sector": "화약,화공품,자동선반류,공작기계 제조,전자교환기,건설,정보통신,종합무역/임직원 및 개인대상 교육,세미나 및 워크샵 중계,동영상광고",
       "themes": [
+        "증권",
         "지주 NAV 재평가",
-        "방산"
+        "건설",
+        "부동산 재개발"
       ],
       "theme_paths": [
+        {
+          "name": "증권",
+          "path": [
+            "금융",
+            "증권"
+          ]
+        },
         {
           "name": "지주 NAV 재평가",
           "path": [
@@ -13193,9 +13216,10 @@
           ]
         },
         {
-          "name": "방산",
+          "name": "부동산 재개발",
           "path": [
-            "방산"
+            "건설",
+            "부동산 재개발"
           ]
         }
       ],
@@ -13214,8 +13238,8 @@
           "url": "https://biz.chosun.com/sports/sports_photo/2026/05/12/GE2WMZBTMI4DCMBSGU4DQZJWGI/",
           "source": "조선비즈",
           "published_at": "2026-05-12T13:16:00",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "한화투자증권 1Q 실적이 전분기 대비 영업익 +17.8%·순익 +35.9%로 큰 폭 개선되며 지주사 보유 증권 자회사 가치 상향 → 동시에 ㈜한화 건설부문이 3개 대형 증권사와 부동산 개발 MOU를 체결해 시공 중심에서 개발·금융 결합 구조로 사업모델 확장 → 압구정 5구역 등 핵심 재건축 수주전 참여로 부동산 재개발 본업 모멘텀까지 가시화 → 자회사 실적·건설 본업·재개발 수주 3축이 동시에 지주 NAV 재평가 근거 강화.",
+          "macro_event": "자회사 한화투자증권 1Q 영업이익 296억(QoQ +17.8%)·순이익 191억(QoQ +35.9%)로 WM·기관영업 수익성 개선",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -13229,8 +13253,8 @@
           "url": "https://biz.chosun.com/sports/baseball/2026/05/12/GUZGMMRSGRTGGYRQGYZDCYLDMY/",
           "source": "조선비즈",
           "published_at": "2026-05-12T13:13:00",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "한화투자증권 1Q 실적이 전분기 대비 영업익 +17.8%·순익 +35.9%로 큰 폭 개선되며 지주사 보유 증권 자회사 가치 상향 → 동시에 ㈜한화 건설부문이 3개 대형 증권사와 부동산 개발 MOU를 체결해 시공 중심에서 개발·금융 결합 구조로 사업모델 확장 → 압구정 5구역 등 핵심 재건축 수주전 참여로 부동산 재개발 본업 모멘텀까지 가시화 → 자회사 실적·건설 본업·재개발 수주 3축이 동시에 지주 NAV 재평가 근거 강화.",
+          "macro_event": "자회사 한화투자증권 1Q 영업이익 296억(QoQ +17.8%)·순이익 191억(QoQ +35.9%)로 WM·기관영업 수익성 개선",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -13244,8 +13268,8 @@
           "url": "https://www.sedaily.com/article/20043060",
           "source": "서울경제",
           "published_at": "2026-05-12T06:11:05",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "한화투자증권 1Q 실적이 전분기 대비 영업익 +17.8%·순익 +35.9%로 큰 폭 개선되며 지주사 보유 증권 자회사 가치 상향 → 동시에 ㈜한화 건설부문이 3개 대형 증권사와 부동산 개발 MOU를 체결해 시공 중심에서 개발·금융 결합 구조로 사업모델 확장 → 압구정 5구역 등 핵심 재건축 수주전 참여로 부동산 재개발 본업 모멘텀까지 가시화 → 자회사 실적·건설 본업·재개발 수주 3축이 동시에 지주 NAV 재평가 근거 강화.",
+          "macro_event": "자회사 한화투자증권 1Q 영업이익 296억(QoQ +17.8%)·순이익 191억(QoQ +35.9%)로 WM·기관영업 수익성 개선",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -13466,9 +13490,7 @@
           141100,
           142200
         ]
-      },
-      "causal_chain": "",
-      "parent_theme": ""
+      }
     },
     {
       "code": "056080",
@@ -13700,7 +13722,9 @@
         ]
       },
       "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "131970",
@@ -14744,7 +14768,9 @@
         ]
       },
       "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "007460",
@@ -15623,7 +15649,9 @@
         ]
       },
       "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "032580",
@@ -16943,7 +16971,7 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04532966645414480",
           "source": "이데일리",
           "published_at": "2026-04-09T07:30:05",
-          "causal_chain": null,
+          "causal_chain": "주식병합에 따른 5/14 매매거래 정지 단신 → 자본정책상 부담 신호이나 본업(PLC·OPTRA) 모멘텀과 무관 → 본질 매크로 사슬 형성되지 않음.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
