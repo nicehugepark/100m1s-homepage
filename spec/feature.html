@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기능 요구사항 정의서 1차 (2026-04-08 ~ 2026-05-13 누적) — 100M1S</title>
+<meta name="description" content="2026-04-05 ~ 2026-05-13 누적 REQ 109건 + MIN 9 + DSN 35 + DEC 1 + FLR 78 종합 기능 요구사항 정의서 1차.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="기능 요구사항 정의서 1차 (2026-04-08 ~ 2026-05-13 누적) — 100M1S">
+<meta property="og:description" content="2026-04-05 ~ 2026-05-13 누적 REQ 109건 + MIN 9 + DSN 35 + DEC 1 + FLR 78 종합 기능 요구사항 정의서 1차.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://100m1s.com/spec/feature.html">
+<meta property="og:image" content="https://100m1s.com/og-image.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/spec/spec.css?v=202605131846">
+</head>
+<body>
+
+<header class="spec-header">
+  <div class="spec-header-inner">
+    <a href="/" class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 124 124" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FBE9B5"/>
+              <stop offset="0.5" stop-color="#E8C063"/>
+              <stop offset="1" stop-color="#C49930"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(5, 3.5)">
+            <path d="M73 24 Q73 12 59 12 Q32 12 32 33 Q32 53 58 57 Q88 61 67 86 Q46 105 26 95" stroke="url(#hg)" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="74" cy="18" r="3.8" fill="#A01528"/>
+            <circle cx="72.5" cy="16.5" r="1.1" fill="#FFE4D8" opacity="0.85"/>
+          </g>
+        </svg>
+      </div>
+      <div class="brand-name">100M1S</div>
+    </a>
+    <nav class="nav-links">
+      <a href="/#about">About</a>
+      <a href="/#products">Products</a>
+      <a href="/news.html">News</a>
+      <a href="/spec/" class="active">Spec</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+<div class="drawer-backdrop" id="drawer-backdrop"></div>
+<nav class="mobile-drawer" id="mobile-drawer" aria-label="모바일 메뉴">
+  <a href="/#about">About</a>
+  <a href="/#products">Products</a>
+  <a href="/news.html">News</a>
+  <a href="/spec/" class="active">Spec</a>
+  <a href="/#contact">Contact</a>
+</nav>
+<script src="/menu.js"></script>
+
+<main class="spec-layout">
+  <aside class="spec-toc" aria-label="목차"><div class="doc-switch"><a href="/spec/feature.html" class="active">REQ</a><a href="/spec/design.html" class="">DSN</a></div><h2>목차</h2><ul><li class="lvl2"><a href="#0-메타">0. 메타</a></li><li class="lvl3"><a href="#01-목적">0.1 목적</a></li><li class="lvl3"><a href="#02-범위">0.2 범위</a></li><li class="lvl3"><a href="#03-흡수-정책">0.3 흡수 정책</a></li><li class="lvl3"><a href="#04-관련-doc">0.4 관련 doc</a></li><li class="lvl2"><a href="#1-회사플랫폼">1. 회사·플랫폼</a></li><li class="lvl3"><a href="#11-100m1scom-홈페이지-외부-레포--company-100m1s-homepage-">1.1 100m1s.com 홈페이지 (외부 레포: `~/company/100m1s-homepage/`)</a></li><li class="lvl3"><a href="#12-에이전트-조직-agents-team-agentmd">1.2 에이전트 조직 (`agents/&lt;team&gt;/AGENT.md`)</a></li><li class="lvl3"><a href="#13-records-거버넌스-records-">1.3 records 거버넌스 (`records/`)</a></li><li class="lvl3"><a href="#14-운영-인프라">1.4 운영 인프라</a></li><li class="lvl2"><a href="#2-5-제품별-기능">2. 5 제품별 기능</a></li><li class="lvl3"><a href="#21-p002-pm320-오후-3시-20분--mvp-운영-중">2.1 P002 PM320 (오후 3시 20분) — MVP **운영 중**</a></li><li class="lvl3"><a href="#22-p001-경매-분석-서비스-auction-analyzer--기획-진행-중">2.2 P001 경매 분석 서비스 (Auction Analyzer) — **기획 진행 중**</a></li><li class="lvl3"><a href="#23-p003-소마타-so-my-type--기획">2.3 P003 소마타 (So My Type) — **기획**</a></li><li class="lvl3"><a href="#24-p004-글래스박스-glass-box--기획">2.4 P004 글래스박스 (Glass Box) — **기획**</a></li><li class="lvl3"><a href="#25-p005-trade-cockpit-트레이드-콕핏--설계-내부-운영-도구">2.5 P005 Trade Cockpit (트레이드 콕핏) — **설계 (내부 운영 도구)**</a></li><li class="lvl2"><a href="#3-데이터-파이프라인">3. 데이터 파이프라인</a></li><li class="lvl3"><a href="#31-키움-api">3.1 키움 API</a></li><li class="lvl3"><a href="#32-카페-스크레이퍼-이시카와">3.2 카페 스크레이퍼 (이시카와)</a></li><li class="lvl3"><a href="#33-이시카와-뉴스-분석">3.3 이시카와 (뉴스 분석)</a></li><li class="lvl3"><a href="#34-토구사-주식-투자-분석">3.4 토구사 (주식 투자 분석)</a></li><li class="lvl3"><a href="#35-db-sqlite">3.5 DB (SQLite)</a></li><li class="lvl3"><a href="#36-cron-안전-자율-사이클-안전-프로토콜">3.6 cron 안전 (자율 사이클 안전 프로토콜)</a></li><li class="lvl2"><a href="#4-운영품질">4. 운영·품질</a></li><li class="lvl3"><a href="#41-워크트리등급-claudemd">4.1 워크트리·등급 (CLAUDE.md)</a></li><li class="lvl3"><a href="#42-하네스-컨트랙트">4.2 하네스 컨트랙트</a></li><li class="lvl3"><a href="#43-sub-agent-협업-매트릭스-claudemd-2026-05-05">4.3 sub-agent 협업 매트릭스 (CLAUDE.md, 2026-05-05)</a></li><li class="lvl3"><a href="#44-lead-메타-룰-doc-20260509-rule-001-rules-lead-meta-rulesmd">4.4 lead 메타 룰 (DOC-20260509-RULE-001, `rules/lead-meta-rules.md`)</a></li><li class="lvl3"><a href="#45-자율-사이클-안전-프로토콜-5-룰-통합-feedback_autonomous_cycle_safety">4.5 자율 사이클 안전 프로토콜 (5 룰 통합, feedback_autonomous_cycle_safety)</a></li><li class="lvl3"><a href="#46-flr-78건-누적-failures-indexmd">4.6 FLR 78건 누적 (failures/INDEX.md)</a></li><li class="lvl2"><a href="#5-우선순위-매트릭스-p0--p3">5. 우선순위 매트릭스 (P0 → P3)</a></li><li class="lvl3"><a href="#p0-즉시-본-세션--5-14">P0 (즉시, 본 세션 ~ 5/14)</a></li><li class="lvl3"><a href="#p1-12주">P1 (1~2주)</a></li><li class="lvl3"><a href="#p2-분기-내">P2 (분기 내)</a></li><li class="lvl3"><a href="#p3-백로그">P3 (백로그)</a></li><li class="lvl2"><a href="#6-supersedes-preserves-정책">6. supersedes / preserves 정책</a></li><li class="lvl3"><a href="#61-결정">6.1 결정</a></li><li class="lvl3"><a href="#62-근거">6.2 근거</a></li><li class="lvl3"><a href="#63-예외-실질-supersede-후보">6.3 예외 (실질 supersede 후보)</a></li><li class="lvl2"><a href="#7-부록--4-5--5-13-req-인덱스-109건-날짜doc_id1줄">7. 부록 — 4/5 ~ 5/13 REQ 인덱스 (109건, 날짜·doc_id·1줄)</a></li><li class="lvl3"><a href="#4월-105건">4월 (105건)</a></li><li class="lvl3"><a href="#5월-4건">5월 (4건)</a></li><li class="lvl2"><a href="#부록-b--도메인-룰-정확성-flr-20260406-agt-003-회피">부록 B — 도메인 룰 정확성 (FLR-20260406-AGT-003 회피)</a></li></ul></aside>
+  <article class="spec-doc">
+    <div class="spec-eyebrow"><span class="kind-badge">REQ</span> DOC-20260513-REQ-001</div>
+    <h1 class="spec-title">기능 요구사항 정의서 1차 (2026-04-08 ~ 2026-05-13 누적)</h1>
+    <div class="spec-summary">2026-04-05 ~ 2026-05-13 누적 REQ 109건 + MIN 9 + DSN 35 + DEC 1 + FLR 78 종합 기능 요구사항 정의서 1차.
+본 정의서는 흡수·통합 산출물 (history 보존, supersede 미적용 — REQ 단위 supersedes 정책 §6 참조).
+UI/UX·디자인 시스템은 DOC-20260513-DSN-001로 위임 (cross-ref).</div>
+    <details class="spec-meta">
+      <summary>문서 메타정보</summary>
+      <dl><dt>문서코드</dt><dd>DOC-20260513-REQ-001</dd><dt>유형</dt><dd>REQ</dd><dt>제목</dt><dd>기능 요구사항 정의서 1차 (2026-04-08 ~ 2026-05-13 누적)</dd><dt>날짜</dt><dd>2026-05-13</dd><dt>상태</dt><dd>ACTIVE</dd><dt>도메인</dt><dd>PLN-PRD</dd><dt>태그</dt><dd><ul class='meta-list'><li>요구사항정의서</li><li>1차</li><li>누적종합</li><li>P002-PM320</li><li>P001-경매분석</li><li>P003-소마타</li><li>P004-글래스박스</li><li>P005-Trade-Cockpit</li></ul></dd><dt>참여자</dt><dd><ul class='meta-list'><li>@human:박성진(대표)</li><li>@agent:타치코마</li><li>@agent:planning-lead</li><li>@agent:docs-management</li></ul></dd><dt>흡수</dt><dd>[]</dd><dt>보존</dt><dd><ul class='meta-list'><li>ALL 4월 ~ 5월 REQ 109건 (history 보존, §7 부록 인덱스)</li><li>DOC-20260504-DEC-001 (토구사 미션 격상, 영구 결정)</li><li>DOC-20260511-MIN-001 (5/8~5/11 세션 인계)</li></ul></dd><dt>관련 문서</dt><dd><ul class='meta-list'><li>DOC-20260513-DSN-001</li><li>DOC-20260504-DEC-001</li><li>DOC-20260511-MIN-001</li><li>DOC-20260430-MIN-001</li></ul></dd><dt>참조 결함</dt><dd><ul class='meta-list'><li>FLR-20260406-AGT-002  # 권위 편향 — 본 정의서 작성 시 대표 발화에 대한 비판적 검토 의무</li><li>FLR-20260406-AGT-003  # 도메인 무지 — 한국 주식시장 상하한가 등 도메인 룰 정확성 의무</li></ul></dd><dt>작성</dt><dd>docs-management</dd><dt>작성 시각</dt><dd>2026-05-13T18:33:00+09:00</dd><dt>개정</dt><dd>0</dd></dl>
+    </details>
+    <div class="spec-body"><h1>100M1S 기능 요구사항 정의서 1차</h1>
+<blockquote>
+<p>본 정의서는 <strong>2026-04-05 ~ 2026-05-13 약 38일</strong> 동안 누적된 REQ 109건 + MIN 9 + DSN 35 + DEC 1 + FLR 78건을 흡수·통합한 1차 산출물입니다. 신규 정의서이며 기존 doc는 history로 보존됩니다. UI/UX 영역은 DOC-20260513-DSN-001로 분리합니다.</p>
+</blockquote>
+<hr>
+<h2 id="0-메타">0. 메타</h2>
+<h3 id="01-목적">0.1 목적</h3>
+<ul>
+<li>38일 누적 발화·결정·결함을 통합한 단일 진실 출처 1차 확정</li>
+<li>5 제품(P001~P005) × 4 도메인(회사·플랫폼 / 제품 / 파이프라인 / 운영·품질) 매트릭스 정합</li>
+<li>차기 사이클(분기 OKR + 분기 PRD) 작성 기반 확보</li>
+</ul>
+<h3 id="02-범위">0.2 범위</h3>
+<ul>
+<li><strong>포함</strong>: 100M1S 회사 인프라 + 5 제품 기능·플로우·수익모델 + 데이터 파이프라인 + 운영·품질 룰</li>
+<li><strong>제외</strong>: UI/UX·디자인 시스템 상세 (DSN-001) / FLR 78건 본문 (failures/INDEX.md 참조) / DSN-arch-<em> 본문 (DOC-20260430-DSN-001-arch-</em> 시리즈)</li>
+</ul>
+<h3 id="03-흡수-정책">0.3 흡수 정책</h3>
+<ul>
+<li>REQ 109건 <strong>history 보존</strong> (supersede 없음). 본 정의서는 상위 통합 layer</li>
+<li>본문 충돌 시 → 최신 doc + FLR 우선 (예: 큐 작업 운영은 DOC-20260511-MIN-001 §A 정책 우선)</li>
+<li>신규 REQ는 본 정의서 §부록 인덱스와 별도로 records/2026-MM/DOC-<em>-REQ-</em>.md에 신규 등록 (정의서는 분기 1회 갱신)</li>
+</ul>
+<h3 id="04-관련-doc">0.4 관련 doc</h3>
+<ul>
+<li>짝: DOC-20260513-DSN-001 (디자인 요구사항 정의서 1차)</li>
+<li>상위 결정: DOC-20260504-DEC-001 (토구사 미션 격상)</li>
+<li>최근 세션 인계: DOC-20260511-MIN-001 (5/8~5/11)</li>
+<li>리팩토링 기준: DOC-20260430-MIN-001</li>
+</ul>
+<hr>
+<h2 id="1-회사플랫폼">1. 회사·플랫폼</h2>
+<h3 id="11-100m1scom-홈페이지-외부-레포--company-100m1s-homepage-">1.1 100m1s.com 홈페이지 (외부 레포: <code>~/company/100m1s-homepage/</code>)</h3>
+<ul>
+<li><strong>호스팅</strong>: GitHub Pages (Vercel 아님). 푸시 → 1~2분 자동 배포</li>
+<li><strong>도메인</strong>: 100m1s.com 외 5개 (가비아, 개인 명의 → 법인 양도 예정)</li>
+<li><strong>HTTPS</strong>: Let's Encrypt 발급 대기 (REF: project_homepage_https_pending)</li>
+<li><strong>태그라인 확정</strong>: "100 Million, 1 Step" / "1억, 한 걸음에" (DOC-20260407-REQ-004 R5 로고 + v2 태그라인)</li>
+<li><strong>법무 페이지</strong>: 개인정보처리방침 / 이용약관 (DOC-20260407-REQ-003 일괄 구축)</li>
+<li><strong>/news</strong>: 회사 홈페이지 뉴스 보드 (PM320 아님) — 주식·부동산·정책 3 카테고리 (DOC-20260409-REQ-002)</li>
+<li><strong>로고</strong>: v4의 38+39 페어(Serpenti S) 유력 (REF: project_logo_exploration, 대표 휴식 후 결정 재개)</li>
+</ul>
+<h3 id="12-에이전트-조직-agents-team-agentmd">1.2 에이전트 조직 (<code>agents/&lt;team&gt;/AGENT.md</code>)</h3>
+<ul>
+<li><strong>공각기동대 네이밍 (필수)</strong>: 토구사=주식투자팀(P002 PM320), 이시카와=뉴스분석팀, 타치코마=오케스트레이터</li>
+<li><strong>레거시 이름 금지</strong>: newzy/뉴지/주주 → 모두 신규 이름으로 통일. 레거시 DB 컬럼(<code>newzy_*</code>)은 마이그레이션 전 유지하되 참조 시 신규 이름</li>
+<li><strong>휴지(HUGEPARK)</strong>: 대표 디지털 트윈 (DOC-20260406-REQ-002). 반말·직설 예외 (대표 말투 유지)</li>
+<li><strong>신설 팀</strong>:</li>
+<li>실패분석팀(FAT, DOC-20260406-REQ-001)</li>
+<li>QA 검증전문팀 (project_qa_team) — 개발팀과 병렬 호출</li>
+<li>DevOps (2026-04-29 도입) — dev-lead 병목 제거, 머지·push·파이프라인·backfill·records commit 전담</li>
+<li>docs-management (문서품질관리실 DQO) — doc_id 원자 할당 + frontmatter 검증</li>
+<li>유튜브 뉴스 수집 에이전트 (이시카와 유사, 대표 조만간 지시 — REF: project_youtube_news_agent)</li>
+</ul>
+<h3 id="13-records-거버넌스-records-">1.3 records 거버넌스 (<code>records/</code>)</h3>
+<ul>
+<li><strong>doc 코드</strong>: <code>DOC-YYYYMMDD-TYPE-NNN</code> (allocate-doc-id.sh 원자 할당)</li>
+<li><strong>doc 유형 13종</strong>: REQ / IDEA / INS / BRS / DPD / AGT / NWS / MTG / RPT / TAX / DSN / DBG / BEN</li>
+<li><strong>참여자 접두어</strong>: <code>@human:</code> / <code>@agent:</code> / <code>@ext:</code></li>
+<li><strong>도메인 태그 9팀 36종</strong>: 경영지원 / 법무 / 마케팅 / 사업 / 기획 / 개발 / 디자인 / 브랜딩 / 문서관리</li>
+<li><strong>FLR</strong>: <code>FLR-YYYYMMDD-CAT-NNN</code> 또는 <code>DOC-YYYYMMDD-FLR-NNN</code>. <strong>78건 누적</strong> (<code>failures/INDEX.md</code>)</li>
+<li><strong>MASTER-QUEUE</strong>: 단일 출처. lead 60초 내 commit 의무 (DOC-20260512-FLR-001, recurring 4회차 critical)</li>
+<li><strong>세션 자동화 인프라</strong>: SessionStart / Stop / 수동 handoff / Write·Edit PostToolUse Hook</li>
+</ul>
+<h3 id="14-운영-인프라">1.4 운영 인프라</h3>
+<ul>
+<li><strong>GitHub + Vercel 계정</strong>: nicehugepark@gmail.com</li>
+<li><strong>워크트리·등급</strong>: S(단일 Agent) / M(TeamCreate 4팀 + 하네스) / L(REQ 문서 + DevOps records commit)</li>
+<li><strong>자동화 훅</strong>: 응답 종료 Stop → session-checkpoint.sh. 파일 작성·수정 시 린트 + INDEX 동기화</li>
+</ul>
+<hr>
+<h2 id="2-5-제품별-기능">2. 5 제품별 기능</h2>
+<h3 id="21-p002-pm320-오후-3시-20분--mvp-운영-중">2.1 P002 PM320 (오후 3시 20분) — MVP <strong>운영 중</strong></h3>
+<h4>컨셉</h4>
+<p>오후 3시 20분 동시호가 진입 직전, 당일 거래대금 상위 종목의 뉴스·테마·재료를 한 화면에 종합 — 단기 트레이더용 의사결정 보조 도구.</p>
+<h4>라이브 기능 (4/8 ~ 5/13 누적)</h4>
+<ol>
+<li>
+<p><strong>거래대금 상위 종목 카드</strong><br>
+   - 키움 ka10032 + ka10080 + ka10017 + ka10081 수집 (10분 cron)<br>
+   - 카드 구성: 종목명·6자리 티커·등락률·거래대금·테마칩·뉴스 요약<br>
+   - 미니 캔들 sparkline + candles20 (20영업일 일봉, 모바일 대응)<br>
+   - 신규 상장 종목 등락률 산출(시초가 대비) — Q-20260512-FRESH-LISTING-CHANGE-PCT<br>
+   - share URL: <code>#stock-{ticker}</code> (6자리, 한글 이름 금지 — feedback_share_url_ticker_only)</p>
+</li>
+<li>
+<p><strong>뉴스 카드 (이시카와)</strong><br>
+   - 카페 스크레이퍼 + RSS 다채널 수집 (DOC-20260408-REQ-001)<br>
+   - LLM 직접 해석 (Gemini 폐기, 이시카와·토구사 직접 LLM — feedback_no_gemini_direct_llm)<br>
+   - 가비지 필터: VI/신고가/등락률 로봇기사 수집·재사용 금지<br>
+   - <strong>법적 리스크</strong>: 카페 데이터는 Option C 현상 유지 (런칭 전 비공개화·스냅샷 삭제)</p>
+</li>
+<li>
+<p><strong>테마칩 + 테마 트리 (토구사)</strong><br>
+   - theme_dictionary.json canonical (현재 v2.4.4 — 의료용 로봇 추가)<br>
+   - 인과·내러티브 트리 + 돈동기 (feedback_theme_master)<br>
+   - 7일 뷰 + 20일 스크롤 (feedback_theme_master)<br>
+   - 증자 유형 = 독립 테마 영구화 (DOC-20260511 Q-012, 3자배정증자 + 무상증자 각각 1 테마)<br>
+   - canonical 사전 결함 차단 — sub-agent 호출 PROMPT 격리 + LLM 캐시 schema validation 의무 (FLR-20260511-DAT-002)</p>
+</li>
+<li>
+<p><strong>상태 뱃지 (status_badges)</strong><br>
+   - DOC-20260427-SPEC-001 시장경보·신용·단기과열·effect_badges SSOT<br>
+   - interval 모델 전환 + 14일 일괄 재빌드 (DOC-20260429-REQ-006)<br>
+   - 14일 backfill / theme rename / range_240d.high / sticky 헤더 (DOC-20260428 17건)</p>
+</li>
+<li>
+<p><strong>stale 라벨 + 차트 layout</strong><br>
+   - staleLabel renderer.js last available date fallback (DOC-20260430-REQ-004)<br>
+   - 7영업일 격리 + 17영업일 scroll + firstDataIdx trim (DOC-20260504-REQ-003)<br>
+   - 차트 layout 정합 v190~v196 6 사이클 (DOC-20260504-MIN-002)</p>
+</li>
+</ol>
+<h4>데이터 파이프라인 의존성 → §3 참조</h4>
+<h4>잔존 P0 (5/13 18:38 KST 기준)</h4>
+<ul>
+<li>🚨 dailybars 96% 누락 본질 (대표 catch, 본 task #1)</li>
+<li>Q-20260512-THEME-TREND-CHANGE-PCT-ZERO (거래대금 추이 종목 0.0 81건, daily_picks ka10032 응답 0.0 그대로 저장)</li>
+<li>모바일 sparkline + candles20 정합 잔존 (Q-20260512-FRESH-LISTING-DATA 진행 중)</li>
+</ul>
+<h4>추적 루프 부재 (보류)</h4>
+<ul>
+<li>4/6 1회 실행 후 정지 (DOC-20260408-REQ-004) — 복구 항목 정리됨</li>
+</ul>
+<hr>
+<h3 id="22-p001-경매-분석-서비스-auction-analyzer--기획-진행-중">2.2 P001 경매 분석 서비스 (Auction Analyzer) — <strong>기획 진행 중</strong></h3>
+<h4>컨셉</h4>
+<p>부동산 경매 권리분석 + 등기부 자동 파싱 + 낙찰가 스코어링 — 대표 본인 사용 → 상용화 검토.</p>
+<h4>기획 항목</h4>
+<ul>
+<li>권리분석 자동화 (등기부 파싱, 말소기준권리 식별)</li>
+<li>낙찰가 스코어링 모델 (지역·물건·낙찰가율 등)</li>
+<li>임장 체크리스트 + 모바일 리포트</li>
+<li>B2C SaaS 전환 검토 (Phase 1 목표: 100 고객, MRR 3,000만원)</li>
+</ul>
+<h4>상태</h4>
+<ul>
+<li>기획 진행 중 (<code>projects/auction-analyzer/</code>)</li>
+<li>MVP 범위·수익모델 미확정</li>
+<li>차기 사이클에 별도 PRD 작성 필요</li>
+</ul>
+<hr>
+<h3 id="23-p003-소마타-so-my-type--기획">2.3 P003 소마타 (So My Type) — <strong>기획</strong></h3>
+<h4>컨셉</h4>
+<p>소개팅·이상형 매칭 + 나노바나나(AI 이상형 생성) — 인간 본성 자극 서비스(대표 사업 철학 정합).</p>
+<h4>기획 항목</h4>
+<ul>
+<li>이상형 프로필 입력 + AI 매칭</li>
+<li>연예인 닮은꼴 분석 + 이상형 생성 (Imagen API)</li>
+<li>데이팅 매칭 알고리즘</li>
+</ul>
+<h4>상태</h4>
+<ul>
+<li>기획 단계 (<code>projects/somytype/</code>)</li>
+<li>Google AI API 키 설정 완료 (Gemini + Imagen, 호출 보류 상태)</li>
+</ul>
+<hr>
+<h3 id="24-p004-글래스박스-glass-box--기획">2.4 P004 글래스박스 (Glass Box) — <strong>기획</strong></h3>
+<h4>컨셉</h4>
+<p>오픈채팅 관찰·관음 서비스 — "유리상자" 컨셉. 인간 본성 자극 서비스(대표 사업 철학 정합).</p>
+<h4>기획 항목</h4>
+<ul>
+<li>채팅 관찰 모드 (참여 X, 구경 only)</li>
+<li>카테고리별 룸 분류</li>
+<li>익명·실명 모드 분기</li>
+</ul>
+<h4>상태</h4>
+<ul>
+<li>기획 단계 (<code>projects/glassbox/</code>)</li>
+<li>MVP 범위 미확정</li>
+</ul>
+<hr>
+<h3 id="25-p005-trade-cockpit-트레이드-콕핏--설계-내부-운영-도구">2.5 P005 Trade Cockpit (트레이드 콕핏) — <strong>설계 (내부 운영 도구)</strong></h3>
+<h4>컨셉</h4>
+<p>대표 전용 키움 실시간 매매 봇 + 텔레그램 메신저 인터페이스. <strong>외부 노출 X, 내부 운영만</strong>.</p>
+<h4>기획 항목</h4>
+<ul>
+<li>Go + SQLite (성능 최우선)</li>
+<li>별도 레포 (메인 100m1s 레포 외)</li>
+<li>키움 API 실시간 주문·매수·매도·계좌·잔고</li>
+<li>텔레그램 봇 인터페이스</li>
+<li>HTS 보조 도구</li>
+</ul>
+<h4>상태</h4>
+<ul>
+<li>설계 단계</li>
+<li>키움 API 키 보유: 모의투자 만료 2026-07-05, 실전 2027-04-01</li>
+<li>모의투자 우선 (릴리즈 전까지 — feedback_mock_trading_first)</li>
+<li>ka10032 거래대금상위 (당일만, 매일 적재)</li>
+</ul>
+<hr>
+<h2 id="3-데이터-파이프라인">3. 데이터 파이프라인</h2>
+<h3 id="31-키움-api">3.1 키움 API</h3>
+<ul>
+<li><strong>ka10032</strong>: 거래대금상위 (당일만)</li>
+<li><strong>ka10080</strong>: 종목 일봉 차트</li>
+<li><strong>ka10017</strong>: 신용잔고</li>
+<li><strong>ka10081</strong>: 분봉 차트</li>
+<li>모의투자 우선. 거래대금 순위 별도 수집 (source='kiwoom_ranking' — feedback_ranking_separate_collection)</li>
+</ul>
+<h3 id="32-카페-스크레이퍼-이시카와">3.2 카페 스크레이퍼 (이시카와)</h3>
+<ul>
+<li>시간당 cron 풀파이프라인 (DOC-20260408-REQ-001)</li>
+<li>다양성 전제 파서 (단일 마커 파서 금지 — feedback_cafe_parser_diversity)</li>
+<li>형식 분류 + 추출</li>
+<li>쿠키 인증 (DOC-20260408-REQ-003 자율 fix)</li>
+</ul>
+<h3 id="33-이시카와-뉴스-분석">3.3 이시카와 (뉴스 분석)</h3>
+<ul>
+<li>LLM 직접 해석 (Gemini 폐기)</li>
+<li>input_hash 캐시 의무 (call_model_cached 경유)</li>
+<li>PROMPT 격리 + 응답 schema validation + hit_count 알람 (FLR-20260511-DAT-002 critical recurring 2회차)</li>
+<li>claude CLI sub-agent 호출 시 <code>--setting-sources user</code> 의무 (project CLAUDE.md auto-inherit 차단)</li>
+</ul>
+<h3 id="34-토구사-주식-투자-분석">3.4 토구사 (주식 투자 분석)</h3>
+<ul>
+<li>미션 격상 (DOC-20260504-DEC-001): 대표 매매 전략 학습 + 자율 매매 + 궁극 능가</li>
+<li>단기=시장분석/산업·모멘텀/가치관 일치, 게이트 G0~G5</li>
+<li>LLM 캐시 광범위 invalidate + manual 보존 룰 (DOC-20260511 Q-FIX-A-LLM-CACHE)</li>
+</ul>
+<h3 id="35-db-sqlite">3.5 DB (SQLite)</h3>
+<ul>
+<li>정규화 완료 (4월 리팩토링 Phase 1~3)</li>
+<li>신규 종목 자동 마스터 등록 hook 필요 (잔존 — Q-20260511-004)</li>
+<li>14일 backfill / interval 모델 전환 / status_badges</li>
+<li>LLM 캐시 audit cron (Q-LLM-CACHE-AUDIT-CRON P2)</li>
+</ul>
+<h3 id="36-cron-안전-자율-사이클-안전-프로토콜">3.6 cron 안전 (자율 사이클 안전 프로토콜)</h3>
+<ul>
+<li>🔴 cron pipeline = SSOT 파일 절대 touch 금지 (FLR-20260504-FLR-003 critical recurring 2회차)</li>
+<li>MASTER-QUEUE.md / failures/INDEX.md / records/INDEX.md / sw.js exclude</li>
+<li>🔴 SSOT-guard 5/8~5/12 4 사이클 누적 SKIP (≈ 17h) — 큐 Edit 60초 commit 의무 (DOC-20260512-FLR-001, recurring 4회차 critical)</li>
+<li>pipeline 단계 의존성 순서 (kiwoom_ranking → daily_picks union → collect_intraday/dailybars)<br>
+  → Q-20260511-006 (P1, pending)</li>
+</ul>
+<hr>
+<h2 id="4-운영품질">4. 운영·품질</h2>
+<h3 id="41-워크트리등급-claudemd">4.1 워크트리·등급 (CLAUDE.md)</h3>
+<table>
+<thead>
+<tr>
+<th>등급</th>
+<th>기준</th>
+<th>운영</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S</td>
+<td>파일 1~2개, 30분 이내</td>
+<td>단일 Agent + 워크트리. dev-lead 직접 push</td>
+</tr>
+<tr>
+<td>M</td>
+<td>팀 협업 1~3시간</td>
+<td>TeamCreate 4팀(dev/design/qa/devops) + 워크트리 + 하네스</td>
+</tr>
+<tr>
+<td>L</td>
+<td>반나절+</td>
+<td>TeamCreate 4팀 + 하네스 + REQ 문서 + DevOps records commit</td>
+</tr>
+</tbody>
+</table>
+<p>코드 수정 = 워크트리 필수 (등급 무관). 메인 직접 수정 금지.</p>
+<h3 id="42-하네스-컨트랙트">4.2 하네스 컨트랙트</h3>
+<ul>
+<li>워크트리·작업판단·디자인선행·REQ존재·run-qa.sh·스크린샷</li>
+<li>M/L: <code>design-doc-sync</code> (DSN-arch-* 정합·동시 갱신, FAIL 차단)</li>
+</ul>
+<h3 id="43-sub-agent-협업-매트릭스-claudemd-2026-05-05">4.3 sub-agent 협업 매트릭스 (CLAUDE.md, 2026-05-05)</h3>
+<ul>
+<li><strong>Rule A — 신규 doc 생성 = docs-management 자동 병렬</strong></li>
+<li><strong>Rule B — 자료 검색 = 이시카와 자동 병렬</strong></li>
+<li><strong>Rule C — 두 trigger 동시 발생 = 동시 병렬 spawn</strong></li>
+<li>모든 멤버 임무 종료 = 자기 shutdown_request 의무</li>
+<li>동일 name 재 spawn 금지 (race condition, FLR-20260504-FLR-007 동형)</li>
+</ul>
+<h3 id="44-lead-메타-룰-doc-20260509-rule-001-rules-lead-meta-rulesmd">4.4 lead 메타 룰 (DOC-20260509-RULE-001, <code>rules/lead-meta-rules.md</code>)</h3>
+<p>21건+ recurring lead 결함 단일 봉쇄:<br>
+- §1 위임 직전 grep / §2 시스템 본래 망각 / §3 좀비 회피 / §4 DSN 동시 갱신<br>
+- §5 lead 직접 cross-check 금지 / §6 destructive·publish 사전 결정<br>
+- §7 동일 name 재 spawn 금지 / §8 sub-agent 자기 shutdown<br>
+- §9 시간·간극 인지 / §10 사전·사후 문서 / §10.5 verify 1줄 의무<br>
+- §11 PROMPT 격리 + LLM 캐시 schema validation (FLR-DAT-002)<br>
+- §11.5 BG launch 보고 + lead audit (FLR-AGT-004 critical recurring 3회차)</p>
+<h3 id="45-자율-사이클-안전-프로토콜-5-룰-통합-feedback_autonomous_cycle_safety">4.5 자율 사이클 안전 프로토콜 (5 룰 통합, feedback_autonomous_cycle_safety)</h3>
+<ol>
+<li>cron pipeline SSOT touch 금지 (critical recurring)</li>
+<li>sub-agent destructive·publish 사전 확인</li>
+<li>spawn 직전 토큰 한도 점검</li>
+<li>자기 shutdown + 동일 name 재 spawn 금지</li>
+<li><strong>큐 Edit 60초 commit 의무</strong> (2026-05-12 신설 recurring 4회차 critical, DOC-20260512-FLR-001)</li>
+</ol>
+<h3 id="46-flr-78건-누적-failures-indexmd">4.6 FLR 78건 누적 (failures/INDEX.md)</h3>
+<p>주요 패턴:<br>
+- <strong>거짓 충실성</strong> (FLR-AGT-002 동형, 3회차 critical 자동 승격)<br>
+  - 1회차: LLM 자가 보고 / 2회차: 캐시 위장 / 3회차: BG 진행 위장<br>
+- <strong>권위 편향</strong> (FLR-20260406-AGT-002) — 대표 지시 비판 미이행<br>
+- <strong>도메인 무지</strong> (FLR-20260406-AGT-003) — 한국 주식시장 상하한가 등<br>
+- <strong>cron SSOT 침해</strong> (FLR-20260504-FLR-003 recurring)<br>
+- <strong>lead 잘못된 진단</strong> (12건+ 누적, DOC-20260512 사이클)</p>
+<hr>
+<h2 id="5-우선순위-매트릭스-p0--p3">5. 우선순위 매트릭스 (P0 → P3)</h2>
+<h3 id="p0-즉시-본-세션--5-14">P0 (즉시, 본 세션 ~ 5/14)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>항목</th>
+<th>출처</th>
+<th>담당</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>dailybars 96% 누락 본질 fix</td>
+<td>task #1 (대표 catch)</td>
+<td>dev</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Q-20260512-THEME-TREND-CHANGE-PCT-ZERO (daily_picks 0.0 81건)</td>
+<td>5/12 15:02</td>
+<td>dev</td>
+</tr>
+<tr>
+<td>3</td>
+<td>모바일 sparkline + candles20 정합 (Q-FRESH-LISTING-DATA)</td>
+<td>5/12 07:53~</td>
+<td>dev</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cron SSOT-guard recurring 차단 영구 룰 운영</td>
+<td>DOC-20260512-FLR-001</td>
+<td>tachikoma</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LLM 캐시 hit_count audit cron 신설 (Q-LLM-CACHE-AUDIT-CRON)</td>
+<td>FLR-DAT-002 후속</td>
+<td>devops</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p1-12주">P1 (1~2주)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>항목</th>
+<th>출처</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>pipeline 단계 의존성 순서 근본 fix (Q-20260511-006)</td>
+<td>dev-lead</td>
+</tr>
+<tr>
+<td>2</td>
+<td>FLR-F1-STOCKS-MISSING (439960 SSOT 단절)</td>
+<td>failure-analysis</td>
+</tr>
+<tr>
+<td>3</td>
+<td>증자 유형 영구화 후속 (interpret_stocks PROMPT §8 운영 점검)</td>
+<td>tachikoma</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DOC-20260513-DSN-001 디자인 요구사항 정의서 본문 작성</td>
+<td>design-lead</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p2-분기-내">P2 (분기 내)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>항목</th>
+<th>출처</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>P001 경매 분석 PRD 작성</td>
+<td>planning</td>
+</tr>
+<tr>
+<td>2</td>
+<td>P003 소마타 MVP 범위 확정</td>
+<td>planning</td>
+</tr>
+<tr>
+<td>3</td>
+<td>P004 글래스박스 MVP 범위 확정</td>
+<td>planning</td>
+</tr>
+<tr>
+<td>4</td>
+<td>P005 Trade Cockpit 설계 → 알파 구현</td>
+<td>dev</td>
+</tr>
+<tr>
+<td>5</td>
+<td>큐렉소 산업 KRX 정정 (FLR-F2)</td>
+<td>dev + research</td>
+</tr>
+<tr>
+<td>6</td>
+<td>RSS 다중 source (네이버 뉴스 API) + data-loader.js fallback</td>
+<td>dev + planning</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p3-백로그">P3 (백로그)</h3>
+<ul>
+<li>SSOT-guard 알람 외부 채널 (모바일 push) + 토큰 위클리리밋 사전 점검 hook</li>
+<li>유튜브 뉴스 수집 에이전트 신설</li>
+<li>휴지·법인 양도 (도메인 6개 명의 이전)</li>
+<li>HTTPS 발급 (100m1s.com Let's Encrypt)</li>
+</ul>
+<hr>
+<h2 id="6-supersedes-preserves-정책">6. supersedes / preserves 정책</h2>
+<h3 id="61-결정">6.1 결정</h3>
+<ul>
+<li><strong>supersedes</strong>: 빈 배열 (<code>[]</code>)</li>
+<li><strong>preserves</strong>: ALL 109 REQ + 9 MIN + 35 DSN + 1 DEC + 78 FLR</li>
+</ul>
+<h3 id="62-근거">6.2 근거</h3>
+<ul>
+<li>본 정의서는 <strong>흡수·통합 산출물</strong>이지 기존 REQ를 폐기하지 않음</li>
+<li>각 REQ는 시점별 결정·구현 history로 가치 유지 (회귀 시 참조 필수)</li>
+<li>본문 충돌 시 우선 순위: 최신 FLR &gt; 최신 MIN &gt; 본 정의서 &gt; 개별 REQ</li>
+<li>분기 1회 갱신 시 본 정의서 v2 (DOC-2026MMDD-REQ-NNN) 신규 작성 → 본 v1은 history로 유지</li>
+</ul>
+<h3 id="63-예외-실질-supersede-후보">6.3 예외 (실질 supersede 후보)</h3>
+<p>없음. 모든 REQ는 어떤 형태로든 본 정의서·DSN-001·DEC-001로 흡수되었거나 history로서 자가 보존.</p>
+<hr>
+<h2 id="7-부록--4-5--5-13-req-인덱스-109건-날짜doc_id1줄">7. 부록 — 4/5 ~ 5/13 REQ 인덱스 (109건, 날짜·doc_id·1줄)</h2>
+<blockquote>
+<p>본 인덱스는 records/INDEX.md를 참조하되 REQ만 추출했습니다. doc_id 링크는 records/YYYY-MM/ 하위 파일을 가리킵니다.</p>
+</blockquote>
+<h3 id="4월-105건">4월 (105건)</h3>
+<table>
+<thead>
+<tr>
+<th>날짜</th>
+<th>doc_id</th>
+<th>1줄 요약</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>04-05</td>
+<td>REQ-001</td>
+<td>법인 설립 1단계 체크리스트</td>
+</tr>
+<tr>
+<td>04-05</td>
+<td>REQ-002</td>
+<td>전체 AI 에이전트 조직 및 프로젝트 세팅</td>
+</tr>
+<tr>
+<td>04-05</td>
+<td>REQ-003</td>
+<td>디렉토리 경로 재구성 + 컨텍스트 토큰 효율화</td>
+</tr>
+<tr>
+<td>04-05</td>
+<td>REQ-004</td>
+<td>디자인팀 신설 + 회사 로고 초안</td>
+</tr>
+<tr>
+<td>04-05</td>
+<td>REQ-005</td>
+<td>문서관리 시스템 구축 (DQO + 코드 체계 + DSN 협업)</td>
+</tr>
+<tr>
+<td>04-05</td>
+<td>REQ-006</td>
+<td>(제목 미입력, 본문 참조)</td>
+</tr>
+<tr>
+<td>04-06</td>
+<td>REQ-001</td>
+<td>실패분석팀(FAT) 신설 — 전사 실패 기록·참조 의무</td>
+</tr>
+<tr>
+<td>04-06</td>
+<td>REQ-002</td>
+<td>휴지(HUGEPARK) + 타치코마(TACHIKOMA) 신설</td>
+</tr>
+<tr>
+<td>04-06</td>
+<td>REQ-003</td>
+<td>디자인팀·브랜딩팀 강화 + 전 에이전트 적극 개입</td>
+</tr>
+<tr>
+<td>04-06</td>
+<td>REQ-004</td>
+<td>에이전트 적극 개입 실효성 점검 (하네스 진단)</td>
+</tr>
+<tr>
+<td>04-07</td>
+<td>REQ-001</td>
+<td>PM320 v2 라이트 테마 + 컨텍스트 자동화</td>
+</tr>
+<tr>
+<td>04-07</td>
+<td>REQ-002</td>
+<td>PM320 백로그 일괄 처리 (내 매매 제거 외)</td>
+</tr>
+<tr>
+<td>04-07</td>
+<td>REQ-003</td>
+<td>100M1S 홈페이지 + 도메인 + 법무 페이지 일괄</td>
+</tr>
+<tr>
+<td>04-07</td>
+<td>REQ-004</td>
+<td>홈페이지 R5 로고 + 태그라인 v2 반영</td>
+</tr>
+<tr>
+<td>04-08</td>
+<td>REQ-001</td>
+<td>뉴지 카페 스크레이퍼 + 홈페이지 뉴스 게시판 cron</td>
+</tr>
+<tr>
+<td>04-08</td>
+<td>REQ-002</td>
+<td>키움 500억+ 조건검색 스크레이퍼 + 거래대금 블록</td>
+</tr>
+<tr>
+<td>04-08</td>
+<td>REQ-003</td>
+<td>자율 세션 — 카페 쿠키 인증 fix</td>
+</tr>
+<tr>
+<td>04-08</td>
+<td>REQ-005</td>
+<td>거래대금 종목 — 테마 누적 모델 + 캘린더</td>
+</tr>
+<tr>
+<td>04-09</td>
+<td>REQ-001</td>
+<td>팀 간 대화 강화 (블랙보드 + 2단계 호출)</td>
+</tr>
+<tr>
+<td>04-09</td>
+<td>REQ-002</td>
+<td>/news 도메인 뉴스 보드 재정의 (3 카테고리)</td>
+</tr>
+<tr>
+<td>04-09</td>
+<td>REQ-003</td>
+<td>/news Phase 1 — 파이프라인 + 종목 마스터 DB 정본</td>
+</tr>
+<tr>
+<td>04-14</td>
+<td>REQ-001~007</td>
+<td>7건 (PM320 데이터 보강 + UI 카드 + 테마 정규화)</td>
+</tr>
+<tr>
+<td>04-15</td>
+<td>REQ-001~009</td>
+<td>9건 (DB 정규화 + 인사이트 + 카드 UX)</td>
+</tr>
+<tr>
+<td>04-16</td>
+<td>REQ-001~002</td>
+<td>2건 (파이프라인 재설계)</td>
+</tr>
+<tr>
+<td>04-17</td>
+<td>REQ-001</td>
+<td>1건 (테마 트리 v1)</td>
+</tr>
+<tr>
+<td>04-20</td>
+<td>REQ-001~004</td>
+<td>4건 (UI v2~v3.3 + 캘린더)</td>
+</tr>
+<tr>
+<td>04-21</td>
+<td>REQ-001~008</td>
+<td>8건 (Phase 2 v1~v4 + UI v2~v3.3)</td>
+</tr>
+<tr>
+<td>04-22</td>
+<td>REQ-001 + analysis + REQ-002 + 3 sub</td>
+<td>4건 (이시카와 LLM_judgment 조사 + 퍼스텍)</td>
+</tr>
+<tr>
+<td>04-24</td>
+<td>REQ-001~007</td>
+<td>7건 (status_badges + range_240d)</td>
+</tr>
+<tr>
+<td>04-25</td>
+<td>REQ-001~007</td>
+<td>7건 (REQ-011 v9 단계 플로우 + REQ-012 보류)</td>
+</tr>
+<tr>
+<td>04-26</td>
+<td>REQ-001</td>
+<td>1건</td>
+</tr>
+<tr>
+<td>04-27</td>
+<td>REQ-001~009</td>
+<td>9건 (시장경보 SSOT DOC-20260427-SPEC-001)</td>
+</tr>
+<tr>
+<td>04-28</td>
+<td>REQ-001~005</td>
+<td>5건 (REQ-054~070 17건 통합)</td>
+</tr>
+<tr>
+<td>04-29</td>
+<td>REQ-001~017</td>
+<td>17건 (incorporation v5 + status_badges interval + V3 PROMPT)</td>
+</tr>
+<tr>
+<td>04-30</td>
+<td>REQ-001~004</td>
+<td>4건 (차트 layout + theme-trend + axis 정합)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5월-4건">5월 (4건)</h3>
+<table>
+<thead>
+<tr>
+<th>날짜</th>
+<th>doc_id</th>
+<th>1줄 요약</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>05-04</td>
+<td>REQ-001</td>
+<td>chart layout 통일 + cover-rect 제거 + lut-wrap unify (4/30 결함 정정)</td>
+</tr>
+<tr>
+<td>05-04</td>
+<td>REQ-002</td>
+<td>admin 모니터링 + 정적 generator (외부 노출 X)</td>
+</tr>
+<tr>
+<td>05-04</td>
+<td>REQ-003</td>
+<td>차트 layout 정합 — 7영업일 격리 + lut breakpoint 잔재 fix</td>
+</tr>
+<tr>
+<td>05-13</td>
+<td>REQ-001</td>
+<td><strong>본 정의서 (기능 요구사항 정의서 1차)</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>5/5 ~ 5/12: 위클리리밋 정지(5/9 02:27~5/11 16:01 약 62h) 영향. 본 기간 신규 REQ 0건, 큐 Q-20260511-<em> + Q-20260512-</em> 다수 누적 (MASTER-QUEUE.md 참조).</p>
+</blockquote>
+<hr>
+<h2 id="부록-b--도메인-룰-정확성-flr-20260406-agt-003-회피">부록 B — 도메인 룰 정확성 (FLR-20260406-AGT-003 회피)</h2>
+<p>기획 검토 시 다음 도메인 룰 위반 금지:<br>
+- <strong>한국 주식시장</strong>: ±30% 상하한가, VI(변동성 완화 장치), 거래시간 09:00~15:30, 동시호가 08:30~09:00 / 15:20~15:30<br>
+- <strong>거래대금</strong>: ka10032 당일만, source='kiwoom_ranking' 분리 적재<br>
+- <strong>법인·세무</strong>: 본사 송도 + 백엠원스텝 + A안 유사투자자문 (DOC-20260429-REQ-012)<br>
+- <strong>카페 데이터</strong>: 법적 리스크 Option C, 런칭 전 비공개화 의무<br>
+- <strong>모의/실전</strong>: 릴리즈 전까지 모의투자, 실전 2027-04-01까지 유효</p>
+<hr>
+<p><strong>작성</strong>: @agent:planning-lead<br>
+<strong>검토 의뢰</strong>: @agent:타치코마<br>
+<strong>짝</strong>: DOC-20260513-DSN-001 (디자인 요구사항 정의서)<br>
+<strong>revision</strong>: v1.0 (2026-05-13 18:38 KST)</p></div>
+    <div class="spec-footer">
+      <div>본 문서는 자동 빌드되었습니다 (build: 2026-05-13 18:46 KST)</div>
+      <div><a href="/spec/">/spec/ 목차로 돌아가기</a></div>
+    </div>
+  </article>
+</main>
+
+</body>
+</html>
