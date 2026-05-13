@@ -225,7 +225,12 @@ function renderCalExpandContent(date, data) {
   } catch (_) { /* getMarketState 미정의 시 graceful */ }
 
   const inner = document.getElementById('cal-content');
-  const _baseStocks = data.kiwoom ? (data.kiwoom.daily_top || data.kiwoom.latest_stocks || []) : [];
+  // Q-20260514-058 Fix F-A Plan B (대표 결정 04:08 KST) — chain 순서 역전.
+  // 종래: daily_top (하루 누적 max_trade_amount, snapshot stale data 포함) → latest_stocks (최신 snapshot, SSOT)
+  // 본질: kiwoom.daily_top는 first_seen=00:22 1회 잡힌 stale 종목까지 포함 (예: 010170 대한광통신 2026-05-13 #1 +4.11%/2.1조 = 키움 HTS 미정합).
+  // 키움 HTS 조건검색 SSOT = latest_stocks (snapshot_count 최종 21:33 기준 25종). 키움 HTS와 정합.
+  // daily_top는 폴백 유지 (latest_stocks 누락 시).
+  const _baseStocks = data.kiwoom ? (data.kiwoom.latest_stocks || data.kiwoom.daily_top || []) : [];
   // REQ-082 Phase 2 §본질 fix (FLR-20260429-FLR-001 §본질) — REQ-080 §1 union 정책을 frontend에서도 적용.
   // build_daily.py union(line 2351-2410)이 interpreted JSON `stocks`에 상한가 종목을 추가하지만,
   // 종래 renderer는 raw kiwoom.daily_top만 사용 → union 결과 무시 → 4/29 6건 카드 미렌더 (qa-2 FAIL 6건).
