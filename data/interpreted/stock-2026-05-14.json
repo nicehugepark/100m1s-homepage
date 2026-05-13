@@ -1,6 +1,6 @@
 {
   "date": "2026-05-14",
-  "generated_at": "2026-05-14T01:12:02.146967",
+  "generated_at": "2026-05-14T01:52:03.151369",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -9,7 +9,11 @@
     },
     {
       "title": "항공합병",
-      "summary": "항공산업 통합 확정(대한항공:아시아나=1:0.27) → 12월 합병 완료 예정 → 항공사 재편 시장 재평가"
+      "summary": "대한항공-아시아나 합병 12월 확정(1:0.27) → 항공업 구조조정 본격화 → 항공·운송 섹터 재편"
+    },
+    {
+      "title": "중국IT전환",
+      "summary": "중국 IT 대형주(알리바바·텐센트) 실적악화 → AI·클라우드 구조전환 가속 → 한국 칩·클라우드 수혜"
     },
     {
       "title": "기아일본",
@@ -22,6 +26,14 @@
     {
       "title": "삼전노사",
       "summary": "노사협상 결렬 → 외인 자금 연내 41조원 이탈 → 삼성전자 신뢰도 하락 리스크"
+    },
+    {
+      "title": "미중협상",
+      "summary": "트럼프 베이징 방문 경제인단 동반 → 미-중 무역협상 재개 신호 → 반도체·자동차 섹터 영향"
+    },
+    {
+      "title": "유가급등",
+      "summary": "중동 공급 차질 심화 → 유가 급등·재고 기록적 고갈 → 에너지·화학·조선 섹터 수혜"
     }
   ],
   "narratives": [],
@@ -546,7 +558,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "439960",
@@ -561,12 +573,19 @@
       "industry": "의료용 기기 제조업",
       "sector": "웨어러블 로봇",
       "themes": [
-        "바이오",
-        "신규상장",
         "의료용 로봇",
-        "로봇"
+        "바이오",
+        "로봇",
+        "신규상장"
       ],
       "theme_paths": [
+        {
+          "name": "의료용 로봇",
+          "path": [
+            "로봇",
+            "의료용 로봇"
+          ]
+        },
         {
           "name": "바이오",
           "path": [
@@ -577,13 +596,6 @@
           "name": "신규상장",
           "path": [
             "신규상장"
-          ]
-        },
-        {
-          "name": "의료용 로봇",
-          "path": [
-            "로봇",
-            "의료용 로봇"
           ]
         }
       ],
@@ -702,7 +714,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "332570",
@@ -1012,7 +1024,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "012860",
@@ -1203,7 +1215,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "353200",
@@ -1484,7 +1498,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "356680",
@@ -1743,7 +1757,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "131970",
@@ -1944,7 +1958,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "000500",
@@ -1959,18 +1975,12 @@
       "industry": "절연선 및 케이블 제조업",
       "sector": "전력선,통신케이블 제조,도매,수출입",
       "themes": [
-        "케이블",
         "AI데이터센터",
         "AI 인프라",
-        "전력설비"
+        "전력설비",
+        "케이블"
       ],
       "theme_paths": [
-        {
-          "name": "케이블",
-          "path": [
-            "케이블"
-          ]
-        },
         {
           "name": "AI데이터센터",
           "path": [
@@ -1989,6 +1999,12 @@
           "name": "전력설비",
           "path": [
             "전력설비"
+          ]
+        },
+        {
+          "name": "케이블",
+          "path": [
+            "케이블"
           ]
         }
       ],
@@ -2189,7 +2205,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자위험"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "144960",
@@ -2389,8 +2405,8 @@
           "c": 11150
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "단기과열"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "183300",
@@ -2617,9 +2633,7 @@
           "l": 146000,
           "c": 187000
         }
-      ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      ]
     },
     {
       "code": "142210",
@@ -2834,8 +2848,8 @@
           "effect_badges": []
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "단기과열"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "330860",
@@ -3069,7 +3083,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "011210",
@@ -4064,7 +4080,9 @@
           "l": 6000,
           "c": 6760
         }
-      ]
+      ],
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "095610",
@@ -4273,7 +4291,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "417840",
@@ -4464,7 +4482,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "142280",
@@ -4654,8 +4674,8 @@
           "c": 4880
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "014680",
@@ -4885,7 +4905,9 @@
           "disclosure_title": "[투자주의]소수계좌 거래집중 종목",
           "effect_badges": []
         }
-      ]
+      ],
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "321260",
@@ -5076,7 +5098,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "004710",
@@ -5343,7 +5367,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "048770",
@@ -5583,7 +5607,9 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "128820",
