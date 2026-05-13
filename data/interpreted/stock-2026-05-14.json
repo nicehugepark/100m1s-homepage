@@ -1,8 +1,12 @@
 {
   "date": "2026-05-14",
-  "generated_at": "2026-05-14T06:30:03.849432",
+  "generated_at": "2026-05-14T07:10:56.321728",
   "data_source": "kiwoom",
   "macro_events": [
+    {
+      "title": "반도체강세",
+      "summary": "메모리칩 공급 부족 → SK하이닉스·저스템 최대 실적 → 반도체 섹터 슈퍼사이클 진입"
+    },
     {
       "title": "메모리호황",
       "summary": "메모리 수요 급증 → SK하이닉스·삼성전기 신고가 경신 → 반도체 섹터 강세장 재개"
@@ -21,7 +25,7 @@
     },
     {
       "title": "금융재편",
-      "summary": "미래에셋그룹 시총 신한지주 추월 → 증권·자산운용 중심 금융질서 재편 → 금융지주 상대 약세"
+      "summary": "미래에셋그룹 시총 신한지주 추월 → 증권중심 금융 구조 재편 → 금융지주 경쟁 심화"
     },
     {
       "title": "관세휴전",
@@ -38,10 +42,6 @@
     {
       "title": "AI반도체",
       "summary": "글로벌 AI 투자 확대 → 데이터센터 HBM·DRAM 수요 급증 → 메모리 반도체 섹터 강세"
-    },
-    {
-      "title": "중국IT전환",
-      "summary": "중국 IT 대형주(알리바바·텐센트) 실적악화 → AI·클라우드 구조전환 가속 → 한국 칩·클라우드 수혜"
     }
   ],
   "narratives": [],
@@ -3655,6 +3655,21 @@
           "newzy_verdict": null
         },
         {
+          "title": "멋진 '신세계' 어닝 서프라이즈에…증권가, 목표주가 66만원까지 줄상향",
+          "url": "https://www.etoday.co.kr/news/view/2584156",
+          "source": "이투데이",
+          "published_at": "2026-05-13T21:00:00",
+          "causal_chain": "올해 역대 최대 실적 전망 제시와 어닝 서프라이즈 시현 → 증권가 목표주가 66만원까지 일제 상향 → 실적 모멘텀 부각 및 밸류에이션 재평가 압력 확대.",
+          "macro_event": "역대 최대 실적 전망 + 어닝 서프라이즈 + 증권가 목표주가 66만원까지 줄상향",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "펄어비스, 붉은사막 흥행 \"부정할 수 없는 성과\"…신세계, 백화점·면세점 모두 호조 목표가 40%↑ [株토피아]",
           "url": "https://www.fnnews.com/news/202605130945098684",
           "source": "파이낸셜뉴스",
@@ -3689,21 +3704,6 @@
           "url": "https://www.etoday.co.kr/news/view/2584004",
           "source": "이투데이",
           "published_at": "2026-05-13T01:34:00",
-          "causal_chain": "백화점·면세점 사업부 동시 호조 → 증권사 목표주가 40% 상향 → 실적 모멘텀 강화 + 소비 회복 기대감 주가 반영.",
-          "macro_event": "증권사 목표주가 40% 상향 — 백화점·면세점 동시 호조",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "실적 호조에 소비 회복 기대감까지 백화점株 강세...신세계 10%↑[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03644086645448592",
-          "source": "이데일리",
-          "published_at": "2026-05-13T00:22:45",
           "causal_chain": "백화점·면세점 사업부 동시 호조 → 증권사 목표주가 40% 상향 → 실적 모멘텀 강화 + 소비 회복 기대감 주가 반영.",
           "macro_event": "증권사 목표주가 40% 상향 — 백화점·면세점 동시 호조",
           "newzy_freshness": null,
@@ -4278,13 +4278,22 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "반도체 습도제어 System",
       "themes": [
+        "HBM",
+        "실적",
         "반도체"
       ],
       "theme_paths": [
         {
-          "name": "반도체",
+          "name": "HBM",
           "path": [
-            "반도체"
+            "반도체",
+            "HBM"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
           ]
         }
       ],
@@ -4297,7 +4306,23 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
+      "news": [
+        {
+          "title": "저스템, 1분기 사상 최대 실적...반도체 슈퍼사이클 올라탔다",
+          "url": "https://www.sedaily.com/article/20043595",
+          "source": "서울경제",
+          "published_at": "2026-05-13T21:01:05",
+          "causal_chain": "반도체 슈퍼사이클 + IDM 3사 D램·HBM 수요 폭발 및 수율 향상 투자 → 저스템 습도제어 솔루션 공급 확대 → 1분기 사상 최대 실적(매출 +67%, 영업이익 +147%, 영업이익률 23%) 시현 → 본업 실적 모멘텀 부각.",
+          "macro_event": "저스템 2026년 1분기 매출 176.9억원(+67%)·영업이익 40.7억원(+147%) 사상 최대 실적 달성",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
       "fallback": true,
       "index_change_pct": 0.0,
       "range_240d": {
@@ -4452,9 +4477,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "회사한도초과",
-      "causal_chain": "",
-      "parent_theme": ""
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "142280",
