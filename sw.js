@@ -1,4 +1,4 @@
-const CACHE_NAME = 'news-v216';
+const CACHE_NAME = 'news-v217';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
@@ -13,6 +13,10 @@ const STATIC_ASSETS = [
   '/js/data-loader.js',
   '/js/calendar.js',
   '/js/renderer.js',
+  '/spec/',
+  '/spec/feature.html',
+  '/spec/design.html',
+  '/spec/spec.css',
 ];
 
 self.addEventListener('install', (e) => {
