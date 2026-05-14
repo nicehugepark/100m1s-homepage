@@ -1,6 +1,6 @@
 {
   "date": "2026-05-14",
-  "generated_at": "2026-05-14T10:24:57.989595",
+  "generated_at": "2026-05-14T10:39:44.153485",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -10,6 +10,10 @@
     {
       "title": "반도체공급",
       "summary": "AI 데이터센터·로봇 급증 → 반도체 핵심 부품(기판·MLCC) 공급 병목 → 삼성전기·LG이노텍 등 공급사 초과수요"
+    },
+    {
+      "title": "1Q실적",
+      "summary": "1분기 실적 시즌 호조 → 중소형주·마이크로캡 영업익 개선 모멘텀"
     },
     {
       "title": "유가급등",
@@ -38,10 +42,6 @@
     {
       "title": "메모리호황",
       "summary": "메모리 수요 급증 → SK하이닉스·삼성전기 신고가 경신 → 반도체 섹터 강세장 재개"
-    },
-    {
-      "title": "항공합병",
-      "summary": "대한항공-아시아나항공 인수합병 공시 → 항공사 산업 통합 → 이익 19% 증가·시너지 기대"
     }
   ],
   "narratives": [],
@@ -59,6 +59,12 @@
       "verified": true
     },
     {
+      "keyword": "1Q실적",
+      "summary": "1분기 실적 시즌 호조 → 중소형주·마이크로캡 영업익 개선 모멘텀",
+      "source_count": 4,
+      "verified": true
+    },
+    {
       "keyword": "유가급등",
       "summary": "중동 호르무즈 긴장·IEA 경고 → 유가 급등 → 에너지·화학 섹터 수익성 개선 vs 수입원가 상승 양극화",
       "source_count": 3,
@@ -69,17 +75,39 @@
       "summary": "AI 인프라 수요 급증 → 한국 부품사(삼성전기·LG이노텍) MLCC·기판 공급 호황 → 반도체부품 섹터 강세",
       "source_count": 3,
       "verified": true
-    },
-    {
-      "keyword": "반도체강세",
-      "summary": "메모리칩 공급 부족 → SK하이닉스·저스템 최대 실적 → 반도체 섹터 슈퍼사이클 진입",
-      "source_count": 3,
-      "verified": true
     }
   ],
   "themes_tree": {
     "date": "2026-05-14",
     "roots": [
+      {
+        "name": "AI",
+        "children": [
+          {
+            "name": "피지컬 AI 로봇",
+            "summary": "국산 NPU·DPU 기반 온디바이스 AI와 휴머노이드/완성차 로봇 결합으로 로봇 부품·반도체 섹터 수급 집중",
+            "source_count": 6,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 반도체",
+            "summary": "국산 NPU/DPU 검증 확대와 HBM 수요 폭증으로 메모리·팹리스·검증 솔루션 동반 강세",
+            "source_count": 5,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "실적 서프라이즈",
+        "children": [
+          {
+            "name": "수출 중소형 실적주",
+            "summary": "와이투솔루션·앱코·누보·아이언디바이스 등 1분기 해외 매출 급증 종목 자금 순환",
+            "source_count": 5,
+            "verdict": "weak"
+          }
+        ]
+      },
       {
         "name": "AI 인프라",
         "children": [
@@ -93,6 +121,18 @@
             "name": "AI 반도체 HBM",
             "summary": "SK하이닉스 프리마켓 200만원 첫 돌파로 HBM·메모리 슈퍼사이클 기대감이 반도체 장비주까지 확산.",
             "source_count": 4,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 반도체 HBM",
+            "summary": "SK하이닉스 프리마켓 200만원 첫 돌파로 HBM·메모리 슈퍼사이클 기대감이 반도체 장비주까지 확산.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 부품 MLCC·기판",
+            "summary": "AI 서버·데이터센터 수요로 MLCC·반도체 기판 빅사이클 진입, 삼성전기·LG이노텍 목표가 일제 상향.",
+            "source_count": 4,
             "verdict": "pass"
           },
           {
@@ -106,6 +146,12 @@
             "summary": "AI 서버·데이터센터 수요로 MLCC·반도체 기판 빅사이클 진입, 삼성전기·LG이노텍 목표가 일제 상향.",
             "source_count": 4,
             "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "LG전자 로봇 밸류체인 본격 탑승으로 로봇 부품·완성품 섹터 재평가, 증시 키워드로 부상.",
+            "source_count": 4,
+            "verdict": "weak"
           },
           {
             "name": "휴머노이드 로봇",
@@ -126,6 +172,12 @@
             "verdict": "weak"
           },
           {
+            "name": "HBM/AI 메모리",
+            "summary": "SK하이닉스 프리마켓 200만원 첫 돌파로 HBM 수요·AI 메모리 사이클 재확인되며 메모리 반도체 섹터 자금 집중.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
             "name": "로봇/데이터센터 신사업",
             "summary": "LG전자 로봇·데이터센터 신사업 기대감에 하나증권 목표가 23만원 상향, 매경 30만원 제시되며 가전주 재평가 자금 유입.",
             "source_count": 3,
@@ -138,10 +190,33 @@
             "verdict": "pass"
           },
           {
+            "name": "데이터센터 SMPS/전력기기",
+            "summary": "에이텀-성호전자 데이터센터용 SMPS 개발 MOU 및 HD현대일렉트릭 +4.06% 출발로 전력기기·전원장치 섹터 AI 인프라 수혜.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
             "name": "MLCC/적층세라믹콘덴서",
             "summary": "삼성전기 KB증권 목표가 27% 상향, AI 서버용 MLCC 수요 확대로 부품주 자금 집중.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "MLCC/적층세라믹콘덴서",
+            "summary": "삼성전기 KB증권 목표가 27% 상향, AI 서버용 MLCC 수요 확대로 부품주 자금 집중.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "헬스케어",
+        "children": [
+          {
+            "name": "바이오 시밀러·신약",
+            "summary": "알테오젠 특허 리스크 해소·셀트리온 유럽 점유율 70%·신약 임상 호재로 코스닥 대장주 교체",
+            "source_count": 4,
+            "verdict": "pass"
           }
         ]
       },
@@ -159,12 +234,24 @@
             "summary": "삼양식품 불닭볶음면 글로벌 초과수요 지속으로 음식료 수출주 밸류 매력 부각.",
             "source_count": 3,
             "verdict": "weak"
+          },
+          {
+            "name": "K-라면 수출",
+            "summary": "삼양식품 불닭볶음면 글로벌 초과수요 지속으로 음식료 수출주 밸류 매력 부각.",
+            "source_count": 3,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "음식료 수출",
         "children": [
+          {
+            "name": "K-푸드 수출",
+            "summary": "삼양식품 역대 최대 실적과 불닭 글로벌 초과수요 확인되며 증권사 목표가 190만원 줄상향, 음식료 수출주 자금 집중.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
           {
             "name": "K-푸드 수출",
             "summary": "삼양식품 역대 최대 실적과 불닭 글로벌 초과수요 확인되며 증권사 목표가 190만원 줄상향, 음식료 수출주 자금 집중.",
@@ -181,6 +268,51 @@
             "summary": "대한항공 6년만 아시아나 흡수합병 4분기부터 시너지 본격화, NH·KB 이익 증가 19% 추정으로 통합 항공주 중장기 재평가 기대.",
             "source_count": 3,
             "verdict": "pass"
+          },
+          {
+            "name": "대한항공-아시아나 합병 시너지",
+            "summary": "대한항공 6년만 아시아나 흡수합병 4분기부터 시너지 본격화, NH·KB 이익 증가 19% 추정으로 통합 항공주 중장기 재평가 기대.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "수출 소비재",
+        "children": [
+          {
+            "name": "K-푸드 수출",
+            "summary": "삼양식품 역대 최대 분기 실적으로 라면·식품 수출주 목표가 상향 및 자금 유입",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "K-푸드 수출",
+            "summary": "삼양식품 역대 최대 분기 실적으로 라면·식품 수출주 목표가 상향 및 자금 유입",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "전기제품",
+        "children": [
+          {
+            "name": "LG전자 가전·로봇 리레이팅",
+            "summary": "로봇 사업 확장과 B2B LED 수주로 증권사 목표가 16만→30만원 상향, 한 달 36% 급등",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "건설",
+        "children": [
+          {
+            "name": "건설 실적 턴어라운드",
+            "summary": "코오롱글로벌 영업익 129% 급증·한화갤러리아 압구정 재건축 기대로 건설/재건축주 자금 유입",
+            "source_count": 3,
+            "verdict": "weak"
           }
         ]
       },
@@ -192,6 +324,12 @@
             "summary": "호르무즈 해협 지정학 리스크로 유가 변동성 확대, SK이노베이션 등 정유주 가치 재평가.",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "에너지 안보·정유",
+            "summary": "호르무즈 해협 지정학 리스크로 유가 변동성 확대, SK이노베이션 등 정유주 가치 재평가.",
+            "source_count": 2,
+            "verdict": "pass"
           },
           {
             "name": "에너지 안보·정유",
@@ -215,6 +353,12 @@
             "summary": "대한항공-아시아나 6년만 흡수합병 공시로 4분기부터 시너지 가시화, 항공주 재평가.",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "항공 합병",
+            "summary": "대한항공-아시아나 6년만 흡수합병 공시로 4분기부터 시너지 가시화, 항공주 재평가.",
+            "source_count": 2,
+            "verdict": "weak"
           }
         ]
       },
@@ -226,6 +370,12 @@
             "summary": "알테오젠 할로자임 특허 무효 판결로 ADC·SC 제형 리스크 해소, 바이오 신약주 재조명.",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "바이오 특허·신약",
+            "summary": "알테오젠 할로자임 특허 무효 판결로 ADC·SC 제형 리스크 해소, 바이오 신약주 재조명.",
+            "source_count": 2,
+            "verdict": "weak"
           },
           {
             "name": "바이오 특허·신약",
@@ -251,6 +401,18 @@
             "verdict": "pass"
           },
           {
+            "name": "유통 구조 재편",
+            "summary": "홈플러스 폐점 반사 수혜로 이마트·신세계 점유율 확대 기대, 유통 대형주 실적 모멘텀.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "K-뷰티 글로벌 확장",
+            "summary": "코스맥스·달바글로벌 한·중·미 채널 다양화로 화장품 ODM·브랜드주 실적 점프 전망.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
             "name": "K-뷰티 글로벌 확장",
             "summary": "코스맥스·달바글로벌 한·중·미 채널 다양화로 화장품 ODM·브랜드주 실적 점프 전망.",
             "source_count": 2,
@@ -271,6 +433,12 @@
             "name": "알테오젠 특허 리스크 해소",
             "summary": "알테오젠 특허 리스크 걷히며 목표가 상향·추가 기술이전 기대감으로 코스닥 시총 1위 탈환, 바이오 대형주 자금 회귀.",
             "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "알테오젠 특허 리스크 해소",
+            "summary": "알테오젠 특허 리스크 걷히며 목표가 상향·추가 기술이전 기대감으로 코스닥 시총 1위 탈환, 바이오 대형주 자금 회귀.",
+            "source_count": 2,
             "verdict": "pass"
           }
         ]
@@ -281,6 +449,34 @@
           {
             "name": "이차전지 첨가제",
             "summary": "쎄노텍 46억 규모 이차전지 첨가제 공급 계약으로 첨가제 사업 수익화 궤도, 소재 중소형주 자금 유입.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "이차전지 첨가제",
+            "summary": "쎄노텍 46억 규모 이차전지 첨가제 공급 계약으로 첨가제 사업 수익화 궤도, 소재 중소형주 자금 유입.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "방산",
+        "children": [
+          {
+            "name": "일본 방산 글로벌화",
+            "summary": "일본 글로벌 방산 사업 큰 도약 직전 보도, 한국 방산 경쟁/협력 구도 재편 기대로 우주항공·국방 섹터 모멘텀.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "에너지",
+        "children": [
+          {
+            "name": "정유·에너지 (중동 리스크)",
+            "summary": "호르무즈 해협 지정학 리스크가 정제마진 개선으로 이어져 정유·수소 밸류체인 수혜",
             "source_count": 2,
             "verdict": "weak"
           }
@@ -305,12 +501,24 @@
             "summary": "현대건설 일본 이토추상사와 수소 에너지 협력 글로벌 밸류체인 구축, 수소 인프라 섹터 모멘텀.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "수소 에너지 밸류체인",
+            "summary": "현대건설 일본 이토추상사와 수소 에너지 협력 글로벌 밸류체인 구축, 수소 인프라 섹터 모멘텀.",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "지정학",
         "children": [
+          {
+            "name": "호르무즈 지정학 정유 수혜",
+            "summary": "SK이노베이션 호르무즈 영향에 실적 개선세 KB증권 분석, 중동 지정학 리스크에 정유주 마진 확대 기대.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
           {
             "name": "호르무즈 지정학 정유 수혜",
             "summary": "SK이노베이션 호르무즈 영향에 실적 개선세 KB증권 분석, 중동 지정학 리스크에 정유주 마진 확대 기대.",
@@ -528,7 +736,26 @@
           "l": 188600,
           "c": 196700
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 189100,
+        "base": 189100,
+        "prices": [
+          189100,
+          194400,
+          196100,
+          196800,
+          197500,
+          198800,
+          197700,
+          196500,
+          198000,
+          198000
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "064400",
@@ -612,8 +839,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.64,
-      "index_multiple_current": 9.04,
+      "index_change_pct": 1.77,
+      "index_multiple_current": 8.38,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 100800,
@@ -774,7 +1001,13 @@
           75100,
           79900,
           82900,
-          83300
+          84000,
+          84300,
+          82000,
+          82900,
+          82500,
+          83200,
+          84700
         ]
       },
       "credit_risk": true,
@@ -904,9 +1137,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.16,
-      "index_multiple_current": 41.25,
-      "index_multiple_eligible": true,
+      "index_change_pct": -0.58,
+      "index_multiple_current": -11.38,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 70700,
         "high_date": "2026-05-14",
@@ -1066,7 +1299,13 @@
           58000,
           66800,
           64900,
-          63600
+          62600,
+          61600,
+          62500,
+          62000,
+          60800,
+          61600,
+          61100
         ]
       },
       "credit_risk": true,
@@ -1154,8 +1393,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.64,
-      "index_multiple_current": 4.74,
+      "index_change_pct": 1.77,
+      "index_multiple_current": 4.4,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 244000,
@@ -1316,7 +1555,13 @@
           215500,
           250000,
           251000,
-          250000
+          248500,
+          251000,
+          249500,
+          247000,
+          253000,
+          254500,
+          253000
         ]
       },
       "togusa_verdict": "neutral",
@@ -1389,9 +1634,9 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 0.16,
-      "index_multiple_current": 153.38,
-      "index_multiple_eligible": true,
+      "index_change_pct": -0.58,
+      "index_multiple_current": -42.31,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 52000,
         "high_date": "2026-05-14",
@@ -1437,6 +1682,12 @@
         "base": 47300,
         "prices": [
           47300,
+          52700,
+          52700,
+          52700,
+          52700,
+          52700,
+          52700,
           52700,
           52700,
           52700
@@ -1500,8 +1751,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 1.64,
-      "index_multiple_current": 4.35,
+      "index_change_pct": 1.77,
+      "index_multiple_current": 4.03,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 4120,
@@ -1662,7 +1913,13 @@
           4110,
           3700,
           3505,
-          3415
+          3475,
+          3640,
+          3700,
+          3770,
+          3635,
+          3700,
+          3735
         ]
       },
       "togusa_verdict": "neutral",
@@ -1682,20 +1939,13 @@
       "industry": "보험업",
       "sector": "생명보험",
       "themes": [
-        "금융",
-        "실적"
+        "금융"
       ],
       "theme_paths": [
         {
           "name": "금융",
           "path": [
             "금융"
-          ]
-        },
-        {
-          "name": "실적",
-          "path": [
-            "실적"
           ]
         }
       ],
@@ -1786,8 +2036,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.64,
-      "index_multiple_current": 7.96,
+      "index_change_pct": 1.77,
+      "index_multiple_current": 7.37,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 7560,
@@ -1948,7 +2198,13 @@
           4965,
           5440,
           5610,
-          5730
+          5700,
+          5610,
+          5640,
+          5820,
+          5590,
+          5620,
+          5580
         ]
       },
       "credit_risk": true,
@@ -2084,6 +2340,12 @@
           20000,
           20000,
           20000,
+          20000,
+          20000,
+          20000,
+          20000,
+          20000,
+          20000,
           20000
         ]
       },
@@ -2173,9 +2435,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.16,
-      "index_multiple_current": 187.19,
-      "index_multiple_eligible": true,
+      "index_change_pct": -0.58,
+      "index_multiple_current": -51.64,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 6720,
         "high_date": "2026-03-24",
@@ -2361,6 +2623,12 @@
           3710,
           3710,
           3710,
+          3710,
+          3710,
+          3710,
+          3710,
+          3710,
+          3710,
           3710
         ]
       },
@@ -2482,9 +2750,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.16,
-      "index_multiple_current": 187.5,
-      "index_multiple_eligible": true,
+      "index_change_pct": -0.58,
+      "index_multiple_current": -51.72,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 6490,
         "high_date": "2025-08-07",
@@ -2667,6 +2935,12 @@
         "open": 4290,
         "base": 3300,
         "prices": [
+          4290,
+          4290,
+          4290,
+          4290,
+          4290,
+          4290,
           4290,
           4290,
           4290,
