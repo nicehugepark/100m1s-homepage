@@ -1,6 +1,6 @@
 {
   "date": "2026-05-14",
-  "generated_at": "2026-05-14T10:51:00.169394",
+  "generated_at": "2026-05-14T11:07:00.297285",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -40,8 +40,8 @@
       "summary": "로봇·AI 기술 산업 성장 기대감 → LG전자 목표가 상향·강세 → 로봇·전자 섹터 호조"
     },
     {
-      "title": "메모리호황",
-      "summary": "메모리 수요 급증 → SK하이닉스·삼성전기 신고가 경신 → 반도체 섹터 강세장 재개"
+      "title": "증권실적",
+      "summary": "증권사 1분기 실적 폭증(유안타증권 순익 643% 급증) → 시장 거래 활성화·투자수익 호전 신호 → 금융·증권 섹터 강세"
     }
   ],
   "narratives": [],
@@ -751,7 +751,10 @@
           197700,
           196500,
           198000,
-          198000
+          198400,
+          196900,
+          195500,
+          195400
         ]
       },
       "credit_risk": true,
@@ -842,8 +845,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 8.38,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 26.48,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 100800,
@@ -1010,7 +1013,10 @@
           82900,
           82500,
           83200,
-          84700
+          84400,
+          84700,
+          83600,
+          83900
         ]
       },
       "credit_risk": true,
@@ -1098,8 +1104,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 4.4,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 13.89,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 244000,
@@ -1266,7 +1272,10 @@
           247000,
           253000,
           254500,
-          253000
+          249500,
+          251500,
+          246000,
+          245500
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1394,8 +1403,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.58,
-      "index_multiple_current": -11.38,
+      "index_change_pct": -1.23,
+      "index_multiple_current": -5.37,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 70700,
@@ -1562,7 +1571,10 @@
           62000,
           60800,
           61600,
-          61100
+          60800,
+          61000,
+          60000,
+          59700
         ]
       },
       "credit_risk": true,
@@ -1637,8 +1649,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -0.58,
-      "index_multiple_current": -42.31,
+      "index_change_pct": -1.23,
+      "index_multiple_current": -19.95,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 52000,
@@ -1685,6 +1697,9 @@
         "base": 47300,
         "prices": [
           47300,
+          52700,
+          52700,
+          52700,
           52700,
           52700,
           52700,
@@ -1754,8 +1769,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 4.03,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 12.75,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 4120,
@@ -1922,7 +1937,10 @@
           3770,
           3635,
           3700,
-          3735
+          3800,
+          3735,
+          3700,
+          3765
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -2046,8 +2064,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 7.37,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 23.3,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 7560,
@@ -2214,7 +2232,10 @@
           5820,
           5590,
           5620,
-          5580
+          5590,
+          5490,
+          5510,
+          5520
         ]
       },
       "credit_risk": true,
@@ -2356,6 +2377,9 @@
           20000,
           20000,
           20000,
+          20000,
+          20000,
+          20000,
           20000
         ]
       },
@@ -2377,8 +2401,24 @@
       "low_price": 6300,
       "industry": "기타 전문 도매업",
       "sector": "정보통신 유통, 자동차 관리, 글로벌 트레이딩, 호텔&리조트",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "AI",
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI",
+          "path": [
+            "AI"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-05-06",
@@ -2394,8 +2434,8 @@
           "url": "https://www.asiae.co.kr/article/2026051320435410963",
           "source": "아시아경제",
           "published_at": "2026-05-13T11:43:54",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "SK네트웍스가 비주력 사업을 정리하고 AI 중심 사업지주회사로 본업을 전환하면서 AI 솔루션 기업 업스테이지에 500억원을 추가 투자해 지분율 12.9%를 유지하고, 자회사 엔코아와의 MOU 및 미스트랄·OpenAI 등 글로벌 AI 네트워크 확장으로 AI 매크로의 직접 수혜 구조를 본업화. 동시에 1분기 영업이익이 전년 대비 102% 증가하며 실적 모멘텀이 본업 전환을 뒷받침.",
+          "macro_event": "SK네트웍스 AI 중심 사업지주회사 전환 가속화 — 업스테이지 500억 추가 투자로 지분율 12.9%",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2454,8 +2494,8 @@
           "url": "https://www.hankyung.com/article/2026041362471",
           "source": "한경",
           "published_at": "2026-04-13T07:10:55",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "SK네트웍스가 비주력 사업을 정리하고 AI 중심 사업지주회사로 본업을 전환하면서 AI 솔루션 기업 업스테이지에 500억원을 추가 투자해 지분율 12.9%를 유지하고, 자회사 엔코아와의 MOU 및 미스트랄·OpenAI 등 글로벌 AI 네트워크 확장으로 AI 매크로의 직접 수혜 구조를 본업화. 동시에 1분기 영업이익이 전년 대비 102% 증가하며 실적 모멘텀이 본업 전환을 뒷받침.",
+          "macro_event": "SK네트웍스 AI 중심 사업지주회사 전환 가속화 — 업스테이지 500억 추가 투자로 지분율 12.9%",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2466,8 +2506,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 7.81,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 24.68,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 7520,
@@ -2619,7 +2659,27 @@
           "l": 6300,
           "c": 6920
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 6420,
+        "base": 6420,
+        "prices": [
+          6420,
+          6790,
+          6730,
+          6870,
+          6860,
+          6830,
+          6940,
+          7000,
+          7240,
+          7350,
+          7750,
+          7900,
+          7900
+        ]
+      }
     },
     {
       "code": "006110",
@@ -2720,8 +2780,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 12.4,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 39.2,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 100500,
@@ -2874,8 +2934,28 @@
           "c": 98900
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 80400,
+        "base": 80400,
+        "prices": [
+          80400,
+          95700,
+          99000,
+          98900,
+          102300,
+          102600,
+          103100,
+          103200,
+          102800,
+          104400,
+          104200,
+          101900,
+          100900
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "090460",
@@ -2889,8 +2969,17 @@
       "low_price": 30750,
       "industry": "전자부품 제조업",
       "sector": "FPCB (연성인쇄회로기판)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "디스플레이"
+      ],
+      "theme_paths": [
+        {
+          "name": "디스플레이",
+          "path": [
+            "디스플레이"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-04-20",
@@ -2906,8 +2995,8 @@
           "url": "https://www.hankyung.com/article/2026042037951",
           "source": "한경",
           "published_at": "2026-04-20T08:35:27",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "애플 아이폰 폴드 9월 출시 + 북미 폴더블 1위 전망 → 폴더블폰은 더 넓은 OLED 디스플레이·복잡한 내부 설계로 RF-PCB 공급가 상승 → 2017년부터 애플에 RF-PCB 납품 중인 비에이치 매출·영업이익 직접 확대 (대신증권 매출 2조760억·영업이익 1210억 전망).",
+          "macro_event": "애플 첫 폴더블폰 '아이폰 폴드' 9월 출시 예정 + 북미 폴더블 시장 1위(46%) 전망",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2978,8 +3067,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": 10.49,
+      "index_change_pct": 0.56,
+      "index_multiple_current": 33.16,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 37000,
@@ -3131,7 +3220,27 @@
           "l": 30750,
           "c": 35750
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 31000,
+        "base": 31000,
+        "prices": [
+          31000,
+          34900,
+          35850,
+          35000,
+          35650,
+          36400,
+          37100,
+          36900,
+          37150,
+          37550,
+          37500,
+          37950,
+          37750
+        ]
+      }
     },
     {
       "code": "081150",
@@ -3167,8 +3276,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.58,
-      "index_multiple_current": -23.69,
+      "index_change_pct": -1.23,
+      "index_multiple_current": -11.17,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5020,
@@ -3321,16 +3430,36 @@
           "c": 4885
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 4715,
+        "base": 4715,
+        "prices": [
+          4715,
+          4545,
+          4580,
+          4670,
+          4890,
+          4865,
+          5070,
+          5210,
+          5320,
+          5330,
+          5240,
+          5500,
+          5430
+        ]
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "012205",
       "name": "계양전기우",
       "rank": 12,
       "trade_amount": 55648693000,
-      "change_pct": 1.1,
-      "close_price": null,
+      "change_pct": -4.39,
+      "close_price": 21800,
       "open_price": 25200,
       "high_price": 26900,
       "low_price": 19860,
@@ -3344,8 +3473,206 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "range_240d": {
+        "high": 26900,
+        "high_date": "2026-05-14",
+        "high_pct": -18.96,
+        "low": 2830,
+        "low_date": "2025-11-27",
+        "low_pct": 670.32,
+        "current": 21800
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-15",
+          "o": 8320,
+          "h": 9050,
+          "l": 8010,
+          "c": 8160
+        },
+        {
+          "date": "2026-04-16",
+          "o": 8200,
+          "h": 8330,
+          "l": 7890,
+          "c": 7930
+        },
+        {
+          "date": "2026-04-17",
+          "o": 7940,
+          "h": 7940,
+          "l": 7630,
+          "c": 7690
+        },
+        {
+          "date": "2026-04-20",
+          "o": 7820,
+          "h": 8310,
+          "l": 7720,
+          "c": 8110
+        },
+        {
+          "date": "2026-04-21",
+          "o": 8390,
+          "h": 8390,
+          "l": 7780,
+          "c": 8130
+        },
+        {
+          "date": "2026-04-22",
+          "o": 8000,
+          "h": 8080,
+          "l": 7500,
+          "c": 7750
+        },
+        {
+          "date": "2026-04-23",
+          "o": 8000,
+          "h": 10070,
+          "l": 7510,
+          "c": 10070
+        },
+        {
+          "date": "2026-04-24",
+          "o": 9700,
+          "h": 10900,
+          "l": 8860,
+          "c": 8930
+        },
+        {
+          "date": "2026-04-27",
+          "o": 9100,
+          "h": 9450,
+          "l": 8800,
+          "c": 8940
+        },
+        {
+          "date": "2026-04-28",
+          "o": 8990,
+          "h": 9400,
+          "l": 8470,
+          "c": 8500
+        },
+        {
+          "date": "2026-04-29",
+          "o": 8560,
+          "h": 9260,
+          "l": 8200,
+          "c": 8710
+        },
+        {
+          "date": "2026-04-30",
+          "o": 8980,
+          "h": 8980,
+          "l": 8400,
+          "c": 8430
+        },
+        {
+          "date": "2026-05-04",
+          "o": 8460,
+          "h": 8900,
+          "l": 8360,
+          "c": 8470
+        },
+        {
+          "date": "2026-05-06",
+          "o": 8500,
+          "h": 8720,
+          "l": 7670,
+          "c": 8100
+        },
+        {
+          "date": "2026-05-07",
+          "o": 8100,
+          "h": 8400,
+          "l": 7900,
+          "c": 8000
+        },
+        {
+          "date": "2026-05-08",
+          "o": 8080,
+          "h": 10400,
+          "l": 7960,
+          "c": 10400
+        },
+        {
+          "date": "2026-05-11",
+          "o": 9750,
+          "h": 13520,
+          "l": 9710,
+          "c": 13520
+        },
+        {
+          "date": "2026-05-12",
+          "o": 16500,
+          "h": 17570,
+          "l": 16380,
+          "c": 17570
+        },
+        {
+          "date": "2026-05-13",
+          "o": 22800,
+          "h": 22800,
+          "l": 20700,
+          "c": 22800
+        },
+        {
+          "date": "2026-05-14",
+          "o": 25200,
+          "h": 26900,
+          "l": 19860,
+          "c": 21800
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-07) 대비 +60%↑",
+              "base_price": 8000,
+              "threshold": 12800,
+              "current": 21800,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-15",
+          "period_end": "2026-05-18",
+          "start": "2026-05-15",
+          "end": "2026-05-18",
+          "view_date": "2026-05-14",
+          "next_trading_day": "2026-05-15",
+          "next_trading_day_for_predicted": "2026-05-15",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 25200,
+        "base": 25200,
+        "prices": [
+          25200,
+          21150,
+          21050,
+          21200,
+          22650,
+          21950,
+          21350,
+          22650,
+          22100,
+          22700,
+          22750,
+          21700,
+          22050
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "우선주"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "066575",
@@ -3522,7 +3849,27 @@
           "l": 73600,
           "c": 79700
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 74400,
+        "base": 74400,
+        "prices": [
+          74400,
+          76500,
+          76800,
+          78900,
+          79600,
+          79800,
+          80200,
+          79800,
+          81200,
+          82800,
+          81400,
+          80800,
+          80800
+        ]
+      }
     },
     {
       "code": "144960",
@@ -3568,8 +3915,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.58,
-      "index_multiple_current": 0.78,
+      "index_change_pct": -1.23,
+      "index_multiple_current": 0.37,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 12060,
@@ -3736,12 +4083,17 @@
           11530,
           11530,
           11640,
-          11820
+          11720,
+          11490,
+          11580,
+          11440
         ]
       },
       "togusa_verdict": "neutral",
       "theme_leader": true,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "014910",
@@ -3768,8 +4120,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.77,
-      "index_multiple_current": -1.71,
+      "index_change_pct": 0.56,
+      "index_multiple_current": -5.41,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3770,
@@ -3955,8 +4307,28 @@
           ]
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 3295,
+        "base": 3295,
+        "prices": [
+          3295,
+          3577,
+          3315,
+          3105,
+          3070,
+          3145,
+          2995,
+          3085,
+          3075,
+          3185,
+          3095,
+          3070,
+          3055
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "261780",
@@ -4038,8 +4410,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.58,
-      "index_multiple_current": -51.64,
+      "index_change_pct": -1.23,
+      "index_multiple_current": -24.35,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6720,
@@ -4232,6 +4604,9 @@
           3710,
           3710,
           3710,
+          3710,
+          3710,
+          3710,
           3710
         ]
       },
@@ -4353,8 +4728,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.58,
-      "index_multiple_current": -51.72,
+      "index_change_pct": -1.23,
+      "index_multiple_current": -24.39,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6490,
@@ -4538,6 +4913,9 @@
         "open": 4290,
         "base": 3300,
         "prices": [
+          4290,
+          4290,
+          4290,
           4290,
           4290,
           4290,
