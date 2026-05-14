@@ -1,6 +1,6 @@
 {
   "date": "2026-05-14",
-  "generated_at": "2026-05-14T09:31:08.867842",
+  "generated_at": "2026-05-14T10:04:03.331261",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -28,20 +28,20 @@
       "summary": "AI·데이터센터 HBM 수요 급증 → 메모리 신고가 경신(SK하이닉스 200만원) → 반도체 섹터 슈퍼사이클"
     },
     {
+      "title": "미중회담",
+      "summary": "트럼프 베이징 방문 시진핑 고위급 회담 → 미-중 무역·기술 정책 전망 → 글로벌 증시 변동성"
+    },
+    {
+      "title": "로봇AI",
+      "summary": "로봇·AI 기술 산업 성장 기대감 → LG전자 목표가 상향·강세 → 로봇·전자 섹터 호조"
+    },
+    {
       "title": "메모리호황",
       "summary": "메모리 수요 급증 → SK하이닉스·삼성전기 신고가 경신 → 반도체 섹터 강세장 재개"
     },
     {
       "title": "항공합병",
       "summary": "대한항공-아시아나항공 인수합병 공시 → 항공사 산업 통합 → 이익 19% 증가·시너지 기대"
-    },
-    {
-      "title": "미중협상",
-      "summary": "트럼프-시진핑 회담 → 관세 완화 협상 진전 → 한국 반도체·자동차 수출기업 수혜"
-    },
-    {
-      "title": "AI수요",
-      "summary": "AI 투자 확대 → 반도체 수요 급증 → SK하이닉스 시총 100조 신기록, 반도체 섹터 재조명"
     }
   ],
   "narratives": [],
@@ -90,6 +90,18 @@
             "verdict": "pass"
           },
           {
+            "name": "AI 반도체 HBM",
+            "summary": "SK하이닉스 프리마켓 200만원 첫 돌파로 HBM·메모리 슈퍼사이클 기대감이 반도체 장비주까지 확산.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 부품 MLCC·기판",
+            "summary": "AI 서버·데이터센터 수요로 MLCC·반도체 기판 빅사이클 진입, 삼성전기·LG이노텍 목표가 일제 상향.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
             "name": "AI 부품 MLCC·기판",
             "summary": "AI 서버·데이터센터 수요로 MLCC·반도체 기판 빅사이클 진입, 삼성전기·LG이노텍 목표가 일제 상향.",
             "source_count": 4,
@@ -99,6 +111,36 @@
             "name": "휴머노이드 로봇",
             "summary": "LG전자 로봇 밸류체인 본격 탑승으로 로봇 부품·완성품 섹터 재평가, 증시 키워드로 부상.",
             "source_count": 4,
+            "verdict": "weak"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "LG전자 로봇 밸류체인 본격 탑승으로 로봇 부품·완성품 섹터 재평가, 증시 키워드로 부상.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "HBM/AI 메모리",
+            "summary": "SK하이닉스 프리마켓 200만원 첫 돌파로 HBM 수요·AI 메모리 사이클 재확인되며 메모리 반도체 섹터 자금 집중.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "로봇/데이터센터 신사업",
+            "summary": "LG전자 로봇·데이터센터 신사업 기대감에 하나증권 목표가 23만원 상향, 매경 30만원 제시되며 가전주 재평가 자금 유입.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "데이터센터 SMPS/전력기기",
+            "summary": "에이텀-성호전자 데이터센터용 SMPS 개발 MOU 및 HD현대일렉트릭 +4.06% 출발로 전력기기·전원장치 섹터 AI 인프라 수혜.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "MLCC/적층세라믹콘덴서",
+            "summary": "삼성전기 KB증권 목표가 27% 상향, AI 서버용 MLCC 수요 확대로 부품주 자금 집중.",
+            "source_count": 1,
             "verdict": "weak"
           }
         ]
@@ -111,12 +153,46 @@
             "summary": "삼양식품 불닭볶음면 글로벌 초과수요 지속으로 음식료 수출주 밸류 매력 부각.",
             "source_count": 3,
             "verdict": "pass"
+          },
+          {
+            "name": "K-라면 수출",
+            "summary": "삼양식품 불닭볶음면 글로벌 초과수요 지속으로 음식료 수출주 밸류 매력 부각.",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "음식료 수출",
+        "children": [
+          {
+            "name": "K-푸드 수출",
+            "summary": "삼양식품 역대 최대 실적과 불닭 글로벌 초과수요 확인되며 증권사 목표가 190만원 줄상향, 음식료 수출주 자금 집중.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "항공",
+        "children": [
+          {
+            "name": "대한항공-아시아나 합병 시너지",
+            "summary": "대한항공 6년만 아시아나 흡수합병 4분기부터 시너지 본격화, NH·KB 이익 증가 19% 추정으로 통합 항공주 중장기 재평가 기대.",
+            "source_count": 3,
+            "verdict": "pass"
           }
         ]
       },
       {
         "name": "지정학 리스크",
         "children": [
+          {
+            "name": "에너지 안보·정유",
+            "summary": "호르무즈 해협 지정학 리스크로 유가 변동성 확대, SK이노베이션 등 정유주 가치 재평가.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
           {
             "name": "에너지 안보·정유",
             "summary": "호르무즈 해협 지정학 리스크로 유가 변동성 확대, SK이노베이션 등 정유주 가치 재평가.",
@@ -133,6 +209,12 @@
             "summary": "대한항공-아시아나 6년만 흡수합병 공시로 4분기부터 시너지 가시화, 항공주 재평가.",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "항공 합병",
+            "summary": "대한항공-아시아나 6년만 흡수합병 공시로 4분기부터 시너지 가시화, 항공주 재평가.",
+            "source_count": 2,
+            "verdict": "weak"
           }
         ]
       },
@@ -144,6 +226,12 @@
             "summary": "알테오젠 할로자임 특허 무효 판결로 ADC·SC 제형 리스크 해소, 바이오 신약주 재조명.",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "바이오 특허·신약",
+            "summary": "알테오젠 할로자임 특허 무효 판결로 ADC·SC 제형 리스크 해소, 바이오 신약주 재조명.",
+            "source_count": 2,
+            "verdict": "weak"
           }
         ]
       },
@@ -157,9 +245,76 @@
             "verdict": "weak"
           },
           {
+            "name": "유통 구조 재편",
+            "summary": "홈플러스 폐점 반사 수혜로 이마트·신세계 점유율 확대 기대, 유통 대형주 실적 모멘텀.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
             "name": "K-뷰티 글로벌 확장",
             "summary": "코스맥스·달바글로벌 한·중·미 채널 다양화로 화장품 ODM·브랜드주 실적 점프 전망.",
             "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "K-뷰티 글로벌 확장",
+            "summary": "코스맥스·달바글로벌 한·중·미 채널 다양화로 화장품 ODM·브랜드주 실적 점프 전망.",
+            "source_count": 2,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "바이오",
+        "children": [
+          {
+            "name": "알테오젠 특허 리스크 해소",
+            "summary": "알테오젠 특허 리스크 걷히며 목표가 상향·추가 기술이전 기대감으로 코스닥 시총 1위 탈환, 바이오 대형주 자금 회귀.",
+            "source_count": 2,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "이차전지 소재",
+        "children": [
+          {
+            "name": "이차전지 첨가제",
+            "summary": "쎄노텍 46억 규모 이차전지 첨가제 공급 계약으로 첨가제 사업 수익화 궤도, 소재 중소형주 자금 유입.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "지주사 재평가",
+        "children": [
+          {
+            "name": "HD현대 자회사 재평가",
+            "summary": "HD현대 자회사 고른 성장에 흥국 목표가 40만원, 지주사 재평가 국면 자금 유입.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "에너지 전환",
+        "children": [
+          {
+            "name": "수소 에너지 밸류체인",
+            "summary": "현대건설 일본 이토추상사와 수소 에너지 협력 글로벌 밸류체인 구축, 수소 인프라 섹터 모멘텀.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "지정학",
+        "children": [
+          {
+            "name": "호르무즈 지정학 정유 수혜",
+            "summary": "SK이노베이션 호르무즈 영향에 실적 개선세 KB증권 분석, 중동 지정학 리스크에 정유주 마진 확대 기대.",
+            "source_count": 1,
             "verdict": "pass"
           }
         ]
@@ -217,57 +372,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "코스모로보틱스, 8.5억 규모 전환청구권 행사",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05549766645448592",
+          "title": "코스모로보틱스, 상장 나흘째도 급등…공모가 대비 735%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03562086645448920",
           "source": "이데일리",
-          "published_at": "2026-05-13T08:18:55",
-          "causal_chain": "코스닥 신규상장(공모가 6,000원) + 기관 74.48% 의무보유 확약으로 유통가능 비율 23% 품절주 효과 → 따따블 + 2거래일 연속 상한가 → 상장 3일 만에 576% 수익률·시총 1.3조 돌파. 본업 의료용 웨어러블 재활로봇(전 생애주기 라인업 유일 기업, 수출 비중 86%) + 2026~2027 해외 인증 이벤트 집중으로 성장 로드맵 구체화.",
-          "macro_event": "코스닥 신규상장 따따블 + 2거래일 연속 상한가 (유통비율 23% 품절주 효과, 시총 1.3조 돌파)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "코스모로보틱스, 상장 3일 만에 576% 수익률…시총 1.3조 돌파 [이런국장 저런주식]",
-          "url": "https://www.sedaily.com/article/20043433",
-          "source": "서울경제",
-          "published_at": "2026-05-13T01:17:45",
-          "causal_chain": "코스닥 신규상장(공모가 6,000원) + 기관 74.48% 의무보유 확약으로 유통가능 비율 23% 품절주 효과 → 따따블 + 2거래일 연속 상한가 → 상장 3일 만에 576% 수익률·시총 1.3조 돌파. 본업 의료용 웨어러블 재활로봇(전 생애주기 라인업 유일 기업, 수출 비중 86%) + 2026~2027 해외 인증 이벤트 집중으로 성장 로드맵 구체화.",
-          "macro_event": "코스닥 신규상장 따따블 + 2거래일 연속 상한가 (유통비율 23% 품절주 효과, 시총 1.3조 돌파)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "코스모로보틱스, 상장 셋째날도 급등…25%↑[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03588326645448592",
-          "source": "이데일리",
-          "published_at": "2026-05-13T00:11:53",
-          "causal_chain": "코스닥 신규상장(공모가 6,000원) + 기관 74.48% 의무보유 확약으로 유통가능 비율 23% 품절주 효과 → 따따블 + 2거래일 연속 상한가 → 상장 3일 만에 576% 수익률·시총 1.3조 돌파. 본업 의료용 웨어러블 재활로봇(전 생애주기 라인업 유일 기업, 수출 비중 86%) + 2026~2027 해외 인증 이벤트 집중으로 성장 로드맵 구체화.",
-          "macro_event": "코스닥 신규상장 따따블 + 2거래일 연속 상한가 (유통비율 23% 품절주 효과, 시총 1.3조 돌파)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "코스모로보틱스, 코스닥 데뷔 첫날 ‘따따블’…공모가 대비 250% 급등 [이런국장 저런주식]",
-          "url": "https://www.sedaily.com/article/20042376",
-          "source": "서울경제",
-          "published_at": "2026-05-11T00:26:44",
-          "causal_chain": "코스닥 신규상장(공모가 6,000원) + 기관 74.48% 의무보유 확약으로 유통가능 비율 23% 품절주 효과 → 따따블 + 2거래일 연속 상한가 → 상장 3일 만에 576% 수익률·시총 1.3조 돌파. 본업 의료용 웨어러블 재활로봇(전 생애주기 라인업 유일 기업, 수출 비중 86%) + 2026~2027 해외 인증 이벤트 집중으로 성장 로드맵 구체화.",
-          "macro_event": "코스닥 신규상장 따따블 + 2거래일 연속 상한가 (유통비율 23% 품절주 효과, 시총 1.3조 돌파)",
+          "published_at": "2026-05-14T00:10:21",
+          "causal_chain": "코스모로보틱스 신규상장 + 상장 직후 4일 연속 급등(공모가 대비 +735%) → 신규상장 종목 단기 수급 쏠림 모멘텀이 본업(웨어러블 의료용 로봇) 도메인 기대감과 결합되어 주가 분출.",
+          "macro_event": "신규상장 직후 단기 수급 모멘텀",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -277,9 +387,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
-      "index_change_pct": 1.17,
-      "index_multiple_current": 20.97,
+      "fallback": false,
+      "index_change_pct": 0.16,
+      "index_multiple_current": 153.38,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 52000,
@@ -320,6 +430,17 @@
           "c": 50500
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 47300,
+        "base": 47300,
+        "prices": [
+          47300,
+          52700,
+          52700,
+          52700
+        ]
+      },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bull",
@@ -331,31 +452,32 @@
       "name": "미래에셋벤처투자",
       "rank": 2,
       "trade_amount": 222560460000,
-      "change_pct": 17.19,
-      "close_price": null,
+      "change_pct": 6.6,
+      "close_price": 61400,
       "open_price": 58000,
       "high_price": 70700,
       "low_price": 58000,
       "industry": "기타 금융업",
       "sector": "중소기업 창업투자 관련 고유계정/투자조합 관련 수익",
       "themes": [
-        "창투사",
-        "스페이스X",
-        "우주항공"
+        "금융",
+        "AI",
+        "AI 인프라",
+        "창투사"
       ],
       "theme_paths": [
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
         {
           "name": "창투사",
           "path": [
             "금융",
             "창투사"
-          ]
-        },
-        {
-          "name": "스페이스X",
-          "path": [
-            "우주항공",
-            "스페이스X"
           ]
         }
       ],
@@ -374,8 +496,8 @@
           "url": "https://www.mk.co.kr/news/it/12029315",
           "source": "매경",
           "published_at": "2026-04-28T02:17:40",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 에이전트가 실제 산업 환경에서 실행 단계로 진입하면서 런타임 보안·감사 인프라 수요가 확산 → 미래에셋벤처투자가 AI 보안 스타트업 티냅스 45억원 시드 라운드를 리드 투자(미래에셋캐피탈·뮤렉스파트너스·카카오벤처스 공동) → 창투사 본업 포트폴리오에 AI 신뢰성 인프라 카테고리가 편입되며 향후 후속 라운드·엑시트 시 평가 차익 노출.",
+          "macro_event": "AI 에이전트 시대 확산에 따른 런타임 보안·신뢰성 인프라 수요 증가",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -446,17 +568,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.17,
-      "index_multiple_current": 14.69,
+      "index_change_pct": 0.16,
+      "index_multiple_current": 41.25,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 70700,
         "high_date": "2026-05-14",
-        "high_pct": -18.53,
+        "high_pct": -13.15,
         "low": 4665,
         "low_date": "2025-05-27",
-        "low_pct": 1134.73,
-        "current": 57600
+        "low_pct": 1216.18,
+        "current": 61400
       },
       "daily_20": [
         {
@@ -597,11 +719,22 @@
           "o": 58000,
           "h": 70700,
           "l": 58000,
-          "c": 67500
+          "c": 61400
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 58000,
+        "base": 58000,
+        "prices": [
+          58000,
+          66800,
+          64900,
+          63600
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "322000",
@@ -682,8 +815,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.21,
-      "index_multiple_current": 37.05,
+      "index_change_pct": 1.64,
+      "index_multiple_current": 4.74,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 244000,
@@ -835,28 +968,112 @@
           "l": 213500,
           "c": 228500
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 215500,
+        "base": 215500,
+        "prices": [
+          215500,
+          250000,
+          251000,
+          250000
+        ]
+      }
     },
     {
       "code": "487580",
       "name": "폴레드",
       "rank": 4,
       "trade_amount": 92299720000,
-      "change_pct": null,
+      "change_pct": 0.0,
       "close_price": 20000,
-      "open_price": null,
+      "open_price": 20000,
       "high_price": 20000,
-      "low_price": 20000,
+      "low_price": 16500,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "신규상장"
+      ],
+      "theme_paths": [
+        {
+          "name": "신규상장",
+          "path": [
+            "신규상장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "[특징주] 폴레드, 코스닥 상장 첫날 ‘따따블’ 성공",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/05/14/BGWAHBLYWJH5PMOK3LPSXRDJWY/",
+          "source": "조선비즈",
+          "published_at": "2026-05-14T00:23:02",
+          "causal_chain": "코스닥 신규상장 첫날 단기 수급 쏠림 → 공모가 대비 +300% 따따블 분출.",
+          "macro_event": "코스닥 신규상장 첫날 따따블(공모가 대비 +300%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "'코스닥 데뷔' 폴레드, 따따블 직행[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03532566645448920",
+          "source": "이데일리",
+          "published_at": "2026-05-14T00:05:57",
+          "causal_chain": "코스닥 신규상장 첫날 단기 수급 쏠림 → 공모가 대비 +300% 따따블 분출.",
+          "macro_event": "코스닥 신규상장 첫날 따따블(공모가 대비 +300%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[특징주] 폴레드, 상장 첫날 공모가 300% 상승 '따따상' 급등 출발",
+          "url": "https://www.etoday.co.kr/news/view/2584317",
+          "source": "이투데이",
+          "published_at": "2026-05-14T00:02:00",
+          "causal_chain": "코스닥 신규상장 첫날 단기 수급 쏠림 → 공모가 대비 +300% 따따블 분출.",
+          "macro_event": "코스닥 신규상장 첫날 따따블(공모가 대비 +300%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "range_240d": {
+        "high": 20000,
+        "high_date": "2026-05-14",
+        "high_pct": 0.0,
+        "low": 16500,
+        "low_date": "2026-05-14",
+        "low_pct": 21.21,
+        "current": 20000
+      },
+      "daily_20": [
+        {
+          "date": "2026-05-14",
+          "o": 20000,
+          "h": 20000,
+          "l": 16500,
+          "c": 20000
+        }
+      ],
       "status_badges": [
         {
           "label": "상한가",
@@ -883,8 +1100,19 @@
           "next_trading_day": "2026-05-15"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 20000,
+        "base": 20000,
+        "prices": [
+          20000,
+          20000,
+          20000,
+          20000
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -894,10 +1122,10 @@
       "name": "LG씨엔에스",
       "rank": 4,
       "trade_amount": 91622340000,
-      "change_pct": 10.2,
-      "close_price": null,
+      "change_pct": 14.83,
+      "close_price": 84400,
       "open_price": 75100,
-      "high_price": 81000,
+      "high_price": 85800,
       "low_price": 74500,
       "industry": "컴퓨터 프로그래밍, 시스템 통합 및 관리업",
       "sector": "컨설팅, 시스템 구축/운영, 토탈 아웃소싱 및 AI, 클라우드·스마트팩토리 등 IT신기술 기반의 DX사업",
@@ -921,8 +1149,8 @@
         "change_pct": 3.55,
         "trade_amount": 260232955000
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "SK證 \"LG씨엔에스, AX수요 증가·해외 진출 가속이 핵심 성장 동력\"",
@@ -971,17 +1199,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.21,
-      "index_multiple_current": 48.57,
+      "index_change_pct": 1.64,
+      "index_multiple_current": 9.04,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 100800,
         "high_date": "2025-06-23",
-        "high_pct": -27.08,
+        "high_pct": -16.27,
         "low": 49600,
         "low_date": "2025-06-02",
-        "low_pct": 48.19,
-        "current": 73500
+        "low_pct": 70.16,
+        "current": 84400
       },
       "daily_20": [
         {
@@ -1120,11 +1348,24 @@
         {
           "date": "2026-05-14",
           "o": 75100,
-          "h": 81000,
+          "h": 85800,
           "l": 74500,
-          "c": 81000
+          "c": 84400
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 75100,
+        "base": 75100,
+        "prices": [
+          75100,
+          79900,
+          82900,
+          83300
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "452260",
@@ -1139,13 +1380,15 @@
       "industry": "종합 소매업",
       "sector": "백화점",
       "themes": [
-        "K-뷰티"
+        "부동산 재개발",
+        "건설"
       ],
       "theme_paths": [
         {
-          "name": "K-뷰티",
+          "name": "부동산 재개발",
           "path": [
-            "K-뷰티"
+            "건설",
+            "부동산 재개발"
           ]
         }
       ],
@@ -1160,72 +1403,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "[특징주] 1분기 실적 개선 기대·기업가치 제고 등 영향…한화갤러리아 등 백화점株 강세",
-          "url": "https://www.etoday.co.kr/news/view/2579350",
-          "source": "이투데이",
-          "published_at": "2026-04-27T00:13:00",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격([3],[4]) + 한화그룹 유통 독립([2]) + 1분기 실적 개선·기업가치 제고([1]) → 한화갤러리아 백화점株 강세 및 15% 상승.",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[급등락주 짚어보기] 한화그룹 유통 독립·K-뷰티 열풍…한화갤러리아·뷰티스킨 등 '上'",
-          "url": "https://www.etoday.co.kr/news/view/2579044",
-          "source": "이투데이",
-          "published_at": "2026-04-24T07:23:00",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격([3],[4]) + 한화그룹 유통 독립([2]) + 1분기 실적 개선·기업가치 제고([1]) → 한화갤러리아 백화점株 강세 및 15% 상승.",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 한화 신설법인 재상장 예비심사 적격 판정에…한화갤러리아 15% 상승",
-          "url": "https://biz.chosun.com/stock/stock_general/2026/04/24/DN3JOVJDU5GHNBNGTEG4W4RNBM/",
-          "source": "조선비즈",
-          "published_at": "2026-04-24T00:36:47",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격([3],[4]) + 한화그룹 유통 독립([2]) + 1분기 실적 개선·기업가치 제고([1]) → 한화갤러리아 백화점株 강세 및 15% 상승.",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 한화갤러리아, 한화 신설법인 재상장 예심 승인에 15%↑",
-          "url": "https://www.etoday.co.kr/news/view/2578803",
-          "source": "이투데이",
-          "published_at": "2026-04-24T00:33:00",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격([3],[4]) + 한화그룹 유통 독립([2]) + 1분기 실적 개선·기업가치 제고([1]) → 한화갤러리아 백화점株 강세 및 15% 상승.",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "H&Q-한화갤러리아, 수익성 떨어진 '파이브가이즈' M&A 가격 조정 들어가나",
-          "url": "https://www.etoday.co.kr/news/view/2575496",
-          "source": "이투데이",
-          "published_at": "2026-04-14T04:38:00",
-          "causal_chain": "한화 신설법인 재상장 예비심사 적격([3],[4]) + 한화그룹 유통 독립([2]) + 1분기 실적 개선·기업가치 제고([1]) → 한화갤러리아 백화점株 강세 및 15% 상승.",
-          "macro_event": "한화 신설법인 재상장 예비심사 적격 판정",
+          "title": "한화갤러리아 강세…압구정 명품관 재건축 기대감 부각[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03640806645448920",
+          "source": "이데일리",
+          "published_at": "2026-05-14T00:21:06",
+          "causal_chain": "압구정 명품관 재건축 추진 기대 → 부동산 재개발 모멘텀 결합 → 한화갤러리아 보유 자산 가치 재평가 및 백화점 본업 리뉴얼 효과 기대.",
+          "macro_event": "압구정 명품관 재건축 기대감 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1235,9 +1418,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
-      "index_change_pct": 0.21,
-      "index_multiple_current": 34.0,
+      "fallback": false,
+      "index_change_pct": 1.64,
+      "index_multiple_current": 4.35,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 4120,
@@ -1389,22 +1572,49 @@
           "l": 3750,
           "c": 3900
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 4110,
+        "base": 4110,
+        "prices": [
+          4110,
+          3700,
+          3505,
+          3415
+        ]
+      }
     },
     {
       "code": "088350",
       "name": "한화생명",
       "rank": 6,
       "trade_amount": 54901324260,
-      "change_pct": 12.05,
-      "close_price": null,
+      "change_pct": 13.05,
+      "close_price": 5630,
       "open_price": 4965,
-      "high_price": 5770,
+      "high_price": 5780,
       "low_price": 4965,
       "industry": "보험업",
       "sector": "생명보험",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "금융",
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-05-06",
@@ -1420,8 +1630,8 @@
           "url": "https://www.mk.co.kr/news/stock/12045773",
           "source": "매경",
           "published_at": "2026-05-12T23:39:43",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "투자손익 급증(대체투자 평가이익 약 2000억원)에 힘입어 1Q 순이익 +103% 호조 + CSM·자본비율 개선 → 생명보험 본업 펀더멘털 회복 신호. 애큐온캐피탈+저축은행 인수 추진 → 캐피탈·저축은행 라이선스 확보 시 종합금융그룹 포트폴리오 확장.",
+          "macro_event": "한화생명 1Q 순이익 전년比 +103% (투자이익 +444%, 보험손익 -40%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1435,8 +1645,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03050406645448592",
           "source": "이데일리",
           "published_at": "2026-05-12T22:52:06",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "투자손익 급증(대체투자 평가이익 약 2000억원)에 힘입어 1Q 순이익 +103% 호조 + CSM·자본비율 개선 → 생명보험 본업 펀더멘털 회복 신호. 애큐온캐피탈+저축은행 인수 추진 → 캐피탈·저축은행 라이선스 확보 시 종합금융그룹 포트폴리오 확장.",
+          "macro_event": "한화생명 1Q 순이익 전년比 +103% (투자이익 +444%, 보험손익 -40%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1450,8 +1660,8 @@
           "url": "https://biz.chosun.com/stock/market_trend/2026/05/13/VJTQIUMWDZHPRMC6ZI63I4BJGU/",
           "source": "조선비즈",
           "published_at": "2026-05-12T21:00:01",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "투자손익 급증(대체투자 평가이익 약 2000억원)에 힘입어 1Q 순이익 +103% 호조 + CSM·자본비율 개선 → 생명보험 본업 펀더멘털 회복 신호. 애큐온캐피탈+저축은행 인수 추진 → 캐피탈·저축은행 라이선스 확보 시 종합금융그룹 포트폴리오 확장.",
+          "macro_event": "한화생명 1Q 순이익 전년比 +103% (투자이익 +444%, 보험손익 -40%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1465,8 +1675,8 @@
           "url": "https://biz.chosun.com/sports/baseball/2026/04/24/GZRTAMBZG42DKZLBGM4WKODEMM/",
           "source": "조선비즈",
           "published_at": "2026-04-24T09:49:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "투자손익 급증(대체투자 평가이익 약 2000억원)에 힘입어 1Q 순이익 +103% 호조 + CSM·자본비율 개선 → 생명보험 본업 펀더멘털 회복 신호. 애큐온캐피탈+저축은행 인수 추진 → 캐피탈·저축은행 라이선스 확보 시 종합금융그룹 포트폴리오 확장.",
+          "macro_event": "한화생명 1Q 순이익 전년比 +103% (투자이익 +444%, 보험손익 -40%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1480,8 +1690,8 @@
           "url": "https://biz.chosun.com/sports/sports_photo/2026/04/15/GFQTCMRZGEZGEOJWGUYWGNLCGQ/",
           "source": "조선비즈",
           "published_at": "2026-04-15T11:02:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "투자손익 급증(대체투자 평가이익 약 2000억원)에 힘입어 1Q 순이익 +103% 호조 + CSM·자본비율 개선 → 생명보험 본업 펀더멘털 회복 신호. 애큐온캐피탈+저축은행 인수 추진 → 캐피탈·저축은행 라이선스 확보 시 종합금융그룹 포트폴리오 확장.",
+          "macro_event": "한화생명 1Q 순이익 전년比 +103% (투자이익 +444%, 보험손익 -40%)",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1492,17 +1702,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.21,
-      "index_multiple_current": 57.38,
+      "index_change_pct": 1.64,
+      "index_multiple_current": 7.96,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 7560,
         "high_date": "2026-02-23",
-        "high_pct": -34.13,
+        "high_pct": -25.53,
         "low": 2525,
         "low_date": "2025-05-21",
-        "low_pct": 97.23,
-        "current": 4980
+        "low_pct": 122.97,
+        "current": 5630
       },
       "daily_20": [
         {
@@ -1641,11 +1851,24 @@
         {
           "date": "2026-05-14",
           "o": 4965,
-          "h": 5770,
+          "h": 5780,
           "l": 4965,
-          "c": 5580
+          "c": 5630
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 4965,
+        "base": 4965,
+        "prices": [
+          4965,
+          5440,
+          5610,
+          5730
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "261780",
@@ -1727,8 +1950,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.17,
-      "index_multiple_current": 25.6,
+      "index_change_pct": 0.16,
+      "index_multiple_current": 187.19,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 6720,
@@ -1907,8 +2130,19 @@
           "next_trading_day": "2026-05-15"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 3710,
+        "base": 2855,
+        "prices": [
+          3710,
+          3710,
+          3710,
+          3710
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": false,
       "hugepark_grade": "관찰"
@@ -2025,8 +2259,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.17,
-      "index_multiple_current": 25.64,
+      "index_change_pct": 0.16,
+      "index_multiple_current": 187.5,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 6490,
@@ -2205,8 +2439,19 @@
           "next_trading_day": "2026-05-15"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 4290,
+        "base": 3300,
+        "prices": [
+          4290,
+          4290,
+          4290,
+          4290
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
