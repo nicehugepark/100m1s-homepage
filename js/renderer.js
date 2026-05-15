@@ -429,16 +429,9 @@ function renderCalExpandContent(date, data) {
     const sign = (pct ?? 0) >= 0 ? '+' : '';
     const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
     const amountText = it.amount ? fmtTradeAmount(it.amount) : '';
-    // Q-20260515-CANDLE-ALG-UNIFY: 일봉캔들 scale을 20일 sparkline (buildCandles20)과 통일.
-    // daily_20 lo/hi (20일 normalize) 제공으로 miniCandle scaleLo/scaleHi 활성. 두 차트 5/15 캔들 정합.
-    const d20 = it.interp?.daily_20;
-    let scaleLo = null, scaleHi = null;
-    if (Array.isArray(d20) && d20.length > 0) {
-      const lows = d20.map(d => d.l).filter(v => v > 0);
-      const highs = d20.map(d => d.h).filter(v => v > 0);
-      if (lows.length && highs.length) { scaleLo = Math.min(...lows); scaleHi = Math.max(...highs); }
-    }
-    const candleHtml = miniCandle(it.open, it.high, it.low, it.price, it.pct, scaleLo, scaleHi);
+    // Q-20260515-CANDLE-ALG-UNIFY-ROLLBACK: 20일 normalize 폐기 — 1건 일봉캔들은 self-zoom 의도 (H=24 전체).
+    // 대표 catch 22:53: 20일 normalize 적용 시 캔들 높이가 절반으로 표시되는 결함.
+    const candleHtml = miniCandle(it.open, it.high, it.low, it.price, it.pct);
     // 테마칩: 같은 루트 트리는 합쳐서 중복 노드 제거
     // REQ-P1 #7 (2026-04-29): chip별 data-tooltip = 해당 노드가 속한 path 전체 ("부모 > 자식")
     const tp = it.interp?.theme_paths || [];
