@@ -1,6 +1,6 @@
 {
   "date": "2026-05-15",
-  "generated_at": "2026-05-15T18:39:50.568152",
+  "generated_at": "2026-05-15T18:54:29.200958",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -18,10 +18,6 @@
     {
       "title": "증권호조",
       "summary": "증권사 1분기 실적 호조(DB증권 47%↑)→주주환원 강화→금융 섹터 실적 회복 신호"
-    },
-    {
-      "title": "삼성파업",
-      "summary": "삼성전자 노조 파업 협상 진행 중 → 메모리칩 생산 차질 우려 → 반도체·전자부품 공급 부족·가격 프리미엄 발생"
     },
     {
       "title": "파업우려",
@@ -42,6 +38,10 @@
     {
       "title": "금융연동",
       "summary": "삼성전자 지분가 85% 상승 → 보험·금융사 본업 부진 상쇄 → 금융·생보주 대형주 연동성 심화"
+    },
+    {
+      "title": "메모리사이클",
+      "summary": "메모리 슈퍼사이클 지속 신호 → SK하이닉스·삼성전자 목표가 잇단 상향 → 반도체 섹터 강세 지속"
     }
   ],
   "narratives": [],
@@ -71,8 +71,8 @@
       "verified": true
     },
     {
-      "keyword": "삼성파업",
-      "summary": "삼성전자 노조 파업 협상 진행 중 → 메모리칩 생산 차질 우려 → 반도체·전자부품 공급 부족·가격 프리미엄 발생",
+      "keyword": "파업우려",
+      "summary": "삼성전자 파업 우려 → 메모리 생산 차질 → 반도체 부품사(대주전자재료, 삼성전기) 수혜 기대",
       "source_count": 3,
       "verified": true
     }
@@ -463,6 +463,12 @@
             "summary": "메모리 슈퍼사이클 지속 전망에 삼성전자·SK하이닉스 목표가 동시 상향되며 메모리 반도체로 자금 집중.",
             "source_count": 5,
             "verdict": "pass"
+          },
+          {
+            "name": "AI 메모리 반도체",
+            "summary": "SK하이닉스 1분기 엔비디아향 메모리 공급 7.7조(+62%)·삼성전자 메모리 희소 전략으로 HBM·MLCC 등 후공정·소재 낙수효과 확산",
+            "source_count": 5,
+            "verdict": "unverified"
           },
           {
             "name": "MLCC 가격 인상",
@@ -1071,6 +1077,197 @@
             "name": "음식료 1분기 실적 호조",
             "summary": "농심·오리온·오뚜기·풀무원 1분기 영업이익 일제히 증가하며 해외·내수 동반 호조로 음식료 섹터 자금 유입.",
             "source_count": 4,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "(독립)",
+        "children": [
+          {
+            "name": "증권사 1분기 호실적",
+            "summary": "DB증권 순익 +47.6%·교보증권 +43%·상상인증권 420배·유안타 자사주 소각 등 증권업 실적·주주환원 동시 개선",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "주주환원 강화",
+            "summary": "유안타증권 624억 자사주 소각·삼립 경영진 자사주 매입으로 주주가치 제고 흐름 확산",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "중국 진출 확대",
+            "summary": "제이브이엠 중국 쑤저우 생산기지 준공으로 의약품 자동조제기 현지 생산 본격화",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "증권주 실적 개선",
+            "summary": "DB증권·교보증권·상상인증권 1분기 영업익 급증으로 증시 거래대금 회복에 따른 증권 섹터 실적 모멘텀 강화.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "건설주 실적 회복",
+            "summary": "동부건설·금호건설 1분기 흑자·영업익 급증으로 건설주 턴어라운드 기대 형성, 서희건설 부진과 혼조.",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "K-콘텐츠",
+            "summary": "삼양식품 글로벌 확장·BTS 라스베이거스 스피어 공연 등 한국 콘텐츠/식품의 글로벌 메가 모멘텀.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "게임 신작",
+            "summary": "크래프톤 '서브노티카2' 얼리 액세스 첫날 100만장 판매로 신작 흥행 모멘텀 부각.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노사 파업",
+            "summary": "삼성전자 노사 추가 대화 불발로 파업 강행 우려 부각되며 IT 대형주 변동성 확대.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "美中 정상회담 무역 완화",
+            "summary": "트럼프-시진핑 정상회담 및 中의 美 원유 매입 발표로 무역 긴장 완화 기대감, 글로벌 위험자산 선호 회복.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "고속터미널 재개발",
+            "summary": "고속터미널 재개발 기대감에 동양·천일고속이 동반 급등하며 부동산 개발 모멘텀 테마로 단기 자금 유입.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "한미 무역·원유 거래",
+            "summary": "트럼프-시진핑 회담 후 중국의 미국산 원유 매입 합의로 유가가 급등, 정유·에너지·해운주 단기 수급 영향.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "K-게임 실적 모멘텀",
+            "summary": "크래프톤 분기 최대 실적·시프트업 니케 누적 2조 육박으로 K게임사 영업이익 1위 교체, 게임 대장주 실적 재평가.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "전력기기",
+            "summary": "일진전기·비에이치아이 1분기 사상 최대 실적으로 전력·발전 설비 슈퍼사이클 수혜 지속",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "코스피·코스닥 급락",
+            "summary": "코스피 -6.12%·코스닥 -5.14% 동반 급락으로 반도체 대형주 약세, 시장 전반 리스크오프 확산",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "주주환원 강화",
+            "summary": "유안타증권 624억 자사주 전량 소각으로 증권주 주주환원 경쟁 부각, 저PBR 재평가 자금 유입.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "원화 약세",
+            "summary": "원·달러 환율 한 달여 만에 1500원 재돌파로 수출주 환차익 및 해외매출 비중 높은 종목 수혜 기대.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "식음료 해외 실적",
+            "summary": "오리온 해외매출 70% 돌파, 삼양식품 김정수 회장 승진(불닭 신화)으로 K-푸드 글로벌 확장 모멘텀.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "K-푸드 해외 확장",
+            "summary": "오리온 해외 매출 비중 사상 첫 70% 돌파·삼양식품 김정수 회장 승진 등 K-푸드 글로벌 확장 모멘텀",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "가상자산 제도화",
+            "summary": "美 Clarity Act 상원 통과로 가상자산 규제 명확화 진전, 크립토 업종 우호적.",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "가상자산 제도화",
+            "summary": "美 Clarity Act 상원 통과로 가상자산 규제 명확화 진전, 크립토 업종 우호적.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "가상자산 제도화",
+            "summary": "美 Clarity Act 상원 통과로 가상자산 규제 명확화 진전, 크립토 업종 우호적.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "보잉 중국 수주",
+            "summary": "트럼프 발언으로 중국이 보잉 200대 발주 예정, 항공기 부품 공급망 모멘텀.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "보잉 중국 수주",
+            "summary": "트럼프 발언으로 중국이 보잉 200대 발주 예정, 항공기 부품 공급망 모멘텀.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "원전 수출",
+            "summary": "대우건설 오스트리아·체코 방문 등 한국 원전 사업 해외 협력 강화로 원전 밸류체인 수혜 기대.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "두나무 지분 매각 차익",
+            "summary": "카카오가 두나무 지분 6.5%를 하나금융에 매각해 수익률 500배 실현, 가상자산·금융 지분 재편 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "원전 해외 수주",
+            "summary": "대우건설 오스트리아·체코 방문 등 동유럽 원전 협력 강화로 K-원전 수출 기대감 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "방산주 차익실현",
+            "summary": "글로벌 방산주 약세 지속에 Citi가 매수 유보 의견 제시, 한국 방산주에도 단기 모멘텀 둔화 신호.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "게임 신작 흥행",
+            "summary": "크래프톤 서브노티카2가 출시 12시간 만에 200만장 판매로 게임주 신작 모멘텀 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "원달러 환율 1500원 돌파",
+            "summary": "원달러 환율 한 달여 만에 1500원 재돌파로 수출주 환차익 기대와 수입원가 부담 양극화",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "게임 신작 흥행",
+            "summary": "크래프톤 서브노티카2 출시 12시간 만에 200만장 판매로 게임주 신작 사이클 재점화",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "방산주 차익실현",
+            "summary": "글로벌 방산주 조정 압력 지속, Citi는 저점매수 유보 의견 제시",
+            "source_count": 1,
             "verdict": "unverified"
           }
         ]
@@ -1709,167 +1906,6 @@
         ]
       },
       {
-        "name": "(독립)",
-        "children": [
-          {
-            "name": "주주환원 강화",
-            "summary": "유안타증권 624억 자사주 소각·삼립 경영진 자사주 매입으로 주주가치 제고 흐름 확산",
-            "source_count": 3,
-            "verdict": "unverified"
-          },
-          {
-            "name": "중국 진출 확대",
-            "summary": "제이브이엠 중국 쑤저우 생산기지 준공으로 의약품 자동조제기 현지 생산 본격화",
-            "source_count": 3,
-            "verdict": "unverified"
-          },
-          {
-            "name": "증권주 실적 개선",
-            "summary": "DB증권·교보증권·상상인증권 1분기 영업익 급증으로 증시 거래대금 회복에 따른 증권 섹터 실적 모멘텀 강화.",
-            "source_count": 3,
-            "verdict": "unverified"
-          },
-          {
-            "name": "건설주 실적 회복",
-            "summary": "동부건설·금호건설 1분기 흑자·영업익 급증으로 건설주 턴어라운드 기대 형성, 서희건설 부진과 혼조.",
-            "source_count": 3,
-            "verdict": "unverified"
-          },
-          {
-            "name": "K-콘텐츠",
-            "summary": "삼양식품 글로벌 확장·BTS 라스베이거스 스피어 공연 등 한국 콘텐츠/식품의 글로벌 메가 모멘텀.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "게임 신작",
-            "summary": "크래프톤 '서브노티카2' 얼리 액세스 첫날 100만장 판매로 신작 흥행 모멘텀 부각.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "삼성전자 노사 파업",
-            "summary": "삼성전자 노사 추가 대화 불발로 파업 강행 우려 부각되며 IT 대형주 변동성 확대.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "美中 정상회담 무역 완화",
-            "summary": "트럼프-시진핑 정상회담 및 中의 美 원유 매입 발표로 무역 긴장 완화 기대감, 글로벌 위험자산 선호 회복.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "고속터미널 재개발",
-            "summary": "고속터미널 재개발 기대감에 동양·천일고속이 동반 급등하며 부동산 개발 모멘텀 테마로 단기 자금 유입.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "한미 무역·원유 거래",
-            "summary": "트럼프-시진핑 회담 후 중국의 미국산 원유 매입 합의로 유가가 급등, 정유·에너지·해운주 단기 수급 영향.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "K-게임 실적 모멘텀",
-            "summary": "크래프톤 분기 최대 실적·시프트업 니케 누적 2조 육박으로 K게임사 영업이익 1위 교체, 게임 대장주 실적 재평가.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "전력기기",
-            "summary": "일진전기·비에이치아이 1분기 사상 최대 실적으로 전력·발전 설비 슈퍼사이클 수혜 지속",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "코스피·코스닥 급락",
-            "summary": "코스피 -6.12%·코스닥 -5.14% 동반 급락으로 반도체 대형주 약세, 시장 전반 리스크오프 확산",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "주주환원 강화",
-            "summary": "유안타증권 624억 자사주 전량 소각으로 증권주 주주환원 경쟁 부각, 저PBR 재평가 자금 유입.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "원화 약세",
-            "summary": "원·달러 환율 한 달여 만에 1500원 재돌파로 수출주 환차익 및 해외매출 비중 높은 종목 수혜 기대.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "식음료 해외 실적",
-            "summary": "오리온 해외매출 70% 돌파, 삼양식품 김정수 회장 승진(불닭 신화)으로 K-푸드 글로벌 확장 모멘텀.",
-            "source_count": 2,
-            "verdict": "unverified"
-          },
-          {
-            "name": "가상자산 제도화",
-            "summary": "美 Clarity Act 상원 통과로 가상자산 규제 명확화 진전, 크립토 업종 우호적.",
-            "source_count": 1,
-            "verdict": "pass"
-          },
-          {
-            "name": "가상자산 제도화",
-            "summary": "美 Clarity Act 상원 통과로 가상자산 규제 명확화 진전, 크립토 업종 우호적.",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "가상자산 제도화",
-            "summary": "美 Clarity Act 상원 통과로 가상자산 규제 명확화 진전, 크립토 업종 우호적.",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "보잉 중국 수주",
-            "summary": "트럼프 발언으로 중국이 보잉 200대 발주 예정, 항공기 부품 공급망 모멘텀.",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "보잉 중국 수주",
-            "summary": "트럼프 발언으로 중국이 보잉 200대 발주 예정, 항공기 부품 공급망 모멘텀.",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "원전 수출",
-            "summary": "대우건설 오스트리아·체코 방문 등 한국 원전 사업 해외 협력 강화로 원전 밸류체인 수혜 기대.",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "두나무 지분 매각 차익",
-            "summary": "카카오가 두나무 지분 6.5%를 하나금융에 매각해 수익률 500배 실현, 가상자산·금융 지분 재편 부각.",
-            "source_count": 1,
-            "verdict": "unverified"
-          },
-          {
-            "name": "원전 해외 수주",
-            "summary": "대우건설 오스트리아·체코 방문 등 동유럽 원전 협력 강화로 K-원전 수출 기대감 부각.",
-            "source_count": 1,
-            "verdict": "unverified"
-          },
-          {
-            "name": "방산주 차익실현",
-            "summary": "글로벌 방산주 약세 지속에 Citi가 매수 유보 의견 제시, 한국 방산주에도 단기 모멘텀 둔화 신호.",
-            "source_count": 1,
-            "verdict": "unverified"
-          },
-          {
-            "name": "게임 신작 흥행",
-            "summary": "크래프톤 서브노티카2가 출시 12시간 만에 200만장 판매로 게임주 신작 모멘텀 부각.",
-            "source_count": 1,
-            "verdict": "unverified"
-          }
-        ]
-      },
-      {
         "name": "중국 진출",
         "children": [
           {
@@ -1932,6 +1968,17 @@
             "name": "강남 재건축",
             "summary": "현대건설 압구정5구역 홍보관 개관으로 강남 재건축 시공권 경쟁 본격화.",
             "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "AI 메모리 반도체",
+        "children": [
+          {
+            "name": "삼성전자 파업 리스크",
+            "summary": "삼성전자 총파업 가시화로 노동장관·사장단 노조 방문, 메모리 공급 차질 우려가 경쟁사 수혜 기대로 전이",
+            "source_count": 3,
             "verdict": "unverified"
           }
         ]
@@ -3012,6 +3059,12 @@
             "summary": "일진전기 1Q 영업익 49%↑ 역대 최대로 미국 송배전 교체 사이클·전력 인프라 투자 수혜 지속.",
             "source_count": 1,
             "verdict": "unverified"
+          },
+          {
+            "name": "ESS 수혜",
+            "summary": "엠플러스 1분기 매출 510억·영업익 102억 달성하며 ESS 수요 본격 반영",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -3038,6 +3091,28 @@
           {
             "name": "중국 현지 생산기지",
             "summary": "제이브이엠 쑤저우 생산기지 준공으로 중국 현지 생산 기반 확보, 중국 수요 대응 본격화.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "지정학 리스크",
+        "children": [
+          {
+            "name": "벌크선 운임 급등",
+            "summary": "전쟁발 벌크 운임 급등으로 팬오션 주가 연초 대비 56% 상승, 해운주 수혜 확산",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "K-방산",
+        "children": [
+          {
+            "name": "현대로템 무인 방산 로봇",
+            "summary": "현대로템 루마니아서 무인소방로봇 시연으로 무인·재난대응 방산 수출 영역 확장",
             "source_count": 1,
             "verdict": "unverified"
           }
