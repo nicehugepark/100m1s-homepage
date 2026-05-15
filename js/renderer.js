@@ -429,9 +429,14 @@ function renderCalExpandContent(date, data) {
     const sign = (pct ?? 0) >= 0 ? '+' : '';
     const pctText = pct != null ? `${sign}${pct.toFixed(2)}%` : '';
     const amountText = it.amount ? fmtTradeAmount(it.amount) : '';
-    // Q-20260515-CANDLE-ALG-UNIFY-ROLLBACK: 20일 normalize 폐기 — 1건 일봉캔들은 self-zoom 의도 (H=24 전체).
-    // 대표 catch 22:53: 20일 normalize 적용 시 캔들 높이가 절반으로 표시되는 결함.
-    const candleHtml = miniCandle(it.open, it.high, it.low, it.price, it.pct);
+    // Q-20260515-CANDLE-SOURCE-UNIFY: 일봉캔들 OHLC를 daily_20[-1]과 동일 source 통일 (sparkline 정합).
+    // it.price (라이브 cur_prc) ≠ daily_20[-1].c (dailybars close) mismatch 시 양봉/음봉 색상 mismatch 발생.
+    // 대표 catch 23:34: 일봉캔들 vs sparkline 마지막 색상 mismatch (앤로보틱스 음봉 vs 양봉).
+    const d20 = it.interp?.daily_20;
+    const lastBar = (Array.isArray(d20) && d20.length > 0) ? d20[d20.length - 1] : null;
+    const candleHtml = lastBar
+      ? miniCandle(lastBar.o, lastBar.h, lastBar.l, lastBar.c, it.pct)
+      : miniCandle(it.open, it.high, it.low, it.price, it.pct);
     // 테마칩: 같은 루트 트리는 합쳐서 중복 노드 제거
     // REQ-P1 #7 (2026-04-29): chip별 data-tooltip = 해당 노드가 속한 path 전체 ("부모 > 자식")
     const tp = it.interp?.theme_paths || [];
