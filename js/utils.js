@@ -1221,9 +1221,12 @@ function miniCandle(open, high, low, close, changePct, scaleLo, scaleHi) {
     return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
       '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/></svg>';
   }
-  // 캔들 색상: 시가 vs 종가 기준 (당일 봉 방향)
-  var isUp = (close >= open);
-  var color = isUp ? '#E03131' : '#1971C2';
+  // Q-20260515-CANDLE-COLOR-UNIFY: 색상/판정 로직을 lib/mini-candle.js buildCandles20과 통일 (대표 catch 23:34)
+  // 이전: isUp = (close >= open) + #E03131/#1971C2 — close=open 시 양봉 처리
+  // 통일: isUp = (close > open) + isFlat (close === open) + #C53939/#1958C7/#94A3B8 (sparkline 정합)
+  var isUp = (close > open);
+  var isFlat = (close === open);
+  var color = isFlat ? '#94A3B8' : (isUp ? '#C53939' : '#1958C7');
   // scaleLo/scaleHi 유효 (양수 + lo<hi) 시 20일 normalize, 아니면 self-zoom
   var useScale = (typeof scaleLo === 'number' && typeof scaleHi === 'number' && scaleLo > 0 && scaleHi > scaleLo);
   var lo = useScale ? scaleLo : low;
