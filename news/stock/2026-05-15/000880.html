@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>한화 (000880) · 100M1S</title>
 <meta property="og:title" content="한화 (000880) · 100M1S">
-<meta property="og:description" content="문현빈 쾅! 페라자 쾅! 한화, KT 5-3 제압하고 2연승…왕옌청 5이닝 KKKKKKKK 시즌 4승, 쿠싱 고별전 굿바이 세이브 [수원 리뷰]">
+<meta property="og:description" content="[사진]한화, 1위 KT 잡고 2연승">
 <meta property="og:image" content="https://100m1s.com/og/news/stock/2026-05-15/000880.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,14 +20,14 @@
   var code = '000880';
   var defaultName = '한화';
   var rawHash = location.hash.replace(/^#/, '');
-  var nameFromHash = decodeURIComponent(rawHash).replace(/^stock-[A-Za-z0-9]+-?/, '');
-  var finalName = nameFromHash || defaultName;
-  var targetHash = '#stock-' + code + (finalName ? '-' + finalName : '');
+  // Q-20260515-STOCK-DETAIL-SCROLL-FIX: anchor format = '#stock-000880' (한글 name 폐기, feedback_share_url_ticker_only.md 정합)
+  // main news.html scrollIntoView는 '#stock-000880' prefix만 처리. 한글 name 포함 시 카드 mismatch → 자동 scroll 실패.
+  var targetHash = '#stock-' + code;
   location.replace('/news.html?date=' + encodeURIComponent(date) + targetHash);
 })();
 </script>
 </head>
 <body>
-<p>리다이렉트 중... <a href="/news.html?date=2026-05-15#stock-000880-한화">한화 (000880) 뉴스 보기</a></p>
+<p>리다이렉트 중... <a href="/news.html?date=2026-05-15#stock-000880">한화 (000880) 뉴스 보기</a></p>
 </body>
 </html>
