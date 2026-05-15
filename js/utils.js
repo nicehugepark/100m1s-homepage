@@ -1204,7 +1204,9 @@ function renderTriggerPin(_badges, _viewDate) {
   return '';
 }
 
-function miniCandle(open, high, low, close, changePct) {
+function miniCandle(open, high, low, close, changePct, scaleLo, scaleHi) {
+  // Q-20260515-CANDLE-ALG-UNIFY (lead-direct): scaleLo/scaleHi 제공 시 20일 normalize 사용 (buildCandles20 정합).
+  // 미제공 시 self-zoom fallback (기존 동작 유지, 후방 호환).
   if (!close) return '';
   var W = 12, H = 24;
   var hasOHLC = open && high && low;
@@ -1222,17 +1224,21 @@ function miniCandle(open, high, low, close, changePct) {
   // 캔들 색상: 시가 vs 종가 기준 (당일 봉 방향)
   var isUp = (close >= open);
   var color = isUp ? '#E03131' : '#1971C2';
-  var range = high - low;
+  // scaleLo/scaleHi 유효 (양수 + lo<hi) 시 20일 normalize, 아니면 self-zoom
+  var useScale = (typeof scaleLo === 'number' && typeof scaleHi === 'number' && scaleLo > 0 && scaleHi > scaleLo);
+  var lo = useScale ? scaleLo : low;
+  var hi = useScale ? scaleHi : high;
+  var range = hi - lo;
   if (range === 0) return '<svg width="'+W+'" height="'+H+'"><line x1="6" y1="0" x2="6" y2="'+H+'" stroke="#8B95A8" stroke-width="1"/></svg>';
   var scale = H / range;
-  var wickTop = 0;
-  var wickBot = H;
-  var bodyTop = (high - Math.max(open, close)) * scale;
-  var bodyBot = (high - Math.min(open, close)) * scale;
+  var yWickTop = (hi - high) * scale;
+  var yWickBot = (hi - low) * scale;
+  var bodyTop = (hi - Math.max(open, close)) * scale;
+  var bodyBot = (hi - Math.min(open, close)) * scale;
   var bodyH = Math.max(bodyBot - bodyTop, 1);
   return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
-    '<line x1="6" y1="'+wickTop+'" x2="6" y2="'+wickBot+'" stroke="'+color+'" stroke-width="1"/>' +
-    '<rect x="2" y="'+bodyTop+'" width="8" height="'+bodyH+'" fill="'+color+'" rx="1"/>' +
+    '<line x1="6" y1="'+yWickTop.toFixed(1)+'" x2="6" y2="'+yWickBot.toFixed(1)+'" stroke="'+color+'" stroke-width="1"/>' +
+    '<rect x="2" y="'+bodyTop.toFixed(1)+'" width="8" height="'+bodyH.toFixed(1)+'" fill="'+color+'" rx="1"/>' +
     '</svg>';
 }
 
