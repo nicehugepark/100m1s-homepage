@@ -1,6 +1,6 @@
 {
   "date": "2026-05-18",
-  "generated_at": "2026-05-18T09:56:16.837749",
+  "generated_at": "2026-05-18T10:03:55.681398",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -10,6 +10,18 @@
     {
       "title": "AI효율화",
       "summary": "AI 제작·운영 효율화로 바이오·제약·소프트웨어 1분기 대거 흑자전환 → 섹터 실적 개선 추세"
+    },
+    {
+      "title": "올림픽",
+      "summary": "월드컵·올림픽 특수→북미 통신인프라 수요↑→통신장비 섹터 강세"
+    },
+    {
+      "title": "K바이오",
+      "summary": "글로벌 바이오 기업 한국 R&D 거점 확대→K-Bio 생태계 고도화→바이오 섹터 투자 확대"
+    },
+    {
+      "title": "LFP",
+      "summary": "LFP 배터리 국내 공급 기반 확충→전기차 배터리 자급률 상승→배터리소재 섹터 강세"
     },
     {
       "title": "배값상승",
@@ -22,6 +34,14 @@
     {
       "title": "관광회복",
       "summary": "K뷰티·방한 관광객 회복 + 일본 택스리펀드 활성화 → 면세·뷰티·호텔 섹터 동반 성장"
+    },
+    {
+      "title": "이란유가",
+      "summary": "이란-미국 평화협상 교착→중동 유가 상승→에너지·화학·조선 섹터 수혜"
+    },
+    {
+      "title": "LNG호황",
+      "summary": "글로벌 LNG선 호황→한국 조선사 대형 수주 시현→조선 섹터 강세"
     }
   ],
   "narratives": [],
@@ -203,8 +223,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -3.45,
-      "index_multiple_current": -0.1,
+      "index_change_pct": -0.66,
+      "index_multiple_current": -0.52,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9900,
@@ -356,7 +376,20 @@
           "l": 8510,
           "c": 8750
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 8700,
+        "base": 8700,
+        "prices": [
+          8700,
+          8920,
+          8960,
+          9280,
+          10010,
+          10030
+        ]
+      }
     },
     {
       "code": "178320",
@@ -371,15 +404,13 @@
       "industry": "기타 전기장비 제조업",
       "sector": "통신장비부품,휴대폰부품(메탈케이스 등)",
       "themes": [
-        "2차전지 장비 수혜",
-        "2차전지"
+        "경영권 분쟁"
       ],
       "theme_paths": [
         {
-          "name": "2차전지 장비 수혜",
+          "name": "경영권 분쟁",
           "path": [
-            "2차전지",
-            "2차전지 장비 수혜"
+            "경영권 분쟁"
           ]
         }
       ],
@@ -398,8 +429,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05582566645448264",
           "source": "이데일리",
           "published_at": "2026-05-12T07:49:07",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "전동규 대표가 회사 자금 대여 목적으로 본인 보유 250만주 매각 결정 → 대주주 지분 변동 + 회사 자금 사정 단서 노출 → 지배구조·자금조달 이벤트성 모멘텀.",
+          "macro_event": "대표이사 보유 주식 250만주 매각 → 회사 자금 대여 목적",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -470,8 +501,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -4.68,
-      "index_multiple_current": -1.31,
+      "index_change_pct": -2.93,
+      "index_multiple_current": -2.09,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 73700,
@@ -624,8 +655,19 @@
           "c": 71100
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 67000,
+        "base": 67000,
+        "prices": [
+          67000,
+          68700,
+          71400,
+          70000,
+          71000,
+          71700
+        ]
+      }
     },
     {
       "code": "084670",
@@ -652,8 +694,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -3.45,
-      "index_multiple_current": -4.89,
+      "index_change_pct": -0.66,
+      "index_multiple_current": -25.56,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 172800,
@@ -848,8 +890,21 @@
           ]
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 63900,
+        "base": 63900,
+        "prices": [
+          63900,
+          74500,
+          67700,
+          71300,
+          69000,
+          67500
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "037460",
@@ -885,8 +940,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -4.68,
-      "index_multiple_current": -4.02,
+      "index_change_pct": -2.93,
+      "index_multiple_current": -6.43,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 62100,
@@ -1066,8 +1121,21 @@
           "effect_badges": []
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 59200,
+        "base": 59200,
+        "prices": [
+          59200,
+          61400,
+          58400,
+          59300,
+          59100,
+          57000
+        ]
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "290690",
@@ -1186,8 +1254,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -4.68,
-      "index_multiple_current": -2.69,
+      "index_change_pct": -2.93,
+      "index_multiple_current": -4.29,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7170,
@@ -1382,8 +1450,21 @@
           ]
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 6520,
+        "base": 6520,
+        "prices": [
+          6520,
+          5780,
+          6210,
+          6680,
+          6620,
+          6440
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "000650",
@@ -1452,8 +1533,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.45,
-      "index_multiple_current": -3.51,
+      "index_change_pct": -0.66,
+      "index_multiple_current": -18.33,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 518000,
@@ -1639,8 +1720,21 @@
           ]
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 317000,
+        "base": 317000,
+        "prices": [
+          317000,
+          374000,
+          336000,
+          346000,
+          343250,
+          332000
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "066430",
@@ -1667,8 +1761,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -4.68,
-      "index_multiple_current": -5.2,
+      "index_change_pct": -2.93,
+      "index_multiple_current": -8.31,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4000,
@@ -1848,8 +1942,21 @@
           "effect_badges": []
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 3410,
+        "base": 3410,
+        "prices": [
+          3410,
+          3425,
+          3675,
+          3560,
+          3695,
+          3550
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "001450",
@@ -1863,80 +1970,36 @@
       "low_price": 34700,
       "industry": "보험업",
       "sector": "손해보험(자동차보험)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "금융",
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
         {
-          "title": "대신증권 “현대해상, 보험손익 크게 개선…손해율 추가 개선도 기대”",
-          "url": "https://www.mk.co.kr/news/stock/12050597",
-          "source": "매경",
-          "published_at": "2026-05-17T23:45:59",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "DB손보, 순익 40% 급감…현대해상 10% 증가 '선방'",
-          "url": "https://www.mk.co.kr/news/economy/12049404",
-          "source": "매경",
-          "published_at": "2026-05-15T08:51:35",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "현대해상, 1분기 순이익 2233억… 전년 比 9.9% 증가",
-          "url": "https://biz.chosun.com/stock/finance/2026/05/15/MICWL3UUC5DYVO3DE2FUC5RRAM/",
-          "source": "조선비즈",
-          "published_at": "2026-05-15T05:22:41",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "“20대 원형탈모도 보험으로 보장” 현대해상 MZ 맞춤형 신상품 출시",
-          "url": "https://www.mk.co.kr/news/economy/12028193",
-          "source": "매경",
-          "published_at": "2026-04-27T02:49:13",
-          "causal_chain": null,
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "“중고나라 사기도 보상해드려요” 현대해상, 디지털 사고안심보험 출시",
-          "url": "https://www.mk.co.kr/news/economy/12021797",
-          "source": "매경",
-          "published_at": "2026-04-20T05:56:58",
-          "causal_chain": null,
-          "macro_event": null,
+          "title": "[특징주] 현대해상, 어닝 서프라이즈에 장 초반 강세",
+          "url": "https://www.etoday.co.kr/news/view/2585384",
+          "source": "이투데이",
+          "published_at": "2026-05-18T00:27:00",
+          "causal_chain": "손해율 안정화·예실차 적자 축소로 장기보험손익이 7개 분기 만에 2000억대 회복 → 1분기 별도 순이익 2233억(전년比 +9.9%, 컨센서스 50%↑) → K-ICS 200% 상회 등 재무건전성 강화 → 손해보험 본업(현대해상) 실적·체질 개선 모멘텀.",
+          "macro_event": "1분기 별도 순이익 2233억원·전년比 9.9% 증가 + 컨센서스 50% 상회",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1946,9 +2009,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
-      "index_change_pct": -3.45,
-      "index_multiple_current": -2.87,
+      "fallback": false,
+      "index_change_pct": -0.66,
+      "index_multiple_current": -15.0,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 44250,
@@ -2100,7 +2163,20 @@
           "l": 34700,
           "c": 36650
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 34800,
+        "base": 34800,
+        "prices": [
+          34800,
+          35500,
+          36250,
+          37150,
+          36600,
+          37250
+        ]
+      }
     }
   ]
 }
