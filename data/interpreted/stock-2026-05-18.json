@@ -1,6 +1,6 @@
 {
   "date": "2026-05-18",
-  "generated_at": "2026-05-18T13:58:38.667827",
+  "generated_at": "2026-05-18T14:04:15.172688",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -21,7 +21,7 @@
     },
     {
       "title": "삼성파업",
-      "summary": "삼성전자 47,000명 노조 파업 → 제조 공정 중단 위험 → 반도체 메모리 공급 차질"
+      "summary": "삼성전자 47,000명 노조 파업 임박 → 반도체·제조 공정 차질 위험 → 반도체·제조 전산업 공급차질"
     },
     {
       "title": "올림픽",
@@ -29,7 +29,7 @@
     },
     {
       "title": "K바이오",
-      "summary": "글로벌 바이오 기업 한국 R&D 거점 확대→K-Bio 생태계 고도화→바이오 섹터 투자 확대"
+      "summary": "K-Bio CIC 글로벌 인프라 구축 → 국내 바이오 스타트업 국제진출 기반 → 바이오 섹터 장기성장"
     },
     {
       "title": "LFP",
@@ -968,8 +968,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -9.1,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -8.6,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 183500,
@@ -1181,6 +1181,8 @@
           182200,
           182200,
           182200,
+          182200,
+          182200,
           182200
         ]
       },
@@ -1224,8 +1226,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -0.42,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -0.4,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 89100,
@@ -1411,7 +1413,9 @@
           101000,
           98100,
           97600,
-          97800
+          96100,
+          95400,
+          95600
         ]
       },
       "credit_risk": true,
@@ -1479,8 +1483,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 0.36,
-      "index_multiple_current": 0.94,
+      "index_change_pct": 0.27,
+      "index_multiple_current": 1.26,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 9900,
@@ -1666,7 +1670,9 @@
           8670,
           8640,
           8830,
-          8660
+          8730,
+          8610,
+          8640
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -1686,20 +1692,29 @@
       "industry": "기타 전기장비 제조업",
       "sector": "통신장비부품,휴대폰부품(메탈케이스 등)",
       "themes": [
-        "경영권 분쟁",
-        "통신장비"
+        "전력설비",
+        "AI데이터센터",
+        "AI 인프라"
       ],
       "theme_paths": [
         {
-          "name": "경영권 분쟁",
+          "name": "전력설비",
           "path": [
-            "경영권 분쟁"
+            "전력설비"
           ]
         },
         {
-          "name": "통신장비",
+          "name": "AI데이터센터",
           "path": [
-            "통신장비"
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
           ]
         }
       ],
@@ -1714,72 +1729,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "서진시스템 전동규 대표, 회사 자금 대여 위해 250만주 매각 결정",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05582566645448264",
-          "source": "이데일리",
-          "published_at": "2026-05-12T07:49:07",
-          "causal_chain": "대표이사가 회사에 자금을 대여하기 위해 보유 주식 250만주 매각을 결정 → 회사 유동성 보강 목적이나 대표 지분 희석 수반.",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "신한證·하나證·SKS PE, 서진시스템 2대주주로 잔류… 5월 중 마무리",
-          "url": "https://biz.chosun.com/stock/market_trend/2026/04/30/VA2E37VF6BEPNPJ54VDBHNX6WY/",
-          "source": "조선비즈",
-          "published_at": "2026-04-30T08:00:00",
-          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
-          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[MM] 신한證·하나證·SKS PE, 서진시스템 2대주주로 잔류… 5월 중 마무리",
-          "url": "https://biz.chosun.com/moneymove/mmna/2026/04/30/7YJM7A4IQRDH3LUN3EW46CG6KA/",
-          "source": "조선비즈",
-          "published_at": "2026-04-30T07:07:58",
-          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
-          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "서진시스템, 1206억 규모 ESS 장비 공급 계약",
-          "url": "https://www.hankyung.com/article/2026042818156",
-          "source": "한경",
-          "published_at": "2026-04-28T04:51:40",
-          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
-          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "서진시스템, 1206억 규모 ESS 장비 공급계약",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03371846645420712",
-          "source": "이데일리",
-          "published_at": "2026-04-28T01:36:25",
-          "causal_chain": "에이스엔지니어링과 ESS 장비 공급계약 1206억 체결 → 서진시스템 2차전지·에너지저장 장비 본업 매출 파이프라인 직접 확대(연매출 대비 11.31% 규모).",
-          "macro_event": "ESS 장비 공급계약 1206억 체결 (매출액 대비 11.31%)",
+          "title": "서진시스템, 1870억 규모 ESS·데이터센터용 전력변환장치 공급계약",
+          "url": "https://www.asiae.co.kr/article/2026051813495964683",
+          "source": "아시아경제",
+          "published_at": "2026-05-18T04:49:59",
+          "causal_chain": "AI데이터센터 확장에 따른 전력 인프라 증설 수요 → ESS·전력변환장치 수주 확대 → 서진시스템의 1870억 공급계약으로 전력설비 매출에 직접 반영.",
+          "macro_event": "AI데이터센터 전력 수요 확장 → ESS·전력변환장치(PCS) 수주 사이클 진입",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1789,7 +1744,7 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
+      "fallback": false,
       "disclosures": [
         {
           "title": "서진시스템이 ㈜에이스엔지니어링과 ESS 및 데이터센터용 PCS(전력변환장치) 공급계약을 187,004,483,329원(USD 124,686,280.39, 환율 1,499.80KRW/USD 기준, 부가세 제외)에 체결, 최근 매출액 대비 17.54% 규모. 계약기간 2026-05-18~2027-12-31, 판매지역 미국, EXW 조건으로 인도 후 45일 이내 현금 지급.",
@@ -1803,8 +1758,8 @@
           "period_end": "2027-12-31"
         }
       ],
-      "index_change_pct": -1.74,
-      "index_multiple_current": -3.52,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -3.33,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 73700,
@@ -1990,7 +1945,9 @@
           72200,
           72600,
           72500,
-          72900
+          73600,
+          72900,
+          73000
         ]
       },
       "togusa_verdict": "neutral",
@@ -2031,8 +1988,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -10.82,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -10.23,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 62100,
@@ -2245,7 +2202,9 @@
           60900,
           59900,
           58600,
-          57200
+          56300,
+          58700,
+          58400
         ]
       },
       "togusa_verdict": "neutral",
@@ -2311,8 +2270,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -7.22,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -6.83,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7170,
@@ -2540,7 +2499,9 @@
           5830,
           5820,
           6090,
-          5890
+          5970,
+          5500,
+          5620
         ]
       },
       "credit_risk": true,
@@ -2574,8 +2535,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.36,
-      "index_multiple_current": 46.86,
+      "index_change_pct": 0.27,
+      "index_multiple_current": 62.48,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 172800,
@@ -2803,7 +2764,9 @@
           56000,
           55800,
           56500,
-          55700
+          56000,
+          56800,
+          56800
         ]
       },
       "credit_risk": true,
@@ -2894,8 +2857,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 0.36,
-      "index_multiple_current": 27.5,
+      "index_change_pct": 0.27,
+      "index_multiple_current": 36.67,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 44250,
@@ -3081,7 +3044,9 @@
           39400,
           39000,
           38950,
-          39100
+          39000,
+          39050,
+          39050
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -3145,8 +3110,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -8.1,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -7.66,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 116600,
@@ -3332,7 +3297,9 @@
           115900,
           116100,
           117900,
-          117000
+          116800,
+          117300,
+          117300
         ]
       },
       "togusa_verdict": "neutral",
@@ -3419,8 +3386,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": 5.96,
+      "index_change_pct": -1.84,
+      "index_multiple_current": 5.64,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6720,
@@ -3606,7 +3573,9 @@
           3815,
           3885,
           3890,
-          3810
+          3815,
+          3685,
+          3700
         ]
       },
       "credit_risk": true,
@@ -3640,8 +3609,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -13.99,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -13.23,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4000,
@@ -3854,7 +3823,9 @@
           3260,
           3150,
           3110,
-          2990
+          2990,
+          3030,
+          3060
         ]
       },
       "credit_risk": true,
@@ -3930,8 +3901,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.36,
-      "index_multiple_current": 33.61,
+      "index_change_pct": 0.27,
+      "index_multiple_current": 44.81,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 518000,
@@ -4150,7 +4121,9 @@
           282000,
           278500,
           281500,
-          281000
+          283000,
+          287000,
+          285500
         ]
       },
       "credit_risk": true,
@@ -4225,8 +4198,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": 2.72,
+      "index_change_pct": -1.84,
+      "index_multiple_current": 2.57,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 12900,
@@ -4412,7 +4385,9 @@
           13940,
           14050,
           13970,
-          14160
+          14020,
+          13930,
+          13960
         ]
       },
       "credit_risk": true,
@@ -4450,8 +4425,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.74,
-      "index_multiple_current": -9.37,
+      "index_change_pct": -1.84,
+      "index_multiple_current": -8.86,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 31300,
@@ -4630,8 +4605,46 @@
           "next_trading_day": "2026-05-19"
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "intraday": {
+        "step_min": 10,
+        "open": 21200,
+        "base": 21200,
+        "prices": [
+          21200,
+          20050,
+          23250,
+          22850,
+          22450,
+          24550,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950,
+          25950
+        ]
+      },
+      "causal_chain": "",
+      "parent_theme": ""
     }
   ]
 }
