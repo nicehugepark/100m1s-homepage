@@ -1,6 +1,6 @@
 {
   "date": "2026-05-18",
-  "generated_at": "2026-05-18T16:06:29.603923",
+  "generated_at": "2026-05-18T16:23:16.848364",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -24,6 +24,10 @@
       "summary": "주요 기업들 1분기 영업익·매출 호조 → 국내 경기 회복 신호 → 경기민감주 선별매수"
     },
     {
+      "title": "바이오",
+      "summary": "한국 바이오 기업들의 신약 개발·글로벌 진출 가속화 → 바이오테크 섹터 성장성 확대"
+    },
+    {
       "title": "에너지인프라",
       "summary": "전력·에너지 인프라 투자 확대(ESS·데이터센터·원전) → 전력기기·에너지 장비 수요 급증 → 관련 섹터 실적 개선 가시화"
     },
@@ -38,10 +42,6 @@
     {
       "title": "바이오클러스터",
       "summary": "한국 바이오 클러스터 구축(K-Bio CIC) + CDMO 사업 확장 → 스타트업 글로벌 진출 지원 본격화"
-    },
-    {
-      "title": "올림픽",
-      "summary": "월드컵·올림픽 특수→북미 통신인프라 수요↑→통신장비 섹터 강세"
     }
   ],
   "narratives": [],
@@ -1835,6 +1835,21 @@
       "bullish_streak": 1,
       "news": [
         {
+          "title": "[급등락주 짚어보기] 반도체·우주항공·로봇 테마 온기…미래산업·주성엔지니어링 등 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2585599",
+          "source": "이투데이",
+          "published_at": "2026-05-18T06:48:00",
+          "causal_chain": "반도체 테마 전반 온기 → LP CVD 박막 증착 장비 본업 모멘텀 부각 → 주성엔지니어링 상한가.",
+          "macro_event": "반도체 테마 전반 온기 (장중 매크로 모멘텀)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "주성엔지니어링, 세계 첫 ALG 장비 공급에 20%대 급등[이런국장 저런주식]",
           "url": "https://www.sedaily.com/article/20045239",
           "source": "서울경제",
@@ -2374,7 +2389,8 @@
       "themes": [
         "전력설비",
         "AI데이터센터",
-        "AI 인프라"
+        "AI 인프라",
+        "실적"
       ],
       "theme_paths": [
         {
@@ -2396,6 +2412,12 @@
             "AI",
             "AI 인프라"
           ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
         }
       ],
       "pick_count": 1,
@@ -2408,6 +2430,21 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "서진시스템, 에이스엔지니어링과 1870억 규모 공급계약 체결",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03785126645450232",
+          "source": "이데일리",
+          "published_at": "2026-05-18T05:46:54",
+          "causal_chain": "에이스엔지니어링과 1870억 규모 공급계약 체결 → 서진시스템 본업(전력설비·AI데이터센터용 메탈 구조물·함체) 수주 잔고 확대 → 실적 가시성 강화 및 본업 매출 직접 기여",
+          "macro_event": "1870억 규모 대형 공급계약 체결 → 실적 가시성 강화",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "서진시스템, 1870억 규모 ESS·데이터센터용 전력변환장치 공급계약",
           "url": "https://www.asiae.co.kr/article/2026051813495964683",
@@ -2996,6 +3033,17 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "삼지전자 주식회사의 최대주주 이기남 외 특별관계자의 주식등 대량보유상황보고서(일반). 보유주식수는 직전 7,525,496주(46.12%)에서 변동 없이 7,525,496주(46.12%) 유지, 다만 주요계약 주식수가 105,514주(0.65%)에서 74,093주(0.45%)로 감소. 보고의무발생일 2026-05-13.",
+          "category": "지분변동",
+          "sentiment": 0,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260518000259",
+          "is_cb": false,
+          "source": "DART",
+          "raw_title": "주식등의대량보유상황보고서(일반)"
+        }
+      ],
       "index_change_pct": -1.66,
       "index_multiple_current": -8.19,
       "index_multiple_eligible": false,
@@ -3214,8 +3262,24 @@
       "low_price": 2950,
       "industry": "기타 전문 도매업",
       "sector": "VCI,LDPE필름 외",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "실적",
+        "로봇"
+      ],
+      "theme_paths": [
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        },
+        {
+          "name": "로봇",
+          "path": [
+            "로봇"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-05-15",
@@ -3225,8 +3289,24 @@
       },
       "bullish_today": true,
       "bullish_streak": 1,
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "아이로보틱스, 1분기 흑자전환…로봇사업 확대 본격화",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03788406645450232",
+          "source": "이데일리",
+          "published_at": "2026-05-18T05:47:00",
+          "causal_chain": "아이로보틱스가 1분기 흑자전환에 성공하고 로봇사업 확대를 본격화 → 실적 모멘텀 + 사명·신사업 정합 로봇 직접 수혜 라벨링.",
+          "macro_event": "1분기 흑자전환",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
       "index_change_pct": -1.66,
       "index_multiple_current": -17.99,
       "index_multiple_eligible": false,
