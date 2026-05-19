@@ -1209,6 +1209,14 @@ function miniCandle(open, high, low, close, changePct, scaleLo, scaleHi) {
   // 미제공 시 self-zoom fallback (기존 동작 유지, 후방 호환).
   if (!close) return '';
   var W = 12, H = 24;
+  // Q-20260519-CYCLE12-JOLSS (2026-05-19): open=null fallback = close (LU 점상 대응).
+  //   build_daily.py Fix C/D stale 오판 회피 후에도 cron 미반영 데이터 cross-source
+  //   유실 가능 → 방어 코드 (open NULL이지만 high/low/close 정합 케이스 처리).
+  //   본질: hasOHLC 판정에서 open이 NULL이어도 high/low/close 정합 시 OHLC 분기 활성.
+  //   대표 본질 룰 (2026-05-19 17:30): "특정 종목 hard-code 금지, 전체 로직 반영".
+  if (open == null && high && low && close) {
+    open = close;
+  }
   var hasOHLC = open && high && low;
   // OHLC 없으면 pct 기반 단순 바 (심지 없음, 높이=pct 비례)
   if (!hasOHLC) {
@@ -1226,13 +1234,32 @@ function miniCandle(open, high, low, close, changePct, scaleLo, scaleHi) {
   // 통일: isUp = (close > open) + isFlat (close === open) + #C53939/#1958C7/#94A3B8 (sparkline 정합)
   var isUp = (close > open);
   var isFlat = (close === open);
+  // Q-20260519-CYCLE12-JOLSS (2026-05-19): LU 점상 (changePct>=29.0) 시 빨강 (#C53939)
+  //   강제. 졸스 등 LU 점상 종목 isFlat 회색 처리 cycle3 본질 catch 동형 (대표 발화
+  //   "OHLC 모두 같은 값이라 '-' 모양이 되어야 하는데 '|' 모양 표시").
+  //   LU/LD 점상은 회색 (#94A3B8) 정합 X — 등락 방향 명시 (빨강/파랑) 정합.
+  if (isFlat && changePct != null) {
+    if (changePct >= 29.0) {
+      isUp = true; isFlat = false;
+    } else if (changePct <= -29.0) {
+      isUp = false; isFlat = false;
+    }
+  }
   var color = isFlat ? '#94A3B8' : (isUp ? '#C53939' : '#1958C7');
   // scaleLo/scaleHi 유효 (양수 + lo<hi) 시 20일 normalize, 아니면 self-zoom
   var useScale = (typeof scaleLo === 'number' && typeof scaleHi === 'number' && scaleLo > 0 && scaleHi > scaleLo);
   var lo = useScale ? scaleLo : low;
   var hi = useScale ? scaleHi : high;
   var range = hi - lo;
-  if (range === 0) return '<svg width="'+W+'" height="'+H+'"><line x1="6" y1="0" x2="6" y2="'+H+'" stroke="#8B95A8" stroke-width="1"/></svg>';
+  // Q-20260519-CYCLE12-JOLSS (2026-05-19): range=0 시 가로선 '-' (수평선) 출력.
+  //   대표 catch (17:25 KST): "OHLC가 모두 같은 값이라 '-' 모양이 되어야 하는데
+  //   '|' 모양으로 표시되고 있다" — 본질 결함 (이전 코드: 세로선 stroke (6,0)→(6,H)).
+  //   가로선 = (0, H/2) → (W, H/2) 수평선. 색상은 위 isUp/isFlat 분기 정합.
+  if (range === 0) {
+    var midY = H / 2;
+    return '<svg width="'+W+'" height="'+H+'" style="vertical-align:middle">' +
+      '<line x1="0" y1="'+midY+'" x2="'+W+'" y2="'+midY+'" stroke="'+color+'" stroke-width="2"/></svg>';
+  }
   var scale = H / range;
   var yWickTop = (hi - high) * scale;
   var yWickBot = (hi - low) * scale;
