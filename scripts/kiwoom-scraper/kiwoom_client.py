@@ -113,6 +113,60 @@ class KiwoomClient:
             return []
         return data.get("data", [])
 
+    def get_today_trade_amount(self, stk_cd):
+        """오늘 일봉 row의 trde_prica (거래대금) 반환 — ka10081.
+
+        Q-20260519-CYCLE11-004 본질 fix: ka10172 조건검색 응답 field 14
+        (거래대금)가 영구 부재(빈 문자열) → ka10081 추가 호출로 정합화.
+
+        패턴: LU collector (collect_kiwoom_limit_up.py
+        fetch_dailybars_trade_amount) 동형 — cycle11 Q-001과 동일 구조.
+
+        Args:
+            stk_cd: 종목코드 6자리 ("001430") 또는 "A001430" 형식.
+
+        Returns:
+            int: trde_prica 원 단위 (백만원 × 1_000_000). 실패/부재 시 None.
+
+        근거: ka10081 trde_prica는 KRX 정식 누적 거래대금 (원본).
+        price × volume 단순곱은 평균체결가 ≠ cur_prc인 경우 부정확
+        (cycle11 5/19 영웅문 catch 26억 차이 본질 검증).
+        """
+        import time as _time
+        from datetime import datetime as _dt
+
+        code = stk_cd if str(stk_cd).startswith("A") else f"A{stk_cd}"
+        today = _dt.now().strftime("%Y%m%d")
+        url = f"{self.base_url}/api/dostk/chart"
+        # LU collector 동형 retry — 429 rate limit 시 2^attempt 백오프 (1s,2s,4s,8s)
+        for attempt in range(4):
+            try:
+                resp = requests.post(
+                    url,
+                    json={"stk_cd": code, "base_dt": today, "upd_stkpc_tp": "1"},
+                    headers=self._rest_headers("ka10081"),
+                    timeout=20,
+                )
+            except Exception:
+                return None
+            if resp.status_code == 429:
+                _time.sleep(2 ** (attempt + 1))
+                continue
+            if resp.status_code != 200:
+                return None
+            data = resp.json()
+            if data.get("return_code") != 0:
+                return None
+            rows = data.get("stk_dt_pole_chart_qry", [])
+            for r in rows:
+                if r.get("dt") == today:
+                    try:
+                        return int(r.get("trde_prica", "0")) * 1_000_000
+                    except (ValueError, TypeError):
+                        return None
+            return None
+        return None
+
     def get_stock_list(self, mrkt_tp="0"):
         """종목정보 리스트 (ka10099) — 0:코스피, 10:코스닥"""
         url = f"{self.base_url}/api/dostk/stkinfo"
@@ -137,7 +191,7 @@ class KiwoomClient:
         headers = self._rest_headers("ka10032")
         body = {"mrkt_tp": mrkt_tp, "mang_stk_incls": "0", "stex_tp": "1"}
 
-        for page in range(pages):
+        for _page in range(pages):
             resp = requests.post(
                 f"{self.base_url}/api/dostk/rkinfo",
                 json=body,
@@ -234,7 +288,7 @@ class KiwoomClient:
             while True:
                 try:
                     r = json.loads(await asyncio.wait_for(ws.recv(), timeout=15))
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     break
 
                 if r.get("return_code") not in (0, None):

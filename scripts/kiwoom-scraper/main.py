@@ -10,6 +10,8 @@
   data/kiwoom/index.json          — 보유 날짜 인덱스
 """
 
+from __future__ import annotations
+
 import json
 import os
 import sys
@@ -123,21 +125,44 @@ def fetch_indicators(client, ticker: str) -> dict:
     return result
 
 
-def parse_kiwoom_stock(s: dict) -> dict:
+def parse_kiwoom_stock(s: dict, ka10081_trade_amount: int | None = None) -> dict:
     """키움 조건검색 응답 1건 → 표준 dict.
 
     키움 필드 코드 (조건검색 ka10172):
       9001: 종목코드 (A 접두)    302: 종목명
       10: 현재가  11: 전일대비  12: 등락률 (×1000)
-      13: 거래량  14: 거래대금 (백만원)
+      13: 거래량  14: 거래대금 (영구 부재 — 빈 문자열, Q-CYCLE11-004 verbatim 검증)
       16: 시가    17: 고가     18: 저가
       311: MACD  312: MACD시그널  313: MACD오실레이터  314: RSI
+
+    trade_amount source 정합화 (Q-20260519-CYCLE11-004, 2026-05-19):
+      ka10172 field 14 (거래대금)는 응답에 영구 부재 (빈 문자열 ''). 본 함수는
+      ka10081 추가 호출 결과(ka10081_trade_amount)를 1순위 source로 사용.
+      ka10081 trde_prica = KRX 정식 누적 거래대금 (원본). price × volume 단순곱
+      fallback은 평균체결가 ≠ cur_prc 시 부정확 (5/19 영웅문 catch 26억 차이).
+
+      Source 우선순위:
+        1. ka10081 trde_prica × 1_000_000 (정확) — trade_amount_source='ka10081'
+        2. ka10172 field 14 (현재 영구 부재) — trade_amount_source='ka10172' (사실상 미적용)
+        3. price × volume fallback (부정확) — trade_amount_source='calc_fallback'
+           (rules/data-continuity.md § 조건검색 trade_amount 정합화 위반 시 critical FLR)
     """
     code = str(s.get("9001", "")).lstrip("A")
     price = parse_int(s.get("10", ""))
     volume = parse_int(s.get("13", ""))
-    raw_amount = parse_int(s.get("14", "")) * 1_000_000  # 백만원 → 원
-    trade_amount = raw_amount if raw_amount > 0 else price * volume
+    # Q-CYCLE11-004 fix: ka10081 trde_prica 1순위 → ka10172 field 14 2순위 → calc fallback
+    raw_amount_ka10172 = (
+        parse_int(s.get("14", "")) * 1_000_000
+    )  # 백만원 → 원 (영구 부재)
+    if ka10081_trade_amount is not None and ka10081_trade_amount > 0:
+        trade_amount = ka10081_trade_amount
+        trade_amount_source = "ka10081"
+    elif raw_amount_ka10172 > 0:
+        trade_amount = raw_amount_ka10172
+        trade_amount_source = "ka10172"
+    else:
+        trade_amount = price * volume  # 부정확 fallback (audit 추적용)
+        trade_amount_source = "calc_fallback"
     result = {
         "ticker": code,
         "name": str(s.get("302", "")).strip(),
@@ -150,6 +175,7 @@ def parse_kiwoom_stock(s: dict) -> dict:
         / 1000.0,  # FLR-20260408 등락률 스케일
         "volume": volume,
         "trade_amount": trade_amount,
+        "trade_amount_source": trade_amount_source,
     }
     # 기술적 지표 — 조건검색 응답에 있으면 저장 (없으면 0)
     macd = parse_float(s.get("311", ""))
@@ -254,7 +280,32 @@ def run() -> int:
             log("⚠️ 결과 0건 (장 시간외 또는 조건 불충족)")
             return 0
 
-        stocks = [parse_kiwoom_stock(s) for s in raw_stocks]
+        # Q-CYCLE11-004: 종목별 ka10081 추가 호출 → 정확 trade_amount (영웅문 정합)
+        # rate limit 안전 마진: 0.4s sleep × ~13종목 = ~5s 추가 latency (cron 10분 주기 대비 무시)
+        # client.get_today_trade_amount 내부 429 백오프 retry (1s,2s,4s,8s) 포함
+        import time as _t
+
+        ka10081_amounts: dict[str, int] = {}
+        log(f"ka10081 trade_amount 추가 호출 시작 ({len(raw_stocks)}종목)…")
+        for s in raw_stocks:
+            code = str(s.get("9001", "")).lstrip("A")
+            if not code:
+                continue
+            ta = client.get_today_trade_amount(code)
+            if ta is not None:
+                ka10081_amounts[code] = ta
+            _t.sleep(0.4)
+        log(f"ka10081 trade_amount {len(ka10081_amounts)}/{len(raw_stocks)} 수신")
+
+        stocks = [
+            parse_kiwoom_stock(
+                s,
+                ka10081_trade_amount=ka10081_amounts.get(
+                    str(s.get("9001", "")).lstrip("A")
+                ),
+            )
+            for s in raw_stocks
+        ]
         # 거래대금 desc 정렬
         stocks = [s for s in stocks if s["ticker"]]
         stocks.sort(key=lambda x: x["trade_amount"], reverse=True)
