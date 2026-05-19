@@ -1,6 +1,6 @@
 {
   "date": "2026-05-19",
-  "generated_at": "2026-05-19T13:44:42.172932",
+  "generated_at": "2026-05-19T13:54:55.616553",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -29,7 +29,7 @@
     },
     {
       "title": "삼성파업",
-      "summary": "삼성전자 노조 파업 장기화 우려 → 산업 리스크·공급 불안정 → 전자·부품 섹터 대체 수요 발생"
+      "summary": "삼성전자 노조 파업 심화 → 반도체 공급 차질 우려 → 메모리칩·반도체 섹터 리스크"
     },
     {
       "title": "1분기실적",
@@ -81,8 +81,73 @@
     "date": "2026-05-19",
     "roots": [
       {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "HBM/반도체 기판",
+            "summary": "SK하이닉스 1분기 영업이익률 1위·LG이노텍 기판 장기공급계약·두산 전자BG 급성장으로 HBM 및 반도체 기판 밸류체인 재평가",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
+          {
+            "name": "HBM",
+            "summary": "SK하이닉스 1분기 영업이익률 1위·이천 부동산 수혜 확산, HBM 호황이 메모리·장비·부동산까지 파급",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "HBM",
+            "summary": "SK하이닉스 1분기 영업이익률 1위·이천 부동산 수혜 확산, HBM 호황이 메모리·장비·부동산까지 파급",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "반도체 기판",
+            "summary": "AI·서버용 기판 장기공급계약 확대로 LG이노텍 등 기판株 리레이팅 부각",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "반도체 기판",
+            "summary": "AI·서버용 기판 장기공급계약 확대로 LG이노텍 등 기판株 리레이팅 부각",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "반도체 기판",
+            "summary": "AI·HBM 수요로 반도체 기판 장기공급계약 시대 진입하며 LG이노텍 등 기판주 리레이팅 부각.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "반도체 기판",
+            "summary": "AI·HBM 수요로 반도체 기판 장기공급계약 시대 진입하며 LG이노텍 등 기판주 리레이팅 부각.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "보안 반도체",
+            "summary": "아이씨티케이 글로벌 빅테크 공급망 진입 보안칩 양산 개시로 PUF 기반 보안 반도체 수혜 가시화.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "보안 반도체",
+            "summary": "아이씨티케이 글로벌 빅테크 공급망 진입 보안칩 양산 개시로 PUF 기반 보안 반도체 수혜 가시화.",
+            "source_count": 1,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
         "name": "AI",
         "children": [
+          {
+            "name": "AI 인프라",
+            "summary": "AI 기판·전력·자동화 수요 폭증으로 이수페타시스 다중적층 증설·LS전선 빅테크 4조원 버스덕트 공급 등 AI 인프라 공급망 전반 수혜.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
           {
             "name": "AI 인프라",
             "summary": "AI 기판·전력·자동화 수요 폭증으로 이수페타시스 다중적층 증설·LS전선 빅테크 4조원 버스덕트 공급 등 AI 인프라 공급망 전반 수혜.",
@@ -100,12 +165,24 @@
             "summary": "포니링크 레벨4 로보택시 무사고 운행과 에스오에스랩-LG CNS 라이다 협력으로 자율주행 밸류체인 부각",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "자율주행",
+            "summary": "포니링크 레벨4 로보택시 무사고 운행과 에스오에스랩-LG CNS 라이다 협력으로 자율주행 밸류체인 부각",
+            "source_count": 2,
+            "verdict": "pass"
           }
         ]
       },
       {
         "name": "산업 자동화",
         "children": [
+          {
+            "name": "로봇 자동화",
+            "summary": "넥사다이내믹스 美 54억 턴키·나우로보틱스 에이피알 공급·SK네트웍스 로봇사업 확장으로 산업용 자동화·로봇 밸류체인 자금 유입.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
           {
             "name": "로봇 자동화",
             "summary": "넥사다이내믹스 美 54억 턴키·나우로보틱스 에이피알 공급·SK네트웍스 로봇사업 확장으로 산업용 자동화·로봇 밸류체인 자금 유입.",
@@ -134,6 +211,12 @@
             "summary": "삼성전자 노사 2차 사후조정 평행선·총파업 시 한국 성장률 최대 0.5%p 하락 청와대 긴급보고서로 반도체 공급망 변동성 확대.",
             "source_count": 4,
             "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 파업 리스크",
+            "summary": "삼성전자 노사 2차 사후조정 평행선·총파업 시 한국 성장률 최대 0.5%p 하락 청와대 긴급보고서로 반도체 공급망 변동성 확대.",
+            "source_count": 4,
+            "verdict": "weak"
           }
         ]
       },
@@ -151,6 +234,24 @@
             "summary": "삼천당제약 1Q 흑자전환·보령 대만 알림타 공급·차바이오텍 써모피셔 협력으로 안과·CDMO·글로벌 임상 인프라 모멘텀.",
             "source_count": 4,
             "verdict": "pass"
+          },
+          {
+            "name": "제약·CDMO",
+            "summary": "삼천당제약 1Q 흑자전환·보령 대만 알림타 공급·차바이오텍 써모피셔 협력으로 안과·CDMO·글로벌 임상 인프라 모멘텀.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "방사성 의약품",
+            "summary": "퓨쳐켐 인니 프로스타뷰 공급으로 동남아 방사성의약품 시장 진출",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "방사성 의약품",
+            "summary": "퓨쳐켐이 인니에 ‘프로스타뷰’ 공급 계약을 맺으며 동남아 방사성의약품 시장 진출 가시화.",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
@@ -168,6 +269,23 @@
             "summary": "롯데-어피니티 롯데렌탈 매각 SPA 해제(공정위 불허), 두산 SK실트론 지분 매입, SOOP 여자배구단 인수로 대형 M&A 재편 활발.",
             "source_count": 4,
             "verdict": "weak"
+          },
+          {
+            "name": "M&A·지분 매각",
+            "summary": "롯데-어피니티 롯데렌탈 매각 SPA 해제(공정위 불허), 두산 SK실트론 지분 매입, SOOP 여자배구단 인수로 대형 M&A 재편 활발.",
+            "source_count": 4,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "지배구조",
+        "children": [
+          {
+            "name": "삼성전자 노사 리스크",
+            "summary": "삼성전자 총파업 D-2·노조 막말 파장·산업부 장관 개입에 DX 이탈 확산 등 지배구조·실적 단기 부담 부각",
+            "source_count": 4,
+            "verdict": "unverified"
           }
         ]
       },
@@ -187,44 +305,27 @@
             "verdict": "pass"
           },
           {
-            "name": "방산·안티드론",
-            "summary": "휴먼테크놀로지 안티드론·방산 체질개선 사명변경, 아우토크립트 차량 사이버보안 수주로 안보·보안 테마 부각.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산·안티드론",
-            "summary": "휴먼테크놀로지 안티드론·방산 체질개선 사명변경, 아우토크립트 차량 사이버보안 수주로 안보·보안 테마 부각.",
-            "source_count": 2,
-            "verdict": "weak"
-          }
-        ]
-      },
-      {
-        "name": "반도체",
-        "children": [
-          {
-            "name": "HBM",
-            "summary": "SK하이닉스 1분기 영업이익률 1위·이천 부동산 수혜 확산, HBM 호황이 메모리·장비·부동산까지 파급",
+            "name": "우주항공",
+            "summary": "스페이스X IPO 기대·스타링크 해운사 공급 계약으로 우주항공 공급망·위성통신 관련주 모멘텀 확산.",
             "source_count": 3,
             "verdict": "pass"
           },
           {
-            "name": "반도체 기판",
-            "summary": "AI·서버용 기판 장기공급계약 확대로 LG이노텍 등 기판株 리레이팅 부각",
+            "name": "방산·안티드론",
+            "summary": "휴먼테크놀로지 안티드론·방산 체질개선 사명변경, 아우토크립트 차량 사이버보안 수주로 안보·보안 테마 부각.",
             "source_count": 2,
             "verdict": "weak"
           },
           {
-            "name": "반도체 기판",
-            "summary": "AI·HBM 수요로 반도체 기판 장기공급계약 시대 진입하며 LG이노텍 등 기판주 리레이팅 부각.",
+            "name": "방산·안티드론",
+            "summary": "휴먼테크놀로지 안티드론·방산 체질개선 사명변경, 아우토크립트 차량 사이버보안 수주로 안보·보안 테마 부각.",
             "source_count": 2,
             "verdict": "weak"
           },
           {
-            "name": "보안 반도체",
-            "summary": "아이씨티케이 글로벌 빅테크 공급망 진입 보안칩 양산 개시로 PUF 기반 보안 반도체 수혜 가시화.",
-            "source_count": 1,
+            "name": "방산·안티드론",
+            "summary": "휴먼테크놀로지 안티드론·방산 체질개선 사명변경, 아우토크립트 차량 사이버보안 수주로 안보·보안 테마 부각.",
+            "source_count": 2,
             "verdict": "weak"
           }
         ]
@@ -239,20 +340,32 @@
             "verdict": "weak"
           },
           {
+            "name": "지주사",
+            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
             "name": "삼성전자 노사 갈등",
             "summary": "총파업 D-2 국면에서 산업부 장관 우려·중노위 타결 가능성 발언 등 노사 협상 변수가 삼성전자 주가 변동성 확대 요인으로 작용.",
             "source_count": 3,
-            "verdict": "unverified"
-          },
-          {
-            "name": "스타벅스 5·18 논란",
-            "summary": "스타벅스 ‘탱크데이’ 5·18 폄훼 논란에 정용진 회장 직접 사과에도 이마트 6%대 급락하며 소비주 투자심리 위축.",
-            "source_count": 3,
-            "verdict": "unverified"
+            "verdict": "weak"
           },
           {
             "name": "유가 하락",
             "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
             "source_count": 2,
             "verdict": "weak"
           },
@@ -269,16 +382,34 @@
             "verdict": "weak"
           },
           {
+            "name": "유가 하락",
+            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
             "name": "건설·플랜트 수주",
             "summary": "에너지 공급망 재편 환경 속 삼성E&A가 수자원공사와 글로벌 물 시장 협력 등 수주 환경 우호로 목표가 상향.",
             "source_count": 2,
-            "verdict": "unverified"
+            "verdict": "weak"
           },
           {
             "name": "방산",
             "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "중국 소비주",
+            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
+            "source_count": 1,
+            "verdict": "pass"
           },
           {
             "name": "중국 소비주",
@@ -295,6 +426,98 @@
             "name": "지주사 외국인 매수",
             "summary": "외국인이 폭풍 매도 와중 SK·두산·한화 등 지주사를 집중 매수하며 지주사 재평가 흐름 부각.",
             "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "AI/로보틱스",
+        "children": [
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "애플 휴머노이드 진출 전망에 비에이치 핵심부품 부각·현대모비스 실리콘밸리 피지컬AI 동맹·포니링크 로보택시 무사고로 휴머노이드 부품·SW 밸류체인 자금 유입",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "애플 휴머노이드 진출 전망에 비에이치 핵심부품 부각·현대모비스 실리콘밸리 피지컬AI 동맹·포니링크 로보택시 무사고로 휴머노이드 부품·SW 밸류체인 자금 유입",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "AI 인프라",
+        "children": [
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
+            "source_count": 2,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "지정학",
+        "children": [
+          {
+            "name": "방산",
+            "summary": "트럼프 이란 공습 연기·미-이란 종전 시점 불확실성에 한화에어로스페이스 등 방산주 상승, 지정학 리스크 장기화 베팅 자금 유입",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "트럼프 이란 공습 연기·미-이란 종전 시점 불확실성에 한화에어로스페이스 등 방산주 상승, 지정학 리스크 장기화 베팅 자금 유입",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "밸류업",
+        "children": [
+          {
+            "name": "지주사 저평가 매수",
+            "summary": "코스피 폭락 와중에도 SK·두산·한화 등 지주사로 외국인 자금 집중, 자회사 가치 재평가(SK스퀘어 닉스·CJ 올리브영) 모멘텀",
+            "source_count": 3,
+            "verdict": "unverified"
+          },
+          {
+            "name": "주주환원/자사주 소각",
+            "summary": "네오위즈홀딩스 100억·제이엠아이 20억 자사주 소각 결정으로 주주환원 강화 종목 단기 수급 쏠림",
+            "source_count": 2,
             "verdict": "unverified"
           }
         ]
@@ -307,29 +530,24 @@
             "summary": "애플·휴머노이드 부품 채택과 현대모비스 실리콘밸리 동맹으로 로봇 부품·피지컬 AI 수혜 부각",
             "source_count": 2,
             "verdict": "pass"
-          }
-        ]
-      },
-      {
-        "name": "AI 인프라",
-        "children": [
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
-            "source_count": 2,
-            "verdict": "weak"
           },
           {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
+            "name": "휴머노이드 로봇",
+            "summary": "애플·휴머노이드 부품 채택과 현대모비스 실리콘밸리 동맹으로 로봇 부품·피지컬 AI 수혜 부각",
             "source_count": 2,
-            "verdict": "weak"
+            "verdict": "pass"
           }
         ]
       },
       {
         "name": "건설",
         "children": [
+          {
+            "name": "플랜트 EPC",
+            "summary": "에너지 공급망 재편 우호적 수주환경에 삼성E&A 목표가 상향·수자원공사 협력으로 플랜트 모멘텀",
+            "source_count": 2,
+            "verdict": "pass"
+          },
           {
             "name": "플랜트 EPC",
             "summary": "에너지 공급망 재편 우호적 수주환경에 삼성E&A 목표가 상향·수자원공사 협력으로 플랜트 모멘텀",
@@ -346,6 +564,12 @@
             "summary": "쎄크 X-ray 검사장비 국산화로 반도체·방산·이차전지 동시 수혜, 2027년 흑자전환 기대",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "X-ray 검사장비",
+            "summary": "쎄크 X-ray 검사장비 국산화로 반도체·방산·이차전지 동시 수혜, 2027년 흑자전환 기대",
+            "source_count": 2,
+            "verdict": "pass"
           }
         ]
       },
@@ -355,6 +579,18 @@
           {
             "name": "자사주 소각",
             "summary": "네오위즈홀딩스 100억·제이엠아이 20억 자사주 소각 결정으로 주주환원 모멘텀",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "자사주 소각",
+            "summary": "네오위즈홀딩스 100억·제이엠아이 20억 자사주 소각 결정으로 주주환원 모멘텀",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "자사주 소각",
+            "summary": "네오위즈홀딩스·제이엠아이 등 자사주 소각 결정으로 주주환원 모멘텀 부각.",
             "source_count": 2,
             "verdict": "weak"
           },
@@ -376,10 +612,10 @@
             "verdict": "pass"
           },
           {
-            "name": "두산로보틱스 PRS",
-            "summary": "두산로보틱스 PRS 추가 블록딜 5376억원 출회로 단기 급등 부담·차익실현 매물 확대.",
+            "name": "휴머노이드 로봇",
+            "summary": "애플·테슬라발 휴머노이드 로봇 부품 수요 기대로 비에이치·현대모비스 등 핵심 부품·기술 동맹주 부각.",
             "source_count": 2,
-            "verdict": "unverified"
+            "verdict": "pass"
           }
         ]
       },
@@ -390,13 +626,81 @@
             "name": "라이다·스마트 인프라",
             "summary": "에스오에스랩이 LG CNS와 손잡고 북미 스마트 인프라 라이다 사업 확대에 나서며 라이다 수출주 부각.",
             "source_count": 2,
-            "verdict": "unverified"
+            "verdict": "weak"
           },
           {
             "name": "자율주행 로보택시",
             "summary": "포니링크가 레벨4 로보택시 6만km 무사고 운행을 달성하며 자율주행 상용화 기대감 강화.",
             "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "에너지 전환",
+        "children": [
+          {
+            "name": "원전해체/SMR",
+            "summary": "오르비텍 원전해체 국책과제 2건 참여·삼성E&A 에너지 공급망 수주환경 우호로 원전 후행시장(해체·제염) 및 에너지 EPC 수혜 기대",
+            "source_count": 2,
             "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "소비재",
+        "children": [
+          {
+            "name": "중국 소비 회복",
+            "summary": "오리온 중국 매출 최고치 전망·푸틴 방중 등 중국 모멘텀 회복 기대에 대중국 소비주 수혜",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "스타벅스/이마트 불매 리스크",
+            "summary": "스타벅스 '5·18 폄훼' 탱크데이 논란에 정용진 회장 직접 사과에도 이마트 6%대 급락, 신세계그룹 단기 ESG·소비 보이콧 리스크",
+            "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "조선",
+        "children": [
+          {
+            "name": "조선/해양플랜트",
+            "summary": "에스엔시스 한화오션 차세대 쇄빙연구선 운항제어 수주·동성화인텍 밸류에이션 매력 평가로 조선·해양 기자재 수혜",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "조선 특수선",
+            "summary": "에스엔시스 한화오션 차세대 쇄빙연구선 운항제어시스템 수주로 특수선 기자재 부각",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "조선 특수선",
+            "summary": "에스엔시스 한화오션 차세대 쇄빙연구선 운항제어시스템 수주로 특수선 기자재 부각",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "조선·해양 특수선",
+            "summary": "에스엔시스가 한화오션 차세대 쇄빙연구선 운항제어시스템을 수주하며 특수선 기자재주 부각.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "2차전지",
+        "children": [
+          {
+            "name": "2차전지 소재",
+            "summary": "탑머티리얼 차세대 LMR 양극재 국책과제 참여로 차세대 양극재 기술 개발 모멘텀.",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
@@ -411,26 +715,21 @@
           },
           {
             "name": "원전 해체",
-            "summary": "오르비텍이 원전해체 국책과제 2건에 참여하며 제염 핵심기술 경쟁력 강화 부각.",
-            "source_count": 1,
-            "verdict": "weak"
-          }
-        ]
-      },
-      {
-        "name": "조선",
-        "children": [
-          {
-            "name": "조선 특수선",
-            "summary": "에스엔시스 한화오션 차세대 쇄빙연구선 운항제어시스템 수주로 특수선 기자재 부각",
+            "summary": "오르비텍 원전해체 국책과제 참여로 제염 핵심기술 경쟁력 강화, 원전 후행 사이클 부각",
             "source_count": 1,
             "verdict": "weak"
           },
           {
-            "name": "조선·해양 특수선",
-            "summary": "에스엔시스가 한화오션 차세대 쇄빙연구선 운항제어시스템을 수주하며 특수선 기자재주 부각.",
+            "name": "원전 해체",
+            "summary": "오르비텍이 원전해체 국책과제 2건에 참여하며 제염 핵심기술 경쟁력 강화 부각.",
             "source_count": 1,
-            "verdict": "unverified"
+            "verdict": "weak"
+          },
+          {
+            "name": "원전 해체",
+            "summary": "오르비텍이 원전해체 국책과제 2건에 참여하며 제염 핵심기술 경쟁력 강화 부각.",
+            "source_count": 1,
+            "verdict": "weak"
           }
         ]
       },
@@ -442,6 +741,12 @@
             "summary": "올리브영 상장 무산에 모회사 CJ 가치 재평가, 목표주가 23만원 부각",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "올리브영 상장 무산 수혜",
+            "summary": "올리브영 상장 무산에 모회사 CJ 가치 재평가, 목표주가 23만원 부각",
+            "source_count": 1,
+            "verdict": "pass"
           }
         ]
       }
@@ -567,8 +872,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": 0.93,
+      "index_change_pct": -3.49,
+      "index_multiple_current": 0.99,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 199300,
@@ -752,7 +1057,10 @@
           171800,
           171100,
           170900,
-          170300
+          170500,
+          171300,
+          172500,
+          174300
         ]
       },
       "credit_risk": true,
@@ -828,8 +1136,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": -1.18,
+      "index_change_pct": -3.49,
+      "index_multiple_current": -1.26,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 19950,
@@ -1013,7 +1321,10 @@
           17410,
           17510,
           17370,
-          17360
+          17460,
+          17500,
+          17390,
+          17480
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1054,8 +1365,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": -1.6,
+      "index_change_pct": -3.49,
+      "index_multiple_current": -1.71,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 32950,
@@ -1239,7 +1550,10 @@
           27700,
           27200,
           27350,
-          28100
+          27750,
+          27900,
+          28000,
+          28350
         ]
       },
       "togusa_verdict": "neutral",
@@ -1305,8 +1619,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": -2.11,
+      "index_change_pct": -3.49,
+      "index_multiple_current": -2.26,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5000,
@@ -1517,7 +1831,10 @@
           4365,
           4545,
           4725,
-          4555
+          4565,
+          4530,
+          4995,
+          4930
         ]
       },
       "credit_risk": true,
@@ -1643,8 +1960,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.95,
-      "index_multiple_current": -0.71,
+      "index_change_pct": -3.68,
+      "index_multiple_current": -0.77,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7560,
@@ -1828,7 +2145,10 @@
           5850,
           5860,
           5810,
-          5810
+          5800,
+          5790,
+          5800,
+          5800
         ]
       },
       "togusa_verdict": "neutral",
@@ -1915,8 +2235,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": -8.02,
+      "index_change_pct": -3.49,
+      "index_multiple_current": -8.57,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 30550,
@@ -2126,6 +2446,9 @@
           25450,
           25450,
           25450,
+          25450,
+          25450,
+          25450,
           25450
         ]
       },
@@ -2266,8 +2589,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": -1.35,
+      "index_change_pct": -3.49,
+      "index_multiple_current": -1.44,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5297,
@@ -2451,7 +2774,10 @@
           3890,
           3880,
           3885,
-          3855
+          3855,
+          3860,
+          3870,
+          3865
         ]
       },
       "credit_risk": true,
@@ -2524,8 +2850,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.73,
-      "index_multiple_current": -3.23,
+      "index_change_pct": -3.49,
+      "index_multiple_current": -3.45,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 33350,
@@ -2705,8 +3031,45 @@
           "effect_badges": []
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 27850,
+        "base": 27850,
+        "prices": [
+          27850,
+          29300,
+          29350,
+          27950,
+          27550,
+          27300,
+          27600,
+          28100,
+          28200,
+          28550,
+          28850,
+          29850,
+          29750,
+          30300,
+          30150,
+          30300,
+          30600,
+          32200,
+          30050,
+          30600,
+          31000,
+          31100,
+          31150,
+          31100,
+          31900,
+          31150,
+          32450,
+          32600,
+          34550,
+          34200
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과"
     },
     {
       "code": "005500",
@@ -2773,8 +3136,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.95,
-      "index_multiple_current": -4.52,
+      "index_change_pct": -3.68,
+      "index_multiple_current": -4.85,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 24800,
@@ -2958,7 +3321,10 @@
           23750,
           24500,
           24500,
-          24750
+          24350,
+          24350,
+          25900,
+          25900
         ]
       },
       "togusa_verdict": "neutral",
@@ -2977,16 +3343,25 @@
       "low_price": 7000,
       "industry": "보험업",
       "sector": "손해보험",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "금융"
+      ],
+      "theme_paths": [
+        {
+          "name": "금융",
+          "path": [
+            "금융"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -3.95,
-      "index_multiple_current": -2.31,
+      "index_change_pct": -3.68,
+      "index_multiple_current": -2.48,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 10800,
@@ -3138,7 +3513,44 @@
           "l": 7000,
           "c": 7770
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 7050,
+        "base": 7050,
+        "prices": [
+          7050,
+          7750,
+          7750,
+          7980,
+          7830,
+          7670,
+          7740,
+          7670,
+          7610,
+          7650,
+          7570,
+          7540,
+          7500,
+          7560,
+          7570,
+          7660,
+          7680,
+          7710,
+          7740,
+          7830,
+          7790,
+          7750,
+          7790,
+          7720,
+          7760,
+          7740,
+          7680,
+          7750,
+          7680,
+          7690
+        ]
+      }
     }
   ]
 }
