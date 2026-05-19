@@ -1,6 +1,6 @@
 {
   "date": "2026-05-19",
-  "generated_at": "2026-05-19T15:26:20.194091",
+  "generated_at": "2026-05-19T15:58:05.592212",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -14,6 +14,10 @@
     {
       "title": "노조리스크",
       "summary": "노란봉투법 논쟁 + 삼성전자 총파업 우려 → 반도체 생산 차질·지배구조 개선 이슈"
+    },
+    {
+      "title": "반도체파업",
+      "summary": "반도체 산업 노사 갈등 심화 → 삼성전자 총파업 우려 → 반도체·부품소재 생산 차질 리스크 확산"
     },
     {
       "title": "반도체호황",
@@ -30,10 +34,6 @@
     {
       "title": "반도체수익",
       "summary": "반도체 수급 개선→SK하이닉스 영업이익률 1위 달성→메모리·반도체 장비 섹터 강세"
-    },
-    {
-      "title": "에너지재편",
-      "summary": "에너지 공급망 재편 + 중동 LNG 프로젝트 확대 → 플랜트·기자재 기업 수주 기대"
     },
     {
       "title": "반도체공급",
@@ -65,14 +65,14 @@
       "verified": true
     },
     {
-      "keyword": "반도체호황",
-      "summary": "AI 데이터센터 수요 + 글로벌 반도체 호황 → 검사장비·광부품·PCB 설비 기업 연쇄 수주 강세",
-      "source_count": 2,
+      "keyword": "반도체파업",
+      "summary": "반도체 산업 노사 갈등 심화 → 삼성전자 총파업 우려 → 반도체·부품소재 생산 차질 리스크 확산",
+      "source_count": 3,
       "verified": true
     },
     {
-      "keyword": "에너지인프라",
-      "summary": "글로벌 에너지 공급망 재편→플랜트·인프라 수주 확대→건설·에너지 부품 섹터 수혜",
+      "keyword": "반도체호황",
+      "summary": "AI 데이터센터 수요 + 글로벌 반도체 호황 → 검사장비·광부품·PCB 설비 기업 연쇄 수주 강세",
       "source_count": 2,
       "verified": true
     }
@@ -225,6 +225,24 @@
             "summary": "애플·현대모비스의 로보틱스 협력 확대로 비에이치 등 핵심부품·피지컬AI 생태계 수혜 기대",
             "source_count": 4,
             "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "비에이치 휴머노이드 부품 부각·에브리봇 피지컬AI B2B 전환·뉴로랩 로봇 전시장 개소로 로봇 부품·서비스 밸류체인 수급 유입.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "비에이치 휴머노이드 부품 부각·에브리봇 피지컬AI B2B 전환·뉴로랩 로봇 전시장 개소로 로봇 부품·서비스 밸류체인 수급 유입.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "비에이치 휴머노이드 부품 부각·에브리봇 피지컬AI B2B 전환·뉴로랩 로봇 전시장 개소로 로봇 부품·서비스 밸류체인 수급 유입.",
+            "source_count": 3,
+            "verdict": "pass"
           }
         ]
       },
@@ -244,6 +262,12 @@
             "verdict": "unverified"
           },
           {
+            "name": "HBM/반도체 후공정",
+            "summary": "삼성전자 HBM 검사장비 공급계약·SK하이닉스 영업이익률 1위·메모리 패키지 테스트 장기 물량 확보로 후공정 장비·소재주 수급 집중.",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
             "name": "AI 데이터센터",
             "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
             "source_count": 3,
@@ -332,6 +356,12 @@
             "summary": "이란發 지정학 리스크 속에도 AI 데이터센터 광트랜시버·전력 수요 지속, 부품주 수주 확대",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터 인프라",
+            "summary": "옵티코어 AI 데이터센터용 광트랜시버 공급계약·LG이노텍 기판 장기공급계약으로 AI 인프라 부품·기판 수주 모멘텀 확산.",
+            "source_count": 2,
+            "verdict": "unverified"
           },
           {
             "name": "AI 데이터센터",
@@ -685,6 +715,23 @@
             "summary": "오리온 중국 매출 최고치 전망으로 중국 소비재 수혜 기대.",
             "source_count": 1,
             "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "대형주 리스크",
+        "children": [
+          {
+            "name": "삼성전자 노사 리스크",
+            "summary": "총파업 D-2 임박·DX 이탈·노조 막말 논란으로 삼성전자 및 연관 협력사 투자심리 단기 위축.",
+            "source_count": 5,
+            "verdict": "weak"
+          },
+          {
+            "name": "현대차·기아 노사 리스크",
+            "summary": "현대차·기아 노사 강대강 대치로 완성차 동반 급락, 자동차 섹터 단기 약세.",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1336,6 +1383,23 @@
             "summary": "SK이노베이션 베트남 3.3조원 LNG 착공 + 독일 Uniper 민영화로 글로벌 가스 인프라 자본 이동",
             "source_count": 2,
             "verdict": "unverified"
+          },
+          {
+            "name": "LNG/에너지 인프라",
+            "summary": "SK이노베이션 베트남 3.3조 LNG 착공·삼성E&A 수주환경 호조로 LNG 플랜트·E&P 수주 확대 기대.",
+            "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "수급 테마",
+        "children": [
+          {
+            "name": "지주사 외인 매수",
+            "summary": "지수 폭락에도 SK·두산·한화 등 지주사로 외인 자금 집중되며 지주사 재평가 모멘텀 형성.",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1418,6 +1482,12 @@
             "summary": "원전 해체 국책과제 본격화로 제염 핵심기술 보유 중소형 소부장 업체 수혜 가시화.",
             "source_count": 1,
             "verdict": "unverified"
+          },
+          {
+            "name": "원전 해체·SMR",
+            "summary": "오르비텍 원전해체 국책과제 참여로 제염 핵심기술 보유 원전 해체 수혜주 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1488,17 +1558,336 @@
             "verdict": "unverified"
           }
         ]
+      },
+      {
+        "name": "행동주의",
+        "children": [
+          {
+            "name": "고려아연 경영권 분쟁",
+            "summary": "한화솔루션 소액주주가 고려아연 지분 매각 압박, 지분 구조 변동 가능성으로 관련주 변동성 확대.",
+            "source_count": 1,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "전동화",
+        "children": [
+          {
+            "name": "전기 이륜차",
+            "summary": "LG에너지솔루션·혼다·하노이시 전기 오토바이 협력으로 동남아 이륜차 배터리 시장 확장.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "지주사 리레이팅",
+        "children": [
+          {
+            "name": "CJ 올리브영 모멘텀",
+            "summary": "올리브영 IPO 막힌 영향으로 CJ 지분가치 재평가, 목표가 23만원 상향.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "AI 응용",
+        "children": [
+          {
+            "name": "VFX/생성형 AI 콘텐츠",
+            "summary": "M83 AI 기반 VFX 솔루션 '디클롭스' 개발 가속으로 콘텐츠 제작 AI 수혜.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "에이전틱 OS",
+            "summary": "한글과컴퓨터 '한컴'으로 사명 변경·글로벌 에이전틱 OS 기업 전환 선언.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "중국 소비주",
+        "children": [
+          {
+            "name": "오리온 중국 소비 회복",
+            "summary": "오리온 올해 중국 매출 최고치 전망, 중국 내수 회복 기대.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
       }
     ]
   },
   "stocks": [
     {
+      "code": "439960",
+      "name": "코스모로보틱스",
+      "rank": 1,
+      "trade_amount": 1231203000000,
+      "change_pct": 29.95,
+      "close_price": 48600,
+      "open_price": 36550,
+      "high_price": 48600,
+      "low_price": 34500,
+      "industry": "의료용 기기 제조업",
+      "sector": "웨어러블 로봇",
+      "themes": [
+        "바이오",
+        "신규상장",
+        "의료용 로봇",
+        "로봇"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        },
+        {
+          "name": "신규상장",
+          "path": [
+            "신규상장"
+          ]
+        },
+        {
+          "name": "의료용 로봇",
+          "path": [
+            "로봇",
+            "의료용 로봇"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-15",
+        "rank": 1,
+        "change_pct": -16.32,
+        "trade_amount": 1302052059000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "코스모로보틱스, 상장 닷새째 급등…공모가 10배↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03749046645449248",
+          "source": "이데일리",
+          "published_at": "2026-05-15T00:17:39",
+          "causal_chain": "코스닥 공모가 6,000원 상장 첫날 따따블(2만4,000원) 달성 → 기관 74.48% 의무보유 확약으로 유통가능 주식 23%까지 축소 → 품절주 수급 쏠림에 따른 연속 상한가(5거래일째 공모가 10배↑, 시총 1.3조 돌파).",
+          "macro_event": "코스닥 신규상장 따따블 후 연속 상한가 — 유통비율 23% 품절주 효과",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "코스모로보틱스, 상장 나흘째도 급등…공모가 대비 735%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03562086645448920",
+          "source": "이데일리",
+          "published_at": "2026-05-14T00:10:21",
+          "causal_chain": "코스닥 공모가 6,000원 상장 첫날 따따블(2만4,000원) 달성 → 기관 74.48% 의무보유 확약으로 유통가능 주식 23%까지 축소 → 품절주 수급 쏠림에 따른 연속 상한가(5거래일째 공모가 10배↑, 시총 1.3조 돌파).",
+          "macro_event": "코스닥 신규상장 따따블 후 연속 상한가 — 유통비율 23% 품절주 효과",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "코스모로보틱스, 8.5억 규모 전환청구권 행사",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05549766645448592",
+          "source": "이데일리",
+          "published_at": "2026-05-13T08:18:55",
+          "causal_chain": "코스닥 공모가 6,000원 상장 첫날 따따블(2만4,000원) 달성 → 기관 74.48% 의무보유 확약으로 유통가능 주식 23%까지 축소 → 품절주 수급 쏠림에 따른 연속 상한가(5거래일째 공모가 10배↑, 시총 1.3조 돌파).",
+          "macro_event": "코스닥 신규상장 따따블 후 연속 상한가 — 유통비율 23% 품절주 효과",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "코스모로보틱스, 상장 3일 만에 576% 수익률…시총 1.3조 돌파 [이런국장 저런주식]",
+          "url": "https://www.sedaily.com/article/20043433",
+          "source": "서울경제",
+          "published_at": "2026-05-13T01:17:45",
+          "causal_chain": "코스닥 공모가 6,000원 상장 첫날 따따블(2만4,000원) 달성 → 기관 74.48% 의무보유 확약으로 유통가능 주식 23%까지 축소 → 품절주 수급 쏠림에 따른 연속 상한가(5거래일째 공모가 10배↑, 시총 1.3조 돌파).",
+          "macro_event": "코스닥 신규상장 따따블 후 연속 상한가 — 유통비율 23% 품절주 효과",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "코스모로보틱스, 상장 셋째날도 급등…25%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03588326645448592",
+          "source": "이데일리",
+          "published_at": "2026-05-13T00:11:53",
+          "causal_chain": "코스닥 공모가 6,000원 상장 첫날 따따블(2만4,000원) 달성 → 기관 74.48% 의무보유 확약으로 유통가능 주식 23%까지 축소 → 품절주 수급 쏠림에 따른 연속 상한가(5거래일째 공모가 10배↑, 시총 1.3조 돌파).",
+          "macro_event": "코스닥 신규상장 따따블 후 연속 상한가 — 유통비율 23% 품절주 효과",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -12.43,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 68500,
+        "high_date": "2026-05-15",
+        "high_pct": -29.05,
+        "low": 20100,
+        "low_date": "2026-05-11",
+        "low_pct": 141.79,
+        "current": 48600
+      },
+      "daily_20": [
+        {
+          "date": "2026-05-11",
+          "o": 23500,
+          "h": 24000,
+          "l": 20100,
+          "c": 24000
+        },
+        {
+          "date": "2026-05-12",
+          "o": 25350,
+          "h": 31200,
+          "l": 25200,
+          "c": 31200
+        },
+        {
+          "date": "2026-05-13",
+          "o": 35500,
+          "h": 40550,
+          "l": 35000,
+          "c": 40550
+        },
+        {
+          "date": "2026-05-14",
+          "o": 47300,
+          "h": 52700,
+          "l": 45500,
+          "c": 52700
+        },
+        {
+          "date": "2026-05-15",
+          "o": 63100,
+          "h": 68500,
+          "l": 39500,
+          "c": 44100
+        },
+        {
+          "date": "2026-05-18",
+          "o": 44100,
+          "h": 49350,
+          "l": 35050,
+          "c": 37400
+        },
+        {
+          "date": "2026-05-19",
+          "o": 36550,
+          "h": 48600,
+          "l": 34500,
+          "c": 48600
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-05-15",
+          "end": "2026-05-29",
+          "summary": "코스모로보틱스 보통주가 2026-05-14 종가가 3일 전일 종가 대비 100% 이상 상승하여 2026-05-15(1일간) 투자주의종목으로 지정되며, 동시에 투자경고종목 지정예고 — 지정예고일부터 10거래일 이내(2026-05-29까지) 판단일(T) 종가가 3일 전(T-3) 대비 100% 이상 상승 + 당일 포함 최근 15일 종가 중 최고가 + T-3 기준 주가상승률이 같은 기간 종합주가지수 상승률의 5배 이상 3개 요건 모두 충족 시 익일 투자경고종목으로 지정.",
+          "condition": "판단일(T) 종가가 3일 전(T-3) 종가보다 100% 이상 상승 + T 종가가 당일 포함 최근 15일 종가 중 최고가 + T-3 기준 주가상승률이 종합주가지수 상승률의 5배 이상",
+          "regulation": "2026-05-15 ~ 2026-05-29 (투자경고종목 지정여부 판단 기간)",
+          "view_date": "2026-05-19",
+          "next_trading_day": "2026-05-20",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 49920,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-06-01",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260514001611",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-05-15)",
+              "base_price": 68500,
+              "threshold": 68500,
+              "current": 48600,
+              "triggered": false
+            }
+          ],
+          "reason_text": "코스모로보틱스 보통주가 2026-05-14 종가가 3일 전일 종가 대비 100% 이상 상승하여 2026-05-15(1일간) 투자주의종목으로 지정되며, 동시에 투자경고종목 지정예고 — 지정예고일부터 10거래일 이내(2026-05-29까지) 판단일(T) 종가가 3일 전(T-3) 대비 100% 이상 상승 + 당일 포함 최근 15일 종가 중 최고가 + T-3 기준 주가상승률이 같은 기간 종합주가지수 상승률의 5배 이상 3개 요건 모두 충족 시 익일 투자경고종목으로 지정.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ]
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-05-19",
+          "summary": "코스모로보틱스 상한가 (29.95%)",
+          "cur_prc": 48600,
+          "flu_rt": 29.95,
+          "trde_qty": 27972264,
+          "trde_prica_calc": 1231203000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-05-20"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자경고"
+    },
+    {
       "code": "036930",
       "name": "주성엔지니어링",
       "rank": 1,
       "trade_amount": 847179497600,
-      "change_pct": -3.46,
-      "close_price": 175900,
+      "change_pct": -2.91,
+      "close_price": 176900,
       "open_price": 191300,
       "high_price": 199300,
       "low_price": 168500,
@@ -1611,17 +2000,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": 1.38,
+      "index_change_pct": -2.41,
+      "index_multiple_current": 1.21,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 199300,
         "high_date": "2026-05-19",
-        "high_pct": -11.74,
+        "high_pct": -11.24,
         "low": 26050,
         "low_date": "2025-08-04",
-        "low_pct": 575.24,
-        "current": 175900
+        "low_pct": 579.08,
+        "current": 176900
       },
       "daily_20": [
         {
@@ -1762,7 +2151,7 @@
           "o": 191300,
           "h": 199300,
           "l": 168500,
-          "c": 175900
+          "c": 176900
         }
       ],
       "intraday": {
@@ -1807,7 +2196,8 @@
           178200,
           179700,
           178300,
-          178500
+          178400,
+          176900
         ]
       },
       "credit_risk": true,
@@ -1821,8 +2211,8 @@
       "name": "아주IB투자",
       "rank": 2,
       "trade_amount": 667198216840,
-      "change_pct": 4.41,
-      "close_price": 17760,
+      "change_pct": 1.59,
+      "close_price": 17280,
       "open_price": 17450,
       "high_price": 19950,
       "low_price": 16300,
@@ -1883,17 +2273,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -1.76,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -0.66,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 19950,
         "high_date": "2026-05-19",
-        "high_pct": -10.98,
+        "high_pct": -13.38,
         "low": 1913,
         "low_date": "2025-11-25",
-        "low_pct": 828.38,
-        "current": 17760
+        "low_pct": 803.29,
+        "current": 17280
       },
       "daily_20": [
         {
@@ -2034,7 +2424,7 @@
           "o": 17450,
           "h": 19950,
           "l": 16300,
-          "c": 17760
+          "c": 17280
         }
       ],
       "intraday": {
@@ -2079,7 +2469,8 @@
           17555,
           17530,
           17580,
-          17470
+          17320,
+          17280
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -2091,8 +2482,8 @@
       "name": "켄코아에어로스페이스",
       "rank": 3,
       "trade_amount": 350738805600,
-      "change_pct": 5.97,
-      "close_price": 27500,
+      "change_pct": 9.63,
+      "close_price": 28450,
       "open_price": 26350,
       "high_price": 32950,
       "low_price": 26100,
@@ -2120,17 +2511,17 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -2.38,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -4.0,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 32950,
         "high_date": "2026-05-19",
-        "high_pct": -16.54,
+        "high_pct": -13.66,
         "low": 9610,
         "low_date": "2025-12-05",
-        "low_pct": 186.16,
-        "current": 27500
+        "low_pct": 196.05,
+        "current": 28450
       },
       "daily_20": [
         {
@@ -2271,7 +2662,7 @@
           "o": 26350,
           "h": 32950,
           "l": 26100,
-          "c": 27500
+          "c": 28450
         }
       ],
       "intraday": {
@@ -2316,7 +2707,8 @@
           27950,
           28250,
           28650,
-          28600
+          28550,
+          28450
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -2330,10 +2722,10 @@
       "name": "아이로보틱스",
       "rank": 4,
       "trade_amount": 281472657495,
-      "change_pct": 7.88,
-      "close_price": 4315,
+      "change_pct": 7.38,
+      "close_price": 4295,
       "open_price": 4050,
-      "high_price": 5000,
+      "high_price": 5080,
       "low_price": 3655,
       "industry": "기타 전문 도매업",
       "sector": "VCI,LDPE필름 외",
@@ -2382,17 +2774,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -3.14,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -3.06,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 5000,
+        "high": 5080,
         "high_date": "2026-05-19",
-        "high_pct": -13.7,
+        "high_pct": -15.45,
         "low": 1002,
         "low_date": "2025-12-02",
-        "low_pct": 330.64,
-        "current": 4315
+        "low_pct": 328.64,
+        "current": 4295
       },
       "daily_20": [
         {
@@ -2531,9 +2923,9 @@
         {
           "date": "2026-05-19",
           "o": 4050,
-          "h": 5000,
+          "h": 5080,
           "l": 3655,
-          "c": 4315
+          "c": 4295
         }
       ],
       "status_badges": [
@@ -2546,7 +2938,7 @@
               "desc": "5일 전(2026-05-12) 대비 +60%↑",
               "base_price": 2650,
               "threshold": 4240,
-              "current": 4315,
+              "current": 4295,
               "triggered": true
             }
           ],
@@ -2605,7 +2997,8 @@
           4780,
           4775,
           4605,
-          4400
+          4295,
+          4295
         ]
       },
       "credit_risk": true,
@@ -2619,8 +3012,8 @@
       "name": "한화생명",
       "rank": 5,
       "trade_amount": 141200747100,
-      "change_pct": 2.82,
-      "close_price": 5830,
+      "change_pct": 2.29,
+      "close_price": 5800,
       "open_price": 5710,
       "high_price": 6160,
       "low_price": 5600,
@@ -2731,17 +3124,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.08,
-      "index_multiple_current": -0.92,
+      "index_change_pct": -3.25,
+      "index_multiple_current": -0.7,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7560,
         "high_date": "2026-02-23",
-        "high_pct": -22.88,
+        "high_pct": -23.28,
         "low": 2625,
         "low_date": "2025-05-26",
-        "low_pct": 122.1,
-        "current": 5830
+        "low_pct": 120.95,
+        "current": 5800
       },
       "daily_20": [
         {
@@ -2882,7 +3275,7 @@
           "o": 5710,
           "h": 6160,
           "l": 5600,
-          "c": 5830
+          "c": 5800
         }
       ],
       "intraday": {
@@ -2927,7 +3320,8 @@
           5810,
           5820,
           5755,
-          5770
+          5780,
+          5800
         ]
       },
       "togusa_verdict": "neutral",
@@ -2939,10 +3333,10 @@
       "name": "삼진제약",
       "rank": 6,
       "trade_amount": 104305950600,
-      "change_pct": 17.85,
-      "close_price": 23500,
+      "change_pct": 23.87,
+      "close_price": 24700,
       "open_price": 20900,
-      "high_price": 24800,
+      "high_price": 25900,
       "low_price": 20650,
       "industry": "의약품 제조업",
       "sector": "의약품(게보린,세트라졸,염산나록손) 제조,판매,수출입,약초재배",
@@ -2999,17 +3393,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.08,
-      "index_multiple_current": -5.8,
+      "index_change_pct": -3.25,
+      "index_multiple_current": -7.34,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 24800,
+        "high": 25900,
         "high_date": "2026-05-19",
-        "high_pct": -5.24,
+        "high_pct": -4.63,
         "low": 16990,
         "low_date": "2026-03-04",
-        "low_pct": 38.32,
-        "current": 23500
+        "low_pct": 45.38,
+        "current": 24700
       },
       "daily_20": [
         {
@@ -3148,9 +3542,9 @@
         {
           "date": "2026-05-19",
           "o": 20900,
-          "h": 24800,
+          "h": 25900,
           "l": 20650,
-          "c": 23500
+          "c": 24700
         }
       ],
       "intraday": {
@@ -3195,7 +3589,8 @@
           24350,
           24200,
           24600,
-          24600
+          24900,
+          24700
         ]
       },
       "togusa_verdict": "neutral",
@@ -3207,10 +3602,10 @@
       "name": "한선엔지니어링",
       "rank": 7,
       "trade_amount": 103264850800,
-      "change_pct": 12.03,
-      "close_price": 31200,
+      "change_pct": 19.57,
+      "close_price": 33300,
       "open_price": 27850,
-      "high_price": 33350,
+      "high_price": 35550,
       "low_price": 26650,
       "industry": "기타 금속 가공제품 제조업",
       "sector": "계장용 피팅 및 밸브, 모듈",
@@ -3266,17 +3661,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -4.79,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -8.12,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 33350,
+        "high": 35550,
         "high_date": "2026-05-19",
-        "high_pct": -6.45,
+        "high_pct": -6.33,
         "low": 6550,
         "low_date": "2025-07-16",
-        "low_pct": 376.34,
-        "current": 31200
+        "low_pct": 408.4,
+        "current": 33300
       },
       "daily_20": [
         {
@@ -3415,9 +3810,9 @@
         {
           "date": "2026-05-19",
           "o": 27850,
-          "h": 33350,
+          "h": 35550,
           "l": 26650,
-          "c": 31200
+          "c": 33300
         }
       ],
       "status_badges": [
@@ -3430,7 +3825,7 @@
               "desc": "5일 전(2026-05-12) 대비 +60%↑",
               "base_price": 17940,
               "threshold": 28704,
-              "current": 31200,
+              "current": 33300,
               "triggered": true
             }
           ],
@@ -3489,7 +3884,8 @@
           32750,
           32900,
           32800,
-          32650
+          33400,
+          33300
         ]
       },
       "credit_risk": true,
@@ -3503,10 +3899,10 @@
       "name": "티이엠씨",
       "rank": 8,
       "trade_amount": 88916383500,
-      "change_pct": 3.33,
-      "close_price": 24800,
+      "change_pct": 7.71,
+      "close_price": 25850,
       "open_price": 24000,
-      "high_price": 25450,
+      "high_price": 26350,
       "low_price": 22150,
       "industry": "기초 화학물질 제조업",
       "sector": "반도체용 특수가스",
@@ -3548,17 +3944,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -1.33,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -3.2,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 25750,
-        "high_date": "2026-05-11",
-        "high_pct": -3.69,
+        "high": 26350,
+        "high_date": "2026-05-19",
+        "high_pct": -1.9,
         "low": 6000,
         "low_date": "2025-05-27",
-        "low_pct": 313.33,
-        "current": 24800
+        "low_pct": 330.83,
+        "current": 25850
       },
       "daily_20": [
         {
@@ -3697,9 +4093,9 @@
         {
           "date": "2026-05-19",
           "o": 24000,
-          "h": 25450,
+          "h": 26350,
           "l": 22150,
-          "c": 24800
+          "c": 25850
         }
       ],
       "intraday": {
@@ -3744,7 +4140,8 @@
           25250,
           26350,
           25400,
-          25350
+          25900,
+          25850
         ]
       },
       "togusa_verdict": "neutral",
@@ -3756,10 +4153,10 @@
       "name": "엠케이전자",
       "rank": 9,
       "trade_amount": 87076419000,
-      "change_pct": 7.76,
-      "close_price": 29850,
+      "change_pct": 15.88,
+      "close_price": 32100,
       "open_price": 27600,
-      "high_price": 31050,
+      "high_price": 32900,
       "low_price": 26350,
       "industry": "전자부품 제조업",
       "sector": "반도체용세금선",
@@ -3788,8 +4185,8 @@
         "change_pct": 5.39,
         "trade_amount": 49518661500
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "엠케이전자, 반도체 소재 성장에 1Q 영업익 132% 급증",
@@ -3838,17 +4235,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -3.09,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -6.59,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 31300,
-        "high_date": "2026-04-23",
-        "high_pct": -4.63,
+        "high": 32900,
+        "high_date": "2026-05-19",
+        "high_pct": -2.43,
         "low": 7410,
         "low_date": "2025-05-26",
-        "low_pct": 302.83,
-        "current": 29850
+        "low_pct": 333.2,
+        "current": 32100
       },
       "daily_20": [
         {
@@ -3987,9 +4384,9 @@
         {
           "date": "2026-05-19",
           "o": 27600,
-          "h": 31050,
+          "h": 32900,
           "l": 26350,
-          "c": 29850
+          "c": 32100
         }
       ],
       "intraday": {
@@ -4034,7 +4431,8 @@
           32350,
           32500,
           32500,
-          32400
+          32250,
+          32100
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -4121,8 +4519,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -11.92,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -12.41,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 30550,
@@ -4284,8 +4682,8 @@
           "summary": "아이씨티케이 상한가 (29.91%)",
           "cur_prc": 25450,
           "flu_rt": 29.91,
-          "trde_qty": 3043920,
-          "trde_prica_calc": 77467764000,
+          "trde_qty": 3099149,
+          "trde_prica_calc": 74462000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -4343,6 +4741,7 @@
           25450,
           25450,
           25450,
+          25450,
           25450
         ]
       },
@@ -4357,8 +4756,8 @@
       "name": "센서뷰",
       "rank": 11,
       "trade_amount": 68794448760,
-      "change_pct": 5.02,
-      "close_price": 3870,
+      "change_pct": 3.66,
+      "close_price": 3820,
       "open_price": 3745,
       "high_price": 4340,
       "low_price": 3700,
@@ -4483,17 +4882,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.51,
-      "index_multiple_current": -2.0,
+      "index_change_pct": -2.41,
+      "index_multiple_current": -1.52,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5297,
         "high_date": "2026-01-23",
-        "high_pct": -26.94,
+        "high_pct": -27.88,
         "low": 897,
         "low_date": "2025-11-21",
-        "low_pct": 331.44,
-        "current": 3870
+        "low_pct": 325.86,
+        "current": 3820
       },
       "daily_20": [
         {
@@ -4634,7 +5033,7 @@
           "o": 3745,
           "h": 4340,
           "l": 3700,
-          "c": 3870
+          "c": 3820
         }
       ],
       "intraday": {
@@ -4679,7 +5078,8 @@
           3870,
           3845,
           3765,
-          3830
+          3820,
+          3820
         ]
       },
       "credit_risk": true,
@@ -4693,8 +5093,8 @@
       "name": "한화손해보험",
       "rank": 12,
       "trade_amount": 55699814940,
-      "change_pct": 9.13,
-      "close_price": 7770,
+      "change_pct": 7.44,
+      "close_price": 7650,
       "open_price": 7050,
       "high_price": 8060,
       "low_price": 7000,
@@ -4717,17 +5117,17 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -3.08,
-      "index_multiple_current": -2.96,
+      "index_change_pct": -3.25,
+      "index_multiple_current": -2.29,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 10800,
         "high_date": "2026-02-23",
-        "high_pct": -28.06,
+        "high_pct": -29.17,
         "low": 4310,
         "low_date": "2025-05-26",
-        "low_pct": 80.28,
-        "current": 7770
+        "low_pct": 77.49,
+        "current": 7650
       },
       "daily_20": [
         {
@@ -4868,7 +5268,7 @@
           "o": 7050,
           "h": 8060,
           "l": 7000,
-          "c": 7770
+          "c": 7650
         }
       ],
       "intraday": {
@@ -4913,7 +5313,8 @@
           7670,
           7670,
           7590,
-          7600
+          7620,
+          7650
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -4927,8 +5328,8 @@
       "name": "세아베스틸지주",
       "rank": 13,
       "trade_amount": 49825329500,
-      "change_pct": -6.49,
-      "close_price": 70600,
+      "change_pct": -5.43,
+      "close_price": 71400,
       "open_price": 83900,
       "high_price": 83900,
       "low_price": 69300,
@@ -5070,17 +5471,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -3.08,
-      "index_multiple_current": 2.11,
+      "index_change_pct": -3.25,
+      "index_multiple_current": 1.67,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 92500,
         "high_date": "2026-02-04",
-        "high_pct": -23.68,
+        "high_pct": -22.81,
         "low": 19200,
         "low_date": "2025-05-26",
-        "low_pct": 267.71,
-        "current": 70600
+        "low_pct": 271.88,
+        "current": 71400
       },
       "daily_20": [
         {
@@ -5221,7 +5622,7 @@
           "o": 83900,
           "h": 83900,
           "l": 69300,
-          "c": 70600
+          "c": 71400
         }
       ],
       "intraday": {
@@ -5266,7 +5667,8 @@
           70800,
           71400,
           71300,
-          71000
+          70900,
+          71400
         ]
       },
       "togusa_verdict": "neutral",
