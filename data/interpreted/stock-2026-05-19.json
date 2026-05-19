@@ -1,6 +1,6 @@
 {
   "date": "2026-05-19",
-  "generated_at": "2026-05-19T14:44:45.338388",
+  "generated_at": "2026-05-19T14:57:13.195117",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -47,12 +47,6 @@
   "narratives": [],
   "themes_macro_summary": [
     {
-      "keyword": "반도체호황",
-      "summary": "반도체 공급 정상화→메모리·로직 수익성 개선→반도체·부품 섹터 강세",
-      "source_count": 3,
-      "verified": true
-    },
-    {
       "keyword": "로봇AI붐",
       "summary": "Big Tech 휴머노이드 로봇 개발 가속→자동화·AI 부품 수요 폭증→로봇·AI부품 섹터 강세",
       "source_count": 3,
@@ -65,14 +59,20 @@
       "verified": true
     },
     {
-      "keyword": "AI로봇",
-      "summary": "애플·테슬라 등의 AI 휴머노이드 로봇 투자 가속 → 로봇 부품·솔루션 섹터 수요 확대",
-      "source_count": 3,
+      "keyword": "에너지인프라",
+      "summary": "글로벌 에너지 공급망 재편→플랜트·인프라 수주 확대→건설·에너지 부품 섹터 수혜",
+      "source_count": 2,
       "verified": true
     },
     {
-      "keyword": "에너지인프라",
-      "summary": "글로벌 에너지 공급망 재편→플랜트·인프라 수주 확대→건설·에너지 부품 섹터 수혜",
+      "keyword": "이란긴장완화",
+      "summary": "미-이란 공격 연기→중동 긴장 완화·유가 하락→방산주·에너지 연동 변동성",
+      "source_count": 2,
+      "verified": true
+    },
+    {
+      "keyword": "반도체수익",
+      "summary": "반도체 수급 개선→SK하이닉스 영업이익률 1위 달성→메모리·반도체 장비 섹터 강세",
       "source_count": 2,
       "verified": true
     }
@@ -106,6 +106,12 @@
             "summary": "SK하이닉스 1분기 영업이익률 1위·이천 부동산 수혜 확산, HBM 호황이 메모리·장비·부동산까지 파급",
             "source_count": 3,
             "verdict": "pass"
+          },
+          {
+            "name": "반도체 호황",
+            "summary": "메모리 영업이익률 1위 SK하이닉스·두산 전자BG 등 반도체 사이클 호황 지속.",
+            "source_count": 3,
+            "verdict": "unverified"
           },
           {
             "name": "반도체 기판",
@@ -182,6 +188,441 @@
         ]
       },
       {
+        "name": "피지컬 AI",
+        "children": [
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "애플·테슬라 등 글로벌 빅테크 휴머노이드 진출 가시화에 핵심 부품·로보틱스 공급망 수혜 부각.",
+            "source_count": 5,
+            "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "애플·테슬라 등 글로벌 빅테크 휴머노이드 진출 가시화에 핵심 부품·로보틱스 공급망 수혜 부각.",
+            "source_count": 5,
+            "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "애플·테슬라 등 글로벌 빅테크 휴머노이드 진출 가시화에 핵심 부품·로보틱스 공급망 수혜 부각.",
+            "source_count": 5,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "AI 인프라",
+        "children": [
+          {
+            "name": "AI 반도체 공급망",
+            "summary": "HBM·기판 장기공급계약 시대 진입으로 SK하이닉스·LG이노텍 등 메모리·기판 밸류체인 리레이팅 진행.",
+            "source_count": 5,
+            "verdict": "unverified"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "AI 데이터센터용 광트랜시버·반도체 기판 수요 확대로 옵티코어·LG이노텍 수혜.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "AI 데이터센터용 광트랜시버·반도체 기판 수요 확대로 옵티코어·LG이노텍 수혜.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "AI 데이터센터용 광트랜시버·반도체 기판 수요 확대로 옵티코어·LG이노텍 수혜.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 AI 인프라 부품 공급망 수혜 부각.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 AI 인프라 부품 공급망 수혜 부각.",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터",
+            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 AI 인프라 부품 공급망 수혜 부각.",
+            "source_count": 1,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "(독립)",
+        "children": [
+          {
+            "name": "삼성전자 노사 리스크",
+            "summary": "삼성전자 총파업 D-2 노사 쟁점 부각, 반도체 외 사업부 이탈 확산으로 단기 변동성 확대.",
+            "source_count": 5,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 파업",
+            "summary": "삼성전자 노조 총파업 임박·내부 성과급 갈등 격화로 주가 변동성 및 정부 개입 압력 확대.",
+            "source_count": 4,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노사 리스크",
+            "summary": "총파업 D-2 임박과 노조 막말 논란으로 DX 이탈·정부 개입 확대되며 삼성전자 단기 불확실성 증폭.",
+            "source_count": 4,
+            "verdict": "weak"
+          },
+          {
+            "name": "중동 지정학 리스크",
+            "summary": "트럼프 이란 공격 연기에 유가 진정되며 방산주 강세·아시아 증시 반등 등 위험자산 일시 안도.",
+            "source_count": 4,
+            "verdict": "unverified"
+          },
+          {
+            "name": "지주사",
+            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "지주사",
+            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "지주사",
+            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "스타벅스 불매 리스크",
+            "summary": "스타벅스 5·18 폄훼 마케팅 역풍으로 이마트 6%대 급락, 정용진 대국민 사과",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노사 갈등",
+            "summary": "총파업 D-2 국면에서 산업부 장관 우려·중노위 타결 가능성 발언 등 노사 협상 변수가 삼성전자 주가 변동성 확대 요인으로 작용.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노사 갈등",
+            "summary": "총파업 D-2 국면에서 산업부 장관 우려·중노위 타결 가능성 발언 등 노사 협상 변수가 삼성전자 주가 변동성 확대 요인으로 작용.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "스타벅스 5·18 논란",
+            "summary": "스타벅스 ‘탱크데이’ 5·18 폄훼 논란에 정용진 회장 직접 사과에도 이마트 6%대 급락하며 소비주 투자심리 위축.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "지주사 재평가",
+            "summary": "SK스퀘어 닉스 지분가치 상승·SK·두산·한화 외인 자금 유입으로 지주사 디스카운트 해소 기대.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "지주사 외국인 매수",
+            "summary": "외국인이 폭풍 매도 와중 SK·두산·한화 등 지주사로 자금 몰리며 지주 디스카운트 해소 기대.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "지주사 외국인 매수",
+            "summary": "외국인이 폭풍 매도 와중 SK·두산·한화 등 지주사로 자금 몰리며 지주 디스카운트 해소 기대.",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "방산",
+            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "유가 하락",
+            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "건설·플랜트 수주",
+            "summary": "에너지 공급망 재편 환경 속 삼성E&A가 수자원공사와 글로벌 물 시장 협력 등 수주 환경 우호로 목표가 상향.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "건설·플랜트 수주",
+            "summary": "에너지 공급망 재편 환경 속 삼성E&A가 수자원공사와 글로벌 물 시장 협력 등 수주 환경 우호로 목표가 상향.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "미국·이란 충돌 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 강세.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "미국·이란 충돌 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 강세.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "방산",
+            "summary": "미국·이란 충돌 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 강세.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "현대차 노사 갈등",
+            "summary": "현대차·기아 노사 강대강 대치 우려로 동반 급락, 자동차 섹터 단기 약세 압력.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "스타벅스 불매 리스크",
+            "summary": "스타벅스 5·18 폄훼 마케팅 논란으로 정용진 사과·이마트 6%대 급락, 신세계 계열 단기 악재.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "주주환원 자사주 소각",
+            "summary": "네오위즈홀딩스·제이엠아이 자사주 소각 결정으로 주주환원 정책 강화 흐름 확산.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "현대차·기아 노사 리스크",
+            "summary": "현대차·기아 노사 강대강 대치 우려로 완성차 양대축 동반 급락하며 자동차 섹터 투심 위축.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "이마트 스타벅스 불매 리스크",
+            "summary": "스타벅스 탱크데이 마케팅 역풍에 정용진 회장 직접 사과에도 이마트 6%대 급락하며 유통주 투심 악화.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "삼성E&A 수주 모멘텀",
+            "summary": "에너지 공급망 재편 우호적 수주환경과 수자원공사 물시장 공략으로 삼성E&A 목표가 상향 흐름.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "현대차 노사 갈등",
+            "summary": "현대차·기아 노사 강대강 대치 우려로 동반 급락, 자동차 섹터 단기 약세.",
+            "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "방산주",
+            "summary": "미국-이란 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 상승.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "이마트 스타벅스 리스크",
+            "summary": "스타벅스 탱크데이 마케팅 역풍에 정용진 사과에도 이마트 6%대 급락.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "주식병합",
+            "summary": "지엘팜텍·드림어스컴퍼니 5대1 주식병합 결정으로 거래단가 조정.",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "방산",
+            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "방산",
+            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "방산",
+            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "중국 소비주",
+            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "중국 소비주",
+            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "중국 소비주",
+            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "고려아연 경영권 분쟁",
+            "summary": "한화솔루션 소액주주 고려아연 지분 매각 압박으로 지분 정리·경영권 이슈 재점화.",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "오리온 중국 매출 회복",
+            "summary": "올해 중국 매출 사상 최고치 전망에 오리온 목표주가 상향, 중국 소비주 반등 기대.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "고려아연 경영권 분쟁",
+            "summary": "한화솔루션 보유 고려아연 지분 매각 압박으로 지배구조 변동 가능성 부각.",
+            "source_count": 1,
+            "verdict": "pass"
+          },
+          {
+            "name": "자율주행 로보택시",
+            "summary": "포니링크 레벨4 로보택시 6만km 무사고 운행으로 국내 자율주행 상용화 모멘텀 강화.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "자율주행 로보택시",
+            "summary": "포니링크 레벨4 로보택시 6만km 무사고 운행으로 국내 자율주행 상용화 모멘텀 강화.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "지주사 외인 매수",
+            "summary": "외국인 폭풍 매도 속에서도 SK·두산·한화 등 지주사로 자금 집중 유입.",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "중국 소비 회복",
+            "summary": "오리온 중국 매출 최고치 전망으로 중국 소비재 수혜 기대.",
+            "source_count": 1,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
         "name": "AI",
         "children": [
           {
@@ -207,6 +648,12 @@
             "summary": "AI 기판·전력·자동화 수요 폭증으로 이수페타시스 다중적층 증설·LS전선 빅테크 4조원 버스덕트 공급 등 AI 인프라 공급망 전반 수혜.",
             "source_count": 4,
             "verdict": "pass"
+          },
+          {
+            "name": "피지컬 AI",
+            "summary": "현대모비스·에브리봇이 로보틱스+AI 결합 신사업 가속, B2B 피지컬AI 영역 확장.",
+            "source_count": 3,
+            "verdict": "unverified"
           },
           {
             "name": "자율주행",
@@ -330,6 +777,12 @@
             "summary": "퓨쳐켐 인니 프로스타뷰 공급으로 동남아 방사성의약품 시장 진출 본격화.",
             "source_count": 1,
             "verdict": "unverified"
+          },
+          {
+            "name": "방사성의약품",
+            "summary": "퓨쳐켐 인니 프로스타뷰 공급으로 동남아 방사성의약품 시장 진출 본격화.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -370,209 +823,6 @@
             "summary": "삼성전자 총파업 D-2·노조 막말 파장·산업부 장관 개입에 DX 이탈 확산 등 지배구조·실적 단기 부담 부각",
             "source_count": 4,
             "verdict": "weak"
-          }
-        ]
-      },
-      {
-        "name": "(독립)",
-        "children": [
-          {
-            "name": "삼성전자 노조 파업",
-            "summary": "삼성전자 노조 총파업 임박·내부 성과급 갈등 격화로 주가 변동성 및 정부 개입 압력 확대.",
-            "source_count": 4,
-            "verdict": "weak"
-          },
-          {
-            "name": "지주사",
-            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "지주사",
-            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "지주사",
-            "summary": "외국인 폭풍 매도 와중에도 SK·두산·한화 지주사로 자금 유입, 자회사 가치 재평가 기대",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "스타벅스 불매 리스크",
-            "summary": "스타벅스 5·18 폄훼 마케팅 역풍으로 이마트 6%대 급락, 정용진 대국민 사과",
-            "source_count": 3,
-            "verdict": "pass"
-          },
-          {
-            "name": "삼성전자 노사 갈등",
-            "summary": "총파업 D-2 국면에서 산업부 장관 우려·중노위 타결 가능성 발언 등 노사 협상 변수가 삼성전자 주가 변동성 확대 요인으로 작용.",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "삼성전자 노사 갈등",
-            "summary": "총파업 D-2 국면에서 산업부 장관 우려·중노위 타결 가능성 발언 등 노사 협상 변수가 삼성전자 주가 변동성 확대 요인으로 작용.",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "스타벅스 5·18 논란",
-            "summary": "스타벅스 ‘탱크데이’ 5·18 폄훼 논란에 정용진 회장 직접 사과에도 이마트 6%대 급락하며 소비주 투자심리 위축.",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "지주사 재평가",
-            "summary": "SK스퀘어 닉스 지분가치 상승·SK·두산·한화 외인 자금 유입으로 지주사 디스카운트 해소 기대.",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "유가 하락",
-            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "유가 하락",
-            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "유가 하락",
-            "summary": "트럼프 이란 공격 연기로 유가 하락·공급차질 우려 완화, 아시아 증시 동반 상승",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산",
-            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산",
-            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "방산",
-            "summary": "미·이란 충돌 지연·종전 불확실성으로 한화에어로스페이스 등 방산주 매수세 유입.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "유가 하락",
-            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "유가 하락",
-            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "유가 하락",
-            "summary": "트럼프가 이란 공격 연기를 발표하며 공급 차질 우려가 완화돼 국제유가 하락, 아시아 증시 위험선호 회복.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "건설·플랜트 수주",
-            "summary": "에너지 공급망 재편 환경 속 삼성E&A가 수자원공사와 글로벌 물 시장 협력 등 수주 환경 우호로 목표가 상향.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "건설·플랜트 수주",
-            "summary": "에너지 공급망 재편 환경 속 삼성E&A가 수자원공사와 글로벌 물 시장 협력 등 수주 환경 우호로 목표가 상향.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산",
-            "summary": "미국·이란 충돌 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 강세.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산",
-            "summary": "미국·이란 충돌 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 강세.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "방산",
-            "summary": "미국·이란 충돌 종전 시점 불확실성 지속으로 한화에어로스페이스 등 방산주 강세.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "현대차 노사 갈등",
-            "summary": "현대차·기아 노사 강대강 대치 우려로 동반 급락, 자동차 섹터 단기 약세 압력.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "스타벅스 불매 리스크",
-            "summary": "스타벅스 5·18 폄훼 마케팅 논란으로 정용진 사과·이마트 6%대 급락, 신세계 계열 단기 악재.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "주주환원 자사주 소각",
-            "summary": "네오위즈홀딩스·제이엠아이 자사주 소각 결정으로 주주환원 정책 강화 흐름 확산.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산",
-            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "방산",
-            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
-            "source_count": 1,
-            "verdict": "pass"
-          },
-          {
-            "name": "방산",
-            "summary": "트럼프 이란 공격 연기로 종전 불확실성 지속, 한화에어로 등 방산주 상승세",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "중국 소비주",
-            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
-            "source_count": 1,
-            "verdict": "pass"
-          },
-          {
-            "name": "중국 소비주",
-            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "중국 소비주",
-            "summary": "오리온 중국 매출 사상 최고치 전망에 목표가 상향, 중국 소비 회복 수혜",
-            "source_count": 1,
-            "verdict": "pass"
-          },
-          {
-            "name": "고려아연 경영권 분쟁",
-            "summary": "한화솔루션 소액주주 고려아연 지분 매각 압박으로 지분 정리·경영권 이슈 재점화.",
-            "source_count": 1,
-            "verdict": "pass"
           }
         ]
       },
@@ -670,83 +920,6 @@
         ]
       },
       {
-        "name": "AI 인프라",
-        "children": [
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
-            "source_count": 3,
-            "verdict": "weak"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
-            "source_count": 3,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 美 AI 데이터센터 광케이블 110억 수주·Google I/O AI 쇼케이스 기대로 AI 데이터센터 인프라(광케이블·라이다) 수혜주 부각",
-            "source_count": 3,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 국내 AI 인프라 부품주 수혜",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
-            "source_count": 2,
-            "verdict": "weak"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨가 미국 AI 데이터센터향 110억 광케이블을 수주하며 데이터센터 인프라 부품주 수혜 부각.",
-            "source_count": 2,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 AI 인프라 부품 공급망 수혜 부각.",
-            "source_count": 1,
-            "verdict": "weak"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 AI 인프라 부품 공급망 수혜 부각.",
-            "source_count": 1,
-            "verdict": "pass"
-          },
-          {
-            "name": "AI 데이터센터",
-            "summary": "티엠씨 미국 AI 데이터센터 110억 광케이블 수주로 AI 인프라 부품 공급망 수혜 부각.",
-            "source_count": 1,
-            "verdict": "pass"
-          }
-        ]
-      },
-      {
         "name": "지정학",
         "children": [
           {
@@ -806,6 +979,12 @@
             "summary": "애플·현대모비스 등 빅테크/완성차 휴머노이드 부품·AI 협력 확대로 핵심 부품주 부각.",
             "source_count": 3,
             "verdict": "pass"
+          },
+          {
+            "name": "휴머노이드 로봇 부품",
+            "summary": "애플·테슬라 휴머노이드 본격화로 비에이치·현대모비스 등 핵심부품주 수혜 부각.",
+            "source_count": 3,
+            "verdict": "unverified"
           },
           {
             "name": "휴머노이드 로봇",
@@ -987,6 +1166,12 @@
             "summary": "포니링크가 레벨4 로보택시 6만km 무사고 운행을 달성하며 자율주행 상용화 기대감 강화.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "로보택시",
+            "summary": "포니링크 레벨4 로보택시 6만km 무사고 운행으로 자율주행 상용화 진전.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1079,6 +1264,12 @@
             "summary": "탑머티리얼 차세대 LMR 양극재 국책과제 참여로 차세대 양극재 기술 개발 모멘텀.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "전기 이륜차",
+            "summary": "LG에너지솔루션-혼다-하노이시 협력으로 동남아 전기 오토바이 시장 확대.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1138,6 +1329,12 @@
             "summary": "오르비텍 원전해체 국책과제 2건 참여로 제염 핵심기술 경쟁력 부각.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "원전 해체·소부장",
+            "summary": "원전 해체 국책과제 본격화로 제염 핵심기술 보유 중소형 소부장 업체 수혜 가시화.",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -1163,6 +1360,40 @@
             "verdict": "pass"
           }
         ]
+      },
+      {
+        "name": "생성형 AI",
+        "children": [
+          {
+            "name": "AI VFX·콘텐츠 솔루션",
+            "summary": "AI 기반 VFX 솔루션 개발 가속으로 영상 제작 자동화 수혜 콘텐츠테크 부각.",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "원전",
+        "children": [
+          {
+            "name": "원전 해체",
+            "summary": "오르비텍 원전해체 국책과제 참여로 제염 핵심기술 수혜 부각.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "원전 해체",
+            "summary": "오르비텍 원전해체 국책과제 참여로 제염 핵심기술 수혜 부각.",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "원전 해체",
+            "summary": "오르비텍 원전해체 국책과제 참여로 제염 핵심기술 수혜 부각.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
       }
     ]
   },
@@ -1171,7 +1402,7 @@
       "code": "036930",
       "name": "주성엔지니어링",
       "rank": 1,
-      "trade_amount": 789502327600,
+      "trade_amount": 823935670000,
       "change_pct": -3.46,
       "close_price": 175900,
       "open_price": 191300,
@@ -1492,7 +1723,7 @@
       "code": "027360",
       "name": "아주IB투자",
       "rank": 2,
-      "trade_amount": 659148674820,
+      "trade_amount": 660754045000,
       "change_pct": 4.41,
       "close_price": 17760,
       "open_price": 17450,
@@ -1759,7 +1990,7 @@
       "code": "274090",
       "name": "켄코아에어로스페이스",
       "rank": 3,
-      "trade_amount": 325571610200,
+      "trade_amount": 332601687900,
       "change_pct": 5.97,
       "close_price": 27500,
       "open_price": 26350,
@@ -1995,7 +2226,7 @@
       "code": "066430",
       "name": "아이로보틱스",
       "rank": 4,
-      "trade_amount": 293638074457,
+      "trade_amount": 296205467415,
       "change_pct": 7.88,
       "close_price": 4315,
       "open_price": 4050,
@@ -2281,7 +2512,7 @@
       "code": "088350",
       "name": "한화생명",
       "rank": 5,
-      "trade_amount": 134024396720,
+      "trade_amount": 136831715280,
       "change_pct": 2.82,
       "close_price": 5830,
       "open_price": 5710,
@@ -2595,10 +2826,275 @@
       "hugepark_grade": "관찰"
     },
     {
+      "code": "005500",
+      "name": "삼진제약",
+      "rank": 6,
+      "trade_amount": 95474772900,
+      "change_pct": 17.85,
+      "close_price": 23500,
+      "open_price": 20900,
+      "high_price": 24800,
+      "low_price": 20650,
+      "industry": "의약품 제조업",
+      "sector": "의약품(게보린,세트라졸,염산나록손) 제조,판매,수출입,약초재배",
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-14",
+        "rank": 36,
+        "change_pct": 29.89,
+        "trade_amount": 12494782500
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "[급등락주 짚어보기] SK네트웍스·삼진제약 등 ‘上’…코스피 4개·코스닥 10개 ↑",
+          "url": "https://www.etoday.co.kr/news/view/2584613",
+          "source": "이투데이",
+          "published_at": "2026-05-14T07:52:00",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "삼진제약, 이대서울병원과 편두통 치료제 공동 연구 MOU",
+          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/13/3V2VEYMYOBFL3NHJAUJTLHV3SE/",
+          "source": "조선비즈",
+          "published_at": "2026-04-13T08:45:00",
+          "causal_chain": "이대서울병원과 편두통 치료제 공동 연구 MOU는 초기 연구 단계 파트너십으로, 본업 의약품 매출·파이프라인과 직접 연결되는 매크로 사슬이 부재.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.55,
+      "index_multiple_current": -7.0,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 24800,
+        "high_date": "2026-05-19",
+        "high_pct": -5.24,
+        "low": 16990,
+        "low_date": "2026-03-04",
+        "low_pct": 38.32,
+        "current": 23500
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-20",
+          "o": 18940,
+          "h": 18990,
+          "l": 18700,
+          "c": 18970
+        },
+        {
+          "date": "2026-04-21",
+          "o": 18970,
+          "h": 18970,
+          "l": 18700,
+          "c": 18800
+        },
+        {
+          "date": "2026-04-22",
+          "o": 18790,
+          "h": 18790,
+          "l": 18590,
+          "c": 18630
+        },
+        {
+          "date": "2026-04-23",
+          "o": 18790,
+          "h": 18790,
+          "l": 18530,
+          "c": 18690
+        },
+        {
+          "date": "2026-04-24",
+          "o": 18690,
+          "h": 18970,
+          "l": 18690,
+          "c": 18930
+        },
+        {
+          "date": "2026-04-27",
+          "o": 19000,
+          "h": 19080,
+          "l": 18870,
+          "c": 19060
+        },
+        {
+          "date": "2026-04-28",
+          "o": 19310,
+          "h": 19460,
+          "l": 19120,
+          "c": 19150
+        },
+        {
+          "date": "2026-04-29",
+          "o": 19000,
+          "h": 19150,
+          "l": 18860,
+          "c": 18990
+        },
+        {
+          "date": "2026-04-30",
+          "o": 19020,
+          "h": 19020,
+          "l": 18670,
+          "c": 18710
+        },
+        {
+          "date": "2026-05-04",
+          "o": 18710,
+          "h": 18770,
+          "l": 18640,
+          "c": 18640
+        },
+        {
+          "date": "2026-05-06",
+          "o": 18710,
+          "h": 18710,
+          "l": 18320,
+          "c": 18350
+        },
+        {
+          "date": "2026-05-07",
+          "o": 18430,
+          "h": 18620,
+          "l": 18280,
+          "c": 18400
+        },
+        {
+          "date": "2026-05-08",
+          "o": 18410,
+          "h": 18410,
+          "l": 18160,
+          "c": 18190
+        },
+        {
+          "date": "2026-05-11",
+          "o": 18230,
+          "h": 18260,
+          "l": 18030,
+          "c": 18070
+        },
+        {
+          "date": "2026-05-12",
+          "o": 18080,
+          "h": 18190,
+          "l": 17730,
+          "c": 17840
+        },
+        {
+          "date": "2026-05-13",
+          "o": 17900,
+          "h": 18000,
+          "l": 17710,
+          "c": 17900
+        },
+        {
+          "date": "2026-05-14",
+          "o": 19880,
+          "h": 23250,
+          "l": 19250,
+          "c": 23250
+        },
+        {
+          "date": "2026-05-15",
+          "o": 23750,
+          "h": 23800,
+          "l": 19330,
+          "c": 19510
+        },
+        {
+          "date": "2026-05-18",
+          "o": 20000,
+          "h": 20950,
+          "l": 19060,
+          "c": 19940
+        },
+        {
+          "date": "2026-05-19",
+          "o": 20900,
+          "h": 24800,
+          "l": 20650,
+          "c": 23500
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 20900,
+        "base": 20900,
+        "prices": [
+          20900,
+          21250,
+          20850,
+          21100,
+          22550,
+          22650,
+          22250,
+          22000,
+          21450,
+          22150,
+          23250,
+          24000,
+          23450,
+          23050,
+          23100,
+          24000,
+          23550,
+          24100,
+          23550,
+          23150,
+          23200,
+          22950,
+          22950,
+          23750,
+          24500,
+          24500,
+          24350,
+          24350,
+          25900,
+          25900,
+          24800,
+          24750,
+          24950,
+          24050,
+          23600
+        ]
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
       "code": "452280",
       "name": "한선엔지니어링",
-      "rank": 6,
-      "trade_amount": 90730853400,
+      "rank": 7,
+      "trade_amount": 93161905600,
       "change_pct": 12.03,
       "close_price": 31200,
       "open_price": 27850,
@@ -2888,44 +3384,66 @@
       "hugepark_grade": "관찰"
     },
     {
-      "code": "005500",
-      "name": "삼진제약",
-      "rank": 7,
-      "trade_amount": 88960452000,
-      "change_pct": 17.85,
-      "close_price": 23500,
-      "open_price": 20900,
-      "high_price": 24800,
-      "low_price": 20650,
-      "industry": "의약품 제조업",
-      "sector": "의약품(게보린,세트라졸,염산나록손) 제조,판매,수출입,약초재배",
+      "code": "033160",
+      "name": "엠케이전자",
+      "rank": 8,
+      "trade_amount": 79073271900,
+      "change_pct": 7.76,
+      "close_price": 29850,
+      "open_price": 27600,
+      "high_price": 31050,
+      "low_price": 26350,
+      "industry": "전자부품 제조업",
+      "sector": "반도체용세금선",
       "themes": [
-        "바이오"
+        "실적",
+        "반도체"
       ],
       "theme_paths": [
         {
-          "name": "바이오",
+          "name": "실적",
           "path": [
-            "바이오"
+            "실적"
+          ]
+        },
+        {
+          "name": "반도체",
+          "path": [
+            "반도체"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": {
-        "date": "2026-05-14",
-        "rank": 36,
-        "change_pct": 29.89,
-        "trade_amount": 12494782500
+        "date": "2026-04-23",
+        "rank": 46,
+        "change_pct": 5.39,
+        "trade_amount": 49518661500
       },
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
         {
-          "title": "[급등락주 짚어보기] SK네트웍스·삼진제약 등 ‘上’…코스피 4개·코스닥 10개 ↑",
-          "url": "https://www.etoday.co.kr/news/view/2584613",
+          "title": "엠케이전자, 반도체 소재 성장에 1Q 영업익 132% 급증",
+          "url": "https://www.asiae.co.kr/article/2026051516045093260",
+          "source": "아시아경제",
+          "published_at": "2026-05-15T07:04:50",
+          "causal_chain": "반도체 소재 수요 성장 → 엠케이전자 본업(반도체용 본딩와이어) 매출 확대 → 1분기 영업이익 132% 급증으로 수익성 모멘텀 부각.",
+          "macro_event": "반도체 소재 수요 성장에 따른 본딩와이어 업체 실적 급증",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[특징주] 엠케이전자, AI서버 메모리 강세 수혜…1Q 어닝서프라이즈 증권가 전망에 상승세",
+          "url": "https://www.etoday.co.kr/news/view/2578315",
           "source": "이투데이",
-          "published_at": "2026-05-14T07:52:00",
-          "causal_chain": "",
+          "published_at": "2026-04-23T00:05:00",
+          "causal_chain": null,
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -2936,11 +3454,11 @@
           "newzy_verdict": null
         },
         {
-          "title": "삼진제약, 이대서울병원과 편두통 치료제 공동 연구 MOU",
-          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/13/3V2VEYMYOBFL3NHJAUJTLHV3SE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-13T08:45:00",
-          "causal_chain": "이대서울병원과 편두통 치료제 공동 연구 MOU는 초기 연구 단계 파트너십으로, 본업 의약품 매출·파이프라인과 직접 연결되는 매크로 사슬이 부재.",
+          "title": "엠케이전자, 32.6억 규모 전환청구권 행사",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04716646645416448",
+          "source": "이데일리",
+          "published_at": "2026-04-15T08:22:22",
+          "causal_chain": null,
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -2952,211 +3470,211 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.55,
-      "index_multiple_current": -7.0,
+      "index_change_pct": -2.11,
+      "index_multiple_current": -3.68,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 24800,
-        "high_date": "2026-05-19",
-        "high_pct": -5.24,
-        "low": 16990,
-        "low_date": "2026-03-04",
-        "low_pct": 38.32,
-        "current": 23500
+        "high": 31300,
+        "high_date": "2026-04-23",
+        "high_pct": -4.63,
+        "low": 7410,
+        "low_date": "2025-05-26",
+        "low_pct": 302.83,
+        "current": 29850
       },
       "daily_20": [
         {
           "date": "2026-04-20",
-          "o": 18940,
-          "h": 18990,
-          "l": 18700,
-          "c": 18970
+          "o": 24000,
+          "h": 27900,
+          "l": 23450,
+          "c": 26700
         },
         {
           "date": "2026-04-21",
-          "o": 18970,
-          "h": 18970,
-          "l": 18700,
-          "c": 18800
+          "o": 27000,
+          "h": 27350,
+          "l": 25550,
+          "c": 26750
         },
         {
           "date": "2026-04-22",
-          "o": 18790,
-          "h": 18790,
-          "l": 18590,
-          "c": 18630
+          "o": 26700,
+          "h": 28000,
+          "l": 26150,
+          "c": 26900
         },
         {
           "date": "2026-04-23",
-          "o": 18790,
-          "h": 18790,
-          "l": 18530,
-          "c": 18690
+          "o": 28900,
+          "h": 31300,
+          "l": 26800,
+          "c": 28350
         },
         {
           "date": "2026-04-24",
-          "o": 18690,
-          "h": 18970,
-          "l": 18690,
-          "c": 18930
+          "o": 28850,
+          "h": 29450,
+          "l": 27000,
+          "c": 28650
         },
         {
           "date": "2026-04-27",
-          "o": 19000,
-          "h": 19080,
-          "l": 18870,
-          "c": 19060
+          "o": 29550,
+          "h": 29550,
+          "l": 28000,
+          "c": 29200
         },
         {
           "date": "2026-04-28",
-          "o": 19310,
-          "h": 19460,
-          "l": 19120,
-          "c": 19150
+          "o": 28800,
+          "h": 31100,
+          "l": 27000,
+          "c": 30450
         },
         {
           "date": "2026-04-29",
-          "o": 19000,
-          "h": 19150,
-          "l": 18860,
-          "c": 18990
+          "o": 29850,
+          "h": 30150,
+          "l": 27800,
+          "c": 28450
         },
         {
           "date": "2026-04-30",
-          "o": 19020,
-          "h": 19020,
-          "l": 18670,
-          "c": 18710
+          "o": 28450,
+          "h": 29500,
+          "l": 27750,
+          "c": 27900
         },
         {
           "date": "2026-05-04",
-          "o": 18710,
-          "h": 18770,
-          "l": 18640,
-          "c": 18640
+          "o": 28600,
+          "h": 29600,
+          "l": 27300,
+          "c": 27500
         },
         {
           "date": "2026-05-06",
-          "o": 18710,
-          "h": 18710,
-          "l": 18320,
-          "c": 18350
+          "o": 28300,
+          "h": 28300,
+          "l": 25900,
+          "c": 27100
         },
         {
           "date": "2026-05-07",
-          "o": 18430,
-          "h": 18620,
-          "l": 18280,
-          "c": 18400
+          "o": 27650,
+          "h": 27950,
+          "l": 26100,
+          "c": 26350
         },
         {
           "date": "2026-05-08",
-          "o": 18410,
-          "h": 18410,
-          "l": 18160,
-          "c": 18190
+          "o": 25650,
+          "h": 28850,
+          "l": 25500,
+          "c": 28500
         },
         {
           "date": "2026-05-11",
-          "o": 18230,
-          "h": 18260,
-          "l": 18030,
-          "c": 18070
+          "o": 28900,
+          "h": 29350,
+          "l": 27500,
+          "c": 27700
         },
         {
           "date": "2026-05-12",
-          "o": 18080,
-          "h": 18190,
-          "l": 17730,
-          "c": 17840
+          "o": 27100,
+          "h": 28200,
+          "l": 24700,
+          "c": 25750
         },
         {
           "date": "2026-05-13",
-          "o": 17900,
-          "h": 18000,
-          "l": 17710,
-          "c": 17900
+          "o": 25100,
+          "h": 26750,
+          "l": 24050,
+          "c": 26600
         },
         {
           "date": "2026-05-14",
-          "o": 19880,
-          "h": 23250,
-          "l": 19250,
-          "c": 23250
+          "o": 26150,
+          "h": 30950,
+          "l": 25800,
+          "c": 29650
         },
         {
           "date": "2026-05-15",
-          "o": 23750,
-          "h": 23800,
-          "l": 19330,
-          "c": 19510
+          "o": 30400,
+          "h": 30400,
+          "l": 27400,
+          "c": 28450
         },
         {
           "date": "2026-05-18",
-          "o": 20000,
-          "h": 20950,
-          "l": 19060,
-          "c": 19940
+          "o": 26200,
+          "h": 28000,
+          "l": 24800,
+          "c": 27700
         },
         {
           "date": "2026-05-19",
-          "o": 20900,
-          "h": 24800,
-          "l": 20650,
-          "c": 23500
+          "o": 27600,
+          "h": 31050,
+          "l": 26350,
+          "c": 29850
         }
       ],
       "intraday": {
         "step_min": 10,
-        "open": 20900,
-        "base": 20900,
+        "open": 27600,
+        "base": 27600,
         "prices": [
-          20900,
-          21250,
-          20850,
-          21100,
-          22550,
-          22650,
-          22250,
-          22000,
-          21450,
-          22150,
-          23250,
-          24000,
-          23450,
-          23050,
-          23100,
-          24000,
-          23550,
-          24100,
-          23550,
-          23150,
-          23200,
-          22950,
-          22950,
-          23750,
-          24500,
-          24500,
-          24350,
-          24350,
-          25900,
-          25900,
-          24800,
-          24750,
-          24950,
-          24050,
-          23600
+          27600,
+          29650,
+          30650,
+          29700,
+          29400,
+          29250,
+          29500,
+          29050,
+          29050,
+          29400,
+          29250,
+          29650,
+          29500,
+          29950,
+          29850,
+          29750,
+          29950,
+          29900,
+          29750,
+          30000,
+          29950,
+          30500,
+          30300,
+          29900,
+          30650,
+          30400,
+          30350,
+          30300,
+          30050,
+          30600,
+          30750,
+          31350,
+          32750,
+          32200,
+          31600
         ]
       },
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "주의"
     },
     {
       "code": "456010",
       "name": "아이씨티케이",
-      "rank": 8,
-      "trade_amount": 78318990150,
+      "rank": 9,
+      "trade_amount": 78385745500,
       "change_pct": 29.91,
       "close_price": 25450,
       "open_price": 23000,
@@ -3463,8 +3981,8 @@
     {
       "code": "321370",
       "name": "센서뷰",
-      "rank": 9,
-      "trade_amount": 67277959140,
+      "rank": 10,
+      "trade_amount": 67500756400,
       "change_pct": 5.02,
       "close_price": 3870,
       "open_price": 3745,
@@ -3794,289 +4312,10 @@
       "hugepark_grade": "관찰"
     },
     {
-      "code": "033160",
-      "name": "엠케이전자",
-      "rank": 10,
-      "trade_amount": 62742859200,
-      "change_pct": 7.76,
-      "close_price": 29850,
-      "open_price": 27600,
-      "high_price": 31050,
-      "low_price": 26350,
-      "industry": "전자부품 제조업",
-      "sector": "반도체용세금선",
-      "themes": [
-        "반도체"
-      ],
-      "theme_paths": [
-        {
-          "name": "반도체",
-          "path": [
-            "반도체"
-          ]
-        }
-      ],
-      "pick_count": 1,
-      "prev_pick": {
-        "date": "2026-04-23",
-        "rank": 46,
-        "change_pct": 5.39,
-        "trade_amount": 49518661500
-      },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "news": [
-        {
-          "title": "엠케이전자, 반도체 소재 성장에 1Q 영업익 132% 급증",
-          "url": "https://www.asiae.co.kr/article/2026051516045093260",
-          "source": "아시아경제",
-          "published_at": "2026-05-15T07:04:50",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 엠케이전자, AI서버 메모리 강세 수혜…1Q 어닝서프라이즈 증권가 전망에 상승세",
-          "url": "https://www.etoday.co.kr/news/view/2578315",
-          "source": "이투데이",
-          "published_at": "2026-04-23T00:05:00",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "엠케이전자, 32.6억 규모 전환청구권 행사",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04716646645416448",
-          "source": "이데일리",
-          "published_at": "2026-04-15T08:22:22",
-          "causal_chain": "",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "index_change_pct": -2.11,
-      "index_multiple_current": -3.68,
-      "index_multiple_eligible": false,
-      "range_240d": {
-        "high": 31300,
-        "high_date": "2026-04-23",
-        "high_pct": -4.63,
-        "low": 7410,
-        "low_date": "2025-05-26",
-        "low_pct": 302.83,
-        "current": 29850
-      },
-      "daily_20": [
-        {
-          "date": "2026-04-20",
-          "o": 24000,
-          "h": 27900,
-          "l": 23450,
-          "c": 26700
-        },
-        {
-          "date": "2026-04-21",
-          "o": 27000,
-          "h": 27350,
-          "l": 25550,
-          "c": 26750
-        },
-        {
-          "date": "2026-04-22",
-          "o": 26700,
-          "h": 28000,
-          "l": 26150,
-          "c": 26900
-        },
-        {
-          "date": "2026-04-23",
-          "o": 28900,
-          "h": 31300,
-          "l": 26800,
-          "c": 28350
-        },
-        {
-          "date": "2026-04-24",
-          "o": 28850,
-          "h": 29450,
-          "l": 27000,
-          "c": 28650
-        },
-        {
-          "date": "2026-04-27",
-          "o": 29550,
-          "h": 29550,
-          "l": 28000,
-          "c": 29200
-        },
-        {
-          "date": "2026-04-28",
-          "o": 28800,
-          "h": 31100,
-          "l": 27000,
-          "c": 30450
-        },
-        {
-          "date": "2026-04-29",
-          "o": 29850,
-          "h": 30150,
-          "l": 27800,
-          "c": 28450
-        },
-        {
-          "date": "2026-04-30",
-          "o": 28450,
-          "h": 29500,
-          "l": 27750,
-          "c": 27900
-        },
-        {
-          "date": "2026-05-04",
-          "o": 28600,
-          "h": 29600,
-          "l": 27300,
-          "c": 27500
-        },
-        {
-          "date": "2026-05-06",
-          "o": 28300,
-          "h": 28300,
-          "l": 25900,
-          "c": 27100
-        },
-        {
-          "date": "2026-05-07",
-          "o": 27650,
-          "h": 27950,
-          "l": 26100,
-          "c": 26350
-        },
-        {
-          "date": "2026-05-08",
-          "o": 25650,
-          "h": 28850,
-          "l": 25500,
-          "c": 28500
-        },
-        {
-          "date": "2026-05-11",
-          "o": 28900,
-          "h": 29350,
-          "l": 27500,
-          "c": 27700
-        },
-        {
-          "date": "2026-05-12",
-          "o": 27100,
-          "h": 28200,
-          "l": 24700,
-          "c": 25750
-        },
-        {
-          "date": "2026-05-13",
-          "o": 25100,
-          "h": 26750,
-          "l": 24050,
-          "c": 26600
-        },
-        {
-          "date": "2026-05-14",
-          "o": 26150,
-          "h": 30950,
-          "l": 25800,
-          "c": 29650
-        },
-        {
-          "date": "2026-05-15",
-          "o": 30400,
-          "h": 30400,
-          "l": 27400,
-          "c": 28450
-        },
-        {
-          "date": "2026-05-18",
-          "o": 26200,
-          "h": 28000,
-          "l": 24800,
-          "c": 27700
-        },
-        {
-          "date": "2026-05-19",
-          "o": 27600,
-          "h": 31050,
-          "l": 26350,
-          "c": 29850
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 27600,
-        "base": 27600,
-        "prices": [
-          27600,
-          29650,
-          30650,
-          29700,
-          29400,
-          29250,
-          29500,
-          29050,
-          29050,
-          29400,
-          29250,
-          29650,
-          29500,
-          29950,
-          29850,
-          29750,
-          29950,
-          29900,
-          29750,
-          30000,
-          29950,
-          30500,
-          30300,
-          29900,
-          30650,
-          30400,
-          30350,
-          30300,
-          30050,
-          30600,
-          30750,
-          31350,
-          32750,
-          32200,
-          31600
-        ]
-      },
-      "causal_chain": "",
-      "parent_theme": ""
-    },
-    {
       "code": "000370",
       "name": "한화손해보험",
       "rank": 11,
-      "trade_amount": 53723842560,
+      "trade_amount": 54424885710,
       "change_pct": 9.13,
       "close_price": 7770,
       "open_price": 7050,
@@ -4307,7 +4546,7 @@
       "code": "001430",
       "name": "세아베스틸지주",
       "rank": 12,
-      "trade_amount": 48241518000,
+      "trade_amount": 49087772000,
       "change_pct": -6.49,
       "close_price": 70600,
       "open_price": 83900,
