@@ -344,7 +344,7 @@ function renderCalExpandContent(date, data) {
       } else {
         themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
-      return { rank: i + 1, name: s.name, ticker: s.ticker, code: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price: s.last_price ?? s.price ?? interp?.close_price };
+      return { rank: i + 1, name: s.name, ticker: s.ticker, code: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price: s.last_price ?? s.price ?? interp?.close_price, _source_union: s._source_union };
     });
   } else if (interpByName.size > 0) {
     // kiwoom JSON 없음 → stock-*.json (interpretedByName)에서 종목 구성
@@ -890,8 +890,13 @@ function renderCalExpandContent(date, data) {
         <span class="cal-trade-amount">${amountText}</span>
       </div>`;
       const _idAttr_full = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
+      // Q-20260519-CYCLE19-009 — LU(상한가 union) 좌측 accent bar 시각 구분 (design 안 B 채택)
+      // _source_union='limit_up' 케이스만 .cal-feature-card--lu 부여 + a11y aria-label
+      const _isLU_full = it._source_union === 'limit_up';
+      const _luClass_full = _isLU_full ? ' cal-feature-card--lu' : '';
+      const _luAria_full = _isLU_full ? ' aria-label="상한가 종목"' : '';
       return `
-        <div class="cal-feature-card v2"${_idAttr_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+        <div class="cal-feature-card v2${_luClass_full}"${_idAttr_full}${_luAria_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
           ${renderShareButton(it)}
           <div class="cal-feature-head v2">
             <div class="cal-feature-head-left">
@@ -952,8 +957,12 @@ function renderCalExpandContent(date, data) {
       ? `${simpleThemesHtml}<div class="cal-feature-news-empty">관련 뉴스 없음</div>`
       : `<div class="cal-feature-news-empty">관련 뉴스 없음</div>`;
     const _idAttr_nointerp = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
+    // Q-20260519-CYCLE19-009 — LU(상한가 union) 좌측 accent bar (no-interp 분기 정합)
+    const _isLU_nointerp = it._source_union === 'limit_up';
+    const _luClass_nointerp = _isLU_nointerp ? ' cal-feature-card--lu' : '';
+    const _luAria_nointerp = _isLU_nointerp ? ' aria-label="상한가 종목"' : '';
     return `
-      <div class="cal-feature-card v2 no-interp"${_idAttr_nointerp} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+      <div class="cal-feature-card v2 no-interp${_luClass_nointerp}"${_idAttr_nointerp}${_luAria_nointerp} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
         ${renderShareButton(it)}
         <div class="cal-feature-head v2">
           <div class="cal-feature-head-left">

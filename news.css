@@ -2827,6 +2827,30 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   }
 }
 
+/* ───── Q-20260519-CYCLE19-009 (design 안 B) — LU(상한가 union) 좌측 accent bar ─────
+   목적: kiwoom latest_stocks 외 build_daily union 추가된 상한가 종목 시각 구분.
+   레이어: effect-badge 시스템과 분리 (border-left vs inline badge — 중복 X, layer 다름).
+   토큰: #C53939 (한국 증시 빨강, 본 파일 다수 사용 — .stock-pct.up, .section-title.up 등 정합).
+   대비: 본문 #1A1D26 / 배경 var(--bg2)=#F2F4F8 → border#C53939 = WCAG 6.18:1 PASS.
+   모바일: box-sizing border-box 전역 적용 → 카드 전체 폭 무영향, 내부 content 3px 우측 이동만.
+   a11y: renderer.js에서 aria-label="상한가 종목" 부착.
+*/
+.cal-feature-card--lu {
+  border-left: 3px solid #C53939;
+}
+/* 다크모드 — 톤 보정 (effect-badge limit-up 다크모드 color #FCA5A5와 일관) */
+@media (prefers-color-scheme: dark) {
+  .cal-feature-card--lu {
+    border-left-color: #FCA5A5;
+  }
+}
+/* 고대비 모드 — border 강조 (a11y) */
+@media (prefers-contrast: more) {
+  .cal-feature-card--lu {
+    border-left-width: 4px;
+  }
+}
+
 /* ───── DSN-20260425-DSN-004 v9.1 — 시제 칩 [내일 가능] + 법무 푸터 ─────
    §G.1 dsn-v9-tense-chip--imminent: 점선 1.5px·weight 700·predicted 색 토큰 #E55A2B 유지·채도 +0.04.
    §G.2 dsn-v91-disclaimer-footer: 0.75rem · var(--text-secondary) · 펼침 최하단 · 미세 구분선 1px.
