@@ -516,6 +516,19 @@ function renderCalExpandContent(date, data) {
     }
     return null;
   };
+  // cycle20 P1 (2026-05-20) — 카드 좌측 빨간 테두리(.cal-feature-card--lu) 결정용 헬퍼.
+  // 본질 fix: 기존 _source_union==='limit_up' 단일 조건 → kiwoom.latest_stocks 內 상한가 종목(녹십자엠에스 등)은 union 미경유 → 테두리 누락.
+  // 대표 catch (2026-05-20 15:08 KST): "녹십엠에스는 상한가인데도 카드 좌측 빨간 테두리 없음 (광전자는 있음)".
+  // 일관성: status_badges[].effect_badges[].effect === 'limit-up' 검출 시 source 무관 테두리 부여.
+  // anomaly guard 동일 적용 (±35% 초과 = ka10017 source 결함이지만 marker는 유지 — 시각 일관성 우선).
+  const _hasLimitUpEffect = (interp) => {
+    if (!interp || !Array.isArray(interp.status_badges)) return false;
+    for (const b of interp.status_badges) {
+      if (!Array.isArray(b.effect_badges)) continue;
+      if (b.effect_badges.some(e => e.effect === 'limit-up')) return true;
+    }
+    return false;
+  };
 
   // 오늘의 종목: 거래대금 TOP을 base로, 카페·해석 정보 join
   let todayStocks;
@@ -1041,7 +1054,43 @@ function renderCalExpandContent(date, data) {
         }
         candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
       } else {
-        candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+        // cycle20 P1 (2026-05-20) — IPO 첫날 분기 합성 (frontend 폴백).
+        // 본질: build_daily가 IPO 첫날 종목(마키나락스 477850 등)은 daily_20=None 적재 → 미니캔들 빈 영역.
+        // 대표 catch 15:08: "마키나락스는 일봉캔들차트가 보이지 않는다".
+        // 합성 spec: themes '신규상장' + intraday.base(공모가) + intraday.open(시초가) + cur_prc(현재가) → 1-bar 합성.
+        //   카드 chip의 등락률(+300%) = (cur_prc - base) / base 와 같은 기준 적용 → 시각 일관성.
+        //   o = intraday.base (공모가), c = 현재가, h = max(시초/현재/intra prices), l = min(공모/시초/현재/intra prices).
+        //   color: 공모가→현재가 추이 (close>open=양봉/적). 마키나락스 +300% = 빨간 큰 막대.
+        //   비표준 candle semantic (IPO 첫날 daily open=시초가 ≠ 공모가) 이지만 시각 의미 우선.
+        //   aria-label 'IPO 첫날'로 의미 명시. backend SoT 통일(P3)까지의 frontend visual fallback.
+        const _themes = it.interp?.themes || it.themes || [];
+        const _isIpoFirst = _themes.some(t => {
+          const _tname = typeof t === 'string' ? t : (t && t.name) || '';
+          return _tname === '신규상장' || _tname.includes('신규상장');
+        });
+        const _intra = it.interp?.intraday;
+        const _ipoBase = _intra?.base; // 공모가
+        const _ipoOpen = _intra?.open ?? it.interp?.open_price ?? it.open; // 시초가
+        const _ipoClose = it.interp?.close_price ?? it.price ?? (Array.isArray(_intra?.prices) && _intra.prices.length ? _intra.prices[_intra.prices.length - 1] : null);
+        const _intraPricesValid = Array.isArray(_intra?.prices) ? _intra.prices.filter(p => typeof p === 'number' && p > 0) : [];
+        if (_isIpoFirst && _ipoBase && _ipoBase > 0 && _ipoClose && _ipoClose > 0) {
+          // 1-bar synthesis: 공모가→현재가 시각화 (등락률 chip 정합)
+          const _allPoints = [_ipoBase, _ipoClose];
+          if (_ipoOpen && _ipoOpen > 0) _allPoints.push(_ipoOpen);
+          _allPoints.push(..._intraPricesValid);
+          const _ipoHigh = Math.max(..._allPoints);
+          const _ipoLow = Math.min(..._allPoints);
+          const _ipoBar = [{
+            date: date,
+            o: _ipoBase,
+            h: _ipoHigh,
+            l: _ipoLow,
+            c: _ipoClose,
+          }];
+          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" aria-label="IPO 첫날 (공모가→현재가)" title="IPO 첫날: 공모가 ${_ipoBase.toLocaleString()}원 → 현재가 ${_ipoClose.toLocaleString()}원">${buildCandles20(_ipoBar)}</div>`;
+        } else {
+          candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+        }
       }
 
       // 240영업일 가격 레인지 바 (REQ-001 Phase 2 안 B / 레이아웃 v2 — 4행 분해)
@@ -1097,9 +1146,10 @@ function renderCalExpandContent(date, data) {
         <span class="cal-trade-amount">${amountText}</span>
       </div>`;
       const _idAttr_full = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
-      // Q-20260519-CYCLE19-009 — LU(상한가 union) 좌측 accent bar 시각 구분 (design 안 B 채택)
-      // _source_union='limit_up' 케이스만 .cal-feature-card--lu 부여 + a11y aria-label
-      const _isLU_full = it._source_union === 'limit_up';
+      // Q-20260519-CYCLE19-009 + cycle20 P1 (2026-05-20) — LU(상한가) 좌측 accent bar 시각 구분.
+      // 기존: _source_union='limit_up' 단일 조건 → kiwoom.latest_stocks 內 상한가(녹십자엠에스 등) 누락.
+      // 본질 fix: status_badges effect='limit-up' OR _source_union='limit_up' → source 무관 일관 적용 (대표 catch 15:08).
+      const _isLU_full = it._source_union === 'limit_up' || _hasLimitUpEffect(it.interp);
       const _luClass_full = _isLU_full ? ' cal-feature-card--lu' : '';
       const _luAria_full = _isLU_full ? ' aria-label="상한가 종목"' : '';
       return `
@@ -1164,8 +1214,9 @@ function renderCalExpandContent(date, data) {
       ? `${simpleThemesHtml}<div class="cal-feature-news-empty">관련 뉴스 없음</div>`
       : `<div class="cal-feature-news-empty">관련 뉴스 없음</div>`;
     const _idAttr_nointerp = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
-    // Q-20260519-CYCLE19-009 — LU(상한가 union) 좌측 accent bar (no-interp 분기 정합)
-    const _isLU_nointerp = it._source_union === 'limit_up';
+    // Q-20260519-CYCLE19-009 + cycle20 P1 (2026-05-20) — LU(상한가) 좌측 accent bar (no-interp 분기 정합)
+    // status_badges effect 우선 (it.interp 없어도 it.status_badges 패스스루 시 동작), _source_union 폴백.
+    const _isLU_nointerp = it._source_union === 'limit_up' || _hasLimitUpEffect(it.interp) || _hasLimitUpEffect(it);
     const _luClass_nointerp = _isLU_nointerp ? ' cal-feature-card--lu' : '';
     const _luAria_nointerp = _isLU_nointerp ? ' aria-label="상한가 종목"' : '';
     return `
