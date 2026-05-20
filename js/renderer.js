@@ -1433,7 +1433,7 @@ function renderCalExpandContent(date, data) {
   // - fetch 성공 시 240행 dailyData 채택
   // - fetch 실패 (404 / network / parse err) 시 fallback = data-daily20 raw (20영업일, Phase 2 prototype) — graceful degradation
   // - per-stock JSON 부재 (Phase 3 cron 미배포) = 정상 fallback. 콘솔 warn 없음 (정상 흐름).
-  // ChartExpanded.render — js/lib/chart/expanded-chart.js. 13종 toggle + localStorage 영구화.
+  // ChartTV.render — js/lib/chart-tv/expanded-chart.js (Phase 7c, TradingView v5 wrapper). 13종 보조지표 + marker primitive + localStorage 영구화.
   // 본 핸들러 = .cal-feature-card.expanded (기존 상세 보기 accordion)와 별개 — chart-expanded class 분리.
   if (!window._chartExpandInit) {
     // 종목별 fetch 결과 메모이즈 (재클릭 시 재 fetch 회피)
@@ -1509,8 +1509,12 @@ function renderCalExpandContent(date, data) {
       card.classList.add('chart-expanded');
       card.setAttribute('aria-expanded', 'true');
       trigger.setAttribute('aria-expanded', 'true'); // SPEC §5.1/§5.6 — trigger 동기화
-      if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
-        window.ChartExpanded.render(slot, prototypeData, { ticker, exDividendDates });
+      // Phase 7c — ChartExpanded (자체 SVG, git rm) → ChartTV (TradingView v5 wrapper, ESM module) 교체.
+      // contract 정합: window.ChartTV.render(slot, dailyArr, { ticker, exDividendDates, pinkSignalDates, ... })
+      // ESM module은 async load이므로 ChartTV global 등록 지연 가능 — graceful fallback "로딩 중" 유지.
+      // exDividendDates / pinkSignalDates 본질 = marker primitive layer (SPEC §3.4 v6 + §15 verbatim).
+      if (window.ChartTV && typeof window.ChartTV.render === 'function') {
+        window.ChartTV.render(slot, prototypeData, { ticker, exDividendDates });
       } else {
         slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
       }
@@ -1523,8 +1527,8 @@ function renderCalExpandContent(date, data) {
       const lazyData = await _fetchDailybars(ticker);
       if (!lazyData || lazyData.length === 0) return; // fallback 유지
       if (!card.classList.contains('chart-expanded')) return; // 닫힘
-      if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
-        window.ChartExpanded.render(slot, lazyData, { ticker, exDividendDates });
+      if (window.ChartTV && typeof window.ChartTV.render === 'function') {
+        window.ChartTV.render(slot, lazyData, { ticker, exDividendDates });
       }
     }
 

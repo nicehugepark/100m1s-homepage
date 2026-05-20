@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cycle22 Phase 7b — Custom Plugin 3종 + Fibonacci standalone test</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 16px; background: #f7f5ef; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 18px; }
+  h2 { font-size: 14px; margin-top: 24px; }
+  #status { font-size: 12px; color: #6B7A99; padding: 8px; background: white; border-radius: 4px; }
+  #status.pass { color: #1A6B2D; background: #e8f5e9; }
+  #status.fail { color: #C53939; background: #ffebee; }
+  .chart-slot { min-height: 480px; border: 1px solid #ddd; background: white; margin-top: 12px; padding: 8px; }
+  .cal-feature-card { padding: 8px; }
+  #test-results { font-family: 'SF Mono', monospace; font-size: 11px; background: #1e1e1e; color: #d4d4d4; padding: 12px; border-radius: 4px; margin-top: 12px; white-space: pre-wrap; }
+  .pass { color: #4ec9b0; }
+  .fail { color: #f48771; }
+</style>
+</head>
+<body>
+<h1>cycle22 Phase 7b — Custom Plugin 3종 + Fibonacci (TradingView Lightweight Charts v5.0.8) standalone test</h1>
+<div id="status">초기화 대기...</div>
+
+<h2>Chart 1: 일목균형표 (Ichimoku) custom series</h2>
+<div class="cal-feature-card" data-stock-code="TEST-ICHIMOKU">
+  <div id="chart-ichimoku" class="chart-slot"></div>
+</div>
+
+<h2>Chart 2: 매물대 10등분 (Volume by Decile) primitive</h2>
+<div class="cal-feature-card" data-stock-code="TEST-VBD">
+  <div id="chart-vbd" class="chart-slot"></div>
+</div>
+
+<h2>Chart 3: Volume Profile continuous primitive + POC</h2>
+<div class="cal-feature-card" data-stock-code="TEST-VP">
+  <div id="chart-vp" class="chart-slot"></div>
+</div>
+
+<h2>Chart 4: Fibonacci retracement 3종 (38.2/50/61.8%)</h2>
+<div class="cal-feature-card" data-stock-code="TEST-FIB">
+  <div id="chart-fib" class="chart-slot"></div>
+</div>
+
+<h2>Test Results</h2>
+<div id="test-results">실행 대기...</div>
+
+<script type="module">
+import {
+  createChart,
+  CandlestickSeries,
+  LineStyle,
+  CrosshairMode,
+} from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
+
+import { IchimokuCustomSeries, buildIchimokuData } from '/js/lib/chart-tv/plugins/ichimoku.js?v=20260521p7b';
+import { VolumeByDecilePrimitive } from '/js/lib/chart-tv/plugins/volume-by-decile.js?v=20260521p7b';
+import { VolumeProfilePrimitive } from '/js/lib/chart-tv/plugins/volume-profile.js?v=20260521p7b';
+import { attachFibonacci } from '/js/lib/chart-tv/plugins/fibonacci.js?v=20260521p7b';
+
+const results = [];
+const errors = [];
+
+window.addEventListener('error', (e) => {
+  errors.push(`window.error: ${e.message} (${e.filename}:${e.lineno})`);
+});
+
+// Sample data — 120 영업일 (Ichimoku Senkou B = 52 + SHIFT 26 산출 가능 본질)
+function genSample() {
+  const today = new Date();
+  const sample = [];
+  let price = 10000;
+  for (let i = 180; i >= 1; i--) {
+    const d = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+    const dow = d.getDay();
+    if (dow === 0 || dow === 6) continue;
+    const open = price + (Math.random() - 0.5) * 200;
+    const close = open + (Math.random() - 0.5) * 300;
+    const high = Math.max(open, close) + Math.random() * 150;
+    const low = Math.min(open, close) - Math.random() * 150;
+    const parts = d.toISOString().slice(0, 10).split('-');
+    sample.push({
+      time: { year: parseInt(parts[0], 10), month: parseInt(parts[1], 10), day: parseInt(parts[2], 10) },
+      open: Math.round(open),
+      high: Math.round(high),
+      low: Math.round(low),
+      close: Math.round(close),
+      _v: Math.round(100000 + Math.random() * 500000),
+    });
+    price = close;
+  }
+  return sample;
+}
+
+function baseChartOptions() {
+  return {
+    width: 1100,
+    height: 440,
+    layout: {
+      background: { color: 'transparent' },
+      textColor: 'rgba(0,0,0,0.6)',
+    },
+    grid: {
+      vertLines: { color: 'rgba(0,0,0,0.08)', style: LineStyle.Dotted },
+      horzLines: { color: 'rgba(0,0,0,0.08)', style: LineStyle.Dotted },
+    },
+    crosshair: { mode: CrosshairMode.Normal },
+    timeScale: {
+      borderColor: 'rgba(0,0,0,0.12)',
+      timeVisible: false,
+      secondsVisible: false,
+    },
+    rightPriceScale: {
+      borderColor: 'rgba(0,0,0,0.12)',
+    },
+  };
+}
+
+function buildCandleSeries(chart) {
+  return chart.addSeries(CandlestickSeries, {
+    upColor: '#C53939',
+    downColor: '#1958C7',
+    wickUpColor: '#C53939',
+    wickDownColor: '#1958C7',
+    borderUpColor: '#C53939',
+    borderDownColor: '#1958C7',
+  });
+}
+
+const sample = genSample();
+console.log(`sample data length = ${sample.length}`);
+
+// ───── Test 1: Ichimoku custom series ─────
+try {
+  const chart = createChart(document.getElementById('chart-ichimoku'), baseChartOptions());
+  const candleSeries = buildCandleSeries(chart);
+  candleSeries.setData(sample.map((d) => ({
+    time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
+  })));
+
+  // addCustomSeries 호출 본질
+  const ichimokuSeries = chart.addCustomSeries(new IchimokuCustomSeries(), {});
+  const ichimokuData = buildIchimokuData(sample);
+  ichimokuSeries.setData(ichimokuData);
+
+  chart.timeScale().fitContent();
+  results.push({ name: 'Ichimoku custom series', pass: true, detail: `data.length=${ichimokuData.length}, valid=${ichimokuData.filter(d => d.tenkan != null).length}` });
+} catch (e) {
+  results.push({ name: 'Ichimoku custom series', pass: false, detail: e.message });
+  errors.push(`Ichimoku: ${e.message}`);
+}
+
+// ───── Test 2: Volume by Decile primitive ─────
+try {
+  const chart = createChart(document.getElementById('chart-vbd'), baseChartOptions());
+  const candleSeries = buildCandleSeries(chart);
+  candleSeries.setData(sample.map((d) => ({
+    time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
+  })));
+
+  const vbdPrimitive = new VolumeByDecilePrimitive(chart, candleSeries, sample);
+  candleSeries.attachPrimitive(vbdPrimitive);
+
+  chart.timeScale().fitContent();
+  results.push({ name: 'Volume by Decile primitive', pass: true, detail: `buckets=${vbdPrimitive._buckets ? vbdPrimitive._buckets.length : 0}` });
+} catch (e) {
+  results.push({ name: 'Volume by Decile primitive', pass: false, detail: e.message });
+  errors.push(`VBD: ${e.message}`);
+}
+
+// ───── Test 3: Volume Profile continuous primitive ─────
+try {
+  const chart = createChart(document.getElementById('chart-vp'), baseChartOptions());
+  const candleSeries = buildCandleSeries(chart);
+  candleSeries.setData(sample.map((d) => ({
+    time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
+  })));
+
+  const vpPrimitive = new VolumeProfilePrimitive(chart, candleSeries, sample);
+  candleSeries.attachPrimitive(vpPrimitive);
+
+  chart.timeScale().fitContent();
+  const pocBucket = vpPrimitive._buckets ? vpPrimitive._buckets.find(b => b.isPOC) : null;
+  results.push({ name: 'Volume Profile continuous + POC', pass: true, detail: `buckets=${vpPrimitive._buckets ? vpPrimitive._buckets.length : 0}, POC volume=${pocBucket ? pocBucket.volume : 'N/A'}` });
+} catch (e) {
+  results.push({ name: 'Volume Profile continuous + POC', pass: false, detail: e.message });
+  errors.push(`VP: ${e.message}`);
+}
+
+// ───── Test 4: Fibonacci retracement 3종 ─────
+try {
+  const chart = createChart(document.getElementById('chart-fib'), baseChartOptions());
+  const candleSeries = buildCandleSeries(chart);
+  candleSeries.setData(sample.map((d) => ({
+    time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
+  })));
+
+  const fibLines = attachFibonacci(candleSeries, sample);
+  chart.timeScale().fitContent();
+  results.push({ name: 'Fibonacci 3종 (38.2/50/61.8%)', pass: fibLines.length === 3, detail: `priceLines created=${fibLines.length}` });
+} catch (e) {
+  results.push({ name: 'Fibonacci 3종 (38.2/50/61.8%)', pass: false, detail: e.message });
+  errors.push(`Fib: ${e.message}`);
+}
+
+// ───── Report ─────
+const statusEl = document.getElementById('status');
+const resultsEl = document.getElementById('test-results');
+
+const allPass = results.every((r) => r.pass) && errors.length === 0;
+statusEl.className = allPass ? 'pass' : 'fail';
+statusEl.textContent = allPass
+  ? `✅ All 4 tests PASS (errors: 0)`
+  : `❌ ${results.filter(r => !r.pass).length}/4 FAIL (errors: ${errors.length})`;
+
+const lines = [];
+lines.push(`=== Phase 7b Custom Plugin Test Results ===`);
+lines.push(`Library: TradingView Lightweight Charts v5.0.8 (jsdelivr ESM)`);
+lines.push(`Sample data: ${sample.length} 영업일`);
+lines.push(``);
+results.forEach((r, i) => {
+  const mark = r.pass ? '[PASS]' : '[FAIL]';
+  lines.push(`${mark} ${i+1}. ${r.name}`);
+  lines.push(`        ${r.detail}`);
+});
+lines.push(``);
+lines.push(`window.onerror count: ${errors.length}`);
+if (errors.length > 0) {
+  errors.forEach((e) => lines.push(`  - ${e}`));
+}
+resultsEl.textContent = lines.join('\n');
+
+// global Hook for headless capture
+window._phase7b_test_pass = allPass;
+window._phase7b_test_results = results;
+window._phase7b_test_errors = errors;
+</script>
+</body>
+</html>
