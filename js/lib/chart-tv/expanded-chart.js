@@ -1,17 +1,17 @@
-/* ───── lib/chart-tv/expanded-chart.js — Phase 7a TradingView Lightweight Charts v5 wrapper ─────
-   cycle22 Phase 7a — REQ DOC-20260520-REQ-001 / SPEC DOC-20260520-SPEC-001 v5 §2 §3.4 §13 §15 / DSN §3.6.6.
+/* ───── lib/chart-tv/expanded-chart.js — Phase 7c TradingView Lightweight Charts v5 wrapper (통합본) ─────
+   cycle22 Phase 7a/7b/7c — REQ DOC-20260520-REQ-001 / SPEC DOC-20260520-SPEC-001 v6 §2 §3.4 §13 §15 §15.6 / DSN §3.6.6.
 
    본질:
-   - TradingView Lightweight Charts v5.0.8 채택 (SPEC v3~v5 본질, Apache 2.0, ~35KB gzip)
-   - 자체 SVG 16 모듈 (js/lib/chart/) = Phase 7c 통합 단계에서 교체 cascade. Phase 7a에서는 별건 wrapper 추가만.
-   - Phase 7a 범위: 캔들 + MA 4선 (5/20/60/120) + grid + crosshair + timeScale + ChartTV.render() entry.
-   - Phase 7b 보류: custom plugin 3종 (Ichimoku custom series + 매물대 10등분 primitive + Volume Profile primitive) + Fibonacci horizontal createPriceLine 3종.
-   - Phase 7c 보류: marker primitive 통합 (createSeriesMarkers — 분홍 강세 #2 + 배당락 #6) + renderer.js _openChartExpand 교체 cascade + sw.js STATIC_ASSETS list 정합 + 자체 SVG 16 모듈 git rm.
+   - TradingView Lightweight Charts v5.0.8 채택 (SPEC v3~v6 본질, Apache 2.0, ~35KB gzip)
+   - 자체 SVG 16 모듈 (js/lib/chart/) = Phase 7c 본 단계 git rm 완료. ChartExpanded global 더 이상 미존재.
+   - Phase 7a 범위 (commit 153c4330): 캔들 + MA 4선 (5/20/60/120) + grid + crosshair + timeScale + ChartTV.render() entry.
+   - Phase 7b 범위 (commit 1a60f203): custom plugin 3종 (Ichimoku custom series + 매물대 10등분 primitive + Volume Profile continuous primitive) + Fibonacci horizontal createPriceLine 3종 helper.
+   - Phase 7c 범위 (본 commit): marker primitive 통합 (createSeriesMarkers — 분홍 강세 #2 + 배당락 #6) + plugins 4종 통합 호출 (Ichimoku/매물대/Volume Profile/Fibonacci) + renderer.js _openChartExpand 교체 + sw.js STATIC_ASSETS list 정합 + 자체 SVG 16 모듈 git rm.
 
    ESM 모듈 본질:
    - news.html에서 `<script type="module">` import 의무 (defer classic script와 별개)
-   - 본 wrapper는 ESM `export` + window 등록 dual 패턴 — 자체 SVG ChartExpanded와 동일 contract (`window.ChartTV.render(slot, data, opts)`)
-   - 기존 자체 SVG ChartExpanded는 Phase 7c 교체 cascade까지 그대로 활성
+   - 본 wrapper는 ESM `export` + window 등록 dual 패턴 — 신규 contract (`window.ChartTV.render(slot, data, opts)`)
+   - 자체 SVG ChartExpanded = git rm (renderer.js는 ChartTV.render 직접 호출)
 
    SPEC §3.4 v4 verbatim 채택 본질:
    - 캔들: addCandlestickSeries({upColor:'#C53939', downColor:'#1958C7', wickUp/Down, borderUp/Down})
@@ -45,6 +45,13 @@ import {
   LineStyle,
   CrosshairMode,
 } from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
+
+// Phase 7b plugins 4종 + Phase 7c markers 통합 import (모두 ESM module — wrapper 1회 import로 plugins 통합 로드)
+import { attachFibonacci, detachFibonacci } from './plugins/fibonacci.js';
+import { IchimokuCustomSeries } from './plugins/ichimoku.js';
+import { VolumeByDecilePrimitive } from './plugins/volume-by-decile.js';
+import { VolumeProfilePrimitive } from './plugins/volume-profile.js';
+import { attachMarkers, updateMarkers, detachMarkers } from './plugins/markers.js';
 
 const STORAGE_KEY = 'm100s.chart.tv.indicators.global';
 
@@ -279,7 +286,62 @@ function renderChartTV(container, dailyArr, options = {}) {
     }
   }
 
-  // timeScale fit content (전체 영업일 시각 가시)
+  // ─── Phase 7c — marker primitive + plugins 4종 통합 호출 (toggle state 정합) ───────
+
+  // #2 분홍 강세 신호 + #6 배당락 marker primitive (SPEC v6 §3.4 + §15 + §2.2.1 verbatim)
+  // input: options.pinkSignalDates / options.exDividendDates (Array<'YYYY-MM-DD'>)
+  // default state: pinkSignal=true / exDividend=true (SPEC §4.3 모바일 default ON)
+  let seriesMarkers = null;
+  if (state.pinkSignal !== false || state.exDividend !== false) {
+    seriesMarkers = attachMarkers(candleSeries, {
+      pinkSignalDates: (state.pinkSignal !== false) ? (options.pinkSignalDates || []) : [],
+      exDividendDates: (state.exDividend !== false) ? (options.exDividendDates || []) : [],
+    });
+  }
+
+  // #3 Fibonacci 38.2/50/61.8% horizontal price line (SPEC v6 §3.4 verbatim)
+  let fibLines = [];
+  if (state.fibonacci === true) {
+    fibLines = attachFibonacci(candleSeries, data, {});
+  }
+
+  // #5 일목균형표 custom series (SPEC v6 §2.2.1 #5 + §3.1.2 색상 verbatim)
+  let ichimokuSeries = null;
+  if (state.ichimoku === true) {
+    try {
+      ichimokuSeries = chart.addCustomSeries(new IchimokuCustomSeries(), {});
+      ichimokuSeries.setData(data.map((d) => ({
+        time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
+      })));
+    } catch (err) {
+      // custom series API 미지원 또는 plugin 본문 incompatibility — silent fail
+      ichimokuSeries = null;
+    }
+  }
+
+  // #1 매물대 10등분 ISeriesPrimitive (SPEC v6 §2.2.1 #1)
+  let volumeByDecile = null;
+  if (state.volumeProfile10 === true) {
+    try {
+      volumeByDecile = new VolumeByDecilePrimitive(chart, candleSeries, data);
+      candleSeries.attachPrimitive(volumeByDecile);
+    } catch (err) {
+      volumeByDecile = null;
+    }
+  }
+
+  // #12 Volume Profile continuous ISeriesPrimitive (SPEC v6 §2.2.1 #12)
+  let volumeProfileCont = null;
+  if (state.volumeProfile === true) {
+    try {
+      volumeProfileCont = new VolumeProfilePrimitive(chart, candleSeries, data);
+      candleSeries.attachPrimitive(volumeProfileCont);
+    } catch (err) {
+      volumeProfileCont = null;
+    }
+  }
+
+  // timeScale fit content (전체 영업일 시각 가시 — plugins attach 후 호출 본질)
   chart.timeScale().fitContent();
 
   // close button — slot 내부 닫기 (renderer.js _openChartExpand close 분기는 트리거 재클릭으로 처리, 본 close는 보조)
@@ -308,8 +370,15 @@ function renderChartTV(container, dailyArr, options = {}) {
     chart,
     candleSeries,
     maSeries,
+    seriesMarkers,
+    fibLines,
+    ichimokuSeries,
+    volumeByDecile,
+    volumeProfileCont,
     destroy() {
       try { ro.disconnect(); } catch (e) { /* noop */ }
+      try { if (seriesMarkers) detachMarkers(seriesMarkers); } catch (e) { /* noop */ }
+      try { if (fibLines && fibLines.length) detachFibonacci(candleSeries, fibLines); } catch (e) { /* noop */ }
       try { chart.remove(); } catch (e) { /* noop */ }
     },
   };
