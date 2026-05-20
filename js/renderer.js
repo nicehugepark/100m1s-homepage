@@ -1052,7 +1052,10 @@ function renderCalExpandContent(date, data) {
           const md = lastBarDate.slice(5).replace('-', '/').replace(/^0/, '');
           staleMetaHtml = `<div class="cal-feature-stale-note" aria-label="가격 데이터 시점">${md} 종가 기준</div>`;
         }
-        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
+        // cycle22 P1: 미니캔들 클릭 → 확대 차트 expand. data-daily20 = 20영업일 raw (JSON stringified).
+        // Phase 3 240일 backend swap 시 data-daily20을 240bar로 교체 가능 (구조 변경 없음).
+        const _d20Json = JSON.stringify(d20).replace(/"/g, '&quot;');
+        candles20Html = `<div class="cal-feature-candles20" data-expand-trigger="chart" data-daily20="${_d20Json}" role="button" tabindex="0" aria-label="20영업일 일봉, 클릭 시 확대 차트" aria-expanded="false">${buildCandles20(d20)}</div>`;
       } else {
         // cycle21 P1 (2026-05-20 15:57 KST) — IPO 첫날 일봉 spec 정합 (장대양봉 → 점상 fix).
         // 본질: build_daily가 IPO 첫날 종목(마키나락스 477850 등)은 daily_20=None 적재 → 미니캔들 빈 영역.
@@ -1097,7 +1100,9 @@ function renderCalExpandContent(date, data) {
           if (_ipoBase && _ipoBase > 0) _titleParts.push(`공모가 ${_ipoBase.toLocaleString()}원`);
           _titleParts.push(`시초가 ${_openPrice.toLocaleString()}원 → 현재가 ${_ipoClose.toLocaleString()}원`);
           const _title = _titleParts.join(' / ');
-          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" aria-label="IPO 첫날 일봉" title="${_title}">${buildCandles20(_ipoBar)}</div>`;
+          // cycle22 P1: IPO 1-bar 합성도 클릭 trigger 부여. 보조지표 대부분은 데이터 부족 placeholder 표시.
+          const _ipoJson = JSON.stringify(_ipoBar).replace(/"/g, '&quot;');
+          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" data-expand-trigger="chart" data-daily20="${_ipoJson}" role="button" tabindex="0" aria-label="IPO 첫날 일봉, 클릭 시 확대 차트" aria-expanded="false" title="${_title}">${buildCandles20(_ipoBar)}</div>`;
         } else {
           candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
         }
@@ -1416,6 +1421,70 @@ function renderCalExpandContent(date, data) {
       _syncToggleText(card);
     });
     window._headerBadgeExpandInit = true;
+  }
+
+  // cycle22 P1 (2026-05-20) — 미니캔들 클릭 → 카드 하단 확대 차트 expand (SPEC-001 §5 + DSN §3.6.6).
+  // .cal-feature-candles20[data-expand-trigger="chart"] click → 카드에 .chart-expanded class + .cal-feature-chart-expanded 슬롯 lazy fill.
+  // 데이터 = trigger의 data-daily20 attr (JSON stringified daily_20 240/20 영업일).
+  // ChartExpanded.render — js/lib/chart/expanded-chart.js. 13종 toggle + localStorage 영구화.
+  // 본 핸들러 = .cal-feature-card.expanded (기존 상세 보기 accordion)와 별개 — chart-expanded class 분리.
+  if (!window._chartExpandInit) {
+    document.addEventListener('click', e => {
+      const trigger = e.target.closest('[data-expand-trigger="chart"]');
+      if (!trigger) return;
+      const card = trigger.closest('.cal-feature-card');
+      if (!card) return;
+      e.stopPropagation();
+      const isOpen = card.classList.contains('chart-expanded');
+      if (isOpen) {
+        card.classList.remove('chart-expanded');
+        card.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      // 슬롯 lazy 생성
+      let slot = card.querySelector('.cal-feature-chart-expanded');
+      if (!slot) {
+        slot = document.createElement('div');
+        slot.className = 'cal-feature-chart-expanded';
+        slot.setAttribute('aria-live', 'polite');
+        const details = card.querySelector('.cal-feature-details');
+        if (details) {
+          card.insertBefore(slot, details);
+        } else {
+          card.appendChild(slot);
+        }
+      }
+      const ticker = card.getAttribute('data-stock-code') || '';
+      let dailyData = [];
+      let exDividendDates = [];
+      try {
+        const stash = trigger.getAttribute('data-daily20');
+        if (stash) dailyData = JSON.parse(stash);
+        const exd = trigger.getAttribute('data-exdividend');
+        if (exd) exDividendDates = JSON.parse(exd);
+      } catch (err) {
+        dailyData = [];
+      }
+      if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
+        window.ChartExpanded.render(slot, dailyData, { ticker, exDividendDates });
+      } else {
+        slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
+      }
+      card.classList.add('chart-expanded');
+      card.setAttribute('aria-expanded', 'true');
+      requestAnimationFrame(() => {
+        const closeBtn = slot.querySelector('.cal-chart-close');
+        if (closeBtn) closeBtn.focus();
+      });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const trigger = e.target.closest('[data-expand-trigger="chart"]');
+      if (!trigger) return;
+      e.preventDefault();
+      trigger.click();
+    });
+    window._chartExpandInit = true;
   }
 
   // 공유 버튼 이벤트 위임 (1회만 등록)
