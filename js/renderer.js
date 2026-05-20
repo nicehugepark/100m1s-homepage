@@ -461,7 +461,14 @@ function renderCalExpandContent(date, data) {
     featureSource = 'fallback';
     featureItems = kiwoomStocks.slice(0, 6).map(s => {
       const interp = interpByName.get(s.name);
-      const pct = interp?.change_pct ?? s.change_pct ?? s.max_change_pct ?? null;
+      // cycle20 P1 — limit-up/down status_badges 우선 (featureItems primary)
+      const _featLimit = (interp && Array.isArray(interp.status_badges))
+        ? interp.status_badges.find(b => Array.isArray(b.effect_badges)
+            && b.effect_badges.some(e => e.effect === 'limit-up' || e.effect === 'limit-down')
+            && b.flu_rt != null
+            && Math.abs(b.flu_rt) <= 35) // anomaly guard (±35% 초과 = ka10017 source 결함, P3 audit)
+        : null;
+      const pct = _featLimit ? _featLimit.flu_rt : (interp?.change_pct ?? s.change_pct ?? s.max_change_pct ?? null);
       const themes = (interp?.themes || themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 3);
       return { name: s.name, pct, themes, links: [], ticker: s.ticker, reason: '', interp };
     });
@@ -472,24 +479,63 @@ function renderCalExpandContent(date, data) {
     for (const [name, interp] of interpByName) {
       if (featureItems.length >= 6) break;
       const themes = (interp.themes || []).slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
-      featureItems.push({ name, pct: interp.change_pct ?? null, themes, links: [], code: interp.code || '', ticker: interp.code || '', reason: '', interp });
+      // cycle20 P1 — limit-up/down status_badges 우선 (featureItems no-kiwoom)
+      const _featLimit2 = Array.isArray(interp.status_badges)
+        ? interp.status_badges.find(b => Array.isArray(b.effect_badges)
+            && b.effect_badges.some(e => e.effect === 'limit-up' || e.effect === 'limit-down')
+            && b.flu_rt != null
+            && Math.abs(b.flu_rt) <= 35) // anomaly guard (±35% 초과 = ka10017 source 결함, P3 audit)
+        : null;
+      const _featPct2 = _featLimit2 ? _featLimit2.flu_rt : (interp.change_pct ?? null);
+      featureItems.push({ name, pct: _featPct2, themes, links: [], code: interp.code || '', ticker: interp.code || '', reason: '', interp });
     }
   }
+
+  // cycle20 P1 (2026-05-20) — 상한가/하한가 카드 등락률 status_badges 우선 사용 (frontend 빠른 fix)
+  // 본질: build_daily.py SoT 결함으로 limit-up 종목의 interp.change_pct가 부정합 (예: 광전자 -1.46% vs 실제 +29.96%).
+  //   intraday.base 잘못된 기준 → change_pct 잘못 계산. backend SoT 통일은 별건 P2 후행.
+  // frontend가 정합 책임: status_badges[].effect_badges[].effect === 'limit-up'/'limit-down' 있고
+  //   status_badges[].flu_rt + cur_prc 정의 시 → 카드 pct/price를 그것으로 override.
+  // mismatch 4/9 종목 catch (광전자/마키나락스/성문전자/케이엠제약, 2026-05-20 13:43 KST lead 진단).
+  // DSN-arch-frontend §3.6.4 spec 신설.
+  const _extractLimitEffect = (interp) => {
+    if (!interp || !Array.isArray(interp.status_badges)) return null;
+    for (const b of interp.status_badges) {
+      if (!Array.isArray(b.effect_badges)) continue;
+      const isLimit = b.effect_badges.some(e => e.effect === 'limit-up' || e.effect === 'limit-down');
+      if (isLimit && b.flu_rt != null && b.cur_prc != null) {
+        // range guard: 한국 증시 상한가/하한가 ±30% 제도적 fact. ±35% 초과 = ka10017 source anomaly (예: 마키나락스 +300%).
+        // anomaly 시 status_badges override 무효 → 기존 change_pct fallback 사용. P3 backend audit 별건 trigger.
+        if (Math.abs(b.flu_rt) > 35) {
+          // eslint-disable-next-line no-console
+          console.warn(`[limit-up-mismatch] anomaly flu_rt=${b.flu_rt} for ${interp.code}/${interp.name} — skip override (P3 backend audit)`);
+          return null;
+        }
+        return { flu_rt: b.flu_rt, cur_prc: b.cur_prc };
+      }
+    }
+    return null;
+  };
 
   // 오늘의 종목: 거래대금 TOP을 base로, 카페·해석 정보 join
   let todayStocks;
   if (kiwoomStocks.length > 0) {
     todayStocks = kiwoomStocks.map((s, i) => {
       const interp = interpByName.get(s.name);
-      // 등락률: stock JSON의 종가 기준 우선 (키움 max_change_pct는 장중 최대라 부정확)
-      const pct = interp?.change_pct ?? s.change_pct ?? s.max_change_pct ?? null;
+      // 등락률: cycle20 P1 — limit-up/down status_badges 우선 (build_daily SoT 결함 회피)
+      // 그 외 stock JSON 종가 기준 우선 (키움 max_change_pct는 장중 최대라 부정확)
+      const _limitEff = _extractLimitEffect(interp);
+      const pct = _limitEff ? _limitEff.flu_rt : (interp?.change_pct ?? s.change_pct ?? s.max_change_pct ?? null);
       let themes;
       if (interp && Array.isArray(interp.themes) && interp.themes.length > 0) {
         themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
       } else {
         themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
-      return { rank: i + 1, name: s.name, ticker: s.ticker, code: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price: s.last_price ?? s.price ?? interp?.close_price, _source_union: s._source_union };
+      // price도 limit-up 시 cur_prc 우선 (candle direction 정합)
+      const _priceBase = s.last_price ?? s.price ?? interp?.close_price;
+      const price = _limitEff ? _limitEff.cur_prc : _priceBase;
+      return { rank: i + 1, name: s.name, ticker: s.ticker, code: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price, _source_union: s._source_union };
     });
   } else if (interpByName.size > 0) {
     // kiwoom JSON 없음 → stock-*.json (interpretedByName)에서 종목 구성
@@ -501,14 +547,18 @@ function renderCalExpandContent(date, data) {
       if (Array.isArray(interp.themes) && interp.themes.length > 0) {
         themes = interp.themes.slice(0, 3).map(t => typeof t === 'string' ? { name: t } : t);
       }
+      // cycle20 P1 — limit-up/down status_badges 우선 (no-kiwoom 분기)
+      const _limitEff = _extractLimitEffect(interp);
+      const _pct = _limitEff ? _limitEff.flu_rt : (interp.change_pct ?? null);
+      const _price = _limitEff ? _limitEff.cur_prc : (interp.close_price ?? null);
       todayStocks.push({
         rank: interp.rank || idx,
         name,
         code: interp.code || interp.ticker || '',
         ticker: interp.code || interp.ticker || '',
-        pct: interp.change_pct ?? null,
+        pct: _pct,
         amount: interp.trade_amount ?? null,
-        price: interp.close_price ?? null,
+        price: _price,
         open: interp.open_price ?? null,
         high: interp.high_price ?? null,
         low: interp.low_price ?? null,
