@@ -1421,6 +1421,25 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 @media (prefers-color-scheme: dark) {
   .cal-day-meta__updated { color: #64748B; }
 }
+/* Q-CYCLE20-P2 (2026-05-20) — kiwoom 마지막 폴링 chip (SPEC-001 §I.4 확장).
+   fresh: 정상 (회색) / info: 장 외 시간 정보 (회색) / stale: 장중 10분+ 지연 (빨강 강조). */
+.cal-day-meta__snapshot {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.cal-day-meta__snapshot--info,
+.cal-day-meta__snapshot--fresh { color: #94A3B8; }
+.cal-day-meta__snapshot--stale {
+  color: #C53939;
+  font-weight: 700;
+}
+@media (prefers-color-scheme: dark) {
+  .cal-day-meta__snapshot--info,
+  .cal-day-meta__snapshot--fresh { color: #64748B; }
+  .cal-day-meta__snapshot--stale { color: #F87171; }
+}
 .cal-section { margin-bottom: 22px; }
 .cal-section:last-child { margin-bottom: 0; }
 .cal-section-title {

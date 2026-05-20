@@ -258,6 +258,10 @@ async function loadCalDayData(date) {
   const dataSource = (stockDailyData && stockDailyData.data_source) || 'kiwoom';
   // REQ-033 — 마지막 업데이트 시각 (build_daily.py generated_at). SPEC-001 §I.4.
   const generatedAt = (stockDailyData && stockDailyData.generated_at) || '';
+  // Q-CYCLE20-P2 (2026-05-20) — kiwoom raw 마지막 폴링 시각 (SPEC-001 §I.4 확장).
+  //   장중 stale 데이터 가시화. kiwoom 폴백 path(stocks 합성 객체)는 last_snapshot_at 없음 →
+  //   자연 미표시 (FLR-AGT-002 거짓 충실성 차단).
+  const lastSnapshotAt = (kiwoom && typeof kiwoom.last_snapshot_at === 'string') ? kiwoom.last_snapshot_at : '';
   const result = {
     kiwoom,
     cafePosts: [],
@@ -265,7 +269,8 @@ async function loadCalDayData(date) {
     interpretedByName,
     macroEvents,
     dataSource,
-    generatedAt
+    generatedAt,
+    lastSnapshotAt
   };
   calDayCache[date] = result;
   _persistCache();
