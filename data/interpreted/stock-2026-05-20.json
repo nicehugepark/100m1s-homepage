@@ -1,6 +1,6 @@
 {
   "date": "2026-05-20",
-  "generated_at": "2026-05-20T12:07:44.437835",
+  "generated_at": "2026-05-20T12:19:26.234739",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -47,6 +47,12 @@
   "narratives": [],
   "themes_macro_summary": [
     {
+      "keyword": "삼성파업",
+      "summary": "삼성전자 47만 노조 총파업 임박 → 메모리반도체 생산 차질 우려 → 전자·반도체주 약세",
+      "source_count": 6,
+      "verified": true
+    },
+    {
       "keyword": "파업우려",
       "summary": "삼성전자 노사분쟁 총파업 위험 → 주가 리스크 선반영 → 반도체·전자 섹터 조정 압력",
       "source_count": 4,
@@ -69,12 +75,6 @@
       "summary": "삼성전자 노사 중노위 조정 → 임금 인상 비용 증가 → 반도체 섹터 실적 부담 우려",
       "source_count": 3,
       "verified": true
-    },
-    {
-      "keyword": "AI글라스",
-      "summary": "AI 글라스·피지컬 AI 상용화 가속 → 현대차그룹·반도체 부품사 실적 개선 기대 → 자동차·부품 섹터",
-      "source_count": 3,
-      "verified": true
     }
   ],
   "themes_tree": {
@@ -83,6 +83,12 @@
       {
         "name": "반도체",
         "children": [
+          {
+            "name": "HBM/메모리 반도체",
+            "summary": "HBM 수혜 본격화와 SK하이닉스 메모리 재평가 기대로 관련 장비·소재주에 자금 집중",
+            "source_count": 4,
+            "verdict": "pass"
+          },
           {
             "name": "HBM/메모리 반도체",
             "summary": "HBM 수혜 본격화와 SK하이닉스 메모리 재평가 기대로 관련 장비·소재주에 자금 집중",
@@ -111,11 +117,23 @@
             "name": "반도체 소부장",
             "summary": "삼성·SK하이닉스 대규모 투자와 BCD 판가 인상으로 소재·부품·장비주 실적 모멘텀 확대",
             "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "반도체 소부장",
+            "summary": "삼성·SK하이닉스 대규모 투자와 BCD 판가 인상으로 소재·부품·장비주 실적 모멘텀 확대",
+            "source_count": 4,
             "verdict": "weak"
           },
           {
             "name": "HBM",
             "summary": "HBM 수요 본격화로 디아이·쎄크 등 후공정·검사장비주 실적 모멘텀 부각, 메모리 밸류체인 자금 유입.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "HBM",
+            "summary": "HBM 수혜 본격화 전망에 디아이·쎄크 등 후공정·검사장비주 이익 증가 기대.",
             "source_count": 2,
             "verdict": "weak"
           }
@@ -137,6 +155,18 @@
             "verdict": "pass"
           },
           {
+            "name": "피지컬 AI/로봇",
+            "summary": "현대차그룹 피지컬 AI 성과 구체화와 로봇 부품 상용화로 자동차·로봇 관련주 수혜",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 인프라/데이터센터",
+            "summary": "OpenAI Guaranteed Capacity 공급과 데이터센터 인프라 투자 확대로 전력·기판·인프라 관련주 수혜",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
             "name": "AI 인프라/데이터센터",
             "summary": "OpenAI Guaranteed Capacity 공급과 데이터센터 인프라 투자 확대로 전력·기판·인프라 관련주 수혜",
             "source_count": 3,
@@ -153,12 +183,30 @@
             "summary": "현대차·코아시아씨엠·마키나락스 등 피지컬 AI(로봇·자율주행 결합 AI) 사업화 가속으로 광학·산업 AI 밸류체인에 매수세 집중.",
             "source_count": 3,
             "verdict": "weak"
+          },
+          {
+            "name": "피지컬 AI",
+            "summary": "현대차·코아시아씨엠·마키나락스 등 피지컬 AI 가속화로 광학·로보틱스·산업 AI 솔루션 섹터 자금 유입.",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "자율주행",
+            "summary": "LG이노텍·카카오모빌리티 자율주행 솔루션 공동개발 협력으로 자율주행 부품·플랫폼 섹터 모멘텀 확대.",
+            "source_count": 2,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "바이오",
         "children": [
+          {
+            "name": "바이오 CDMO",
+            "summary": "삼성바이오로직스 영업이익률 45% 전망과 에스티팜 RNA 원료 수요 확대로 위탁개발생산 섹터 성장 모멘텀",
+            "source_count": 3,
+            "verdict": "pass"
+          },
           {
             "name": "바이오 CDMO",
             "summary": "삼성바이오로직스 영업이익률 45% 전망과 에스티팜 RNA 원료 수요 확대로 위탁개발생산 섹터 성장 모멘텀",
@@ -187,12 +235,24 @@
             "summary": "현대건설·DL이앤씨 압구정5구역 수주전 격화로 대형 건설사 도시정비 경쟁 부각",
             "source_count": 3,
             "verdict": "weak"
+          },
+          {
+            "name": "도시정비 재건축",
+            "summary": "현대건설·DL이앤씨 압구정5구역 수주전 격화로 대형 건설사 도시정비 경쟁 부각",
+            "source_count": 3,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "밸류업",
         "children": [
+          {
+            "name": "지주사 재평가",
+            "summary": "SK스퀘어 하이닉스 지분가치와 LS 비상장 자회사 가치 부각으로 지주사 디스카운트 해소 기대",
+            "source_count": 3,
+            "verdict": "pass"
+          },
           {
             "name": "지주사 재평가",
             "summary": "SK스퀘어 하이닉스 지분가치와 LS 비상장 자회사 가치 부각으로 지주사 디스카운트 해소 기대",
@@ -219,8 +279,25 @@
         ]
       },
       {
+        "name": "주주환원",
+        "children": [
+          {
+            "name": "자사주 공개매수",
+            "summary": "세아홀딩스 300억 자사주 공개매수 발표로 주가 10% 급등, 저평가 지주사 주주환원 테마 확산.",
+            "source_count": 3,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
         "name": "소비재",
         "children": [
+          {
+            "name": "유통/면세점",
+            "summary": "신세계 백화점·면세점 동반 호황으로 역대 최고 실적 전망과 목표가 상향",
+            "source_count": 2,
+            "verdict": "pass"
+          },
           {
             "name": "유통/면세점",
             "summary": "신세계 백화점·면세점 동반 호황으로 역대 최고 실적 전망과 목표가 상향",
@@ -249,12 +326,24 @@
             "summary": "쏠리드 저PBR 통신장비주 실적 낙관 전망으로 밸류업 수혜 기대",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "저PBR 통신장비",
+            "summary": "쏠리드 저PBR 통신장비주 실적 낙관 전망으로 밸류업 수혜 기대",
+            "source_count": 2,
+            "verdict": "weak"
           }
         ]
       },
       {
         "name": "자동차부품",
         "children": [
+          {
+            "name": "타이어/열관리",
+            "summary": "한국타이어 열관리 부문이 타이어 업황 방어하며 실적 개선 모멘텀 확보",
+            "source_count": 2,
+            "verdict": "weak"
+          },
           {
             "name": "타이어/열관리",
             "summary": "한국타이어 열관리 부문이 타이어 업황 방어하며 실적 개선 모멘텀 확보",
@@ -277,6 +366,12 @@
             "summary": "전진건설로봇 글로벌 수요 견조와 두산로보틱스 IR로 건설기계·로봇 섹터 모멘텀",
             "source_count": 2,
             "verdict": "weak"
+          },
+          {
+            "name": "건설기계/로봇",
+            "summary": "전진건설로봇 글로벌 수요 견조와 두산로보틱스 IR로 건설기계·로봇 섹터 모멘텀",
+            "source_count": 2,
+            "verdict": "weak"
           }
         ]
       },
@@ -288,12 +383,24 @@
             "summary": "美 AI 데이터센터 전력 수요 폭증으로 SOFC 부품(한선엔지니어링)·HD현대중공업 엔진 수주 기대, 전력 인프라 섹터 자금 유입.",
             "source_count": 2,
             "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터 전력 인프라",
+            "summary": "美 AI 데이터센터 전력 수요 급증으로 HD현대중공업 엔진·한선엔지니어링 SOFC 부품 공급 본격화.",
+            "source_count": 2,
+            "verdict": "unverified"
           }
         ]
       },
       {
         "name": "방산",
         "children": [
+          {
+            "name": "방산 3D 프린팅",
+            "summary": "링크솔루션 국방부 적합제품 지정·쎄크 방산 IR 등 방산 첨단제조 밸류체인 확장, 정부 조달 모멘텀.",
+            "source_count": 2,
+            "verdict": "weak"
+          },
           {
             "name": "방산 3D 프린팅",
             "summary": "링크솔루션 국방부 적합제품 지정·쎄크 방산 IR 등 방산 첨단제조 밸류체인 확장, 정부 조달 모멘텀.",
@@ -309,6 +416,12 @@
             "name": "원료의약품 CDMO",
             "summary": "유한양행 길리어드와 2102억 원료의약품 공급계약 체결, 국내 CDMO 글로벌 수출 모멘텀 강화로 제약섹터 재평가.",
             "source_count": 2,
+            "verdict": "pass"
+          },
+          {
+            "name": "원료의약품 CDMO",
+            "summary": "유한양행 길리어드와 2102억 원료의약품 공급계약 체결, 국내 CDMO 글로벌 수출 모멘텀 강화로 제약섹터 재평가.",
+            "source_count": 2,
             "verdict": "weak"
           }
         ]
@@ -320,7 +433,7 @@
       "code": "036930",
       "name": "주성엔지니어링",
       "rank": 1,
-      "trade_amount": 945406000000,
+      "trade_amount": 964896000000,
       "change_pct": 16.45,
       "close_price": 206000,
       "open_price": 176900,
@@ -565,7 +678,7 @@
       "code": "288180",
       "name": "케이피항공산업",
       "rank": 2,
-      "trade_amount": 148174000000,
+      "trade_amount": 148331000000,
       "change_pct": -4.22,
       "close_price": 42000,
       "open_price": 46500,
@@ -869,13 +982,18 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "001820",
       "name": "삼화콘덴서",
       "rank": 3,
-      "trade_amount": 134396000000,
+      "trade_amount": 139675000000,
       "change_pct": 11.11,
       "close_price": 71000,
       "open_price": 63200,
@@ -1076,15 +1194,266 @@
           75000
         ]
       },
-      "togusa_verdict": "weak_bear",
+      "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "253840",
+      "name": "수젠텍",
+      "rank": 4,
+      "trade_amount": 135678000000,
+      "change_pct": 2.11,
+      "close_price": 6770,
+      "open_price": 6680,
+      "high_price": 6770,
+      "low_price": 6540,
+      "industry": "의료용품 및 기타 의약 관련제품 제조업",
+      "sector": "체외진단 기기 및 시약",
+      "themes": [
+        "바이오",
+        "희귀질환 진단"
+      ],
+      "theme_paths": [
+        {
+          "name": "희귀질환 진단",
+          "path": [
+            "바이오",
+            "희귀질환 진단"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-20",
+        "rank": 14,
+        "change_pct": 2.81,
+        "trade_amount": 171031333750
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "수젠텍, 한타바이러스 美·유럽 확산에 5% 상승 [Why 바이오]",
+          "url": "https://www.sedaily.com/article/20043435",
+          "source": "서울경제",
+          "published_at": "2026-05-13T01:19:29",
+          "causal_chain": "한타바이러스 대서양 크루즈선 집단감염 → 승객 120여 명 미국·유럽 각국 분산 이동으로 추가 확산 우려 부각 → 코로나19 팬데믹 당시 신속진단키트·면역진단 플랫폼 글로벌 공급 경험 보유한 수젠텍에 진단 수요 기대감 유입.",
+          "macro_event": "한타바이러스 글로벌 확산 (WHO 크루즈선 확진 9명·사망 3명, 미국·유럽 각국 이동)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[특징주] 코로나19 변이 확산 조짐에 수젠텍ㆍ신풍제약 등 ↑",
+          "url": "https://www.etoday.co.kr/news/view/2576646",
+          "source": "이투데이",
+          "published_at": "2026-04-17T00:43:00",
+          "causal_chain": "코로나19 변이 확산 조짐 → 진단키트 수요 증가 기대 → 수젠텍 주가 상승.",
+          "macro_event": "코로나19 변이 확산 조짐",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -3.6,
+      "index_multiple_current": -0.59,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 9390,
+        "high_date": "2025-05-29",
+        "high_pct": -27.9,
+        "low": 4310,
+        "low_date": "2026-04-03",
+        "low_pct": 57.08,
+        "current": 6770
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-21",
+          "o": 7000,
+          "h": 7310,
+          "l": 6400,
+          "c": 6480
+        },
+        {
+          "date": "2026-04-22",
+          "o": 6450,
+          "h": 7140,
+          "l": 6150,
+          "c": 6160
+        },
+        {
+          "date": "2026-04-23",
+          "o": 6010,
+          "h": 6560,
+          "l": 5890,
+          "c": 5930
+        },
+        {
+          "date": "2026-04-24",
+          "o": 5910,
+          "h": 6190,
+          "l": 5780,
+          "c": 5840
+        },
+        {
+          "date": "2026-04-27",
+          "o": 5820,
+          "h": 5880,
+          "l": 5620,
+          "c": 5640
+        },
+        {
+          "date": "2026-04-28",
+          "o": 5710,
+          "h": 5960,
+          "l": 5510,
+          "c": 5650
+        },
+        {
+          "date": "2026-04-29",
+          "o": 5640,
+          "h": 5940,
+          "l": 5600,
+          "c": 5720
+        },
+        {
+          "date": "2026-04-30",
+          "o": 5720,
+          "h": 5940,
+          "l": 5550,
+          "c": 5580
+        },
+        {
+          "date": "2026-05-04",
+          "o": 5600,
+          "h": 5700,
+          "l": 5510,
+          "c": 5530
+        },
+        {
+          "date": "2026-05-06",
+          "o": 5550,
+          "h": 5750,
+          "l": 5360,
+          "c": 5420
+        },
+        {
+          "date": "2026-05-07",
+          "o": 5450,
+          "h": 6230,
+          "l": 5450,
+          "c": 5530
+        },
+        {
+          "date": "2026-05-08",
+          "o": 5750,
+          "h": 6920,
+          "l": 5610,
+          "c": 6250
+        },
+        {
+          "date": "2026-05-11",
+          "o": 6170,
+          "h": 7200,
+          "l": 5900,
+          "c": 6050
+        },
+        {
+          "date": "2026-05-12",
+          "o": 6100,
+          "h": 7700,
+          "l": 5810,
+          "c": 6850
+        },
+        {
+          "date": "2026-05-13",
+          "o": 7250,
+          "h": 7970,
+          "l": 6870,
+          "c": 7150
+        },
+        {
+          "date": "2026-05-14",
+          "o": 6900,
+          "h": 7650,
+          "l": 6900,
+          "c": 6950
+        },
+        {
+          "date": "2026-05-15",
+          "o": 6770,
+          "h": 7440,
+          "l": 6380,
+          "c": 6640
+        },
+        {
+          "date": "2026-05-18",
+          "o": 6850,
+          "h": 7350,
+          "l": 6430,
+          "c": 6460
+        },
+        {
+          "date": "2026-05-19",
+          "o": 6500,
+          "h": 7150,
+          "l": 6330,
+          "c": 6630
+        },
+        {
+          "date": "2026-05-20",
+          "o": 6680,
+          "h": 6770,
+          "l": 6540,
+          "c": 6770
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 6680,
+        "base": 6680,
+        "prices": [
+          6680,
+          7450,
+          7230,
+          7630,
+          8010,
+          7870,
+          7860,
+          7720,
+          7540,
+          7550,
+          7690,
+          7450,
+          7410,
+          7510,
+          7710,
+          7870,
+          7860,
+          7810,
+          7750
+        ]
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "440110",
       "name": "파두",
-      "rank": 4,
-      "trade_amount": 131910000000,
+      "rank": 5,
+      "trade_amount": 134812000000,
       "change_pct": 5.38,
       "close_price": 113700,
       "open_price": 108900,
@@ -1384,261 +1753,10 @@
       "hugepark_grade": "관찰"
     },
     {
-      "code": "253840",
-      "name": "수젠텍",
-      "rank": 5,
-      "trade_amount": 131031000000,
-      "change_pct": 2.11,
-      "close_price": 6770,
-      "open_price": 6680,
-      "high_price": 6770,
-      "low_price": 6540,
-      "industry": "의료용품 및 기타 의약 관련제품 제조업",
-      "sector": "체외진단 기기 및 시약",
-      "themes": [
-        "바이오",
-        "희귀질환 진단"
-      ],
-      "theme_paths": [
-        {
-          "name": "희귀질환 진단",
-          "path": [
-            "바이오",
-            "희귀질환 진단"
-          ]
-        }
-      ],
-      "pick_count": 1,
-      "prev_pick": {
-        "date": "2026-04-20",
-        "rank": 14,
-        "change_pct": 2.81,
-        "trade_amount": 171031333750
-      },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "news": [
-        {
-          "title": "수젠텍, 한타바이러스 美·유럽 확산에 5% 상승 [Why 바이오]",
-          "url": "https://www.sedaily.com/article/20043435",
-          "source": "서울경제",
-          "published_at": "2026-05-13T01:19:29",
-          "causal_chain": "한타바이러스 대서양 크루즈선 집단감염 → 승객 120여 명 미국·유럽 각국 분산 이동으로 추가 확산 우려 부각 → 코로나19 팬데믹 당시 신속진단키트·면역진단 플랫폼 글로벌 공급 경험 보유한 수젠텍에 진단 수요 기대감 유입.",
-          "macro_event": "한타바이러스 글로벌 확산 (WHO 크루즈선 확진 9명·사망 3명, 미국·유럽 각국 이동)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 코로나19 변이 확산 조짐에 수젠텍ㆍ신풍제약 등 ↑",
-          "url": "https://www.etoday.co.kr/news/view/2576646",
-          "source": "이투데이",
-          "published_at": "2026-04-17T00:43:00",
-          "causal_chain": "코로나19 변이 확산 조짐 → 진단키트 수요 증가 기대 → 수젠텍 주가 상승.",
-          "macro_event": "코로나19 변이 확산 조짐",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "index_change_pct": -3.6,
-      "index_multiple_current": -0.59,
-      "index_multiple_eligible": false,
-      "range_240d": {
-        "high": 9390,
-        "high_date": "2025-05-29",
-        "high_pct": -27.9,
-        "low": 4310,
-        "low_date": "2026-04-03",
-        "low_pct": 57.08,
-        "current": 6770
-      },
-      "daily_20": [
-        {
-          "date": "2026-04-21",
-          "o": 7000,
-          "h": 7310,
-          "l": 6400,
-          "c": 6480
-        },
-        {
-          "date": "2026-04-22",
-          "o": 6450,
-          "h": 7140,
-          "l": 6150,
-          "c": 6160
-        },
-        {
-          "date": "2026-04-23",
-          "o": 6010,
-          "h": 6560,
-          "l": 5890,
-          "c": 5930
-        },
-        {
-          "date": "2026-04-24",
-          "o": 5910,
-          "h": 6190,
-          "l": 5780,
-          "c": 5840
-        },
-        {
-          "date": "2026-04-27",
-          "o": 5820,
-          "h": 5880,
-          "l": 5620,
-          "c": 5640
-        },
-        {
-          "date": "2026-04-28",
-          "o": 5710,
-          "h": 5960,
-          "l": 5510,
-          "c": 5650
-        },
-        {
-          "date": "2026-04-29",
-          "o": 5640,
-          "h": 5940,
-          "l": 5600,
-          "c": 5720
-        },
-        {
-          "date": "2026-04-30",
-          "o": 5720,
-          "h": 5940,
-          "l": 5550,
-          "c": 5580
-        },
-        {
-          "date": "2026-05-04",
-          "o": 5600,
-          "h": 5700,
-          "l": 5510,
-          "c": 5530
-        },
-        {
-          "date": "2026-05-06",
-          "o": 5550,
-          "h": 5750,
-          "l": 5360,
-          "c": 5420
-        },
-        {
-          "date": "2026-05-07",
-          "o": 5450,
-          "h": 6230,
-          "l": 5450,
-          "c": 5530
-        },
-        {
-          "date": "2026-05-08",
-          "o": 5750,
-          "h": 6920,
-          "l": 5610,
-          "c": 6250
-        },
-        {
-          "date": "2026-05-11",
-          "o": 6170,
-          "h": 7200,
-          "l": 5900,
-          "c": 6050
-        },
-        {
-          "date": "2026-05-12",
-          "o": 6100,
-          "h": 7700,
-          "l": 5810,
-          "c": 6850
-        },
-        {
-          "date": "2026-05-13",
-          "o": 7250,
-          "h": 7970,
-          "l": 6870,
-          "c": 7150
-        },
-        {
-          "date": "2026-05-14",
-          "o": 6900,
-          "h": 7650,
-          "l": 6900,
-          "c": 6950
-        },
-        {
-          "date": "2026-05-15",
-          "o": 6770,
-          "h": 7440,
-          "l": 6380,
-          "c": 6640
-        },
-        {
-          "date": "2026-05-18",
-          "o": 6850,
-          "h": 7350,
-          "l": 6430,
-          "c": 6460
-        },
-        {
-          "date": "2026-05-19",
-          "o": 6500,
-          "h": 7150,
-          "l": 6330,
-          "c": 6630
-        },
-        {
-          "date": "2026-05-20",
-          "o": 6680,
-          "h": 6770,
-          "l": 6540,
-          "c": 6770
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 6680,
-        "base": 6680,
-        "prices": [
-          6680,
-          7450,
-          7230,
-          7630,
-          8010,
-          7870,
-          7860,
-          7720,
-          7540,
-          7550,
-          7690,
-          7450,
-          7410,
-          7510,
-          7710,
-          7870,
-          7860,
-          7810,
-          7750
-        ]
-      },
-      "togusa_verdict": "neutral",
-      "theme_leader": true,
-      "hugepark_grade": "관찰"
-    },
-    {
       "code": "005950",
       "name": "이수화학",
       "rank": 6,
-      "trade_amount": 102756000000,
+      "trade_amount": 104534000000,
       "change_pct": 10.82,
       "close_price": 13520,
       "open_price": 12330,
@@ -1874,7 +1992,7 @@
       "code": "142280",
       "name": "녹십자엠에스",
       "rank": 7,
-      "trade_amount": 97174000000,
+      "trade_amount": 97218000000,
       "change_pct": 29.84,
       "close_price": 6310,
       "open_price": 4815,
@@ -2312,7 +2430,8 @@
       "themes": [
         "건설",
         "반도체 팹 건설 수주",
-        "실적"
+        "실적",
+        "반도체"
       ],
       "theme_paths": [
         {
@@ -2345,8 +2464,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02643686645450888",
           "source": "이데일리",
           "published_at": "2026-05-20T00:22:49",
-          "causal_chain": "삼성전자·SK하이닉스·DB하이텍 반도체 팹 투자 확대 → 한성크린텍 초순수 수처리 EPC 310억 수주 + 역대급 수주잔고 → 본업 매출 성장으로 올해 턴어라운드 기대.",
-          "macro_event": "삼성전자·SK하이닉스·DB하이텍 반도체 팹 투자 확대 → 초순수 수처리 EPC 수주 확장",
+          "causal_chain": "삼성전자·DB하이텍 반도체 팹 대규모 투자 → 한성크린텍 수처리설비 EPC 잇단 수주(~310억) + 역대급 수주잔고 축적 + 초순수 국산화 모멘텀 → 본업 매출 성장 기반 확보와 턴어라운드 기대 부각.",
+          "macro_event": "삼성전자·DB하이텍 반도체 팹 대규모 투자 확대 → 수처리설비 EPC 수주 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2538,7 +2657,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "185490",
@@ -2741,7 +2863,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "014910",
@@ -2949,7 +3074,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "투자경고",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "004870",
@@ -3208,7 +3336,12 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "121850",
@@ -3416,7 +3549,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "225430",
@@ -3430,8 +3566,17 @@
       "low_price": 2370,
       "industry": "기타 화학제품 제조업",
       "sector": "구강제품, 화장품,기타 생활용품",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "K-뷰티"
+      ],
+      "theme_paths": [
+        {
+          "name": "K-뷰티",
+          "path": [
+            "K-뷰티"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -3442,7 +3587,7 @@
           "url": "https://www.sedaily.com/article/20045849",
           "source": "서울경제",
           "published_at": "2026-05-19T06:16:50",
-          "causal_chain": "한울바이오와 MPC 소재 마우스워시 공동개발 MOU 체결 및 뽀로로 치약 중국·베트남 공급 확대 단계로, 제품 출시·매출 인식 전 초기 협력·유통 단계이며 본업 직접 수혜로 단정할 매출 모멘텀 단서는 본문에 미명시.",
+          "causal_chain": "한울바이오 MPC 소재 마우스워시 공동개발 MOU + 뽀로로 치약 중·베트남 공급 확대 → 본업(구강 케어) 제품 라인업 확장 의지이나, 제품 출시·매출 인식 전 초기 협력·유통 단계로 직접 매출 모멘텀 단서 미명시.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -3457,7 +3602,7 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04250886645448592",
           "source": "이데일리",
           "published_at": "2026-05-13T02:32:19",
-          "causal_chain": "한울바이오와 MPC 소재 마우스워시 공동개발 MOU 체결 및 뽀로로 치약 중국·베트남 공급 확대 단계로, 제품 출시·매출 인식 전 초기 협력·유통 단계이며 본업 직접 수혜로 단정할 매출 모멘텀 단서는 본문에 미명시.",
+          "causal_chain": "한울바이오 MPC 소재 마우스워시 공동개발 MOU + 뽀로로 치약 중·베트남 공급 확대 → 본업(구강 케어) 제품 라인업 확장 의지이나, 제품 출시·매출 인식 전 초기 협력·유통 단계로 직접 매출 모멘텀 단서 미명시.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -3680,7 +3825,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     }
   ]
 }
