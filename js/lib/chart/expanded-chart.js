@@ -267,6 +267,11 @@
         rerender: (newState) => renderExpandedChart(container, dailyArr, { ...options, indicatorState: newState }),
       });
     }
+
+    // Layer 3 crosshair + tooltip wire (Phase 2.2 본체)
+    if (root.ChartInteractionCrosshair && typeof root.ChartInteractionCrosshair.wire === 'function') {
+      root.ChartInteractionCrosshair.wire(container, { data, scale, options });
+    }
   }
 
   // 공개 API

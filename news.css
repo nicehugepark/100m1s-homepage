@@ -3355,6 +3355,40 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border-radius: 6px;
 }
 
+/* Layer 3 crosshair tooltip (Phase 2.2 crosshair.js 정합) */
+.cal-chart-tooltip {
+  position: absolute;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(196, 153, 48, 0.4);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--g80);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 116px;
+  pointer-events: none;
+}
+.cal-chart-tooltip-date {
+  font-weight: 700;
+  color: var(--am);
+  margin-bottom: 4px;
+  font-size: 10px;
+}
+.cal-chart-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cal-chart-tooltip-row span {
+  color: var(--dm);
+}
+.cal-chart-tooltip-row strong {
+  color: var(--g80);
+  font-weight: 600;
+}
+
 /* 다크모드 (SPEC §3.3 보정) */
 @media (prefers-color-scheme: dark) {
   .cal-feature-chart-expanded {
@@ -3382,6 +3416,15 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
     background: rgba(255, 255, 255, 0.04);
     color: #8B95A8;
   }
+  .cal-chart-tooltip {
+    background: rgba(26, 29, 38, 0.95);
+    border-color: rgba(196, 153, 48, 0.4);
+    color: #E2E8F0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+  .cal-chart-tooltip-date { color: #FBE9B5; }
+  .cal-chart-tooltip-row span { color: #8B95A8; }
+  .cal-chart-tooltip-row strong { color: #E2E8F0; }
 }
 
 /* ─────────────────────────────────────────────────────────────────

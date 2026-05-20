@@ -1425,16 +1425,50 @@ function renderCalExpandContent(date, data) {
 
   // cycle22 P1 (2026-05-20) — 미니캔들 클릭 → 카드 하단 확대 차트 expand (SPEC-001 §5 + DSN §3.6.6).
   // .cal-feature-candles20[data-expand-trigger="chart"] click → 카드에 .chart-expanded class + .cal-feature-chart-expanded 슬롯 lazy fill.
-  // 데이터 = trigger의 data-daily20 attr (JSON stringified daily_20 240/20 영업일).
+  //
+  // Phase 2.2 (2026-05-20) — lazy fetch swap:
+  // - 1차 fetch `/data/dailybars/{code}.json` (240영업일, Phase 3 emit_dailybars_per_stock.py 산출)
+  // - fetch 성공 시 240행 dailyData 채택
+  // - fetch 실패 (404 / network / parse err) 시 fallback = data-daily20 raw (20영업일, Phase 2 prototype) — graceful degradation
+  // - per-stock JSON 부재 (Phase 3 cron 미배포) = 정상 fallback. 콘솔 warn 없음 (정상 흐름).
   // ChartExpanded.render — js/lib/chart/expanded-chart.js. 13종 toggle + localStorage 영구화.
   // 본 핸들러 = .cal-feature-card.expanded (기존 상세 보기 accordion)와 별개 — chart-expanded class 분리.
   if (!window._chartExpandInit) {
-    document.addEventListener('click', e => {
-      const trigger = e.target.closest('[data-expand-trigger="chart"]');
-      if (!trigger) return;
-      const card = trigger.closest('.cal-feature-card');
-      if (!card) return;
-      e.stopPropagation();
+    // 종목별 fetch 결과 메모이즈 (재클릭 시 재 fetch 회피)
+    const _dailybarsCache = new Map();
+    async function _fetchDailybars(code) {
+      if (!code) return null;
+      if (_dailybarsCache.has(code)) return _dailybarsCache.get(code);
+      try {
+        const url = `/data/dailybars/${code}.json`;
+        const resp = await fetch(url, { credentials: 'omit' });
+        if (!resp.ok) {
+          _dailybarsCache.set(code, null);
+          return null;
+        }
+        const payload = await resp.json();
+        const rows = Array.isArray(payload && payload.rows) ? payload.rows : null;
+        if (!rows || rows.length === 0) {
+          _dailybarsCache.set(code, null);
+          return null;
+        }
+        // Phase 3 schema {d,o,h,l,c,v,ta} → expanded-chart.js normalize 입력 schema {date,o,h,l,c,v,tv} 정합
+        // build_daily prototype {date,o,h,l,c,v,tv} 와 lazy fetch {d,o,h,l,c,v,ta} 양 호환 — d→date / ta→tv alias.
+        const normalized = rows.map(r => ({
+          date: r.date || r.d || null,
+          o: r.o, h: r.h, l: r.l, c: r.c,
+          v: typeof r.v === 'number' ? r.v : 0,
+          tv: typeof r.tv === 'number' ? r.tv : (typeof r.ta === 'number' ? r.ta : (r.c || 0) * (r.v || 0)),
+        }));
+        _dailybarsCache.set(code, normalized);
+        return normalized;
+      } catch (err) {
+        _dailybarsCache.set(code, null);
+        return null;
+      }
+    }
+
+    async function _openChartExpand(trigger, card) {
       const isOpen = card.classList.contains('chart-expanded');
       if (isOpen) {
         card.classList.remove('chart-expanded');
@@ -1455,27 +1489,49 @@ function renderCalExpandContent(date, data) {
         }
       }
       const ticker = card.getAttribute('data-stock-code') || '';
-      let dailyData = [];
       let exDividendDates = [];
       try {
-        const stash = trigger.getAttribute('data-daily20');
-        if (stash) dailyData = JSON.parse(stash);
         const exd = trigger.getAttribute('data-exdividend');
         if (exd) exDividendDates = JSON.parse(exd);
+      } catch (err) { /* noop */ }
+
+      // 1차 prototype fallback (20영업일) — 즉시 render (사용자 perceived latency ↓)
+      let prototypeData = [];
+      try {
+        const stash = trigger.getAttribute('data-daily20');
+        if (stash) prototypeData = JSON.parse(stash);
       } catch (err) {
-        dailyData = [];
+        prototypeData = [];
       }
+      // accordion 즉시 open + 1차 render (20일) — 사용자 인지 부담 0 ms 정합 (AC-13 <200ms)
+      card.classList.add('chart-expanded');
+      card.setAttribute('aria-expanded', 'true');
       if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
-        window.ChartExpanded.render(slot, dailyData, { ticker, exDividendDates });
+        window.ChartExpanded.render(slot, prototypeData, { ticker, exDividendDates });
       } else {
         slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
       }
-      card.classList.add('chart-expanded');
-      card.setAttribute('aria-expanded', 'true');
       requestAnimationFrame(() => {
         const closeBtn = slot.querySelector('.cal-chart-close');
         if (closeBtn) closeBtn.focus();
       });
+
+      // 2차 lazy fetch 240영업일 → 성공 시 swap. 차트가 닫혀있으면 swap skip (race).
+      const lazyData = await _fetchDailybars(ticker);
+      if (!lazyData || lazyData.length === 0) return; // fallback 유지
+      if (!card.classList.contains('chart-expanded')) return; // 닫힘
+      if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
+        window.ChartExpanded.render(slot, lazyData, { ticker, exDividendDates });
+      }
+    }
+
+    document.addEventListener('click', e => {
+      const trigger = e.target.closest('[data-expand-trigger="chart"]');
+      if (!trigger) return;
+      const card = trigger.closest('.cal-feature-card');
+      if (!card) return;
+      e.stopPropagation();
+      _openChartExpand(trigger, card);
     });
     document.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
