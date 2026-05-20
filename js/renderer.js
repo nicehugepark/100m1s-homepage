@@ -1496,6 +1496,14 @@ function renderCalExpandContent(date, data) {
         const exd = trigger.getAttribute('data-exdividend');
         if (exd) exDividendDates = JSON.parse(exd);
       } catch (err) { /* noop */ }
+      // P0 hotfix (cycle22 라이브 배포 보조지표 누락 catch, 대표 2026-05-21 07:37 KST):
+      // pinkSignalDates source = data-pinksignal attribute (별건 cycle 본질, 현 시점 빈 배열 graceful).
+      // 본질: ChartTV.render options 누락 본질 (Phase 7c integration mismatch — markers attach 호출 시 옵션 omit) 봉쇄.
+      let pinkSignalDates = [];
+      try {
+        const pink = trigger.getAttribute('data-pinksignal');
+        if (pink) pinkSignalDates = JSON.parse(pink);
+      } catch (err) { /* noop */ }
 
       // 1차 prototype fallback (20영업일) — 즉시 render (사용자 perceived latency ↓)
       let prototypeData = [];
@@ -1514,7 +1522,7 @@ function renderCalExpandContent(date, data) {
       // ESM module은 async load이므로 ChartTV global 등록 지연 가능 — graceful fallback "로딩 중" 유지.
       // exDividendDates / pinkSignalDates 본질 = marker primitive layer (SPEC §3.4 v6 + §15 verbatim).
       if (window.ChartTV && typeof window.ChartTV.render === 'function') {
-        window.ChartTV.render(slot, prototypeData, { ticker, exDividendDates });
+        window.ChartTV.render(slot, prototypeData, { ticker, exDividendDates, pinkSignalDates });
       } else {
         slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
       }
@@ -1528,7 +1536,7 @@ function renderCalExpandContent(date, data) {
       if (!lazyData || lazyData.length === 0) return; // fallback 유지
       if (!card.classList.contains('chart-expanded')) return; // 닫힘
       if (window.ChartTV && typeof window.ChartTV.render === 'function') {
-        window.ChartTV.render(slot, lazyData, { ticker, exDividendDates });
+        window.ChartTV.render(slot, lazyData, { ticker, exDividendDates, pinkSignalDates });
       }
     }
 
