@@ -1054,40 +1054,50 @@ function renderCalExpandContent(date, data) {
         }
         candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
       } else {
-        // cycle20 P1 (2026-05-20) — IPO 첫날 분기 합성 (frontend 폴백).
+        // cycle21 P1 (2026-05-20 15:57 KST) — IPO 첫날 일봉 spec 정합 (장대양봉 → 점상 fix).
         // 본질: build_daily가 IPO 첫날 종목(마키나락스 477850 등)은 daily_20=None 적재 → 미니캔들 빈 영역.
-        // 대표 catch 15:08: "마키나락스는 일봉캔들차트가 보이지 않는다".
-        // 합성 spec: themes '신규상장' + intraday.base(공모가) + intraday.open(시초가) + cur_prc(현재가) → 1-bar 합성.
-        //   카드 chip의 등락률(+300%) = (cur_prc - base) / base 와 같은 기준 적용 → 시각 일관성.
-        //   o = intraday.base (공모가), c = 현재가, h = max(시초/현재/intra prices), l = min(공모/시초/현재/intra prices).
-        //   color: 공모가→현재가 추이 (close>open=양봉/적). 마키나락스 +300% = 빨간 큰 막대.
-        //   비표준 candle semantic (IPO 첫날 daily open=시초가 ≠ 공모가) 이지만 시각 의미 우선.
-        //   aria-label 'IPO 첫날'로 의미 명시. backend SoT 통일(P3)까지의 frontend visual fallback.
+        // 대표 catch 15:08 (cycle20): "마키나락스는 일봉캔들차트가 보이지 않는다" → frontend 폴백 신설.
+        // 대표 catch 15:57 (cycle21): "마키나락스 일봉캔들의 경우 점상인데 장대양봉 처럼 보이는 이유가 뭐지".
+        // 본질 evidence (WebSearch 2건 corroborating 2026-05-20):
+        //   - 서울경제/뉴스핌: 마키나락스 5/20 시초가 60,000원 형성 + 개장 직후 상한가 직행 (공모가 15,000원 ×4 따따블).
+        //   - 한국 시장 관습: '점 상한가(쩜상)' = 시초가가 상한가에서 시작 → OHLC 모두 동일.
+        // 일봉차트 spec (영웅문 정합):
+        //   - 일봉 OHLC = '거래 가격' 기준 (시초가/고가/저가/종가). 공모가(청약 가격)는 일봉 OHLC에 포함 안 됨.
+        //   - IPO 첫날 점상: o = h = l = c = 시초가 (60,000) → mini-candle.js L31-32 isFlat 분기 → 회색 horizontal line.
+        //   - 공모가 정보(15,000)는 title hover에 정보 가치 보존 (사용자 학습 효과).
+        // before (cycle20): o=공모가, c=현재가 → 장대양봉 (잘못된 일봉 semantic).
+        // after (cycle21): o=시초가, c=현재가, h/l=시초가·현재가·intraday prices (공모가 제외) → 점상 또는 정상 캔들.
+        // 영웅문 spec 가정 (lead 추정 — 직접 캡처 부재): IPO 첫날 시초가 동결 시 점상 표시. 영웅문 캡처 evidence 부재 시 대표 cross-check 의무.
         const _themes = it.interp?.themes || it.themes || [];
         const _isIpoFirst = _themes.some(t => {
           const _tname = typeof t === 'string' ? t : (t && t.name) || '';
           return _tname === '신규상장' || _tname.includes('신규상장');
         });
         const _intra = it.interp?.intraday;
-        const _ipoBase = _intra?.base; // 공모가
-        const _ipoOpen = _intra?.open ?? it.interp?.open_price ?? it.open; // 시초가
+        const _ipoBase = _intra?.base; // 공모가 (title hover 정보 보존용)
+        const _ipoOpen = _intra?.open ?? it.interp?.open_price ?? it.open; // 시초가 (일봉 OHLC의 o)
         const _ipoClose = it.interp?.close_price ?? it.price ?? (Array.isArray(_intra?.prices) && _intra.prices.length ? _intra.prices[_intra.prices.length - 1] : null);
         const _intraPricesValid = Array.isArray(_intra?.prices) ? _intra.prices.filter(p => typeof p === 'number' && p > 0) : [];
-        if (_isIpoFirst && _ipoBase && _ipoBase > 0 && _ipoClose && _ipoClose > 0) {
-          // 1-bar synthesis: 공모가→현재가 시각화 (등락률 chip 정합)
-          const _allPoints = [_ipoBase, _ipoClose];
-          if (_ipoOpen && _ipoOpen > 0) _allPoints.push(_ipoOpen);
-          _allPoints.push(..._intraPricesValid);
+        if (_isIpoFirst && _ipoClose && _ipoClose > 0) {
+          // 1-bar synthesis: 일봉 OHLC = 거래 가격 기준 (공모가 제외).
+          // 시초가 fallback: _ipoOpen 부재 시 _ipoClose 사용 (점상 보장).
+          const _openPrice = (_ipoOpen && _ipoOpen > 0) ? _ipoOpen : _ipoClose;
+          const _allPoints = [_openPrice, _ipoClose, ..._intraPricesValid];
           const _ipoHigh = Math.max(..._allPoints);
           const _ipoLow = Math.min(..._allPoints);
           const _ipoBar = [{
             date: date,
-            o: _ipoBase,
+            o: _openPrice,
             h: _ipoHigh,
             l: _ipoLow,
             c: _ipoClose,
           }];
-          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" aria-label="IPO 첫날 (공모가→현재가)" title="IPO 첫날: 공모가 ${_ipoBase.toLocaleString()}원 → 현재가 ${_ipoClose.toLocaleString()}원">${buildCandles20(_ipoBar)}</div>`;
+          // title: 공모가 정보 보존 (있을 때만), 일봉 OHLC는 시초가→현재가 명시.
+          const _titleParts = [`IPO 첫날 일봉`];
+          if (_ipoBase && _ipoBase > 0) _titleParts.push(`공모가 ${_ipoBase.toLocaleString()}원`);
+          _titleParts.push(`시초가 ${_openPrice.toLocaleString()}원 → 현재가 ${_ipoClose.toLocaleString()}원`);
+          const _title = _titleParts.join(' / ');
+          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" aria-label="IPO 첫날 일봉" title="${_title}">${buildCandles20(_ipoBar)}</div>`;
         } else {
           candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
         }
