@@ -17,9 +17,12 @@
   1 = 미등록 매치 발견 (커밋 차단 또는 baseline 실패)
   2 = 환경 오류 (화이트리스트 JSON 없음 등)
 
-화이트리스트 위치:
-  $UI_TEXT_WHITELIST 환경변수 또는
-  ../100m1s/rules/_whitelist/ui-text.json (홈페이지 레포 부모 디렉토리 기준)
+화이트리스트 위치 (multi-strategy resolve — Q-CYCLE21-010 recurring 4회차 fix):
+  1순위: $UI_TEXT_WHITELIST 환경변수 (명시 override)
+  2순위: ../100m1s/rules/_whitelist/ui-text.json (메인 worktree case, ROOT 의 parent 기준)
+  3순위: git rev-parse --git-common-dir 의 parent 의 parent 의 `100m1s/rules/_whitelist/ui-text.json`
+          (worktree case — git-common-dir = `<main>/.git`, parent = `<main>`, parent = `~/company/`)
+  4순위: 명확한 error message + exit 2 (whitelist 부재 시 fail-fast)
 """
 
 from __future__ import annotations
@@ -37,6 +40,69 @@ TARGET_FILES = [
     os.path.join(ROOT, "js", "renderer.js"),
     os.path.join(ROOT, "news.css"),
 ]
+
+
+def resolve_whitelist_path() -> tuple[str | None, list[str]]:
+    """multi-strategy whitelist 경로 resolve (Q-CYCLE21-010 recurring 4회차 fix).
+
+    return: (matched_path | None, attempted_paths_for_error_message)
+
+    Strategy 1: $UI_TEXT_WHITELIST env (명시 override — 기존 우회 방식 호환)
+    Strategy 2: ROOT 의 parent 의 `100m1s/rules/_whitelist/ui-text.json`
+                = `../100m1s/rules/_whitelist/ui-text.json` (메인 worktree case)
+    Strategy 3: git rev-parse --git-common-dir 의 parent 의 parent 의 `100m1s/rules/...`
+                (worktree case — git-common-dir = `<main_repo>/.git`)
+    """
+    attempted: list[str] = []
+
+    # Strategy 1: env override (명시 override 의도 — 부재 시 fail-fast, fallback 금지)
+    env_path = os.environ.get("UI_TEXT_WHITELIST", "").strip()
+    if env_path:
+        attempted.append(f"S1 env UI_TEXT_WHITELIST={env_path}")
+        if os.path.isfile(env_path):
+            return env_path, attempted
+        # env 명시는 사용자 의도 강제 — 부재 시 fallback 차단 후 fail-fast
+        attempted.append(
+            "S1 env 명시 + 경로 부재 → fail-fast (S2/S3 fallback 시도 차단)"
+        )
+        return None, attempted
+
+    # Strategy 2: ROOT parent (메인 worktree case)
+    s2 = os.path.normpath(os.path.join(ROOT, DEFAULT_WL_REL))
+    attempted.append(f"S2 ROOT/{DEFAULT_WL_REL} = {s2}")
+    if os.path.isfile(s2):
+        return s2, attempted
+
+    # Strategy 3: git common-dir parent (worktree case)
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--git-common-dir"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=5,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            common_dir = result.stdout.strip()
+            # common_dir relative → ROOT 기준 절대화
+            if not os.path.isabs(common_dir):
+                common_dir = os.path.normpath(os.path.join(ROOT, common_dir))
+            # common_dir = `<main_repo>/.git` → main_repo = parent
+            main_repo = os.path.dirname(common_dir)
+            # main_repo 의 parent = `~/company/` → 거기에 100m1s/rules/...
+            company_dir = os.path.dirname(main_repo)
+            s3 = os.path.join(
+                company_dir, "100m1s", "rules", "_whitelist", "ui-text.json"
+            )
+            attempted.append(f"S3 git-common-dir resolve = {s3}")
+            if os.path.isfile(s3):
+                return s3, attempted
+    except (FileNotFoundError, subprocess.TimeoutExpired) as e:
+        attempted.append(f"S3 git-common-dir FAILED: {type(e).__name__}")
+
+    return None, attempted
+
 
 # 한국어 문자열 리터럴 추출 — JS template literal/string + CSS content/title 등
 # 따옴표(`'"`) 또는 backtick으로 감싼 한글 포함 토큰
@@ -188,16 +254,42 @@ def main() -> int:
     )
     parser.add_argument(
         "--whitelist",
-        default=os.environ.get(
-            "UI_TEXT_WHITELIST",
-            os.path.normpath(os.path.join(ROOT, DEFAULT_WL_REL)),
+        default=None,
+        help=(
+            "화이트리스트 JSON 경로 (기본: multi-strategy resolve — "
+            "$UI_TEXT_WHITELIST > ROOT/../100m1s/rules/... > git-common-dir parent)"
         ),
-        help="화이트리스트 JSON 경로 (기본: $UI_TEXT_WHITELIST 또는 표준 경로)",
     )
     args = parser.parse_args()
 
+    # multi-strategy whitelist resolve (Q-CYCLE21-010 recurring 4회차 fix)
+    if args.whitelist:
+        wl_path = args.whitelist
+        attempted = [f"--whitelist arg = {wl_path}"]
+        if not os.path.isfile(wl_path):
+            print(
+                f"ERROR: --whitelist 인자 경로 미존재: {wl_path}",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+    else:
+        wl_path, attempted = resolve_whitelist_path()
+        if wl_path is None:
+            print(
+                "ERROR: UI 텍스트 화이트리스트 JSON 자동 탐색 실패. 시도 경로:",
+                file=sys.stderr,
+            )
+            for a in attempted:
+                print(f"  - {a}", file=sys.stderr)
+            print(
+                "조치: $UI_TEXT_WHITELIST 환경변수로 절대 경로 명시 또는 "
+                "메인 worktree (`~/company/100m1s-homepage/`) 에서 실행",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+
     global DOMAIN_KW_RE, WL_ITEMS_BY_TEXT
-    wl = load_whitelist(args.whitelist)
+    wl = load_whitelist(wl_path)
     DOMAIN_KW_RE, WL_ITEMS_BY_TEXT = index_whitelist(wl)
 
     mode = "baseline" if args.check_baseline else "staged-diff"
