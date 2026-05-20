@@ -1,6 +1,6 @@
 {
   "date": "2026-05-20",
-  "generated_at": "2026-05-20T20:05:26.915159",
+  "generated_at": "2026-05-20T20:30:21.380598",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -18,6 +18,10 @@
     {
       "title": "금융경쟁",
       "summary": "한화투자증권 두나무 3.9% 추가 취득→금융사 블록체인·핀테크 투자 가속→금융·디지털금융 섹터 경쟁심화"
+    },
+    {
+      "title": "삼성파업반도체",
+      "summary": "삼성전자 성과급 갈등 → 총파업 돌입 → D램값 급등 + 반도체 공급망 차질로 섹터 영향파급"
     },
     {
       "title": "AI로봇투자",
@@ -38,10 +42,6 @@
     {
       "title": "AI글라스",
       "summary": "AI 글라스·피지컬 AI 상용화 가속 → 현대차그룹·반도체 부품사 실적 개선 기대 → 자동차·부품 섹터"
-    },
-    {
-      "title": "삼성파업",
-      "summary": "삼성전자 목표가 57만원 제시 + 총파업 리스크 본격화 → 반도체 섹터 실적 모멘텀 vs 공급 차질 양극 평가"
     }
   ],
   "narratives": [],
@@ -4861,6 +4861,18 @@
           "raw_title": "기업지배구조보고서공시              ",
           "period_start": "2025-01-01",
           "period_end": "2025-12-31"
+        },
+        {
+          "title": "성문전자우(KR7014911002)가 당일 종가 기준 종류주식과 보통주식 간 가격괴리율 50% 초과로 단기과열종목(가격괴리율, 3거래일 단일가매매) 지정기간이 3거래일 연장되어 종료일 2026-05-26까지 단일가매매가 적용된다.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260520000820",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "단기과열종목(가격괴리율, 3거래일 단일가매매) 지정 연장(성문전자우)",
+          "period_end": "2026-05-26",
+          "condition": "당일 종가 기준 종류주식 가격과 보통주식 가격 간 괴리율 50% 초과",
+          "regulation_period": "종료일 2026-05-26까지 3거래일 연장"
         }
       ],
       "index_change_pct": -0.86,
@@ -5018,6 +5030,21 @@
         }
       ],
       "status_badges": [
+        {
+          "label": "단기과열",
+          "severity": "hot",
+          "end": "2026-05-26",
+          "summary": "성문전자우(KR7014911002)가 당일 종가 기준 종류주식과 보통주식 간 가격괴리율 50% 초과로 단기과열종목(가격괴리율, 3거래일 단일가매매) 지정기간이 3거래일 연장되어 종료일 2026-05-26까지 단일가매매가 적용된다.",
+          "condition": "당일 종가 기준 종류주식 가격과 보통주식 가격 간 괴리율 50% 초과",
+          "regulation": "종료일 2026-05-26까지 3거래일 연장",
+          "view_date": "2026-05-20",
+          "next_trading_day": "2026-05-21",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260520000820",
+          "disclosure_title": "단기과열종목(가격괴리율, 3거래일 단일가매매) 지정 연장(성문전자우)"
+        },
         {
           "label": "상한가",
           "severity": "hot",
