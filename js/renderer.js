@@ -527,7 +527,9 @@ function renderCalExpandContent(date, data) {
   // 메타
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
-  const streakCount = todayStocks.filter(i => i.interp?.prev_pick).length;
+  // pick_count >= 2: 카드 chip "연속선정+N" 표시와 동일 정의 (DSN §3.6.3 단일 출처, cycle20 P1).
+  // 이전 정의 (prev_pick != null) 은 어제 1회 등장 종목까지 포함 → 헤더 N종 vs 카드 chip 노출 종목수 mismatch.
+  const streakCount = todayStocks.filter(i => (i.interp?.pick_count || 0) >= 2).length;
   const streakSuffix = streakCount > 0 ? ` · 연속선정 ${streakCount}종` : '';
   const sourceSuffix = '';
   // REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). build_daily.py generated_at 표시.
