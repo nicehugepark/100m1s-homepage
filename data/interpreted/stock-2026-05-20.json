@@ -1,11 +1,11 @@
 {
   "date": "2026-05-20",
-  "generated_at": "2026-05-20T14:10:21.701688",
+  "generated_at": "2026-05-20T14:18:25.263836",
   "data_source": "kiwoom",
   "macro_events": [
     {
       "title": "삼성파업",
-      "summary": "삼성전자 노조 총파업 현실화(협상 결렬) → 반도체 공급망 차질, 주가 4% 급락 → 글로벌 반도체·전자 섹터 공급 위기"
+      "summary": "삼성전자 노조 임금협상 결렬 → 총파업 임박 → 반도체·전자 섹터 공급망 위기"
     },
     {
       "title": "파업우려",
@@ -705,11 +705,19 @@
       "industry": "특수 목적용 기계 제조업",
       "sector": "LP CVD",
       "themes": [
+        "디스플레이",
         "AI",
         "반도체",
-        "반도체 박막 장비"
+        "반도체 박막 장비",
+        "태양광"
       ],
       "theme_paths": [
+        {
+          "name": "디스플레이",
+          "path": [
+            "디스플레이"
+          ]
+        },
         {
           "name": "AI",
           "path": [
@@ -721,6 +729,12 @@
           "path": [
             "반도체",
             "반도체 박막 장비"
+          ]
+        },
+        {
+          "name": "태양광",
+          "path": [
+            "태양광"
           ]
         }
       ],
@@ -734,6 +748,21 @@
       "bullish_today": true,
       "bullish_streak": 1,
       "news": [
+        {
+          "title": "코스피 하락에도 굳건…주성엔지니어링 15% 상승 [매경 자이앤트]",
+          "url": "https://www.mk.co.kr/news/stock/12053104",
+          "source": "매경",
+          "published_at": "2026-05-20T05:08:42",
+          "causal_chain": "AI 관련 수요 확대 → 글로벌 반도체 기업의 D램 투자 증가 → 주성엔지니어링 ALD 박막 장비 직접 수혜. 동시에 ALD 장비 세계 첫 출하 + 테슬라향 태양광 장비 수출 기대감으로 태양광·디스플레이 신사업 매출 본격화 모멘텀 부각.",
+          "macro_event": "AI 수요 확대에 따른 글로벌 반도체 기업 대규모 D램 투자 사이클 진입",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "주성엔지니어링, '신고가' 코스닥 시총 5위로...올들어 61계단 껑충[특징주]",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02748646645450888",
@@ -751,8 +780,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -5.54,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -5.03,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 214000,
@@ -939,7 +968,9 @@
           191400,
           191400,
           188200,
-          188000
+          188200,
+          188400,
+          187700
         ]
       },
       "credit_risk": true,
@@ -973,8 +1004,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.51,
-      "index_multiple_current": -7.36,
+      "index_change_pct": -2.0,
+      "index_multiple_current": -5.55,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 73000,
@@ -1161,7 +1192,9 @@
           74800,
           74400,
           74400,
-          73400
+          73200,
+          74200,
+          73700
         ]
       },
       "togusa_verdict": "neutral",
@@ -1285,8 +1318,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -1.81,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -1.65,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 114800,
@@ -1473,7 +1506,9 @@
           113300,
           113300,
           113900,
-          112600
+          112600,
+          112300,
+          111900
         ]
       },
       "credit_risk": true,
@@ -1549,8 +1584,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -0.71,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -0.65,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9390,
@@ -1737,7 +1772,9 @@
           7610,
           7800,
           7710,
-          7630
+          7630,
+          7640,
+          7660
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1837,6 +1874,8 @@
           30700,
           30700,
           30700,
+          30700,
+          30700,
           30700
         ]
       },
@@ -1882,8 +1921,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.51,
-      "index_multiple_current": 0.97,
+      "index_change_pct": -2.0,
+      "index_multiple_current": 0.73,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 22450,
@@ -2096,6 +2135,8 @@
           12450,
           12450,
           12450,
+          12450,
+          12450,
           12450
         ]
       },
@@ -2157,8 +2198,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.51,
-      "index_multiple_current": -7.17,
+      "index_change_pct": -2.0,
+      "index_multiple_current": -5.41,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 14110,
@@ -2345,7 +2386,9 @@
           13250,
           13270,
           13380,
-          13550
+          13580,
+          13770,
+          13760
         ]
       },
       "credit_risk": true,
@@ -2388,8 +2431,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -10.05,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -9.13,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6310,
@@ -2602,6 +2645,8 @@
           6310,
           6310,
           6310,
+          6310,
+          6310,
           6310
         ]
       },
@@ -2648,6 +2693,21 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "AI 버블은 없다…마키나락스, 상장 첫날 시총 1조원 돌파",
+          "url": "https://www.etnews.com/20260520000305",
+          "source": "전자신문",
+          "published_at": "2026-05-20T04:46:28",
+          "causal_chain": "코스닥 신규상장 첫날 공모가 대비 4배 따따블·시총 1조원 돌파 → AI OS 런웨이 자체 기술력과 4대 대기업 AX 사업 경험 평가 + 올해 첫 AI 상장 기업 프리미엄 → 마키나락스 신규상장 모멘텀 + AI 인프라 본업 성장 기대감 직접 부각.",
+          "macro_event": "코스닥 신규상장 첫날 따따블·시총 1조원 돌파",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "‘AI 신흥강자’ 마키나락스, 코스닥 상장 첫 날 ‘따따블’ 달성",
           "url": "https://www.mk.co.kr/news/stock/12052897",
@@ -2707,21 +2767,6 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null
-        },
-        {
-          "title": "[특징주] 마키나락스, 상장 첫날 공모가 대비 300% 상승 '따따상' 직행",
-          "url": "https://www.etoday.co.kr/news/view/2586184",
-          "source": "이투데이",
-          "published_at": "2026-05-20T00:02:00",
-          "causal_chain": "피지컬 AI 기업 마키나락스 코스닥 신규상장 → 기관 수요예측 1196:1 + 일반 청약 증거금 13.9조(코스닥 역대 2위) + 기관 78% 보호예수 확약 → 상장 첫날 시초가 따따블(6만원) 직행.",
-          "macro_event": "코스닥 신규상장 첫날 따따블 달성 (공모가 1.5만→6만원, +300%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
         }
       ],
       "fallback": false,
@@ -2765,6 +2810,8 @@
         "open": 60000,
         "base": 15000,
         "prices": [
+          60000,
+          60000,
           60000,
           60000,
           60000,
@@ -2864,8 +2911,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -10.1,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -9.17,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 1951,
@@ -3078,6 +3125,8 @@
           1890,
           1890,
           1890,
+          1890,
+          1890,
           1890
         ]
       },
@@ -3099,16 +3148,41 @@
       "low_price": 1681,
       "industry": "자연과학 및 공학 연구개발업",
       "sector": "당뇨성망막병증 치료제, 욕창치료제, 대상포진백신, 코로나19 예방백신 등",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
-      "fallback": true,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -10.03,
+      "news": [
+        {
+          "title": "아이진, 한타바이러스 mRNA 백신 개발 기대감에 ‘급등’ [Why 바이오]",
+          "url": "https://www.sedaily.com/article/20046311",
+          "source": "서울경제",
+          "published_at": "2026-05-20T05:00:35",
+          "causal_chain": "한타바이러스 글로벌 보건 위협 부각 + 질병관리청 mRNA 예방백신 국가 R&D 과제 선정 → 아이진 mRNA 플랫폼 기술 활용 한탄·서울바이러스 교차 면역 범용 백신 개발 본격 착수 → 백신 본업 R&D 파이프라인 확장 모멘텀 직접 부각.",
+          "macro_event": "질병관리청 한타바이러스 mRNA 예방백신 개발 과제 선정 (2년 30억 투입)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -9.11,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3466,
@@ -3321,6 +3395,8 @@
           2235,
           2235,
           2235,
+          2235,
+          2235,
           2235
         ]
       },
@@ -3368,8 +3444,8 @@
           "period_end": "2025-12-31"
         }
       ],
-      "index_change_pct": -1.51,
-      "index_multiple_current": -11.56,
+      "index_change_pct": -2.0,
+      "index_multiple_current": -8.73,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4150,
@@ -3582,6 +3658,8 @@
           3125,
           3125,
           3125,
+          3125,
+          3125,
           3125
         ]
       },
@@ -3642,8 +3720,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.51,
-      "index_multiple_current": -19.78,
+      "index_change_pct": -2.0,
+      "index_multiple_current": -14.94,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 780,
@@ -3881,6 +3959,8 @@
           400,
           400,
           400,
+          400,
+          400,
           400
         ]
       },
@@ -3917,8 +3997,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -10.09,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -9.17,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 12498,
@@ -4129,6 +4209,8 @@
           2775,
           2775,
           2775,
+          2775,
+          2775,
           2775
         ]
       },
@@ -4228,8 +4310,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.97,
-      "index_multiple_current": -1.37,
+      "index_change_pct": -3.27,
+      "index_multiple_current": -1.24,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6850,
@@ -4415,6 +4497,8 @@
         "prices": [
           2370,
           2600,
+          3035,
+          3035,
           3035,
           3035,
           3035,
