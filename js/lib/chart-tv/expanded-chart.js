@@ -65,20 +65,25 @@ function getViewportSize() {
 }
 
 // SPEC §4.3 모바일 default ON 4종 + 데스크탑 default ON 5종 (자체 SVG 정합)
+// P0 hotfix (cycle22 라이브 배포 보조지표 누락 catch, 대표 2026-05-21 07:37 KST):
+// - Phase 7c 시점 default OFF 9종 본질 (volumeProfile10/ichimoku/fibonacci 등) → 첫 진입 사용자 보조지표 가시 0건 본질
+// - 자체 SVG 시절 매물대/일목/Fibonacci default ON 본질 정합 (사용자 학습 본질 보존)
+// - volume default ON 본질 (Phase 7b/7c 통합 누락 = 거짓 충실성 FLR-AGT-002 패턴 catch) → false 정정
+// - toggle UI 부재 = 별건 cycle 분리 (P0 scope 외 — §16 lead 보고 본질, 100~200 LoC 추가 분량)
 const DEFAULT_INDICATORS = {
   ma: true,         // #4 이동평균선 (5/20/60/120 — Phase 7a 채택)
-  volume: true,     // #10 거래량 sub-pane — Phase 7a 보류 (Phase 7b custom plugin layer)
+  volume: false,    // #10 거래량 sub-pane — Phase 7b/7c 통합 누락 본질 (거짓 충실성 제거, P0 hotfix)
   pinkSignal: true, // #2 — Phase 7c marker primitive
   exDividend: true, // #6 — Phase 7c marker primitive
-  fibonacci: false, // #3 — Phase 7b createPriceLine
-  ichimoku: false,  // #5 — Phase 7b custom series
-  valueBars: false, // #7 — Phase 7b sub-pane
-  macd: false,      // #8 — Phase 7b sub-pane
-  rsi: false,       // #9 — Phase 7b sub-pane
-  stochastic: false,// #11 — Phase 7b sub-pane
-  obv: false,       // #13 — Phase 7b sub-pane
-  volumeProfile10: false, // #1 — Phase 7b custom primitive
-  volumeProfile: false,   // #12 — Phase 7b custom primitive
+  fibonacci: true,  // #3 — Phase 7b createPriceLine (P0 hotfix: 자체 SVG 시절 default ON 본질 정합)
+  ichimoku: true,   // #5 — Phase 7b custom series (P0 hotfix: 자체 SVG 시절 default ON 본질 정합)
+  valueBars: false, // #7 — Phase 7b sub-pane (미통합)
+  macd: false,      // #8 — Phase 7b sub-pane (미통합)
+  rsi: false,       // #9 — Phase 7b sub-pane (미통합)
+  stochastic: false,// #11 — Phase 7b sub-pane (미통합)
+  obv: false,       // #13 — Phase 7b sub-pane (미통합)
+  volumeProfile10: true,  // #1 — Phase 7b custom primitive (P0 hotfix: 매물대 자체 SVG 시절 default ON 본질 정합)
+  volumeProfile: false,   // #12 — Phase 7b custom primitive (volumeProfile10과 중복 가능, default OFF 유지)
 };
 
 // 13종 메타 (toggle UI 표시용 — Phase 7a wrapper)
