@@ -3164,3 +3164,270 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   .dsn-v92-stage-flow__node-effect--predicted { border-top-width: 2px; }
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   cycle22 P1 (2026-05-20) — 일봉캔들 확대 차트 (SPEC-001 §3~§5)
+   100m1s 토큰 재사용: --am/--am2/--am3/--am4 햇살 + --pos/--neg + --g04~--g80.
+   자체 SVG (라이브러리 의존 0). 13종 보조지표 layer.
+   accordion 인터랙션 (.cal-feature-card.chart-expanded — 기존 .expanded와 분리).
+─────────────────────────────────────────────────────────────────── */
+
+/* 미니캔들 트리거 — 클릭 가능 hint */
+.cal-feature-candles20[data-expand-trigger="chart"] {
+  cursor: pointer;
+  transition: filter 200ms ease;
+}
+.cal-feature-candles20[data-expand-trigger="chart"]:hover {
+  filter: brightness(1.05);
+}
+.cal-feature-candles20[data-expand-trigger="chart"]:focus-visible {
+  outline: 2px solid #0064FF;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 확대 차트 슬롯 — accordion expand (max-height 트랜지션) */
+.cal-feature-chart-expanded {
+  display: none;
+  margin: 8px 12px 4px;
+  padding: 12px;
+  background: #FFFFFF;
+  border: 1px solid var(--am4);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px var(--g04);
+}
+.cal-feature-card.chart-expanded .cal-feature-chart-expanded {
+  display: block;
+  animation: chartExpandIn 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes chartExpandIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-feature-card.chart-expanded .cal-feature-chart-expanded {
+    animation: none;
+  }
+}
+
+/* toggle bar — 13종 chip 가로 스크롤 (SPEC §7.2 인지 부담) */
+.cal-chart-toggle-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed var(--am4);
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.cal-chart-toggle-bar::-webkit-scrollbar {
+  height: 4px;
+}
+.cal-chart-toggle-bar::-webkit-scrollbar-thumb {
+  background: var(--am4);
+  border-radius: 4px;
+}
+
+.cal-chart-toggle {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 28px; /* mobile touch 44pt는 padding+font로 보강 */
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--am4);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--dm);
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+.cal-chart-toggle:hover {
+  background: var(--am4);
+  border-color: var(--am);
+  color: var(--tx2);
+}
+.cal-chart-toggle.on {
+  background: var(--am3);
+  border-color: var(--am);
+  color: var(--am);
+}
+.cal-chart-toggle:focus-visible {
+  outline: 2px solid #0064FF;
+  outline-offset: 2px;
+}
+@media (max-width: 768px) {
+  .cal-chart-toggle {
+    min-height: 32px; /* 모바일 44pt 영역 보강 */
+    font-size: 11px;
+  }
+}
+
+/* main pane — SVG */
+.cal-chart-main {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 6px;
+}
+.cal-chart-main-svg {
+  width: 100%;
+  height: auto;
+  max-height: 440px;
+  display: block;
+}
+@media (max-width: 768px) {
+  .cal-chart-main-svg {
+    max-height: 320px;
+  }
+}
+
+/* sub-pane */
+.cal-chart-sub-panes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.cal-chart-sub-pane {
+  position: relative;
+  border-top: 1px dashed var(--g04);
+  padding-top: 4px;
+}
+.cal-chart-sub-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--dm);
+  pointer-events: none;
+  background: rgba(255,255,255,0.85);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.cal-chart-sub-svg {
+  width: 100%;
+  height: 80px;
+  display: block;
+}
+@media (min-width: 768px) {
+  .cal-chart-sub-svg { height: 100px; }
+}
+@media (min-width: 1024px) {
+  .cal-chart-sub-svg { height: 120px; }
+}
+@media (min-width: 1440px) {
+  .cal-chart-sub-svg { height: 140px; }
+}
+
+/* close button */
+.cal-chart-close {
+  display: block;
+  margin: 8px auto 0;
+  min-height: 36px;
+  padding: 6px 16px;
+  font-size: 12px;
+  color: var(--dm);
+  background: var(--g04);
+  border: 1px solid var(--am4);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+.cal-chart-close:hover {
+  background: var(--am4);
+  color: var(--tx2);
+}
+.cal-chart-close:focus-visible {
+  outline: 2px solid #0064FF;
+  outline-offset: 2px;
+}
+
+/* 빈 데이터 placeholder */
+.cal-chart-empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--dm);
+  font-size: 12px;
+  background: var(--g04);
+  border-radius: 6px;
+}
+
+/* Layer 3 crosshair tooltip (Phase 2.2 crosshair.js 정합) */
+.cal-chart-tooltip {
+  position: absolute;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(196, 153, 48, 0.4);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--g80);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 116px;
+  pointer-events: none;
+}
+.cal-chart-tooltip-date {
+  font-weight: 700;
+  color: var(--am);
+  margin-bottom: 4px;
+  font-size: 10px;
+}
+.cal-chart-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cal-chart-tooltip-row span {
+  color: var(--dm);
+}
+.cal-chart-tooltip-row strong {
+  color: var(--g80);
+  font-weight: 600;
+}
+
+/* 다크모드 (SPEC §3.3 보정) */
+@media (prefers-color-scheme: dark) {
+  .cal-feature-chart-expanded {
+    background: #1A1D26;
+    border-color: rgba(196, 153, 48, 0.3);
+  }
+  .cal-chart-toggle {
+    border-color: rgba(196, 153, 48, 0.3);
+    color: #8B95A8;
+  }
+  .cal-chart-toggle.on {
+    background: rgba(196, 153, 48, 0.2);
+    color: #FBE9B5;
+  }
+  .cal-chart-sub-label {
+    background: rgba(26, 29, 38, 0.85);
+    color: #8B95A8;
+  }
+  .cal-chart-close {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(196, 153, 48, 0.3);
+    color: #8B95A8;
+  }
+  .cal-chart-empty {
+    background: rgba(255, 255, 255, 0.04);
+    color: #8B95A8;
+  }
+  .cal-chart-tooltip {
+    background: rgba(26, 29, 38, 0.95);
+    border-color: rgba(196, 153, 48, 0.4);
+    color: #E2E8F0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+  .cal-chart-tooltip-date { color: #FBE9B5; }
+  .cal-chart-tooltip-row span { color: #8B95A8; }
+  .cal-chart-tooltip-row strong { color: #E2E8F0; }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   cycle22 P1 END
+─────────────────────────────────────────────────────────────────── */
+

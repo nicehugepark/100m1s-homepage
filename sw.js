@@ -1,4 +1,4 @@
-const CACHE_NAME = 'news-v220';
+const CACHE_NAME = 'news-v223';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
@@ -13,6 +13,22 @@ const STATIC_ASSETS = [
   '/js/data-loader.js',
   '/js/calendar.js',
   '/js/renderer.js',
+  '/js/lib/chart/expanded-chart.js',
+  '/js/lib/chart/indicators/ma.js',
+  '/js/lib/chart/indicators/ichimoku.js',
+  '/js/lib/chart/indicators/fibonacci.js',
+  '/js/lib/chart/indicators/volume-bars.js',
+  '/js/lib/chart/indicators/value-bars.js',
+  '/js/lib/chart/indicators/macd.js',
+  '/js/lib/chart/indicators/rsi.js',
+  '/js/lib/chart/indicators/stochastic.js',
+  '/js/lib/chart/indicators/obv.js',
+  '/js/lib/chart/indicators/volume-profile-10.js',
+  '/js/lib/chart/indicators/volume-profile.js',
+  '/js/lib/chart/indicators/pink-signal.js',
+  '/js/lib/chart/indicators/ex-dividend.js',
+  '/js/lib/chart/interaction/crosshair.js',
+  '/js/lib/chart/interaction/toggle-panel.js',
   '/spec/',
   '/spec/feature.html',
   '/spec/design.html',

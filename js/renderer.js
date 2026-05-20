@@ -1052,7 +1052,11 @@ function renderCalExpandContent(date, data) {
           const md = lastBarDate.slice(5).replace('-', '/').replace(/^0/, '');
           staleMetaHtml = `<div class="cal-feature-stale-note" aria-label="가격 데이터 시점">${md} 종가 기준</div>`;
         }
-        candles20Html = `<div class="cal-feature-candles20" aria-label="20영업일 일봉">${buildCandles20(d20)}</div>`;
+        // cycle22 P1: 미니캔들 클릭 → 확대 차트 expand. data-daily20 = 20영업일 raw (JSON stringified).
+        // Phase 3 240일 backend swap 시 data-daily20을 240bar로 교체 가능 (구조 변경 없음).
+        const _d20Json = JSON.stringify(d20).replace(/"/g, '&quot;');
+        // SPEC §5.6 MAJOR-1 — aria-controls anchor (stable id `chart-{code}` slot 측 정합)
+        candles20Html = `<div class="cal-feature-candles20" data-expand-trigger="chart" data-daily20="${_d20Json}" role="button" tabindex="0" aria-label="20영업일 일봉, 클릭 시 확대 차트" aria-expanded="false" aria-controls="chart-${escapeHtml(it.code || '')}">${buildCandles20(d20)}</div>`;
       } else {
         // cycle21 P1 (2026-05-20 15:57 KST) — IPO 첫날 일봉 spec 정합 (장대양봉 → 점상 fix).
         // 본질: build_daily가 IPO 첫날 종목(마키나락스 477850 등)은 daily_20=None 적재 → 미니캔들 빈 영역.
@@ -1097,7 +1101,10 @@ function renderCalExpandContent(date, data) {
           if (_ipoBase && _ipoBase > 0) _titleParts.push(`공모가 ${_ipoBase.toLocaleString()}원`);
           _titleParts.push(`시초가 ${_openPrice.toLocaleString()}원 → 현재가 ${_ipoClose.toLocaleString()}원`);
           const _title = _titleParts.join(' / ');
-          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" aria-label="IPO 첫날 일봉" title="${_title}">${buildCandles20(_ipoBar)}</div>`;
+          // cycle22 P1: IPO 1-bar 합성도 클릭 trigger 부여. 보조지표 대부분은 데이터 부족 placeholder 표시.
+          const _ipoJson = JSON.stringify(_ipoBar).replace(/"/g, '&quot;');
+          // SPEC §5.6 MAJOR-1 — aria-controls anchor (stable id `chart-{code}` slot 측 정합)
+          candles20Html = `<div class="cal-feature-candles20 cal-candles20-ipo" data-expand-trigger="chart" data-daily20="${_ipoJson}" role="button" tabindex="0" aria-label="IPO 첫날 일봉, 클릭 시 확대 차트" aria-expanded="false" aria-controls="chart-${escapeHtml(it.code || '')}" title="${_title}">${buildCandles20(_ipoBar)}</div>`;
         } else {
           candles20Html = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
         }
@@ -1416,6 +1423,127 @@ function renderCalExpandContent(date, data) {
       _syncToggleText(card);
     });
     window._headerBadgeExpandInit = true;
+  }
+
+  // cycle22 P1 (2026-05-20) — 미니캔들 클릭 → 카드 하단 확대 차트 expand (SPEC-001 §5 + DSN §3.6.6).
+  // .cal-feature-candles20[data-expand-trigger="chart"] click → 카드에 .chart-expanded class + .cal-feature-chart-expanded 슬롯 lazy fill.
+  //
+  // Phase 2.2 (2026-05-20) — lazy fetch swap:
+  // - 1차 fetch `/data/dailybars/{code}.json` (240영업일, Phase 3 emit_dailybars_per_stock.py 산출)
+  // - fetch 성공 시 240행 dailyData 채택
+  // - fetch 실패 (404 / network / parse err) 시 fallback = data-daily20 raw (20영업일, Phase 2 prototype) — graceful degradation
+  // - per-stock JSON 부재 (Phase 3 cron 미배포) = 정상 fallback. 콘솔 warn 없음 (정상 흐름).
+  // ChartExpanded.render — js/lib/chart/expanded-chart.js. 13종 toggle + localStorage 영구화.
+  // 본 핸들러 = .cal-feature-card.expanded (기존 상세 보기 accordion)와 별개 — chart-expanded class 분리.
+  if (!window._chartExpandInit) {
+    // 종목별 fetch 결과 메모이즈 (재클릭 시 재 fetch 회피)
+    const _dailybarsCache = new Map();
+    async function _fetchDailybars(code) {
+      if (!code) return null;
+      if (_dailybarsCache.has(code)) return _dailybarsCache.get(code);
+      try {
+        const url = `/data/dailybars/${code}.json`;
+        const resp = await fetch(url, { credentials: 'omit' });
+        if (!resp.ok) {
+          _dailybarsCache.set(code, null);
+          return null;
+        }
+        const payload = await resp.json();
+        const rows = Array.isArray(payload && payload.rows) ? payload.rows : null;
+        if (!rows || rows.length === 0) {
+          _dailybarsCache.set(code, null);
+          return null;
+        }
+        // Phase 3 schema {d,o,h,l,c,v,ta} → expanded-chart.js normalize 입력 schema {date,o,h,l,c,v,tv} 정합
+        // build_daily prototype {date,o,h,l,c,v,tv} 와 lazy fetch {d,o,h,l,c,v,ta} 양 호환 — d→date / ta→tv alias.
+        const normalized = rows.map(r => ({
+          date: r.date || r.d || null,
+          o: r.o, h: r.h, l: r.l, c: r.c,
+          v: typeof r.v === 'number' ? r.v : 0,
+          tv: typeof r.tv === 'number' ? r.tv : (typeof r.ta === 'number' ? r.ta : (r.c || 0) * (r.v || 0)),
+        }));
+        _dailybarsCache.set(code, normalized);
+        return normalized;
+      } catch (err) {
+        _dailybarsCache.set(code, null);
+        return null;
+      }
+    }
+
+    async function _openChartExpand(trigger, card) {
+      const isOpen = card.classList.contains('chart-expanded');
+      if (isOpen) {
+        card.classList.remove('chart-expanded');
+        card.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      const ticker = card.getAttribute('data-stock-code') || '';
+      // 슬롯 lazy 생성 — SPEC-001 v2 §5.2/§5.3 옵션 B 채택 (Phase 5 design-lead 본질 갱신, cluster v21 99회차 critical FLR-001 catch).
+      // `.cal-feature-details`는 `.cal-feature-body` 직접 자식 (card 직접 자식 아님). 따라서 `insertBefore(slot, details)` 호출 시 NotFoundError throw.
+      // 옵션 B: `card.appendChild(slot)` 단일 분기 — details/hasDetails 분기 자체 제거. slot 위치 = card 마지막 자식 (body sibling).
+      // selector `:scope >` 명시 — card 직접 자식만 매칭 (body 내부 잘못된 위치 슬롯 검색 회피).
+      let slot = card.querySelector(':scope > .cal-feature-chart-expanded');
+      if (!slot) {
+        slot = document.createElement('div');
+        slot.className = 'cal-feature-chart-expanded';
+        slot.id = `chart-${ticker}`; // SPEC §5.6 MINOR-1 — stable id (aria-controls anchor)
+        slot.setAttribute('aria-live', 'polite');
+        card.appendChild(slot); // SPEC §5.2 옵션 B — 단일 분기, body sibling, card 마지막 자식
+      }
+      let exDividendDates = [];
+      try {
+        const exd = trigger.getAttribute('data-exdividend');
+        if (exd) exDividendDates = JSON.parse(exd);
+      } catch (err) { /* noop */ }
+
+      // 1차 prototype fallback (20영업일) — 즉시 render (사용자 perceived latency ↓)
+      let prototypeData = [];
+      try {
+        const stash = trigger.getAttribute('data-daily20');
+        if (stash) prototypeData = JSON.parse(stash);
+      } catch (err) {
+        prototypeData = [];
+      }
+      // accordion 즉시 open + 1차 render (20일) — 사용자 인지 부담 0 ms 정합 (AC-13 <200ms)
+      card.classList.add('chart-expanded');
+      card.setAttribute('aria-expanded', 'true');
+      trigger.setAttribute('aria-expanded', 'true'); // SPEC §5.1/§5.6 — trigger 동기화
+      if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
+        window.ChartExpanded.render(slot, prototypeData, { ticker, exDividendDates });
+      } else {
+        slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
+      }
+      requestAnimationFrame(() => {
+        const closeBtn = slot.querySelector('.cal-chart-close');
+        if (closeBtn) closeBtn.focus();
+      });
+
+      // 2차 lazy fetch 240영업일 → 성공 시 swap. 차트가 닫혀있으면 swap skip (race).
+      const lazyData = await _fetchDailybars(ticker);
+      if (!lazyData || lazyData.length === 0) return; // fallback 유지
+      if (!card.classList.contains('chart-expanded')) return; // 닫힘
+      if (window.ChartExpanded && typeof window.ChartExpanded.render === 'function') {
+        window.ChartExpanded.render(slot, lazyData, { ticker, exDividendDates });
+      }
+    }
+
+    document.addEventListener('click', e => {
+      const trigger = e.target.closest('[data-expand-trigger="chart"]');
+      if (!trigger) return;
+      const card = trigger.closest('.cal-feature-card');
+      if (!card) return;
+      e.stopPropagation();
+      _openChartExpand(trigger, card);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const trigger = e.target.closest('[data-expand-trigger="chart"]');
+      if (!trigger) return;
+      e.preventDefault();
+      trigger.click();
+    });
+    window._chartExpandInit = true;
   }
 
   // 공유 버튼 이벤트 위임 (1회만 등록)
