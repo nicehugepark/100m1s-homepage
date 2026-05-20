@@ -3431,3 +3431,122 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
    cycle22 P1 END
 ─────────────────────────────────────────────────────────────────── */
 
+/* ─────────────────────────────────────────────────────────────────
+   cycle22 Phase 7d-1 — ChartTV (TradingView v5) wrapper UI
+   REQ DOC-20260521-REQ-001 §5 토글 UI chip bar verbatim
+─────────────────────────────────────────────────────────────────── */
+
+.cal-chart-tv-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.cal-chart-tv-toggles-host {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.2) transparent;
+}
+
+.cal-chart-tv-toggle-bar {
+  display: flex;
+  gap: 6px;
+  padding: 4px 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.cal-chart-tv-toggle-bar::-webkit-scrollbar { height: 4px; }
+.cal-chart-tv-toggle-bar::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 2px;
+}
+
+.cal-chart-tv-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.cal-chart-tv-chip:hover {
+  background: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.85);
+}
+
+.cal-chart-tv-chip.is-on {
+  background: #C49930;
+  color: #fff;
+  border-color: #A88639;
+}
+
+.cal-chart-tv-chip.is-on:hover {
+  background: #A88639;
+}
+
+.cal-chart-tv-chip:focus-visible {
+  outline: 2px solid #C49930;
+  outline-offset: 2px;
+}
+
+/* category 별 hue 차별 (overlay = 햇살 톤 / sub-pane = blue / marker = pink / drawing = neutral) */
+.cal-chart-tv-chip[data-category="sub-pane"].is-on {
+  background: #0064FF;
+  border-color: #0050CC;
+}
+.cal-chart-tv-chip[data-category="sub-pane"].is-on:hover {
+  background: #0050CC;
+}
+
+.cal-chart-tv-chip[data-category="marker"].is-on {
+  background: #EC4899;
+  border-color: #C53980;
+}
+.cal-chart-tv-chip[data-category="marker"].is-on:hover {
+  background: #C53980;
+}
+
+.cal-chart-tv-chip[data-category="drawing"].is-on {
+  background: #6B7A99;
+  border-color: #4D5A78;
+}
+
+.cal-chart-tv-main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cal-chart-tv-attr {
+  width: 100%;
+  text-align: right;
+  padding-right: 8px;
+}
+
+@media (max-width: 360px) {
+  .cal-chart-tv-chip {
+    min-width: 40px;
+    height: 24px;
+    font-size: 11px;
+    padding: 0 8px;
+  }
+}
+
