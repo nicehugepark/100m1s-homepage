@@ -1,8 +1,12 @@
 {
   "date": "2026-05-20",
-  "generated_at": "2026-05-20T08:29:44.192578",
+  "generated_at": "2026-05-20T09:11:07.598189",
   "data_source": "kiwoom",
   "macro_events": [
+    {
+      "title": "파업우려",
+      "summary": "삼성전자 노사분쟁 총파업 위험 → 주가 리스크 선반영 → 반도체·전자 섹터 조정 압력"
+    },
     {
       "title": "AI로봇투자",
       "summary": "글로벌 AI·로봇 인프라 투자 가속화(Blackstone $5B, 한화 신규 AI·방산 진출) → 반도체·정밀기기·방위산업 수혜 강화"
@@ -38,15 +42,146 @@
     {
       "title": "노사교착",
       "summary": "삼성전자 노사협상 중노위 조정과정 교착→생산차질 리스크→반도체·전자 섹터 공급 불확실성 증가"
-    },
-    {
-      "title": "스피어우주",
-      "summary": "스피어 900억원 CB 재매각 → 우주 인프라·물류 자동화 확장 자금 확보"
     }
   ],
   "narratives": [],
-  "themes_macro_summary": [],
-  "themes_tree": null,
+  "themes_macro_summary": [
+    {
+      "keyword": "파업우려",
+      "summary": "삼성전자 노사분쟁 총파업 위험 → 주가 리스크 선반영 → 반도체·전자 섹터 조정 압력",
+      "source_count": 4,
+      "verified": true
+    },
+    {
+      "keyword": "AI로봇투자",
+      "summary": "글로벌 AI·로봇 인프라 투자 가속화(Blackstone $5B, 한화 신규 AI·방산 진출) → 반도체·정밀기기·방위산업 수혜 강화",
+      "source_count": 3,
+      "verified": true
+    },
+    {
+      "keyword": "AI로봇",
+      "summary": "Blackstone 5조원 AI인프라 투자·비에이치 휴머노이드 부각·한화 AI방산 투자→로봇·AI부품 공급망 강화→부품·정밀기계 섹터 수혜",
+      "source_count": 3,
+      "verified": true
+    },
+    {
+      "keyword": "임금협상",
+      "summary": "삼성전자 노사 중노위 조정 → 임금 인상 비용 증가 → 반도체 섹터 실적 부담 우려",
+      "source_count": 3,
+      "verified": true
+    },
+    {
+      "keyword": "AI글라스",
+      "summary": "AI 글라스·피지컬 AI 상용화 가속 → 현대차그룹·반도체 부품사 실적 개선 기대 → 자동차·부품 섹터",
+      "source_count": 3,
+      "verified": true
+    }
+  ],
+  "themes_tree": {
+    "date": "2026-05-20",
+    "roots": [
+      {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "HBM/메모리 반도체",
+            "summary": "HBM 수혜 본격화와 SK하이닉스 메모리 재평가 기대로 관련 장비·소재주에 자금 집중",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "반도체 소부장",
+            "summary": "삼성·SK하이닉스 대규모 투자와 BCD 판가 인상으로 소재·부품·장비주 실적 모멘텀 확대",
+            "source_count": 4,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "AI",
+        "children": [
+          {
+            "name": "피지컬 AI/로봇",
+            "summary": "현대차그룹 피지컬 AI 성과 구체화와 로봇 부품 상용화로 자동차·로봇 관련주 수혜",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 인프라/데이터센터",
+            "summary": "OpenAI Guaranteed Capacity 공급과 데이터센터 인프라 투자 확대로 전력·기판·인프라 관련주 수혜",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "바이오",
+        "children": [
+          {
+            "name": "바이오 CDMO",
+            "summary": "삼성바이오로직스 영업이익률 45% 전망과 에스티팜 RNA 원료 수요 확대로 위탁개발생산 섹터 성장 모멘텀",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "건설",
+        "children": [
+          {
+            "name": "도시정비 재건축",
+            "summary": "현대건설·DL이앤씨 압구정5구역 수주전 격화로 대형 건설사 도시정비 경쟁 부각",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "밸류업",
+        "children": [
+          {
+            "name": "지주사 재평가",
+            "summary": "SK스퀘어 하이닉스 지분가치와 LS 비상장 자회사 가치 부각으로 지주사 디스카운트 해소 기대",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "소비재",
+        "children": [
+          {
+            "name": "유통/면세점",
+            "summary": "신세계 백화점·면세점 동반 호황으로 역대 최고 실적 전망과 목표가 상향",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "통신",
+        "children": [
+          {
+            "name": "저PBR 통신장비",
+            "summary": "쏠리드 저PBR 통신장비주 실적 낙관 전망으로 밸류업 수혜 기대",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "자동차부품",
+        "children": [
+          {
+            "name": "타이어/열관리",
+            "summary": "한국타이어 열관리 부문이 타이어 업황 방어하며 실적 개선 모멘텀 확보",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      }
+    ]
+  },
   "stocks": [
     {
       "code": "036930",
@@ -90,6 +225,21 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "19일 코스닥 시장 공매도 금액 상위 종목. 주성엔지니어링, 에코프로 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/05/20/MEYTOYJRGU3TCODDGA3DOZRUG4/",
+          "source": "조선비즈",
+          "published_at": "2026-05-19T23:01:15",
+          "causal_chain": "공매도 금액 상위 종목 단순 집계 노출 — 본업·매크로 직접 영향 없음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "[급등락주 짚어보기] 반도체·우주항공·로봇 테마 온기…미래산업·주성엔지니어링 등 '上'",
           "url": "https://www.etoday.co.kr/news/view/2585599",
@@ -149,25 +299,12 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null
-        },
-        {
-          "title": "주성엔지니어링, 업계 최초 '원자층 성장' 장비 출하·공급",
-          "url": "https://www.etnews.com/20260517000034",
-          "source": "전자신문",
-          "published_at": "2026-05-17T21:00:00",
-          "causal_chain": "AI 연산용 고집적 반도체 수요 확대 → 수직 적층 구조 차세대 트랜지스터 제조에 초미세 박막 균일도 확보 필수 → 주성엔지니어링이 세계 최초 ALG(원자층박막성장) 장비를 글로벌 반도체 기업에 출하, 기존 ALD 대비 밀도·수율 우위로 본업(반도체 박막 장비) 직접 수혜.",
-          "macro_event": "AI 반도체 고도화 → 초미세 공정·수직 적층 구조 차세대 트랜지스터 장비 수요 확대",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": 1.4,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 199300,
         "high_date": "2026-05-19",
@@ -389,7 +526,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -0.76,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 19950,
         "high_date": "2026-05-19",
@@ -547,11 +686,11 @@
       "name": "켄코아에어로스페이스",
       "rank": 3,
       "trade_amount": 358278000000,
-      "change_pct": 9.63,
-      "close_price": null,
-      "open_price": 26350,
-      "high_price": 32950,
-      "low_price": 26100,
+      "change_pct": -5.8,
+      "close_price": 26800,
+      "open_price": 27150,
+      "high_price": 27200,
+      "low_price": 25300,
       "industry": "항공기,우주선 및 부품 제조업",
       "sector": "항공가공품 및 조립품",
       "themes": [
@@ -576,15 +715,17 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": 2.79,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 32950,
         "high_date": "2026-05-19",
-        "high_pct": -13.66,
+        "high_pct": -18.66,
         "low": 9610,
         "low_date": "2025-12-05",
-        "low_pct": 196.05,
-        "current": 28450
+        "low_pct": 178.88,
+        "current": 26800
       },
       "daily_20": [
         {
@@ -722,10 +863,10 @@
         },
         {
           "date": "2026-05-20",
-          "o": 26350,
-          "h": 32950,
-          "l": 26100,
-          "c": 28450
+          "o": 27150,
+          "h": 27200,
+          "l": 25300,
+          "c": 26800
         }
       ],
       "causal_chain": "",
@@ -788,7 +929,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -3.55,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 5080,
         "high_date": "2026-05-19",
@@ -984,6 +1127,21 @@
       "bullish_streak": 0,
       "news": [
         {
+          "title": "19일 코스피 시장 공매도 수량 상위 종목. 한화생명, LG디스플레이 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/05/20/HE3DEMLBMZRTQMLEHE2WCODFGY/",
+          "source": "조선비즈",
+          "published_at": "2026-05-19T23:01:14",
+          "causal_chain": "공매도 수량 상위 종목 단순 집계 노출 — 본업·매크로 직접 영향 없음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
           "title": "키움증권 “한화생명, 보험손익은 감소…투자이익 호조로 점진적 회복”",
           "url": "https://www.mk.co.kr/news/stock/12045773",
           "source": "매경",
@@ -1042,25 +1200,12 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null
-        },
-        {
-          "title": "[사진]대전 한화생명 볼파크, 전석 매진",
-          "url": "https://biz.chosun.com/sports/sports_photo/2026/04/15/GFQTCMRZGEZGEOJWGUYWGNLCGQ/",
-          "source": "조선비즈",
-          "published_at": "2026-04-15T11:02:00",
-          "causal_chain": "투자손익 급증(대체투자 평가이익 약 2000억원)에 힘입어 1Q 순이익 +103% 호조 + CSM·자본비율 개선 → 생명보험 본업 펀더멘털 회복 신호. 애큐온캐피탈+저축은행 인수 추진 → 캐피탈·저축은행 라이선스 확보 시 종합금융그룹 포트폴리오 확장.",
-          "macro_event": "한화생명 1Q 순이익 전년比 +103% (투자이익 +444%, 보험손익 -40%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -0.92,
+      "index_multiple_current": -2.49,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 7560,
         "high_date": "2026-02-23",
@@ -1278,7 +1423,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -0.92,
+      "index_multiple_current": -25.95,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 25900,
         "high_date": "2026-05-19",
@@ -1436,11 +1583,11 @@
       "name": "한선엔지니어링",
       "rank": 7,
       "trade_amount": 99803000000,
-      "change_pct": 19.57,
-      "close_price": null,
-      "open_price": 27850,
-      "high_price": 35550,
-      "low_price": 26650,
+      "change_pct": -3.6,
+      "close_price": 32100,
+      "open_price": 31200,
+      "high_price": 32800,
+      "low_price": 30550,
       "industry": "기타 금속 가공제품 제조업",
       "sector": "계장용 피팅 및 밸브, 모듈",
       "themes": [
@@ -1495,15 +1642,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": 1.73,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 35550,
         "high_date": "2026-05-19",
-        "high_pct": -6.33,
+        "high_pct": -9.7,
         "low": 6550,
         "low_date": "2025-07-16",
-        "low_pct": 408.4,
-        "current": 33300
+        "low_pct": 390.08,
+        "current": 32100
       },
       "daily_20": [
         {
@@ -1641,10 +1790,10 @@
         },
         {
           "date": "2026-05-20",
-          "o": 27850,
-          "h": 35550,
-          "l": 26650,
-          "c": 33300
+          "o": 31200,
+          "h": 32800,
+          "l": 30550,
+          "c": 32100
         }
       ],
       "credit_risk": true,
@@ -1655,11 +1804,11 @@
       "name": "티이엠씨",
       "rank": 8,
       "trade_amount": 86038000000,
-      "change_pct": 7.71,
-      "close_price": null,
-      "open_price": 24000,
-      "high_price": 26350,
-      "low_price": 22150,
+      "change_pct": -7.93,
+      "close_price": 23800,
+      "open_price": 24300,
+      "high_price": 25200,
+      "low_price": 23800,
       "industry": "기초 화학물질 제조업",
       "sector": "반도체용 특수가스",
       "themes": [
@@ -1700,15 +1849,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": 3.81,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 26350,
         "high_date": "2026-05-19",
-        "high_pct": -1.9,
+        "high_pct": -9.68,
         "low": 6000,
         "low_date": "2025-05-27",
-        "low_pct": 330.83,
-        "current": 25850
+        "low_pct": 296.67,
+        "current": 23800
       },
       "daily_20": [
         {
@@ -1846,10 +1997,10 @@
         },
         {
           "date": "2026-05-20",
-          "o": 24000,
-          "h": 26350,
-          "l": 22150,
-          "c": 25850
+          "o": 24300,
+          "h": 25200,
+          "l": 23800,
+          "c": 23800
         }
       ],
       "status_badges": [
@@ -1975,7 +2126,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -7.63,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 32900,
         "high_date": "2026-05-19",
@@ -2168,11 +2321,11 @@
       "name": "아이씨티케이",
       "rank": 10,
       "trade_amount": 74551000000,
-      "change_pct": 29.91,
-      "close_price": null,
-      "open_price": 23000,
-      "high_price": 25450,
-      "low_price": 21600,
+      "change_pct": -3.14,
+      "close_price": 24650,
+      "open_price": 23350,
+      "high_price": 24700,
+      "low_price": 22400,
       "industry": "반도체 제조업",
       "sector": "PUF반도체,보안솔루션(보안반도체,정보통신모듈기기,정보통신용반도체) 제조,개발",
       "themes": [
@@ -2243,15 +2396,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": 1.51,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 30550,
         "high_date": "2026-04-20",
-        "high_pct": -16.69,
+        "high_pct": -19.31,
         "low": 10460,
         "low_date": "2025-08-20",
-        "low_pct": 143.31,
-        "current": 25450
+        "low_pct": 135.66,
+        "current": 24650
       },
       "daily_20": [
         {
@@ -2389,10 +2544,10 @@
         },
         {
           "date": "2026-05-20",
-          "o": 23000,
-          "h": 25450,
-          "l": 21600,
-          "c": 25450
+          "o": 23350,
+          "h": 24700,
+          "l": 22400,
+          "c": 24650
         }
       ],
       "credit_risk": true,
@@ -2403,11 +2558,11 @@
       "name": "센서뷰",
       "rank": 11,
       "trade_amount": 72976000000,
-      "change_pct": 3.66,
-      "close_price": null,
-      "open_price": 3745,
-      "high_price": 4340,
-      "low_price": 3700,
+      "change_pct": -8.38,
+      "close_price": 3500,
+      "open_price": 3760,
+      "high_price": 3760,
+      "low_price": 3410,
       "industry": "전자부품 제조업",
       "sector": "T&M 케이블, 초소형 전송선로",
       "themes": [
@@ -2529,15 +2684,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": 4.03,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 5297,
         "high_date": "2026-01-23",
-        "high_pct": -27.88,
+        "high_pct": -33.92,
         "low": 897,
         "low_date": "2025-11-21",
-        "low_pct": 325.86,
-        "current": 3820
+        "low_pct": 290.19,
+        "current": 3500
       },
       "daily_20": [
         {
@@ -2675,10 +2832,10 @@
         },
         {
           "date": "2026-05-20",
-          "o": 3745,
-          "h": 4340,
-          "l": 3700,
-          "c": 3820
+          "o": 3760,
+          "h": 3760,
+          "l": 3410,
+          "c": 3500
         }
       ],
       "credit_risk": true,
@@ -2718,7 +2875,9 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -0.92,
+      "index_multiple_current": -8.09,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 10800,
         "high_date": "2026-02-23",
@@ -3026,7 +3185,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.0,
+      "index_change_pct": -0.92,
+      "index_multiple_current": 5.9,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 92500,
         "high_date": "2026-02-04",
@@ -3178,6 +3339,567 @@
           "c": 71400
         }
       ]
+    },
+    {
+      "code": "477850",
+      "name": "마키나락스",
+      "rank": 14,
+      "trade_amount": 28680000000,
+      "change_pct": null,
+      "close_price": 60000,
+      "open_price": 60000,
+      "high_price": 60000,
+      "low_price": 60000,
+      "industry": null,
+      "sector": null,
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-05-20",
+          "summary": "마키나락스 상한가 (300.0%)",
+          "cur_prc": 60000,
+          "flu_rt": 300.0,
+          "trde_qty": 477889,
+          "trde_prica_calc": 28680000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-05-21"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "065420",
+      "name": "에스아이리소스",
+      "rank": 15,
+      "trade_amount": 1577000000,
+      "change_pct": 29.86,
+      "close_price": 287,
+      "open_price": 287,
+      "high_price": 287,
+      "low_price": 287,
+      "industry": "기타 화학제품 제조업",
+      "sector": "유연탄",
+      "themes": [
+        "경영권 분쟁"
+      ],
+      "theme_paths": [
+        {
+          "name": "경영권 분쟁",
+          "path": [
+            "경영권 분쟁"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-20",
+        "rank": 50,
+        "change_pct": 30.0,
+        "trade_amount": 7222000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "에스아이리소스 “파행적 주총 운영 및 위법적 개최 시도 강력 대응”",
+          "url": "https://www.sedaily.com/article/20036820",
+          "source": "서울경제",
+          "published_at": "2026-04-24T06:34:16",
+          "causal_chain": "소수주주 측 임시주총 소집허가 인용→4/17 임시주총 개회 무산 후 4/21 일방 개최 시도→회사 측 가처분·부존재 확인 소송 제기→지분 매집·우호 지분 확보(대주주 측 45.37%)·이사 해임 표대결 구도 형성으로 경영권 다툼 격화·후속 모멘텀 부각.",
+          "macro_event": "소수주주 김효수 측 임시주주총회 소집·이사 해임 시도, 회사 측 주주총회효력정지·해임등기효력정지 가처분 및 주주총회부존재 확인 청구 소송 등 법적 대응 착수",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[오늘의 증시일정] TPC로보틱스·에스아이리소스·엔에이치스팩29호 등",
+          "url": "https://www.etoday.co.kr/news/view/2576582",
+          "source": "이투데이",
+          "published_at": "2026-04-16T23:30:00",
+          "causal_chain": "소수주주 측 임시주총 소집허가 인용→4/17 임시주총 개회 무산 후 4/21 일방 개최 시도→회사 측 가처분·부존재 확인 소송 제기→지분 매집·우호 지분 확보(대주주 측 45.37%)·이사 해임 표대결 구도 형성으로 경영권 다툼 격화·후속 모멘텀 부각.",
+          "macro_event": "소수주주 김효수 측 임시주주총회 소집·이사 해임 시도, 회사 측 주주총회효력정지·해임등기효력정지 가처분 및 주주총회부존재 확인 청구 소송 등 법적 대응 착수",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "에스아이리소스, 43억원 규모 한국중부발전 공급계약 체결",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03772006645415792",
+          "source": "이데일리",
+          "published_at": "2026-04-13T06:24:27",
+          "causal_chain": "소수주주 측 임시주총 소집허가 인용→4/17 임시주총 개회 무산 후 4/21 일방 개최 시도→회사 측 가처분·부존재 확인 소송 제기→지분 매집·우호 지분 확보(대주주 측 45.37%)·이사 해임 표대결 구도 형성으로 경영권 다툼 격화·후속 모멘텀 부각.",
+          "macro_event": "소수주주 김효수 측 임시주주총회 소집·이사 해임 시도, 회사 측 주주총회효력정지·해임등기효력정지 가처분 및 주주총회부존재 확인 청구 소송 등 법적 대응 착수",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -14.36,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 418,
+        "high_date": "2025-07-21",
+        "high_pct": -31.34,
+        "low": 163,
+        "low_date": "2026-02-13",
+        "low_pct": 76.07,
+        "current": 287
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-21",
+          "o": 351,
+          "h": 388,
+          "l": 271,
+          "c": 291
+        },
+        {
+          "date": "2026-04-22",
+          "o": 291,
+          "h": 349,
+          "l": 286,
+          "c": 296
+        },
+        {
+          "date": "2026-04-23",
+          "o": 302,
+          "h": 302,
+          "l": 252,
+          "c": 261
+        },
+        {
+          "date": "2026-04-24",
+          "o": 260,
+          "h": 330,
+          "l": 245,
+          "c": 285
+        },
+        {
+          "date": "2026-04-27",
+          "o": 286,
+          "h": 293,
+          "l": 272,
+          "c": 282
+        },
+        {
+          "date": "2026-04-28",
+          "o": 282,
+          "h": 323,
+          "l": 270,
+          "c": 308
+        },
+        {
+          "date": "2026-04-29",
+          "o": 312,
+          "h": 375,
+          "l": 305,
+          "c": 345
+        },
+        {
+          "date": "2026-04-30",
+          "o": 345,
+          "h": 365,
+          "l": 299,
+          "c": 300
+        },
+        {
+          "date": "2026-05-04",
+          "o": 299,
+          "h": 305,
+          "l": 284,
+          "c": 286
+        },
+        {
+          "date": "2026-05-06",
+          "o": 286,
+          "h": 290,
+          "l": 276,
+          "c": 281
+        },
+        {
+          "date": "2026-05-07",
+          "o": 302,
+          "h": 303,
+          "l": 270,
+          "c": 274
+        },
+        {
+          "date": "2026-05-08",
+          "o": 279,
+          "h": 285,
+          "l": 267,
+          "c": 267
+        },
+        {
+          "date": "2026-05-11",
+          "o": 267,
+          "h": 276,
+          "l": 262,
+          "c": 266
+        },
+        {
+          "date": "2026-05-12",
+          "o": 266,
+          "h": 291,
+          "l": 258,
+          "c": 277
+        },
+        {
+          "date": "2026-05-13",
+          "o": 277,
+          "h": 278,
+          "l": 258,
+          "c": 259
+        },
+        {
+          "date": "2026-05-14",
+          "o": 263,
+          "h": 263,
+          "l": 237,
+          "c": 242
+        },
+        {
+          "date": "2026-05-15",
+          "o": 244,
+          "h": 254,
+          "l": 227,
+          "c": 233
+        },
+        {
+          "date": "2026-05-18",
+          "o": 234,
+          "h": 234,
+          "l": 221,
+          "c": 229
+        },
+        {
+          "date": "2026-05-19",
+          "o": 228,
+          "h": 230,
+          "l": 215,
+          "c": 221
+        },
+        {
+          "date": "2026-05-20",
+          "o": 287,
+          "h": 287,
+          "l": 287,
+          "c": 287
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-05-20",
+          "summary": "에스아이리소스 상한가 (29.86%)",
+          "cur_prc": 287,
+          "flu_rt": 29.86,
+          "trde_qty": 5652805,
+          "trde_prica_calc": 1577000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-05-21"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "018700",
+      "name": "졸스",
+      "rank": 16,
+      "trade_amount": 478000000,
+      "change_pct": 29.91,
+      "close_price": 2975,
+      "open_price": 2975,
+      "high_price": 2975,
+      "low_price": 2975,
+      "industry": "생활용품 도매업",
+      "sector": "지제품",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-05-19",
+        "rank": 22,
+        "change_pct": 29.75,
+        "trade_amount": 452000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "바른손, 12일 주권매매거래 정지 해제",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=07386566645446624",
+          "source": "이데일리",
+          "published_at": "2026-05-07T09:02:31",
+          "causal_chain": "본문은 주권매매거래 정지 해제 사실만 포함. 산업·매크로 본질 모멘텀 단서 없음.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -14.38,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 4763,
+        "high_date": "2025-06-23",
+        "high_pct": -37.54,
+        "low": 1503,
+        "low_date": "2026-04-09",
+        "low_pct": 97.94,
+        "current": 2975
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-21",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-22",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-23",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-24",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-27",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-28",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-29",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-04-30",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-05-04",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-05-06",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-05-07",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-05-08",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-05-11",
+          "o": 1686,
+          "h": 1686,
+          "l": 1686,
+          "c": 1686
+        },
+        {
+          "date": "2026-05-12",
+          "o": 1686,
+          "h": 1814,
+          "l": 1506,
+          "c": 1583
+        },
+        {
+          "date": "2026-05-13",
+          "o": 1581,
+          "h": 1581,
+          "l": 1517,
+          "c": 1552
+        },
+        {
+          "date": "2026-05-14",
+          "o": 1548,
+          "h": 1940,
+          "l": 1548,
+          "c": 1652
+        },
+        {
+          "date": "2026-05-15",
+          "o": 1707,
+          "h": 1950,
+          "l": 1671,
+          "c": 1783
+        },
+        {
+          "date": "2026-05-18",
+          "o": 1792,
+          "h": 1808,
+          "l": 1552,
+          "c": 1765
+        },
+        {
+          "date": "2026-05-19",
+          "o": 2290,
+          "h": 2290,
+          "l": 2290,
+          "c": 2290
+        },
+        {
+          "date": "2026-05-20",
+          "o": 2975,
+          "h": 2975,
+          "l": 2975,
+          "c": 2975
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-13) 대비 +60%↑",
+              "base_price": 1552,
+              "threshold": 2483,
+              "current": 2975,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-21",
+          "period_end": "2026-05-22",
+          "start": "2026-05-21",
+          "end": "2026-05-22",
+          "view_date": "2026-05-20",
+          "next_trading_day": "2026-05-21",
+          "next_trading_day_for_predicted": "2026-05-21",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-05-20",
+          "summary": "졸스 상한가 (29.91%)",
+          "cur_prc": 2975,
+          "flu_rt": 29.91,
+          "trde_qty": 160784,
+          "trde_prica_calc": 478000000,
+          "consecutive_count": 2,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 2
+            }
+          ],
+          "next_trading_day": "2026-05-21"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
     }
   ]
 }
