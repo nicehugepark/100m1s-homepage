@@ -1,8 +1,12 @@
 {
   "date": "2026-05-20",
-  "generated_at": "2026-05-20T15:31:40.598712",
+  "generated_at": "2026-05-20T16:28:09.790819",
   "data_source": "kiwoom",
   "macro_events": [
+    {
+      "title": "삼성파업",
+      "summary": "삼성전자 총파업 현실화 → 반도체 생산 차질 우려 → 반도체·전자 섹터 주가 하락"
+    },
     {
       "title": "파업우려",
       "summary": "삼성전자 노사분쟁 총파업 위험 → 주가 리스크 선반영 → 반도체·전자 섹터 조정 압력"
@@ -32,10 +36,6 @@
       "summary": "AI 글라스·피지컬 AI 상용화 가속 → 현대차그룹·반도체 부품사 실적 개선 기대 → 자동차·부품 섹터"
     },
     {
-      "title": "삼성파업",
-      "summary": "삼성전자 내일 총파업 단행 → D램·낸드플래시 공급 차질 우려 → 반도체 메모리 섹터 공급 리스크 재부상"
-    },
-    {
       "title": "메모리고",
       "summary": "SK하이닉스 시총 상승 신호 → 메모리 칩 공급 부족 인정 → D-램 고가격 지속 → 반도체 고객사 마진 압박"
     },
@@ -46,6 +46,12 @@
   ],
   "narratives": [],
   "themes_macro_summary": [
+    {
+      "keyword": "삼성파업",
+      "summary": "삼성전자 노사 협상 결렬→정부 긴급조정 검토→반도체·IT 섹터 공급 리스크",
+      "source_count": 4,
+      "verified": true
+    },
     {
       "keyword": "파업우려",
       "summary": "삼성전자 노사분쟁 총파업 위험 → 주가 리스크 선반영 → 반도체·전자 섹터 조정 압력",
@@ -67,12 +73,6 @@
     {
       "keyword": "AI로봇",
       "summary": "Blackstone 5조원 AI인프라 투자·비에이치 휴머노이드 부각·한화 AI방산 투자→로봇·AI부품 공급망 강화→부품·정밀기계 섹터 수혜",
-      "source_count": 3,
-      "verified": true
-    },
-    {
-      "keyword": "AI인프라",
-      "summary": "AI 데이터센터 수요 확산 → 차세대 전력설비(UPS) 개발·양산 시작 → 반도체·전력설비 섹터 수혜",
       "source_count": 3,
       "verified": true
     }
@@ -115,6 +115,18 @@
           },
           {
             "name": "삼성전자 노조 파업",
+            "summary": "삼성전자 노사 임금협상 결렬·총파업 선언으로 글로벌 반도체 공급망 차질 우려 → 경쟁사·대체 수혜주로 자금 이동",
+            "source_count": 7,
+            "verdict": "pass"
+          },
+          {
+            "name": "삼성전자 노조 파업",
+            "summary": "삼성전자 노사 임금협상 결렬·총파업 선언으로 글로벌 반도체 공급망 차질 우려 → 경쟁사·대체 수혜주로 자금 이동",
+            "source_count": 7,
+            "verdict": "weak"
+          },
+          {
+            "name": "삼성전자 노조 파업",
             "summary": "삼성전자 노사 사후조정 결렬로 총파업 돌입, 반도체 생산 차질 우려가 주가·동종업계 변동성 확대로 연결.",
             "source_count": 6,
             "verdict": "pass"
@@ -238,6 +250,12 @@
             "summary": "HBM 수혜 본격화로 디아이 등 후공정 검사장비 업체 이익 증가 모멘텀 부각",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "반도체 후공정",
+            "summary": "피엠티 삼성 中 반도체법인向 65억원 프로브카드 공급으로 반도체 검사장비 수요 부각",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -444,6 +462,12 @@
             "summary": "유한양행이 美 길리어드와 2100억원 규모 원료의약품 공급계약을 체결하며 한국 CMO(위탁생산) 수출 모멘텀이 강화된다.",
             "source_count": 1,
             "verdict": "weak"
+          },
+          {
+            "name": "mRNA 백신",
+            "summary": "아이진 한타바이러스 mRNA 백신 개발 기대감으로 mRNA 플랫폼주 부각",
+            "source_count": 1,
+            "verdict": "unverified"
           }
         ]
       },
@@ -479,6 +503,12 @@
             "summary": "현대건설·DL이앤씨 압구정5구역 수주전 격화로 대형 건설사 도시정비 경쟁 부각",
             "source_count": 3,
             "verdict": "weak"
+          },
+          {
+            "name": "GTX 부실시공",
+            "summary": "GTX 철근 누락 사고로 현대건설 재건축 단지 신뢰 훼손·건설주 투자심리 악화",
+            "source_count": 3,
+            "verdict": "unverified"
           }
         ]
       },
@@ -609,6 +639,18 @@
           },
           {
             "name": "AI 데이터센터 전력",
+            "summary": "에이루트 자회사 지오닉스 AI 데이터센터용 고효율 UPS 시제품 개발 완료로 전력설비 수요 부각",
+            "source_count": 3,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 데이터센터 전력",
+            "summary": "에이루트 자회사 지오닉스 AI 데이터센터용 고효율 UPS 시제품 개발 완료로 전력설비 수요 부각",
+            "source_count": 3,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 데이터센터 전력",
             "summary": "美 AI 데이터센터 전력 수요 폭증으로 SOFC 부품(한선엔지니어링)·HD현대중공업 엔진 수주 기대, 전력 인프라 섹터 자금 유입.",
             "source_count": 2,
             "verdict": "pass"
@@ -641,6 +683,36 @@
             "name": "피지컬 AI",
             "summary": "현대차 '선도기업' 도약 선언 + 코아시아씨엠 차세대 광학 사업 확대 → 로보틱스·자율주행·산업 AI 광학 부품주로 자금 이동",
             "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "AI 반도체 부품",
+            "summary": "삼성전기 빅테크向 1.5조원 실리콘 캐패시터 공급 계약으로 AI 반도체 핵심 수동부품 수요 본격화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "피지컬 AI",
+            "summary": "현대차 피지컬 AI 가속·코아시아씨엠 차세대 광학 사업 확대로 로보틱스·자율주행향 광학·센서 수요 부각",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "피지컬 AI",
+            "summary": "현대차 피지컬 AI 가속·코아시아씨엠 차세대 광학 사업 확대로 로보틱스·자율주행향 광학·센서 수요 부각",
+            "source_count": 2,
+            "verdict": "weak"
+          },
+          {
+            "name": "HBM",
+            "summary": "HBM 수혜 본격화로 후공정·검사 장비주(디아이 등) 이익 증가 전망",
+            "source_count": 1,
+            "verdict": "weak"
+          },
+          {
+            "name": "HBM",
+            "summary": "HBM 수혜 본격화로 후공정·검사 장비주(디아이 등) 이익 증가 전망",
+            "source_count": 1,
             "verdict": "weak"
           }
         ]
@@ -882,6 +954,52 @@
         ]
       },
       {
+        "name": "(독립)",
+        "children": [
+          {
+            "name": "우주·위성",
+            "summary": "AP위성 수도권 통합 위성 AIT센터 준공으로 위성 조립·시험 자체화 본격화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "전기차 부품",
+            "summary": "성우 멕시코 몬테레이 280억원 신규 투자로 북미 EV 시장 대응 본격화",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "보잉·항공기",
+            "summary": "중국 보잉 200대 발주 확정으로 항공·MRO 밸류체인 수혜 기대",
+            "source_count": 2,
+            "verdict": "unverified"
+          },
+          {
+            "name": "카카오 노조 파업",
+            "summary": "카카오 노조 파업 투표 본사 포함 5개 법인 찬성으로 플랫폼 운영 리스크 부각",
+            "source_count": 1,
+            "verdict": "unverified"
+          },
+          {
+            "name": "K뷰티 미국 진출",
+            "summary": "에이피알 美 타겟·월마트 오프라인 입점으로 K뷰티 미국 메인스트림 유통망 확장",
+            "source_count": 1,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
+        "name": "의료기기",
+        "children": [
+          {
+            "name": "수술 로봇",
+            "summary": "큐렉소 인도向 85억원 인공관절 수술로봇 공급계약·이지메디봇 식약처 혁신의료기기 사업 선정으로 의료로봇 수출 확대",
+            "source_count": 2,
+            "verdict": "unverified"
+          }
+        ]
+      },
+      {
         "name": "인터넷플랫폼",
         "children": [
           {
@@ -976,8 +1094,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -6.48,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -5.83,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 214000,
@@ -1172,6 +1290,7 @@
           169600,
           174300,
           176700,
+          178500,
           178500
         ]
       },
@@ -1186,10 +1305,10 @@
       "name": "삼화콘덴서",
       "rank": 2,
       "trade_amount": 219181000000,
-      "change_pct": 11.11,
-      "close_price": 71000,
+      "change_pct": 23.0,
+      "close_price": 78600,
       "open_price": 63200,
-      "high_price": 72000,
+      "high_price": 80400,
       "low_price": 63000,
       "industry": "전자부품 제조업",
       "sector": "콘덴서(축전기) 제조",
@@ -1206,17 +1325,17 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -0.72,
-      "index_multiple_current": -15.43,
+      "index_change_pct": -1.06,
+      "index_multiple_current": -21.7,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 73000,
-        "high_date": "2026-04-29",
-        "high_pct": -2.74,
+        "high": 80400,
+        "high_date": "2026-05-20",
+        "high_pct": -2.24,
         "low": 23700,
         "low_date": "2025-05-27",
-        "low_pct": 199.58,
-        "current": 71000
+        "low_pct": 231.65,
+        "current": 78600
       },
       "daily_20": [
         {
@@ -1355,9 +1474,9 @@
         {
           "date": "2026-05-20",
           "o": 63200,
-          "h": 72000,
+          "h": 80400,
           "l": 63000,
-          "c": 71000
+          "c": 78600
         }
       ],
       "intraday": {
@@ -1402,7 +1521,8 @@
           75700,
           77000,
           78300,
-          78800
+          78800,
+          78600
         ]
       },
       "togusa_verdict": "neutral",
@@ -1526,8 +1646,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -2.12,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -1.91,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 114800,
@@ -1722,6 +1842,7 @@
           111900,
           111500,
           111900,
+          112200,
           112200
         ]
       },
@@ -1798,8 +1919,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -0.83,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -0.75,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9390,
@@ -1994,7 +2115,8 @@
           7730,
           7650,
           7680,
-          7690
+          7690,
+          7630
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -2102,6 +2224,7 @@
           30700,
           30700,
           30700,
+          30700,
           30700
         ]
       },
@@ -2118,10 +2241,10 @@
       "name": "이수화학",
       "rank": 6,
       "trade_amount": 149396000000,
-      "change_pct": 10.82,
-      "close_price": 13520,
+      "change_pct": 15.41,
+      "close_price": 14080,
       "open_price": 12330,
-      "high_price": 14110,
+      "high_price": 14400,
       "low_price": 12330,
       "industry": "기초 화학물질 제조업",
       "sector": "등유,알킬벤젠,윤활유,노말파라핀 제조,도매",
@@ -2143,8 +2266,8 @@
         "change_pct": 20.92,
         "trade_amount": 139843070550
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
           "title": "[특징주] 유가 강세에 석유화학주 급등⋯롯데케미칼 22%ㆍ이수화학 20%↑",
@@ -2163,17 +2286,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.72,
-      "index_multiple_current": -15.03,
+      "index_change_pct": -1.06,
+      "index_multiple_current": -14.54,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 14110,
+        "high": 14400,
         "high_date": "2026-05-20",
-        "high_pct": -4.18,
+        "high_pct": -2.22,
         "low": 5060,
         "low_date": "2025-10-13",
-        "low_pct": 167.19,
-        "current": 13520
+        "low_pct": 178.26,
+        "current": 14080
       },
       "daily_20": [
         {
@@ -2312,9 +2435,9 @@
         {
           "date": "2026-05-20",
           "o": 12330,
-          "h": 14110,
+          "h": 14400,
           "l": 12330,
-          "c": 13520
+          "c": 14080
         }
       ],
       "intraday": {
@@ -2359,12 +2482,13 @@
           13880,
           13930,
           13880,
-          14070
+          14070,
+          14080
         ]
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -2400,10 +2524,26 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
-      "fallback": true,
-      "index_change_pct": -0.72,
-      "index_multiple_current": 2.03,
+      "news": [
+        {
+          "title": "[급등락주 짚어보기] 전력 인프라 및 신규 상장주 주목…광전자·마키나락스 등 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2586428",
+          "source": "이투데이",
+          "published_at": "2026-05-20T07:01:00",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "index_change_pct": -1.06,
+      "index_multiple_current": -28.26,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 22450,
@@ -2551,9 +2691,9 @@
         {
           "date": "2026-05-20",
           "o": 9590,
-          "h": 9750,
+          "h": 12450,
           "l": 8970,
-          "c": 9440
+          "c": 12450
         }
       ],
       "status_badges": [
@@ -2595,6 +2735,7 @@
           11540,
           11520,
           11350,
+          12450,
           12450,
           12450,
           12450,
@@ -2669,8 +2810,8 @@
       "bullish_streak": 1,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -11.75,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -10.58,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6310,
@@ -2891,7 +3032,8 @@
           6310,
           6310,
           6310,
-          6310
+          6310,
+          6230
         ]
       },
       "togusa_verdict": "neutral",
@@ -2905,11 +3047,11 @@
       "name": "메이슨캐피탈",
       "rank": 8,
       "trade_amount": 51210000000,
-      "change_pct": 14.18,
-      "close_price": 322,
+      "change_pct": -2.84,
+      "close_price": 274,
       "open_price": 309,
       "high_price": 347,
-      "low_price": 271,
+      "low_price": 244,
       "industry": "기타 금융업",
       "sector": "리스수입",
       "themes": [
@@ -2934,17 +3076,17 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -5.58,
+      "index_change_pct": -2.82,
+      "index_multiple_current": 1.01,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 568,
         "high_date": "2025-05-27",
-        "high_pct": -43.31,
+        "high_pct": -51.76,
         "low": 157,
         "low_date": "2026-05-12",
-        "low_pct": 105.1,
-        "current": 322
+        "low_pct": 74.52,
+        "current": 274
       },
       "daily_20": [
         {
@@ -3084,8 +3226,8 @@
           "date": "2026-05-20",
           "o": 309,
           "h": 347,
-          "l": 271,
-          "c": 322
+          "l": 244,
+          "c": 274
         }
       ],
       "status_badges": [
@@ -3113,8 +3255,8 @@
               "desc": "최근 15일 최고가(2026-05-19)",
               "base_price": 282,
               "threshold": 282,
-              "current": 322,
-              "triggered": true
+              "current": 274,
+              "triggered": false
             }
           ],
           "reason_text": "메이슨캐피탈 보통주가 2026-05-19 종가가 5거래일 전 종가 대비 60% 이상 상승하여 2026-05-20 당일 투자주의종목으로 지정되며 투자경고종목 지정예고됨. 판단일은 2026-05-20부터 2026-06-04까지 순연 적용.",
@@ -3172,14 +3314,12 @@
           296,
           290,
           281,
+          274,
           274
         ]
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의",
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -3226,8 +3366,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -2.16,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -1.94,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 229500,
@@ -3422,12 +3562,10 @@
           236000,
           237000,
           239000,
-          239500
+          239500,
+          237000
         ]
       },
-      "togusa_verdict": "neutral",
-      "theme_leader": true,
-      "hugepark_grade": "관찰",
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -3468,6 +3606,21 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "news": [
+        {
+          "title": "[급등락주 짚어보기] 전력 인프라 및 신규 상장주 주목…광전자·마키나락스 등 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2586428",
+          "source": "이투데이",
+          "published_at": "2026-05-20T07:01:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
         {
           "title": "AI 버블은 없다…마키나락스, 상장 첫날 시총 1조원 돌파",
           "url": "https://www.etnews.com/20260520000305",
@@ -3527,21 +3680,6 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null
-        },
-        {
-          "title": "마키나락스, 상장 첫날 '따따블' 직행[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02561686645450888",
-          "source": "이데일리",
-          "published_at": "2026-05-20T00:05:05",
-          "causal_chain": "정부 AI 3대 강국 기조 + 대기업 AX 수요 확대 → 엔터프라이즈 AI OS '런웨이' 기반 마키나락스 IPO 흥행(기관 1196:1, 청약 증거금 13.9조) → 상장 첫날 따따블·시총 1조 돌파, 피지컬 AI 수익화 기대 반영.",
-          "macro_event": "올해 첫 AI 코스닥 상장 — 따따블(공모가 4배) 달성, 시총 1조원 돌파",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
         }
       ],
       "fallback": false,
@@ -3587,6 +3725,7 @@
         "open": 60000,
         "base": 15000,
         "prices": [
+          60000,
           60000,
           60000,
           60000,
@@ -3694,8 +3833,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -11.81,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -10.63,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 1951,
@@ -3916,6 +4055,7 @@
           1890,
           1890,
           1890,
+          1890,
           1890
         ]
       },
@@ -3970,8 +4110,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -11.73,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -10.56,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3466,
@@ -4192,6 +4332,7 @@
           2235,
           2235,
           2235,
+          2235,
           2235
         ]
       },
@@ -4239,8 +4380,8 @@
           "period_end": "2025-12-31"
         }
       ],
-      "index_change_pct": -0.72,
-      "index_multiple_current": -24.25,
+      "index_change_pct": -1.06,
+      "index_multiple_current": -28.25,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4150,
@@ -4388,9 +4529,9 @@
         {
           "date": "2026-05-20",
           "o": 2450,
-          "h": 2910,
+          "h": 3125,
           "l": 2385,
-          "c": 2825
+          "c": 3125
         }
       ],
       "status_badges": [
@@ -4431,6 +4572,7 @@
           2825,
           2730,
           2785,
+          3125,
           3125,
           3125,
           3125,
@@ -4521,8 +4663,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.72,
-      "index_multiple_current": -41.49,
+      "index_change_pct": -1.06,
+      "index_multiple_current": -28.18,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 780,
@@ -4768,6 +4910,7 @@
           400,
           400,
           400,
+          400,
           400
         ]
       },
@@ -4804,8 +4947,8 @@
       "bullish_streak": 0,
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -11.8,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -10.63,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 12498,
@@ -5023,6 +5166,7 @@
           2775,
           2775,
           2775,
+          2775,
           2775
         ]
       },
@@ -5122,8 +5266,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.54,
-      "index_multiple_current": -1.6,
+      "index_change_pct": -2.82,
+      "index_multiple_current": -1.44,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6850,
@@ -5136,126 +5280,126 @@
       },
       "daily_20": [
         {
-          "date": "2026-03-20",
-          "o": 2510,
-          "h": 2740,
-          "l": 2230,
-          "c": 2255
-        },
-        {
-          "date": "2026-03-23",
-          "o": 2255,
-          "h": 2450,
-          "l": 2160,
-          "c": 2325
-        },
-        {
-          "date": "2026-03-24",
-          "o": 2435,
-          "h": 2730,
-          "l": 2330,
-          "c": 2330
-        },
-        {
-          "date": "2026-03-25",
-          "o": 2335,
-          "h": 2430,
-          "l": 2260,
-          "c": 2400
-        },
-        {
-          "date": "2026-03-26",
-          "o": 2450,
-          "h": 3120,
-          "l": 2450,
-          "c": 3120
-        },
-        {
-          "date": "2026-03-27",
-          "o": 3935,
-          "h": 4055,
-          "l": 3865,
-          "c": 4055
-        },
-        {
-          "date": "2026-03-30",
-          "o": 5270,
-          "h": 5270,
-          "l": 5270,
-          "c": 5270
-        },
-        {
-          "date": "2026-03-31",
-          "o": 6850,
-          "h": 6850,
-          "l": 4010,
-          "c": 4100
-        },
-        {
-          "date": "2026-04-01",
-          "o": 4310,
-          "h": 5330,
-          "l": 3890,
-          "c": 4545
-        },
-        {
-          "date": "2026-04-02",
-          "o": 4520,
-          "h": 4900,
-          "l": 3850,
-          "c": 4050
-        },
-        {
-          "date": "2026-04-03",
-          "o": 4105,
-          "h": 4500,
-          "l": 3805,
-          "c": 4005
-        },
-        {
-          "date": "2026-04-06",
-          "o": 4005,
-          "h": 4005,
-          "l": 3370,
-          "c": 3405
-        },
-        {
-          "date": "2026-04-07",
-          "o": 3400,
-          "h": 3540,
-          "l": 3130,
-          "c": 3275
-        },
-        {
-          "date": "2026-04-08",
-          "o": 3280,
-          "h": 3755,
-          "l": 3195,
-          "c": 3325
-        },
-        {
-          "date": "2026-04-09",
-          "o": 3370,
-          "h": 3370,
-          "l": 2930,
-          "c": 2990
-        },
-        {
-          "date": "2026-04-10",
-          "o": 2875,
-          "h": 2900,
-          "l": 2665,
-          "c": 2755
-        },
-        {
-          "date": "2026-04-13",
-          "o": 2810,
-          "h": 2950,
-          "l": 2570,
+          "date": "2026-04-21",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
           "c": 2585
         },
         {
-          "date": "2026-04-14",
+          "date": "2026-04-22",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-04-23",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-04-24",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-04-27",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-04-28",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-04-29",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-04-30",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-04",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-06",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-07",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-08",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-11",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-12",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-13",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-14",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-15",
+          "o": 2585,
+          "h": 2585,
+          "l": 2585,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-18",
           "o": 2585,
           "h": 2585,
           "l": 2585,
@@ -5309,6 +5453,7 @@
         "prices": [
           2370,
           2600,
+          3035,
           3035,
           3035,
           3035,
