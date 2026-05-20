@@ -1063,9 +1063,11 @@ a.cal-credit-row:hover,
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
   .theme-trend-wrap { padding: 12px; overflow: visible; }
   .trend-y-axis { top: 12px; left: 12px; width: 36px; height: calc(100% - 24px); }
-  /* 5/8 fix (qa D3): 모바일 viewport = VISIBLE_DAYS(7) × FIXED_SLOT(53) + 2×EDGE_PAD(32) = 435px.
-     모바일 폭(320~414px) 내 자연 cropping + max-width로 안전망. */
-  .trend-scroll-area { margin-left: 36px; max-width: 435px; }
+  /* 5/20 fix (대표 catch 09:29 KST, viewport 763×779): 모바일 가로 폼팩터(500~880px)에서 .trend-scroll-area
+     max-width:435px cap이 wrapper 폭(~700px+)과 mismatch → 차트 우측 빈공간/cut-off.
+     lut-trend(.lut-scroll) 정합: wrapper 폭까지 자연 fit. 작은 폰(320~414px)은 wrapper 자체가 좁아
+     자연 cropping 유지. VISIBLE_DAYS=7 mask는 작은 폰에서만 강제, 큰 모바일/타블렛은 자연 확장 = 개선. */
+  .trend-scroll-area { margin-left: 36px; max-width: 100%; }
 }
 .theme-trend-tooltip {
   position: absolute; pointer-events: none;
