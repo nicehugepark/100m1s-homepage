@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cycle22 Phase 7a — ChartTV (TradingView v5) standalone test</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 16px; background: #f7f5ef; }
+  h1 { font-size: 18px; }
+  #status { font-size: 12px; color: #6B7A99; }
+  #chart-slot { min-height: 480px; border: 1px solid #ddd; background: white; margin-top: 12px; }
+  .cal-feature-card { padding: 8px; }
+</style>
+</head>
+<body>
+<h1>cycle22 Phase 7a — ChartTV (TradingView Lightweight Charts v5.0.8) standalone test</h1>
+<div id="status">초기화 대기...</div>
+<div class="cal-feature-card" data-stock-code="TEST">
+  <div id="chart-slot" class="cal-feature-chart-expanded"></div>
+</div>
+
+<script src="/js/lib/chart-tv/expanded-chart.js?v=20260521v224" type="module" crossorigin="anonymous"></script>
+
+<script>
+// ChartTV global load 대기 후 sample data로 render
+(function waitForChartTV(retries = 30) {
+  if (window.ChartTV && typeof window.ChartTV.render === 'function') {
+    document.getElementById('status').textContent = 'ChartTV loaded. Rendering sample data...';
+    // Phase 7a sample data — 60 영업일 (MA 60일 산출 가능 본질 cross-check)
+    const today = new Date();
+    const sample = [];
+    let price = 10000;
+    for (let i = 60; i >= 1; i--) {
+      const d = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+      // skip 주말
+      const dow = d.getDay();
+      if (dow === 0 || dow === 6) continue;
+      const open = price + (Math.random() - 0.5) * 200;
+      const close = open + (Math.random() - 0.5) * 300;
+      const high = Math.max(open, close) + Math.random() * 150;
+      const low = Math.min(open, close) - Math.random() * 150;
+      sample.push({
+        date: d.toISOString().slice(0, 10),
+        o: Math.round(open),
+        h: Math.round(high),
+        l: Math.round(low),
+        c: Math.round(close),
+        v: Math.round(100000 + Math.random() * 500000),
+        tv: Math.round((open + close) / 2 * (100000 + Math.random() * 500000)),
+      });
+      price = close;
+    }
+    const slot = document.getElementById('chart-slot');
+    try {
+      const instance = window.ChartTV.render(slot, sample, { ticker: 'TEST', indicatorState: { ma: true } });
+      document.getElementById('status').textContent = `Rendered. data.length=${sample.length}, instance=${instance ? 'OK' : 'NULL'}`;
+      window._phase7a_test_pass = !!instance;
+    } catch (e) {
+      document.getElementById('status').textContent = `Render error: ${e.message}`;
+      window._phase7a_test_pass = false;
+    }
+    return;
+  }
+  if (retries <= 0) {
+    document.getElementById('status').textContent = 'ChartTV load timeout';
+    window._phase7a_test_pass = false;
+    return;
+  }
+  setTimeout(() => waitForChartTV(retries - 1), 200);
+})();
+</script>
+</body>
+</html>
