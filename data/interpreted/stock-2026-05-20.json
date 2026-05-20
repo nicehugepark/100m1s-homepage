@@ -1,6 +1,6 @@
 {
   "date": "2026-05-20",
-  "generated_at": "2026-05-20T09:23:49.066704",
+  "generated_at": "2026-05-20T09:53:55.115125",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -242,29 +242,113 @@
           "c": 42000
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 46500,
+        "base": 46500,
+        "prices": [
+          46500,
+          34750,
+          33650,
+          31750
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "477850",
       "name": "마키나락스",
       "rank": 2,
       "trade_amount": 28680000000,
-      "change_pct": null,
+      "change_pct": 0.0,
       "close_price": 60000,
       "open_price": 60000,
       "high_price": 60000,
       "low_price": 60000,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "신규상장",
+        "AI"
+      ],
+      "theme_paths": [
+        {
+          "name": "신규상장",
+          "path": [
+            "신규상장"
+          ]
+        },
+        {
+          "name": "AI",
+          "path": [
+            "AI"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "[특징주] ‘K팔란티어’ 마키나락스, 코스닥 입성 첫날 ‘따따블’",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/05/20/FOSTDZHLG5B5HCD45KSUTNBVWY/",
+          "source": "조선비즈",
+          "published_at": "2026-05-20T00:22:42",
+          "causal_chain": "마키나락스가 코스닥에 신규 상장하며 첫날 공모가 대비 300% 상승(따따블)으로 거래 개시 → 신규상장 이벤트 모멘텀 + '피지컬 AI' 포지셔닝 부각.",
+          "macro_event": "코스닥 신규 상장 첫날 따따블(공모가 대비 +300%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "마키나락스, 상장 첫날 '따따블' 직행[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02561686645450888",
+          "source": "이데일리",
+          "published_at": "2026-05-20T00:05:05",
+          "causal_chain": "마키나락스가 코스닥에 신규 상장하며 첫날 공모가 대비 300% 상승(따따블)으로 거래 개시 → 신규상장 이벤트 모멘텀 + '피지컬 AI' 포지셔닝 부각.",
+          "macro_event": "코스닥 신규 상장 첫날 따따블(공모가 대비 +300%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[특징주] 마키나락스, 상장 첫날 공모가 대비 300% 상승 '따따상' 직행",
+          "url": "https://www.etoday.co.kr/news/view/2586184",
+          "source": "이투데이",
+          "published_at": "2026-05-20T00:02:00",
+          "causal_chain": "마키나락스가 코스닥에 신규 상장하며 첫날 공모가 대비 300% 상승(따따블)으로 거래 개시 → 신규상장 이벤트 모멘텀 + '피지컬 AI' 포지셔닝 부각.",
+          "macro_event": "코스닥 신규 상장 첫날 따따블(공모가 대비 +300%)",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": false,
+      "range_240d": {
+        "high": 60000,
+        "high_date": "2026-05-20",
+        "high_pct": 0.0,
+        "low": 60000,
+        "low_date": "2026-05-20",
+        "low_pct": 0.0,
+        "current": 60000
+      },
       "status_badges": [
         {
           "label": "상한가",
@@ -291,8 +375,19 @@
           "next_trading_day": "2026-05-21"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 60000,
+        "base": 60000,
+        "prices": [
+          60000,
+          60000,
+          60000,
+          60000
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -304,19 +399,19 @@
       "trade_amount": 1577000000,
       "change_pct": 29.86,
       "close_price": 287,
-      "open_price": 287,
+      "open_price": 240,
       "high_price": 287,
-      "low_price": 287,
+      "low_price": 238,
       "industry": "기타 화학제품 제조업",
       "sector": "유연탄",
       "themes": [
-        "경영권 분쟁"
+        "저PBR"
       ],
       "theme_paths": [
         {
-          "name": "경영권 분쟁",
+          "name": "저PBR",
           "path": [
-            "경영권 분쟁"
+            "저PBR"
           ]
         }
       ],
@@ -331,42 +426,12 @@
       "bullish_streak": 0,
       "news": [
         {
-          "title": "에스아이리소스 “파행적 주총 운영 및 위법적 개최 시도 강력 대응”",
-          "url": "https://www.sedaily.com/article/20036820",
-          "source": "서울경제",
-          "published_at": "2026-04-24T06:34:16",
-          "causal_chain": "소수주주 측 임시주총 소집허가 인용→4/17 임시주총 개회 무산 후 4/21 일방 개최 시도→회사 측 가처분·부존재 확인 소송 제기→지분 매집·우호 지분 확보(대주주 측 45.37%)·이사 해임 표대결 구도 형성으로 경영권 다툼 격화·후속 모멘텀 부각.",
-          "macro_event": "소수주주 김효수 측 임시주주총회 소집·이사 해임 시도, 회사 측 주주총회효력정지·해임등기효력정지 가처분 및 주주총회부존재 확인 청구 소송 등 법적 대응 착수",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[오늘의 증시일정] TPC로보틱스·에스아이리소스·엔에이치스팩29호 등",
-          "url": "https://www.etoday.co.kr/news/view/2576582",
-          "source": "이투데이",
-          "published_at": "2026-04-16T23:30:00",
-          "causal_chain": "소수주주 측 임시주총 소집허가 인용→4/17 임시주총 개회 무산 후 4/21 일방 개최 시도→회사 측 가처분·부존재 확인 소송 제기→지분 매집·우호 지분 확보(대주주 측 45.37%)·이사 해임 표대결 구도 형성으로 경영권 다툼 격화·후속 모멘텀 부각.",
-          "macro_event": "소수주주 김효수 측 임시주주총회 소집·이사 해임 시도, 회사 측 주주총회효력정지·해임등기효력정지 가처분 및 주주총회부존재 확인 청구 소송 등 법적 대응 착수",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "에스아이리소스, 43억원 규모 한국중부발전 공급계약 체결",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03772006645415792",
-          "source": "이데일리",
-          "published_at": "2026-04-13T06:24:27",
-          "causal_chain": "소수주주 측 임시주총 소집허가 인용→4/17 임시주총 개회 무산 후 4/21 일방 개최 시도→회사 측 가처분·부존재 확인 소송 제기→지분 매집·우호 지분 확보(대주주 측 45.37%)·이사 해임 표대결 구도 형성으로 경영권 다툼 격화·후속 모멘텀 부각.",
-          "macro_event": "소수주주 김효수 측 임시주주총회 소집·이사 해임 시도, 회사 측 주주총회효력정지·해임등기효력정지 가처분 및 주주총회부존재 확인 청구 소송 등 법적 대응 착수",
+          "title": "에스아이리소스, 5년간 M&A 15건 추진 \"통합 에너지 플랫폼 도약\"",
+          "url": "https://www.fnnews.com/news/202605200853001980",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-05-20T09:31:49.802251",
+          "causal_chain": "밸류업 프로그램 발표 + 5년간 M&A 15건 추진으로 통합 에너지 플랫폼 도약 의지 표명 → 기업가치 제고 정책 대응 모멘텀 부각.",
+          "macro_event": "기업 밸류업 프로그램 발표",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -376,9 +441,9 @@
           "newzy_verdict": null
         }
       ],
-      "fallback": true,
-      "index_change_pct": -2.08,
-      "index_multiple_current": -14.36,
+      "fallback": false,
+      "index_change_pct": -3.35,
+      "index_multiple_current": -8.91,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 418,
@@ -525,9 +590,9 @@
         },
         {
           "date": "2026-05-20",
-          "o": 287,
+          "o": 240,
           "h": 287,
-          "l": 287,
+          "l": 238,
           "c": 287
         }
       ],
@@ -557,8 +622,19 @@
           "next_trading_day": "2026-05-21"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 240,
+        "base": 221,
+        "prices": [
+          240,
+          287,
+          287,
+          287
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
@@ -568,11 +644,11 @@
       "name": "졸스",
       "rank": 4,
       "trade_amount": 478000000,
-      "change_pct": 29.91,
-      "close_price": 2975,
+      "change_pct": 9.61,
+      "close_price": 2510,
       "open_price": 2975,
       "high_price": 2975,
-      "low_price": 2975,
+      "low_price": 2460,
       "industry": "생활용품 도매업",
       "sector": "지제품",
       "themes": [],
@@ -604,17 +680,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.08,
-      "index_multiple_current": -14.38,
+      "index_change_pct": -3.35,
+      "index_multiple_current": -2.87,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4763,
         "high_date": "2025-06-23",
-        "high_pct": -37.54,
+        "high_pct": -47.3,
         "low": 1503,
         "low_date": "2026-04-09",
-        "low_pct": 97.94,
-        "current": 2975
+        "low_pct": 67.0,
+        "current": 2510
       },
       "daily_20": [
         {
@@ -754,8 +830,8 @@
           "date": "2026-05-20",
           "o": 2975,
           "h": 2975,
-          "l": 2975,
-          "c": 2975
+          "l": 2460,
+          "c": 2510
         }
       ],
       "status_badges": [
@@ -768,7 +844,7 @@
               "desc": "5일 전(2026-05-13) 대비 +60%↑",
               "base_price": 1552,
               "threshold": 2483,
-              "current": 2975,
+              "current": 2510,
               "triggered": true
             }
           ],
@@ -809,8 +885,19 @@
           "next_trading_day": "2026-05-21"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 2975,
+        "base": 2714,
+        "prices": [
+          2975,
+          2735,
+          2500,
+          2570
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
