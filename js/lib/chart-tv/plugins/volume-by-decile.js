@@ -1,30 +1,22 @@
-/* ───── lib/chart-tv/plugins/volume-by-decile.js — #1 매물대 10등분 ISeriesPrimitive (TradingView v5) ─────
-   cycle22 Phase 7b — SPEC DOC-20260520-SPEC-001 v6 §2.2.1 #1 + §3.1.2 색상 verbatim 정합.
+/* ───── lib/chart-tv/plugins/volume-by-decile.js — #1 매물대 10등분 화면 가변 (TradingView v5) ─────
+   cycle22 Phase 7d-1 — REQ DOC-20260521-REQ-001 §2 #1 verbatim 정합.
 
-   본질 (lead-meta §11.15 외부 spec 사전 검증 PASS):
-   - TradingView Lightweight Charts v5 ISeriesPrimitive interface 구현
-   - WebFetch corroborate (2026-05-21 04:47 KST):
-     * plugin-examples/volume-profile (verbatim 패턴 reference):
-       "class VolumeProfile implements ISeriesPrimitive<Time>
-        constructor(chart, series, vpData)
-        updateAllViews() { this._paneViews.forEach(pw => pw.update()); }
-        paneViews() { return this._paneViews; }
-        renderer with CanvasRenderingTarget2D draw method
-        series.priceToCoordinate(price) for y-coord conversion"
-   - candleSeries.attachPrimitive(new VolumeByDecilePrimitive(chart, series, candles)) 패턴 의무
+   본질 (대표 2026-05-21 08:16 KST verbatim "매물대도 필요한데 현재 화면에 보여지는 캔들에 한해서 가변적이어야 한다"):
+   - 매물대 10등분 = **차트 visible range 기준 동적 재계산** (줌/스크롤 시 갱신)
+   - 240영업일 고정 → 화면 가변 본질 정정
+   - chart.timeScale().subscribeVisibleLogicalRangeChange(handler) v5 API 채택
 
-   산식 (자체 SVG volume-profile-10.js verbatim 정합):
-   - 가격 범위 (hi-lo)를 10 bucket으로 분할
-   - 각 bucket = 해당 가격 구간에 close가 위치하는 영업일의 거래량 누적
-   - bucket별 horizontal rect 우측 side 영역에 가시
+   §11.15 외부 spec 사전 검증 (WebSearch 2건 + 공식 docs 1건):
+   - https://tradingview.github.io/lightweight-charts/docs/api/interfaces/ITimeScaleApi
+     "subscribeVisibleLogicalRangeChange(handler) — handler receives newVisibleLogicalRange (LogicalRange | null)"
+   - LogicalRange = { from: number, to: number } — bar index float (예: from=10.5 = 10번째 bar 중간부터)
+   - known issue #1851: v5 panes 사용 시 main pane timeScale은 정상 (cycle22 단일 main pane 본질, sub-pane series는 별)
 
-   색상 (SPEC v6 §3.1.2 + 자체 SVG L40 verbatim):
-   - fill = rgba(196,153,48, 0.3~0.6) — 햇살 톤 alpha (volume 비례)
-   - stroke = #C49930 — 햇살 톤 base
+   v5 ISeriesPrimitive interface 본질 정합.
 
-   §16 self-catch (Phase 7b 진입 시):
-   - prompt 본 plugin은 SPEC v6 §3.4 verbatim 비포함 (Ichimoku/marker/Fibonacci만 §3.4 코드 sample).
-     volume-profile-10 색상은 §3.1.2 + 자체 SVG verbatim 채택 정합.
+   §16 self-catch (Phase 7d-1):
+   - 본 plugin 본질 정정 = REQ v2 §2 #1 verbatim "현재 화면 보이는 캔들 범위 기준 동적 10등분"
+   - subscribeVisibleLogicalRangeChange handler에서 visible candles 추출 + buckets 재계산 + updateAllViews() 호출
 */
 
 const N_BUCKET = 10;
@@ -35,10 +27,14 @@ const DEFAULT_OPTIONS = {
   sideWidthPx: 60,              // 우측 side 영역 폭 (px)
   alphaMin: 0.3,
   alphaMax: 0.6,
-  bucketGapPx: 2,               // bucket간 vertical gap
+  bucketGapPx: 2,
   strokeWidth: 0.3,
 };
 
+/**
+ * candles 배열 → 10 bucket 산출 (close 기준 가격 분포 + 거래량 누적).
+ * 입력 candles는 visible range 추출 후 본 함수 호출 본질.
+ */
 function computeBuckets(candles) {
   if (!Array.isArray(candles) || candles.length < 2) return null;
   const closes = candles.map((c) => c.close).filter((v) => typeof v === 'number' && v > 0);
@@ -57,7 +53,6 @@ function computeBuckets(candles) {
   const maxV = Math.max(...buckets);
   if (maxV <= 0) return null;
 
-  // 각 bucket 가격 중심값 + 거래량 ratio
   const result = [];
   for (let i = 0; i < N_BUCKET; i++) {
     if (buckets[i] <= 0) continue;
@@ -119,7 +114,6 @@ class VolumeByDecileRenderer {
   }
 }
 
-// IPrimitivePaneView 구현 본질 (zOrder + renderer)
 class VolumeByDecilePaneView {
   constructor(primitive) {
     this._primitive = primitive;
@@ -127,7 +121,7 @@ class VolumeByDecilePaneView {
   }
 
   zOrder() {
-    return 'top'; // 매물대는 캔들 위 overlay (우측 side, 캔들과 영역 분리)
+    return 'top';
   }
 
   renderer() {
@@ -135,19 +129,63 @@ class VolumeByDecilePaneView {
   }
 
   update() {
-    // primitive._buckets는 attach 시점 또는 update 시점에 재계산
+    // buckets는 primitive setVisibleRange 시점에 재계산
   }
 }
 
-// ISeriesPrimitive 구현 본질
+// ISeriesPrimitive 구현 본질 + 화면 가변 subscribe layer
 export class VolumeByDecilePrimitive {
+  /**
+   * @param {IChartApi} chart — TradingView chart instance (subscribeVisibleLogicalRangeChange 의무)
+   * @param {ISeriesApi} series — candle series (priceToCoordinate 의무)
+   * @param {Array} candles — 전체 candle 배열 (visible range 추출 source)
+   * @param {Object} [options]
+   */
   constructor(chart, series, candles, options = {}) {
     this._chart = chart;
     this._series = series;
-    this._candles = candles;
+    this._allCandles = candles;
     this._options = { ...DEFAULT_OPTIONS, ...options };
+    // 초기 buckets = 전체 candles 본질 (visible range 미설정 시 default)
     this._buckets = computeBuckets(candles);
     this._paneViews = [new VolumeByDecilePaneView(this)];
+
+    // 화면 가변 subscribe — visibleLogicalRange 변화 시 재계산
+    this._rangeHandler = (newRange) => {
+      this._onVisibleRangeChange(newRange);
+    };
+
+    try {
+      this._chart.timeScale().subscribeVisibleLogicalRangeChange(this._rangeHandler);
+      // 초기 1회 호출 — fitContent 직후 visibleLogicalRange가 이미 있을 수 있음
+      const initialRange = this._chart.timeScale().getVisibleLogicalRange();
+      if (initialRange) this._onVisibleRangeChange(initialRange);
+    } catch (err) {
+      // subscribe 미지원 시 fallback = 전체 candles 본질 유지 (정적 매물대)
+      this._rangeHandler = null;
+    }
+  }
+
+  /**
+   * visibleLogicalRange handler — visible candles 추출 + buckets 재계산
+   * @param {{from: number, to: number} | null} range
+   */
+  _onVisibleRangeChange(range) {
+    if (!range || !this._allCandles) return;
+    const from = Math.max(0, Math.floor(range.from));
+    const to = Math.min(this._allCandles.length - 1, Math.ceil(range.to));
+    if (to < from) return;
+    const visible = this._allCandles.slice(from, to + 1);
+    if (visible.length < 2) return;
+    this._buckets = computeBuckets(visible);
+    this.updateAllViews();
+    // chart 재 draw trigger (v5는 series 변경 자동 감지, primitive 변경은 명시 trigger 필요할 수 있음)
+    try {
+      if (this._series && typeof this._series.applyOptions === 'function') {
+        // no-op options apply = redraw trigger (v5 v5.0.8 hack)
+        this._series.applyOptions({});
+      }
+    } catch (e) { /* noop */ }
   }
 
   updateAllViews() {
@@ -158,20 +196,25 @@ export class VolumeByDecilePrimitive {
     return this._paneViews;
   }
 
-  // 데이터 갱신 시 호출 — Phase 7c lazy fetch swap 본질
+  // 데이터 갱신 시 호출 — lazy fetch swap 본질
   setCandles(candles) {
-    this._candles = candles;
+    this._allCandles = candles;
     this._buckets = computeBuckets(candles);
     this.updateAllViews();
-    // chart 재 draw 요청 (TradingView v5 자동 호출 — series 변경 감지 시)
   }
 
-  // detach 시 cleanup
+  // detach 시 cleanup — subscribe 해제 의무 (메모리 누수 회피)
   detached() {
+    try {
+      if (this._chart && this._rangeHandler) {
+        this._chart.timeScale().unsubscribeVisibleLogicalRangeChange(this._rangeHandler);
+      }
+    } catch (e) { /* noop */ }
     this._chart = null;
     this._series = null;
-    this._candles = null;
+    this._allCandles = null;
     this._buckets = null;
+    this._rangeHandler = null;
   }
 }
 
