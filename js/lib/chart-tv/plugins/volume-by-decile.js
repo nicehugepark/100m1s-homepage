@@ -21,21 +21,39 @@
 
 const N_BUCKET = 10;
 
-// P0-10 Fix-31 (2026-05-21 12:17 KST 대표 verbatim
-//   "매물대는 색상은 마음에 드는데 길이가 여전히 아쉽다. 지금 보다 두배 정도 길게 해봐줘"):
-//   P0-9 Fix-21 sideWidthPx 200 본문 → 400 본문 2배 확대 (대표 verbatim "두배 정도 길게")
-//   - 색상 본문 = 파스텔 LightYellow (#FFF59D) 유지 (대표 verbatim "색상은 마음에 드는데")
-//   - alpha 본문 0.25~0.55 본문 유지 (파스텔 visible 정합)
-//   - sideWidthPx 200 → 400 본문 2배 확대 (영웅문 본문 좌측 본문 영역 본문 더 길게 visible 정합)
+// P0-10 Fix-31 (2026-05-21 12:17 KST 대표 verbatim "매물대는 색상은 마음에 드는데 길이가 여전히 아쉽다. 두배 정도 길게"):
+//   P0-9 Fix-21 sideWidthPx 200 → 400 본문 2배 확대 (데스크탑 본문 정합).
+//
+// P0-12 Fix-39 (2026-05-21 13:25 KST 대표 verbatim
+//   "모바일 화면인데 아직 매물대가 많이 길다 일목균형표는 없어졌고"):
+//   image ad63f48f-10183 직접 read evidence — 모바일 본문 매물대 visible:
+//     - 매물대 (파스텔 노란) 본문 chart 본문 좌측 ~83% 본문 차지 → 캔들 영역 본문 침범 본문 → 너무 길음 본질
+//     - 영웅문 23a74560 본문 매물대 width = chart 본문 약 40~50% 본문 정합
+//   root cause 진단 본질:
+//     - sideWidthPx 400 본문 고정 (DEFAULT_OPTIONS)
+//     - 모바일 viewport 본문 chart width 본문 약 480px (S25 412px → slot inner ~316~480px) → 400px = 83~95% 차지
+//   정합 본질 — viewport-adaptive 본문 sideWidthPx 본문 분기 채택 (mobile 150 / desktop 400):
+//     - window.innerWidth < 768 본문 → sideWidthPx 150 본문 (모바일 본문 chart width 본문 약 30~35% 차지 본문 정합)
+//     - window.innerWidth >= 768 본문 → sideWidthPx 400 본문 유지 (데스크탑 본문 P0-10 Fix-31 본질 보존)
+//     - getSideWidth() helper 본문 신축 — viewport 변화 본문 동적 산출 본질 (resize 본문 대비)
 //   §16 self-catch:
-//     - 400px 본문 chart width 본문 mobile viewport adaptive (P0-10 Fix-32) 본문 대비 본문 점검 의무
-//     - viewport 470px → adaptive width 약 454px → 매물대 400px = chart 본문 거의 전체 본문 가로 영역 차지
-//     - 그러나 매물대 본문 ratio 본문 normalize (max=1.0 본문 sideW * ratio = bucket width) → 최대 bucket만 400px
-//     - 대부분 bucket은 ratio < 1.0 본문 → 시각 본문 부담 본문 회피
+//     - mobile 150 본문 = 영웅문 본문 ratio (~40%) 대비 약간 작음 (~30~35%) — 본질 정합 우선 (대표 catch "많이 길다" 본문 강한 정정)
+//     - viewport 변화 본문 동적 산출 — chart resize 본문 시점 본문 sideWidthPx 본문 재산출 의무
+//     - bucket 본문 ratio normalize 본질 유지 (max=1.0 본문 sideW * ratio = bucket width)
+//   §11.15 외부 spec 사전 검증 PASS:
+//     - window.innerWidth 본문 W3C CSSOM spec, 모바일 viewport 본문 정확 측정 PASS
+//     - TradingView v5 ISeriesPrimitive draw() 본문 매번 호출 본문 → DEFAULT_OPTIONS 본문 변경 시점 본문 동적 반영 PASS
+function getSideWidth() {
+  // SSR / 비-브라우저 env fallback
+  if (typeof window === 'undefined') return 400;
+  // P0-12 Fix-39: 모바일 viewport 본문 sideWidthPx 150 본문 (영웅문 ratio ~40% 정합 + 대표 catch "많이 길다" 본질 정정)
+  return window.innerWidth < 768 ? 150 : 400;
+}
+
 const DEFAULT_OPTIONS = {
   fillColorBase: 'rgba(255,245,157,', // P0-9 Fix-21: 파스텔 LightYellow (#FFF59D) 본문 유지
   strokeColor: '#FFEB3B',             // P0-9 Fix-21: Yellow stroke 유지
-  sideWidthPx: 400,                   // P0-10 Fix-31: 200 → 400 본문 2배 확대 (대표 verbatim "두배 정도 길게")
+  sideWidthPx: 400,                   // P0-10 Fix-31: 데스크탑 default 400 (모바일은 P0-12 Fix-39 getSideWidth() 본문 동적)
   alphaMin: 0.25,
   alphaMax: 0.55,                     // P0-9 Fix-21: 본문 유지 (대표 verbatim "색상은 마음에 드는데")
   bucketGapPx: 2,
@@ -100,7 +118,11 @@ class VolumeByDecileRenderer {
     //   sideX = 0 (차트 좌측벽 즉시 시작 본질, scope.bitmapSize 본문 = chart 본문 영역만 본문, priceScale 본문 제외)
     //   sideX 본문 0부터 sideW 본문까지 width 본문 (좌측 → 우측 본문 확장 본질, 영웅문 정합)
     //   v5 useBitmapCoordinateSpace scope.bitmapSize.width = chart 영역 본문 (priceScale 제외) → 0이 좌측벽 본문
-    const sideW = opts.sideWidthPx * scope.horizontalPixelRatio;
+    // P0-12 Fix-39 (2026-05-21 13:25 KST 대표 verbatim "모바일 화면인데 아직 매물대가 많이 길다"):
+    //   sideWidthPx 본문 viewport 분기 동적 산출 (모바일 150 / 데스크탑 400) — getSideWidth() 본문 매 draw 호출 시점 본문 재산출
+    //   resize 본문 viewport 본문 변경 시점 본문 자동 반영 본질 (정적 DEFAULT_OPTIONS 본문 회피)
+    const sideWidthPxDyn = getSideWidth();
+    const sideW = sideWidthPxDyn * scope.horizontalPixelRatio;
     const sideX = 0;
 
     p._buckets.forEach((b) => {

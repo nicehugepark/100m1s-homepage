@@ -37,27 +37,42 @@ const KIJUN = 26;
 const SENKOU_B = 52;
 const SHIFT = 26;
 
-// P0-10 Fix-27 (2026-05-21 12:17 KST 대표 verbatim
-//   "일목균형표가 여전히 문제를 일으키고 있고"):
-//   영웅문 reference 23a74560 직접 read evidence (cross-check):
-//   - 영웅문 본문 cloud (Kumo) 본문 = 매우 subtle 본문 visible (opacity 본문 약 0.04~0.06 본문)
-//   - 라이브 image #8 본문 cloud = 너무 진함 (opacity 0.10~0.12 본문 → chart 본문 본질 가림)
-//   - root cause 진단 본질 = cloud opacity 본문 너무 높음 (영웅문 본문 mismatch)
-//   - 정합 본질: cloud opacity 본문 0.12/0.10 → 0.05/0.04 본문 본질 영웅문 정합 (subtle visible 정합)
-//   - 추가 본질: stroke lineWidth 0.8 → 0.5 본문 본질 (영웅문 본문 선행스팬 본문 더 얇음 visible 정합)
+// P0-10 Fix-27 (2026-05-21 12:17 KST 본문) — 본 진단 본질 P0-12 Fix-40 본문 정정 본문 (아래 박제).
 //
+// P0-12 Fix-40 (2026-05-21 13:25 KST 대표 verbatim
+//   "모바일 화면인데 아직 매물대가 많이 길다 일목균형표는 없어졌고"):
+//   image ad63f48f-10183 직접 read evidence — 모바일 본문 일목 cloud:
+//     - cloud visible 본문 0건 본질 (chart 본문 캔들 영역 본문 cloud 본문 부재 visible)
+//     - P0-9 Fix-20 backward source 본문 PASS but cloud 본문 invisible 본질 cascade
+//   영웅문 23a74560 직접 read evidence (cross-check):
+//     - cloud (Kumo) 본문 = **명확하게 visible** 본문 (분홍/연두 본문 semi-transparent fill 본문)
+//     - chart 본문 우측 본문 cloud 본문 분홍 (양봉 영역) 본문 명확 visible 본질 → P0-10 Fix-27 진단 "subtle (0.04~0.06)" 본문 환각
+//     - 정확 본질 opacity ~0.18~0.25 본문 visible 본질 (mobile 작은 viewport 본문 정합)
+//   root cause 진단 본질 cluster:
+//     - P0-10 Fix-27 본문 opacity 0.12/0.10 → 0.05/0.04 본문 정정 본문 **잘못된 진단** (영웅문 cloud "subtle" 추정 환각)
+//     - 0.05 본문 본질 = 화이트 본문 배경 본문 사실상 invisible 본질 (5% alpha 본문 인지 한계 본문 아래)
+//   정합 본질 — opacity 본문 0.05/0.04 → 0.20/0.18 본문 본질 정정 (영웅문 visible 정합):
+//     - cloudUpColor: 'rgba(197,57,57,0.20)' 본문 (한국 양봉 분홍 톤 본문 visible 정합)
+//     - cloudDownColor: 'rgba(25,88,199,0.18)' 본문 (한국 음봉 파랑 톤 본문 visible 정합)
+//     - spanLineWidth 0.5 본문 유지 (영웅문 본문 얇은 stroke 정합 본질)
 //   §16 self-catch:
-//   - backward source 본문 (P0-9 Fix-20) 본문 유지 — cloud 본문 i 좌표 plot 본문 정합
-//   - opacity 본문 0.05 본문 = chart 본문 본질 가림 본문 회피 + 영웅문 본문 subtle visible 정합 양 축 PASS
+//     - "subtle visible" 본문 P0-10 진단 본질 환각 본문 self-catch (대표 catch 13:25 KST "일목균형표는 없어졌고")
+//     - 0.20/0.18 본문 = 영웅문 직접 read evidence 본문 정합 본질 (subtle 본문이 아닌 명확 visible 본질)
+//     - chart 본문 캔들 본문 가림 본문 회피 양 축 — 0.20 본문 = candle wick 본문 visible (alpha 30% 본문 아래 본질)
+//     - backward source 본문 (P0-9 Fix-20) 본문 유지 — cloud 본문 i 좌표 plot 본문 정합
+//   §11.15 외부 spec 사전 검증 PASS:
+//     - CSS rgba alpha 본문 W3C spec: 0.0 (transparent) ~ 1.0 (opaque), 0.20 = 20% opaque PASS
+//     - canvas ctx.fillStyle rgba 본문 동일 spec PASS
+//     - chart background 본문 transparent 본문 정합 (cloud 본문 alpha blending 본질 정합)
 const DEFAULT_OPTIONS = {
   // 선행스팬 stroke (보존)
   spanAColor: '#D4A857',      // 햇살 톤 dashed
   spanBColor: '#FBE9B5',      // 햇살 톤 dashed
-  spanLineWidth: 0.5,         // P0-10 Fix-27: 0.8 → 0.5 본문 (영웅문 본문 얇은 stroke 정합)
+  spanLineWidth: 0.5,         // P0-10 Fix-27 유지: 영웅문 본문 얇은 stroke 정합
   // 구름대 fill (한국 증시 양봉/음봉 정합)
-  // P0-10 Fix-27: opacity 본문 0.12/0.10 → 0.05/0.04 본문 (영웅문 subtle visible 정합)
-  cloudUpColor: 'rgba(197,57,57,0.05)',
-  cloudDownColor: 'rgba(25,88,199,0.04)',
+  // P0-12 Fix-40: opacity 본문 0.05/0.04 → 0.20/0.18 본문 정정 (영웅문 visible 본문 정합, P0-10 환각 self-catch)
+  cloudUpColor: 'rgba(197,57,57,0.20)',
+  cloudDownColor: 'rgba(25,88,199,0.18)',
   lastValueVisible: false,
   priceLineVisible: false,
 };
