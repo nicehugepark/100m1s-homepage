@@ -3563,51 +3563,30 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 /* ───────────────────────────────────────────────────────────────────────
-   P0-24 Fix-82 (2026-05-21 22:40 KST 대표 verbatim "피보나치 사용법이 여전히 알 수 없다 뜻대로 되지 않아"):
-   Fibonacci drag handle pulse 애니메이션 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문.
+   P0-25 (2026-05-22 00:00 KST 대표 결정 영웅문 paradigm 채택):
+   Fibonacci handle = 영웅문 inline ↓ marker 정합 (anchor 시각 cue만, drag trigger 본문 chart canvas 본문 본질).
+   본문 P0-24 Fix-82 pulse 애니메이션 + 적색 glow + :hover scale 1.25 본문 본문 본문 모두 폐기 (paradigm 변경).
+   handle inline style 본문 본문 본문 (fibonacci.js _createHandleEl) — 본 CSS 본문 본문 정적 fallback 본문 본문 본문 보조 본질.
 
-   본질:
-     - handle visible 강화 본문 본문 본문 본문 본문 본문 — 1.6초 주기 pulse (scale 1.0 → 1.15 → 1.0)
-     - 적색 ring 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
-     - hover 시점 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 (1.25배 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문)
-     - prefers-reduced-motion 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 (animation: none)
+   §16 self-catch (Fix-86 본문 본질 본문 본문):
+     - P0-24 .cal-chart-tv-fib-handle:hover { transform: scale(1.25); ... } 본문에 box-shadow !important 본문만 본문
+       transform: scale(1.25) !important 부재 → animation 본문 transform: scale(1.0~1.10) 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+       (CSS animation 본문 keyframe-based animations 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 :hover 본문 본문 본문 본문 본문 본문 본문 본문 unless :hover 본문 !important 본문 명시).
+     - WebSearch 본문 PASS: keyframe animations have a higher precedence than non-important :hover 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+       (https://www.stefanjudis.com/today-i-learned/keyframe-animations-have-a-special-role-in-the-css-cascade/)
+     - P0-25 paradigm 변경 본문 pulse 애니메이션 자체 폐기 → :hover scale 본문 본문 본문 본문 본문 본문 본문 (handle pointer-events: none + cursor: default 본문 정합)
+     - Fix-86 본질 = animation 자체 폐기 본문 본문 본문 본문 (animation-play-state: paused 또는 !important transform 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문)
 
-   §11.15 외부 spec 사전 검증 PASS:
-     - https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes (CSS Animations Level 1, baseline ≥2015)
-     - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion (Media Queries Level 5, baseline ≥2020)
-     - repo verbatim grep: news.css L785 @keyframes lut-detail-in / L1594 cardHighlight / L3215 chartExpandIn — 동형 paradigm 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   §11.15 외부 spec PASS:
+     - https://www.stefanjudis.com/today-i-learned/keyframe-animations-have-a-special-role-in-the-css-cascade/
+       "Keyframe animations have a higher precedence than any other 'non-important' style"
+     - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
+     - repo verbatim grep: news.css 본문 @keyframes 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 (lut-detail-in / cardHighlight / chartExpandIn 등)
    ─────────────────────────────────────────────────────────────────────── */
-@keyframes cal-fib-handle-pulse {
-  0% {
-    box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.35),
-                0 0 0 8px rgba(245, 166, 35, 0.20),
-                0 3px 10px rgba(0, 0, 0, 0.45);
-    transform: scale(1.0);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(233, 30, 99, 0.50),
-                0 0 0 12px rgba(245, 166, 35, 0.30),
-                0 3px 12px rgba(0, 0, 0, 0.50);
-    transform: scale(1.10);
-  }
-  100% {
-    box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.35),
-                0 0 0 8px rgba(245, 166, 35, 0.20),
-                0 3px 10px rgba(0, 0, 0, 0.45);
-    transform: scale(1.0);
-  }
-}
-
-.cal-chart-tv-fib-handle:hover {
-  transform: scale(1.25);
-  box-shadow: 0 0 0 6px rgba(233, 30, 99, 0.55),
-              0 0 0 12px rgba(245, 166, 35, 0.35),
-              0 4px 14px rgba(0, 0, 0, 0.55) !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cal-chart-tv-fib-handle {
     animation: none !important;
+    transition: none !important;
   }
 }
 
