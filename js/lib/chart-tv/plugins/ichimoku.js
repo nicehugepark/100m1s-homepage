@@ -78,7 +78,7 @@ function midHL(data, i, period) {
  *   - getDay() 본문 0=일 / 6=토 본문 skip 본질
  *   - 영웅문 한국 시장 본문 = 월~금만 plot (공휴일 본문 별건 layer)
  */
-function addBusinessDays(time, days) {
+export function addBusinessDays(time, days) {
   const date = new Date(Date.UTC(time.year, time.month - 1, time.day));
   let added = 0;
   while (added < days) {
