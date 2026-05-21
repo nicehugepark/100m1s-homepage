@@ -21,12 +21,19 @@
 
 const N_BUCKET = 10;
 
+// P0-9 Fix-21 (2026-05-21 11:34 KST 대표 verbatim "너무 짧고, 색깔이 어둡다. 더 파스텔톤의 노란색이다"):
+//   영웅문 reference 23a74560 직접 read evidence:
+//   - 매물대 본문 visible 영역 = 차트 좌측~중앙 영역 (전체 가격대 본문 거의 모든 visible 본문 노출)
+//   - 색상 본문 = 파스텔 톤 노란/햇살 본문 (#FFF59D 본문 LightYellow vs 기존 brown #C49930)
+//   - sideWidthPx 60 → 200 본문 확대 (영웅문 본문 좌측~중앙 본문 매물대 길이 정합)
+//   - alpha 본문 0.25~0.55 본문 (파스텔 본문 살린 visible 정합)
+//   - stroke 본문 #FFEB3B 본문 노란 (영웅문 본문 매물대 outline 정합)
 const DEFAULT_OPTIONS = {
-  fillColorBase: 'rgba(196,153,48,', // alpha 0.3~0.6 동적
-  strokeColor: '#C49930',
-  sideWidthPx: 60,              // 우측 side 영역 폭 (px)
-  alphaMin: 0.3,
-  alphaMax: 0.6,
+  fillColorBase: 'rgba(255,245,157,', // P0-9 Fix-21: 파스텔 LightYellow (#FFF59D) 본문
+  strokeColor: '#FFEB3B',             // P0-9 Fix-21: Yellow 본문 stroke
+  sideWidthPx: 200,                   // P0-9 Fix-21: 60 → 200 본문 확대 (영웅문 본문 좌측~중앙 정합)
+  alphaMin: 0.25,
+  alphaMax: 0.55,                     // P0-9 Fix-21: 0.6 → 0.55 본문 파스텔 본문 visible 정합
   bucketGapPx: 2,
   strokeWidth: 0.3,
 };
