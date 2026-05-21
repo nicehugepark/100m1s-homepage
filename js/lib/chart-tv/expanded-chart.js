@@ -416,6 +416,12 @@ function renderChartTV(container, dailyArr, options = {}) {
   const lastCandle = data.length > 0 ? data[data.length - 1] : null;
   const lastBullish = lastCandle && lastCandle.close >= lastCandle.open;
   const priceLineColor = lastBullish ? '#C53939' : '#1958C7';
+  // P0-13 Fix-45 (2026-05-21 13:44 KST 대표 verbatim "주가의 소수점은 필요없다. 한국은 소수점 화폐가 없다"):
+  //   priceFormat 본문 한국 화폐 정합 — precision 0 + minMove 1 본질 (정수 본문 visible).
+  //   영웅문 verbatim 본문 정합: 727,000 / 657,680 / 592,000 본문 정수 본문 (소수점 부재).
+  //   §11.15 외부 spec 사전 검증 PASS — TradingView v5 PriceFormat:
+  //     { type: 'price', precision: 0, minMove: 1 } = 정수만 visible 본문 정합 본질 (PriceFormatBuiltIn spec).
+  const KRW_PRICE_FORMAT = { type: 'price', precision: 0, minMove: 1 };
   const candleSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#C53939',
     downColor: '#1958C7',
@@ -428,6 +434,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     priceLineWidth: 1,
     priceLineColor: priceLineColor,
     priceLineStyle: 2, // Dashed
+    priceFormat: KRW_PRICE_FORMAT,  // P0-13 Fix-45: 한국 화폐 정수 본문 정합
   });
   candleSeries.setData(data.map((d) => ({
     time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
@@ -464,6 +471,7 @@ function renderChartTV(container, dailyArr, options = {}) {
         priceLineVisible: false,
         lastValueVisible: false,
         crosshairMarkerVisible: false,
+        priceFormat: KRW_PRICE_FORMAT,  // P0-13 Fix-45: MA 가격 라인 본문 정수 본문 정합
       });
       line.setData(maData);
       layers.ma6.push(line);
@@ -488,6 +496,7 @@ function renderChartTV(container, dailyArr, options = {}) {
         priceScaleId: 'right',           // candle series와 동일 right priceScale share 본질
         lastValueVisible: false,
         priceLineVisible: false,
+        priceFormat: KRW_PRICE_FORMAT,   // P0-13 Fix-45: 일목 senkou span 가격 본문 정수 본문 정합
       });
       layers.ichimoku.setData(buildIchimokuData(data.map((d) => ({
         time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
@@ -859,17 +868,20 @@ function renderChartTV(container, dailyArr, options = {}) {
   });
 
   // timeScale — lead 옵션 A-3 채택 #5 (대표 verbatim 09:08 KST (a) "가장 최근 날짜로 포커싱이 안되는게 문제")
-  // P0-9 Fix-20: 일목 backward source 본질 정정 cascade — 미래 cloud 영역 폐기 (영웅문 정합).
-  // 정합 본질: 전체 240영업일 fitContent 후 setVisibleLogicalRange로 최근 ~50 영업일 visible.
-  // (영웅문 정합 약 03/31 ~ 05/21, 미래 영역 부재)
+  // P0-13 Fix-46 (2026-05-21 13:44 KST 대표 verbatim "선행스팬인데 선행하지 않다.. 위치와 비율도 엉망이다"):
+  //   P0-9 Fix-20 backward source cascade revert + P0-4 forward shift 본질 복원 본문 정합.
+  //   영웅문 verbatim "선행스팬 = leading = forward shift +26 영업일" 본질 → cloud 본문 미래 영역 visible 정합.
+  //   visible range 본문 = (최근 candle영역 ~50) + (미래 SHIFT=26 영업일 cloud 영역) 양 축 포함 본질.
+  //   FUTURE_CLOUD 본문 = SHIFT 상수 본문 (ichimoku.js 본문 동일 정합) — 영웅문 본문 우측 cloud 영역 visible.
   try {
     chart.timeScale().fitContent();
-    // P0-9 Fix-20: 미래 cloud 영역 제거, 최근 ~50 영업일만 visible 본질
+    // P0-13 Fix-46: forward shift +26 cloud 영역 visible 정합 (영웅문 본문 우측 미래 cloud 본문 정합)
     const N = data.length;
     if (N > 0) {
       const VISIBLE_RECENT = 50;       // 최근 영업일 (영웅문 정합 약 39 + 여유분)
+      const FUTURE_CLOUD = 26;         // P0-13 Fix-46: 미래 cloud 영역 본문 영업일 (ichimoku.js SHIFT 본문 정합)
       const fromIdx = Math.max(0, N - VISIBLE_RECENT);
-      const toIdx = N - 1;
+      const toIdx = N - 1 + FUTURE_CLOUD;  // 미래 26 영업일 cloud visible 본질 정합
       chart.timeScale().setVisibleLogicalRange({ from: fromIdx, to: toIdx });
     }
   } catch (err) { /* noop */ }
