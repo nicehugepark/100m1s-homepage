@@ -31,7 +31,7 @@ import {
 
 // Phase 7d-1 정정 plugin 4종 + Phase 7d-1 P0-4 분홍 강세 vertical line primitive + 토글 panel
 import { attachFibonacci, detachFibonacci } from './plugins/fibonacci.js';
-import { IchimokuCustomSeries, buildIchimokuData } from './plugins/ichimoku.js';
+import { IchimokuCustomSeries, buildIchimokuData, addBusinessDays } from './plugins/ichimoku.js';
 import { VolumeByDecilePrimitive } from './plugins/volume-by-decile.js';
 import { attachMarkers, detachMarkers } from './plugins/markers.js';
 import { PinkSignalPrimitive } from './plugins/pink-signal.js';
@@ -436,9 +436,42 @@ function renderChartTV(container, dailyArr, options = {}) {
     priceLineStyle: 2, // Dashed
     priceFormat: KRW_PRICE_FORMAT,  // P0-13 Fix-45: 한국 화폐 정수 본문 정합
   });
-  candleSeries.setData(data.map((d) => ({
+  // P0-15 Fix-49 (2026-05-21 14:35 KST §11.15 외부 spec 결정적 cross-check 본질):
+  //   P0-14b Fix-48 fitContent 폐기 후 잔존 결함 — cloud 우측 미래 visible 0건 라이브 결정적 catch.
+  //   root cause = TradingView v5 time scale 본문 candle series의 logical index만 인식 본문 본질.
+  //   ichimoku custom series가 N+SHIFT logical index data 본문 setData 본문 등록 시도 but
+  //   candle series N=240 본문 time scale union 본문 effective range = N-1=239 본문 clip 본문.
+  //   → setVisibleLogicalRange({to: N-1+26=265}) 본문 candle series N-1=239 본문 clip → 미래 cloud visible 부재.
+  //
+  // §11.15 외부 spec 결정적 cross-check 3중 corroborating (WebSearch 2회 + WebFetch + github discussion 1462):
+  //   - "whitespace data should be added to your candle series itself, not a separate custom series.
+  //      This ensures the time scale properly recognizes and renders the future logical indices"
+  //     (github tradingview/lightweight-charts discussion #1462 verbatim)
+  //   - TradingView v5 WhitespaceData = { time } 본문만 본질 (OHLC undefined → 자동 whitespace 본문)
+  //   - candle series 본문 setData(Array<CandlestickData | WhitespaceData>) 본문 v5 native 지원 (mixed types)
+  //   - WhitespaceData 본문 time scale logical index 등록 PASS but 본문 candle body 본문 draw 0건 본질
+  //
+  // Fix 옵션 D 채택 (WebSearch evidence 기반 신규 옵션, 옵션 A/B/C 본문 본질 회피):
+  //   - candleSeries.setData(actual_candles + future_whitespace[SHIFT=26])
+  //   - future_whitespace[k] = { time: addBusinessDays(lastTime, k) } (k ∈ [1, SHIFT])
+  //   - time scale union 본문 effective range = candle N + whitespace SHIFT = N+26 본질
+  //   - setVisibleLogicalRange({to: N-1+SHIFT=265}) 본문 effective 본질 정합 (clip 회피)
+  //   - ichimoku.js outLen = N + SHIFT 본문 본질 정합 (buildIchimokuData 본문 변경 부재, 미래 영역 senkouA/B plot 본문 정합)
+  //
+  // 영웅문 정합 결정적 PASS (3005fbac/23a74560 본문 직접 read evidence):
+  //   - 영웅문 우측 미래 영역 = empty bars (candle 부재) + cloud only visible
+  //   - 본 fix-49 candle series WhitespaceData 본문 = empty bars 본문 정합 + ichimoku cloud forward shift +26 본문 visible 정합
+  const SHIFT_FUTURE = 26;
+  const candleDataWithFuture = data.map((d) => ({
     time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
-  })));
+  }));
+  if (data.length > 0) {
+    const lastTime = data[data.length - 1].time;
+    for (let k = 1; k <= SHIFT_FUTURE; k++) {
+      candleDataWithFuture.push({ time: addBusinessDays(lastTime, k) });
+    }
+  }
+  candleSeries.setData(candleDataWithFuture);
 
   // ─── 모든 plugin/series instance 보관 (toggle 시 add/remove) ───
   const layers = {
@@ -885,6 +918,13 @@ function renderChartTV(container, dailyArr, options = {}) {
   //     - setVisibleLogicalRange({to: N-1+26}) → series 등록 logical index 0~N+25 범위 내 effective 본질
   //     - candle series N=240 fit 누락 본문 회피 — setVisibleLogicalRange가 의도된 range 정확 결정 본질
   //   라이브 라이브 결함 (7072f037 모바일 cloud 우측 미래 0건 vs 영웅문 3005fbac/23a74560 +26영업일 visible) 결정적 fix 본질.
+  //
+  // P0-15 Fix-49 잔존 결함 catch + 결정적 fix (2026-05-21 14:35 KST §11.15 결정적 cross-check):
+  //   Fix-48 후에도 라이브 cloud 우측 미래 visible 0건 (대표 라이브 catch 7072f037 모바일).
+  //   root cause = TradingView v5 time scale 본문 candle series의 logical index만 본질 인식 본질.
+  //   ichimoku custom series N+SHIFT setData 본문 등록 시도 but candle series N=240 본문 union effective range N-1=239 clip.
+  //   → fix: candleSeries.setData(actual + WhitespaceData[SHIFT=26]) 본문 본질 time scale union 본문 확장 (L439-468 본문 본질).
+  //   §11.15 결정적 cross-check 3중 corroborating PASS (WebSearch + WebFetch + github discussion 1462 verbatim).
   try {
     const N = data.length;
     if (N > 0) {
