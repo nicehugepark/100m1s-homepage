@@ -59,13 +59,25 @@ const LEVELS = [
   { ratio: 1.0,   title: 'Fib 100%',  color: '#94A3B8' },
 ];
 
+// P0-17 Fix-55 (2026-05-21 15:18 KST 대표 verbatim "피보나치 역시 라벨값이 너무 지저분하다 안보여줘도 돼.
+//   대신 가격 fib xx% 값을 제거해줘"):
+//   - axisLabelVisible: false → 우측 priceScale axis 본문 가격값 (22450/17619 등) 제거
+//   - title 본문 제거 (LEVELS 본문 lv.title 본문 createPriceLine 호출 시 빈 string 본문 채택)
+//   - 7 horizontal line 본문 visible 보존 (라벨만 제거 본질)
+//   §11.15 외부 spec 사전 검증 PASS:
+//     - TradingView v5 createPriceLine.axisLabelVisible:false → priceScale 우측 가격 라벨 hide
+//     - title 빈 string 본문 → priceLine 본문 좌측 비율 라벨 hide
+//     - line color/lineStyle/lineWidth 본문은 그대로 → 가로선 본문 visible 보존
 const DEFAULT_OPTIONS = {
   magnetWindow: 5,        // ±N 영업일 자석 detection window
   lineStyle: LineStyle.Dotted,
   lineWidth: 1,
-  axisLabelVisible: true,
+  axisLabelVisible: false,  // P0-17 Fix-55: 우측 가격값 (22450/17619 등) 제거
   handleColor: '#F5A623',
-  handleRadius: 6,
+  // P0-17 Fix-56 (2026-05-21 15:18 KST 대표 verbatim "어떻게 지표를 이동하는지 방법을 모르겠다"):
+  //   drag handle 시각 강화 — handleRadius 6 → 8 + box-shadow 강화 + pulse 애니메이션 본질
+  //   사용자 본문 drag 본질 시각 cue 강화 (handle 발견 본문 → drag 본질 발견 cascade)
+  handleRadius: 8,
 };
 
 /**
@@ -317,7 +329,10 @@ class FibonacciDrawingController {
           lineStyle: this._options.lineStyle,
           lineWidth: this._options.lineWidth,
           axisLabelVisible: this._options.axisLabelVisible,
-          title: lv.title,
+          // P0-17 Fix-55 (2026-05-21 15:18 KST): title 본문 빈 string 본문 정정
+          //   (대표 verbatim "라벨값이 너무 지저분하다 안보여줘도 돼")
+          //   기존 lv.title 본문 'Fib 76.4%' 등 좌측 비율 라벨 본문 제거 본질
+          title: '',
         });
         this._priceLines.push(line);
       } catch (e) { /* noop */ }
@@ -349,16 +364,19 @@ class FibonacciDrawingController {
     el.className = 'cal-chart-tv-fib-handle';
     el.dataset.anchor = label;
     el.setAttribute('aria-label', `Fibonacci ${label} 끝점 drag`);
+    // P0-17 Fix-56 (2026-05-21 15:18 KST): handle 시각 강화 본문
+    //   box-shadow 본문 다중 레이어 (외부 glow + 내부 shadow 본문) — 발견 본질 강화
+    //   class 본문 신축 'cal-chart-tv-fib-handle' 본문 CSS 본문 pulse 애니메이션 본질 (별건 CSS 본문 매핑)
     el.style.cssText = [
       'position: absolute',
       `width: ${this._options.handleRadius * 2}px`,
       `height: ${this._options.handleRadius * 2}px`,
       `background: ${this._options.handleColor}`,
-      'border: 2px solid #fff',
+      'border: 2.5px solid #fff',
       'border-radius: 50%',
       'cursor: grab',
       'z-index: 100',
-      'box-shadow: 0 1px 4px rgba(0,0,0,0.3)',
+      'box-shadow: 0 0 0 3px rgba(245,166,35,0.25), 0 2px 6px rgba(0,0,0,0.35)',
       'pointer-events: auto',
       'touch-action: none',
       'display: none',
