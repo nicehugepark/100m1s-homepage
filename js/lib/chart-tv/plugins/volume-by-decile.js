@@ -85,9 +85,12 @@ class VolumeByDecileRenderer {
     const series = p._series;
     if (!series) return;
 
+    // P0-7 fix-3 (2026-05-21 11:01 KST 대표 verbatim "매물대도 차트 좌측벽에서부터 출발해야한다"):
+    //   sideX = 0 (차트 좌측벽 즉시 시작 본질, scope.bitmapSize 본문 = chart 본문 영역만 본문, priceScale 본문 제외)
+    //   sideX 본문 0부터 sideW 본문까지 width 본문 (좌측 → 우측 본문 확장 본질, 영웅문 정합)
+    //   v5 useBitmapCoordinateSpace scope.bitmapSize.width = chart 영역 본문 (priceScale 제외) → 0이 좌측벽 본문
     const sideW = opts.sideWidthPx * scope.horizontalPixelRatio;
-    const chartWidthBitmap = scope.bitmapSize.width;
-    const sideX = chartWidthBitmap - sideW;
+    const sideX = 0;
 
     p._buckets.forEach((b) => {
       const yMid = series.priceToCoordinate(b.priceMid);
