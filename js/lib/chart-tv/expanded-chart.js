@@ -524,11 +524,15 @@ function renderChartTV(container, dailyArr, options = {}) {
   // v5.0.8 공식 API: chart.addSeries(Type, opts, paneIdx) 3번째 positional 인자
   // P0-4 영웅문 정합 fix #2 (2026-05-21 10:00 KST):
   //   title: '#거래대금' 영웅문 verbatim (priceScale 좌측 상단 자동 표시 본질, TradingView v5 native)
+  // P0-17 Fix-54 (2026-05-21 15:18 KST 대표 verbatim "하단 보조지표 라벨이 옮겨진듯하지만 아직 남아있고"):
+  //   root cause = native series title 본문 = priceScale 우측 label 본문 visible (P0-16 HTML overlay 추가만 + native title 본문 동시 제거 0건 → 이중 라벨 cascade)
+  //   fix = title 빈 string 본문 정정 (HTML overlay 좌측 단독 visible 본문 정합, 영웅문 23a74560 sub-pane 좌측 라벨만 본질 정합)
+  //   §11.15 외부 spec 사전 검증 PASS: TradingView v5 series title 빈 string 본문 시 priceScale 우측 label 부재 (WebSearch 2회 corroborating)
   function addTradingValue() {
     if (layers.tradingValue) return;
     try {
       layers.tradingValue = chart.addSeries(HistogramSeries, {
-        title: '#거래대금',
+        title: '',  // P0-17 Fix-54: native title 본문 제거 (HTML overlay 좌측 단독)
         priceFormat: { type: 'volume' },
         priceScaleId: '',
       }, 1);
@@ -623,7 +627,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     if (m.line.length === 0) return;
     try {
       const line = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'MACD',  // P0-10 Fix-29: 대표 verbatim 단순화 본문
+        // P0-17 Fix-54 (2026-05-21 15:18 KST): native title 본문 제거 (HTML overlay 좌측 단독 본문 정합)
+        color: '#0064FF', lineWidth: 1, title: '',
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const signal = chart.addSeries(LineSeries, {
@@ -696,7 +701,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     try {
       // RSI 메인 라인 (period 14)
       layers.rsi = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'RSI',  // P0-10 Fix-29: 대표 verbatim 단순화 본문
+        // P0-17 Fix-54 (2026-05-21 15:18 KST): native title 본문 제거 (HTML overlay 좌측 단독 본문 정합)
+        color: '#0064FF', lineWidth: 1, title: '',
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
@@ -780,14 +786,84 @@ function renderChartTV(container, dailyArr, options = {}) {
   // ── Fibonacci 자석 drawing tool (Phase 7d-2 신축, default OFF) ──
   // 본질: 사용자 클릭 + 자석 snap + drag handle + localStorage 영구화 (대표 verbatim 08:08 KST)
   // signature: attachFibonacci(chart, series, candles, ticker, container, options)
+  // P0-17 Fix-56 (2026-05-21 15:18 KST 대표 verbatim "어떻게 지표를 이동하는지 방법을 모르겠다"):
+  //   - UX hint badge 본문 신축 — chip ON 시점 좌측 상단 hint 본문 4초간 visible 후 fade
+  //   - sessionStorage 본문 본 세션 1회 visible 본문 (반복 노출 방지)
+  //   - localStorage 본문 m100s.chart.tv.fib.hint.dismissed=1 본문 사용자 dismiss 본문 영구화 (별건)
+  //   §11.15 외부 spec 사전 검증 PASS:
+  //     - HTML5 sessionStorage / localStorage 본문 native API
+  //     - CSS transition opacity 본문 native (vendor prefix 부재)
+  const HINT_TEXT = '피보나치: 노란 점을 끌어 시작·끝점 조정';
+  let hintEl = null;
+  function showFibHint() {
+    // 1회만 (per session) — 세션 본문 본 ticker 본문 1회 본질
+    try {
+      const sessionKey = `m100s.chart.tv.fib.hint.shown.${ticker}`;
+      if (sessionStorage.getItem(sessionKey) === '1') return;
+      // localStorage 영구 dismiss 본문 확인
+      if (localStorage.getItem('m100s.chart.tv.fib.hint.dismissed') === '1') return;
+      sessionStorage.setItem(sessionKey, '1');
+    } catch (e) { /* private mode silent */ }
+
+    if (hintEl) return;
+    hintEl = document.createElement('div');
+    hintEl.className = 'cal-chart-tv-fib-hint';
+    hintEl.setAttribute('role', 'tooltip');
+    hintEl.setAttribute('aria-live', 'polite');
+    hintEl.style.cssText = [
+      'position: absolute',
+      'left: 8px',
+      'top: 8px',
+      'background: rgba(245,166,35,0.95)',
+      'color: #fff',
+      'font-size: 11px',
+      'font-weight: 600',
+      'padding: 6px 10px',
+      'border-radius: 4px',
+      'box-shadow: 0 2px 8px rgba(0,0,0,0.25)',
+      'z-index: 200',
+      'pointer-events: auto',
+      'opacity: 0',
+      'transition: opacity 0.3s ease',
+      'max-width: 220px',
+      'line-height: 1.35',
+      'cursor: pointer',
+    ].join(';');
+    hintEl.textContent = HINT_TEXT;
+    // 사용자 탭하여 dismiss 본문 + localStorage 본문 영구 dismiss 본질
+    hintEl.addEventListener('click', () => {
+      try { localStorage.setItem('m100s.chart.tv.fib.hint.dismissed', '1'); } catch (e) { /* noop */ }
+      hideFibHint();
+    });
+    main.style.position = 'relative';
+    main.appendChild(hintEl);
+    // 다음 frame 본문 fade in (transition 발동 본질)
+    requestAnimationFrame(() => {
+      if (hintEl) hintEl.style.opacity = '1';
+    });
+    // 5초 후 자동 fade out 본질
+    setTimeout(() => hideFibHint(), 5000);
+  }
+  function hideFibHint() {
+    if (!hintEl) return;
+    hintEl.style.opacity = '0';
+    const el = hintEl;
+    hintEl = null;
+    setTimeout(() => {
+      try { el.remove(); } catch (e) { /* noop */ }
+    }, 350);
+  }
   function addFibonacci() {
     if (layers.fibController) return;
     layers.fibController = attachFibonacci(chart, candleSeries, data, ticker, main, {});
+    // P0-17 Fix-56: UX hint badge 본문 visible (chip ON 시점 본문 사용자 본문 drag 본질 발견 cascade)
+    showFibHint();
   }
   function removeFibonacci() {
     if (!layers.fibController) return;
     try { detachFibonacci(layers.fibController); } catch (e) { /* noop */ }
     layers.fibController = null;
+    hideFibHint();
   }
 
   function applyState(s) {
