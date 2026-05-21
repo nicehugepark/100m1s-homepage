@@ -40,28 +40,44 @@ import { buildTogglePanel, INDICATOR_CHIPS } from './toggle-panel.js';
 const STORAGE_KEY = 'm100s.chart.tv.indicators.global';
 
 // SPEC §4.1 viewport별 차트 크기
-// P0-10 Fix-32 (2026-05-21 12:17 KST 대표 verbatim
-//   "모바일은 첨부한 두번째 이미지 같이 보인다. 시작 지점도 엉망이고, y축 값들도 보이지 않고..."):
-//   대표 catch viewport = 470x779 (image #9 본문 직접 read evidence)
-//   root cause 진단 본질:
-//     - 기존 fallback w <= 768 → fixed width 640px 반환
-//     - viewport 470px 본문 vs chart width 640px = 170px overflow 본문 (chart 본문 viewport 우측 본문 잘림)
-//     - cal-chart-tv-main { width: 100% } CSS는 정상 but JS chart instance width 본문 fixed 640px 본문
-//       → TradingView chart canvas 본문 자체가 640px wide 본문 → 우측 priceScale + 우측 본문 잘림
-//   정합 본질:
-//     - 본 viewport 실측 width 본문 동적 산출 (window.innerWidth - margin)
-//     - 우측 priceScale visible 의무 (가격 값 + sub-pane 보조지표 값 본문 visible 정합)
-//     - 좌측 본문 시작 지점 정합 (chart 본문 viewport 좌측 본문 align 본질)
+// P0-11 Fix-34 (2026-05-21 12:44 KST 대표 verbatim
+//   "현재 나의 갤럭시s25 모바일폰에서 확인한 화면이다. ... 차트 자체가 모바일 버전과 데스크탑 버전을 다르게 가야할거같다.
+//    그리고 모바일 버전에서는 y축 위치도 여전히 문제다."):
+//   image #10 76d1f57d 직접 read evidence — 갤럭시 S25 본문:
+//     - sub-pane title `#거래대` / `MAC` / `R` 본문 우측 본문 잘림 (`#거래대금` / `MACD` / `RSI`)
+//     - 우측 priceScale 본문 visible 0건 (영웅문 23a74560 본문 우측 priceScale 727,000 ~ 270,692 본질 vs 본 시스템 부재)
+//   root cause 결정적 진단:
+//     - P0-10 Fix-32 본문 `Math.min(w - 16, 640)` = window.innerWidth 기준 → viewport 412px (S25) 본문 = 396px chart width
+//     - 그러나 실제 chart parent 본문 = `.cal-feature-chart-expanded` 본문 (margin 8px 12px 4px + padding 12px)
+//     - main 본문 (`.cal-chart-tv-main`, width:100%) 본문 실제 가용 width = card_width - margin(24) - padding(24) = card_width - 48px
+//     - main { display:flex; justify-content:center; } → chart 본문 396px 본문이 부모 본문 (예: 364px) 초과 → overflow 우측 본문 잘림
+//     - chart canvas 본문 자체가 부모 본문 초과 → 우측 priceScale (100px) + sub-pane title 본문 잘림
+//   정합 본질 — `container.clientWidth` 본문 실측 채택 (DOM 본문 정확 가용 width):
+//     - container = renderChartTV(container, ...) 인자 = `.cal-feature-chart-expanded` slot (padding 12 적용된 inner box)
+//     - container.clientWidth 본문 = inner content area width (padding 제외) — 정확한 chart 본문 가용 width
+//     - layout 본문 timing 본질: slot은 renderer.js L1492 `card.appendChild(slot)` 후 L1525 즉시 ChartTV.render 호출
+//       → slot 본문 layout 완료 후 호출되므로 clientWidth 본문 정확 측정 PASS
+//   별건 layout 본문 (대표 verbatim "모바일과 데스크탑 다르게"):
+//     - 모바일 본문 priceScale minimumWidth 100 → 60 본문 축소 (좁은 폰 본문 가시 영역 본질)
+//     - 모바일 본문 chart slot margin/padding 본문 축소 (Fix-37 본문 별건 CSS layer)
 //   §11.15 외부 spec 사전 검증 PASS:
-//     - TradingView Lightweight Charts v5 createChart options.width 본문 = canvas pixel width
-//     - parent container width 100% 본문 정합 정합 본질 (CSS layer는 정합, JS layer width 본문 정정 의무)
-function getViewportSize() {
+//     - HTMLElement.clientWidth 본문 = inner padding 본문 본문 포함 X (W3C CSSOM spec)
+//     - TradingView Lightweight Charts v5 createChart options.width 본문 = canvas pixel width (정확 integer)
+//     - PriceScaleOptions.minimumWidth 본문 = integer px (v5 docs)
+function getViewportSize(container) {
   const w = window.innerWidth;
-  // 모바일 본문 (w < 768) — viewport 실측 width 본문 채택 (overflow 회피)
-  // SAFETY_MARGIN 16px = parent container padding/border 본문 정합
+  // 모바일 본문 (w < 768) — container.clientWidth 본문 실측 width 본문 채택 (DOM 본문 정확 가용 width)
   if (w < 768) {
-    const SAFETY_MARGIN = 16;
-    const adaptiveWidth = Math.max(280, Math.min(w - SAFETY_MARGIN, 640));
+    let adaptiveWidth;
+    if (container && container.clientWidth > 0) {
+      // container = chart slot inner content area (padding 제외)
+      // 본 chart slot 본문이 부모 카드 본문 width 본질에서 margin/padding 본문 빠진 본질 실측 width 본문
+      adaptiveWidth = Math.max(280, Math.min(container.clientWidth, 640));
+    } else {
+      // fallback (container 본문 layout 본질 직전 호출 본질 시) — viewport - 48px (margin 24 + padding 24)
+      const SAFETY_MARGIN = 48;
+      adaptiveWidth = Math.max(280, Math.min(w - SAFETY_MARGIN, 640));
+    }
     // height 본문 ratio (640:360 = 16:9) 보존 본질
     const adaptiveHeight = Math.round(adaptiveWidth * 360 / 640);
     return { width: adaptiveWidth, height: Math.max(280, adaptiveHeight) };
@@ -330,7 +346,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     return null;
   }
 
-  const vp = getViewportSize();
+  // P0-11 Fix-34: container 인자 전달 — chart slot inner content width 실측 본문 채택 (모바일 본문 overflow 봉쇄)
+  const vp = getViewportSize(container);
   // sub-pane 3종 (거래대금 + MACD + RSI) — height 분배 본질
   // P0-7 fix-5 (2026-05-21 10:55 KST 대표 verbatim "하단 지표의 높이가 너무 높다. 지금의 절반 수준으로 해봐"):
   //   subPaneHeight 본문 0.15 → 0.075 (절반 본질). main pane stretch factor 본질 상대 증가.
@@ -363,16 +380,17 @@ function renderChartTV(container, dailyArr, options = {}) {
       timeVisible: false,
       secondsVisible: false,
     },
-    // P0-10 Fix-28 (2026-05-21 12:17 KST 대표 verbatim "여전히 주가가 잘려서 다 보이지 않는다"):
-    //   P0-9 Fix-25 minimumWidth 80 본문 잔존 결함 본문 — 영웅문 23a74560 본문 priceScale 본문 폭 cross-check
-    //   본질: 영웅문 본문 우측 priceScale = 약 90~100px 본문 visible (727,000 본문 7자리 본문 + 6.67% 본문 라벨 동시 visible)
-    //   80 → 100 본문 확대 정합 + scaleMargins 본문 유지 (위/아래 여백 0.15 본문 보존).
-    //   §11.15 외부 spec 사전 검증 PASS — v5 PriceScaleOptions.minimumWidth 본문 (px) accepts integer.
+    // P0-11 Fix-36 (2026-05-21 12:44 KST 대표 verbatim "y축 위치도 여전히 문제"):
+    //   image #10 76d1f57d 본문 우측 priceScale visible 0건 — chart canvas 본문 자체가 부모 본문 초과 (Fix-34 본질)
+    //   본 Fix-34 본문 container.clientWidth 본문 채택 → chart canvas 본문 부모 본문 align 정합 후
+    //   모바일 본문 좁은 screen (S25 412px 본문 → chart slot inner ~316px) 본문 priceScale 100px 본문이 33% 차지 → 압축 본질
+    //   모바일 본문 minimumWidth 60 본문 (5자리 99,999원 본문 visible 정합), 데스크탑 100 유지.
+    //   §11.15 외부 spec 사전 검증 PASS — v5 PriceScaleOptions.minimumWidth (px) accepts integer.
     rightPriceScale: {
       borderColor: 'rgba(0,0,0,0.12)',
       visible: true,
       scaleMargins: { top: 0.15, bottom: 0.15 },  // P0-9 Fix-25 본문 유지
-      minimumWidth: 100,                            // P0-10 Fix-28: 80 → 100 본문 확대 (영웅문 7자리 가격 visible 정합)
+      minimumWidth: window.innerWidth < 768 ? 60 : 100,  // P0-11 Fix-36: 모바일 60 / 데스크탑 100 별건 (대표 verbatim "모바일과 데스크탑 다르게")
     },
     handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
     handleScale: { axisPressedMouseMove: true, mouseWheel: true, pinch: true },
@@ -870,8 +888,9 @@ function renderChartTV(container, dailyArr, options = {}) {
   });
 
   const ro = new ResizeObserver(() => {
-    const vp2 = getViewportSize();
-    const subH2 = Math.round(vp2.height * 0.15);
+    // P0-11 Fix-34: container 인자 전달 — resize 시점 chart slot inner width 실측 본문 채택
+    const vp2 = getViewportSize(container);
+    const subH2 = Math.round(vp2.height * 0.075);  // P0-7 fix-5 정합 (0.15 → 0.075 본문)
     chart.applyOptions({ width: vp2.width, height: vp2.height + subH2 * 3 });
   });
   ro.observe(main);
