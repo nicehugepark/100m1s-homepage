@@ -42,11 +42,14 @@ const EX_DIVIDEND_OPTIONS = {
 // P0-4 영웅문 정합 fix #3 (2026-05-21 10:01 KST 대표 정정 verbatim):
 //   "영웅문 차트 캔들 상단의 아래쪽 검은 화살표는 RSI 과매도 신호이다"
 //   RSI 14 < 30 시점 = 과매도 본질 (영웅문 verbatim 임계값) → aboveBar arrowDown 검정 marker
+// P0-7 fix-11 (2026-05-21 11:19 KST 대표 verbatim
+//   "차트에서 RSI<30 이라는 레이블이 검은 화살표위에 붙어있는데 화살표만 있으면 된다. 레이블은 생략해줘. 보기 지져분해져."):
+//   text 본문 빈 string 본질 정정 — 화살표만 visible + 라벨 부재 (영웅문 정합)
 const RSI_OVERSOLD_OPTIONS = {
   position: 'aboveBar',
   shape: 'arrowDown',
   color: '#1F2937',  // 영웅문 verbatim 검정 (gracefully gray-900)
-  text: 'RSI<30',
+  text: '',           // P0-7 fix-11 — 라벨 제거 (화살표만 visible)
 };
 
 /**
