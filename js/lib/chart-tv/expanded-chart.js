@@ -873,15 +873,26 @@ function renderChartTV(container, dailyArr, options = {}) {
   //   영웅문 verbatim "선행스팬 = leading = forward shift +26 영업일" 본질 → cloud 본문 미래 영역 visible 정합.
   //   visible range 본문 = (최근 candle영역 ~50) + (미래 SHIFT=26 영업일 cloud 영역) 양 축 포함 본질.
   //   FUTURE_CLOUD 본문 = SHIFT 상수 본문 (ichimoku.js 본문 동일 정합) — 영웅문 본문 우측 cloud 영역 visible.
+  //
+  // P0-14b Fix-48 (2026-05-21 14:17 KST §16 정직 채널 + §11.15 외부 spec 검증 PASS):
+  //   P0-14 sub-agent root cause catch = fitContent + setVisibleLogicalRange race condition.
+  //   TradingView v5 docs (WebSearch 2회 corroborating + 공식 docs + github issue #1107 cross-check):
+  //     - fitContent()는 "momentary operation" but axis width recalc → cascade visible range re-change 본질
+  //     - 호출 순서 win 본질 = "whichever is called last takes effect" but cascade re-render 본문 race
+  //     - fitContent가 setVisibleLogicalRange의 의도된 logical range를 cascade overwrite 가능 본질
+  //   Fix 옵션 A 채택 (race 근본 제거 본질) — fitContent() 호출 폐기 + setVisibleLogicalRange만 본문.
+  //     - ichimoku cloud series outLen = N + SHIFT = N + 26 logical index 등록 PASS (ichimoku.js:108 verbatim grep)
+  //     - setVisibleLogicalRange({to: N-1+26}) → series 등록 logical index 0~N+25 범위 내 effective 본질
+  //     - candle series N=240 fit 누락 본문 회피 — setVisibleLogicalRange가 의도된 range 정확 결정 본질
+  //   라이브 라이브 결함 (7072f037 모바일 cloud 우측 미래 0건 vs 영웅문 3005fbac/23a74560 +26영업일 visible) 결정적 fix 본질.
   try {
-    chart.timeScale().fitContent();
-    // P0-13 Fix-46: forward shift +26 cloud 영역 visible 정합 (영웅문 본문 우측 미래 cloud 본문 정합)
     const N = data.length;
     if (N > 0) {
       const VISIBLE_RECENT = 50;       // 최근 영업일 (영웅문 정합 약 39 + 여유분)
       const FUTURE_CLOUD = 26;         // P0-13 Fix-46: 미래 cloud 영역 본문 영업일 (ichimoku.js SHIFT 본문 정합)
       const fromIdx = Math.max(0, N - VISIBLE_RECENT);
       const toIdx = N - 1 + FUTURE_CLOUD;  // 미래 26 영업일 cloud visible 본질 정합
+      // P0-14b: fitContent() 호출 폐기 본문 (race condition 근본 제거) — setVisibleLogicalRange만 본문 visible range 결정 본질
       chart.timeScale().setVisibleLogicalRange({ from: fromIdx, to: toIdx });
     }
   } catch (err) { /* noop */ }
