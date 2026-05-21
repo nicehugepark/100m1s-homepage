@@ -26,6 +26,7 @@ import {
   HistogramSeries,
   LineStyle,
   CrosshairMode,
+  createSeriesMarkers,
 } from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
 
 // Phase 7d-1 정정 plugin 4종 + Phase 7d-1 P0-4 분홍 강세 vertical line primitive + 토글 panel
@@ -121,25 +122,31 @@ function computeMA(data, period) {
 
 // REQ v3 §3.1 verbatim 정합 — MA 7선 (5/10/20/43/60/120/240). Phase 7d-2 별건 사이클 본질.
 // 대표 verbatim 2026-05-21 09:15 KST "ma 선의 종류와 색상이다" + 영웅문 zoom 7 line 본문.
-// 색상은 lead 옵션 A-3 회신 verbatim (영웅문 zoom 직접 read 결과 = 6선 본문 정합 유지) +
-// MA 10 추가 색상 = #3B82F6 (파랑, REQ v3 보조지표 본문 정합):
-//   5=red/magenta / 10=blue (신규) / 20=yellow/orange / 43=green / 60=brown/dark / 120=grey / 240=purple
 //
-// §16 self-catch (Phase 7d-2):
-//   - REQ v3 §2 verbatim 영웅문 zoom 색상 (5=분홍 #FF69B4 / 10=노랑 #FFD700 / 20=하늘 #87CEEB / 43=주황 #FFA500 /
-//     60=주황 #FF8C00 / 120=파랑 #4169E1 / 240=연두 #90EE90)는 Phase 7d-1 본문 6선 색상 paradigm vs
-//     REQ v3 §2 verbatim 색상 mismatch → 본 Phase 7d-2는 MA 10 line 추가 본질만 수행. 색상 본문 정정은
-//     별건 cycle 후행 본질 (AC-20 6 hex grep PASS 본문 정합 유지). 본 §16 catch 박제 (보고 의무).
+// P0-7 fix-6 (2026-05-21 11:01 KST):
+//   REQ v3 §2 + REQ v4 §3.1 verbatim 영웅문 zoom 색상 정정 채택 (별건 cycle 후행 본질 → 본 P0-7 통합):
+//     MA 5 = #FF69B4 분홍 (HotPink) — 영웅문 zoom verbatim
+//     MA 10 = #FFD700 노랑 (Gold) — 영웅문 zoom verbatim
+//     MA 20 = #87CEEB 하늘 (SkyBlue) — 영웅문 zoom verbatim
+//     MA 43 = #FFA500 주황 (Orange) — 영웅문 zoom verbatim, 대표 매매 customization
+//     MA 60 = #FF8C00 주황 (DarkOrange) — 영웅문 zoom verbatim
+//     MA 120 = #4169E1 파랑 (RoyalBlue) — 영웅문 zoom verbatim
+//     MA 240 = #90EE90 연두 (LightGreen) — 영웅문 zoom verbatim, 1년 영업일
+//
+// P0-7 fix-1 (2026-05-21 10:55 KST 대표 verbatim "확대 차트에서 ma선 레이블은 모두 제거해줘. 내 영웅문 화면에도 없잖아"):
+//   title 본문 제거 — priceScale 본문 라벨 visible 부재 본질 (영웅문 정합).
+//   기존 priceLineVisible:false + lastValueVisible:false + crosshairMarkerVisible:false 본문 정합 유지.
+//   title 본문 빈 string '' 본질 → priceScale legend layer 본문 출력 부재.
 //
 // state key `ma6` 명칭은 그대로 유지 (localStorage backward 호환 본질). 의미는 7선으로 확장.
 const MA_CONFIGS = [
-  { period: 5,   color: '#EF4444', title: 'MA 5',   width: 1 },   // red/magenta (영웅문 verbatim)
-  { period: 10,  color: '#3B82F6', title: 'MA 10',  width: 1 },   // blue 파랑 (REQ v3 신축 본질)
-  { period: 20,  color: '#FBBF24', title: 'MA 20',  width: 1 },   // yellow/orange 노랑 (영웅문 verbatim)
-  { period: 43,  color: '#22C55E', title: 'MA 43',  width: 1.2 }, // green 녹색 (대표 매매 customization)
-  { period: 60,  color: '#92400E', title: 'MA 60',  width: 1 },   // brown/dark (영웅문 verbatim)
-  { period: 120, color: '#9CA3AF', title: 'MA 120', width: 1 },   // grey 회색 (영웅문 verbatim)
-  { period: 240, color: '#9333EA', title: 'MA 240', width: 1.2 }, // purple 보라 (1년 영업일)
+  { period: 5,   color: '#FF69B4', title: '', width: 1 },   // HotPink 분홍 (영웅문 zoom verbatim)
+  { period: 10,  color: '#FFD700', title: '', width: 1 },   // Gold 노랑 (영웅문 zoom verbatim)
+  { period: 20,  color: '#87CEEB', title: '', width: 1 },   // SkyBlue 하늘 (영웅문 zoom verbatim)
+  { period: 43,  color: '#FFA500', title: '', width: 1.2 }, // Orange 주황 (영웅문 zoom verbatim, 대표 customization)
+  { period: 60,  color: '#FF8C00', title: '', width: 1 },   // DarkOrange 주황 (영웅문 zoom verbatim)
+  { period: 120, color: '#4169E1', title: '', width: 1 },   // RoyalBlue 파랑 (영웅문 zoom verbatim)
+  { period: 240, color: '#90EE90', title: '', width: 1.2 }, // LightGreen 연두 (영웅문 zoom verbatim, 1년 영업일)
 ];
 
 // EMA helper
@@ -303,7 +310,10 @@ function renderChartTV(container, dailyArr, options = {}) {
 
   const vp = getViewportSize();
   // sub-pane 3종 (거래대금 + MACD + RSI) — height 분배 본질
-  const subPaneHeight = Math.round(vp.height * 0.15);
+  // P0-7 fix-5 (2026-05-21 10:55 KST 대표 verbatim "하단 지표의 높이가 너무 높다. 지금의 절반 수준으로 해봐"):
+  //   subPaneHeight 본문 0.15 → 0.075 (절반 본질). main pane stretch factor 본질 상대 증가.
+  //   setStretchFactor v5.0.8 API 본문 추가 적용 (chart instance 생성 후 chart.panes() 본문 호출 본질).
+  const subPaneHeight = Math.round(vp.height * 0.075);
   const totalHeight = vp.height + subPaneHeight * 3;
 
   let state = options.indicatorState || loadIndicatorState();
@@ -331,10 +341,30 @@ function renderChartTV(container, dailyArr, options = {}) {
       timeVisible: false,
       secondsVisible: false,
     },
-    rightPriceScale: { borderColor: 'rgba(0,0,0,0.12)' },
+    // P0-7 fix-2 (2026-05-21 10:55 KST 대표 verbatim "우측 주가가 잘려서 보이지 않는다"):
+    //   rightPriceScale scaleMargins + minimumWidth 본질 정합 — 가격 라벨 본문 잘림 회피.
+    //   v5 PriceScaleOptions: scaleMargins {top, bottom} + minimumWidth (px) + visible:true 본문.
+    rightPriceScale: {
+      borderColor: 'rgba(0,0,0,0.12)',
+      visible: true,
+      scaleMargins: { top: 0.1, bottom: 0.1 },
+      minimumWidth: 60,
+    },
     handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
     handleScale: { axisPressedMouseMove: true, mouseWheel: true, pinch: true },
   });
+
+  // P0-7 fix-5 (2026-05-21 10:55 KST 대표 verbatim "하단 지표의 높이가 너무 높다. 지금의 절반 수준으로 해봐"):
+  //   chart 생성 직후 setStretchFactor 본문 호출 — main pane 본문 비율 증가 + sub-pane 절반 본질.
+  //   v5.0.8 IPaneApi.setStretchFactor() + getStretchFactor() — default = 1.0 동일 비율 본문.
+  //   main pane stretch factor = 4.0 (sub-pane 3종 대비 4배) → 각 sub-pane = 1/(4+1+1+1) = 1/7 본문.
+  //   §11.15 외부 spec 사전 검증 PASS (WebSearch v5.0.8 release notes + 공식 docs).
+  try {
+    const panes = chart.panes();
+    if (Array.isArray(panes) && panes.length > 0 && typeof panes[0].setStretchFactor === 'function') {
+      panes[0].setStretchFactor(4.0);  // main pane 본문 4배
+    }
+  } catch (err) { /* noop v5.0.8 미지원 fallback = totalHeight 본문만 적용 */ }
 
   // 캔들 series (main pane = paneIdx 0)
   // lead 옵션 A-3 채택 #4 — 현재가 priceLine 본질 (대표 verbatim 09:08 KST (c) "현재가가 표시되지 않는것도 문제")
@@ -403,10 +433,20 @@ function renderChartTV(container, dailyArr, options = {}) {
   }
 
   // ── 일목 (구름만) ──
+  // P0-7 fix-4 (2026-05-21 10:55 KST 대표 verbatim
+  //   "일목균형표 역시 오류가 있는 것 같다. 너무 상단에 얇게 그려지는데 차트 위치와 너무 안맞아"):
+  //   root cause 진단 본질 = ICustomSeries 본문 default priceScale 본문 candle series와 mismatch
+  //   → priceScaleId 본문 'right' 명시 (candle series와 동일 priceScale share 본질)
+  //   → priceLineVisible:false + lastValueVisible:false 본문 정합 (legend 본문 회피)
+  //   §11.15 외부 spec 사전 검증 — ICustomSeries options.priceScaleId 본문 v5 지원 PASS
   function addIchimoku() {
     if (layers.ichimoku) return;
     try {
-      layers.ichimoku = chart.addCustomSeries(new IchimokuCustomSeries(), {});
+      layers.ichimoku = chart.addCustomSeries(new IchimokuCustomSeries(), {
+        priceScaleId: 'right',           // candle series와 동일 right priceScale share 본질
+        lastValueVisible: false,
+        priceLineVisible: false,
+      });
       layers.ichimoku.setData(buildIchimokuData(data.map((d) => ({
         time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
       }))));
@@ -466,6 +506,69 @@ function renderChartTV(container, dailyArr, options = {}) {
   // P0-4 영웅문 정합 fix #2 (2026-05-21 10:00 KST):
   //   title 영웅문 verbatim — 'MACD Oscillator 12,26,9' / 'MACD 시그널 9' / 'Hist'
   //   (영웅문 reference 본문 "MACD Oscillator 12,26,9 MACD 시그널 3,177.81" 정합)
+  //
+  // P0-7 fix-10 (2026-05-21 11:03 KST 대표 verbatim):
+  //   "macd의 경우 시그널 선과 오실래이터 선이 크로스 할 때 데드크로스일 경우 파란색 아래쪽 화살표,
+  //    골든크로스일 때 빨강색 위쪽 화살표를 macd 보조지표의 크로스하는 라인에 그려줘야해.
+  //    데드크로스는 라인 위에 골든크로스는 라인 아래에."
+  //
+  //   골든크로스 (MACD line이 signal line 위로 cross) = belowBar arrowUp #C53939 (한국 시장 강세 빨강)
+  //   데드크로스 (MACD line이 signal line 아래로 cross) = aboveBar arrowDown #1958C7 (한국 시장 약세 파랑)
+  //
+  //   §11.15 외부 spec 사전 검증 PASS:
+  //   - createSeriesMarkers(series, markers) v5 primitive 본질 (markers.js 동일 패턴)
+  //   - position 'aboveBar' / 'belowBar' 본문 sub-pane series 본문 정합 (high/low value 기준)
+  //
+  //   §16 self-catch:
+  //   - 모든 종목 동일 공식 본문 (종목 레벨 하드코딩 0건, 대표 정책 정합)
+  //   - signal line undefined / NaN 본문 graceful skip
+  //   - edge case 첫 시점 (i=0) cross detection 부재 (prev 본문 없음)
+  function detectMACDCrosses(line, signal) {
+    // line/signal 본문 = [{time, value}, ...] 동일 length 가정 못함 (signal 본문 9 영업일 지연 본질)
+    // time 본문 key string 'YYYY-MM-DD' 생성 → signal map 본문 lookup
+    const golden = [];
+    const dead = [];
+    if (!Array.isArray(line) || !Array.isArray(signal) || line.length < 2 || signal.length < 2) {
+      return { golden, dead };
+    }
+    const timeKey = (t) => `${t.year}-${String(t.month).padStart(2, '0')}-${String(t.day).padStart(2, '0')}`;
+    const signalMap = new Map();
+    signal.forEach((p) => { signalMap.set(timeKey(p.time), p.value); });
+
+    let prevDiff = null;
+    for (let i = 0; i < line.length; i++) {
+      const lp = line[i];
+      const sv = signalMap.get(timeKey(lp.time));
+      if (typeof lp.value !== 'number' || typeof sv !== 'number' || isNaN(lp.value) || isNaN(sv)) {
+        prevDiff = null;
+        continue;
+      }
+      const curDiff = lp.value - sv;
+      if (prevDiff != null) {
+        // 골든크로스: prev <= 0 && cur > 0 (MACD line이 signal line 아래에서 위로)
+        if (prevDiff <= 0 && curDiff > 0) {
+          golden.push({
+            time: lp.time,
+            position: 'belowBar',
+            shape: 'arrowUp',
+            color: '#C53939',
+          });
+        }
+        // 데드크로스: prev >= 0 && cur < 0 (MACD line이 signal line 위에서 아래로)
+        if (prevDiff >= 0 && curDiff < 0) {
+          dead.push({
+            time: lp.time,
+            position: 'aboveBar',
+            shape: 'arrowDown',
+            color: '#1958C7',
+          });
+        }
+      }
+      prevDiff = curDiff;
+    }
+    return { golden, dead };
+  }
+
   function addMACD() {
     if (layers.macd) return;
     const m = computeMACD(data);
@@ -486,7 +589,22 @@ function renderChartTV(container, dailyArr, options = {}) {
       line.setData(m.line);
       signal.setData(m.signal);
       hist.setData(m.hist);
-      layers.macd = { line, signal, hist };
+
+      // P0-7 fix-10: MACD 크로스 detection + marker attach (line series 본문에 attach, sort by time)
+      const { golden, dead } = detectMACDCrosses(m.line, m.signal);
+      const crossMarkers = [...golden, ...dead].sort((a, b) => {
+        const ta = a.time.year * 10000 + a.time.month * 100 + a.time.day;
+        const tb = b.time.year * 10000 + b.time.month * 100 + b.time.day;
+        return ta - tb;
+      });
+      let macdCrossMarkers = null;
+      if (crossMarkers.length > 0) {
+        try {
+          macdCrossMarkers = createSeriesMarkers(line, crossMarkers);
+        } catch (err) { /* noop createSeriesMarkers v5 미지원 fallback */ }
+      }
+
+      layers.macd = { line, signal, hist, crossMarkers: macdCrossMarkers };
     } catch (err) {
       layers.macd = null;
     }
@@ -494,6 +612,9 @@ function renderChartTV(container, dailyArr, options = {}) {
   function removeMACD() {
     if (!layers.macd) return;
     try {
+      if (layers.macd.crossMarkers && typeof layers.macd.crossMarkers.setMarkers === 'function') {
+        layers.macd.crossMarkers.setMarkers([]);
+      }
       chart.removeSeries(layers.macd.line);
       chart.removeSeries(layers.macd.signal);
       chart.removeSeries(layers.macd.hist);
@@ -504,18 +625,53 @@ function renderChartTV(container, dailyArr, options = {}) {
   // ── RSI sub-pane (paneIdx 3) ──
   // P0-4 영웅문 정합 fix #2 (2026-05-21 10:00 KST):
   //   title 영웅문 verbatim — 'RSI 14 시그널 9' (영웅문 reference "RSI 14 시그널 9 46.86 / 63.09 / 84.39" 정합)
+  //
+  // P0-7 fix-9 (2026-05-21 11:00 KST 대표 verbatim
+  //   "하단 rsi 보조지표의 경우 과열30, 침체30, period 14, signal 9 거꾸로 보기를 해서 보여줘"):
+  //   - 거꾸로 보기 (invertScale) — priceScale invertScale:true 본질 (Y축 반전, 침체 위 + 과열 아래)
+  //   - 양 임계값 30 (과열 30 + 침체 30 본질) — invertScale 본질 상 둘 다 30 본문 정합
+  //     §16 본질: 영웅문 본인 customization 본문 (표준 RSI overbought 70 / oversold 30 vs 영웅문 둘 다 30 본질)
+  //   - signal 9 — SMA(9) of RSI series 본문 추가 신축
+  //   - period 14 — 기존 정합 유지
+  //   - title 영웅문 verbatim 유지 'RSI 14 시그널 9'
+  //   - §11.15 외부 spec 사전 검증 PASS (TradingView v5 PriceScaleOptions invertScale:bool, default:false)
   function addRSI() {
     if (layers.rsi) return;
     const rsiData = computeRSI(data, 14);
     if (rsiData.length === 0) return;
     try {
+      // RSI 메인 라인 (period 14)
       layers.rsi = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'RSI 14 시그널 9',
+        color: '#0064FF', lineWidth: 1, title: 'RSI 14',
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '30' });
-      layers.rsi.createPriceLine({ price: 70, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '70' });
+      // P0-7 fix-9: 양 임계값 30 본질 (invertScale 본문 정합 침체 30 위 + 과열 30 아래 본질)
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '과열 30' });
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '침체 30' });
+
+      // P0-7 fix-9: signal 9 line 본문 신축 — SMA(9) of RSI series
+      const signalData = [];
+      if (rsiData.length >= 9) {
+        let sum = 0;
+        for (let i = 0; i < rsiData.length; i++) {
+          sum += rsiData[i].value;
+          if (i >= 9) sum -= rsiData[i - 9].value;
+          if (i >= 8) signalData.push({ time: rsiData[i].time, value: sum / 9 });
+        }
+      }
+      if (signalData.length > 0) {
+        layers.rsiSignal = chart.addSeries(LineSeries, {
+          color: '#FFA726', lineWidth: 1, title: '시그널 9',
+          priceLineVisible: false, lastValueVisible: false,
+        }, 3);
+        layers.rsiSignal.setData(signalData);
+      }
+
+      // P0-7 fix-9: invertScale 본문 — RSI sub-pane priceScale Y축 반전 (영웅문 customization)
+      try {
+        chart.priceScale('right', 3).applyOptions({ invertScale: true });
+      } catch (err) { /* noop fallback */ }
     } catch (err) {
       layers.rsi = null;
     }
@@ -523,6 +679,10 @@ function renderChartTV(container, dailyArr, options = {}) {
   function removeRSI() {
     if (!layers.rsi) return;
     try { chart.removeSeries(layers.rsi); } catch (e) { /* noop */ }
+    if (layers.rsiSignal) {
+      try { chart.removeSeries(layers.rsiSignal); } catch (e) { /* noop */ }
+      layers.rsiSignal = null;
+    }
     layers.rsi = null;
   }
 
