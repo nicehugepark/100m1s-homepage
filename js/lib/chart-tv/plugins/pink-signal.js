@@ -18,12 +18,26 @@
    §16 self-catch (Phase 7d-1 P0-4):
    - markers.js PINK_SIGNAL_OPTIONS (aboveBar arrowUp #EC4899) 폐기 본질 (본 plugin이 대체)
    - 본 primitive = ISeriesPrimitive paneViews 본질 + canvas 2D vertical line draw 본문
+
+   P0-22 Fix-73/74 (2026-05-21 18:12 KST 대표 verbatim
+     "강세가 표시된건 고무적이다. 다만 강세 세로선이 너무 얇다. 캔들의 폭과 동일하게,
+      그리고 더 연한 분홍색으로 더 반투명하게"):
+   - Fix-73 폭 본질: lineWidth: 1 (고정 px) → null (sentinel 본문 = barSpacing 정합 본질)
+     - draw 본문 시점 chart.timeScale().options().barSpacing 본문 retrieve → 캔들 폭 정합
+     - barSpacing default 6px (TradingView v5 spec) — 가시 캔들 본문 동등 폭 본질
+     - §11.15 외부 spec 사전 검증 PASS:
+       - WebSearch 2회 corroborating (Lightweight Charts v5 TimeScaleOptions.barSpacing default 6)
+       - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/ITimeScaleApi
+         "options() — Returns current options" (barSpacing 본문 retrieve path 본질)
+   - Fix-74 색/alpha 본질: #EC4899 / 0.5 → #FFB6C1 (LightPink) / 0.25
+     - 영웅문 23a74560 image direct read 본문 vertical 분홍 박스 연한 분홍 + alpha 본문 ~25% 정합
+     - 라이브 a0ff645f image direct read 본문 진한 #EC4899 alpha 0.5 본문 vs 영웅문 분리 결정적 입증
 */
 
 const DEFAULT_OPTIONS = {
-  color: '#EC4899',       // 분홍 (REQ-039 강세 배지 본문 정합)
-  lineWidth: 1,
-  alpha: 0.5,             // 영웅문 alpha 분홍 본문 정합 (gracefully)
+  color: '#FFB6C1',       // P0-22 Fix-74: 더 연한 분홍 (LightPink, 영웅문 23a74560 정합)
+  lineWidth: null,        // P0-22 Fix-73: null sentinel = barSpacing 본문 정합 본질 (캔들 폭 동등)
+  alpha: 0.25,            // P0-22 Fix-74: 더 반투명 (0.5 → 0.25, 영웅문 정합)
 };
 
 /**
@@ -62,7 +76,31 @@ class PinkSignalRenderer {
 
     const timeScale = chart.timeScale();
     const chartHeight = scope.bitmapSize.height;
-    const lineWBitmap = opts.lineWidth * scope.horizontalPixelRatio;
+
+    // P0-22 Fix-73: lineWidth=null sentinel → barSpacing 본문 정합 (캔들 폭 동등 본질)
+    //   §11.15 외부 spec 사전 검증 PASS:
+    //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/ITimeScaleApi
+    //       "options() — Returns current options" (barSpacing 본문 retrieve path 본문)
+    //     - WebSearch 2회 corroborating (Lightweight Charts v5 TimeScaleOptions.barSpacing default 6)
+    //   §16 self-catch:
+    //     - barSpacing 본문 = 본 차트 본문 두 캔들 사이 본문 간격 px (logical, CSS px) 본질
+    //     - 캔들 실 폭 본문 = 약 barSpacing × 0.8 본문 (TradingView 본문 internal gap 본질)
+    //     - 본 vertical line 폭 본문 = Math.max(2, barSpacing - 2) 본문 정합 (gap 본문 보존)
+    //     - bitmap pixel 본문 = logical × horizontalPixelRatio 본문 정합
+    let lineWLogical;
+    if (opts.lineWidth == null) {
+      let barSpacing = 6;  // default fallback (TradingView v5 spec)
+      try {
+        const tsOpts = timeScale.options();
+        if (tsOpts && typeof tsOpts.barSpacing === 'number' && tsOpts.barSpacing > 0) {
+          barSpacing = tsOpts.barSpacing;
+        }
+      } catch (e) { /* noop fallback = default 6 */ }
+      lineWLogical = Math.max(2, barSpacing - 2);  // 캔들 실 폭 정합 (gap 2px 보존)
+    } else {
+      lineWLogical = opts.lineWidth;
+    }
+    const lineWBitmap = lineWLogical * scope.horizontalPixelRatio;
 
     ctx.globalAlpha = opts.alpha;
     ctx.fillStyle = opts.color;

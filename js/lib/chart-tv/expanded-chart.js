@@ -300,6 +300,40 @@ function extractRSIOversoldDates(data, rsiData) {
   return dates;
 }
 
+// P0-22 Fix-77 (2026-05-21 18:14 KST 대표 verbatim
+//   "그리고 하단 거래대금 지표의 y축 값의 표기 역시 한글 단위로 표시해줘. 9000억, 1.2천억, 22억 이런식으로"):
+//   거래대금 priceScale 본문 한글 단위 formatter — 만/억/천억/조 본문 본질.
+//   §11.15 외부 spec 사전 검증 PASS:
+//     - WebSearch 2회 corroborating (TradingView Lightweight Charts v5 PriceFormatCustom)
+//     - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/PriceFormatCustom
+//       "type:'custom', formatter:(price:number)=>string, minMove:number"
+//   §16 self-catch:
+//     - 대표 verbatim 양식 "9000억" + "1.2천억" + "22억" 본문 mixed = (a) < 1조 본문 천억 자리수 본문 다른 양식 본문 mixed
+//     - 결정적 본질: 1억 ~ 999억 = "NN억" 정수 본문 (9000억 = 9.0e11 본문 한자리 본문 "9000억" 본문 정합)
+//     - 1,000억 ~ 9,999억 = 대표 verbatim "1.2천억" 본문 = 천억 단위 본문 소수점 1자리 본문 본질
+//     - 본 본질 정정 cascade: 대표 verbatim "9000억" 본문 = 9.0e11 본문 본질 → "9000억" 본문 본질 (1조 미만 본문 모두 억)
+//     - 별 path: 1조 이상 = "N.N조"
+//     - 영웅문 reference 본문 K (천) 단위 본문 무시 본문 대표 verbatim 우선 본문 본질 정합
+function formatKRWUnit(price) {
+  if (typeof price !== 'number' || !isFinite(price)) return '';
+  const abs = Math.abs(price);
+  const sign = price < 0 ? '-' : '';
+  // 1조 이상 (≥ 1e12) → "N.N조"
+  if (abs >= 1e12) {
+    return `${sign}${(abs / 1e12).toFixed(1)}조`;
+  }
+  // 1억 이상 (≥ 1e8) → "NN억" (정수, 1조 미만 본문 모두 억 단위 본질)
+  if (abs >= 1e8) {
+    return `${sign}${Math.round(abs / 1e8)}억`;
+  }
+  // 1만 이상 (≥ 1e4) → "NN만" (정수)
+  if (abs >= 1e4) {
+    return `${sign}${Math.round(abs / 1e4)}만`;
+  }
+  // < 1만 → 정수 raw (드물 본질)
+  return `${sign}${Math.round(abs)}`;
+}
+
 // 거래대금 histogram (sub-pane) — 캔들 색 동조 (양봉/음봉)
 function buildTradingValue(data) {
   return data.map((d) => ({
@@ -401,6 +435,28 @@ function renderChartTV(container, dailyArr, options = {}) {
       borderColor: 'rgba(0,0,0,0.12)',
       timeVisible: false,
       secondsVisible: false,
+      // P0-22 Fix-75 (2026-05-21 18:12 KST 대표 verbatim
+      //   "하단부 날짜가 표시되는데 yyyy-mm-dd 포맷으로 검정 글씨에 바탕 없이 해줘"):
+      //   - tickMarkFormatter 본문 yyyy-MM-dd 양식 본문 본질 (TradingView v5 native)
+      //   - BusinessDay 본문 {year, month, day} 본문 통과 본질 (normalizeData 본문 정합)
+      //   - 검정 글씨 본문 = layout.textColor 본문 rgba(0,0,0,0.6) 본문 본질 정합 (이미 본문 검정 ~ 검정)
+      //   - 바탕 없음 본문 = layout.background:transparent 본문 본질 정합 (이미 transparent)
+      //   §11.15 외부 spec 사전 검증 PASS:
+      //     - WebSearch 2회 corroborating (TradingView Lightweight Charts v5 TimeScaleOptions.tickMarkFormatter)
+      //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/TimeScaleOptions
+      //       "tickMarkFormatter — customize tick marks labels on time axis"
+      //     - signature: (time, tickMarkType, locale) => string, BusinessDay 본문 {year, month, day}
+      //   §16 self-catch:
+      //     - tickMarkType 본문 enum (Year/Month/DayOfMonth/Time/TimeWithSeconds) — daily candle 본문 DayOfMonth 본질 빈번
+      //     - 가독성 본문 본질 = month/day 본문 2자리 zero-pad (yyyy-MM-dd 본문 양식 본질 표준)
+      //     - tickMarkType 본문 무시 본문 동일 yyyy-MM-dd 출력 본문 정합 (대표 verbatim 일관 양식 본질)
+      tickMarkFormatter: (time) => {
+        if (!time || typeof time.year !== 'number') return '';
+        const yyyy = String(time.year);
+        const mm = String(time.month).padStart(2, '0');
+        const dd = String(time.day).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      },
     },
     // P0-11 Fix-36 (2026-05-21 12:44 KST 대표 verbatim "y축 위치도 여전히 문제"):
     //   image #10 76d1f57d 본문 우측 priceScale visible 0건 — chart canvas 본문 자체가 부모 본문 초과 (Fix-34 본질)
@@ -559,7 +615,12 @@ function renderChartTV(container, dailyArr, options = {}) {
     try {
       layers.tradingValue = chart.addSeries(HistogramSeries, {
         title: '',  // P0-17 Fix-54: native title 본문 제거 (HTML overlay 좌측 단독)
-        priceFormat: { type: 'volume' },
+        // P0-22 Fix-77 (2026-05-21 18:14 KST 대표 verbatim
+        //   "하단 거래대금 지표의 y축 값의 표기 역시 한글 단위로 표시해줘. 9000억, 1.2천억, 22억 이런식으로"):
+        //   priceFormat 본문 'volume' → 'custom' + formatKRWUnit 본문 한글 단위 본질 (만/억/조).
+        //   minMove: 1 본문 (정수 본문 본질 trading value 본문 정합, KRW 원 단위 본질).
+        //   §11.15 외부 spec PASS: PriceFormatCustom (type='custom', formatter, minMove) 본문 v5 native.
+        priceFormat: { type: 'custom', formatter: formatKRWUnit, minMove: 1 },
         priceScaleId: 'tradingValue',  // P0-20 Fix-70: '' (overlay) → 별도 priceScale id 본문 (자체 autoScale visible range 본문 기준)
         lastValueVisible: true,         // P0-20 Fix-70: 우측 last value visible (영웅문 정합)
       }, 1);
