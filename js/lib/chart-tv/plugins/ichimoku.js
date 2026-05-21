@@ -1,25 +1,35 @@
-/* ───── lib/chart-tv/plugins/ichimoku.js — #5 일목균형표 (구름대만 forward shift +26, TradingView v5) ─────
-   cycle22 Phase 7d-1 P0 — REQ DOC-20260521-REQ-001 §2 #5 + lead 옵션 A-3 회신 verbatim 정합.
+/* ───── lib/chart-tv/plugins/ichimoku.js — #5 일목균형표 (영웅문 정합 backward source 본문, TradingView v5) ─────
+   cycle22 Phase 7d-1 P0-9 — REQ DOC-20260521-REQ-001 §2 #5 + 대표 verbatim 11:34 KST 영웅문 정합 정정.
 
-   본질 (대표 2026-05-21 09:08 KST verbatim "일목균형표가 선행스팬인데 후행으로 그려지는것도 문제"):
+   본질 (대표 2026-05-21 11:34 KST verbatim "달라진 점이 없다. 선행스팬 자체가 과거의 차트 위치를
+         그저 우측으로 이동시킨 것 밖에 없는데 높낮이 위치가 맞지 않다"):
    - 선행스팬 A + 선행스팬 B + 구름대 (Kumo) fill 3종만 유지
-   - **Senkou = "Leading" = forward shift +26 영업일 본질** (TradingView v5 표준, 영웅문 정합)
-   - Tenkan(전환선 9) / Kijun(기준선 26) / Chikou(후행스팬 -26) 3선 draw 본질 **제거**
+   - 영웅문 reference 본문 (23a74560-10166.jpg 09:08 KST 현대모비스 012330) 직접 read evidence:
+     * cloud visible 영역 = 차트 **좌측~마지막 candle 본문 영역** (3/31~5/21)
+     * **마지막 candle 우측 미래 영역 cloud 부재** = forward shift visible 없음
+     * 즉 영웅문 = **i 좌표 plot value = (tenkan[i-26]+kijun[i-26])/2 본문 backward source forward draw**
+       (cloud 본문 i 시점 좌표 visible but source data = i-26 시점, 즉 외관상 cloud 본문 candle 위 정합)
+   - Tenkan(전환선 9) / Kijun(기준선 26) / Chikou(후행스팬 -26) 3선 draw 본질 **제거** (REQ v2 §3 5 제거 cascade)
    - 산식은 보존, draw layer만 제거
 
-   forward shift cascade (Phase 7d-1 P0 정정):
-   - 기존 (Phase 7d-1 backward 본문): `src = i - SHIFT` → 현재 시점 i의 senkouA/B 값을 i-26 데이터로 계산
-     → cloud가 차트 좌측 (과거 영역) 에 표시 = 후행 본문, 영웅문/표준 mismatch
-   - 정정 (Phase 7d-1 P0 forward 본문): 현재 i 시점 데이터로 계산된 senkouA/B를 i + SHIFT 시점 좌표에 plot
-     → cloud가 차트 우측 (미래 영역) 에 표시 = forward 본문, 영웅문/표준 정합
-   - 미래 SHIFT(26) 영업일 placeholder 추가 (whitespace data, candle 없는 미래 좌표)
-   - 한국 영업일 정확한 계산은 Phase 7d-2 후행, 본 Phase 7d-1 P0는 calendar day 근사 (주말 skip)
+   P0-9 Fix-20 본질 정정 (Phase 7d-1 P0 forward shift cascade 폐기):
+   - 기존 (Phase 7d-1 P0 forward 본문 폐기): `outIdx = i + SHIFT` source=i → 미래 i+26 좌표 plot
+     → cloud가 차트 **우측 미래 영역**에 표시 = 영웅문 본문 mismatch (영웅문 = 미래 cloud 부재)
+   - 정정 (P0-9 backward source 본문): `outIdx = i` source = i-SHIFT → i 좌표 plot value 본문
+     value = (tenkan[i-26] + kijun[i-26]) / 2  본문 = i-26 시점 산출값을 i 좌표 plot
+     senkouB[i] = midHL(rawData, i-26, 52)
+     → cloud가 차트 **좌측~현재 visible 영역**에 표시 = 영웅문 정합
+   - 미래 placeholder 제거 (영웅문 cloud 미래 영역 부재 visible 정합)
+   - outLen = N (미래 확장 없음, candle data 영역만 본문 정합)
 
    v5 ICustomSeriesPaneView interface 본질 정합 (cycle22 Phase 7b 구조 보존).
 
-   §16 self-catch (Phase 7d-1 P0):
-   - 본 plugin 본질 정정 = 대표 09:08 KST verbatim "후행 → 선행" + forward shift +26 본문
+   §16 self-catch (P0-9 Fix-20):
+   - 본 plugin 본질 정정 = 영웅문 23a74560 직접 read evidence cloud visible 영역 본문 정합
+   - "높낮이 위치가 맞지 않다" 본문 root cause = forward shift 본문 cloud 본문 미래 영역 visible
+     vs 영웅문 backward source 본문 i 좌표 cloud visible mismatch 본문
    - Tenkan/Kijun/Chikou draw 제거 유지 = REQ v2 §3 5 제거 cascade
+   - addBusinessDays 본문 미래 placeholder 본문 layer 폐기 (cloud 미래 영역 부재 영웅문 정합)
 */
 
 const TENKAN = 9;
@@ -52,17 +62,17 @@ function midHL(data, i, period) {
 }
 
 /**
- * 일목 산식 — forward shift +26 본질 (Phase 7d-1 P0 정정).
- * 현재 i 시점 데이터로 계산된 senkouA/B 값을 i + SHIFT 좌표 (미래) 에 plot.
+ * 일목 산식 — P0-9 Fix-20 영웅문 정합 backward source 본질.
+ * i 좌표 plot value = (tenkan[i-SHIFT] + kijun[i-SHIFT]) / 2  본문 = i-26 시점 산출값을 i 좌표 plot.
  *
- * @returns {senkouA, senkouB} — length = N + SHIFT (미래 placeholder 포함)
- *   senkouA[k] = (k < SHIFT) ? null : (tenkan[k-SHIFT] + kijun[k-SHIFT]) / 2
- *   senkouB[k] = (k < SHIFT) ? null : midHL(rawData, k-SHIFT, SENKOU_B)
- *   k ∈ [0, N+SHIFT-1], k < SHIFT 시점은 fwd shift source 부재로 null
+ * @returns {senkouA, senkouB} — length = N (미래 placeholder 없음, 영웅문 정합)
+ *   senkouA[i] = (i < SHIFT) ? null : (tenkan[i-SHIFT] + kijun[i-SHIFT]) / 2
+ *   senkouB[i] = (i < SHIFT) ? null : midHL(rawData, i-SHIFT, SENKOU_B)
+ *   i ∈ [0, N-1], i < SHIFT 시점은 backward source 부재로 null (영웅문 본문 차트 좌측 영역 cloud 부재 visible 정합)
  */
 function calculateIchimoku(rawData) {
   const N = rawData.length;
-  const outLen = N + SHIFT;  // 미래 SHIFT만큼 확장
+  const outLen = N;  // P0-9 Fix-20: 미래 placeholder 없음 (영웅문 본문 미래 cloud 부재 정합)
   const tenkan = new Array(N).fill(null);
   const kijun = new Array(N).fill(null);
   const senkouA = new Array(outLen).fill(null);
@@ -74,16 +84,15 @@ function calculateIchimoku(rawData) {
     kijun[i] = midHL(rawData, i, KIJUN);
   }
 
-  // forward shift +SHIFT: i 시점 senkouA/B 값을 i + SHIFT 좌표에 plot
-  // outIdx = i + SHIFT, source = i
-  for (let i = 0; i < N; i++) {
-    const outIdx = i + SHIFT;
-    if (outIdx >= outLen) break;
-    if (tenkan[i] != null && kijun[i] != null) {
-      senkouA[outIdx] = (tenkan[i] + kijun[i]) / 2;
+  // P0-9 Fix-20 backward source: i 좌표 plot value = i-SHIFT 시점 산출값
+  // outIdx = i, source = i - SHIFT (영웅문 정합 본문)
+  for (let i = SHIFT; i < N; i++) {
+    const srcIdx = i - SHIFT;
+    if (tenkan[srcIdx] != null && kijun[srcIdx] != null) {
+      senkouA[i] = (tenkan[srcIdx] + kijun[srcIdx]) / 2;
     }
-    const v = midHL(rawData, i, SENKOU_B);
-    if (v != null) senkouB[outIdx] = v;
+    const v = midHL(rawData, srcIdx, SENKOU_B);
+    if (v != null) senkouB[i] = v;
   }
   return { senkouA, senkouB };
 }
@@ -240,55 +249,25 @@ export class IchimokuCustomSeries {
 }
 
 /**
- * BusinessDay {year, month, day} 좌표를 day 만큼 forward shift.
- * 한국 주말 (Sat/Sun) skip. 공휴일 정확한 calc는 Phase 7d-2 후행, 본 Phase 7d-1 P0는 주말만 skip.
+ * helper: 캔들 data {time, open, high, low, close} 배열 → ichimoku series data 배열 (senkouA/B만, backward source).
  *
- * @param {{year, month, day}} bd — start BusinessDay 좌표
- * @param {number} days — forward shift 영업일 수
- * @returns {{year, month, day}} — shifted BusinessDay
- */
-function addBusinessDays(bd, days) {
-  let d = new Date(Date.UTC(bd.year, bd.month - 1, bd.day));
-  let added = 0;
-  while (added < days) {
-    d = new Date(d.getTime() + 86400000); // +1 day
-    const dow = d.getUTCDay();
-    if (dow !== 0 && dow !== 6) added += 1; // skip Sun/Sat
-  }
-  return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() };
-}
-
-/**
- * helper: 캔들 data {time, open, high, low, close} 배열 → ichimoku series data 배열 (senkouA/B만, forward shift +SHIFT).
+ * P0-9 Fix-20: 영웅문 정합 본질. 미래 placeholder 폐기 (영웅문 본문 cloud 미래 영역 부재 visible 정합).
  *
- * 출력 length = N + SHIFT (미래 26 영업일 placeholder 포함).
- *   - i ∈ [0, N-1]: time = candles[i].time, senkouA/B = forward shift source (i-SHIFT 시점 데이터)
- *   - i ∈ [N, N+SHIFT-1]: time = forward shift 미래 좌표, senkouA/B = (i-SHIFT) 시점 데이터
+ * 출력 length = N (미래 확장 없음).
+ *   - i ∈ [0, N-1]: time = candles[i].time, senkouA/B = backward source (i-SHIFT 시점 데이터)
+ *   - i < SHIFT: senkouA/B = null (backward source 부재 = 영웅문 본문 차트 좌측 cloud 부재 visible 정합)
  */
 export function buildIchimokuData(candles) {
   if (!Array.isArray(candles) || candles.length < TENKAN) return [];
   const N = candles.length;
   const { senkouA, senkouB } = calculateIchimoku(candles);
-  const outLen = N + SHIFT;
-  const out = new Array(outLen);
+  const out = new Array(N);
 
-  // 본 시점 N 개 (candle time 본문 정합)
   for (let i = 0; i < N; i++) {
     out[i] = {
       time: candles[i].time,
       senkouA: senkouA[i],
       senkouB: senkouB[i],
-    };
-  }
-
-  // 미래 SHIFT 개 (영업일 forward shift 좌표 추가)
-  const lastTime = candles[N - 1].time;
-  for (let k = 0; k < SHIFT; k++) {
-    const futureTime = addBusinessDays(lastTime, k + 1);
-    out[N + k] = {
-      time: futureTime,
-      senkouA: senkouA[N + k],
-      senkouB: senkouB[N + k],
     };
   }
   return out;

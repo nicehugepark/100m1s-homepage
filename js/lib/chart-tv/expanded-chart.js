@@ -341,14 +341,16 @@ function renderChartTV(container, dailyArr, options = {}) {
       timeVisible: false,
       secondsVisible: false,
     },
-    // P0-7 fix-2 (2026-05-21 10:55 KST 대표 verbatim "우측 주가가 잘려서 보이지 않는다"):
-    //   rightPriceScale scaleMargins + minimumWidth 본질 정합 — 가격 라벨 본문 잘림 회피.
+    // P0-9 Fix-25 (2026-05-21 11:34 KST 대표 verbatim "여전히 너무 우측이라 주가든 지표값이든 다 잘린다"):
+    //   영웅문 reference 23a74560 직접 read evidence — 우측 priceScale 본문 폭 = 약 70~80px 본문 visible
+    //   (가격 라벨 727,000 / 657,680 / 612,923 / 592,000 / 498,846 / 384,769 / 270,692 본문 7개 본문 자릿수 6+ 본문)
+    //   P0-7 fix-2 minimumWidth 60px 본문 잔존 잘림 본문 → 80px 본문 확대 + scaleMargins 본문 정합
     //   v5 PriceScaleOptions: scaleMargins {top, bottom} + minimumWidth (px) + visible:true 본문.
     rightPriceScale: {
       borderColor: 'rgba(0,0,0,0.12)',
       visible: true,
-      scaleMargins: { top: 0.1, bottom: 0.1 },
-      minimumWidth: 60,
+      scaleMargins: { top: 0.15, bottom: 0.15 },  // P0-9 Fix-25: 0.1 → 0.15 본문 본문 위/아래 여백 확대
+      minimumWidth: 80,                            // P0-9 Fix-25: 60 → 80 본문 확대 (영웅문 본문 6자리+ 가격 라벨 정합)
     },
     handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
     handleScale: { axisPressedMouseMove: true, mouseWheel: true, pinch: true },
@@ -569,21 +571,29 @@ function renderChartTV(container, dailyArr, options = {}) {
     return { golden, dead };
   }
 
+  // P0-9 Fix-22 (2026-05-21 11:34 KST 대표 verbatim "잘 했는데 보조지표의 이름을 영웅문 이미지와 동일한 위치로 해줘"):
+  //   영웅문 reference 23a74560 직접 read evidence:
+  //   - MACD sub-pane 좌측 상단 본문 visible verbatim = "MACD Oscillator 12,26,9 MACD 시그널" 본문 한 줄 (single line)
+  //   - 기존 분리 title ('MACD Oscillator 12,26,9' / 'MACD 시그널 9') → 통합 title 본문 정합
+  //   - line series title = 'MACD Oscillator 12,26,9 MACD 시그널' (한 줄 통합 본문)
+  //   - signal series title = '' (영웅문 본문 단일 row title 본문 정합, signal title 제거)
+  // P0-9 Fix-23 (2026-05-21 11:34 KST 대표 verbatim "영웅문에 없는 정보는 굳이 보여주지 않아도 괜찮아"):
+  //   - Hist series title 'Hist' → '' 본문 (영웅문 본문 부재 정보)
   function addMACD() {
     if (layers.macd) return;
     const m = computeMACD(data);
     if (m.line.length === 0) return;
     try {
       const line = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'MACD Oscillator 12,26,9',
+        color: '#0064FF', lineWidth: 1, title: 'MACD Oscillator 12,26,9 MACD 시그널',  // P0-9 Fix-22: 영웅문 통합 본문
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const signal = chart.addSeries(LineSeries, {
-        color: '#4D8EFF', lineWidth: 1, title: 'MACD 시그널 9',
+        color: '#4D8EFF', lineWidth: 1, title: '',  // P0-9 Fix-22: signal title 제거 (영웅문 본문 단일 row 정합)
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const hist = chart.addSeries(HistogramSeries, {
-        title: 'Hist',
+        title: '',                                   // P0-9 Fix-23: 영웅문 본문 부재 정보 제거
         priceFormat: { type: 'volume' },
       }, 2);
       line.setData(m.line);
@@ -635,6 +645,15 @@ function renderChartTV(container, dailyArr, options = {}) {
   //   - period 14 — 기존 정합 유지
   //   - title 영웅문 verbatim 유지 'RSI 14 시그널 9'
   //   - §11.15 외부 spec 사전 검증 PASS (TradingView v5 PriceScaleOptions invertScale:bool, default:false)
+  // P0-9 Fix-24 (2026-05-21 11:34 KST 대표 verbatim "라인이 2개로 보이는건 좋아.
+  //   그런데 다른 정보들을 라벨로 뽑은건 잘못했어"):
+  //   영웅문 reference 23a74560 직접 read evidence:
+  //   - RSI sub-pane 라벨 = "RSI 14 시그널 9" 단일 본문 (한 줄 통합 본문)
+  //   - 기존 분리 title ('RSI 14' / '시그널 9') → 통합 title 본문 정합
+  //   - line series title = 'RSI 14 시그널 9' (영웅문 본문 한 줄 정합)
+  //   - signal series title = '' (영웅문 본문 단일 row title 정합)
+  // P0-9 Fix-23 (2026-05-21 11:34 KST 대표 verbatim "영웅문에 없는 정보는 굳이 보여주지 않아도 괜찮아"):
+  //   - priceLine title '과열 30' / '침체 30' → '' 본문 (영웅문 본문 priceLine title 부재)
   function addRSI() {
     if (layers.rsi) return;
     const rsiData = computeRSI(data, 14);
@@ -642,13 +661,13 @@ function renderChartTV(container, dailyArr, options = {}) {
     try {
       // RSI 메인 라인 (period 14)
       layers.rsi = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'RSI 14',
+        color: '#0064FF', lineWidth: 1, title: 'RSI 14 시그널 9',  // P0-9 Fix-24: 영웅문 통합 본문
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
-      // P0-7 fix-9: 양 임계값 30 본질 (invertScale 본문 정합 침체 30 위 + 과열 30 아래 본질)
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '과열 30' });
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '침체 30' });
+      // P0-9 Fix-23: priceLine title 제거 (영웅문 본문 부재 정보, 임계값 30 line 본문만 visible 본문)
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '' });
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '' });
 
       // P0-7 fix-9: signal 9 line 본문 신축 — SMA(9) of RSI series
       const signalData = [];
@@ -662,7 +681,7 @@ function renderChartTV(container, dailyArr, options = {}) {
       }
       if (signalData.length > 0) {
         layers.rsiSignal = chart.addSeries(LineSeries, {
-          color: '#FFA726', lineWidth: 1, title: '시그널 9',
+          color: '#FFA726', lineWidth: 1, title: '',  // P0-9 Fix-24: signal title 제거 (영웅문 본문 단일 row 정합)
           priceLineVisible: false, lastValueVisible: false,
         }, 3);
         layers.rsiSignal.setData(signalData);
@@ -774,17 +793,17 @@ function renderChartTV(container, dailyArr, options = {}) {
   });
 
   // timeScale — lead 옵션 A-3 채택 #5 (대표 verbatim 09:08 KST (a) "가장 최근 날짜로 포커싱이 안되는게 문제")
-  // 정합 본질: 전체 240영업일 fitContent 후 setVisibleLogicalRange로 최근 ~50 영업일 + 일목 미래 26 영업일 영역 visible.
-  // (영웅문 정합 약 03/31 ~ 05/21 + 미래 cloud forward shift 영역)
+  // P0-9 Fix-20: 일목 backward source 본질 정정 cascade — 미래 cloud 영역 폐기 (영웅문 정합).
+  // 정합 본질: 전체 240영업일 fitContent 후 setVisibleLogicalRange로 최근 ~50 영업일 visible.
+  // (영웅문 정합 약 03/31 ~ 05/21, 미래 영역 부재)
   try {
     chart.timeScale().fitContent();
-    // 일목 forward shift +26 미래 영역 포함 + 최근 ~50 영업일 visible 본질
+    // P0-9 Fix-20: 미래 cloud 영역 제거, 최근 ~50 영업일만 visible 본질
     const N = data.length;
     if (N > 0) {
       const VISIBLE_RECENT = 50;       // 최근 영업일 (영웅문 정합 약 39 + 여유분)
-      const FUTURE_CLOUD = 26;          // 일목 forward shift cloud 영역
       const fromIdx = Math.max(0, N - VISIBLE_RECENT);
-      const toIdx = N - 1 + FUTURE_CLOUD;
+      const toIdx = N - 1;
       chart.timeScale().setVisibleLogicalRange({ from: fromIdx, to: toIdx });
     }
   } catch (err) { /* noop */ }
