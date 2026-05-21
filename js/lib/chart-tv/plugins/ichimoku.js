@@ -37,14 +37,27 @@ const KIJUN = 26;
 const SENKOU_B = 52;
 const SHIFT = 26;
 
+// P0-10 Fix-27 (2026-05-21 12:17 KST 대표 verbatim
+//   "일목균형표가 여전히 문제를 일으키고 있고"):
+//   영웅문 reference 23a74560 직접 read evidence (cross-check):
+//   - 영웅문 본문 cloud (Kumo) 본문 = 매우 subtle 본문 visible (opacity 본문 약 0.04~0.06 본문)
+//   - 라이브 image #8 본문 cloud = 너무 진함 (opacity 0.10~0.12 본문 → chart 본문 본질 가림)
+//   - root cause 진단 본질 = cloud opacity 본문 너무 높음 (영웅문 본문 mismatch)
+//   - 정합 본질: cloud opacity 본문 0.12/0.10 → 0.05/0.04 본문 본질 영웅문 정합 (subtle visible 정합)
+//   - 추가 본질: stroke lineWidth 0.8 → 0.5 본문 본질 (영웅문 본문 선행스팬 본문 더 얇음 visible 정합)
+//
+//   §16 self-catch:
+//   - backward source 본문 (P0-9 Fix-20) 본문 유지 — cloud 본문 i 좌표 plot 본문 정합
+//   - opacity 본문 0.05 본문 = chart 본문 본질 가림 본문 회피 + 영웅문 본문 subtle visible 정합 양 축 PASS
 const DEFAULT_OPTIONS = {
   // 선행스팬 stroke (보존)
   spanAColor: '#D4A857',      // 햇살 톤 dashed
   spanBColor: '#FBE9B5',      // 햇살 톤 dashed
-  spanLineWidth: 0.8,
+  spanLineWidth: 0.5,         // P0-10 Fix-27: 0.8 → 0.5 본문 (영웅문 본문 얇은 stroke 정합)
   // 구름대 fill (한국 증시 양봉/음봉 정합)
-  cloudUpColor: 'rgba(197,57,57,0.12)',
-  cloudDownColor: 'rgba(25,88,199,0.10)',
+  // P0-10 Fix-27: opacity 본문 0.12/0.10 → 0.05/0.04 본문 (영웅문 subtle visible 정합)
+  cloudUpColor: 'rgba(197,57,57,0.05)',
+  cloudDownColor: 'rgba(25,88,199,0.04)',
   lastValueVisible: false,
   priceLineVisible: false,
 };
