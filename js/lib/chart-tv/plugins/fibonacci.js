@@ -155,11 +155,51 @@ class FibonacciDrawingController {
     this._crosshairHandler = (param) => this._onCrosshairMove(param);
     this._chart.subscribeCrosshairMove(this._crosshairHandler);
 
-    // 초기 render (localStorage 복원 시)
+    // P0-16 Fix-51 (2026-05-21 14:57 KST 대표 verbatim "피보나치 이어서 계속 해줘 화면에 표시되지도 않아"):
+    //   root cause = drawing tool 본질 사용자 2회 클릭 의무 → 화면 visible 0건 (anchor A/B 미설정 본질)
+    //   fix = anchor A/B 미설정 시 candles 본문 최근 가시 영역 hi/lo 본문 auto-anchor 본질
+    //         → 차트 진입 즉시 7 fibonacci level 본문 visible (대표 verbatim "이어서 계속" 본질 정합)
+    //         → 사용자 후속 drag 본문 정밀 조정 가능 (paradigm 보존)
+    if (!this._state.anchorA || !this._state.anchorB) {
+      const auto = this._autoAnchorFromVisibleRange();
+      if (auto) {
+        this._state.anchorA = auto.high;
+        this._state.anchorB = auto.low;
+        this._saveState();
+      }
+    }
+
+    // 초기 render (localStorage 복원 또는 auto-anchor 본문)
     if (this._state.anchorA && this._state.anchorB) {
       this._renderLevels();
       this._renderHandles();
     }
+  }
+
+  /**
+   * P0-16 Fix-51 auto-anchor 본문 — candles 본문 최근 50 영업일 본문 hi/lo 본문 자동 추출.
+   * 영웅문 23a74560 본문 본질 정합 (727,000 high / 286,000 low 본문 swing 본질 본문).
+   *
+   * @returns {{high: {time, price, candleIdx}, low: {time, price, candleIdx}} | null}
+   */
+  _autoAnchorFromVisibleRange() {
+    if (!Array.isArray(this._candles) || this._candles.length < 2) return null;
+    const RECENT_N = 50;  // 영웅문 본문 visible 영역 본문 정합
+    const N = this._candles.length;
+    const from = Math.max(0, N - RECENT_N);
+    let hi = -Infinity, lo = Infinity;
+    let hiIdx = -1, loIdx = -1;
+    for (let i = from; i < N; i++) {
+      const c = this._candles[i];
+      if (!c || !(c.high > 0) || !(c.low > 0)) continue;
+      if (c.high > hi) { hi = c.high; hiIdx = i; }
+      if (c.low < lo) { lo = c.low; loIdx = i; }
+    }
+    if (hiIdx < 0 || loIdx < 0) return null;
+    return {
+      high: { time: this._candles[hiIdx].time, price: hi, candleIdx: hiIdx },
+      low: { time: this._candles[loIdx].time, price: lo, candleIdx: loIdx },
+    };
   }
 
   /**
