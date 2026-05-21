@@ -70,14 +70,34 @@ const LEVELS = [
 //     - line color/lineStyle/lineWidth 본문은 그대로 → 가로선 본문 visible 보존
 //
 // P0-18 Fix-58 (2026-05-21 16:03 KST 대표 verbatim "피보나치 선 마다 좌측에 작은 글씨로 가격을 표사해주고"):
-//   - createPriceLine title 본문 = 가격 string (정수 + ko-KR locale 본문) 본질 신축
-//   - axisLabelVisible: false 유지 (우측 priceScale 가격값 부재 — Fix-55 보존)
-//   - 영웅문 23a74560 reference 본문: 좌측 본문 '727,000 (1.000)' / '643,928 (0.764)' 등 visible
-//   - 본 시스템 본문 = 가격만 본문 (비율 부재, 대표 verbatim "작은 글씨로 가격" 정합)
-//   - title font 본문 = priceLine native rendering 본문 (chart layout.fontSize 본문 영향)
+//   1차 시도 — createPriceLine title 본문 = 가격 string. §16 self-catch (P0-18 Playwright audit):
+//   TradingView v5 PriceLineOptions.title 본문 visibility = axisLabelVisible:true 종속 본질
+//   → axisLabelVisible:false (Fix-55) + title:formatPriceLabel 본문 동시 설정 = title visible 0건 결정적 paradigm 충돌.
+//
+// P0-19 Fix-63 (2026-05-21 16:35 KST P0-18 Fix-58 paradigm 충돌 cascade 정합, 대표 verbatim
+//   "피보나치 선 마다 좌측에 작은 글씨로 가격을 표사해주고" 16:03 KST):
+//   - createPriceLine title 본문 = '' (빈 string) 복원 — Fix-55 axisLabelVisible:false 보존
+//   - 좌측 본문 가격 라벨 = HTML overlay DOM 본문 신축 (P0-17 Fix-52 sub-pane title 좌측 본문 동형 paradigm)
+//     · 각 fib level별 absolute-positioned <div> 본문 chart container 위 직접 신축
+//     · left: 8px (영웅문 23a74560 본문 좌측 본문 정합)
+//     · top: series.priceToCoordinate(price) — y좌표 실시간 계산 본문
+//     · font-size: 10px (대표 verbatim "작은 글씨" 정합)
+//     · text: formatPriceLabel(price) — ko-KR locale 본문 정수 (예: '727,000')
+//     · pointer-events: none (chart click/drag 본문 통과)
+//   - ResizeObserver 본문 chart resize 시점 재측정 (P0-17 Fix-52 동형)
+//   - timeScale.subscribeVisibleLogicalRangeChange 본문 zoom/scroll 시점 재측정 (priceToCoordinate y 좌표 변화)
 //   §11.15 외부 spec 사전 검증 PASS:
-//     - PriceLineOptions.title (string) — "Price line's on the chart pane" 본문 chart 좌측 본문 visible
-//     - WebFetch corroborate: https://tradingview.github.io/lightweight-charts/docs/api/interfaces/PriceLineOptions
+//     - ISeriesApi.priceToCoordinate(price) → Coordinate | null — chart pane 본문 y좌표 반환
+//     - ITimeScaleApi.subscribeVisibleLogicalRangeChange(handler) — pan/zoom 시점 callback
+//     - WebSearch 2회 corroborating (TradingView Lightweight Charts v5 priceToCoordinate + subscribeVisibleLogicalRangeChange)
+//     - repo verbatim: js/lib/chart-tv/plugins/volume-by-decile.js L129~131 + L195 (priceToCoordinate + subscribe 동형 패턴)
+//     - repo verbatim: js/lib/chart-tv/expanded-chart.js L1019~1038 (label className+absolute overlay 동형 패턴 sub-pane title Fix-52)
+//   §16 self-catch (P0-19):
+//     - HTML overlay z-index: 10 본문 (sub-pane title Fix-52 동형) → drag handle (z-index:100) 본문 침범 부재
+//     - priceToCoordinate null fallback (price 가시 영역 외부 본문) → label 본문 display:none silent skip
+//     - destroy cleanup 본문 overlay <div> + ResizeObserver + subscribeVisibleLogicalRangeChange unsubscribe 의무
+//     - ResizeObserver race condition: observe target 본문 chartContainer (main DOM) — chart.applyOptions resize cascade 본질 동기 PASS
+//     - subscribeVisibleLogicalRangeChange handler 본문 _renderOverlayLabels() 즉시 호출 (debounce 부재 — handler 본문 가벼움 본질)
 const DEFAULT_OPTIONS = {
   magnetWindow: 5,        // ±N 영업일 자석 detection window
   lineStyle: LineStyle.Dotted,
@@ -182,6 +202,9 @@ class FibonacciDrawingController {
     // 현재 drag 대상 ('A' | 'B' | null)
     this._dragging = null;
 
+    // P0-19 Fix-63: HTML overlay 좌측 가격 라벨 본문 (LEVELS.length 개수 본문 array)
+    this._overlayLabels = [];
+
     // subscribeClick handler ref (detach 시 unsubscribe 의무)
     this._clickHandler = (param) => this._onClick(param);
     this._chart.subscribeClick(this._clickHandler);
@@ -189,6 +212,30 @@ class FibonacciDrawingController {
     // crosshair move handler (drag 중 실시간 갱신 본질)
     this._crosshairHandler = (param) => this._onCrosshairMove(param);
     this._chart.subscribeCrosshairMove(this._crosshairHandler);
+
+    // P0-19 Fix-63: timeScale visible logical range change handler — chart zoom/scroll 시점
+    //   priceToCoordinate y좌표 변화 본문 overlay label 본문 재측정 의무 (volume-by-decile.js 동형)
+    this._rangeHandler = () => this._renderOverlayLabels();
+    try {
+      this._chart.timeScale().subscribeVisibleLogicalRangeChange(this._rangeHandler);
+    } catch (e) { /* noop fallback */ }
+
+    // P0-19 Fix-63: ResizeObserver — chart container resize 시점 (expanded-chart.js Fix-52 동형)
+    //   chart.applyOptions resize cascade → priceToCoordinate y좌표 변화 본문 재측정 의무
+    this._resizeObserver = null;
+    if (this._container && typeof ResizeObserver === 'function') {
+      try {
+        this._resizeObserver = new ResizeObserver(() => {
+          // requestAnimationFrame 본문 = layout 본문 완료 후 호출 본질 (Fix-52 동형)
+          if (typeof requestAnimationFrame === 'function') {
+            requestAnimationFrame(() => this._renderOverlayLabels());
+          } else {
+            this._renderOverlayLabels();
+          }
+        });
+        this._resizeObserver.observe(this._container);
+      } catch (e) { /* noop */ }
+    }
 
     // P0-16 Fix-51 (2026-05-21 14:57 KST 대표 verbatim "피보나치 이어서 계속 해줘 화면에 표시되지도 않아"):
     //   root cause = drawing tool 본질 사용자 2회 클릭 의무 → 화면 visible 0건 (anchor A/B 미설정 본질)
@@ -352,16 +399,18 @@ class FibonacciDrawingController {
           lineStyle: this._options.lineStyle,
           lineWidth: this._options.lineWidth,
           axisLabelVisible: this._options.axisLabelVisible,
-          // P0-18 Fix-58 (2026-05-21 16:03 KST 대표 verbatim "피보나치 선 마다 좌측에 작은 글씨로 가격을 표사해주고"):
-          //   title 본문 = formatPriceLabel(price) — 정수 + ko-KR locale 본문 (예: '98,400')
-          //   axisLabelVisible: false 유지 (Fix-55 보존, 우측 priceScale 가격값 부재)
-          //   title 본문 = priceLine 본문 chart 좌측 pane 본문 visible (TradingView v5 native rendering)
-          //   영웅문 23a74560 reference 본문 좌측 가격 라벨 본질 정합
-          title: formatPriceLabel(price),
+          // P0-19 Fix-63 (2026-05-21 16:35 KST P0-18 Fix-58 paradigm 충돌 cascade 정합):
+          //   title 본문 = '' (빈 string) 복원 — Fix-55 axisLabelVisible:false 보존
+          //   좌측 가격 라벨 본문은 HTML overlay div 본문 신축 본질 (this._renderOverlayLabels())
+          //   v5 PriceLineOptions.title visibility = axisLabelVisible:true 종속 본질 paradigm 충돌 회피
+          title: '',
         });
         this._priceLines.push(line);
       } catch (e) { /* noop */ }
     });
+
+    // P0-19 Fix-63: HTML overlay 본문 좌측 가격 라벨 render 본질 cascade
+    this._renderOverlayLabels();
   }
 
   _clearPriceLines() {
@@ -369,6 +418,99 @@ class FibonacciDrawingController {
       try { this._series.removePriceLine(line); } catch (e) { /* noop */ }
     });
     this._priceLines = [];
+  }
+
+  /**
+   * P0-19 Fix-63 — HTML overlay 본문 좌측 가격 라벨 render 본질 (LEVELS.length 본문 div 본문).
+   *
+   * 본질:
+   *   - LEVELS 본문 각 ratio별 price 계산 (anchorB + (anchorA - anchorB) * ratio)
+   *   - left: 8px (영웅문 23a74560 본문 좌측 본문 정합)
+   *   - top: series.priceToCoordinate(price) — chart pane 본문 y좌표 실시간 계산
+   *   - text: formatPriceLabel(price) — ko-KR locale 본문 정수 (예: '727,000')
+   *   - font-size: 10px (대표 verbatim "작은 글씨" 정합)
+   *   - pointer-events: none (chart click/drag 본문 통과)
+   *   - z-index: 10 (drag handle z-index:100 본문 침범 부재)
+   *
+   * §16 self-catch:
+   *   - priceToCoordinate null fallback (price 가시 영역 외부) → label display:none silent skip
+   *   - chart container 본문 position:relative 본문 절대 좌표 본질 (Fix-52 동형 main.style.position='relative')
+   *
+   * 본문 호출 시점:
+   *   - _renderLevels() 내부 cascade (anchor 변경 시점)
+   *   - _rangeHandler (zoom/scroll 시점)
+   *   - ResizeObserver callback (chart resize 시점)
+   */
+  _renderOverlayLabels() {
+    if (!this._container) return;
+    if (!this._state.anchorA || !this._state.anchorB) {
+      // anchor 미설정 시 모든 overlay label hide
+      this._overlayLabels.forEach((el) => { if (el) el.style.display = 'none'; });
+      return;
+    }
+
+    const a = this._state.anchorA.price;
+    const b = this._state.anchorB.price;
+    if (a == null || b == null) return;
+
+    // 필요시 overlay div 본문 lazy create (LEVELS.length 본문 개수 보장)
+    if (this._overlayLabels.length < LEVELS.length) {
+      // chart container 본문 position:relative 보장 (Fix-52 동형, sub-pane title 본문 main.style.position='relative' 호출 후 본 hook 호출 가능)
+      try {
+        const computedPos = window.getComputedStyle(this._container).position;
+        if (computedPos === 'static') {
+          this._container.style.position = 'relative';
+        }
+      } catch (e) { /* noop */ }
+
+      for (let i = this._overlayLabels.length; i < LEVELS.length; i++) {
+        const label = document.createElement('div');
+        label.className = 'cal-chart-tv-fib-price-label';
+        label.dataset.fibIdx = String(i);
+        label.style.cssText = [
+          'position: absolute',
+          'left: 8px',
+          'top: 0',
+          'font-size: 10px',
+          'font-weight: 600',
+          'color: rgba(0,0,0,0.7)',
+          'pointer-events: none',
+          'z-index: 10',
+          'display: none',
+          'background: rgba(255,255,255,0.65)',
+          'padding: 1px 4px',
+          'border-radius: 2px',
+          'transform: translateY(-50%)',  // y좌표 = 가로선 중앙 정합 본질 (top:y → label 본문 중앙)
+          'white-space: nowrap',
+        ].join(';');
+        this._container.appendChild(label);
+        this._overlayLabels.push(label);
+      }
+    }
+
+    // 각 LEVELS 본문 price 계산 + label 본문 position
+    LEVELS.forEach((lv, i) => {
+      const price = b + (a - b) * lv.ratio;
+      const label = this._overlayLabels[i];
+      if (!label) return;
+      let y = null;
+      try { y = this._series.priceToCoordinate(price); } catch (e) { /* noop */ }
+      if (y == null || !isFinite(y)) {
+        label.style.display = 'none';
+        return;
+      }
+      label.style.display = 'block';
+      label.style.top = `${y}px`;
+      label.textContent = formatPriceLabel(price);
+    });
+  }
+
+  _clearOverlayLabels() {
+    this._overlayLabels.forEach((el) => {
+      if (!el) return;
+      try { el.remove(); } catch (e) { /* noop */ }
+    });
+    this._overlayLabels = [];
   }
 
   /**
@@ -467,6 +609,8 @@ class FibonacciDrawingController {
     this._state = { anchorA: null, anchorB: null };
     this._saveState();
     this._clearPriceLines();
+    // P0-19 Fix-63: overlay label 본문 hide (clear 본질은 destroy 시점만)
+    this._overlayLabels.forEach((el) => { if (el) el.style.display = 'none'; });
     if (this._handleA) this._handleA.style.display = 'none';
     if (this._handleB) this._handleB.style.display = 'none';
   }
@@ -477,7 +621,18 @@ class FibonacciDrawingController {
   destroy() {
     try { this._chart.unsubscribeClick(this._clickHandler); } catch (e) { /* noop */ }
     try { this._chart.unsubscribeCrosshairMove(this._crosshairHandler); } catch (e) { /* noop */ }
+    // P0-19 Fix-63: timeScale subscribeVisibleLogicalRangeChange unsubscribe 의무
+    try {
+      this._chart.timeScale().unsubscribeVisibleLogicalRangeChange(this._rangeHandler);
+    } catch (e) { /* noop */ }
+    // P0-19 Fix-63: ResizeObserver disconnect 의무
+    try {
+      if (this._resizeObserver) this._resizeObserver.disconnect();
+    } catch (e) { /* noop */ }
+    this._resizeObserver = null;
     this._clearPriceLines();
+    // P0-19 Fix-63: overlay label DOM 본문 제거 의무
+    this._clearOverlayLabels();
     [this._handleA, this._handleB].forEach((el) => {
       if (!el) return;
       try { if (typeof el._cleanup === 'function') el._cleanup(); } catch (e) { /* noop */ }
