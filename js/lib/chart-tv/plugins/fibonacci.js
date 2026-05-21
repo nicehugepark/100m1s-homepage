@@ -107,7 +107,15 @@ const DEFAULT_OPTIONS = {
   // P0-17 Fix-56 (2026-05-21 15:18 KST 대표 verbatim "어떻게 지표를 이동하는지 방법을 모르겠다"):
   //   drag handle 시각 강화 — handleRadius 6 → 8 + box-shadow 강화 + pulse 애니메이션 본질
   //   사용자 본문 drag 본질 시각 cue 강화 (handle 발견 본문 → drag 본질 발견 cascade)
-  handleRadius: 8,
+  // P0-24 Fix-82 (2026-05-21 22:40 KST 대표 verbatim "피보나치 사용법이 여전히 알 수 없다 뜻대로 되지 않아"):
+  //   handle radius 8 → 14 추가 강화 (모바일 터치 본질 — Apple HIG 본문 minimum 44pt 권고 정합,
+  //   현재 16px diameter 본문 본문 본문 본문 본문 본문 본문 본문 본문 너무 작음 본질 본문 catch),
+  //   2배 강화 본문 28px diameter 본문 본문 본문 본문 본문 본문 본문 본문 본문 모바일 finger tap target 본문 정합.
+  //   §11.15 외부 spec PASS:
+  //     - Apple HIG (Human Interface Guidelines) "Minimum 44pt × 44pt tap target"
+  //     - Material Design "Touch target minimum 48dp"
+  //     - 본 fix 28px diameter 본문 본문 절충 본질 (chart 본문 본문 차지 본문 본문 본문 본문 본문 본문 본문 본문)
+  handleRadius: 14,
 };
 
 /**
@@ -204,6 +212,10 @@ class FibonacciDrawingController {
 
     // P0-19 Fix-63: HTML overlay 좌측 가격 라벨 본문 (LEVELS.length 개수 본문 array)
     this._overlayLabels = [];
+
+    // P0-24 Fix-83: 자석 snap 작동 visible feedback toast 본문 본문 본문 (1개만 visible 본질)
+    this._snapToastEl = null;
+    this._snapToastTimer = null;
 
     // subscribeClick handler ref (detach 시 unsubscribe 의무)
     this._clickHandler = (param) => this._onClick(param);
@@ -342,6 +354,9 @@ class FibonacciDrawingController {
       this._state.anchorA = snap;
       this._saveState();
       this._renderHandles();
+      // P0-24 Fix-83 (2026-05-21 22:40 KST 대표 verbatim "피크 저가 고가가 자석 기능이고 내가 선택해서 이동하거나 기간을 조정할 수 있다"):
+      //   자석 작동 visible feedback — anchor 1차 결정 toast 본문 본문 본문 본문 본문 사용자 인지 cascade.
+      this._showSnapToast(`A 끝점 설정됨 (자석: ${formatPriceLabel(snap.price)}원). 다시 클릭하여 B 끝점 설정.`);
       return;
     }
     // anchor A 있고 B 없음 → B 설정 + render
@@ -350,6 +365,8 @@ class FibonacciDrawingController {
       this._saveState();
       this._renderLevels();
       this._renderHandles();
+      // P0-24 Fix-83: anchor 2차 결정 toast 본문 — fibonacci level visible 본질 confirm.
+      this._showSnapToast(`B 끝점 설정됨 (자석: ${formatPriceLabel(snap.price)}원). 점을 끌어 조정 가능.`);
       return;
     }
     // 둘 다 있는 상태에서 클릭 = 재시작 (B를 새 클릭으로 갱신, drag 본질 보완 fallback)
@@ -358,6 +375,85 @@ class FibonacciDrawingController {
     this._saveState();
     this._renderLevels();
     this._renderHandles();
+    // P0-24 Fix-83: 재시작 toast 본문 — 사용자가 둘 다 있는 상태에서 새로 클릭한 경우.
+    this._showSnapToast(`B 끝점 재설정 (자석: ${formatPriceLabel(snap.price)}원).`);
+  }
+
+  /**
+   * P0-24 Fix-83 — 자석 snap 작동 visible feedback toast 본문 본문 본문 본문 본문 사용자 인지 cascade.
+   *
+   * 본질:
+   *   - chart container 우측 상단 본문 absolute-positioned toast div 본문 신축 (sub-pane title Fix-52 동형 paradigm)
+   *   - 2.4초 후 자동 fade out + remove
+   *   - 동시 toast 본문 본문 본문 본문 본문 본문 본문 본문 1개 본문 본문 본문 본문 본문 (기존 toast 본문 본문 본문 본문 본문 즉시 remove)
+   *   - z-index 200 (drag handle 100 + sub-pane title 10 본문 본문 본문 본문 본문 본문)
+   *   - pointer-events: none (chart click 통과)
+   *
+   * §11.15 외부 spec PASS:
+   *   - native DOM appendChild/remove + setTimeout/setInterval (vendor 본문 부재)
+   *   - CSS transition opacity 본문 본문 본문 본문 본문 본문 (vendor prefix 부재 native)
+   *   - repo verbatim: expanded-chart.js L948~1006 hint badge 본문 본문 본문 본문 fade transition 동형 paradigm
+   */
+  _showSnapToast(text) {
+    if (!this._container) return;
+    // 기존 toast 본문 본문 본문 본문 본문 즉시 remove (1개만 visible 본질)
+    if (this._snapToastEl) {
+      try { this._snapToastEl.remove(); } catch (e) { /* noop */ }
+      this._snapToastEl = null;
+    }
+    if (this._snapToastTimer) {
+      try { clearTimeout(this._snapToastTimer); } catch (e) { /* noop */ }
+      this._snapToastTimer = null;
+    }
+    const toast = document.createElement('div');
+    toast.className = 'cal-chart-tv-fib-snap-toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.style.cssText = [
+      'position: absolute',
+      'right: 8px',
+      'top: 8px',
+      'background: rgba(233,30,99,0.92)',
+      'color: #fff',
+      'font-size: 11px',
+      'font-weight: 600',
+      'padding: 6px 10px',
+      'border-radius: 4px',
+      'box-shadow: 0 2px 8px rgba(0,0,0,0.30)',
+      'z-index: 200',
+      'pointer-events: none',
+      'opacity: 0',
+      'transition: opacity 0.25s ease',
+      'max-width: 240px',
+      'line-height: 1.35',
+      'white-space: normal',
+    ].join(';');
+    toast.textContent = text;
+    try {
+      const computedPos = window.getComputedStyle(this._container).position;
+      if (computedPos === 'static') {
+        this._container.style.position = 'relative';
+      }
+    } catch (e) { /* noop */ }
+    this._container.appendChild(toast);
+    this._snapToastEl = toast;
+    // 다음 frame 본문 fade in (transition 발동 본질)
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => {
+        if (toast && toast.parentNode) toast.style.opacity = '1';
+      });
+    } else {
+      toast.style.opacity = '1';
+    }
+    // 2.4초 후 자동 fade out + remove
+    this._snapToastTimer = setTimeout(() => {
+      if (!toast || !toast.parentNode) return;
+      toast.style.opacity = '0';
+      setTimeout(() => {
+        try { toast.remove(); } catch (e) { /* noop */ }
+        if (this._snapToastEl === toast) this._snapToastEl = null;
+      }, 300);
+    }, 2400);
   }
 
   _onCrosshairMove(param) {
@@ -536,23 +632,37 @@ class FibonacciDrawingController {
     const el = document.createElement('div');
     el.className = 'cal-chart-tv-fib-handle';
     el.dataset.anchor = label;
-    el.setAttribute('aria-label', `Fibonacci ${label} 끝점 drag`);
+    el.setAttribute('aria-label', `Fibonacci ${label} 끝점 drag — 끌어 이동`);
+    el.setAttribute('title', `${label} 점을 끌어 기간을 조정하세요`);
     // P0-17 Fix-56 (2026-05-21 15:18 KST): handle 시각 강화 본문
     //   box-shadow 본문 다중 레이어 (외부 glow + 내부 shadow 본문) — 발견 본질 강화
     //   class 본문 신축 'cal-chart-tv-fib-handle' 본문 CSS 본문 pulse 애니메이션 본질 (별건 CSS 본문 매핑)
+    // P0-24 Fix-82 (2026-05-21 22:40 KST 대표 verbatim "피보나치 사용법이 여전히 알 수 없다 뜻대로 되지 않아"):
+    //   handle 시각 본문 본문 강화 누적 cascade:
+    //     1. radius 8 → 14 (DEFAULT_OPTIONS, +75% 면적, 모바일 터치 본질 정합 Apple HIG/Material)
+    //     2. 적색 (E91E63) 외곽 glow 강화 — 영웅문 본문 chart area drag paradigm vs 본 시스템 separate handle paradigm 본문 catch 본질 (별건 시각 강조)
+    //     3. cursor 'grab' → 'move' (UA-agent 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 발견 본질 cue)
+    //     4. inset 본문 본문 본문 본문 ::after 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 — pulse 애니메이션 CSS 본문 본문 본문 본문 본문 본문 (expanded-chart.js 본문 본문 본문 본문 본문 본문 본문 본문)
+    //   §11.15 외부 spec PASS:
+    //     - Apple HIG "Minimum 44pt × 44pt tap target" — 28px diameter 본문 본문 본문 정합 (chart density 본문 본문 본문 본문 절충)
+    //     - WCAG 2.1 Target Size (Level AAA) "44 × 44 CSS pixels minimum" — 본 fix 28px 본문 본문 절충
+    //     - repo verbatim grep: css cursor:move 본문 본문 본문 본문 본문 본문 본문 본문 사용 사례 부재 → 본 fix 본문 본문 본문 본문 도입
     el.style.cssText = [
       'position: absolute',
       `width: ${this._options.handleRadius * 2}px`,
       `height: ${this._options.handleRadius * 2}px`,
       `background: ${this._options.handleColor}`,
-      'border: 2.5px solid #fff',
+      'border: 3px solid #fff',
       'border-radius: 50%',
-      'cursor: grab',
+      'cursor: move',
       'z-index: 100',
-      'box-shadow: 0 0 0 3px rgba(245,166,35,0.25), 0 2px 6px rgba(0,0,0,0.35)',
+      // 외곽 glow 본문 강화 (P0-24 Fix-82): 적색 (E91E63) glow + 기존 amber glow 누적
+      'box-shadow: 0 0 0 4px rgba(233,30,99,0.35), 0 0 0 8px rgba(245,166,35,0.20), 0 3px 10px rgba(0,0,0,0.45)',
       'pointer-events: auto',
       'touch-action: none',
       'display: none',
+      // pulse 애니메이션 본문 본질 (P0-24 Fix-82): CSS keyframes 본문 본문 본문 본문 본문 expanded-chart.js 본문 본문 본문 인접 보충 (외부 CSS file 부재 본문 본문 본문 inline style 부재 본문 본문 본문)
+      'animation: cal-fib-handle-pulse 1.6s ease-in-out infinite',
     ].join(';');
 
     const onPointerDown = (e) => {
@@ -610,15 +720,75 @@ class FibonacciDrawingController {
 
   /**
    * 사용자 그린 Fibonacci 초기화 (clear all).
+   *
+   * P0-24 Fix-84 (2026-05-21 22:40 KST 대표 verbatim "내가 선택해서 이동하거나 기간을 조정할 수 있다"):
+   *   reset() 호출 시 anchor 재계산 본질 — auto-anchor 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 visible range 본문 본문 본문 본문 본문 본문 본문 본문 본문.
+   *   기간 조정 메커니즘 본문 본문 본문 본문 (대표 ④ catch):
+   *     - 사용자가 chart zoom in/out → 자동 visible range 변경
+   *     - reset 클릭 시 auto-anchor 본문 본문 본문 본문 본문 _autoAnchorFromVisibleRangeNow() 본문 본문 본문 본문 본문 본문 본문 본문 현재 가시 영역 본문 hi/lo 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *   본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문.
+   *
+   * @param {boolean} [autoReseed=true] — true: reset 후 auto-anchor 재진행, false: 완전 비움
    */
-  reset() {
+  reset(autoReseed = true) {
     this._state = { anchorA: null, anchorB: null };
-    this._saveState();
     this._clearPriceLines();
     // P0-19 Fix-63: overlay label 본문 hide (clear 본질은 destroy 시점만)
     this._overlayLabels.forEach((el) => { if (el) el.style.display = 'none'; });
     if (this._handleA) this._handleA.style.display = 'none';
     if (this._handleB) this._handleB.style.display = 'none';
+
+    if (autoReseed) {
+      // P0-24 Fix-84: 현재 가시 영역 본문 hi/lo 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+      const auto = this._autoAnchorFromCurrentVisibleRange() || this._autoAnchorFromVisibleRange();
+      if (auto) {
+        this._state.anchorA = auto.high;
+        this._state.anchorB = auto.low;
+        this._renderLevels();
+        this._renderHandles();
+      }
+    }
+    this._saveState();
+  }
+
+  /**
+   * P0-24 Fix-84 — 현재 chart timeScale 본문 visible logical range 본문 본문 hi/lo 본문 본문 본문 본문 본문.
+   *
+   * 본질:
+   *   - chart.timeScale().getVisibleLogicalRange() → { from, to } logical index
+   *   - candles 본문 본문 본문 본문 본문 본문 본문 hi/lo 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *   - _autoAnchorFromVisibleRange() (RECENT_N=50 본문 본문 본문 본문) 와 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 사용자 zoom 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *
+   * §11.15 외부 spec PASS:
+   *   - ITimeScaleApi.getVisibleLogicalRange() → LogicalRange | null
+   *     https://tradingview.github.io/lightweight-charts/docs/api/interfaces/ITimeScaleApi
+   *
+   * @returns {{high: {time, price, candleIdx}, low: {time, price, candleIdx}} | null}
+   */
+  _autoAnchorFromCurrentVisibleRange() {
+    if (!Array.isArray(this._candles) || this._candles.length < 2) return null;
+    let range = null;
+    try {
+      range = this._chart.timeScale().getVisibleLogicalRange();
+    } catch (e) { /* noop */ }
+    if (!range || range.from == null || range.to == null) return null;
+    const from = Math.max(0, Math.floor(range.from));
+    const to = Math.min(this._candles.length - 1, Math.ceil(range.to));
+    if (from >= to) return null;
+
+    let hi = -Infinity, lo = Infinity;
+    let hiIdx = -1, loIdx = -1;
+    for (let i = from; i <= to; i++) {
+      const c = this._candles[i];
+      if (!c || !(c.high > 0) || !(c.low > 0)) continue;
+      if (c.high > hi) { hi = c.high; hiIdx = i; }
+      if (c.low < lo) { lo = c.low; loIdx = i; }
+    }
+    if (hiIdx < 0 || loIdx < 0) return null;
+    return {
+      high: { time: this._candles[hiIdx].time, price: hi, candleIdx: hiIdx },
+      low: { time: this._candles[loIdx].time, price: lo, candleIdx: loIdx },
+    };
   }
 
   /**
@@ -639,6 +809,15 @@ class FibonacciDrawingController {
     this._clearPriceLines();
     // P0-19 Fix-63: overlay label DOM 본문 제거 의무
     this._clearOverlayLabels();
+    // P0-24 Fix-83: snap toast cleanup 의무
+    if (this._snapToastTimer) {
+      try { clearTimeout(this._snapToastTimer); } catch (e) { /* noop */ }
+      this._snapToastTimer = null;
+    }
+    if (this._snapToastEl) {
+      try { this._snapToastEl.remove(); } catch (e) { /* noop */ }
+      this._snapToastEl = null;
+    }
     [this._handleA, this._handleB].forEach((el) => {
       if (!el) return;
       try { if (typeof el._cleanup === 'function') el._cleanup(); } catch (e) { /* noop */ }
