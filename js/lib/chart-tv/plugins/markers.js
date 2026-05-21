@@ -1,40 +1,29 @@
-/* ───── lib/chart-tv/plugins/markers.js — #2 분홍 강세 + #6 배당락 marker primitive (TradingView v5) ─────
-   cycle22 Phase 7c — SPEC DOC-20260520-SPEC-001 v6 §2.2.1 #2/#6 + §3.4 + §15 verbatim 정합.
+/* ───── lib/chart-tv/plugins/markers.js — #6 배당락 + RSI 과매도 marker primitive (TradingView v5) ─────
+   cycle22 Phase 7c → Phase 7d-1 P0-4 정정 cascade — 영웅문 정합 본질.
 
    본질 (lead-meta §11.15 외부 spec 사전 검증 PASS):
    - TradingView Lightweight Charts v5에서 `series.setMarkers()` **deprecated**.
    - v5 정합 = `createSeriesMarkers(series, [...])` separate primitive 패턴 의무.
-   - WebFetch corroborate (SPEC §15 + §3.4 verbatim):
+   - WebFetch corroborate:
      * https://tradingview.github.io/lightweight-charts/docs/migrations/from-v4-to-v5
        "Markers moved to separate primitive for optimized bundle size"
-       "You must now import createSeriesMarkers separately"
      * https://tradingview.github.io/lightweight-charts/tutorials/how_to/series-markers
        v5 정합 패턴: createSeriesMarkers(series, [...markers]) + seriesMarkers.setMarkers([...]) 후속 갱신
-   - bundle size 최적화 본질 — v3까지 core method였으나 v5에서 separate primitive로 분리
 
-   marker 4종 본질 (SPEC v6 §2.2.1 + §3.4 verbatim):
-   - #2 분홍 강세 신호: position='aboveBar', shape='arrowUp', color='#EC4899' (sev-hot 정합), text='강세'
-     * 입력 source = options.pinkSignalDates (Array<string 'YYYY-MM-DD'>) — 후속 trigger 본질
-       (Phase 7c 본 단계 = data schema stub 만 — 실 산식 + dataset 적재는 별건 cycle 본질)
+   P0-4 영웅문 정합 정정 cascade (2026-05-21 10:02 KST 대표 critical 정정):
+   - 분홍 강세 본질 = vertical line primitive (별건 plugins/pink-signal.js 신축)
+   - 본 markers.js는 배당락 + RSI 과매도 2종 marker만 처리 (분홍 강세 marker 본문 폐기)
+
+   marker 2종 본질 (P0-4 정정 정합):
    - #6 배당락 marker: position='belowBar', shape='circle', color='#6B7A99' (--neu 회색 정합), text='배당락'
-     * 입력 source = options.exDividendDates (Array<string 'YYYY-MM-DD'>) — 자체 SVG ex-dividend.js 입력 schema 정합
+     * 입력 source = options.exDividendDates (Array<string 'YYYY-MM-DD'>)
+   - RSI 과매도 marker (P0-4 신축, 영웅문 verbatim): position='aboveBar', shape='arrowDown', color='#1F2937', text='RSI<30'
+     * 입력 source = options.rsiOversoldDates (Array<string 'YYYY-MM-DD'>) — RSI 14 < 30 시점 자동 추출 (expanded-chart.js extractRSIOversoldDates 본질)
 
-   SPEC v6 §3.4 verbatim 채택 본질:
-   - import { createSeriesMarkers } from 'lightweight-charts'
-   - const seriesMarkers = createSeriesMarkers(candleSeries, [
-       { time: '2026-05-15', position: 'aboveBar', shape: 'arrowUp', color: '#EC4899', text: '강세 #2' },
-       { time: '2026-04-30', position: 'belowBar', shape: 'circle',  color: '#6B7A99', text: '배당락' },
-     ]);
-   - 후속 갱신: seriesMarkers.setMarkers([...])
-   - 조회: seriesMarkers.markers()
-
-   §16 self-catch (Phase 7c 진입 시):
-   - prompt 본 plugin은 SPEC v6 §3.4 verbatim 채택 (분홍 강세 + 배당락 2종).
-   - dataset 본질 (분홍 강세 산식 + 배당락 일자 source) = renderer.js _openChartExpand 입력 layer.
-     본 Phase 7c는 marker primitive 통합 layer만 구현. 산식/dataset 본질은 후속 별건 cycle.
+   §16 self-catch (Phase 7d-1 P0-4):
+   - 분홍 강세 marker 본문 (createSeriesMarkers aboveBar arrowUp) 폐기 — 본질 정정 cascade
    - BusinessDay vs UNIX timestamp 본질: TradingView v5 marker time = candle series time 본질과 동일 type 의무.
-     candle series가 BusinessDay 객체 {year, month, day} 사용 (expanded-chart.js normalizeData L129 정합) →
-     marker time도 BusinessDay 객체로 변환 의무 (string 'YYYY-MM-DD' 직접 불가).
+     candle series가 BusinessDay 객체 {year, month, day} 사용 → marker time도 BusinessDay 객체로 변환 의무.
 */
 
 import { createSeriesMarkers } from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
@@ -146,7 +135,7 @@ export function attachMarkers(candleSeries, options = {}) {
  * 기존 attach한 markers 갱신 (재계산 필요 시 setMarkers([...]) 후속 호출).
  *
  * @param {ISeriesMarkers} seriesMarkers — attachMarkers return
- * @param {Object} options — pinkSignalDates / exDividendDates (attachMarkers와 동일 schema)
+ * @param {Object} options — exDividendDates / rsiOversoldDates (attachMarkers와 동일 schema)
  */
 export function updateMarkers(seriesMarkers, options = {}) {
   if (!seriesMarkers || typeof seriesMarkers.setMarkers !== 'function') return;
