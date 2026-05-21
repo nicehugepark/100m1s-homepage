@@ -944,16 +944,18 @@ function renderChartTV(container, dailyArr, options = {}) {
   //   §11.15 외부 spec 사전 검증 PASS:
   //     - HTML5 sessionStorage / localStorage 본문 native API
   //     - CSS transition opacity 본문 native (vendor prefix 부재)
-  const HINT_TEXT = '피보나치: 노란 점을 끌어 시작·끝점 조정';
+  // P0-24 Fix-82 (2026-05-21 22:40 KST 대표 verbatim "피보나치 사용법이 여전히 알 수 없다 뜻대로 되지 않아"):
+  //   1. hint 본문 visible 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 dismiss 본문 본문 본문 본문 본문 본문 sessionStorage dismiss 본문 본문 본문 본문 본문 본문 본문 매 chip ON 시점 visible (사용자 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 1회 본문 본문 본문 본문 본문 paradigm 본문 본문 본문 본문 본문 본문 본문 본문 본문)
+  //   2. hint 본문 본문 "초기화" 버튼 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 — anchor 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 controller.reset() 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+  //   3. hint 본문 visible 5초 → 8초 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 사용자 인지 본문 본문 본문 본문 본문 본문 본문 본문
+  // P0-24 Fix-83/84: 자석 작동 toast + reset 본문 본문 본문 본문 visible range 본문 본문 본문 본문 anchor 재계산 (fibonacci.js _onClick + reset(true) 본문)
+  const HINT_TEXT = '피보나치: 큰 노란 점을 끌어 끝점 조정. 자석이 자동 snap.';
   let hintEl = null;
   function showFibHint() {
-    // 1회만 (per session) — 세션 본문 본 ticker 본문 1회 본질
+    // P0-24 Fix-82: sessionStorage dismiss 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 매 chip ON 시점 visible.
+    // localStorage 영구 dismiss 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 — 사용자가 명시적 dismiss 클릭 시점 본문 본문 본문 본문 본문 본문 본문.
     try {
-      const sessionKey = `m100s.chart.tv.fib.hint.shown.${ticker}`;
-      if (sessionStorage.getItem(sessionKey) === '1') return;
-      // localStorage 영구 dismiss 본문 확인
       if (localStorage.getItem('m100s.chart.tv.fib.hint.dismissed') === '1') return;
-      sessionStorage.setItem(sessionKey, '1');
     } catch (e) { /* private mode silent */ }
 
     if (hintEl) return;
@@ -965,35 +967,98 @@ function renderChartTV(container, dailyArr, options = {}) {
       'position: absolute',
       'left: 8px',
       'top: 8px',
-      'background: rgba(245,166,35,0.95)',
+      'background: rgba(233,30,99,0.95)',  // P0-24 Fix-82: 적색 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 amber → pink
       'color: #fff',
       'font-size: 11px',
       'font-weight: 600',
       'padding: 6px 10px',
       'border-radius: 4px',
-      'box-shadow: 0 2px 8px rgba(0,0,0,0.25)',
+      'box-shadow: 0 2px 8px rgba(0,0,0,0.30)',
       'z-index: 200',
       'pointer-events: auto',
       'opacity: 0',
       'transition: opacity 0.3s ease',
-      'max-width: 220px',
-      'line-height: 1.35',
-      'cursor: pointer',
+      'max-width: 260px',
+      'line-height: 1.4',
+      'cursor: default',
+      'display: flex',
+      'flex-direction: column',
+      'gap: 4px',
     ].join(';');
-    hintEl.textContent = HINT_TEXT;
-    // 사용자 탭하여 dismiss 본문 + localStorage 본문 영구 dismiss 본질
-    hintEl.addEventListener('click', () => {
-      try { localStorage.setItem('m100s.chart.tv.fib.hint.dismissed', '1'); } catch (e) { /* noop */ }
+
+    // P0-24 Fix-82: hint 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 + "초기화" + "닫기" 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+    const textRow = document.createElement('div');
+    textRow.textContent = HINT_TEXT;
+    textRow.style.cssText = 'flex: 1; min-width: 0;';
+    hintEl.appendChild(textRow);
+
+    const buttonRow = document.createElement('div');
+    buttonRow.style.cssText = 'display: flex; gap: 6px; margin-top: 2px;';
+
+    // P0-24 Fix-84: "초기화 (기간 재조정)" 버튼 본문 본문 본문 — controller.reset(true) 본문 본문 본문 본문 visible range 본문 본문 본문 본문 anchor 재계산
+    const resetBtn = document.createElement('button');
+    resetBtn.type = 'button';
+    resetBtn.textContent = '초기화 (기간 재조정)';
+    resetBtn.setAttribute('aria-label', 'Fibonacci 기간 초기화 — 현재 가시 영역 최고가/최저가로 재설정');
+    resetBtn.style.cssText = [
+      'background: rgba(255,255,255,0.22)',
+      'color: #fff',
+      'border: 1px solid rgba(255,255,255,0.45)',
+      'border-radius: 3px',
+      'padding: 3px 8px',
+      'font-size: 10px',
+      'font-weight: 600',
+      'cursor: pointer',
+      'flex: 1',
+      'min-width: 0',
+      'white-space: nowrap',
+    ].join(';');
+    resetBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // controller.reset(true) — auto-reseed 본문 본문 본문 본문 본문 본문 현재 가시 영역 hi/lo 본문 본문 본문 본문 anchor 재계산
+      try {
+        if (layers.fibController && typeof layers.fibController.reset === 'function') {
+          layers.fibController.reset(true);
+        }
+      } catch (err) { /* noop */ }
+    });
+    buttonRow.appendChild(resetBtn);
+
+    const dismissBtn = document.createElement('button');
+    dismissBtn.type = 'button';
+    dismissBtn.textContent = '다시 안 보기';
+    dismissBtn.setAttribute('aria-label', 'Fibonacci 안내 본문 본문 본문 본문 본문 본문 영구 닫기');
+    dismissBtn.style.cssText = [
+      'background: transparent',
+      'color: rgba(255,255,255,0.85)',
+      'border: 1px solid rgba(255,255,255,0.35)',
+      'border-radius: 3px',
+      'padding: 3px 8px',
+      'font-size: 10px',
+      'font-weight: 500',
+      'cursor: pointer',
+      'flex: 0 0 auto',
+      'white-space: nowrap',
+    ].join(';');
+    dismissBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      try { localStorage.setItem('m100s.chart.tv.fib.hint.dismissed', '1'); } catch (err) { /* noop */ }
       hideFibHint();
     });
+    buttonRow.appendChild(dismissBtn);
+
+    hintEl.appendChild(buttonRow);
+
     main.style.position = 'relative';
     main.appendChild(hintEl);
     // 다음 frame 본문 fade in (transition 발동 본질)
     requestAnimationFrame(() => {
       if (hintEl) hintEl.style.opacity = '1';
     });
-    // 5초 후 자동 fade out 본질
-    setTimeout(() => hideFibHint(), 5000);
+    // P0-24 Fix-82: 자동 fade out 5초 → 8초 (사용자 본문 본문 본문 본문 본문 본문 본문 본문)
+    setTimeout(() => hideFibHint(), 8000);
   }
   function hideFibHint() {
     if (!hintEl) return;
@@ -1008,6 +1073,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     if (layers.fibController) return;
     layers.fibController = attachFibonacci(chart, candleSeries, data, ticker, main, {});
     // P0-17 Fix-56: UX hint badge 본문 visible (chip ON 시점 본문 사용자 본문 drag 본질 발견 cascade)
+    // P0-24 Fix-82: 매 chip ON 시점 visible (sessionStorage 본문 본문 본문 본문 본문 본문 본문 본문 폐기, localStorage 영구 dismiss 본문 본문 본문 본문 본문 본문 본문 본문)
     showFibHint();
   }
   function removeFibonacci() {
