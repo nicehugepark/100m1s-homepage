@@ -431,6 +431,23 @@ function renderChartTV(container, dailyArr, options = {}) {
       horzLines: { color: 'rgba(0,0,0,0.08)', style: LineStyle.Dotted },
     },
     crosshair: { mode: CrosshairMode.Normal },
+    // P0-23 Fix-80 (2026-05-21 19:38 KST 대표 verbatim
+    //   "확대 차트에서 특정일을 선택 시 하단의 날짜 표시가 21 5월 '26 으로 표기가 되는데 이것도 yyyy-mm-dd로 바꿔줘"):
+    //   - localization.dateFormat 본문 'yyyy-MM-dd' 본질 → crosshair 본문 BusinessDay tooltip 본문 정합
+    //   - default 본문 'dd MMM \'yy' 본문 = "21 5월 '26" (한국 locale MMM = '5월') → 본 fix 본문 ISO 양식
+    //   - Fix-75 (tickMarkFormatter) 본문 timeScale axis tick 본문 별 layer — 본 Fix-80 본문 crosshair label layer
+    //   §11.15 외부 spec 사전 검증 PASS:
+    //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/LocalizationOptions
+    //       "dateFormat — String containing yyyy, yy, MMMM, MMM, MM and dd literals" / default 'dd MMM \'yy'
+    //       "Ignored if timeFormatter has been specified" (본 코드 본문 timeFormatter 미설정 → dateFormat 적용 본질)
+    //     - WebSearch 2회 corroborating (Lightweight Charts v5 LocalizationOptions dateFormat / timeFormatter signature)
+    //   §16 self-catch:
+    //     - dateFormat 본문 timeScale tick label 본문 영향 X (tickMarkFormatter 본문 우선) → Fix-75 정합 유지
+    //     - dateFormat 본문 crosshair label 본문 직접 영향 본질 (LocalizationOptions API spec)
+    //     - timeFormatter 본문 미설정 본질 (dateFormat 우선 본질 정합)
+    localization: {
+      dateFormat: 'yyyy-MM-dd',
+    },
     timeScale: {
       borderColor: 'rgba(0,0,0,0.12)',
       timeVisible: false,

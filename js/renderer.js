@@ -1044,37 +1044,39 @@ function renderCalExpandContent(date, data) {
       let candles20Html;
       let staleMetaHtml = '';
 
-      // P0-18 Fix-61 (2026-05-21 16:03 KST 대표 verbatim "왜 강세신호인 분홍색 기둥은 표시되지 않나?"):
-      //   분홍 vertical line 본문 visible 0건 root cause 진단:
-      //   - pink-signal.js primitive 본문 정상 신축 (Phase 7d-1 P0-4 ISeriesPrimitive paneViews 본질)
-      //   - expanded-chart.js attachPrimitive 호출 본문 정상 (L772)
-      //   - **root cause**: renderer.js L1500-1505 본문 data-pinksignal attribute 본문 setter 0건 본문 → pinkSignalDates = [] graceful 본문 → 본질 dates 0건 → vertical line 0건 visible
+      // P0-23 Fix-79 (2026-05-21 19:38 KST 대표 verbatim
+      //   "제주반도체 일봉캔들 영웅문을 보면 강세 날짜가 상당히 많다. 그런데 오늘 하루만 강세로 표시가 된다"):
+      //   분홍 vertical line 본문 SoT (backend) 직접 사용 본질 — P0-21 backend rollout cascade.
+      //   - P0-18 Fix-61 backward derive (streak=N → daily_20 마지막 N건) 본질 폐기
+      //   - root cause = streak 본문 "연속 강세 N영업일" 본질 (오늘 + N-1일 cap) → 강세 history 단속 영업일 (예: 4/24, 5/14 등 비연속) 부재
+      //   - SoT = backend build_daily.py L3188 entry["bullish_dates"] (list[str] YYYY-MM-DD, 30일 range 강세 영업일 모두)
+      //   - data-loader.js Fix-79 (L240) bullish_dates pass-through 본문 합성 → it.bullish_dates / it.interp.bullish_dates
       //
       //   §11.15 외부 spec 사전 검증 PASS:
-      //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/plugins/intro
-      //       "ISeriesPrimitive — paneViews() returns IPrimitivePaneView[] for canvas draw"
-      //     - WebFetch https://tradingview.github.io/lightweight-charts/tutorials/customization/series-primitives
-      //       "BitmapCoordinatesRenderingScope for high-DPR canvas draw"
+      //     - build_daily.py _prefetch_bullish_info L2509-2609 verbatim grep (30일 range 강세 영업일 list[str])
+      //     - build_daily.py L3188 entry["bullish_dates"] = bullish_dates verbatim grep
+      //     - 라이브 evidence: curl 본문 제주반도체 080220 → bullish_dates 4건 ['2026-04-24','2026-05-14','2026-05-18','2026-05-21']
+      //     - 영웅문 image 797cf4ef direct read evidence: 제주반도체 분홍 vertical line 4건+ visible (4/24, 5/14, 5/18, 5/21)
       //
-      //   본 cycle 본문 frontend graceful path 본문 fix 본질:
-      //   - it.bullish_today === true + it.bullish_streak >= 1 본문 종목 본문 본질 dates 본문 derive
-      //   - streak=N 본문 daily_20 본문 마지막 N영업일 dates 본문 visible (backward derive)
-      //   - JSON stringified Array<'YYYY-MM-DD'> 본문 data-pinksignal attribute set
-      //
-      //   §16 self-catch critical (lead 본문 광전자 본문 본질 catch):
-      //   - 광전자 (#2) bullish_today=false + streak=0 본문 → 본질 visible 부재 데이터 정합
-      //   - 본질 backend interpreter 본문 강세 시계열 history 본문 부재 → backend 별건 cycle 의무
-      //   - 본 cycle frontend graceful path 본문 bullish 종목 본문 streak N영업일 본문 visible 본질
-      //   - 데이터 source = it.bullish_today / it.bullish_streak (it 루트 레벨 본문, interp 본문 부재 path 정합)
-      const _bullishToday = !!(it.bullish_today || (it.interp && it.interp.bullish_today));
-      const _bullishStreak = (it.bullish_streak || (it.interp && it.interp.bullish_streak)) || 0;
-      const _pinkSignalDates = [];
-      if (_bullishToday && _bullishStreak >= 1 && Array.isArray(d20) && d20.length >= 1) {
-        // daily_20 본문 마지막 N영업일 dates 본문 backward derive (streak 본문 영업일 본질 정합)
-        const _streakN = Math.min(_bullishStreak, d20.length);
-        for (let _i = d20.length - _streakN; _i < d20.length; _i++) {
-          const _bar = d20[_i];
-          if (_bar && _bar.date) _pinkSignalDates.push(_bar.date);
+      //   §16 self-catch:
+      //   - bullish_dates 부재 path (old data / IPO 첫날 등) → backward derive 폴백 본문 graceful 유지
+      //   - 광전자 (#2) bullish_today=false 본문 → bullish_dates 부재 / 빈 array → 분홍 vertical line 0건 정합
+      const _bullishDatesRaw = (Array.isArray(it.bullish_dates) ? it.bullish_dates : null)
+        || (it.interp && Array.isArray(it.interp.bullish_dates) ? it.interp.bullish_dates : null);
+      let _pinkSignalDates = [];
+      if (Array.isArray(_bullishDatesRaw) && _bullishDatesRaw.length > 0) {
+        // SoT 직접 사용 — backend 본문 30일 range 모든 강세 영업일 (오름차순, today 마지막)
+        _pinkSignalDates = _bullishDatesRaw.filter(d => typeof d === 'string' && d.length === 10);
+      } else {
+        // 폴백 — bullish_dates 부재 path (old data) backward derive 본문 graceful 유지
+        const _bullishToday = !!(it.bullish_today || (it.interp && it.interp.bullish_today));
+        const _bullishStreak = (it.bullish_streak || (it.interp && it.interp.bullish_streak)) || 0;
+        if (_bullishToday && _bullishStreak >= 1 && Array.isArray(d20) && d20.length >= 1) {
+          const _streakN = Math.min(_bullishStreak, d20.length);
+          for (let _i = d20.length - _streakN; _i < d20.length; _i++) {
+            const _bar = d20[_i];
+            if (_bar && _bar.date) _pinkSignalDates.push(_bar.date);
+          }
         }
       }
 

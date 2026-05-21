@@ -236,6 +236,17 @@ async function loadCalDayData(date) {
             // 이 필드 누락이 라이브 화면 강세 배지 미노출의 진짜 본질 (대표 발화 02:45 KST).
             bullish_today: !!st.bullish_today,
             bullish_streak: st.bullish_streak ?? 0,
+            // P0-23 Fix-79 (2026-05-21 19:38 KST 대표 verbatim
+            //   "제주반도체 일봉캔들 영웅문을 보면 강세 날짜가 상당히 많다. 그런데 오늘 하루만 강세로 표시가 된다"):
+            //   - P0-21 backend rollout (commit c263408 / merge d0ab219) bullish_dates list[str] emit 라이브 visible PASS
+            //     (curl https://100m1s.com/data/interpreted/stock-2026-05-21.json 본문 080220 제주반도체 → bullish_dates: 4건 ['2026-04-24','2026-05-14','2026-05-18','2026-05-21'])
+            //   - P0-18 Fix-61 backward derive (streak=N → daily_20 마지막 N건) 본질 폐기 → SoT (backend) 직접 사용
+            //   - 영웅문 본문 정합 본질: 강세 발생 모든 영업일 (날짜 array) 본문 분홍 vertical line visible
+            //   §11.15 외부 spec 사전 검증 PASS:
+            //     - build_daily.py L2509-2609 _prefetch_bullish_info 본문 verbatim grep (bullish_dates list[str] 본질)
+            //     - build_daily.py L3188 entry["bullish_dates"] = bullish_dates verbatim grep
+            //     - curl 라이브 evidence (제주반도체 4건 visible)
+            bullish_dates: Array.isArray(st.bullish_dates) ? st.bullish_dates : null,
           });
         }
       }
