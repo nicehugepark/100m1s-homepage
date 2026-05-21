@@ -40,10 +40,32 @@ import { buildTogglePanel, INDICATOR_CHIPS } from './toggle-panel.js';
 const STORAGE_KEY = 'm100s.chart.tv.indicators.global';
 
 // SPEC §4.1 viewport별 차트 크기
+// P0-10 Fix-32 (2026-05-21 12:17 KST 대표 verbatim
+//   "모바일은 첨부한 두번째 이미지 같이 보인다. 시작 지점도 엉망이고, y축 값들도 보이지 않고..."):
+//   대표 catch viewport = 470x779 (image #9 본문 직접 read evidence)
+//   root cause 진단 본질:
+//     - 기존 fallback w <= 768 → fixed width 640px 반환
+//     - viewport 470px 본문 vs chart width 640px = 170px overflow 본문 (chart 본문 viewport 우측 본문 잘림)
+//     - cal-chart-tv-main { width: 100% } CSS는 정상 but JS chart instance width 본문 fixed 640px 본문
+//       → TradingView chart canvas 본문 자체가 640px wide 본문 → 우측 priceScale + 우측 본문 잘림
+//   정합 본질:
+//     - 본 viewport 실측 width 본문 동적 산출 (window.innerWidth - margin)
+//     - 우측 priceScale visible 의무 (가격 값 + sub-pane 보조지표 값 본문 visible 정합)
+//     - 좌측 본문 시작 지점 정합 (chart 본문 viewport 좌측 본문 align 본질)
+//   §11.15 외부 spec 사전 검증 PASS:
+//     - TradingView Lightweight Charts v5 createChart options.width 본문 = canvas pixel width
+//     - parent container width 100% 본문 정합 정합 본질 (CSS layer는 정합, JS layer width 본문 정정 의무)
 function getViewportSize() {
   const w = window.innerWidth;
-  if (w <= 360) return { width: 280, height: 320 };
-  if (w <= 768) return { width: 640, height: 360 };
+  // 모바일 본문 (w < 768) — viewport 실측 width 본문 채택 (overflow 회피)
+  // SAFETY_MARGIN 16px = parent container padding/border 본문 정합
+  if (w < 768) {
+    const SAFETY_MARGIN = 16;
+    const adaptiveWidth = Math.max(280, Math.min(w - SAFETY_MARGIN, 640));
+    // height 본문 ratio (640:360 = 16:9) 보존 본질
+    const adaptiveHeight = Math.round(adaptiveWidth * 360 / 640);
+    return { width: adaptiveWidth, height: Math.max(280, adaptiveHeight) };
+  }
   if (w <= 1024) return { width: 880, height: 400 };
   return { width: 1000, height: 440 };
 }
@@ -341,16 +363,16 @@ function renderChartTV(container, dailyArr, options = {}) {
       timeVisible: false,
       secondsVisible: false,
     },
-    // P0-9 Fix-25 (2026-05-21 11:34 KST 대표 verbatim "여전히 너무 우측이라 주가든 지표값이든 다 잘린다"):
-    //   영웅문 reference 23a74560 직접 read evidence — 우측 priceScale 본문 폭 = 약 70~80px 본문 visible
-    //   (가격 라벨 727,000 / 657,680 / 612,923 / 592,000 / 498,846 / 384,769 / 270,692 본문 7개 본문 자릿수 6+ 본문)
-    //   P0-7 fix-2 minimumWidth 60px 본문 잔존 잘림 본문 → 80px 본문 확대 + scaleMargins 본문 정합
-    //   v5 PriceScaleOptions: scaleMargins {top, bottom} + minimumWidth (px) + visible:true 본문.
+    // P0-10 Fix-28 (2026-05-21 12:17 KST 대표 verbatim "여전히 주가가 잘려서 다 보이지 않는다"):
+    //   P0-9 Fix-25 minimumWidth 80 본문 잔존 결함 본문 — 영웅문 23a74560 본문 priceScale 본문 폭 cross-check
+    //   본질: 영웅문 본문 우측 priceScale = 약 90~100px 본문 visible (727,000 본문 7자리 본문 + 6.67% 본문 라벨 동시 visible)
+    //   80 → 100 본문 확대 정합 + scaleMargins 본문 유지 (위/아래 여백 0.15 본문 보존).
+    //   §11.15 외부 spec 사전 검증 PASS — v5 PriceScaleOptions.minimumWidth 본문 (px) accepts integer.
     rightPriceScale: {
       borderColor: 'rgba(0,0,0,0.12)',
       visible: true,
-      scaleMargins: { top: 0.15, bottom: 0.15 },  // P0-9 Fix-25: 0.1 → 0.15 본문 본문 위/아래 여백 확대
-      minimumWidth: 80,                            // P0-9 Fix-25: 60 → 80 본문 확대 (영웅문 본문 6자리+ 가격 라벨 정합)
+      scaleMargins: { top: 0.15, bottom: 0.15 },  // P0-9 Fix-25 본문 유지
+      minimumWidth: 100,                            // P0-10 Fix-28: 80 → 100 본문 확대 (영웅문 7자리 가격 visible 정합)
     },
     handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
     handleScale: { axisPressedMouseMove: true, mouseWheel: true, pinch: true },
@@ -571,25 +593,24 @@ function renderChartTV(container, dailyArr, options = {}) {
     return { golden, dead };
   }
 
-  // P0-9 Fix-22 (2026-05-21 11:34 KST 대표 verbatim "잘 했는데 보조지표의 이름을 영웅문 이미지와 동일한 위치로 해줘"):
-  //   영웅문 reference 23a74560 직접 read evidence:
-  //   - MACD sub-pane 좌측 상단 본문 visible verbatim = "MACD Oscillator 12,26,9 MACD 시그널" 본문 한 줄 (single line)
-  //   - 기존 분리 title ('MACD Oscillator 12,26,9' / 'MACD 시그널 9') → 통합 title 본문 정합
-  //   - line series title = 'MACD Oscillator 12,26,9 MACD 시그널' (한 줄 통합 본문)
-  //   - signal series title = '' (영웅문 본문 단일 row title 본문 정합, signal title 제거)
-  // P0-9 Fix-23 (2026-05-21 11:34 KST 대표 verbatim "영웅문에 없는 정보는 굳이 보여주지 않아도 괜찮아"):
-  //   - Hist series title 'Hist' → '' 본문 (영웅문 본문 부재 정보)
+  // P0-10 Fix-29 (2026-05-21 12:17 KST 대표 verbatim
+  //   "'rsi 14 시그널 9' 레이블은 그냥 'RSI'로 macd는 그냥 'MACD'로 하고"):
+  //   영웅문 reference 영웅문은 'MACD Oscillator 12,26,9 MACD 시그널' / 'RSI 14 시그널 9' 본문 한 줄
+  //   but 대표 verbatim 단순화 의도 — 그냥 'MACD' / 'RSI' 본문 채택 정합 (영웅문 본문 무시, 대표 명시 우선).
+  //   - line series title = 'MACD' (영웅문 본문 무시, 대표 verbatim 정합)
+  //   - signal series title = '' (단일 row title 보존)
+  //   - Hist series title = '' (영웅문 본문 부재 정보, P0-9 Fix-23 본문 유지)
   function addMACD() {
     if (layers.macd) return;
     const m = computeMACD(data);
     if (m.line.length === 0) return;
     try {
       const line = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'MACD Oscillator 12,26,9 MACD 시그널',  // P0-9 Fix-22: 영웅문 통합 본문
+        color: '#0064FF', lineWidth: 1, title: 'MACD',  // P0-10 Fix-29: 대표 verbatim 단순화 본문
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const signal = chart.addSeries(LineSeries, {
-        color: '#4D8EFF', lineWidth: 1, title: '',  // P0-9 Fix-22: signal title 제거 (영웅문 본문 단일 row 정합)
+        color: '#4D8EFF', lineWidth: 1, title: '',  // signal title 부재 (단일 row 정합)
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const hist = chart.addSeries(HistogramSeries, {
@@ -645,15 +666,12 @@ function renderChartTV(container, dailyArr, options = {}) {
   //   - period 14 — 기존 정합 유지
   //   - title 영웅문 verbatim 유지 'RSI 14 시그널 9'
   //   - §11.15 외부 spec 사전 검증 PASS (TradingView v5 PriceScaleOptions invertScale:bool, default:false)
-  // P0-9 Fix-24 (2026-05-21 11:34 KST 대표 verbatim "라인이 2개로 보이는건 좋아.
-  //   그런데 다른 정보들을 라벨로 뽑은건 잘못했어"):
-  //   영웅문 reference 23a74560 직접 read evidence:
-  //   - RSI sub-pane 라벨 = "RSI 14 시그널 9" 단일 본문 (한 줄 통합 본문)
-  //   - 기존 분리 title ('RSI 14' / '시그널 9') → 통합 title 본문 정합
-  //   - line series title = 'RSI 14 시그널 9' (영웅문 본문 한 줄 정합)
-  //   - signal series title = '' (영웅문 본문 단일 row title 정합)
-  // P0-9 Fix-23 (2026-05-21 11:34 KST 대표 verbatim "영웅문에 없는 정보는 굳이 보여주지 않아도 괜찮아"):
-  //   - priceLine title '과열 30' / '침체 30' → '' 본문 (영웅문 본문 priceLine title 부재)
+  // P0-10 Fix-29 (2026-05-21 12:17 KST 대표 verbatim
+  //   "'rsi 14 시그널 9' 레이블은 그냥 'RSI'로 macd는 그냥 'MACD'로 하고"):
+  //   영웅문 본문 'RSI 14 시그널 9' but 대표 명시 단순화 → 'RSI' 본문 채택 정합
+  //   - line series title = 'RSI' (대표 verbatim 정합)
+  //   - signal series title = '' (단일 row title 보존)
+  // P0-9 Fix-23 본문 유지: priceLine title '' (영웅문 본문 부재 정보)
   function addRSI() {
     if (layers.rsi) return;
     const rsiData = computeRSI(data, 14);
@@ -661,7 +679,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     try {
       // RSI 메인 라인 (period 14)
       layers.rsi = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'RSI 14 시그널 9',  // P0-9 Fix-24: 영웅문 통합 본문
+        color: '#0064FF', lineWidth: 1, title: 'RSI',  // P0-10 Fix-29: 대표 verbatim 단순화 본문
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
@@ -784,6 +802,36 @@ function renderChartTV(container, dailyArr, options = {}) {
   addTradingValue();
   addMACD();
   addRSI();
+
+  // P0-10 Fix-30 (2026-05-21 12:17 KST 대표 verbatim
+  //   "보조지표의 y축 우측에 있는 값은 보여주지 않아도 된다"):
+  //   sub-pane 3종 (거래대금 paneIdx=1 / MACD paneIdx=2 / RSI paneIdx=3) priceScale 본문 정합:
+  //     - 우측 y축 본문 가격 라벨 visible 부재 의무 (label visible 본문 hide)
+  //     - 본질: lastValueVisible 본문 false 본문 + priceScale borderVisible 본문 유지 (chart 본문 visual 정합)
+  //   §11.15 외부 spec 사전 검증 PASS:
+  //     - TradingView v5 PriceScaleOptions.visible 본문 false → priceScale 전체 hide (border + label 둘 다)
+  //     - chart.priceScale(id, paneIdx).applyOptions({visible: false}) 본문 v5 native API
+  //   §16 self-catch:
+  //     - sub-pane 본문 priceScale 본문 hide 시 chart 본문 layout 본문 shift 가능성 본문 (canvas width 본문 늘어남)
+  //     - main pane right priceScale 본문은 visible 유지 (P0-10 Fix-28 minimumWidth:100 본문 정합)
+  //     - sub-pane 본문 priceScale 본문 hide 본문 가능 → main pane priceScale 본문 본문 alignment 본문 정합
+  try {
+    // 거래대금 sub-pane (paneIdx=1) priceScale visible 본문 hide
+    if (layers.tradingValue) {
+      // tradingValue series는 priceScaleId='' (overlay) 본문 정합
+      // P0-10 Fix-30: lastValueVisible 본문 false + priceLineVisible 본문 false 본문 (priceScale label hide)
+      layers.tradingValue.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+    }
+    // MACD sub-pane (paneIdx=2) priceScale label hide
+    if (layers.macd) {
+      if (layers.macd.line) layers.macd.line.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+      if (layers.macd.signal) layers.macd.signal.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+      if (layers.macd.hist) layers.macd.hist.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+    }
+    // RSI sub-pane (paneIdx=3) priceScale label hide
+    if (layers.rsi) layers.rsi.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+    if (layers.rsiSignal) layers.rsiSignal.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+  } catch (err) { /* noop fallback = priceScale label visible 유지 */ }
 
   // 토글 panel chip bar 신축
   buildTogglePanel(togglesHost, state, (newState) => {

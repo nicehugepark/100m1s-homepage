@@ -21,19 +21,23 @@
 
 const N_BUCKET = 10;
 
-// P0-9 Fix-21 (2026-05-21 11:34 KST 대표 verbatim "너무 짧고, 색깔이 어둡다. 더 파스텔톤의 노란색이다"):
-//   영웅문 reference 23a74560 직접 read evidence:
-//   - 매물대 본문 visible 영역 = 차트 좌측~중앙 영역 (전체 가격대 본문 거의 모든 visible 본문 노출)
-//   - 색상 본문 = 파스텔 톤 노란/햇살 본문 (#FFF59D 본문 LightYellow vs 기존 brown #C49930)
-//   - sideWidthPx 60 → 200 본문 확대 (영웅문 본문 좌측~중앙 본문 매물대 길이 정합)
-//   - alpha 본문 0.25~0.55 본문 (파스텔 본문 살린 visible 정합)
-//   - stroke 본문 #FFEB3B 본문 노란 (영웅문 본문 매물대 outline 정합)
+// P0-10 Fix-31 (2026-05-21 12:17 KST 대표 verbatim
+//   "매물대는 색상은 마음에 드는데 길이가 여전히 아쉽다. 지금 보다 두배 정도 길게 해봐줘"):
+//   P0-9 Fix-21 sideWidthPx 200 본문 → 400 본문 2배 확대 (대표 verbatim "두배 정도 길게")
+//   - 색상 본문 = 파스텔 LightYellow (#FFF59D) 유지 (대표 verbatim "색상은 마음에 드는데")
+//   - alpha 본문 0.25~0.55 본문 유지 (파스텔 visible 정합)
+//   - sideWidthPx 200 → 400 본문 2배 확대 (영웅문 본문 좌측 본문 영역 본문 더 길게 visible 정합)
+//   §16 self-catch:
+//     - 400px 본문 chart width 본문 mobile viewport adaptive (P0-10 Fix-32) 본문 대비 본문 점검 의무
+//     - viewport 470px → adaptive width 약 454px → 매물대 400px = chart 본문 거의 전체 본문 가로 영역 차지
+//     - 그러나 매물대 본문 ratio 본문 normalize (max=1.0 본문 sideW * ratio = bucket width) → 최대 bucket만 400px
+//     - 대부분 bucket은 ratio < 1.0 본문 → 시각 본문 부담 본문 회피
 const DEFAULT_OPTIONS = {
-  fillColorBase: 'rgba(255,245,157,', // P0-9 Fix-21: 파스텔 LightYellow (#FFF59D) 본문
-  strokeColor: '#FFEB3B',             // P0-9 Fix-21: Yellow 본문 stroke
-  sideWidthPx: 200,                   // P0-9 Fix-21: 60 → 200 본문 확대 (영웅문 본문 좌측~중앙 정합)
+  fillColorBase: 'rgba(255,245,157,', // P0-9 Fix-21: 파스텔 LightYellow (#FFF59D) 본문 유지
+  strokeColor: '#FFEB3B',             // P0-9 Fix-21: Yellow stroke 유지
+  sideWidthPx: 400,                   // P0-10 Fix-31: 200 → 400 본문 2배 확대 (대표 verbatim "두배 정도 길게")
   alphaMin: 0.25,
-  alphaMax: 0.55,                     // P0-9 Fix-21: 0.6 → 0.55 본문 파스텔 본문 visible 정합
+  alphaMax: 0.55,                     // P0-9 Fix-21: 본문 유지 (대표 verbatim "색상은 마음에 드는데")
   bucketGapPx: 2,
   strokeWidth: 0.3,
 };
