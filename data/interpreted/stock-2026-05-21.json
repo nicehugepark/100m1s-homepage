@@ -1,6 +1,6 @@
 {
   "date": "2026-05-21",
-  "generated_at": "2026-05-21T09:22:43.907573",
+  "generated_at": "2026-05-21T09:38:52.666601",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -32,16 +32,16 @@
       "summary": "삼성전자 노사 극적 합의로 총파업 회피 → 반도체 공급망 안정화 우려 해소 → 반도체·전자 섹터 긍정"
     },
     {
+      "title": "AI인프라투자",
+      "summary": "정부·민간 AI 데이터센터 투자 본격화 → ESS·전해액·통신인프라 수요 확대 → IT·소재 섹터 수혜"
+    },
+    {
       "title": "노사합의",
       "summary": "삼성전자 노사 임금협상 극적 합의 → 반도체·제조업 생산 리스크 해소 → 제조업 섹터 강세"
     },
     {
       "title": "금감강화",
       "summary": "NH투자증권 미공개정보 이용 임원 8명 검찰 고발 → 금융 규제 강화 신호 → 증권사 컴플라이언스 비용 증가"
-    },
-    {
-      "title": "핀테크",
-      "summary": "NH투자증권 미공개정보 이용 검찰 고발 + 한화투자증권 두나무 지분 추가 → 증권사 내부통제 강화 의무·핀테크 경쟁 구도 재편"
     }
   ],
   "narratives": [],
@@ -79,14 +79,109 @@
   ],
   "themes_tree": {
     "date": "2026-05-21",
-    "roots": []
+    "roots": [
+      {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "삼성전자 파업 리스크 해소",
+            "summary": "삼성전자 노사 합의로 총파업 리스크 해소되며 반도체·삼성그룹 지주·생보 동반 급등.",
+            "source_count": 12,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "AI 인프라",
+        "children": [
+          {
+            "name": "AI 데이터센터",
+            "summary": "AI 데이터센터 수요 확대로 전해액·광통신·디지털 트윈·ESS 관련 수혜주 부각.",
+            "source_count": 4,
+            "verdict": "pass"
+          },
+          {
+            "name": "온디바이스 AI",
+            "summary": "폴라리스오피스 96억 국책과제 선정, 망분리 온디바이스 AI 협업 플랫폼 개발 본격화.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "전자부품",
+        "children": [
+          {
+            "name": "실리콘 커패시터",
+            "summary": "삼성전기 실리콘 커패시터 두 번째 수주로 신성장 동력 부상하며 목표가 줄상향.",
+            "source_count": 3,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "바이오",
+        "children": [
+          {
+            "name": "바이오 기술수출",
+            "summary": "삼진제약·리가켐바이오·한올바이오파마 ADC·신약 R&D 협력 및 기술수출 성과 가시화.",
+            "source_count": 3,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "에너지",
+        "children": [
+          {
+            "name": "원자력 발전",
+            "summary": "4세대 원자로 한미 동맹 확대 및 SMR·대형원전·가스터빈 3박자 성장 기대.",
+            "source_count": 2,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "환경",
+        "children": [
+          {
+            "name": "탈질촉매 유럽 진출",
+            "summary": "나노 폴란드 국영 전력사 첫 수주로 유럽 탈질촉매 시장 진출 확대.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "로봇",
+        "children": [
+          {
+            "name": "휴머노이드 로봇",
+            "summary": "현대모비스 로봇 밸류체인 재평가로 장 초반 17% 급등, 로봇 섹터 모멘텀 재점화.",
+            "source_count": 1,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "화장품",
+        "children": [
+          {
+            "name": "K뷰티 북미 진출",
+            "summary": "아이패밀리에스씨 올리브영 직거래·북미 오프라인 진출로 K뷰티 글로벌 확장 모멘텀.",
+            "source_count": 1,
+            "verdict": "weak"
+          }
+        ]
+      }
+    ]
   },
   "stocks": [
     {
       "code": "017900",
       "name": "광전자",
       "rank": 1,
-      "trade_amount": 176414000000,
+      "trade_amount": 204498000000,
       "change_pct": 13.25,
       "close_price": 14100,
       "open_price": 13350,
@@ -286,19 +381,33 @@
           "c": 14100
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 13350,
+        "base": 13350,
+        "prices": [
+          13350,
+          14240,
+          13930,
+          13600
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "477850",
       "name": "마키나락스",
       "rank": 2,
-      "trade_amount": 26091000000,
+      "trade_amount": 98156000000,
       "change_pct": 30.0,
       "close_price": 78000,
       "open_price": 78000,
       "high_price": 78000,
-      "low_price": 78000,
+      "low_price": 77700,
       "industry": null,
       "sector": null,
       "themes": [
@@ -336,8 +445,8 @@
           "url": "https://www.mk.co.kr/news/stock/12053437",
           "source": "매경",
           "published_at": "2026-05-20T08:48:11",
-          "causal_chain": "글로벌 AI 3대 강국 정부 기조 + 피지컬 AI 수익화 기대 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 폭발적 수요 → 마키나락스 상장 첫날 공모가 1.5만→6만원 따따블, 시총 1조원 돌파.",
-          "macro_event": "산업용 AI OS 기업 마키나락스 코스닥 상장 첫날 따따블(공모가 4배) 달성, 시총 1조원 돌파",
+          "causal_chain": "산업용 피지컬 AI 수요 확대 + 글로벌 AI 3대 강국 정부 기조 → 마키나락스 AI OS '런웨이' 기술력·삼성·현대차·SK·LG 대기업 AX 고객 기반 부각 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 흥행 → 상장 첫날 공모가 1.5만원 대비 4배 6만원 따따블·시총 1조원 돌파.",
+          "macro_event": "산업용 피지컬 AI 수요 확대 + 대기업 AX 전환 본격화",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -351,8 +460,8 @@
           "url": "https://www.etoday.co.kr/news/view/2586428",
           "source": "이투데이",
           "published_at": "2026-05-20T07:01:00",
-          "causal_chain": "글로벌 AI 3대 강국 정부 기조 + 피지컬 AI 수익화 기대 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 폭발적 수요 → 마키나락스 상장 첫날 공모가 1.5만→6만원 따따블, 시총 1조원 돌파.",
-          "macro_event": "산업용 AI OS 기업 마키나락스 코스닥 상장 첫날 따따블(공모가 4배) 달성, 시총 1조원 돌파",
+          "causal_chain": "산업용 피지컬 AI 수요 확대 + 글로벌 AI 3대 강국 정부 기조 → 마키나락스 AI OS '런웨이' 기술력·삼성·현대차·SK·LG 대기업 AX 고객 기반 부각 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 흥행 → 상장 첫날 공모가 1.5만원 대비 4배 6만원 따따블·시총 1조원 돌파.",
+          "macro_event": "산업용 피지컬 AI 수요 확대 + 대기업 AX 전환 본격화",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -366,8 +475,8 @@
           "url": "https://www.etnews.com/20260520000305",
           "source": "전자신문",
           "published_at": "2026-05-20T04:46:28",
-          "causal_chain": "글로벌 AI 3대 강국 정부 기조 + 피지컬 AI 수익화 기대 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 폭발적 수요 → 마키나락스 상장 첫날 공모가 1.5만→6만원 따따블, 시총 1조원 돌파.",
-          "macro_event": "산업용 AI OS 기업 마키나락스 코스닥 상장 첫날 따따블(공모가 4배) 달성, 시총 1조원 돌파",
+          "causal_chain": "산업용 피지컬 AI 수요 확대 + 글로벌 AI 3대 강국 정부 기조 → 마키나락스 AI OS '런웨이' 기술력·삼성·현대차·SK·LG 대기업 AX 고객 기반 부각 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 흥행 → 상장 첫날 공모가 1.5만원 대비 4배 6만원 따따블·시총 1조원 돌파.",
+          "macro_event": "산업용 피지컬 AI 수요 확대 + 대기업 AX 전환 본격화",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -381,8 +490,8 @@
           "url": "https://www.mk.co.kr/news/stock/12052897",
           "source": "매경",
           "published_at": "2026-05-20T01:11:05",
-          "causal_chain": "글로벌 AI 3대 강국 정부 기조 + 피지컬 AI 수익화 기대 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 폭발적 수요 → 마키나락스 상장 첫날 공모가 1.5만→6만원 따따블, 시총 1조원 돌파.",
-          "macro_event": "산업용 AI OS 기업 마키나락스 코스닥 상장 첫날 따따블(공모가 4배) 달성, 시총 1조원 돌파",
+          "causal_chain": "산업용 피지컬 AI 수요 확대 + 글로벌 AI 3대 강국 정부 기조 → 마키나락스 AI OS '런웨이' 기술력·삼성·현대차·SK·LG 대기업 AX 고객 기반 부각 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 흥행 → 상장 첫날 공모가 1.5만원 대비 4배 6만원 따따블·시총 1조원 돌파.",
+          "macro_event": "산업용 피지컬 AI 수요 확대 + 대기업 AX 전환 본격화",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -396,8 +505,8 @@
           "url": "https://www.sedaily.com/article/20046180",
           "source": "서울경제",
           "published_at": "2026-05-20T00:58:18",
-          "causal_chain": "글로벌 AI 3대 강국 정부 기조 + 피지컬 AI 수익화 기대 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 폭발적 수요 → 마키나락스 상장 첫날 공모가 1.5만→6만원 따따블, 시총 1조원 돌파.",
-          "macro_event": "산업용 AI OS 기업 마키나락스 코스닥 상장 첫날 따따블(공모가 4배) 달성, 시총 1조원 돌파",
+          "causal_chain": "산업용 피지컬 AI 수요 확대 + 글로벌 AI 3대 강국 정부 기조 → 마키나락스 AI OS '런웨이' 기술력·삼성·현대차·SK·LG 대기업 AX 고객 기반 부각 → 기관 수요예측 1196:1·일반청약 증거금 13.9조(코스닥 역대 2위) 흥행 → 상장 첫날 공모가 1.5만원 대비 4배 6만원 따따블·시총 1조원 돌파.",
+          "macro_event": "산업용 피지컬 AI 수요 확대 + 대기업 AX 전환 본격화",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -443,13 +552,906 @@
           "next_trading_day": "2026-05-22"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 78000,
+        "base": 78000,
+        "prices": [
+          78000,
+          78000,
+          78000,
+          78000
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "080220",
+      "name": "제주반도체",
+      "rank": 3,
+      "trade_amount": 74974000000,
+      "change_pct": 3.8,
+      "close_price": 98400,
+      "open_price": 98900,
+      "high_price": 99000,
+      "low_price": 94300,
+      "industry": "반도체 제조업",
+      "sector": "모바일용 LP DDR SDRAM, CRAM, SRAM",
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "반도체"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-19",
+        "rank": 1,
+        "change_pct": 12.52,
+        "trade_amount": 859688954800
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -2.61,
+      "index_multiple_current": -1.46,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 101500,
+        "high_date": "2026-05-18",
+        "high_pct": -3.05,
+        "low": 12860,
+        "low_date": "2025-05-28",
+        "low_pct": 665.16,
+        "current": 98400
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-22",
+          "o": 46150,
+          "h": 47000,
+          "l": 44700,
+          "c": 46950
+        },
+        {
+          "date": "2026-04-23",
+          "o": 47450,
+          "h": 47600,
+          "l": 44200,
+          "c": 45700
+        },
+        {
+          "date": "2026-04-24",
+          "o": 45800,
+          "h": 56500,
+          "l": 45800,
+          "c": 54000
+        },
+        {
+          "date": "2026-04-27",
+          "o": 54900,
+          "h": 62600,
+          "l": 54000,
+          "c": 58400
+        },
+        {
+          "date": "2026-04-28",
+          "o": 58500,
+          "h": 58600,
+          "l": 54000,
+          "c": 54900
+        },
+        {
+          "date": "2026-04-29",
+          "o": 53700,
+          "h": 55300,
+          "l": 52300,
+          "c": 53600
+        },
+        {
+          "date": "2026-04-30",
+          "o": 54100,
+          "h": 55900,
+          "l": 52400,
+          "c": 52400
+        },
+        {
+          "date": "2026-05-04",
+          "o": 53800,
+          "h": 57700,
+          "l": 53800,
+          "c": 56700
+        },
+        {
+          "date": "2026-05-06",
+          "o": 60500,
+          "h": 61900,
+          "l": 56800,
+          "c": 58500
+        },
+        {
+          "date": "2026-05-07",
+          "o": 58500,
+          "h": 58800,
+          "l": 53300,
+          "c": 55100
+        },
+        {
+          "date": "2026-05-08",
+          "o": 53100,
+          "h": 55900,
+          "l": 53000,
+          "c": 54700
+        },
+        {
+          "date": "2026-05-11",
+          "o": 56500,
+          "h": 58200,
+          "l": 53800,
+          "c": 56100
+        },
+        {
+          "date": "2026-05-12",
+          "o": 56700,
+          "h": 59500,
+          "l": 53200,
+          "c": 55200
+        },
+        {
+          "date": "2026-05-13",
+          "o": 53700,
+          "h": 59300,
+          "l": 53200,
+          "c": 58900
+        },
+        {
+          "date": "2026-05-14",
+          "o": 57000,
+          "h": 76500,
+          "l": 55000,
+          "c": 75600
+        },
+        {
+          "date": "2026-05-15",
+          "o": 76000,
+          "h": 89100,
+          "l": 71100,
+          "c": 82300
+        },
+        {
+          "date": "2026-05-18",
+          "o": 84400,
+          "h": 101500,
+          "l": 82200,
+          "c": 92600
+        },
+        {
+          "date": "2026-05-19",
+          "o": 90700,
+          "h": 101000,
+          "l": 87800,
+          "c": 95900
+        },
+        {
+          "date": "2026-05-20",
+          "o": 97100,
+          "h": 100700,
+          "l": 90000,
+          "c": 94800
+        },
+        {
+          "date": "2026-05-21",
+          "o": 98900,
+          "h": 99000,
+          "l": 94300,
+          "c": 98400
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "425040",
+      "name": "티이엠씨",
+      "rank": 4,
+      "trade_amount": 68016000000,
+      "change_pct": 15.48,
+      "close_price": null,
+      "open_price": 26550,
+      "high_price": 30300,
+      "low_price": 26400,
+      "industry": "기초 화학물질 제조업",
+      "sector": "반도체용 특수가스",
+      "themes": [
+        "양자"
+      ],
+      "theme_paths": [
+        {
+          "name": "양자",
+          "path": [
+            "양자"
+          ]
+        }
+      ],
+      "pick_count": 3,
+      "prev_pick": {
+        "date": "2026-05-20",
+        "rank": 8,
+        "change_pct": 7.71,
+        "trade_amount": 86038000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "티이엠씨 “동위원소 생산 및 공급기술 확보…양자컴퓨터 분야 핵심 소재로 부상”",
+          "url": "https://www.etoday.co.kr/news/view/2579390",
+          "source": "이투데이",
+          "published_at": "2026-04-27T00:55:00",
+          "causal_chain": "양자컴퓨터 상용화 진전 → 동위원소 등 핵심 소재 수요 증가 → 티이엠씨 동위원소 생산·공급 기술 확보로 본업(특수가스·화학소재) 직접 수혜",
+          "macro_event": "양자컴퓨터 핵심 소재(동위원소) 수요 부상",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.61,
+      "index_multiple_current": -5.93,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 30300,
+        "high_date": "2026-05-21",
+        "high_pct": -16.83,
+        "low": 6000,
+        "low_date": "2025-05-27",
+        "low_pct": 320.0,
+        "current": 25200
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-22",
+          "o": 12390,
+          "h": 12500,
+          "l": 12110,
+          "c": 12440
+        },
+        {
+          "date": "2026-04-23",
+          "o": 12530,
+          "h": 12600,
+          "l": 12060,
+          "c": 12260
+        },
+        {
+          "date": "2026-04-24",
+          "o": 12270,
+          "h": 12670,
+          "l": 12270,
+          "c": 12570
+        },
+        {
+          "date": "2026-04-27",
+          "o": 12800,
+          "h": 16340,
+          "l": 12430,
+          "c": 16340
+        },
+        {
+          "date": "2026-04-28",
+          "o": 17900,
+          "h": 19170,
+          "l": 16450,
+          "c": 17100
+        },
+        {
+          "date": "2026-04-29",
+          "o": 16800,
+          "h": 17150,
+          "l": 15940,
+          "c": 16760
+        },
+        {
+          "date": "2026-04-30",
+          "o": 16840,
+          "h": 17680,
+          "l": 16570,
+          "c": 17160
+        },
+        {
+          "date": "2026-05-04",
+          "o": 17700,
+          "h": 20350,
+          "l": 17350,
+          "c": 19710
+        },
+        {
+          "date": "2026-05-06",
+          "o": 23250,
+          "h": 25200,
+          "l": 21700,
+          "c": 21700
+        },
+        {
+          "date": "2026-05-07",
+          "o": 22350,
+          "h": 23150,
+          "l": 21500,
+          "c": 22350
+        },
+        {
+          "date": "2026-05-08",
+          "o": 22350,
+          "h": 23350,
+          "l": 21650,
+          "c": 22100
+        },
+        {
+          "date": "2026-05-11",
+          "o": 23100,
+          "h": 25750,
+          "l": 22800,
+          "c": 23600
+        },
+        {
+          "date": "2026-05-12",
+          "o": 23800,
+          "h": 24150,
+          "l": 20450,
+          "c": 23100
+        },
+        {
+          "date": "2026-05-13",
+          "o": 22450,
+          "h": 23950,
+          "l": 22000,
+          "c": 23700
+        },
+        {
+          "date": "2026-05-14",
+          "o": 23700,
+          "h": 24200,
+          "l": 22400,
+          "c": 24050
+        },
+        {
+          "date": "2026-05-15",
+          "o": 24050,
+          "h": 24650,
+          "l": 21000,
+          "c": 21950
+        },
+        {
+          "date": "2026-05-18",
+          "o": 21600,
+          "h": 24700,
+          "l": 21000,
+          "c": 24000
+        },
+        {
+          "date": "2026-05-19",
+          "o": 24000,
+          "h": 26350,
+          "l": 22150,
+          "c": 25850
+        },
+        {
+          "date": "2026-05-20",
+          "o": 24300,
+          "h": 25300,
+          "l": 23050,
+          "c": 25200
+        },
+        {
+          "date": "2026-05-21",
+          "o": 26550,
+          "h": 30300,
+          "l": 26400,
+          "c": 29100
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자경고"
+    },
+    {
+      "code": "440110",
+      "name": "파두",
+      "rank": 5,
+      "trade_amount": 51312000000,
+      "change_pct": 5.44,
+      "close_price": null,
+      "open_price": 113800,
+      "high_price": 119900,
+      "low_price": 113650,
+      "industry": "반도체 제조업",
+      "sector": "SSD 컨트롤러",
+      "themes": [
+        "실적",
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        },
+        {
+          "name": "반도체",
+          "path": [
+            "반도체"
+          ]
+        }
+      ],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-05-20",
+        "rank": 3,
+        "change_pct": 3.99,
+        "trade_amount": 184299000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "news": [
+        {
+          "title": "파두 사태로 상장 2년 늦어진 AI기업 마키나락스, 그만큼 FI들에 고수익 안겨줄까",
+          "url": "https://biz.chosun.com/stock/market_trend/2026/05/08/UETYC4WPCRAXTHVXFDPJOGCYVI/",
+          "source": "조선비즈",
+          "published_at": "2026-05-07T21:00:01",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[MM] 파두 사태로 상장 2년 늦어진 AI기업 마키나락스, 그만큼 FI들에 고수익 안겨줄까",
+          "url": "https://biz.chosun.com/moneymove/mindustry/2026/05/07/KTXOKAE5R5CWLHDURW657CUROA/",
+          "source": "조선비즈",
+          "published_at": "2026-05-07T07:54:10",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "파두, 1분기 매출 595억원 ‘역대 최대’… 영업익 77억원 ‘흑자전환’",
+          "url": "https://biz.chosun.com/it-science/ict/2026/04/27/KOWYVJNKZND5LNOVFL2V2IZ7SA/",
+          "source": "조선비즈",
+          "published_at": "2026-04-27T02:16:30",
+          "causal_chain": "외부 매크로 이벤트와의 인과 사슬은 식별되지 않는다. 파두 자체 1분기 매출 595억원(역대 최대) + 영업이익 77억원(전년 대비 흑자전환)으로 실적 턴어라운드가 핵심이다.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "파두, 1Q 연결 영업익 77억…전년비 흑자전환",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02581366645420384",
+          "source": "이데일리",
+          "published_at": "2026-04-27T01:36:28",
+          "causal_chain": "외부 매크로 이벤트와의 인과 사슬은 식별되지 않는다. 파두 자체 1분기 매출 595억원(역대 최대) + 영업이익 77억원(전년 대비 흑자전환)으로 실적 턴어라운드가 핵심이다.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "‘코스닥 성장주’ 쓸어담은 초고수...알테오젠·파두 나란히 순매수 1·2위[주식 초고수는 지금]",
+          "url": "https://www.sedaily.com/article/20032793",
+          "source": "서울경제",
+          "published_at": "2026-04-15T03:57:20",
+          "causal_chain": "파두의 1분기 실적 개선(매출 595억원 최대, 영업익 77억원 흑자전환) 및 기업용 SSD 컨트롤러 공급계약(152억원) → 반도체 컨트롤러 시장 내 수주 확대 및 실적 강화",
+          "macro_event": "파두 1Q 실적 흑자전환 + SSD 컨트롤러 공급계약",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.61,
+      "index_multiple_current": -2.08,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 119900,
+        "high_date": "2026-05-21",
+        "high_pct": -6.42,
+        "low": 10060,
+        "low_date": "2025-06-02",
+        "low_pct": 1015.31,
+        "current": 112200
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-22",
+          "o": 60800,
+          "h": 66800,
+          "l": 59500,
+          "c": 65400
+        },
+        {
+          "date": "2026-04-23",
+          "o": 65800,
+          "h": 69000,
+          "l": 64600,
+          "c": 68400
+        },
+        {
+          "date": "2026-04-24",
+          "o": 68400,
+          "h": 70400,
+          "l": 66300,
+          "c": 68100
+        },
+        {
+          "date": "2026-04-27",
+          "o": 69300,
+          "h": 82200,
+          "l": 68300,
+          "c": 81300
+        },
+        {
+          "date": "2026-04-28",
+          "o": 81300,
+          "h": 84000,
+          "l": 76400,
+          "c": 81600
+        },
+        {
+          "date": "2026-04-29",
+          "o": 80000,
+          "h": 82600,
+          "l": 79200,
+          "c": 81500
+        },
+        {
+          "date": "2026-04-30",
+          "o": 85000,
+          "h": 89300,
+          "l": 77100,
+          "c": 78200
+        },
+        {
+          "date": "2026-05-04",
+          "o": 80500,
+          "h": 84200,
+          "l": 78900,
+          "c": 81200
+        },
+        {
+          "date": "2026-05-06",
+          "o": 84800,
+          "h": 85500,
+          "l": 75800,
+          "c": 78800
+        },
+        {
+          "date": "2026-05-07",
+          "o": 79000,
+          "h": 84800,
+          "l": 76800,
+          "c": 83800
+        },
+        {
+          "date": "2026-05-08",
+          "o": 81900,
+          "h": 94200,
+          "l": 80000,
+          "c": 92400
+        },
+        {
+          "date": "2026-05-11",
+          "o": 94700,
+          "h": 102300,
+          "l": 93900,
+          "c": 100400
+        },
+        {
+          "date": "2026-05-12",
+          "o": 102000,
+          "h": 103700,
+          "l": 91300,
+          "c": 94800
+        },
+        {
+          "date": "2026-05-13",
+          "o": 92000,
+          "h": 101000,
+          "l": 91100,
+          "c": 100000
+        },
+        {
+          "date": "2026-05-14",
+          "o": 99700,
+          "h": 103500,
+          "l": 96200,
+          "c": 103500
+        },
+        {
+          "date": "2026-05-15",
+          "o": 104200,
+          "h": 110800,
+          "l": 98400,
+          "c": 100100
+        },
+        {
+          "date": "2026-05-18",
+          "o": 99900,
+          "h": 101200,
+          "l": 91900,
+          "c": 98900
+        },
+        {
+          "date": "2026-05-19",
+          "o": 98800,
+          "h": 108600,
+          "l": 98800,
+          "c": 107900
+        },
+        {
+          "date": "2026-05-20",
+          "o": 108900,
+          "h": 114800,
+          "l": 104500,
+          "c": 112200
+        },
+        {
+          "date": "2026-05-21",
+          "o": 113800,
+          "h": 119900,
+          "l": 113650,
+          "c": 118300
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
+      "code": "125020",
+      "name": "티씨머티리얼즈",
+      "rank": 6,
+      "trade_amount": 50448000000,
+      "change_pct": 27.53,
+      "close_price": 9450,
+      "open_price": 7700,
+      "high_price": 9520,
+      "low_price": 7630,
+      "industry": "절연선 및 케이블 제조업",
+      "sector": "에나멜동선, 초고압케이블, 각동선, CTC 등",
+      "themes": [
+        "케이블"
+      ],
+      "theme_paths": [
+        {
+          "name": "케이블",
+          "path": [
+            "케이블"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-04",
+        "rank": 30,
+        "change_pct": 3.8,
+        "trade_amount": 88189587500
+      },
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "news": [
+        {
+          "title": "[오늘의 IR] 티씨머티리얼즈ㆍ바이오솔루션ㆍ압타바이오 등",
+          "url": "https://www.etoday.co.kr/news/view/2575008",
+          "source": "이투데이",
+          "published_at": "2026-04-12T22:37:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.61,
+      "index_multiple_current": -10.55,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 9520,
+        "high_date": "2026-05-21",
+        "high_pct": -0.74,
+        "low": 2990,
+        "low_date": "2025-11-25",
+        "low_pct": 216.05,
+        "current": 9450
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-22",
+          "o": 5830,
+          "h": 6230,
+          "l": 5570,
+          "c": 5980
+        },
+        {
+          "date": "2026-04-23",
+          "o": 6190,
+          "h": 6440,
+          "l": 5700,
+          "c": 6080
+        },
+        {
+          "date": "2026-04-24",
+          "o": 6100,
+          "h": 6420,
+          "l": 5930,
+          "c": 6200
+        },
+        {
+          "date": "2026-04-27",
+          "o": 6290,
+          "h": 7600,
+          "l": 6270,
+          "c": 7190
+        },
+        {
+          "date": "2026-04-28",
+          "o": 7460,
+          "h": 7470,
+          "l": 6450,
+          "c": 6540
+        },
+        {
+          "date": "2026-04-29",
+          "o": 6450,
+          "h": 7660,
+          "l": 6450,
+          "c": 7300
+        },
+        {
+          "date": "2026-04-30",
+          "o": 7750,
+          "h": 9420,
+          "l": 7750,
+          "c": 8430
+        },
+        {
+          "date": "2026-05-04",
+          "o": 8950,
+          "h": 9490,
+          "l": 8490,
+          "c": 8750
+        },
+        {
+          "date": "2026-05-06",
+          "o": 8700,
+          "h": 8790,
+          "l": 8000,
+          "c": 8180
+        },
+        {
+          "date": "2026-05-07",
+          "o": 8230,
+          "h": 8450,
+          "l": 7580,
+          "c": 7640
+        },
+        {
+          "date": "2026-05-08",
+          "o": 7600,
+          "h": 7790,
+          "l": 7310,
+          "c": 7610
+        },
+        {
+          "date": "2026-05-11",
+          "o": 7790,
+          "h": 7790,
+          "l": 6980,
+          "c": 7220
+        },
+        {
+          "date": "2026-05-12",
+          "o": 7260,
+          "h": 7320,
+          "l": 6540,
+          "c": 6890
+        },
+        {
+          "date": "2026-05-13",
+          "o": 6890,
+          "h": 6890,
+          "l": 6520,
+          "c": 6640
+        },
+        {
+          "date": "2026-05-14",
+          "o": 6800,
+          "h": 6950,
+          "l": 6300,
+          "c": 6560
+        },
+        {
+          "date": "2026-05-15",
+          "o": 7340,
+          "h": 7660,
+          "l": 6500,
+          "c": 6680
+        },
+        {
+          "date": "2026-05-18",
+          "o": 6660,
+          "h": 7000,
+          "l": 6050,
+          "c": 6850
+        },
+        {
+          "date": "2026-05-19",
+          "o": 7020,
+          "h": 7510,
+          "l": 6750,
+          "c": 7290
+        },
+        {
+          "date": "2026-05-20",
+          "o": 7290,
+          "h": 7480,
+          "l": 6980,
+          "c": 7410
+        },
+        {
+          "date": "2026-05-21",
+          "o": 7700,
+          "h": 9520,
+          "l": 7630,
+          "c": 9450
+        }
+      ],
       "credit_risk": true,
       "credit_reason": "신용거래 제한 종목"
     },
     {
       "code": "004870",
       "name": "티웨이홀딩스",
-      "rank": 3,
+      "rank": 7,
       "trade_amount": 2977000000,
       "change_pct": 30.0,
       "close_price": 520,
@@ -717,13 +1719,29 @@
           "next_trading_day": "2026-05-22"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 435,
+        "base": 400,
+        "prices": [
+          435,
+          520,
+          520,
+          520
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "009420",
       "name": "한올바이오파마",
-      "rank": 4,
+      "rank": 8,
       "trade_amount": 1058000000,
       "change_pct": 29.85,
       "close_price": 50900,
@@ -732,8 +1750,17 @@
       "low_price": 50900,
       "industry": "의약품 제조업",
       "sector": "의약품 제조,도매/부동산 임대",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -744,7 +1771,7 @@
           "url": "https://biz.chosun.com/science-chosun/bio/2026/05/21/O7KT36ARUVCPZOAN4LT3U2XU7M/",
           "source": "조선비즈",
           "published_at": "2026-05-20T23:36:57",
-          "causal_chain": null,
+          "causal_chain": "개발 신약 류마티스관절염 효능 확인 → 한올바이오파마 신약 파이프라인 임상 가치 부각 → 바이오 본업 R&D 모멘텀 직접 수혜.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -965,12 +1992,26 @@
           ],
           "next_trading_day": "2026-05-22"
         }
-      ]
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 50900,
+        "base": 39199,
+        "prices": [
+          50900,
+          50900,
+          50900,
+          50900
+        ]
+      },
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "373110",
       "name": "엑셀세라퓨틱스",
-      "rank": 5,
+      "rank": 9,
       "trade_amount": 408000000,
       "change_pct": 29.94,
       "close_price": 1597,
@@ -979,8 +2020,17 @@
       "low_price": 1597,
       "industry": "기초 의약물질 제조업",
       "sector": "CellCor SFD/CD(세포배양배지)",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -991,7 +2041,7 @@
           "url": "https://www.sedaily.com/article/20043930",
           "source": "서울경제",
           "published_at": "2026-05-14T01:07:42",
-          "causal_chain": null,
+          "causal_chain": "CGT 배양배지 사업에서 축적된 바이오·헬스케어 도메인 역량 기반 → OTC 의약품 중국 수출 사업 본격화(알리 헬스 입점, 연간 활성 사용자 3억+) → 매출 다각화 + 글로벌 유통 채널 확보 모멘텀.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -1213,8 +2263,22 @@
           "next_trading_day": "2026-05-22"
         }
       ],
+      "intraday": {
+        "step_min": 10,
+        "open": 1335,
+        "base": 1229,
+        "prices": [
+          1335,
+          1597,
+          1597,
+          1597
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     }
   ]
 }
