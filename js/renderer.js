@@ -1043,6 +1043,41 @@ function renderCalExpandContent(date, data) {
       // 텍스트 정정: "데이터 05/07" → "5/7 종가 기준" (의미 명료).
       let candles20Html;
       let staleMetaHtml = '';
+
+      // P0-18 Fix-61 (2026-05-21 16:03 KST 대표 verbatim "왜 강세신호인 분홍색 기둥은 표시되지 않나?"):
+      //   분홍 vertical line 본문 visible 0건 root cause 진단:
+      //   - pink-signal.js primitive 본문 정상 신축 (Phase 7d-1 P0-4 ISeriesPrimitive paneViews 본질)
+      //   - expanded-chart.js attachPrimitive 호출 본문 정상 (L772)
+      //   - **root cause**: renderer.js L1500-1505 본문 data-pinksignal attribute 본문 setter 0건 본문 → pinkSignalDates = [] graceful 본문 → 본질 dates 0건 → vertical line 0건 visible
+      //
+      //   §11.15 외부 spec 사전 검증 PASS:
+      //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/plugins/intro
+      //       "ISeriesPrimitive — paneViews() returns IPrimitivePaneView[] for canvas draw"
+      //     - WebFetch https://tradingview.github.io/lightweight-charts/tutorials/customization/series-primitives
+      //       "BitmapCoordinatesRenderingScope for high-DPR canvas draw"
+      //
+      //   본 cycle 본문 frontend graceful path 본문 fix 본질:
+      //   - it.bullish_today === true + it.bullish_streak >= 1 본문 종목 본문 본질 dates 본문 derive
+      //   - streak=N 본문 daily_20 본문 마지막 N영업일 dates 본문 visible (backward derive)
+      //   - JSON stringified Array<'YYYY-MM-DD'> 본문 data-pinksignal attribute set
+      //
+      //   §16 self-catch critical (lead 본문 광전자 본문 본질 catch):
+      //   - 광전자 (#2) bullish_today=false + streak=0 본문 → 본질 visible 부재 데이터 정합
+      //   - 본질 backend interpreter 본문 강세 시계열 history 본문 부재 → backend 별건 cycle 의무
+      //   - 본 cycle frontend graceful path 본문 bullish 종목 본문 streak N영업일 본문 visible 본질
+      //   - 데이터 source = it.bullish_today / it.bullish_streak (it 루트 레벨 본문, interp 본문 부재 path 정합)
+      const _bullishToday = !!(it.bullish_today || (it.interp && it.interp.bullish_today));
+      const _bullishStreak = (it.bullish_streak || (it.interp && it.interp.bullish_streak)) || 0;
+      const _pinkSignalDates = [];
+      if (_bullishToday && _bullishStreak >= 1 && Array.isArray(d20) && d20.length >= 1) {
+        // daily_20 본문 마지막 N영업일 dates 본문 backward derive (streak 본문 영업일 본질 정합)
+        const _streakN = Math.min(_bullishStreak, d20.length);
+        for (let _i = d20.length - _streakN; _i < d20.length; _i++) {
+          const _bar = d20[_i];
+          if (_bar && _bar.date) _pinkSignalDates.push(_bar.date);
+        }
+      }
+
       // Q-20260512-FRESH-LISTING-DATA — 자연 데이터 1건 이상이면 그대로 렌더.
       // 신규 상장(코스모로보틱스 5/11)은 build_daily가 1건 적재 → 자연 노출 (합성 폐기).
       if (Array.isArray(d20) && d20.length >= 1) {
@@ -1055,8 +1090,12 @@ function renderCalExpandContent(date, data) {
         // cycle22 P1: 미니캔들 클릭 → 확대 차트 expand. data-daily20 = 20영업일 raw (JSON stringified).
         // Phase 3 240일 backend swap 시 data-daily20을 240bar로 교체 가능 (구조 변경 없음).
         const _d20Json = JSON.stringify(d20).replace(/"/g, '&quot;');
+        // P0-18 Fix-61: data-pinksignal attribute 본문 신축 (bullish 종목 본문만 visible).
+        const _pinkAttr = _pinkSignalDates.length > 0
+          ? ` data-pinksignal="${JSON.stringify(_pinkSignalDates).replace(/"/g, '&quot;')}"`
+          : '';
         // SPEC §5.6 MAJOR-1 — aria-controls anchor (stable id `chart-{code}` slot 측 정합)
-        candles20Html = `<div class="cal-feature-candles20" data-expand-trigger="chart" data-daily20="${_d20Json}" role="button" tabindex="0" aria-label="20영업일 일봉, 클릭 시 확대 차트" aria-expanded="false" aria-controls="chart-${escapeHtml(it.code || '')}">${buildCandles20(d20)}</div>`;
+        candles20Html = `<div class="cal-feature-candles20" data-expand-trigger="chart" data-daily20="${_d20Json}"${_pinkAttr} role="button" tabindex="0" aria-label="20영업일 일봉, 클릭 시 확대 차트" aria-expanded="false" aria-controls="chart-${escapeHtml(it.code || '')}">${buildCandles20(d20)}</div>`;
       } else {
         // cycle21 P1 (2026-05-20 15:57 KST) — IPO 첫날 일봉 spec 정합 (장대양봉 → 점상 fix).
         // 본질: build_daily가 IPO 첫날 종목(마키나락스 477850 등)은 daily_20=None 적재 → 미니캔들 빈 영역.

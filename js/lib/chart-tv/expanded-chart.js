@@ -371,12 +371,21 @@ function renderChartTV(container, dailyArr, options = {}) {
   let state = options.indicatorState || loadIndicatorState();
 
   // chart instance
+  // P0-18 Fix-59 (2026-05-21 16:03 KST 대표 verbatim "y축의 값들도 폰트를 더 작게 적어줘"):
+  //   layout.fontSize 본문 신축 — chart 전역 본문 font size (default 12 → 9 본문 축소).
+  //   본 옵션 본문 = priceScale (우측 가격 라벨) + timeScale (하단 날짜) + sub-pane priceScale 본문 동시 영향.
+  //   §11.15 외부 spec 사전 검증 PASS:
+  //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/LayoutOptions
+  //       "fontSize - Font size of text on scales in pixels, default 12"
+  //     - chart 본문 전역 본문 textColor / fontFamily / fontSize 본문 동급 옵션 본질
+  //   영웅문 23a74560 reference 본문 우측 priceScale 본문 작은 font 본질 정합 (727,000 / 657,680 / 612,923 등 visible).
   const chart = createChart(main, {
     width: vp.width,
     height: totalHeight,
     layout: {
       background: { color: 'transparent' },
       textColor: 'rgba(0,0,0,0.6)',
+      fontSize: 9,  // P0-18 Fix-59: y축 + 하단 날짜 font 축소 (default 12 → 9)
       panes: {
         separatorColor: 'rgba(0,0,0,0.12)',
         separatorHoverColor: 'rgba(0,0,0,0.2)',
@@ -580,6 +589,14 @@ function renderChartTV(container, dailyArr, options = {}) {
     const signalMap = new Map();
     signal.forEach((p) => { signalMap.set(timeKey(p.time), p.value); });
 
+    // P0-18 Fix-60 (2026-05-21 16:03 KST 대표 verbatim "macd 화살표 역시 훨씬 작게"):
+    //   MACD 골든/데드 cross marker 본문 size 본문 신축 — default 1 → 0.5 본문 축소.
+    //   §11.15 외부 spec 사전 검증 PASS:
+    //     - WebFetch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/SeriesMarkerBar
+    //       "size?: number — optional The optional size of the marker, default 1"
+    //     - v5 SeriesMarkerBar.size 본문 visible 본문 비율 본질 (작을수록 marker 자체 size 본문 작아짐)
+    //   image #16 885ff7ba 본문 MACD sub-pane 본문 빨간 ↑ arrow size 큼 → 0.5 본문 축소 본질 정합.
+    const MARKER_SIZE = 0.5;
     let prevDiff = null;
     for (let i = 0; i < line.length; i++) {
       const lp = line[i];
@@ -597,6 +614,7 @@ function renderChartTV(container, dailyArr, options = {}) {
             position: 'belowBar',
             shape: 'arrowUp',
             color: '#C53939',
+            size: MARKER_SIZE,  // P0-18 Fix-60
           });
         }
         // 데드크로스: prev >= 0 && cur < 0 (MACD line이 signal line 위에서 아래로)
@@ -606,6 +624,7 @@ function renderChartTV(container, dailyArr, options = {}) {
             position: 'aboveBar',
             shape: 'arrowDown',
             color: '#1958C7',
+            size: MARKER_SIZE,  // P0-18 Fix-60
           });
         }
       }
