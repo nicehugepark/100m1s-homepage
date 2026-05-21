@@ -1573,12 +1573,13 @@ function renderCalExpandContent(date, data) {
       const dateParam = urlParams.get('date');
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
-      // OG 메타 HTML 경로로 공유 — 카톡/트위터 크롤러가 종목별 OG 이미지 수집
-      // URL fragment는 현대 브라우저가 한글 raw 허용. 공백/특수문자만 제거.
-      const nameSlug = (name || '').replace(/[\s\/?#%&]/g, '');
-      const hashPart = nameSlug ? `#${nameSlug}` : '';  // fragment는 이름만 (식별 용도)
+      // P0-3 옵션 A (2026-05-21 09:42 KST 대표 직접 발화 catch):
+      //   공유 URL = 단일 페이지 + #stock-{ticker} anchor scroll 본질.
+      //   기존 `/news/stock/{date}/{code}.html` redirect path는 cron pipeline 산출물 부재 시 404.
+      //   feedback_share_url_ticker_only.md 정합 — DOM id `stock-${code}` 본질 매칭 (renderer.js L1165/L1233 일치).
+      const hashPart = code ? `#stock-${code}` : '';
       const shareUrl = dateStr
-        ? `${window.location.origin}/news/stock/${dateStr}/${code}.html${hashPart}`
+        ? `${window.location.origin}/news.html?date=${dateStr}${hashPart}`
         : `${window.location.origin}/news.html${hashPart}`;
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
@@ -1610,6 +1611,37 @@ function renderCalExpandContent(date, data) {
     });
     window._cardShareInit = true;
   }
+
+  // P0-3 옵션 A anchor scroll (2026-05-21 09:42 KST 대표 catch):
+  //   페이지 진입 시 URL hash `#stock-{ticker}` 감지 → 해당 종목카드 scroll.
+  //   본 함수는 카드 렌더 종결 시점 → DOM 본질 보장. swap 분기 (cal-content id 임시 변경) 회피.
+  //   1회만 실행 (window._stockHashScrolled flag). popstate/onCalCellClick은 별건 path.
+  try {
+    const _hashRaw = (window.location.hash || '').replace(/^#/, '');
+    const _hashMatch = /^stock-(\d{6})$/.exec(_hashRaw);
+    if (_hashMatch && !window._stockHashScrolled) {
+      const _ticker = _hashMatch[1];
+      const _calContent = document.getElementById('cal-content');
+      // swap 분기 회피 — id 임시 변경 시 cal-content 부재 → skip
+      if (_calContent) {
+        const _target = document.getElementById('stock-' + _ticker);
+        if (_target) {
+          window._stockHashScrolled = true;
+          // sticky 헤더 offset 고려 — block: 'center' 사용 시 자연스러운 가시성
+          const _prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          // 데이터 로드 완료 직후 layout 안정화 대기 (raf 1프레임)
+          requestAnimationFrame(() => {
+            try {
+              _target.scrollIntoView({ behavior: _prefersReduce ? 'auto' : 'smooth', block: 'center' });
+              // 시각 강조 — 기존 .card-highlight (news.css L1591) 본문 재사용 (2s glow)
+              _target.classList.add('card-highlight');
+              setTimeout(() => _target.classList.remove('card-highlight'), 2400);
+            } catch (_) { /* graceful */ }
+          });
+        }
+      }
+    }
+  } catch (_) { /* graceful — hash 부재/jsdom 미지원 시 */ }
 }
 
 // 공유 버튼 HTML 생성 (SVG 아이콘 + 접근성 속성)
