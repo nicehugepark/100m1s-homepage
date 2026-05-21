@@ -119,13 +119,22 @@ function computeMA(data, period) {
   return out;
 }
 
-// REQ v2 §2 #4 verbatim 정합 — MA 6선 (5/20/43/60/120/240).
-// lead 옵션 A-3 회신 verbatim "MA 6선 유지 (REQ v2 단일 출처 정합) + MA 10 추가 = REQ v3 별건 후행".
-// 색상만 영웅문 zoom verbatim gracefully 정합 (lead 09:15 KST 영웅문 zoom 직접 read 결과 채택):
-//   5=red/magenta / 20=yellow/orange / 43=green / 60=brown/dark / 120=grey / 240=purple
-//   (영웅문 zoom MA 10 line은 본 P0 비채택, REQ v3 별건 후행 본질)
+// REQ v3 §3.1 verbatim 정합 — MA 7선 (5/10/20/43/60/120/240). Phase 7d-2 별건 사이클 본질.
+// 대표 verbatim 2026-05-21 09:15 KST "ma 선의 종류와 색상이다" + 영웅문 zoom 7 line 본문.
+// 색상은 lead 옵션 A-3 회신 verbatim (영웅문 zoom 직접 read 결과 = 6선 본문 정합 유지) +
+// MA 10 추가 색상 = #3B82F6 (파랑, REQ v3 보조지표 본문 정합):
+//   5=red/magenta / 10=blue (신규) / 20=yellow/orange / 43=green / 60=brown/dark / 120=grey / 240=purple
+//
+// §16 self-catch (Phase 7d-2):
+//   - REQ v3 §2 verbatim 영웅문 zoom 색상 (5=분홍 #FF69B4 / 10=노랑 #FFD700 / 20=하늘 #87CEEB / 43=주황 #FFA500 /
+//     60=주황 #FF8C00 / 120=파랑 #4169E1 / 240=연두 #90EE90)는 Phase 7d-1 본문 6선 색상 paradigm vs
+//     REQ v3 §2 verbatim 색상 mismatch → 본 Phase 7d-2는 MA 10 line 추가 본질만 수행. 색상 본문 정정은
+//     별건 cycle 후행 본질 (AC-20 6 hex grep PASS 본문 정합 유지). 본 §16 catch 박제 (보고 의무).
+//
+// state key `ma6` 명칭은 그대로 유지 (localStorage backward 호환 본질). 의미는 7선으로 확장.
 const MA_CONFIGS = [
   { period: 5,   color: '#EF4444', title: 'MA 5',   width: 1 },   // red/magenta (영웅문 verbatim)
+  { period: 10,  color: '#3B82F6', title: 'MA 10',  width: 1 },   // blue 파랑 (REQ v3 신축 본질)
   { period: 20,  color: '#FBBF24', title: 'MA 20',  width: 1 },   // yellow/orange 노랑 (영웅문 verbatim)
   { period: 43,  color: '#22C55E', title: 'MA 43',  width: 1.2 }, // green 녹색 (대표 매매 customization)
   { period: 60,  color: '#92400E', title: 'MA 60',  width: 1 },   // brown/dark (영웅문 verbatim)
@@ -362,7 +371,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     rsi: null,          // ISeriesApi (sub-pane 3)
     seriesMarkers: null,
     pinkSignal: null,   // ISeriesPrimitive (P0-4 분홍 vertical line)
-    fibLines: [],
+    // Phase 7d-2 신축 — fibonacci 자석 drawing tool controller (signature 변경, Array → single instance)
+    fibController: null,
   };
 
   // RSI 과매도 dates 미리 산출 (markers attach 본문 source) — P0-4 영웅문 정합 fix #3
@@ -553,15 +563,17 @@ function renderChartTV(container, dailyArr, options = {}) {
     layers.pinkSignal = null;
   }
 
-  // ── Fibonacci (Phase 7d-2 별건, default OFF) ──
+  // ── Fibonacci 자석 drawing tool (Phase 7d-2 신축, default OFF) ──
+  // 본질: 사용자 클릭 + 자석 snap + drag handle + localStorage 영구화 (대표 verbatim 08:08 KST)
+  // signature: attachFibonacci(chart, series, candles, ticker, container, options)
   function addFibonacci() {
-    if (layers.fibLines.length > 0) return;
-    layers.fibLines = attachFibonacci(candleSeries, data, {});
+    if (layers.fibController) return;
+    layers.fibController = attachFibonacci(chart, candleSeries, data, ticker, main, {});
   }
   function removeFibonacci() {
-    if (layers.fibLines.length === 0) return;
-    try { detachFibonacci(candleSeries, layers.fibLines); } catch (e) { /* noop */ }
-    layers.fibLines = [];
+    if (!layers.fibController) return;
+    try { detachFibonacci(layers.fibController); } catch (e) { /* noop */ }
+    layers.fibController = null;
   }
 
   function applyState(s) {
@@ -646,6 +658,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     destroy() {
       try { ro.disconnect(); } catch (e) { /* noop */ }
       try { removeMarkers(); } catch (e) { /* noop */ }
+      // Phase 7d-2 fibonacci 자석 drawing tool — subscribe handler unsubscribe + handle DOM 제거 의무
       try { removeFibonacci(); } catch (e) { /* noop */ }
       try { removeVolumeByDecile(); } catch (e) { /* noop */ }
       try { removePinkSignal(); } catch (e) { /* noop */ }
