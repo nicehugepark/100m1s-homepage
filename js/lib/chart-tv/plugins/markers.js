@@ -32,11 +32,17 @@ import { createSeriesMarkers } from 'https://cdn.jsdelivr.net/npm/lightweight-ch
 //   분홍 강세 본질 = vertical line primitive (별건 plugins/pink-signal.js 신축)
 //   본 markers.js는 배당락 + RSI 과매도 2종 marker만 처리 (분홍 강세 PINK_SIGNAL_OPTIONS 폐기)
 
+// P0-20 Fix-65 (2026-05-21 17:46 KST 대표 verbatim "macd 화살표를 더 작게"):
+//   본 markers.js 본문 RSI 과매도 arrowDown / 배당락 circle 본문 size 본문 동일 본질 적용 (영웅문 reference 본문 visible 매우 작음 정합).
+//   §11.15 외부 spec 사전 검증 PASS — SeriesMarker.size?: number, default 1 (https://tradingview.github.io/lightweight-charts/docs/api/interfaces/SeriesMarkerBar).
+const MARKER_SIZE = 0.3;
+
 const EX_DIVIDEND_OPTIONS = {
   position: 'belowBar',
   shape: 'circle',
   color: '#6B7A99',
   text: '배당락',
+  size: MARKER_SIZE,
 };
 
 // P0-4 영웅문 정합 fix #3 (2026-05-21 10:01 KST 대표 정정 verbatim):
@@ -50,6 +56,7 @@ const RSI_OVERSOLD_OPTIONS = {
   shape: 'arrowDown',
   color: '#1F2937',  // 영웅문 verbatim 검정 (gracefully gray-900)
   text: '',           // P0-7 fix-11 — 라벨 제거 (화살표만 visible)
+  size: MARKER_SIZE,  // P0-20 Fix-65 — 0.3 본문 축소
 };
 
 /**

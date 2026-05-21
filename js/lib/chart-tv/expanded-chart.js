@@ -537,15 +537,54 @@ function renderChartTV(container, dailyArr, options = {}) {
   //   root cause = native series title 본문 = priceScale 우측 label 본문 visible (P0-16 HTML overlay 추가만 + native title 본문 동시 제거 0건 → 이중 라벨 cascade)
   //   fix = title 빈 string 본문 정정 (HTML overlay 좌측 단독 visible 본문 정합, 영웅문 23a74560 sub-pane 좌측 라벨만 본질 정합)
   //   §11.15 외부 spec 사전 검증 PASS: TradingView v5 series title 빈 string 본문 시 priceScale 우측 label 부재 (WebSearch 2회 corroborating)
+  // P0-20 Fix-69 (2026-05-21 17:46 KST 대표 verbatim "거래대금의 경우 500억 위치에 검정 가로선 항상 표시"):
+  //   거래대금 sub-pane 본문 500억 (= 50,000,000,000 KRW 정수 본문) 가로선 본문 createPriceLine 본문 신축.
+  //   color: '#000000' (영웅문 정합 검정), lineWidth: 1, lineStyle: Solid, axisLabelVisible: false (라벨 없이 가로선만).
+  //   §11.15 외부 spec 사전 검증 PASS — ISeriesApi.createPriceLine(options) 본문 v5 native API.
+  //   §16 self-catch: 한국 거래대금 본문 500억 본문 정수 본문 verbatim — 50_000_000_000 (5e10) 정합.
+  //
+  // P0-20 Fix-70 (2026-05-21 17:46 KST 대표 verbatim "거래대금 y축 값을 최고 거래대금 기준으로 보여주기"):
+  //   기존 priceScaleId: '' (overlay) 본문 → 'tradingValue' 본문 별도 priceScale id 본문 변경.
+  //   별도 priceScale 본문 = 자체 autoScale (default true) 본문 visible range 본문 최고값 기준 본문 정합.
+  //   lastValueVisible: true 본문 명시 — 우측 priceScale 본문 last value 본문 visible (영웅문 정합).
+  //   priceScale scaleMargins 본문 추가 = sub-pane 본문 상단/하단 본문 margin 본문 0.05 (visible 본질 강화).
+  //   §11.15 외부 spec 사전 검증 PASS:
+  //     - WebSearch 2회 corroborating (TradingView Lightweight Charts v5 priceScale autoScale default true)
+  //     - https://tradingview.github.io/lightweight-charts/docs/api/interfaces/PriceScaleOptions
+  //       "autoScale - Automatically set price range based on visible data range, default true"
+  //     - 별도 priceScale id 본문 = pane 본문 별도 visible range 본질 (overlay '' 본문 main pane priceScale 종속 paradigm 회피)
+  //   §16 self-catch: 영웅문 23a74560 본문 우측 priceScale "2,172.71K / 196,768.00" + 3005fbac 본문 "1,096.99K / 739,721.00" 본문 visible 정합.
   function addTradingValue() {
     if (layers.tradingValue) return;
     try {
       layers.tradingValue = chart.addSeries(HistogramSeries, {
         title: '',  // P0-17 Fix-54: native title 본문 제거 (HTML overlay 좌측 단독)
         priceFormat: { type: 'volume' },
-        priceScaleId: '',
+        priceScaleId: 'tradingValue',  // P0-20 Fix-70: '' (overlay) → 별도 priceScale id 본문 (자체 autoScale visible range 본문 기준)
+        lastValueVisible: true,         // P0-20 Fix-70: 우측 last value visible (영웅문 정합)
       }, 1);
       layers.tradingValue.setData(buildTradingValue(data));
+
+      // P0-20 Fix-70: 거래대금 sub-pane priceScale 본문 옵션 본문 명시 — autoScale visible range 본문 기준
+      //   chart.priceScale(id, paneIdx) 본문 v5 native API (id='tradingValue', paneIdx=1).
+      try {
+        chart.priceScale('tradingValue', 1).applyOptions({
+          autoScale: true,
+          scaleMargins: { top: 0.05, bottom: 0.05 },  // sub-pane visible range 본문 최대 본질
+        });
+      } catch (e) { /* noop fallback */ }
+
+      // P0-20 Fix-69: 500억 검정 가로선 본문 createPriceLine 본문 신축 (모든 종목 본문 항상 표시)
+      try {
+        layers.tradingValue.createPriceLine({
+          price: 50_000_000_000,           // 500억 = 5e10 KRW 정수 verbatim (한국 화폐 정수 본질)
+          color: '#000000',                // 영웅문 reference 검정
+          lineWidth: 1,
+          lineStyle: LineStyle.Solid,
+          axisLabelVisible: false,         // 라벨 없이 가로선만 visible (대표 verbatim "검정 가로선 항상 표시" 본질)
+          title: '',
+        });
+      } catch (e) { /* noop fallback */ }
     } catch (err) {
       layers.tradingValue = null;
     }
@@ -596,7 +635,13 @@ function renderChartTV(container, dailyArr, options = {}) {
     //       "size?: number — optional The optional size of the marker, default 1"
     //     - v5 SeriesMarkerBar.size 본문 visible 본문 비율 본질 (작을수록 marker 자체 size 본문 작아짐)
     //   image #16 885ff7ba 본문 MACD sub-pane 본문 빨간 ↑ arrow size 큼 → 0.5 본문 축소 본질 정합.
-    const MARKER_SIZE = 0.5;
+    // P0-20 Fix-65 (2026-05-21 17:46 KST 대표 verbatim "macd 화살표를 더 작게"):
+    //   0.5 → 0.3 본문 추가 축소 (영웅문 23a74560 본문 MACD ↑ arrow visible 매우 작음 정합).
+    //   §11.15 외부 spec 사전 검증 PASS:
+    //     - WebSearch https://tradingview.github.io/lightweight-charts/docs/api/interfaces/SeriesMarkerBar
+    //       "size?: number — optional, default 1" — minimum value 명시 부재, 0.3 본문 visible 보존 본질.
+    //     - default 1 → 0.3 = 70% 축소 본질 (영웅문 reference 본문 visible 정합).
+    const MARKER_SIZE = 0.3;
     let prevDiff = null;
     for (let i = 0; i < line.length; i++) {
       const lp = line[i];
@@ -726,8 +771,17 @@ function renderChartTV(container, dailyArr, options = {}) {
       }, 3);
       layers.rsi.setData(rsiData);
       // P0-9 Fix-23: priceLine title 제거 (영웅문 본문 부재 정보, 임계값 30 line 본문만 visible 본문)
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '' });
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '' });
+      // P0-20 Fix-71 (2026-05-21 17:46 KST 대표 verbatim "rsi 보조지표에서 30.00 y축 값 라벨 삭제"):
+      //   axisLabelVisible: false 본문 명시 — TradingView v5 PriceLineOptions.axisLabelVisible default true 본문 본질.
+      //   §11.15 외부 spec 사전 검증 PASS:
+      //     - https://tradingview.github.io/lightweight-charts/tutorials/how_to/price-line
+      //       "axisLabelVisible: boolean — display label on price axis for the price line"
+      //     - WebSearch corroborating (default true 본문 본질, false 명시 시 우측 priceScale label 부재).
+      //   §16 self-catch: 영웅문 23a74560 + 3005fbac reference 본문 RSI 우측 priceScale "37.15/60.82" "48.54/89.05" 본문 visible
+      //     but 30.00 label 본문 부재 정합. 70.00 label 본문도 부재 (별도 createPriceLine 부재 → 영웅문 정합 보존).
+      //   가로선 본문 visible 보존 (color/lineStyle/lineWidth 본문 그대로) — y축 라벨만 hide 본질.
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: false });
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: false });
 
       // P0-7 fix-9: signal 9 line 본문 신축 — SMA(9) of RSI series
       const signalData = [];
@@ -928,11 +982,16 @@ function renderChartTV(container, dailyArr, options = {}) {
   //     - main pane right priceScale 본문은 visible 유지 (P0-10 Fix-28 minimumWidth:100 본문 정합)
   //     - sub-pane 본문 priceScale 본문 hide 본문 가능 → main pane priceScale 본문 본문 alignment 본문 정합
   try {
-    // 거래대금 sub-pane (paneIdx=1) priceScale visible 본문 hide
+    // 거래대금 sub-pane (paneIdx=1) priceScale visible 본문 본질
+    // P0-20 Fix-70 (2026-05-21 17:46 KST 대표 verbatim "거래대금 y축 값을 최고 거래대금 기준으로 보여주기"):
+    //   P0-10 Fix-30 본문 `lastValueVisible: false` 본문 polic 본문 정정 cascade —
+    //   대표 verbatim 우선 본문 본질 = 거래대금 sub-pane 본문 last value visible 본문 의무 (영웅문 정합).
+    //   addTradingValue() 본문 lastValueVisible:true 본문 명시 본문 본문 정합 → 본 layer 본문 override 본문 폐기.
+    //   priceLineVisible: false 본문 보존 (현재가 dashed line 본문 부재 본질, 가로선만 createPriceLine 본문 직접 control).
     if (layers.tradingValue) {
-      // tradingValue series는 priceScaleId='' (overlay) 본문 정합
-      // P0-10 Fix-30: lastValueVisible 본문 false + priceLineVisible 본문 false 본문 (priceScale label hide)
-      layers.tradingValue.applyOptions({ lastValueVisible: false, priceLineVisible: false });
+      // P0-20 Fix-70 cascade: lastValueVisible 본문 true 본문 보존 (addTradingValue 본문 명시).
+      //   priceLineVisible: false 본문 본문 거래대금 series 본문 last value dashed line 본문 제거 본문 정합.
+      layers.tradingValue.applyOptions({ priceLineVisible: false });
     }
     // MACD sub-pane (paneIdx=2) priceScale label hide
     if (layers.macd) {
@@ -1019,19 +1078,23 @@ function renderChartTV(container, dailyArr, options = {}) {
     label.className = 'cal-chart-tv-subpane-title';
     label.dataset.paneIdx = String(i + 1);
     label.textContent = title;
+    // P0-20 Fix-68 (2026-05-21 17:46 KST 대표 verbatim "하단 보조지표의 이름도 배경이 반투명한 흰색인데 완전 투명하게"):
+    //   background rgba(255,255,255,0.65) → transparent 본문 완전 투명.
+    //   가독성 본문 정합 의무 — text-shadow 흰색 outline 본문 추가 (영웅문 정합 본문 #거래대금/MACD/RSI 좌측 본문 visible 본질).
+    //   §16 self-catch: 영웅문 23a74560 + 3005fbac reference 본문 배경 부재 + 검정 text + 흰색 outline 본문 visible 정합.
     label.style.cssText = [
       'position: absolute',
       'left: 8px',
       'top: 0',
       'font-size: 10px',
       'font-weight: 600',
-      'color: rgba(0,0,0,0.6)',
+      'color: rgba(0,0,0,0.85)',                         // 가독성 본문 강화 (0.6 → 0.85)
       'pointer-events: none',
       'z-index: 10',
       'display: none',
-      'background: rgba(255,255,255,0.65)',
-      'padding: 1px 4px',
-      'border-radius: 2px',
+      'background: transparent',                         // P0-20 Fix-68: 완전 투명
+      'padding: 0',                                      // 배경 부재 본문 정합
+      'text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 2px #fff',  // P0-20 Fix-68: 흰색 outline 본문 가독성 본질
     ].join(';');
     main.style.position = 'relative';  // overlay parent 본문 positioned 본질
     main.appendChild(label);

@@ -467,19 +467,25 @@ class FibonacciDrawingController {
         const label = document.createElement('div');
         label.className = 'cal-chart-tv-fib-price-label';
         label.dataset.fibIdx = String(i);
+        // P0-20 Fix-66 (2026-05-21 17:46 KST 대표 verbatim "피보나치 가격라벨도 훨씬 작게"):
+        //   font-size 10px → 8px 본문 축소 (영웅문 23a74560 본문 "727,000 (1.000)" 매우 작은 글씨 정합).
+        // P0-20 Fix-67 (2026-05-21 17:46 KST 대표 verbatim "가격라벨 바탕의 반투명한 흰색인데 완전 투명하게"):
+        //   background rgba(255,255,255,0.65) → transparent 본문 완전 투명.
+        //   가독성 본문 정합 의무 — text-shadow 본문 흰색 outline 본문 추가 (영웅문 정합 본문 흰색 outline + 검정 text 본질).
+        //   §16 self-catch: 영웅문 23a74560 reference 본문 배경 부재 + 흰색 outline + 검정 text 본문 visible 정합.
         label.style.cssText = [
           'position: absolute',
           'left: 8px',
           'top: 0',
-          'font-size: 10px',
+          'font-size: 8px',                                  // P0-20 Fix-66: 10 → 8
           'font-weight: 600',
-          'color: rgba(0,0,0,0.7)',
+          'color: rgba(0,0,0,0.85)',                         // 가독성 본문 강화 (0.7 → 0.85)
           'pointer-events: none',
           'z-index: 10',
           'display: none',
-          'background: rgba(255,255,255,0.65)',
-          'padding: 1px 4px',
-          'border-radius: 2px',
+          'background: transparent',                         // P0-20 Fix-67: 완전 투명
+          'padding: 0',                                      // P0-20 Fix-67: padding 본문 부재 (배경 부재 본문 정합)
+          'text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 2px #fff',  // P0-20 Fix-67: 흰색 outline 본문 가독성 본질
           'transform: translateY(-50%)',  // y좌표 = 가로선 중앙 정합 본질 (top:y → label 본문 중앙)
           'white-space: nowrap',
         ].join(';');
