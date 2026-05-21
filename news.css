@@ -3196,6 +3196,18 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   overflow: hidden;
   box-shadow: 0 1px 3px var(--g04);
 }
+/* P0-11 Fix-37 (2026-05-21 12:44 KST 대표 verbatim "모바일 버전과 데스크탑 버전을 다르게 가야할거같다"):
+   모바일 본문 별건 layout — margin 12 → 6, padding 12 → 8 본문 축소 (좁은 screen 본문 가용 width 확보).
+   이전: card_width - 48px (margin 24 + padding 24)
+   본 Fix-37 후: card_width - 28px (margin 12 + padding 16)
+   image #10 76d1f57d (갤럭시 S25 412px viewport) 본문 chart inner width 본문 확보 = +20px */
+@media (max-width: 640px) {
+  .cal-feature-chart-expanded {
+    margin: 4px 6px 4px;
+    padding: 8px;
+    border-radius: 6px;
+  }
+}
 .cal-feature-card.chart-expanded .cal-feature-chart-expanded {
   display: block;
   animation: chartExpandIn 250ms cubic-bezier(0.16, 1, 0.3, 1);
