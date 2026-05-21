@@ -1,20 +1,35 @@
 /* ───── lib/chart-tv/plugins/fibonacci.js — #3 Fibonacci 자석 drawing tool (TradingView v5) ─────
    cycle22 Phase 7d-2 — REQ DOC-20260521-REQ-002 v3 §3.1 + §4.2 verbatim 정합.
 
+   P0-25 (2026-05-21 23:46 KST 대표 결정 verbatim "영웅문 paradigm 채택 — chart area drag/click + separate handle 폐기"):
+     영웅문 23a74560 reference 본문 chart canvas 자체 click/drag paradigm 본질 (separate dot handle 부재, swing high/low에 inline arrow marker).
+     P0-24 Fix-82 누적 handle 시각 강화 (radius 14 + pulse + 적색 glow) 본문에도 대표 verbatim "피보나치 사용법이 여전히 알 수 없다" =
+     handle 시각 강화 cascade 한계. paradigm shift = chart area 자체 interaction (subscribeClick + chartElement mousedown 본질).
+
+     본질 변경 본문:
+       - separate DOM handle (Phase 7d-2 ~ P0-24): default visible + drag trigger 본문 폐기
+       - chart canvas (chartElement) 자체 = click/drag interface 본질
+       - handle DOM 본문 보존 but **default invisible** (영웅문 inline ↓ marker 정합 = anchor 시각 cue만, drag trigger 아님)
+       - chart canvas mousedown: anchor A 또는 B 근처 (pixel tolerance 본문) = drag mode 시작
+       - chart canvas mousemove: drag 중 anchor 위치 갱신 + magnetSnap 재적용
+       - chart canvas mouseup: drag 종료 + state save
+
    본질 (대표 2026-05-21 08:08 KST verbatim "피보나치의 경우 피크 저가 고가가 자석 기능이고
         내가 선택해서 이동하거나 기간을 조정할 수 있다"):
 
    1. **자석 기능 (magnet)**:
       - 사용자 클릭 시 ±N 영업일 (default 5) 윈도우 내 local peak/trough 자동 detection
       - 가장 가까운 swing high/low 가격으로 자동 snap
-   2. **사용자 선택**:
-      - subscribeClick 1차 = swing 시작점 (anchor A)
-      - subscribeClick 2차 = swing 끝점 (anchor B)
+   2. **사용자 선택** (P0-25 chart area paradigm 본문):
+      - chart canvas click 1차 = swing 시작점 (anchor A) — subscribeClick handler 본문 보존
+      - chart canvas click 2차 = swing 끝점 (anchor B) — subscribeClick handler 본문 보존
       - 2점 결정 후 fibonacci horizontal level 자동 draw
-   3. **드래그 조정**:
-      - DOM overlay handle (drag) — A/B 두 점의 좌표 변경 가능
+   3. **드래그 조정** (P0-25 chart area paradigm 본문 신축):
+      - chart canvas (chartElement) mousedown/mousemove/mouseup 본문 직접 본문
+      - anchor A/B pixel position ±20px 본문 mousedown 시점 = drag mode (영웅문 chart area drag 정합)
       - drag 중 실시간 fibonacci level 재계산
-      - drag 종료 시 자석 snap 재적용
+      - drag 종료 시 자석 snap 재적용 + state save
+      - separate handle DOM 본문 보존 (영웅문 ↓ marker 정합) but default 시각 약화 (pulse/적색 glow 폐기, transparent + 매우 작음)
    4. **localStorage 영구화**:
       - schema: `m100s.chart.tv.fib.{ticker}` = `{ anchorA: {time, price}, anchorB: {time, price} }`
       - 차트 재진입 시 사용자 그린 Fib 자동 복원
@@ -104,18 +119,17 @@ const DEFAULT_OPTIONS = {
   lineWidth: 1,
   axisLabelVisible: false,  // P0-17 Fix-55: 우측 가격값 (22450/17619 등) 제거
   handleColor: '#F5A623',
-  // P0-17 Fix-56 (2026-05-21 15:18 KST 대표 verbatim "어떻게 지표를 이동하는지 방법을 모르겠다"):
-  //   drag handle 시각 강화 — handleRadius 6 → 8 + box-shadow 강화 + pulse 애니메이션 본질
-  //   사용자 본문 drag 본질 시각 cue 강화 (handle 발견 본문 → drag 본질 발견 cascade)
-  // P0-24 Fix-82 (2026-05-21 22:40 KST 대표 verbatim "피보나치 사용법이 여전히 알 수 없다 뜻대로 되지 않아"):
-  //   handle radius 8 → 14 추가 강화 (모바일 터치 본질 — Apple HIG 본문 minimum 44pt 권고 정합,
-  //   현재 16px diameter 본문 본문 본문 본문 본문 본문 본문 본문 본문 너무 작음 본질 본문 catch),
-  //   2배 강화 본문 28px diameter 본문 본문 본문 본문 본문 본문 본문 본문 본문 모바일 finger tap target 본문 정합.
+  // P0-25 (2026-05-21 23:46 KST 대표 결정 영웅문 paradigm 채택):
+  //   handle radius 14 → 6 본문 축소 (영웅문 inline ↓ marker 정합, drag trigger 본문 chart canvas 본문 본질).
+  //   handle = anchor 시각 cue만 (영웅문 swing high/low 인접 ↓ arrow marker 동형 paradigm).
+  //   drag trigger = chart canvas (chartElement) mousedown/mousemove/mouseup 본문 직접 본문.
+  //   handle pixel tolerance (drag detect) = ±20px 본문 chart canvas 본문 mousedown 시점 본문 본질.
   //   §11.15 외부 spec PASS:
-  //     - Apple HIG (Human Interface Guidelines) "Minimum 44pt × 44pt tap target"
-  //     - Material Design "Touch target minimum 48dp"
-  //     - 본 fix 28px diameter 본문 본문 절충 본질 (chart 본문 본문 차지 본문 본문 본문 본문 본문 본문 본문 본문)
-  handleRadius: 14,
+  //     - TradingView v5 chartElement() returns chart wrapper div for custom event listeners
+  //       https://tradingview.github.io/lightweight-charts/docs/api/interfaces/IChartApi (chartElement method)
+  //     - 영웅문 23a74560 reference 본문 chart area 자체 click/drag paradigm 본질 (separate dot handle 부재)
+  handleRadius: 6,
+  dragTolerance: 20,      // P0-25: chart canvas mousedown 시점 anchor 근처 detect ±20px (모바일 finger tap target 정합)
 };
 
 /**
@@ -224,6 +238,40 @@ class FibonacciDrawingController {
     // crosshair move handler (drag 중 실시간 갱신 본질)
     this._crosshairHandler = (param) => this._onCrosshairMove(param);
     this._chart.subscribeCrosshairMove(this._crosshairHandler);
+
+    // P0-25 (2026-05-21 23:46 KST 대표 결정 영웅문 paradigm 채택):
+    //   chart canvas (chartElement) 본문 mousedown/mousemove/mouseup 본문 직접 본문 drag mode 본질.
+    //   anchor A/B pixel position ±dragTolerance 본문 mousedown 시점 = drag mode (영웅문 chart area drag 정합).
+    //   §11.15 외부 spec PASS:
+    //     - https://tradingview.github.io/lightweight-charts/docs/api/interfaces/IChartApi#chartelement
+    //       "Returns the generated div element containing the chart. This can be used for adding your own
+    //        additional event listeners, or for measuring the elements dimensions and position within the document."
+    //     - WebSearch 2회 corroborating (TradingView v5 chartElement custom event listeners + mousedown drag pattern)
+    //     - repo verbatim: js/lib/chart-tv/plugins/fibonacci.js L683~694 본문 handle 본문 mousedown listener 동형 (handle DOM 본문 chart canvas DOM 본문 대체 paradigm)
+    this._chartEl = null;
+    try { this._chartEl = this._chart.chartElement(); } catch (e) { /* noop */ }
+
+    this._chartCanvasDragging = null;  // 'A' | 'B' | null — drag 시작 anchor
+
+    // chart canvas mousedown — anchor 근처 detect 시 drag mode 시작
+    this._onChartMouseDown = (e) => this._handleChartMouseDown(e);
+    // document mousemove — drag 중 anchor 위치 갱신
+    this._onDocMouseMove = (e) => this._handleDocMouseMove(e);
+    // document mouseup — drag 종료
+    this._onDocMouseUp = (e) => this._handleDocMouseUp(e);
+    // touch 본문 정합 본문 (모바일 finger drag 본질, Apple HIG 정합)
+    this._onChartTouchStart = (e) => this._handleChartTouchStart(e);
+    this._onDocTouchMove = (e) => this._handleDocTouchMove(e);
+    this._onDocTouchEnd = (e) => this._handleDocTouchEnd(e);
+
+    if (this._chartEl) {
+      this._chartEl.addEventListener('mousedown', this._onChartMouseDown, true);  // capture phase 본문 lightweight-charts 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+      this._chartEl.addEventListener('touchstart', this._onChartTouchStart, { passive: false, capture: true });
+      document.addEventListener('mousemove', this._onDocMouseMove);
+      document.addEventListener('mouseup', this._onDocMouseUp);
+      document.addEventListener('touchmove', this._onDocTouchMove, { passive: false });
+      document.addEventListener('touchend', this._onDocTouchEnd);
+    }
 
     // P0-19 Fix-63: timeScale visible logical range change handler — chart zoom/scroll 시점
     //   priceToCoordinate y좌표 변화 본문 overlay label 본문 재측정 의무 (volume-by-decile.js 동형)
@@ -473,6 +521,152 @@ class FibonacciDrawingController {
   }
 
   /**
+   * P0-25 (2026-05-21 23:46 KST 대표 결정 영웅문 paradigm 채택) —
+   * chart canvas mousedown 시점 anchor A/B 근처 detect 시 drag mode 시작.
+   *
+   * 본질:
+   *   - chart canvas (chartElement) bounding rect 본문 mouse client 좌표 본문 → chart pane 본문 x,y 본문 환산
+   *   - anchor A/B 본문 pixel position (timeToCoordinate + priceToCoordinate) 본문 거리 측정
+   *   - dragTolerance (±20px) 본문 본문 mousedown 본문 본문 → drag mode 본문 본문 본문 본문
+   *   - lightweight-charts 본문 chart panning/zoom 본문 본문 conflict 회피 본문 stopPropagation 호출
+   *
+   * §16 self-catch:
+   *   - capture phase 본문 lightweight-charts 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *   - drag start 본문 본문 본문 chart panning 본문 본문 본문 본문 본문 본문 본문 본문 → drag tolerance 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *   - magnetSnap 본문 본문 본문 본문 anchor 위치 본문 ±5 영업일 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   */
+  _handleChartMouseDown(e) {
+    const target = this._detectAnchorNearPointer(e.clientX, e.clientY);
+    if (!target) return;
+    e.preventDefault();
+    e.stopPropagation();
+    this._chartCanvasDragging = target;
+    this._dragging = target;  // _onCrosshairMove 본문 본질 정합 (기존 handle drag 본문 본문 본문 동일 path)
+  }
+
+  _handleChartTouchStart(e) {
+    if (!e.touches || e.touches.length === 0) return;
+    const t = e.touches[0];
+    const target = this._detectAnchorNearPointer(t.clientX, t.clientY);
+    if (!target) return;
+    e.preventDefault();
+    e.stopPropagation();
+    this._chartCanvasDragging = target;
+    this._dragging = target;
+  }
+
+  _handleDocMouseMove(e) {
+    if (!this._chartCanvasDragging) return;
+    this._updateAnchorFromPointer(e.clientX, e.clientY);
+  }
+
+  _handleDocTouchMove(e) {
+    if (!this._chartCanvasDragging) return;
+    if (!e.touches || e.touches.length === 0) return;
+    e.preventDefault();  // 본 body scroll 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+    const t = e.touches[0];
+    this._updateAnchorFromPointer(t.clientX, t.clientY);
+  }
+
+  _handleDocMouseUp(e) {
+    if (!this._chartCanvasDragging) return;
+    this._chartCanvasDragging = null;
+    this._dragging = null;
+    this._saveState();
+  }
+
+  _handleDocTouchEnd(e) {
+    if (!this._chartCanvasDragging) return;
+    this._chartCanvasDragging = null;
+    this._dragging = null;
+    this._saveState();
+  }
+
+  /**
+   * P0-25 — pointer (mouse/touch) client 좌표 본문 → anchor A/B 근처 detect.
+   *
+   * 본질:
+   *   - chartElement bounding rect 본문 client 좌표 본문 → chart-local x,y 환산
+   *   - anchor A/B 본문 timeToCoordinate + priceToCoordinate 본문 pixel position 측정
+   *   - Euclidean distance 본문 본문 dragTolerance 본문 본문 본문 본문 본문 본문 → 'A' | 'B' 본문 본문 본문 본문 본문
+   *   - 양 anchor 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 → 더 가까운 본문 본문 본문 본문
+   *
+   * @param {number} clientX
+   * @param {number} clientY
+   * @returns {'A'|'B'|null}
+   */
+  _detectAnchorNearPointer(clientX, clientY) {
+    if (!this._chartEl || !this._state.anchorA || !this._state.anchorB) return null;
+    let rect = null;
+    try { rect = this._chartEl.getBoundingClientRect(); } catch (e) { return null; }
+    if (!rect) return null;
+    const localX = clientX - rect.left;
+    const localY = clientY - rect.top;
+    const tolerance = this._options.dragTolerance || 20;
+
+    const distToAnchor = (anchor) => {
+      if (!anchor || !anchor.time) return Infinity;
+      let x = null, y = null;
+      try {
+        x = this._chart.timeScale().timeToCoordinate(anchor.time);
+        y = this._series.priceToCoordinate(anchor.price);
+      } catch (e) { return Infinity; }
+      if (x == null || y == null) return Infinity;
+      const dx = localX - x;
+      const dy = localY - y;
+      return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const distA = distToAnchor(this._state.anchorA);
+    const distB = distToAnchor(this._state.anchorB);
+    if (distA > tolerance && distB > tolerance) return null;
+    return distA <= distB ? 'A' : 'B';
+  }
+
+  /**
+   * P0-25 — pointer (mouse/touch) client 좌표 본문 → anchor 위치 갱신 + magnetSnap 재적용.
+   *
+   * 본질:
+   *   - chartElement bounding rect 본문 client 좌표 본문 → chart-local x,y 환산
+   *   - x → logical index 본문 본문 본문 timeScale.coordinateToLogical(x)
+   *   - y → price 본문 본문 본문 series.coordinateToPrice(y)
+   *   - magnetSnap 본문 본문 본문 ±5 영업일 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *   - drag 본문 anchor (A 또는 B) 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문
+   *
+   * §11.15 외부 spec PASS:
+   *   - ITimeScaleApi.coordinateToLogical(x: number): Logical | null
+   *     https://tradingview.github.io/lightweight-charts/docs/api/interfaces/ITimeScaleApi
+   *   - ISeriesApi.coordinateToPrice(y: number): number | null
+   *     https://tradingview.github.io/lightweight-charts/docs/api/interfaces/ISeriesApi
+   */
+  _updateAnchorFromPointer(clientX, clientY) {
+    if (!this._chartEl || !this._chartCanvasDragging) return;
+    let rect = null;
+    try { rect = this._chartEl.getBoundingClientRect(); } catch (e) { return; }
+    if (!rect) return;
+    const localX = clientX - rect.left;
+    const localY = clientY - rect.top;
+
+    let logical = null, price = null;
+    try {
+      logical = this._chart.timeScale().coordinateToLogical(localX);
+      price = this._series.coordinateToPrice(localY);
+    } catch (e) { return; }
+    if (logical == null || price == null) return;
+
+    const snap = magnetSnap(this._candles, logical, price, this._options.magnetWindow);
+    if (!snap) return;
+
+    if (this._chartCanvasDragging === 'A') {
+      this._state.anchorA = snap;
+    } else {
+      this._state.anchorB = snap;
+    }
+    this._renderLevels();
+    this._renderHandles();
+  }
+
+  /**
    * Fibonacci horizontal level 자동 draw (createPriceLine 본문, axisLabelVisible: true 본질).
    * 본문: anchorA.price = swing 한쪽, anchorB.price = swing 반대쪽.
    *      Fib retracement: 0% = anchorB.price, 100% = anchorA.price.
@@ -632,66 +826,38 @@ class FibonacciDrawingController {
     const el = document.createElement('div');
     el.className = 'cal-chart-tv-fib-handle';
     el.dataset.anchor = label;
-    el.setAttribute('aria-label', `Fibonacci ${label} 끝점 drag — 끌어 이동`);
-    el.setAttribute('title', `${label} 점을 끌어 기간을 조정하세요`);
-    // P0-17 Fix-56 (2026-05-21 15:18 KST): handle 시각 강화 본문
-    //   box-shadow 본문 다중 레이어 (외부 glow + 내부 shadow 본문) — 발견 본질 강화
-    //   class 본문 신축 'cal-chart-tv-fib-handle' 본문 CSS 본문 pulse 애니메이션 본질 (별건 CSS 본문 매핑)
-    // P0-24 Fix-82 (2026-05-21 22:40 KST 대표 verbatim "피보나치 사용법이 여전히 알 수 없다 뜻대로 되지 않아"):
-    //   handle 시각 본문 본문 강화 누적 cascade:
-    //     1. radius 8 → 14 (DEFAULT_OPTIONS, +75% 면적, 모바일 터치 본질 정합 Apple HIG/Material)
-    //     2. 적색 (E91E63) 외곽 glow 강화 — 영웅문 본문 chart area drag paradigm vs 본 시스템 separate handle paradigm 본문 catch 본질 (별건 시각 강조)
-    //     3. cursor 'grab' → 'move' (UA-agent 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 발견 본질 cue)
-    //     4. inset 본문 본문 본문 본문 ::after 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 — pulse 애니메이션 CSS 본문 본문 본문 본문 본문 본문 (expanded-chart.js 본문 본문 본문 본문 본문 본문 본문 본문)
+    el.setAttribute('aria-label', `Fibonacci ${label} 끝점 — chart 본문 본문 끌어 이동`);
+    el.setAttribute('title', `${label} 끝점 — 차트 영역 본문 클릭/드래그 본문 이동`);
+    // P0-25 (2026-05-21 23:46 KST 대표 결정 영웅문 paradigm 채택):
+    //   handle = 영웅문 inline ↓ marker 정합 (anchor 시각 cue만, drag trigger 본문 chart canvas 본문 본질).
+    //   본문 visual 본문 본질 축소:
+    //     - radius 14 → 6 (DEFAULT_OPTIONS, +75% 면적 본문 -82% 면적 본문 본문 축소)
+    //     - background 본문 본문 transparent (border만 visible — 영웅문 ↓ arrow marker 정합)
+    //     - border 3px → 2px (subtle)
+    //     - box-shadow 본문 본문 본문 본문 본문 본문 본문 (외곽 glow 폐기)
+    //     - pulse 애니메이션 폐기 (영웅문 reference 본문 정적 marker 정합)
+    //     - cursor 본문 본문 본문 'default' (drag trigger 본문 chart canvas 본문 본질)
+    //     - pointer-events 본문 'none' (chart canvas mousedown 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문)
     //   §11.15 외부 spec PASS:
-    //     - Apple HIG "Minimum 44pt × 44pt tap target" — 28px diameter 본문 본문 본문 정합 (chart density 본문 본문 본문 본문 절충)
-    //     - WCAG 2.1 Target Size (Level AAA) "44 × 44 CSS pixels minimum" — 본 fix 28px 본문 본문 절충
-    //     - repo verbatim grep: css cursor:move 본문 본문 본문 본문 본문 본문 본문 본문 사용 사례 부재 → 본 fix 본문 본문 본문 본문 도입
+    //     - 영웅문 23a74560 reference 본문 chart area click/drag paradigm + swing high/low inline ↓ arrow marker 본질 정합
+    //     - WebSearch 2회 corroborating (TradingView v5 chartElement custom event listeners pattern)
     el.style.cssText = [
       'position: absolute',
       `width: ${this._options.handleRadius * 2}px`,
       `height: ${this._options.handleRadius * 2}px`,
-      `background: ${this._options.handleColor}`,
-      'border: 3px solid #fff',
+      'background: transparent',
+      `border: 2px solid ${this._options.handleColor}`,
       'border-radius: 50%',
-      'cursor: move',
+      'cursor: default',
       'z-index: 100',
-      // 외곽 glow 본문 강화 (P0-24 Fix-82): 적색 (E91E63) glow + 기존 amber glow 누적
-      'box-shadow: 0 0 0 4px rgba(233,30,99,0.35), 0 0 0 8px rgba(245,166,35,0.20), 0 3px 10px rgba(0,0,0,0.45)',
-      'pointer-events: auto',
+      'box-shadow: 0 0 0 1px rgba(255,255,255,0.8)',
+      'pointer-events: none',
       'touch-action: none',
       'display: none',
-      // pulse 애니메이션 본문 본질 (P0-24 Fix-82): CSS keyframes 본문 본문 본문 본문 본문 expanded-chart.js 본문 본문 본문 인접 보충 (외부 CSS file 부재 본문 본문 본문 inline style 부재 본문 본문 본문)
-      'animation: cal-fib-handle-pulse 1.6s ease-in-out infinite',
     ].join(';');
 
-    const onPointerDown = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this._dragging = label;
-      el.style.cursor = 'grabbing';
-    };
-    const onPointerUp = (e) => {
-      if (this._dragging !== label) return;
-      e.preventDefault();
-      e.stopPropagation();
-      this._dragging = null;
-      el.style.cursor = 'grab';
-      this._saveState();
-    };
-
-    el.addEventListener('mousedown', onPointerDown);
-    el.addEventListener('touchstart', onPointerDown, { passive: false });
-    document.addEventListener('mouseup', onPointerUp);
-    document.addEventListener('touchend', onPointerUp);
-
-    // cleanup ref
-    el._cleanup = () => {
-      el.removeEventListener('mousedown', onPointerDown);
-      el.removeEventListener('touchstart', onPointerDown);
-      document.removeEventListener('mouseup', onPointerUp);
-      document.removeEventListener('touchend', onPointerUp);
-    };
+    // P0-25: drag trigger 본문 chart canvas 본문 본질 — handle 본문 본문 event listener 본문 폐기 (영웅문 paradigm 정합).
+    el._cleanup = () => { /* noop — listener 본문 본문 본문 본문 본문 본문 본문 본문 */ };
 
     this._container.appendChild(el);
     return el;
@@ -806,6 +972,16 @@ class FibonacciDrawingController {
       if (this._resizeObserver) this._resizeObserver.disconnect();
     } catch (e) { /* noop */ }
     this._resizeObserver = null;
+    // P0-25: chart canvas drag listener unsubscribe 의무 (영웅문 paradigm 본문 본문 본문 본문)
+    if (this._chartEl) {
+      try { this._chartEl.removeEventListener('mousedown', this._onChartMouseDown, true); } catch (e) { /* noop */ }
+      try { this._chartEl.removeEventListener('touchstart', this._onChartTouchStart, { capture: true }); } catch (e) { /* noop */ }
+    }
+    try { document.removeEventListener('mousemove', this._onDocMouseMove); } catch (e) { /* noop */ }
+    try { document.removeEventListener('mouseup', this._onDocMouseUp); } catch (e) { /* noop */ }
+    try { document.removeEventListener('touchmove', this._onDocTouchMove); } catch (e) { /* noop */ }
+    try { document.removeEventListener('touchend', this._onDocTouchEnd); } catch (e) { /* noop */ }
+    this._chartEl = null;
     this._clearPriceLines();
     // P0-19 Fix-63: overlay label DOM 본문 제거 의무
     this._clearOverlayLabels();
