@@ -1,4 +1,4 @@
-const CACHE_NAME = 'news-v239';
+const CACHE_NAME = 'news-v240';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
@@ -16,7 +16,6 @@ const STATIC_ASSETS = [
   '/js/lib/chart-tv/expanded-chart.js',
   '/js/lib/chart-tv/toggle-panel.js',
   '/js/lib/chart-tv/plugins/fibonacci.js',
-  '/js/lib/chart-tv/plugins/ichimoku.js',
   '/js/lib/chart-tv/plugins/volume-by-decile.js',
   '/js/lib/chart-tv/plugins/markers.js',
   '/js/lib/chart-tv/plugins/pink-signal.js',

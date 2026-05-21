@@ -1,22 +1,30 @@
-/* ───── lib/chart-tv/expanded-chart.js — Phase 7d-1 TradingView v5 wrapper (보조지표 정정 통합본) ─────
-   cycle22 Phase 7d-1 — REQ DOC-20260521-REQ-001 v2 verbatim 정합.
+/* ───── lib/chart-tv/expanded-chart.js — Phase 7d-1 + P0-16 TradingView v5 wrapper (보조지표 정정 통합본) ─────
+   cycle22 P0-16 — REQ DOC-20260521-REQ-001 v3 verbatim 정합 (일목 제거 + 피보 visible + sub-pane title 좌측).
 
-   본질 (대표 정정 cumulative 6회 박제 정합):
-   - 9 확정 (캔들 base + MA 6선 + 일목 구름 + 매물대 화면 가변 + 거래대금/MACD/RSI sub-pane + 분홍/배당락 marker)
-   - 5 제거 (거래량 sub-pane #10 + Stochastic #11 + OBV #13 + Volume Profile #12 + 일목 Tenkan/Kijun/Chikou)
-   - 피보나치 = Phase 7d-2 별건 후행 (본 Phase 7d-1 OFF default 유지, createPriceLine 3선 helper만 보존)
+   본질 (대표 2026-05-21 14:57 KST verbatim
+     "일목균형표는 도저히 안되겠다 제거해줘. 그리고 피보나치 이어서 계속 해줘 화면에 표시되지도 않아.
+      그리고 하단지표의 지표 이름 라벨도 좌측 구석으로 위치를 바꿔줘"):
+   - **일목 본문 제거** (ichimoku.js git rm + import/state/whitespace future data 본문 모두 폐기) — destructive ack 본질
+   - **피보 visible 본문 default ON + auto-anchor** (대표 verbatim "이어서 계속 화면에 표시되지도 않아" 본질)
+     - root cause = drawing tool 본문 사용자 2회 클릭 의무 → 화면 visible 0건 (anchor A/B 미설정 본질)
+     - fix = chip default ON + 가시 영역 hi/lo 본문 auto-anchor (사용자 후속 drag 가능)
+   - **sub-pane title 좌측 본문** (영웅문 23a74560 본문 정합)
+     - root cause = TradingView v5 `title` 옵션 본문 = priceScale **우측** label 본질 (native API 좌측 미지원)
+     - fix = HTML overlay 본문 신축 (chart-tv-main DOM 위 absolute positioned `<div>` 본문 paneIdx별 Y 좌표 + 좌측 8px)
+     - §11.15 외부 spec 사전 검증 PASS — v5 IPaneApi.getHTMLElement() / PaneApi.paneIndex() 본문 paneIdx 좌표 측정 본질
 
-   §11.15 외부 spec 사전 검증 (WebSearch 2건 + 공식 docs 1건 PASS):
+   §11.15 외부 spec 사전 검증 (WebSearch ≥2회 + 공식 docs PASS):
+   - https://tradingview.github.io/lightweight-charts/docs/series-types
+     "title property — displayed on the label next to the last value label" (우측 priceScale 본문 native)
    - https://tradingview.github.io/lightweight-charts/tutorials/how_to/panes
-     "chart.addSeries(SeriesType, options, paneIndex) — 3rd positional arg is pane index"
-   - SPEC v6 §3.4 verbatim `pane: 1` options key 형태는 v5 실제 API와 mismatch (§16 self-catch #1)
-   - 본 wrapper는 공식 docs verbatim 3번째 positional 인자 채택
+     "PaneApi.getHTMLElement() — returns DOM element of pane (or null if not created)"
+   - HTML overlay 본문 = chart-tv-main 본문 absolute position div, paneIdx별 top 좌표 본문 측정 본질
 
-   §16 self-catch (Phase 7d-1):
-   1. SPEC v6 §3.4 `pane: 1` options key → 공식 docs `addSeries(Type, opts, paneIdx)` 3번째 positional 인자 정정 (자율 채택, SPEC 갱신 별건 후행)
-   2. INDICATOR_META 13종 → INDICATOR_CHIPS 9종 (toggle-panel.js 이관, 제거 5종 chip 없음)
-   3. volumeProfile (#12) 제거 — import + state + 호출 layer 모두 삭제
-   4. ichimoku.js plugin 본문 정정 채택 (Tenkan/Kijun/Chikou draw 제거, senkouA/B + cloud만)
+   §16 self-catch (P0-16):
+   1. 일목 본문 제거 시 future whitespace data 본문 (SHIFT_FUTURE=26) 본질 자체가 일목 cloud 미래 영역 visible용 → 통째 제거 본질 정합
+   2. addBusinessDays helper 본문 ichimoku.js export → 일목 제거 cascade로 본 helper 본문 호출처 0건 (자기 검증 PASS)
+   3. 피보 default ON 본문 = drawing tool paradigm 보존 + 가시 영역 hi/lo auto-anchor 본문 보강 (대표 verbatim "이어서 계속")
+   4. HTML overlay 본문 paneIdx별 Y 좌표 측정 = pane separator 본문 동적 layout 본질 + ResizeObserver 본문 재측정 의무
 */
 
 import {
@@ -29,9 +37,9 @@ import {
   createSeriesMarkers,
 } from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
 
-// Phase 7d-1 정정 plugin 4종 + Phase 7d-1 P0-4 분홍 강세 vertical line primitive + 토글 panel
+// P0-16 Fix-50 — 일목 import 제거 (ichimoku.js git rm cascade, addBusinessDays helper 폐기)
+// Phase 7d-1 정정 plugin 3종 + Phase 7d-1 P0-4 분홍 강세 vertical line primitive + 토글 panel
 import { attachFibonacci, detachFibonacci } from './plugins/fibonacci.js';
-import { IchimokuCustomSeries, buildIchimokuData, addBusinessDays } from './plugins/ichimoku.js';
 import { VolumeByDecilePrimitive } from './plugins/volume-by-decile.js';
 import { attachMarkers, detachMarkers } from './plugins/markers.js';
 import { PinkSignalPrimitive } from './plugins/pink-signal.js';
@@ -89,16 +97,21 @@ function getViewportSize(container) {
 // lead 옵션 A-3 회신 verbatim (2026-05-21 09:15:50 KST 대표 추가 정정):
 // "그리고 하단 지표인 거래대금 rsi macd는 토글뱌튼 필요없이 기본 출력이야"
 // → 거래대금/MACD/RSI = base 영구 ON (사용자 toggle 불가, chip 부재). DEFAULT_INDICATORS 본문 외 정합.
-// 토글 chip 본질 = 6 chip (MA + 일목 + 매물대 + 분홍 + 배당락 + 피보 Phase 7d-2).
-// MA = REQ v2 §2 #4 verbatim 6선 (5/20/43/60/120/240) 유지. MA 10 = REQ v3 별건 후행.
+//
+// P0-16 Fix-50 본문 (2026-05-21 14:57 KST 대표 verbatim "일목균형표는 도저히 안되겠다 제거해줘"):
+//   토글 chip 본질 = **5 chip** (MA + 매물대 + 분홍 + 배당락 + 피보 — 일목 chip 제거 본질).
+// P0-16 Fix-51 본문 (대표 verbatim "피보나치 이어서 계속 해줘 화면에 표시되지도 않아"):
+//   fibonacci default = **true** (drawing tool default ON + 가시 영역 hi/lo auto-anchor 본문 정합).
+//
+// MA = REQ v2 §2 #4 verbatim 7선 (5/10/20/43/60/120/240) 유지.
 const DEFAULT_INDICATORS = {
-  ma6: true,             // #4 MA 6선 (5/20/43/60/120/240) — chip
-  ichimoku: true,        // #5 일목 (구름만, forward shift +26) — chip
+  ma6: true,             // #4 MA 7선 (5/10/20/43/60/120/240) — chip
   volumeByDecile: true,  // #1 매물대 화면 가변 — chip
   pinkSignal: true,      // #2 분홍 강세 marker — chip
   exDividend: true,      // #6 배당락 marker — chip
-  fibonacci: false,      // #3 Fibonacci (Phase 7d-2 별건, OFF default) — chip
+  fibonacci: true,       // #3 Fibonacci (P0-16 Fix-51: default ON + auto-anchor 본문) — chip
   // 하단 sub-pane 3종 (tradingValue/macd/rsi) = base 영구 ON (chip 부재). state 본문 외 layer 본질.
+  // (일목 제거 P0-16 Fix-50 cascade)
 };
 
 function loadIndicatorState() {
@@ -436,47 +449,18 @@ function renderChartTV(container, dailyArr, options = {}) {
     priceLineStyle: 2, // Dashed
     priceFormat: KRW_PRICE_FORMAT,  // P0-13 Fix-45: 한국 화폐 정수 본문 정합
   });
-  // P0-15 Fix-49 (2026-05-21 14:35 KST §11.15 외부 spec 결정적 cross-check 본질):
-  //   P0-14b Fix-48 fitContent 폐기 후 잔존 결함 — cloud 우측 미래 visible 0건 라이브 결정적 catch.
-  //   root cause = TradingView v5 time scale 본문 candle series의 logical index만 인식 본문 본질.
-  //   ichimoku custom series가 N+SHIFT logical index data 본문 setData 본문 등록 시도 but
-  //   candle series N=240 본문 time scale union 본문 effective range = N-1=239 본문 clip 본문.
-  //   → setVisibleLogicalRange({to: N-1+26=265}) 본문 candle series N-1=239 본문 clip → 미래 cloud visible 부재.
-  //
-  // §11.15 외부 spec 결정적 cross-check 3중 corroborating (WebSearch 2회 + WebFetch + github discussion 1462):
-  //   - "whitespace data should be added to your candle series itself, not a separate custom series.
-  //      This ensures the time scale properly recognizes and renders the future logical indices"
-  //     (github tradingview/lightweight-charts discussion #1462 verbatim)
-  //   - TradingView v5 WhitespaceData = { time } 본문만 본질 (OHLC undefined → 자동 whitespace 본문)
-  //   - candle series 본문 setData(Array<CandlestickData | WhitespaceData>) 본문 v5 native 지원 (mixed types)
-  //   - WhitespaceData 본문 time scale logical index 등록 PASS but 본문 candle body 본문 draw 0건 본질
-  //
-  // Fix 옵션 D 채택 (WebSearch evidence 기반 신규 옵션, 옵션 A/B/C 본문 본질 회피):
-  //   - candleSeries.setData(actual_candles + future_whitespace[SHIFT=26])
-  //   - future_whitespace[k] = { time: addBusinessDays(lastTime, k) } (k ∈ [1, SHIFT])
-  //   - time scale union 본문 effective range = candle N + whitespace SHIFT = N+26 본질
-  //   - setVisibleLogicalRange({to: N-1+SHIFT=265}) 본문 effective 본질 정합 (clip 회피)
-  //   - ichimoku.js outLen = N + SHIFT 본문 본질 정합 (buildIchimokuData 본문 변경 부재, 미래 영역 senkouA/B plot 본문 정합)
-  //
-  // 영웅문 정합 결정적 PASS (3005fbac/23a74560 본문 직접 read evidence):
-  //   - 영웅문 우측 미래 영역 = empty bars (candle 부재) + cloud only visible
-  //   - 본 fix-49 candle series WhitespaceData 본문 = empty bars 본문 정합 + ichimoku cloud forward shift +26 본문 visible 정합
-  const SHIFT_FUTURE = 26;
-  const candleDataWithFuture = data.map((d) => ({
+  // P0-16 Fix-50 (2026-05-21 14:57 KST 대표 verbatim "일목균형표는 도저히 안되겠다 제거해줘"):
+  //   P0-15 Fix-49 future whitespace 본문 (SHIFT_FUTURE=26)은 일목 cloud 미래 영역 visible용 본질.
+  //   일목 제거 cascade로 future whitespace 본문 자체 폐기 → candle series 본문 actual candles only 정합.
+  //   영웅문 23a74560 본문 cloud 부재 = 현시 candle 영역만 visible 정합 (피보 horizontal line 본문 visible 보존).
+  candleSeries.setData(data.map((d) => ({
     time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
-  }));
-  if (data.length > 0) {
-    const lastTime = data[data.length - 1].time;
-    for (let k = 1; k <= SHIFT_FUTURE; k++) {
-      candleDataWithFuture.push({ time: addBusinessDays(lastTime, k) });
-    }
-  }
-  candleSeries.setData(candleDataWithFuture);
+  })));
 
   // ─── 모든 plugin/series instance 보관 (toggle 시 add/remove) ───
+  // P0-16 Fix-50: ichimoku layer 제거 (일목 plugin git rm cascade)
   const layers = {
     ma6: [],            // Array<ISeriesApi>
-    ichimoku: null,     // ICustomSeriesApi
     volumeByDecile: null, // ISeriesPrimitive
     tradingValue: null, // ISeriesApi (sub-pane 1)
     macd: null,         // { line, signal, hist }
@@ -515,34 +499,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     layers.ma6 = [];
   }
 
-  // ── 일목 (구름만) ──
-  // P0-7 fix-4 (2026-05-21 10:55 KST 대표 verbatim
-  //   "일목균형표 역시 오류가 있는 것 같다. 너무 상단에 얇게 그려지는데 차트 위치와 너무 안맞아"):
-  //   root cause 진단 본질 = ICustomSeries 본문 default priceScale 본문 candle series와 mismatch
-  //   → priceScaleId 본문 'right' 명시 (candle series와 동일 priceScale share 본질)
-  //   → priceLineVisible:false + lastValueVisible:false 본문 정합 (legend 본문 회피)
-  //   §11.15 외부 spec 사전 검증 — ICustomSeries options.priceScaleId 본문 v5 지원 PASS
-  function addIchimoku() {
-    if (layers.ichimoku) return;
-    try {
-      layers.ichimoku = chart.addCustomSeries(new IchimokuCustomSeries(), {
-        priceScaleId: 'right',           // candle series와 동일 right priceScale share 본질
-        lastValueVisible: false,
-        priceLineVisible: false,
-        priceFormat: KRW_PRICE_FORMAT,   // P0-13 Fix-45: 일목 senkou span 가격 본문 정수 본문 정합
-      });
-      layers.ichimoku.setData(buildIchimokuData(data.map((d) => ({
-        time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
-      }))));
-    } catch (err) {
-      layers.ichimoku = null;
-    }
-  }
-  function removeIchimoku() {
-    if (!layers.ichimoku) return;
-    try { chart.removeSeries(layers.ichimoku); } catch (e) { /* noop */ }
-    layers.ichimoku = null;
-  }
+  // ── 일목 본문 제거 (P0-16 Fix-50, 2026-05-21 14:57 KST 대표 verbatim "일목균형표는 도저히 안되겠다 제거해줘") ──
 
   // ── 매물대 화면 가변 ──
   function addVolumeByDecile() {
@@ -835,7 +792,7 @@ function renderChartTV(container, dailyArr, options = {}) {
 
   function applyState(s) {
     if (s.ma6) addMA6(); else removeMA6();
-    if (s.ichimoku) addIchimoku(); else removeIchimoku();
+    // P0-16 Fix-50: 일목 제거 cascade (s.ichimoku branch 폐기)
     if (s.volumeByDecile) addVolumeByDecile(); else removeVolumeByDecile();
     // 하단 sub-pane 3종 = base 영구 ON (lead 옵션 A-3 회신 verbatim 09:15:50 KST 대표 정정)
     // chip 부재 + toggle 불가 + state 본문 외 layer 본질
@@ -901,41 +858,98 @@ function renderChartTV(container, dailyArr, options = {}) {
   });
 
   // timeScale — lead 옵션 A-3 채택 #5 (대표 verbatim 09:08 KST (a) "가장 최근 날짜로 포커싱이 안되는게 문제")
-  // P0-13 Fix-46 (2026-05-21 13:44 KST 대표 verbatim "선행스팬인데 선행하지 않다.. 위치와 비율도 엉망이다"):
-  //   P0-9 Fix-20 backward source cascade revert + P0-4 forward shift 본질 복원 본문 정합.
-  //   영웅문 verbatim "선행스팬 = leading = forward shift +26 영업일" 본질 → cloud 본문 미래 영역 visible 정합.
-  //   visible range 본문 = (최근 candle영역 ~50) + (미래 SHIFT=26 영업일 cloud 영역) 양 축 포함 본질.
-  //   FUTURE_CLOUD 본문 = SHIFT 상수 본문 (ichimoku.js 본문 동일 정합) — 영웅문 본문 우측 cloud 영역 visible.
-  //
-  // P0-14b Fix-48 (2026-05-21 14:17 KST §16 정직 채널 + §11.15 외부 spec 검증 PASS):
-  //   P0-14 sub-agent root cause catch = fitContent + setVisibleLogicalRange race condition.
-  //   TradingView v5 docs (WebSearch 2회 corroborating + 공식 docs + github issue #1107 cross-check):
-  //     - fitContent()는 "momentary operation" but axis width recalc → cascade visible range re-change 본질
-  //     - 호출 순서 win 본질 = "whichever is called last takes effect" but cascade re-render 본문 race
-  //     - fitContent가 setVisibleLogicalRange의 의도된 logical range를 cascade overwrite 가능 본질
-  //   Fix 옵션 A 채택 (race 근본 제거 본질) — fitContent() 호출 폐기 + setVisibleLogicalRange만 본문.
-  //     - ichimoku cloud series outLen = N + SHIFT = N + 26 logical index 등록 PASS (ichimoku.js:108 verbatim grep)
-  //     - setVisibleLogicalRange({to: N-1+26}) → series 등록 logical index 0~N+25 범위 내 effective 본질
-  //     - candle series N=240 fit 누락 본문 회피 — setVisibleLogicalRange가 의도된 range 정확 결정 본질
-  //   라이브 라이브 결함 (7072f037 모바일 cloud 우측 미래 0건 vs 영웅문 3005fbac/23a74560 +26영업일 visible) 결정적 fix 본질.
-  //
-  // P0-15 Fix-49 잔존 결함 catch + 결정적 fix (2026-05-21 14:35 KST §11.15 결정적 cross-check):
-  //   Fix-48 후에도 라이브 cloud 우측 미래 visible 0건 (대표 라이브 catch 7072f037 모바일).
-  //   root cause = TradingView v5 time scale 본문 candle series의 logical index만 본질 인식 본질.
-  //   ichimoku custom series N+SHIFT setData 본문 등록 시도 but candle series N=240 본문 union effective range N-1=239 clip.
-  //   → fix: candleSeries.setData(actual + WhitespaceData[SHIFT=26]) 본문 본질 time scale union 본문 확장 (L439-468 본문 본질).
-  //   §11.15 결정적 cross-check 3중 corroborating PASS (WebSearch + WebFetch + github discussion 1462 verbatim).
+  // P0-16 Fix-50 (2026-05-21 14:57 KST 대표 verbatim "일목균형표는 도저히 안되겠다 제거해줘"):
+  //   FUTURE_CLOUD 본문 폐기 (일목 cloud 미래 영역 visible 본문 의무 부재 cascade).
+  //   visible range 본문 = 최근 candle 영역 50 영업일 본문만 본질 (영웅문 23a74560 본문 cloud 부재 정합).
+  //   candle series N=240 본문 effective range 0~N-1 본문만 본질 → toIdx = N-1 본문 정합.
   try {
     const N = data.length;
     if (N > 0) {
       const VISIBLE_RECENT = 50;       // 최근 영업일 (영웅문 정합 약 39 + 여유분)
-      const FUTURE_CLOUD = 26;         // P0-13 Fix-46: 미래 cloud 영역 본문 영업일 (ichimoku.js SHIFT 본문 정합)
       const fromIdx = Math.max(0, N - VISIBLE_RECENT);
-      const toIdx = N - 1 + FUTURE_CLOUD;  // 미래 26 영업일 cloud visible 본질 정합
-      // P0-14b: fitContent() 호출 폐기 본문 (race condition 근본 제거) — setVisibleLogicalRange만 본문 visible range 결정 본질
+      const toIdx = N - 1;             // P0-16 Fix-50: future cloud 본문 폐기 cascade
       chart.timeScale().setVisibleLogicalRange({ from: fromIdx, to: toIdx });
     }
   } catch (err) { /* noop */ }
+
+  // ─── P0-16 Fix-52 sub-pane title 좌측 HTML overlay (2026-05-21 14:57 KST 대표 verbatim
+  //     "하단지표의 지표 이름 라벨도 좌측 구석으로 위치를 바꿔줘") ───
+  //
+  // root cause: TradingView v5 series `title` 옵션 본문 = priceScale **우측** label 본질 (native API 좌측 미지원)
+  //   - 영웅문 23a74560 본문 #거래대금 / MACD Oscillator 12,26,9 / RSI 14 시그널 9 본문 좌측 상단 본질
+  //   - native series title 본문은 lastValueVisible:false 상태에서도 좌측 출력 부재 (우측 priceScale 좌측 column 본질)
+  //
+  // fix 본질: HTML overlay 본문 신축 — chart-tv-main DOM 위 absolute positioned div
+  //   - paneIdx별 Y 좌표 본문 측정 = chart.panes()[idx].getHTMLElement().offsetTop 본문 + getHeight() 본질
+  //   - 좌측 본문 = absolute left:8px (영웅문 영역 본질 정합)
+  //   - top 본문 = pane offsetTop + 6px (sub-pane 상단 안쪽 6px margin 본질)
+  //   - ResizeObserver 본문 재측정 의무 (pane separator drag / window resize 본질)
+  //
+  // §11.15 외부 spec 사전 검증 PASS:
+  //   - v5 IChartApi.panes() → IPaneApi[] 본문 (release notes v5.0)
+  //   - IPaneApi.getHTMLElement() → HTMLElement | null (pane DOM 본문 직접 접근)
+  //   - IPaneApi.getHeight() → number (px 본문)
+  //   - WebSearch 2회 corroborating (TradingView Lightweight Charts v5 panes API + Pane.getHTMLElement)
+  //
+  // §16 self-catch:
+  //   - sub-pane 3종 layer order: paneIdx 1 (거래대금) / 2 (MACD) / 3 (RSI) — addSeries 3번째 인자 본문 정합
+  //   - main pane (paneIdx 0) 본문 title overlay 부재 (candle 본문 priceScale 우측 본질)
+  //   - getHTMLElement() 본문 null fallback (v5.0.0~5.0.7 본문 미지원 가능) → silent skip 본문 graceful
+  //   - overlay div 본문 pointer-events:none 본질 (chart 본문 click/drag 본문 통과)
+  const SUB_PANE_TITLES = ['#거래대금', 'MACD', 'RSI'];
+  const subPaneLabels = [];
+
+  function positionSubPaneLabels() {
+    try {
+      const panes = chart.panes();
+      if (!Array.isArray(panes)) return;
+      // paneIdx 1, 2, 3 본문 (main paneIdx 0 본문 제외)
+      for (let idx = 1; idx <= 3; idx++) {
+        const pane = panes[idx];
+        if (!pane || typeof pane.getHTMLElement !== 'function') continue;
+        const paneEl = pane.getHTMLElement();
+        if (!paneEl) continue;
+        const label = subPaneLabels[idx - 1];
+        if (!label) continue;
+        // paneEl 본문 = main 자체의 자식 본문 → offsetTop 본문 main 본문 relative 정합
+        const topPx = paneEl.offsetTop + 6;
+        label.style.top = `${topPx}px`;
+        label.style.display = 'block';
+      }
+    } catch (err) { /* noop fallback (v5.0.0~5.0.7 본문 panes()/getHTMLElement() 미지원) */ }
+  }
+
+  SUB_PANE_TITLES.forEach((title, i) => {
+    const label = document.createElement('div');
+    label.className = 'cal-chart-tv-subpane-title';
+    label.dataset.paneIdx = String(i + 1);
+    label.textContent = title;
+    label.style.cssText = [
+      'position: absolute',
+      'left: 8px',
+      'top: 0',
+      'font-size: 10px',
+      'font-weight: 600',
+      'color: rgba(0,0,0,0.6)',
+      'pointer-events: none',
+      'z-index: 10',
+      'display: none',
+      'background: rgba(255,255,255,0.65)',
+      'padding: 1px 4px',
+      'border-radius: 2px',
+    ].join(';');
+    main.style.position = 'relative';  // overlay parent 본문 positioned 본질
+    main.appendChild(label);
+    subPaneLabels.push(label);
+  });
+
+  // 초기 1회 positioning (sub-pane series add 직후 layout 본문 완료 후 호출 본질)
+  // requestAnimationFrame 본문 = 다음 paint frame 본문 layout 완료 후 호출 본질
+  if (typeof requestAnimationFrame === 'function') {
+    requestAnimationFrame(() => positionSubPaneLabels());
+  } else {
+    setTimeout(() => positionSubPaneLabels(), 0);
+  }
 
   close.addEventListener('click', (e) => {
     e.preventDefault();
@@ -955,6 +969,10 @@ function renderChartTV(container, dailyArr, options = {}) {
     const vp2 = getViewportSize(container);
     const subH2 = Math.round(vp2.height * 0.075);  // P0-7 fix-5 정합 (0.15 → 0.075 본문)
     chart.applyOptions({ width: vp2.width, height: vp2.height + subH2 * 3 });
+    // P0-16 Fix-52: sub-pane title overlay 본문 좌표 재측정 (pane 본문 height 본문 재계산 후)
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => positionSubPaneLabels());
+    }
   });
   ro.observe(main);
 
