@@ -68,6 +68,16 @@ const LEVELS = [
 //     - TradingView v5 createPriceLine.axisLabelVisible:false → priceScale 우측 가격 라벨 hide
 //     - title 빈 string 본문 → priceLine 본문 좌측 비율 라벨 hide
 //     - line color/lineStyle/lineWidth 본문은 그대로 → 가로선 본문 visible 보존
+//
+// P0-18 Fix-58 (2026-05-21 16:03 KST 대표 verbatim "피보나치 선 마다 좌측에 작은 글씨로 가격을 표사해주고"):
+//   - createPriceLine title 본문 = 가격 string (정수 + ko-KR locale 본문) 본질 신축
+//   - axisLabelVisible: false 유지 (우측 priceScale 가격값 부재 — Fix-55 보존)
+//   - 영웅문 23a74560 reference 본문: 좌측 본문 '727,000 (1.000)' / '643,928 (0.764)' 등 visible
+//   - 본 시스템 본문 = 가격만 본문 (비율 부재, 대표 verbatim "작은 글씨로 가격" 정합)
+//   - title font 본문 = priceLine native rendering 본문 (chart layout.fontSize 본문 영향)
+//   §11.15 외부 spec 사전 검증 PASS:
+//     - PriceLineOptions.title (string) — "Price line's on the chart pane" 본문 chart 좌측 본문 visible
+//     - WebFetch corroborate: https://tradingview.github.io/lightweight-charts/docs/api/interfaces/PriceLineOptions
 const DEFAULT_OPTIONS = {
   magnetWindow: 5,        // ±N 영업일 자석 detection window
   lineStyle: LineStyle.Dotted,
@@ -79,6 +89,19 @@ const DEFAULT_OPTIONS = {
   //   사용자 본문 drag 본질 시각 cue 강화 (handle 발견 본문 → drag 본질 발견 cascade)
   handleRadius: 8,
 };
+
+/**
+ * P0-18 Fix-58 — 가격 → 좌측 라벨 string formatter.
+ * 한국 화폐 정수 본문 정합 (소수점 부재, P0-13 Fix-45 KRW_PRICE_FORMAT 본문 동형).
+ * 예: 98400 → '98,400', 22450 → '22,450'.
+ *
+ * @param {number} price
+ * @returns {string}
+ */
+function formatPriceLabel(price) {
+  if (typeof price !== 'number' || !isFinite(price)) return '';
+  return Math.round(price).toLocaleString('ko-KR');
+}
 
 /**
  * candles 배열 + 클릭한 시점(logical index) 기준 ±window 영업일 내 local peak/trough 자석 snap.
@@ -329,10 +352,12 @@ class FibonacciDrawingController {
           lineStyle: this._options.lineStyle,
           lineWidth: this._options.lineWidth,
           axisLabelVisible: this._options.axisLabelVisible,
-          // P0-17 Fix-55 (2026-05-21 15:18 KST): title 본문 빈 string 본문 정정
-          //   (대표 verbatim "라벨값이 너무 지저분하다 안보여줘도 돼")
-          //   기존 lv.title 본문 'Fib 76.4%' 등 좌측 비율 라벨 본문 제거 본질
-          title: '',
+          // P0-18 Fix-58 (2026-05-21 16:03 KST 대표 verbatim "피보나치 선 마다 좌측에 작은 글씨로 가격을 표사해주고"):
+          //   title 본문 = formatPriceLabel(price) — 정수 + ko-KR locale 본문 (예: '98,400')
+          //   axisLabelVisible: false 유지 (Fix-55 보존, 우측 priceScale 가격값 부재)
+          //   title 본문 = priceLine 본문 chart 좌측 pane 본문 visible (TradingView v5 native rendering)
+          //   영웅문 23a74560 reference 본문 좌측 가격 라벨 본질 정합
+          title: formatPriceLabel(price),
         });
         this._priceLines.push(line);
       } catch (e) { /* noop */ }
