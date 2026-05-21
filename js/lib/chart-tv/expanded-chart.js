@@ -28,11 +28,12 @@ import {
   CrosshairMode,
 } from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
 
-// Phase 7d-1 정정 plugin 4종 + 토글 panel (volume-profile.js 제거)
+// Phase 7d-1 정정 plugin 4종 + Phase 7d-1 P0-4 분홍 강세 vertical line primitive + 토글 panel
 import { attachFibonacci, detachFibonacci } from './plugins/fibonacci.js';
 import { IchimokuCustomSeries, buildIchimokuData } from './plugins/ichimoku.js';
 import { VolumeByDecilePrimitive } from './plugins/volume-by-decile.js';
 import { attachMarkers, detachMarkers } from './plugins/markers.js';
+import { PinkSignalPrimitive } from './plugins/pink-signal.js';
 import { buildTogglePanel, INDICATOR_CHIPS } from './toggle-panel.js';
 
 const STORAGE_KEY = 'm100s.chart.tv.indicators.global';
@@ -215,6 +216,23 @@ function computeRSI(data, period = 14) {
   return out;
 }
 
+// P0-4 영웅문 정합 fix #3 helper (2026-05-21 10:01 KST 대표 정정):
+//   RSI 14 시계열 본문 → RSI < 30 (과매도) 시점 'YYYY-MM-DD' string 배열 추출.
+//   영웅문 verbatim 임계값 30 본문 (gracefully).
+function extractRSIOversoldDates(data, rsiData) {
+  if (!Array.isArray(rsiData) || rsiData.length === 0) return [];
+  const dates = [];
+  rsiData.forEach((point) => {
+    if (typeof point.value !== 'number' || point.value >= 30) return;
+    const t = point.time;
+    if (!t || typeof t.year !== 'number') return;
+    const mm = String(t.month).padStart(2, '0');
+    const dd = String(t.day).padStart(2, '0');
+    dates.push(`${t.year}-${mm}-${dd}`);
+  });
+  return dates;
+}
+
 // 거래대금 histogram (sub-pane) — 캔들 색 동조 (양봉/음봉)
 function buildTradingValue(data) {
   return data.map((d) => ({
@@ -311,7 +329,12 @@ function renderChartTV(container, dailyArr, options = {}) {
 
   // 캔들 series (main pane = paneIdx 0)
   // lead 옵션 A-3 채택 #4 — 현재가 priceLine 본질 (대표 verbatim 09:08 KST (c) "현재가가 표시되지 않는것도 문제")
-  // lastValueVisible: true + priceLineVisible: true 1줄 fix
+  // P0-4 영웅문 정합 fix #1 (2026-05-21 10:00 KST):
+  //   priceLineColor 동적 분기 — 마지막 candle close vs open 비교 후 양봉=#C53939 / 음봉=#1958C7
+  //   영웅문 verbatim "14,370 ▲ 1,920 (15.42%)" 양봉 = red priceLine 정합
+  const lastCandle = data.length > 0 ? data[data.length - 1] : null;
+  const lastBullish = lastCandle && lastCandle.close >= lastCandle.open;
+  const priceLineColor = lastBullish ? '#C53939' : '#1958C7';
   const candleSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#C53939',
     downColor: '#1958C7',
@@ -322,7 +345,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     lastValueVisible: true,
     priceLineVisible: true,
     priceLineWidth: 1,
-    priceLineColor: '#666',
+    priceLineColor: priceLineColor,
     priceLineStyle: 2, // Dashed
   });
   candleSeries.setData(data.map((d) => ({
@@ -338,8 +361,13 @@ function renderChartTV(container, dailyArr, options = {}) {
     macd: null,         // { line, signal, hist }
     rsi: null,          // ISeriesApi (sub-pane 3)
     seriesMarkers: null,
+    pinkSignal: null,   // ISeriesPrimitive (P0-4 분홍 vertical line)
     fibLines: [],
   };
+
+  // RSI 과매도 dates 미리 산출 (markers attach 본문 source) — P0-4 영웅문 정합 fix #3
+  const rsiDataPrecomputed = computeRSI(data, 14);
+  const rsiOversoldDatesAuto = extractRSIOversoldDates(data, rsiDataPrecomputed);
 
   // ── MA 6선 ──
   function addMA6() {
@@ -403,10 +431,13 @@ function renderChartTV(container, dailyArr, options = {}) {
 
   // ── 거래대금 sub-pane (paneIdx 1) ──
   // v5.0.8 공식 API: chart.addSeries(Type, opts, paneIdx) 3번째 positional 인자
+  // P0-4 영웅문 정합 fix #2 (2026-05-21 10:00 KST):
+  //   title: '#거래대금' 영웅문 verbatim (priceScale 좌측 상단 자동 표시 본질, TradingView v5 native)
   function addTradingValue() {
     if (layers.tradingValue) return;
     try {
       layers.tradingValue = chart.addSeries(HistogramSeries, {
+        title: '#거래대금',
         priceFormat: { type: 'volume' },
         priceScaleId: '',
       }, 1);
@@ -422,17 +453,20 @@ function renderChartTV(container, dailyArr, options = {}) {
   }
 
   // ── MACD sub-pane (paneIdx 2) ──
+  // P0-4 영웅문 정합 fix #2 (2026-05-21 10:00 KST):
+  //   title 영웅문 verbatim — 'MACD Oscillator 12,26,9' / 'MACD 시그널 9' / 'Hist'
+  //   (영웅문 reference 본문 "MACD Oscillator 12,26,9 MACD 시그널 3,177.81" 정합)
   function addMACD() {
     if (layers.macd) return;
     const m = computeMACD(data);
     if (m.line.length === 0) return;
     try {
       const line = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'MACD',
+        color: '#0064FF', lineWidth: 1, title: 'MACD Oscillator 12,26,9',
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const signal = chart.addSeries(LineSeries, {
-        color: '#4D8EFF', lineWidth: 1, title: 'Signal',
+        color: '#4D8EFF', lineWidth: 1, title: 'MACD 시그널 9',
         priceLineVisible: false, lastValueVisible: false,
       }, 2);
       const hist = chart.addSeries(HistogramSeries, {
@@ -458,13 +492,15 @@ function renderChartTV(container, dailyArr, options = {}) {
   }
 
   // ── RSI sub-pane (paneIdx 3) ──
+  // P0-4 영웅문 정합 fix #2 (2026-05-21 10:00 KST):
+  //   title 영웅문 verbatim — 'RSI 14 시그널 9' (영웅문 reference "RSI 14 시그널 9 46.86 / 63.09 / 84.39" 정합)
   function addRSI() {
     if (layers.rsi) return;
     const rsiData = computeRSI(data, 14);
     if (rsiData.length === 0) return;
     try {
       layers.rsi = chart.addSeries(LineSeries, {
-        color: '#0064FF', lineWidth: 1, title: 'RSI 14',
+        color: '#0064FF', lineWidth: 1, title: 'RSI 14 시그널 9',
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
@@ -480,18 +516,41 @@ function renderChartTV(container, dailyArr, options = {}) {
     layers.rsi = null;
   }
 
-  // ── markers (분홍 + 배당락) ──
+  // ── markers (배당락 + RSI 과매도) ──
+  // P0-4 영웅문 정합 정정 (2026-05-21 10:02 KST): 분홍 강세 marker 본문 제거 — 별건 PinkSignalPrimitive layer로 이관
+  // P0-4 영웅문 정합 fix #3 (2026-05-21 10:01 KST): RSI<30 (과매도) 시점 검은 arrowDown marker 신축
   function addMarkers() {
     if (layers.seriesMarkers) return;
     layers.seriesMarkers = attachMarkers(candleSeries, {
-      pinkSignalDates: (state.pinkSignal !== false) ? (options.pinkSignalDates || []) : [],
       exDividendDates: (state.exDividend !== false) ? (options.exDividendDates || []) : [],
+      rsiOversoldDates: rsiOversoldDatesAuto || [],
     });
   }
   function removeMarkers() {
     if (!layers.seriesMarkers) return;
     try { detachMarkers(layers.seriesMarkers); } catch (e) { /* noop */ }
     layers.seriesMarkers = null;
+  }
+
+  // ── 분홍 강세 vertical line primitive (P0-4 영웅문 정합 정정 2026-05-21 10:02 KST) ──
+  function addPinkSignal() {
+    if (layers.pinkSignal) return;
+    try {
+      const pinkDates = options.pinkSignalDates || [];
+      if (!Array.isArray(pinkDates) || pinkDates.length === 0) return;
+      layers.pinkSignal = new PinkSignalPrimitive(chart, pinkDates, {});
+      candleSeries.attachPrimitive(layers.pinkSignal);
+    } catch (err) {
+      layers.pinkSignal = null;
+    }
+  }
+  function removePinkSignal() {
+    if (!layers.pinkSignal) return;
+    try {
+      candleSeries.detachPrimitive(layers.pinkSignal);
+      layers.pinkSignal.detached();
+    } catch (e) { /* noop */ }
+    layers.pinkSignal = null;
   }
 
   // ── Fibonacci (Phase 7d-2 별건, default OFF) ──
@@ -511,12 +570,19 @@ function renderChartTV(container, dailyArr, options = {}) {
     if (s.volumeByDecile) addVolumeByDecile(); else removeVolumeByDecile();
     // 하단 sub-pane 3종 = base 영구 ON (lead 옵션 A-3 회신 verbatim 09:15:50 KST 대표 정정)
     // chip 부재 + toggle 불가 + state 본문 외 layer 본질
-    if (s.pinkSignal || s.exDividend) {
+    // P0-4 영웅문 정합 정정 (2026-05-21 10:02 KST):
+    //   분홍 강세 = vertical line primitive (별건 layer, state.pinkSignal chip toggle 본질 정합)
+    //   배당락 + RSI 과매도 = markers.js 통합 layer (createSeriesMarkers 본문)
+    //   RSI 과매도 marker = 영웅문 본질 visible 영구 (RSI<30 자동 추출, 사용자 toggle 불가, 영웅문 reference 정합)
+    if (s.exDividend) {
       removeMarkers();
       addMarkers();
     } else {
+      // RSI 과매도는 영웅문 본질 영구 visible — 배당락 toggle off 시에도 RSI 과매도 marker 유지
       removeMarkers();
+      addMarkers();
     }
+    if (s.pinkSignal) addPinkSignal(); else removePinkSignal();
     if (s.fibonacci) addFibonacci(); else removeFibonacci();
   }
 
@@ -582,6 +648,7 @@ function renderChartTV(container, dailyArr, options = {}) {
       try { removeMarkers(); } catch (e) { /* noop */ }
       try { removeFibonacci(); } catch (e) { /* noop */ }
       try { removeVolumeByDecile(); } catch (e) { /* noop */ }
+      try { removePinkSignal(); } catch (e) { /* noop */ }
       try { chart.remove(); } catch (e) { /* noop */ }
     },
   };
