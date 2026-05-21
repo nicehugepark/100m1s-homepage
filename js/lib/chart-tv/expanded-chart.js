@@ -46,19 +46,19 @@ function getViewportSize() {
   return { width: 1000, height: 440 };
 }
 
-// REQ v2 §6 AC-6 verbatim default 정합 (9 확정 본질)
-// ON: 캔들/MA/일목/매물대/거래대금/분홍/배당락 (7종)
-// OFF: MACD/RSI/Fibonacci (3종 — 사용자 toggle)
+// lead 옵션 A-3 회신 verbatim (2026-05-21 09:15:50 KST 대표 추가 정정):
+// "그리고 하단 지표인 거래대금 rsi macd는 토글뱌튼 필요없이 기본 출력이야"
+// → 거래대금/MACD/RSI = base 영구 ON (사용자 toggle 불가, chip 부재). DEFAULT_INDICATORS 본문 외 정합.
+// 토글 chip 본질 = 6 chip (MA + 일목 + 매물대 + 분홍 + 배당락 + 피보 Phase 7d-2).
+// MA = REQ v2 §2 #4 verbatim 6선 (5/20/43/60/120/240) 유지. MA 10 = REQ v3 별건 후행.
 const DEFAULT_INDICATORS = {
-  ma6: true,             // #4 MA 6선 (5/20/43/60/120/240)
-  ichimoku: true,        // #5 일목 (구름만)
-  volumeByDecile: true,  // #1 매물대 화면 가변
-  tradingValue: true,    // #7 거래대금 sub-pane
-  macd: false,           // #8 MACD sub-pane (사용자 toggle)
-  rsi: false,            // #9 RSI sub-pane (사용자 toggle)
-  pinkSignal: true,      // #2 분홍 강세 marker
-  exDividend: true,      // #6 배당락 marker
-  fibonacci: false,      // #3 Fibonacci (Phase 7d-2 별건, OFF default)
+  ma6: true,             // #4 MA 6선 (5/20/43/60/120/240) — chip
+  ichimoku: true,        // #5 일목 (구름만, forward shift +26) — chip
+  volumeByDecile: true,  // #1 매물대 화면 가변 — chip
+  pinkSignal: true,      // #2 분홍 강세 marker — chip
+  exDividend: true,      // #6 배당락 marker — chip
+  fibonacci: false,      // #3 Fibonacci (Phase 7d-2 별건, OFF default) — chip
+  // 하단 sub-pane 3종 (tradingValue/macd/rsi) = base 영구 ON (chip 부재). state 본문 외 layer 본질.
 };
 
 function loadIndicatorState() {
@@ -118,14 +118,18 @@ function computeMA(data, period) {
   return out;
 }
 
-// REQ v2 §2 #4 MA 6선 — 5/20/43/60/120/240 (43=대표 매매 customization, 240=1년 영업일)
+// REQ v2 §2 #4 verbatim 정합 — MA 6선 (5/20/43/60/120/240).
+// lead 옵션 A-3 회신 verbatim "MA 6선 유지 (REQ v2 단일 출처 정합) + MA 10 추가 = REQ v3 별건 후행".
+// 색상만 영웅문 zoom verbatim gracefully 정합 (lead 09:15 KST 영웅문 zoom 직접 read 결과 채택):
+//   5=red/magenta / 20=yellow/orange / 43=green / 60=brown/dark / 120=grey / 240=purple
+//   (영웅문 zoom MA 10 line은 본 P0 비채택, REQ v3 별건 후행 본질)
 const MA_CONFIGS = [
-  { period: 5,   color: '#EC4899', title: 'MA 5',   width: 1 },   // 핫핑크
-  { period: 20,  color: '#F5A623', title: 'MA 20',  width: 1 },   // 노랑
-  { period: 43,  color: '#A88639', title: 'MA 43',  width: 1.2 }, // am dark (대표 매매 강조)
-  { period: 60,  color: '#1A6B2D', title: 'MA 60',  width: 1 },   // 초록
-  { period: 120, color: '#6B7A99', title: 'MA 120', width: 1 },   // 회색
-  { period: 240, color: '#2C3E50', title: 'MA 240', width: 1.2 }, // 진청 (1년 추세 강조)
+  { period: 5,   color: '#EF4444', title: 'MA 5',   width: 1 },   // red/magenta (영웅문 verbatim)
+  { period: 20,  color: '#FBBF24', title: 'MA 20',  width: 1 },   // yellow/orange 노랑 (영웅문 verbatim)
+  { period: 43,  color: '#22C55E', title: 'MA 43',  width: 1.2 }, // green 녹색 (대표 매매 customization)
+  { period: 60,  color: '#92400E', title: 'MA 60',  width: 1 },   // brown/dark (영웅문 verbatim)
+  { period: 120, color: '#9CA3AF', title: 'MA 120', width: 1 },   // grey 회색 (영웅문 verbatim)
+  { period: 240, color: '#9333EA', title: 'MA 240', width: 1.2 }, // purple 보라 (1년 영업일)
 ];
 
 // EMA helper
@@ -306,6 +310,8 @@ function renderChartTV(container, dailyArr, options = {}) {
   });
 
   // 캔들 series (main pane = paneIdx 0)
+  // lead 옵션 A-3 채택 #4 — 현재가 priceLine 본질 (대표 verbatim 09:08 KST (c) "현재가가 표시되지 않는것도 문제")
+  // lastValueVisible: true + priceLineVisible: true 1줄 fix
   const candleSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#C53939',
     downColor: '#1958C7',
@@ -313,6 +319,11 @@ function renderChartTV(container, dailyArr, options = {}) {
     wickDownColor: '#1958C7',
     borderUpColor: '#C53939',
     borderDownColor: '#1958C7',
+    lastValueVisible: true,
+    priceLineVisible: true,
+    priceLineWidth: 1,
+    priceLineColor: '#666',
+    priceLineStyle: 2, // Dashed
   });
   candleSeries.setData(data.map((d) => ({
     time: d.time, open: d.open, high: d.high, low: d.low, close: d.close,
@@ -498,9 +509,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     if (s.ma6) addMA6(); else removeMA6();
     if (s.ichimoku) addIchimoku(); else removeIchimoku();
     if (s.volumeByDecile) addVolumeByDecile(); else removeVolumeByDecile();
-    if (s.tradingValue) addTradingValue(); else removeTradingValue();
-    if (s.macd) addMACD(); else removeMACD();
-    if (s.rsi) addRSI(); else removeRSI();
+    // 하단 sub-pane 3종 = base 영구 ON (lead 옵션 A-3 회신 verbatim 09:15:50 KST 대표 정정)
+    // chip 부재 + toggle 불가 + state 본문 외 layer 본질
     if (s.pinkSignal || s.exDividend) {
       removeMarkers();
       addMarkers();
@@ -512,6 +522,12 @@ function renderChartTV(container, dailyArr, options = {}) {
 
   applyState(state);
 
+  // 하단 sub-pane 3종 base 영구 ON — applyState 호출 후 1회 신축, toggle 불가
+  // (lead 옵션 A-3 회신 verbatim "토글뱌튼 필요없이 기본 출력")
+  addTradingValue();
+  addMACD();
+  addRSI();
+
   // 토글 panel chip bar 신축
   buildTogglePanel(togglesHost, state, (newState) => {
     state = newState;
@@ -519,8 +535,21 @@ function renderChartTV(container, dailyArr, options = {}) {
     applyState(state);
   });
 
-  // timeScale fit content
-  chart.timeScale().fitContent();
+  // timeScale — lead 옵션 A-3 채택 #5 (대표 verbatim 09:08 KST (a) "가장 최근 날짜로 포커싱이 안되는게 문제")
+  // 정합 본질: 전체 240영업일 fitContent 후 setVisibleLogicalRange로 최근 ~50 영업일 + 일목 미래 26 영업일 영역 visible.
+  // (영웅문 정합 약 03/31 ~ 05/21 + 미래 cloud forward shift 영역)
+  try {
+    chart.timeScale().fitContent();
+    // 일목 forward shift +26 미래 영역 포함 + 최근 ~50 영업일 visible 본질
+    const N = data.length;
+    if (N > 0) {
+      const VISIBLE_RECENT = 50;       // 최근 영업일 (영웅문 정합 약 39 + 여유분)
+      const FUTURE_CLOUD = 26;          // 일목 forward shift cloud 영역
+      const fromIdx = Math.max(0, N - VISIBLE_RECENT);
+      const toIdx = N - 1 + FUTURE_CLOUD;
+      chart.timeScale().setVisibleLogicalRange({ from: fromIdx, to: toIdx });
+    }
+  } catch (err) { /* noop */ }
 
   close.addEventListener('click', (e) => {
     e.preventDefault();

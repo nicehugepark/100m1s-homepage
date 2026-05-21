@@ -146,7 +146,7 @@ export class VolumeByDecilePrimitive {
     this._series = series;
     this._allCandles = candles;
     this._options = { ...DEFAULT_OPTIONS, ...options };
-    // 초기 buckets = 전체 candles 본질 (visible range 미설정 시 default)
+    // 초기 buckets = 전체 candles 본질 (visible range 미설정 시 default = 항상 visible 보장)
     this._buckets = computeBuckets(candles);
     this._paneViews = [new VolumeByDecilePaneView(this)];
 
@@ -160,6 +160,17 @@ export class VolumeByDecilePrimitive {
       // 초기 1회 호출 — fitContent 직후 visibleLogicalRange가 이미 있을 수 있음
       const initialRange = this._chart.timeScale().getVisibleLogicalRange();
       if (initialRange) this._onVisibleRangeChange(initialRange);
+
+      // 매물대 visible 결함 root cause fix (Phase 7d-1 P0):
+      // expanded-chart.js setVisibleLogicalRange 호출이 primitive attach 직후 발생 시
+      // subscribe handler 1회 호출 보장 안됨. setTimeout 0 + 강제 재호출 본질.
+      // (대표 verbatim 09:08 KST (e) "매물대도 보이지 않는게 문제")
+      setTimeout(() => {
+        try {
+          const lateRange = this._chart && this._chart.timeScale().getVisibleLogicalRange();
+          if (lateRange) this._onVisibleRangeChange(lateRange);
+        } catch (e) { /* noop */ }
+      }, 0);
     } catch (err) {
       // subscribe 미지원 시 fallback = 전체 candles 본질 유지 (정적 매물대)
       this._rangeHandler = null;
