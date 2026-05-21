@@ -1,6 +1,6 @@
 {
   "date": "2026-05-21",
-  "generated_at": "2026-05-21T11:49:19.132087",
+  "generated_at": "2026-05-21T11:54:42.526062",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1402,7 +1402,7 @@
       "code": "080220",
       "name": "제주반도체",
       "rank": 1,
-      "trade_amount": 488738000000,
+      "trade_amount": 500204000000,
       "change_pct": 3.8,
       "close_price": 98400,
       "open_price": 98900,
@@ -1612,9 +1612,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
-      "theme_leader": false,
-      "hugepark_grade": "관찰",
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극",
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -1622,7 +1622,7 @@
       "code": "017900",
       "name": "광전자",
       "rank": 2,
-      "trade_amount": 471184000000,
+      "trade_amount": 479422000000,
       "change_pct": 13.25,
       "close_price": 14100,
       "open_price": 13350,
@@ -1848,15 +1848,15 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "strong_bull",
-      "theme_leader": true,
-      "hugepark_grade": "적극"
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "067310",
       "name": "하나마이크론",
       "rank": 3,
-      "trade_amount": 262859000000,
+      "trade_amount": 267896000000,
       "change_pct": 14.62,
       "close_price": 54100,
       "open_price": 49100,
@@ -2112,7 +2112,7 @@
       "code": "222800",
       "name": "심텍",
       "rank": 4,
-      "trade_amount": 136041000000,
+      "trade_amount": 139137000000,
       "change_pct": 17.86,
       "close_price": 122100,
       "open_price": 110000,
@@ -2395,45 +2395,70 @@
       "hugepark_grade": "관찰"
     },
     {
-      "code": "125020",
-      "name": "티씨머티리얼즈",
+      "code": "353200",
+      "name": "대덕전자",
       "rank": 5,
-      "trade_amount": 117052000000,
-      "change_pct": 27.53,
-      "close_price": 9450,
-      "open_price": 7700,
-      "high_price": 9520,
-      "low_price": 7630,
-      "industry": "절연선 및 케이블 제조업",
-      "sector": "에나멜동선, 초고압케이블, 각동선, CTC 등",
+      "trade_amount": 119357000000,
+      "change_pct": 11.73,
+      "close_price": 148600,
+      "open_price": 138100,
+      "high_price": 149000,
+      "low_price": 136100,
+      "industry": "전자부품 제조업",
+      "sector": "PCB(Printed Circuit Board, 인쇄회로기판)의 제조 및 판매",
       "themes": [
-        "케이블"
+        "HBM",
+        "반도체",
+        "FC-BGA"
       ],
       "theme_paths": [
         {
-          "name": "케이블",
+          "name": "HBM",
           "path": [
-            "케이블"
+            "반도체",
+            "HBM"
+          ]
+        },
+        {
+          "name": "FC-BGA",
+          "path": [
+            "반도체",
+            "FC-BGA"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": {
-        "date": "2026-05-04",
-        "rank": 30,
-        "change_pct": 3.8,
-        "trade_amount": 88189587500
+        "date": "2026-05-14",
+        "rank": 6,
+        "change_pct": 11.64,
+        "trade_amount": 187707295300
       },
-      "bullish_today": true,
-      "bullish_streak": 1,
+      "bullish_today": false,
+      "bullish_streak": 0,
       "news": [
         {
-          "title": "[오늘의 IR] 티씨머티리얼즈ㆍ바이오솔루션ㆍ압타바이오 등",
-          "url": "https://www.etoday.co.kr/news/view/2575008",
-          "source": "이투데이",
-          "published_at": "2026-04-12T22:37:00",
-          "causal_chain": "",
-          "macro_event": null,
+          "title": "\"롯데케미칼, 10개 분기 만에 흑자 '바닥' 지났나'\"…대덕전자, 메모리 기판 풀가동에 2130억 증설 [株토피아]",
+          "url": "https://www.fnnews.com/news/202605120932260183",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-05-12T22:56:08.357705",
+          "causal_chain": "메모리 반도체 수요 급증 → 대덕전자 메모리 패키지 기판 가동률 90% 초과 풀가동 + 일부 라인 고수익 플립칩 칩스케일패키지(FC-CSP) 전환으로 메모리 기판 쇼티지 심화 → 2130억원 증설 투자 결정 → 본업 실적·성장 모멘텀 부각.",
+          "macro_event": "메모리 반도체 수요 폭발 → 패키지 기판 풀가동·쇼티지 심화 + 2130억 증설",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "유진證 “대덕전자, 컨트롤러·항공우주 수요에 실적 호조 이어질 것… ‘강력 매수’ 의견”",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/04/30/A3G23T6QDZDJNNPXNE55IM4O5I/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T23:51:07",
+          "causal_chain": "HBM·메모리 수요 급증 → 패키지 기판 가동률 90% 초과 풀가동 + 일부 라인 고수익 FC-CSP 전환 → 메모리 기판 쇼티지 심화 → 2130억 증설 투자 → 매출·수익성 동반 성장 전망.",
+          "macro_event": "메모리 패키지 기판 풀가동(90%↑) 속 FC-CSP 전환으로 쇼티지 심화, 2130억 증설 투자",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -2444,195 +2469,195 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 5.12,
-      "index_multiple_current": 5.38,
+      "index_change_pct": 7.2,
+      "index_multiple_current": 1.63,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 9520,
-        "high_date": "2026-05-21",
-        "high_pct": -0.74,
-        "low": 2990,
-        "low_date": "2025-11-25",
-        "low_pct": 216.05,
-        "current": 9450
+        "high": 149500,
+        "high_date": "2026-05-13",
+        "high_pct": -0.6,
+        "low": 14510,
+        "low_date": "2025-05-28",
+        "low_pct": 924.12,
+        "current": 148600
       },
       "daily_20": [
         {
           "date": "2026-04-22",
-          "o": 5830,
-          "h": 6230,
-          "l": 5570,
-          "c": 5980
+          "o": 100700,
+          "h": 103500,
+          "l": 96000,
+          "c": 101200
         },
         {
           "date": "2026-04-23",
-          "o": 6190,
-          "h": 6440,
-          "l": 5700,
-          "c": 6080
+          "o": 102000,
+          "h": 102100,
+          "l": 96100,
+          "c": 98900
         },
         {
           "date": "2026-04-24",
-          "o": 6100,
-          "h": 6420,
-          "l": 5930,
-          "c": 6200
+          "o": 99700,
+          "h": 116000,
+          "l": 99300,
+          "c": 115200
         },
         {
           "date": "2026-04-27",
-          "o": 6290,
-          "h": 7600,
-          "l": 6270,
-          "c": 7190
+          "o": 115200,
+          "h": 115200,
+          "l": 107800,
+          "c": 108800
         },
         {
           "date": "2026-04-28",
-          "o": 7460,
-          "h": 7470,
-          "l": 6450,
-          "c": 6540
+          "o": 109900,
+          "h": 111100,
+          "l": 105300,
+          "c": 109300
         },
         {
           "date": "2026-04-29",
-          "o": 6450,
-          "h": 7660,
-          "l": 6450,
-          "c": 7300
+          "o": 108000,
+          "h": 115400,
+          "l": 104100,
+          "c": 115400
         },
         {
           "date": "2026-04-30",
-          "o": 7750,
-          "h": 9420,
-          "l": 7750,
-          "c": 8430
+          "o": 117600,
+          "h": 120000,
+          "l": 112200,
+          "c": 112800
         },
         {
           "date": "2026-05-04",
-          "o": 8950,
-          "h": 9490,
-          "l": 8490,
-          "c": 8750
+          "o": 115900,
+          "h": 117300,
+          "l": 112700,
+          "c": 114400
         },
         {
           "date": "2026-05-06",
-          "o": 8700,
-          "h": 8790,
-          "l": 8000,
-          "c": 8180
+          "o": 119100,
+          "h": 127900,
+          "l": 115500,
+          "c": 125400
         },
         {
           "date": "2026-05-07",
-          "o": 8230,
-          "h": 8450,
-          "l": 7580,
-          "c": 7640
+          "o": 126400,
+          "h": 127000,
+          "l": 118100,
+          "c": 120700
         },
         {
           "date": "2026-05-08",
-          "o": 7600,
-          "h": 7790,
-          "l": 7310,
-          "c": 7610
+          "o": 118600,
+          "h": 124000,
+          "l": 114600,
+          "c": 123200
         },
         {
           "date": "2026-05-11",
-          "o": 7790,
-          "h": 7790,
-          "l": 6980,
-          "c": 7220
+          "o": 125500,
+          "h": 130600,
+          "l": 122600,
+          "c": 125800
         },
         {
           "date": "2026-05-12",
-          "o": 7260,
-          "h": 7320,
-          "l": 6540,
-          "c": 6890
+          "o": 131000,
+          "h": 136400,
+          "l": 106300,
+          "c": 128000
         },
         {
           "date": "2026-05-13",
-          "o": 6890,
-          "h": 6890,
-          "l": 6520,
-          "c": 6640
+          "o": 124000,
+          "h": 149500,
+          "l": 120000,
+          "c": 142900
         },
         {
           "date": "2026-05-14",
-          "o": 6800,
-          "h": 6950,
-          "l": 6300,
-          "c": 6560
+          "o": 142900,
+          "h": 149000,
+          "l": 138000,
+          "c": 144600
         },
         {
           "date": "2026-05-15",
-          "o": 7340,
-          "h": 7660,
-          "l": 6500,
-          "c": 6680
+          "o": 145000,
+          "h": 147400,
+          "l": 123500,
+          "c": 135800
         },
         {
           "date": "2026-05-18",
-          "o": 6660,
-          "h": 7000,
-          "l": 6050,
-          "c": 6850
+          "o": 133000,
+          "h": 143300,
+          "l": 125000,
+          "c": 140400
         },
         {
           "date": "2026-05-19",
-          "o": 7020,
-          "h": 7510,
-          "l": 6750,
-          "c": 7290
+          "o": 140400,
+          "h": 141300,
+          "l": 131000,
+          "c": 134300
         },
         {
           "date": "2026-05-20",
-          "o": 7290,
-          "h": 7480,
-          "l": 6980,
-          "c": 7410
+          "o": 134300,
+          "h": 137000,
+          "l": 126200,
+          "c": 133000
         },
         {
           "date": "2026-05-21",
-          "o": 7700,
-          "h": 9520,
-          "l": 7630,
-          "c": 9450
+          "o": 138100,
+          "h": 149000,
+          "l": 136100,
+          "c": 148600
         }
       ],
       "intraday": {
         "step_min": 10,
-        "open": 7700,
-        "base": 7700,
+        "open": 138100,
+        "base": 138100,
         "prices": [
-          7700,
-          8790,
-          9140,
-          9550,
-          9630,
-          9540,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630,
-          9630
+          138100,
+          144000,
+          145300,
+          147700,
+          148100,
+          146600,
+          146700,
+          144900,
+          144300,
+          142600,
+          142800,
+          143200,
+          144100,
+          144200,
+          148500,
+          149700,
+          150600
         ]
       },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "관찰"
     },
     {
       "code": "440110",
       "name": "파두",
       "rank": 6,
-      "trade_amount": 115358000000,
+      "trade_amount": 118591000000,
       "change_pct": 4.63,
       "close_price": 117400,
       "open_price": 113800,
@@ -2930,70 +2955,45 @@
       "hugepark_grade": "관찰"
     },
     {
-      "code": "353200",
-      "name": "대덕전자",
+      "code": "125020",
+      "name": "티씨머티리얼즈",
       "rank": 7,
-      "trade_amount": 113522000000,
-      "change_pct": 11.73,
-      "close_price": 148600,
-      "open_price": 138100,
-      "high_price": 149000,
-      "low_price": 136100,
-      "industry": "전자부품 제조업",
-      "sector": "PCB(Printed Circuit Board, 인쇄회로기판)의 제조 및 판매",
+      "trade_amount": 117104000000,
+      "change_pct": 27.53,
+      "close_price": 9450,
+      "open_price": 7700,
+      "high_price": 9520,
+      "low_price": 7630,
+      "industry": "절연선 및 케이블 제조업",
+      "sector": "에나멜동선, 초고압케이블, 각동선, CTC 등",
       "themes": [
-        "HBM",
-        "반도체",
-        "FC-BGA"
+        "케이블"
       ],
       "theme_paths": [
         {
-          "name": "HBM",
+          "name": "케이블",
           "path": [
-            "반도체",
-            "HBM"
-          ]
-        },
-        {
-          "name": "FC-BGA",
-          "path": [
-            "반도체",
-            "FC-BGA"
+            "케이블"
           ]
         }
       ],
       "pick_count": 1,
       "prev_pick": {
-        "date": "2026-05-14",
-        "rank": 6,
-        "change_pct": 11.64,
-        "trade_amount": 187707295300
+        "date": "2026-05-04",
+        "rank": 30,
+        "change_pct": 3.8,
+        "trade_amount": 88189587500
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 1,
       "news": [
         {
-          "title": "\"롯데케미칼, 10개 분기 만에 흑자 '바닥' 지났나'\"…대덕전자, 메모리 기판 풀가동에 2130억 증설 [株토피아]",
-          "url": "https://www.fnnews.com/news/202605120932260183",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-05-12T22:56:08.357705",
-          "causal_chain": "메모리 반도체 수요 급증 → 대덕전자 메모리 패키지 기판 가동률 90% 초과 풀가동 + 일부 라인 고수익 플립칩 칩스케일패키지(FC-CSP) 전환으로 메모리 기판 쇼티지 심화 → 2130억원 증설 투자 결정 → 본업 실적·성장 모멘텀 부각.",
-          "macro_event": "메모리 반도체 수요 폭발 → 패키지 기판 풀가동·쇼티지 심화 + 2130억 증설",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "유진證 “대덕전자, 컨트롤러·항공우주 수요에 실적 호조 이어질 것… ‘강력 매수’ 의견”",
-          "url": "https://biz.chosun.com/stock/stock_general/2026/04/30/A3G23T6QDZDJNNPXNE55IM4O5I/",
-          "source": "조선비즈",
-          "published_at": "2026-04-29T23:51:07",
-          "causal_chain": "HBM·메모리 수요 급증 → 패키지 기판 가동률 90% 초과 풀가동 + 일부 라인 고수익 FC-CSP 전환 → 메모리 기판 쇼티지 심화 → 2130억 증설 투자 → 매출·수익성 동반 성장 전망.",
-          "macro_event": "메모리 패키지 기판 풀가동(90%↑) 속 FC-CSP 전환으로 쇼티지 심화, 2130억 증설 투자",
+          "title": "[오늘의 IR] 티씨머티리얼즈ㆍ바이오솔루션ㆍ압타바이오 등",
+          "url": "https://www.etoday.co.kr/news/view/2575008",
+          "source": "이투데이",
+          "published_at": "2026-04-12T22:37:00",
+          "causal_chain": "",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -3004,192 +3004,195 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 7.2,
-      "index_multiple_current": 1.63,
+      "index_change_pct": 5.12,
+      "index_multiple_current": 5.38,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 149500,
-        "high_date": "2026-05-13",
-        "high_pct": -0.6,
-        "low": 14510,
-        "low_date": "2025-05-28",
-        "low_pct": 924.12,
-        "current": 148600
+        "high": 9520,
+        "high_date": "2026-05-21",
+        "high_pct": -0.74,
+        "low": 2990,
+        "low_date": "2025-11-25",
+        "low_pct": 216.05,
+        "current": 9450
       },
       "daily_20": [
         {
           "date": "2026-04-22",
-          "o": 100700,
-          "h": 103500,
-          "l": 96000,
-          "c": 101200
+          "o": 5830,
+          "h": 6230,
+          "l": 5570,
+          "c": 5980
         },
         {
           "date": "2026-04-23",
-          "o": 102000,
-          "h": 102100,
-          "l": 96100,
-          "c": 98900
+          "o": 6190,
+          "h": 6440,
+          "l": 5700,
+          "c": 6080
         },
         {
           "date": "2026-04-24",
-          "o": 99700,
-          "h": 116000,
-          "l": 99300,
-          "c": 115200
+          "o": 6100,
+          "h": 6420,
+          "l": 5930,
+          "c": 6200
         },
         {
           "date": "2026-04-27",
-          "o": 115200,
-          "h": 115200,
-          "l": 107800,
-          "c": 108800
+          "o": 6290,
+          "h": 7600,
+          "l": 6270,
+          "c": 7190
         },
         {
           "date": "2026-04-28",
-          "o": 109900,
-          "h": 111100,
-          "l": 105300,
-          "c": 109300
+          "o": 7460,
+          "h": 7470,
+          "l": 6450,
+          "c": 6540
         },
         {
           "date": "2026-04-29",
-          "o": 108000,
-          "h": 115400,
-          "l": 104100,
-          "c": 115400
+          "o": 6450,
+          "h": 7660,
+          "l": 6450,
+          "c": 7300
         },
         {
           "date": "2026-04-30",
-          "o": 117600,
-          "h": 120000,
-          "l": 112200,
-          "c": 112800
+          "o": 7750,
+          "h": 9420,
+          "l": 7750,
+          "c": 8430
         },
         {
           "date": "2026-05-04",
-          "o": 115900,
-          "h": 117300,
-          "l": 112700,
-          "c": 114400
+          "o": 8950,
+          "h": 9490,
+          "l": 8490,
+          "c": 8750
         },
         {
           "date": "2026-05-06",
-          "o": 119100,
-          "h": 127900,
-          "l": 115500,
-          "c": 125400
+          "o": 8700,
+          "h": 8790,
+          "l": 8000,
+          "c": 8180
         },
         {
           "date": "2026-05-07",
-          "o": 126400,
-          "h": 127000,
-          "l": 118100,
-          "c": 120700
+          "o": 8230,
+          "h": 8450,
+          "l": 7580,
+          "c": 7640
         },
         {
           "date": "2026-05-08",
-          "o": 118600,
-          "h": 124000,
-          "l": 114600,
-          "c": 123200
+          "o": 7600,
+          "h": 7790,
+          "l": 7310,
+          "c": 7610
         },
         {
           "date": "2026-05-11",
-          "o": 125500,
-          "h": 130600,
-          "l": 122600,
-          "c": 125800
+          "o": 7790,
+          "h": 7790,
+          "l": 6980,
+          "c": 7220
         },
         {
           "date": "2026-05-12",
-          "o": 131000,
-          "h": 136400,
-          "l": 106300,
-          "c": 128000
+          "o": 7260,
+          "h": 7320,
+          "l": 6540,
+          "c": 6890
         },
         {
           "date": "2026-05-13",
-          "o": 124000,
-          "h": 149500,
-          "l": 120000,
-          "c": 142900
+          "o": 6890,
+          "h": 6890,
+          "l": 6520,
+          "c": 6640
         },
         {
           "date": "2026-05-14",
-          "o": 142900,
-          "h": 149000,
-          "l": 138000,
-          "c": 144600
+          "o": 6800,
+          "h": 6950,
+          "l": 6300,
+          "c": 6560
         },
         {
           "date": "2026-05-15",
-          "o": 145000,
-          "h": 147400,
-          "l": 123500,
-          "c": 135800
+          "o": 7340,
+          "h": 7660,
+          "l": 6500,
+          "c": 6680
         },
         {
           "date": "2026-05-18",
-          "o": 133000,
-          "h": 143300,
-          "l": 125000,
-          "c": 140400
+          "o": 6660,
+          "h": 7000,
+          "l": 6050,
+          "c": 6850
         },
         {
           "date": "2026-05-19",
-          "o": 140400,
-          "h": 141300,
-          "l": 131000,
-          "c": 134300
+          "o": 7020,
+          "h": 7510,
+          "l": 6750,
+          "c": 7290
         },
         {
           "date": "2026-05-20",
-          "o": 134300,
-          "h": 137000,
-          "l": 126200,
-          "c": 133000
+          "o": 7290,
+          "h": 7480,
+          "l": 6980,
+          "c": 7410
         },
         {
           "date": "2026-05-21",
-          "o": 138100,
-          "h": 149000,
-          "l": 136100,
-          "c": 148600
+          "o": 7700,
+          "h": 9520,
+          "l": 7630,
+          "c": 9450
         }
       ],
       "intraday": {
         "step_min": 10,
-        "open": 138100,
-        "base": 138100,
+        "open": 7700,
+        "base": 7700,
         "prices": [
-          138100,
-          144000,
-          145300,
-          147700,
-          148100,
-          146600,
-          146700,
-          144900,
-          144300,
-          142600,
-          142800,
-          143200,
-          144100,
-          144200,
-          148500,
-          149700,
-          150600
+          7700,
+          8790,
+          9140,
+          9550,
+          9630,
+          9540,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630,
+          9630
         ]
       },
-      "credit_risk": true,
-      "credit_reason": "회사한도초과"
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "425040",
       "name": "티이엠씨",
       "rank": 8,
-      "trade_amount": 108324000000,
+      "trade_amount": 108845000000,
       "change_pct": 14.09,
       "close_price": 28750,
       "open_price": 26550,
@@ -3423,7 +3426,7 @@
       "code": "477850",
       "name": "마키나락스",
       "rank": 9,
-      "trade_amount": 103405000000,
+      "trade_amount": 103423000000,
       "change_pct": 30.0,
       "close_price": 78000,
       "open_price": 78000,
@@ -3616,7 +3619,7 @@
       "code": "142280",
       "name": "녹십자엠에스",
       "rank": 10,
-      "trade_amount": 86862000000,
+      "trade_amount": 89587000000,
       "change_pct": -4.01,
       "close_price": 5980,
       "open_price": 5820,
@@ -3824,6 +3827,9 @@
           6010
         ]
       },
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰",
       "causal_chain": "",
       "parent_theme": ""
     },
@@ -3831,7 +3837,7 @@
       "code": "001820",
       "name": "삼화콘덴서",
       "rank": 11,
-      "trade_amount": 80797000000,
+      "trade_amount": 81718000000,
       "change_pct": 1.02,
       "close_price": 79400,
       "open_price": 75200,
@@ -4038,7 +4044,7 @@
       "code": "033160",
       "name": "엠케이전자",
       "rank": 12,
-      "trade_amount": 77674000000,
+      "trade_amount": 78572000000,
       "change_pct": 20.96,
       "close_price": 35200,
       "open_price": 30550,
@@ -4309,7 +4315,7 @@
       "code": "215790",
       "name": "이노인스트루먼트",
       "rank": 13,
-      "trade_amount": 72068000000,
+      "trade_amount": 72749000000,
       "change_pct": -3.09,
       "close_price": 2195,
       "open_price": 2320,
@@ -4537,7 +4543,7 @@
       "code": "039030",
       "name": "이오테크닉스",
       "rank": 14,
-      "trade_amount": 65475000000,
+      "trade_amount": 66980000000,
       "change_pct": 12.55,
       "close_price": 520000,
       "open_price": 473000,
@@ -4746,7 +4752,7 @@
       "code": "005950",
       "name": "이수화학",
       "rank": 15,
-      "trade_amount": 55619000000,
+      "trade_amount": 57288000000,
       "change_pct": -3.62,
       "close_price": 13570,
       "open_price": 13930,
@@ -5579,7 +5585,7 @@
         ]
       },
       "togusa_verdict": "neutral",
-      "theme_leader": true,
+      "theme_leader": false,
       "hugepark_grade": "관찰"
     },
     {
