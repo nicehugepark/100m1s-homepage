@@ -39,19 +39,25 @@
 
 import { createSeriesMarkers } from 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/+esm';
 
-// SPEC v6 §3.4 verbatim 색상 + shape 정합
-const PINK_SIGNAL_OPTIONS = {
-  position: 'aboveBar',
-  shape: 'arrowUp',
-  color: '#EC4899',
-  text: '강세',
-};
+// P0-4 영웅문 정합 정정 cascade (2026-05-21 10:02 KST 대표 critical 정정):
+//   분홍 강세 본질 = vertical line primitive (별건 plugins/pink-signal.js 신축)
+//   본 markers.js는 배당락 + RSI 과매도 2종 marker만 처리 (분홍 강세 PINK_SIGNAL_OPTIONS 폐기)
 
 const EX_DIVIDEND_OPTIONS = {
   position: 'belowBar',
   shape: 'circle',
   color: '#6B7A99',
   text: '배당락',
+};
+
+// P0-4 영웅문 정합 fix #3 (2026-05-21 10:01 KST 대표 정정 verbatim):
+//   "영웅문 차트 캔들 상단의 아래쪽 검은 화살표는 RSI 과매도 신호이다"
+//   RSI 14 < 30 시점 = 과매도 본질 (영웅문 verbatim 임계값) → aboveBar arrowDown 검정 marker
+const RSI_OVERSOLD_OPTIONS = {
+  position: 'aboveBar',
+  shape: 'arrowDown',
+  color: '#1F2937',  // 영웅문 verbatim 검정 (gracefully gray-900)
+  text: 'RSI<30',
 };
 
 /**
@@ -73,34 +79,30 @@ function toBusinessDay(dateStr) {
 }
 
 /**
- * 분홍 강세 + 배당락 marker 통합 attach.
+ * 배당락 + RSI 과매도 marker 통합 attach.
  *
  * 본질: v5 marker primitive 단일 호출 (분리된 series.setMarkers() 2회 deprecated 패턴 회피).
  * 본 wrapper는 marker 배열 build + createSeriesMarkers 1회 호출.
  *
+ * P0-4 영웅문 정합 정정 (2026-05-21 10:02 KST 대표 critical 정정):
+ *   분홍 강세 본질 = vertical line primitive (별건 plugins/pink-signal.js 신축, markers.js scope 외)
+ *
+ * P0-4 영웅문 정합 fix #3 — RSI 과매도 marker 신축 (2026-05-21 10:01 KST 대표 정정):
+ *   영웅문 verbatim "캔들 상단의 아래쪽 검은 화살표 = RSI 과매도 신호"
+ *
  * @param {ISeriesApi} candleSeries — 캔들 series (markers attach 대상)
  * @param {Object} [options]
- * @param {Array<string>} [options.pinkSignalDates] — 분홍 강세 일자 (Array<'YYYY-MM-DD'>)
  * @param {Array<string>} [options.exDividendDates] — 배당락 일자 (Array<'YYYY-MM-DD'>)
+ * @param {Array<string>} [options.rsiOversoldDates] — RSI 과매도 일자 (Array<'YYYY-MM-DD'>, RSI<30 시점)
  * @returns {ISeriesMarkers|null} — createSeriesMarkers return (제거 시 destroy() 또는 setMarkers([]) 호출)
  */
 export function attachMarkers(candleSeries, options = {}) {
   if (!candleSeries) return null;
 
-  const pinkDates = Array.isArray(options.pinkSignalDates) ? options.pinkSignalDates : [];
   const exdDates = Array.isArray(options.exDividendDates) ? options.exDividendDates : [];
+  const rsiOversoldDates = Array.isArray(options.rsiOversoldDates) ? options.rsiOversoldDates : [];
 
   const markers = [];
-
-  // #2 분홍 강세 신호 (SPEC v6 §3.4 verbatim — aboveBar arrowUp #EC4899)
-  pinkDates.forEach((dateStr) => {
-    const time = toBusinessDay(dateStr);
-    if (!time) return;
-    markers.push({
-      time,
-      ...PINK_SIGNAL_OPTIONS,
-    });
-  });
 
   // #6 배당락 marker (SPEC v6 §3.4 verbatim — belowBar circle #6B7A99)
   exdDates.forEach((dateStr) => {
@@ -109,6 +111,16 @@ export function attachMarkers(candleSeries, options = {}) {
     markers.push({
       time,
       ...EX_DIVIDEND_OPTIONS,
+    });
+  });
+
+  // P0-4 RSI 과매도 marker (영웅문 verbatim — aboveBar arrowDown #1F2937)
+  rsiOversoldDates.forEach((dateStr) => {
+    const time = toBusinessDay(dateStr);
+    if (!time) return;
+    markers.push({
+      time,
+      ...RSI_OVERSOLD_OPTIONS,
     });
   });
 
@@ -139,19 +151,19 @@ export function attachMarkers(candleSeries, options = {}) {
 export function updateMarkers(seriesMarkers, options = {}) {
   if (!seriesMarkers || typeof seriesMarkers.setMarkers !== 'function') return;
 
-  const pinkDates = Array.isArray(options.pinkSignalDates) ? options.pinkSignalDates : [];
   const exdDates = Array.isArray(options.exDividendDates) ? options.exDividendDates : [];
+  const rsiOversoldDates = Array.isArray(options.rsiOversoldDates) ? options.rsiOversoldDates : [];
 
   const markers = [];
-  pinkDates.forEach((dateStr) => {
-    const time = toBusinessDay(dateStr);
-    if (!time) return;
-    markers.push({ time, ...PINK_SIGNAL_OPTIONS });
-  });
   exdDates.forEach((dateStr) => {
     const time = toBusinessDay(dateStr);
     if (!time) return;
     markers.push({ time, ...EX_DIVIDEND_OPTIONS });
+  });
+  rsiOversoldDates.forEach((dateStr) => {
+    const time = toBusinessDay(dateStr);
+    if (!time) return;
+    markers.push({ time, ...RSI_OVERSOLD_OPTIONS });
   });
   markers.sort((a, b) => {
     const ta = a.time.year * 10000 + a.time.month * 100 + a.time.day;
