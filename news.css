@@ -1407,7 +1407,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
    대표 verbatim "정말로 종목카드만 하나 존재" (2026-05-23 02:15 KST) 정합.
    body.single-card-mode 진입 시 page chrome 전부 hide (header / nav / footer / page-header / cal-side / theme-tree / theme-trend / limit-up-trend / theme-map / mobile-drawer / drawer-backdrop).
    `.cal-layout` flex/grid는 단일 카드 정중앙 정렬 위해 정돈, `main`은 padding 0 본문.
-   backward compat: body class 없으면 본 rules 비활성 → 다중 카드 mode 정상 표시. */
+   backward compat: body class 없으면 본 rules 비활성 → 다중 카드 mode 정상 표시.
+   cycle23 rounded-square-restore (2026-05-23 02:33 KST) — 대표 verbatim "종목카드가 라운드 스퀘어 테두리가 사라지니까 ux가 너무 별로다 / 라운드 스퀘어까지는 다시 살려줘".
+   본질: `.cal-content`의 라운드 스퀘어 frame (background var(--sf) + border 1px var(--bd) + border-radius 16px)은 복원, padding만 12px로 축소하여 카드와 외곽 사이 적정 여백 유지. cal-content-head sticky 헤더는 single-card mode에서 hide (단일 카드만 보여야 하므로 날짜 헤더 노출 불필요). */
 body.single-card-mode > header,
 body.single-card-mode > footer,
 body.single-card-mode > nav.mobile-drawer,
@@ -1417,14 +1419,15 @@ body.single-card-mode .theme-trend,
 body.single-card-mode .limit-up-trend,
 body.single-card-mode .cal-side,
 body.single-card-mode .theme-tree,
-body.single-card-mode .theme-map { display: none !important; }
-body.single-card-mode main { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+body.single-card-mode .theme-map,
+body.single-card-mode .cal-content-head { display: none !important; }
+body.single-card-mode main { padding: 12px !important; margin: 0 !important; max-width: 640px !important; margin-left: auto !important; margin-right: auto !important; }
 body.single-card-mode .cal-layout { display: block !important; padding: 0 !important; margin: 0 !important; }
-body.single-card-mode .cal-content { padding: 0 !important; margin: 0 !important; min-height: 0 !important; background: transparent !important; border: 0 !important; border-radius: 0 !important; }
+body.single-card-mode .cal-content { padding: 12px !important; margin: 0 !important; min-height: 0 !important; }
 body.single-card-mode .cal-content .cal-inner { padding: 0 !important; margin: 0 !important; }
 body.single-card-mode .cal-section { margin: 0 !important; padding: 0 !important; }
 body.single-card-mode .cal-section--single-card .cal-trade-list { margin: 0 !important; padding: 0 !important; }
-body.single-card-mode { background: transparent !important; }
+body.single-card-mode { background: var(--bg) !important; }
 .cal-section-title {
   font-size: 11px; font-weight: 800; color: var(--am);
   text-transform: uppercase; letter-spacing: 1.1px;
