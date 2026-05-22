@@ -558,6 +558,32 @@ function renderCalExpandContent(date, data) {
     todayStocks = [];
   }
 
+  // Phase 2c-1 (2026-05-23) — single-card mode 동적 분기
+  // 본질: URL param `?stock={code}` 또는 `?stock={code}&date={date}` 진입 시
+  //   todayStocks를 본 종목 1개만 filter → 단독 카드 render.
+  // 외부 호출 사이트 (news.html fragment fetch 또는 외부 임베딩) 본 본 본 sparkline/chart-tv/bullish/status_badges
+  //   본 본 전체 render 본 본 본 시각 일관성 본 본.
+  // backward compat: ?stock= 본 본 본 본 본 본 본 기존 다중 카드 path (kiwoom.latest_stocks 전체).
+  // Phase 2c-2 후행: news.html 또는 외부 페이지에서 fetch + innerHTML 임베딩 본 본 spec hint.
+  let _isSingleCardMode = false;
+  let _singleCardCode = null;
+  try {
+    if (typeof window !== 'undefined' && window.location) {
+      const _urlParams = new URLSearchParams(window.location.search);
+      const _qStock = _urlParams.get('stock');
+      if (_qStock && /^\d{4,6}$/.test(_qStock)) {
+        _singleCardCode = _qStock;
+        _isSingleCardMode = true;
+      }
+    }
+  } catch (_) { /* graceful */ }
+  if (_isSingleCardMode && _singleCardCode) {
+    const _filtered = todayStocks.filter(s => (s.ticker || s.code) === _singleCardCode);
+    todayStocks = _filtered;
+    // rank 재산정 (단일 카드 1)
+    todayStocks.forEach((s, i) => { s.rank = i + 1; });
+  }
+
   // 메타
   const newsTotal = todayStocks.reduce((acc, i) => acc + (i.links ? i.links.length : 0), 0);
   const interpCount = todayStocks.filter(i => i.interp).length;
@@ -1269,31 +1295,45 @@ function renderCalExpandContent(date, data) {
   };
 
   const rankingBanner = '';
+  // Phase 2c-1 (2026-05-23) — single-card mode 본 본 section title / 뉴스요약 / macro / ranking 본 본 hide.
+  // 단독 카드 본 본 본 본 본 본 sparkline + chart-tv + bullish lines + status_badges 전체 본 본 본 본 본 본.
+  const _sectionTitleHtml = _isSingleCardMode ? '' : '<div class="cal-section-title">오늘의 뉴스요약</div>';
+  const _narrPillsHtmlOut = _isSingleCardMode ? '' : narrPillsHtml;
+  const _macroHtmlOut = _isSingleCardMode ? '' : macroHtml;
+  const _rankingBannerOut = _isSingleCardMode ? '' : rankingBanner;
   const todayHtml = `
-    <div class="cal-section">
-      <div class="cal-section-title">오늘의 뉴스요약</div>
-      ${narrPillsHtml}
-      ${macroHtml}
-      ${rankingBanner}
+    <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
+      ${_sectionTitleHtml}
+      ${_narrPillsHtmlOut}
+      ${_macroHtmlOut}
+      ${_rankingBannerOut}
       ${todayStocks.length > 0 ? `
         <div class="cal-trade-list" style="margin-top:10px;">
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
       ` : `
-        ${isMarketClosed(date) ? (() => { const nd = getNextTradingDate(date); const nl = nd ? formatKoDate(nd) : ''; return `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nl ? '다음 거래일 ' + escapeHtml(nl) : ''}</div></div>`; })() : '<div class="cal-empty" style="padding:24px 0;">조건검색 데이터 없음 — 장 마감 후 또는 파이프라인 실행 후 업데이트</div>'}
+        ${_isSingleCardMode
+          ? `<div class="cal-empty" style="padding:24px 0;">단독 카드 mode — 종목 코드 ${escapeHtml(_singleCardCode || '')} 본 본 데이터 없음</div>`
+          : (isMarketClosed(date) ? (() => { const nd = getNextTradingDate(date); const nl = nd ? formatKoDate(nd) : ''; return `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nl ? '다음 거래일 ' + escapeHtml(nl) : ''}</div></div>`; })() : '<div class="cal-empty" style="padding:24px 0;">조건검색 데이터 없음 — 장 마감 후 또는 파이프라인 실행 후 업데이트</div>')}
       `}
     </div>
   `;
 
   const _rulesVersionBanner = _buildRulesVersionBanner(data && data.rules_version);
-  inner.innerHTML = `
-    ${_rulesVersionBanner}
-    <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
-      <div class="cal-content-date">${formatKoDate(date)}</div>
-      <div class="cal-content-meta">${metaText}</div>
-    </div>
-    ${todayHtml}
-  `;
+  // Phase 2c-1 (2026-05-23) — single-card mode 본 본 rules-version banner / cal-content-head 본 본 hide.
+  // 외부 임베딩 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 본 단독.
+  if (_isSingleCardMode) {
+    inner.innerHTML = todayHtml;
+  } else {
+    inner.innerHTML = `
+      ${_rulesVersionBanner}
+      <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
+        <div class="cal-content-date">${formatKoDate(date)}</div>
+        <div class="cal-content-meta">${metaText}</div>
+      </div>
+      ${todayHtml}
+    `;
+  }
 
   // 접기/펼치기 이벤트 위임 (1회만 등록)
   // REQ-046 — CSS font-size:0 + ::after content trick 폐기 → JS textContent 직접 변경.

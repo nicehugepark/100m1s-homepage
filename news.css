@@ -1426,6 +1426,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
    hard guard 30분 차단 (renderer.js `_computeMarketHardGuard`)은 유지 — 별도 본문, 별도 placeholder. */
 .cal-section { margin-bottom: 22px; }
 .cal-section:last-child { margin-bottom: 0; }
+/* Phase 2c-1 (2026-05-23) — single-card mode: section title/뉴스요약/macro 모두 hide, 단독 카드만 보이도록 padding/margin 정돈. */
+.cal-section--single-card { margin-bottom: 0; padding: 0; }
+.cal-section--single-card .cal-trade-list { margin-top: 0 !important; }
 .cal-section-title {
   font-size: 11px; font-weight: 800; color: var(--am);
   text-transform: uppercase; letter-spacing: 1.1px;
