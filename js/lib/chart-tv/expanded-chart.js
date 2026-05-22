@@ -104,9 +104,14 @@ function getViewportSize(container) {
 // P0-16 Fix-51 본문 (대표 verbatim "피보나치 이어서 계속 해줘 화면에 표시되지도 않아"):
 //   fibonacci default = **true** (drawing tool default ON + 가시 영역 hi/lo auto-anchor 본문 정합).
 //
-// MA = REQ v2 §2 #4 verbatim 7선 (5/10/20/43/60/120/240) 유지.
+// MA = REQ v2 §2 #4 verbatim 7선 (5/10/20/43/60/120/240) → cycle23 chart-tv-3changes Spot 3 본문 6선 (240 제거).
+// cycle23 chart-tv-3changes Spot 3 (2026-05-22 17:24 KST 대표 verbatim
+//   "ma 240선도 제거해줘. 현재 캔들 윈도우에서는 사실상 의미가 없네"):
+//   - MA 240 본문 1년 영업일 본문 영웅문 zoom verbatim but 본 시스템 본문 candle window 본문 240일 미만 본질 가능 본문
+//     본질상 MA 240 본문 visible 본질 무의미 본문 본질 (대표 verbatim "사실상 의미가 없네") → 제거 본질
+//   - 6선 = MA 5/10/20/43/60/120 (240 제거 cascade)
 const DEFAULT_INDICATORS = {
-  ma6: true,             // #4 MA 7선 (5/10/20/43/60/120/240) — chip
+  ma6: true,             // #4 MA 6선 (5/10/20/43/60/120) — chip (cycle23: 240 제거 cascade)
   volumeByDecile: true,  // #1 매물대 화면 가변 — chip
   pinkSignal: true,      // #2 분홍 강세 marker — chip
   exDividend: true,      // #6 배당락 marker — chip
@@ -172,8 +177,14 @@ function computeMA(data, period) {
   return out;
 }
 
-// REQ v3 §3.1 verbatim 정합 — MA 7선 (5/10/20/43/60/120/240). Phase 7d-2 별건 사이클 본질.
+// REQ v3 §3.1 verbatim 정합 — MA 7선 (5/10/20/43/60/120/240) → cycle23 본문 6선 (240 제거 cascade).
 // 대표 verbatim 2026-05-21 09:15 KST "ma 선의 종류와 색상이다" + 영웅문 zoom 7 line 본문.
+//
+// cycle23 chart-tv-3changes Spot 3 (2026-05-22 17:24 KST 대표 verbatim
+//   "ma 240선도 제거해줘. 현재 캔들 윈도우에서는 사실상 의미가 없네"):
+//   - MA 240 = #90EE90 연두 (LightGreen) — 영웅문 zoom verbatim 1년 영업일 본질 → cycle23 본문 제거
+//   - 사유: 본 시스템 candle window 본문 240일 미만 본질 빈번 → MA 240 본질 visible 본질 무의미 본문
+//   - 6선 = MA 5/10/20/43/60/120 (240 제거 cascade)
 //
 // P0-7 fix-6 (2026-05-21 11:01 KST):
 //   REQ v3 §2 + REQ v4 §3.1 verbatim 영웅문 zoom 색상 정정 채택 (별건 cycle 후행 본질 → 본 P0-7 통합):
@@ -183,14 +194,14 @@ function computeMA(data, period) {
 //     MA 43 = #FFA500 주황 (Orange) — 영웅문 zoom verbatim, 대표 매매 customization
 //     MA 60 = #FF8C00 주황 (DarkOrange) — 영웅문 zoom verbatim
 //     MA 120 = #4169E1 파랑 (RoyalBlue) — 영웅문 zoom verbatim
-//     MA 240 = #90EE90 연두 (LightGreen) — 영웅문 zoom verbatim, 1년 영업일
+//     MA 240 = #90EE90 연두 (LightGreen) — 영웅문 zoom verbatim, 1년 영업일 (cycle23: 제거)
 //
 // P0-7 fix-1 (2026-05-21 10:55 KST 대표 verbatim "확대 차트에서 ma선 레이블은 모두 제거해줘. 내 영웅문 화면에도 없잖아"):
 //   title 본문 제거 — priceScale 본문 라벨 visible 부재 본질 (영웅문 정합).
 //   기존 priceLineVisible:false + lastValueVisible:false + crosshairMarkerVisible:false 본문 정합 유지.
 //   title 본문 빈 string '' 본질 → priceScale legend layer 본문 출력 부재.
 //
-// state key `ma6` 명칭은 그대로 유지 (localStorage backward 호환 본질). 의미는 7선으로 확장.
+// state key `ma6` 명칭은 그대로 유지 (localStorage backward 호환 본질). 의미는 cycle23 본문 6선으로 축소.
 const MA_CONFIGS = [
   { period: 5,   color: '#FF69B4', title: '', width: 1 },   // HotPink 분홍 (영웅문 zoom verbatim)
   { period: 10,  color: '#FFD700', title: '', width: 1 },   // Gold 노랑 (영웅문 zoom verbatim)
@@ -198,7 +209,7 @@ const MA_CONFIGS = [
   { period: 43,  color: '#FFA500', title: '', width: 1.2 }, // Orange 주황 (영웅문 zoom verbatim, 대표 customization)
   { period: 60,  color: '#FF8C00', title: '', width: 1 },   // DarkOrange 주황 (영웅문 zoom verbatim)
   { period: 120, color: '#4169E1', title: '', width: 1 },   // RoyalBlue 파랑 (영웅문 zoom verbatim)
-  { period: 240, color: '#90EE90', title: '', width: 1.2 }, // LightGreen 연두 (영웅문 zoom verbatim, 1년 영업일)
+  // cycle23 chart-tv-3changes Spot 3: MA 240 본질 제거 (대표 verbatim "현재 캔들 윈도우에서는 사실상 의미가 없네")
 ];
 
 // EMA helper
@@ -854,18 +865,27 @@ function renderChartTV(container, dailyArr, options = {}) {
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
-      // P0-9 Fix-23: priceLine title 제거 (영웅문 본문 부재 정보, 임계값 30 line 본문만 visible 본문)
-      // P0-20 Fix-71 (2026-05-21 17:46 KST 대표 verbatim "rsi 보조지표에서 30.00 y축 값 라벨 삭제"):
-      //   axisLabelVisible: false 본문 명시 — TradingView v5 PriceLineOptions.axisLabelVisible default true 본문 본질.
+      // cycle23 chart-tv-3changes Spot 1 (2026-05-22 17:21 KST 대표 verbatim
+      //   "하단 rsi 지표의 y축 값이 현재 40,80으로 보여지는데 30,70으로 바꿔줘"):
+      //   - 직전 P0-7 fix-9 본문 "과열30, 침체30 + invertScale" 영웅문 customization 본문 vs
+      //     본 cycle23 대표 신규 verbatim 본문 30/70 양 임계값 본질 (표준 RSI overbought 70 / oversold 30).
+      //   - 양 priceLine 본문 (a) price=30 + (b) price=70 본질 신축 → Y축 30/70 label visible.
+      //   - axisLabelVisible:true 본질 (P0-20 Fix-71 본문 false 본질 → 본 cycle23 true 본문 신규 verbatim 우선).
+      //   - invertScale:true 본문 그대로 보존 → 30 (위) / 70 (아래) visible 본질 (영웅문 customization 영구).
+      //   - cycle23 직전 rsi-overbought-cloud-fill (threshold 70 본문) 정합 (RSI ≥ 70 cloud fill + 70 label visible).
       //   §11.15 외부 spec 사전 검증 PASS:
       //     - https://tradingview.github.io/lightweight-charts/tutorials/how_to/price-line
-      //       "axisLabelVisible: boolean — display label on price axis for the price line"
-      //     - WebSearch corroborating (default true 본문 본질, false 명시 시 우측 priceScale label 부재).
-      //   §16 self-catch: 영웅문 23a74560 + 3005fbac reference 본문 RSI 우측 priceScale "37.15/60.82" "48.54/89.05" 본문 visible
-      //     but 30.00 label 본문 부재 정합. 70.00 label 본문도 부재 (별도 createPriceLine 부재 → 영웅문 정합 보존).
-      //   가로선 본문 visible 보존 (color/lineStyle/lineWidth 본문 그대로) — y축 라벨만 hide 본질.
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: false });
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: false });
+      //       "axisLabelVisible: boolean — display label on price axis for the price line, default true"
+      //     - WebSearch 2회 corroborating (Lightweight Charts v5 PriceLineOptions.axisLabelVisible boolean)
+      //     - priceScale auto tick interval 본문 user direct 지정 spec 부재 → createPriceLine label 본문 본질
+      //       대안 PASS (대표 verbatim "현재 40,80으로 보여지는데" = autoScale tick 본질 0~100 본문 자동).
+      //   §16 self-catch:
+      //     - 영웅문 23a74560 본문 RSI priceScale "37.15/60.82" visible은 line 본문 marker label (createPriceLine 별건),
+      //       본 시스템 본문 RSI 가로선 30/70 본문 직접 createPriceLine 본문 axisLabelVisible:true 본질 → 양 label visible
+      //     - 직전 P0-20 Fix-71 본문 30 label 삭제 → 본 cycle23 본문 30/70 label 재 신축 (대표 신규 verbatim 우선)
+      //     - invertScale:true 본질 → 30 (상단) / 70 (하단) visible 본질 (priceScale 본문 Y축 반전 그대로)
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: true });
+      layers.rsi.createPriceLine({ price: 70, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: true });
 
       // P0-7 fix-9: signal 9 line 본문 신축 — SMA(9) of RSI series
       const signalData = [];
@@ -927,10 +947,17 @@ function renderChartTV(container, dailyArr, options = {}) {
   // ── markers (배당락 + RSI 과매도) ──
   // P0-4 영웅문 정합 정정 (2026-05-21 10:02 KST): 분홍 강세 marker 본문 제거 — 별건 PinkSignalPrimitive layer로 이관
   // P0-4 영웅문 정합 fix #3 (2026-05-21 10:01 KST): RSI<30 (과매도) 시점 검은 arrowDown marker 신축
+  // cycle23 chart-tv-3changes Spot 2 (2026-05-22 17:22 KST 대표 verbatim
+  //   "배당락 토글이 있는데 아직 한번도 검증되진 않았지만 기본기능으로 판단하고 항상 표시해주는걸로
+  //    한 다음 토글 버튼은 제거해줘"):
+  //   - exDividend 본질 영구 ON (toggle 부재 + DEFAULT_INDICATORS 본문 true)
+  //   - state.exDividend 본문 user localStorage 본문 false 잔존 본문 봉쇄 — 강제 항상 visible 본질
+  //   - 본 cycle23 본문 `state.exDividend !== false` 본문 본질 → `(options.exDividendDates || [])` 본문 force
+  //   §16 self-catch: user localStorage 잔존 false 본문 → 본 force 본문 본질 cycle23 verbatim "항상 표시" 영구 PASS
   function addMarkers() {
     if (layers.seriesMarkers) return;
     layers.seriesMarkers = attachMarkers(candleSeries, {
-      exDividendDates: (state.exDividend !== false) ? (options.exDividendDates || []) : [],
+      exDividendDates: (options.exDividendDates || []),  // cycle23: state.exDividend 본문 무시, 영구 항상 표시 본질
       rsiOversoldDates: rsiOversoldDatesAuto || [],
     });
   }
@@ -1111,24 +1138,26 @@ function renderChartTV(container, dailyArr, options = {}) {
   }
 
   function applyState(s) {
-    if (s.ma6) addMA6(); else removeMA6();
-    // P0-16 Fix-50: 일목 제거 cascade (s.ichimoku branch 폐기)
-    if (s.volumeByDecile) addVolumeByDecile(); else removeVolumeByDecile();
+    // cycle23 toggle-fibonacci-only (2026-05-22 17:58 KST 대표 verbatim
+    //   "기능 검증을 위해 피보나치 토글 버튼만 남기고 나머지는 기본으로 항상 표시 시킨 후 토글 버튼을 모두 제거해줘"):
+    //   - ma6 / volumeByDecile / pinkSignal 본문 영구 ON 본질 (state 본문 무시 본문 force 본질)
+    //   - 사용자 localStorage 본문 false 잔존 봉쇄 본문 정합 (배당락 본문 본질 본문 정합)
+    //   - INDICATOR_CHIPS 본문 fibonacci 1 entry만 본문 본질 → ma6/volumeByDecile/pinkSignal chip 본문 부재 cascade
+    addMA6();              // 영구 ON (chip 제거 cascade, state.ma6 무시)
+    addVolumeByDecile();   // 영구 ON (chip 제거 cascade, state.volumeByDecile 무시)
+    addPinkSignal();       // 영구 ON (chip 제거 cascade, state.pinkSignal 무시)
     // 하단 sub-pane 3종 = base 영구 ON (lead 옵션 A-3 회신 verbatim 09:15:50 KST 대표 정정)
     // chip 부재 + toggle 불가 + state 본문 외 layer 본질
     // P0-4 영웅문 정합 정정 (2026-05-21 10:02 KST):
-    //   분홍 강세 = vertical line primitive (별건 layer, state.pinkSignal chip toggle 본질 정합)
+    //   분홍 강세 = vertical line primitive (별건 layer, cycle23 toggle-fibonacci-only 본문 force ON cascade)
     //   배당락 + RSI 과매도 = markers.js 통합 layer (createSeriesMarkers 본문)
     //   RSI 과매도 marker = 영웅문 본질 visible 영구 (RSI<30 자동 추출, 사용자 toggle 불가, 영웅문 reference 정합)
-    if (s.exDividend) {
-      removeMarkers();
-      addMarkers();
-    } else {
-      // RSI 과매도는 영웅문 본질 영구 visible — 배당락 toggle off 시에도 RSI 과매도 marker 유지
-      removeMarkers();
-      addMarkers();
-    }
-    if (s.pinkSignal) addPinkSignal(); else removePinkSignal();
+    // cycle23 chart-tv-3changes Spot 2 (2026-05-22 17:22 KST 대표 verbatim "배당락 ... 토글 버튼은 제거"):
+    //   - exDividend toggle chip 제거 본질 → branching 본문 본질 단일 layer 본문 정합 (배당락 + RSI 과매도 영구 visible)
+    //   - addMarkers() 본문 1회 호출 본문 본질 (state.exDividend 본문 본문 무시 본질 본문 addMarkers 본문 force)
+    removeMarkers();
+    addMarkers();
+    // cycle23 toggle-fibonacci-only: fibonacci 본문 본질 사용자 toggle 유지 (기능 검증 본문)
     if (s.fibonacci) addFibonacci(); else removeFibonacci();
   }
 
