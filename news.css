@@ -1429,6 +1429,29 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 /* Phase 2c-1 (2026-05-23) — single-card mode: section title/뉴스요약/macro 모두 hide, 단독 카드만 보이도록 padding/margin 정돈. */
 .cal-section--single-card { margin-bottom: 0; padding: 0; }
 .cal-section--single-card .cal-trade-list { margin-top: 0 !important; }
+
+/* cycle23 Q-CYCLE23-002 Phase 2c-1-extend (2026-05-23) — single-card mode 페이지 frame 완전 격리.
+   대표 verbatim "정말로 종목카드만 하나 존재" (2026-05-23 02:15 KST) 정합.
+   body.single-card-mode 진입 시 page chrome 전부 hide (header / nav / footer / page-header / cal-side / theme-tree / theme-trend / limit-up-trend / theme-map / mobile-drawer / drawer-backdrop).
+   `.cal-layout` flex/grid는 단일 카드 정중앙 정렬 위해 정돈, `main`은 padding 0 본문.
+   backward compat: body class 없으면 본 rules 비활성 → 다중 카드 mode 정상 표시. */
+body.single-card-mode > header,
+body.single-card-mode > footer,
+body.single-card-mode > nav.mobile-drawer,
+body.single-card-mode > .drawer-backdrop,
+body.single-card-mode .page-header,
+body.single-card-mode .theme-trend,
+body.single-card-mode .limit-up-trend,
+body.single-card-mode .cal-side,
+body.single-card-mode .theme-tree,
+body.single-card-mode .theme-map { display: none !important; }
+body.single-card-mode main { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+body.single-card-mode .cal-layout { display: block !important; padding: 0 !important; margin: 0 !important; }
+body.single-card-mode .cal-content { padding: 0 !important; margin: 0 !important; min-height: 0 !important; background: transparent !important; border: 0 !important; border-radius: 0 !important; }
+body.single-card-mode .cal-content .cal-inner { padding: 0 !important; margin: 0 !important; }
+body.single-card-mode .cal-section { margin: 0 !important; padding: 0 !important; }
+body.single-card-mode .cal-section--single-card .cal-trade-list { margin: 0 !important; padding: 0 !important; }
+body.single-card-mode { background: transparent !important; }
 .cal-section-title {
   font-size: 11px; font-weight: 800; color: var(--am);
   text-transform: uppercase; letter-spacing: 1.1px;

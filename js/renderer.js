@@ -582,6 +582,15 @@ function renderCalExpandContent(date, data) {
     todayStocks = _filtered;
     // rank 재산정 (단일 카드 1)
     todayStocks.forEach((s, i) => { s.rank = i + 1; });
+    // cycle23 Q-CYCLE23-002 Phase 2c-1-extend — single-card mode 페이지 frame 완전 격리.
+    // 본질: body class `single-card-mode` 부여 → CSS `body.single-card-mode header/nav/footer/page-header/cal-side/theme-tree/limit-up-trend/theme-trend/theme-map` hide.
+    // 대표 verbatim "정말로 종목카드만 하나 존재" (2026-05-23 02:15 KST) 정합.
+    // backward compat: ?stock param 없으면 class 미부여 → 다중 카드 mode 본 페이지 frame 정상 표시.
+    try {
+      if (typeof document !== 'undefined' && document.body) {
+        document.body.classList.add('single-card-mode');
+      }
+    } catch (_) { /* graceful */ }
   }
 
   // 메타
