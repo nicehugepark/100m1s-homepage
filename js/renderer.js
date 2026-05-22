@@ -89,41 +89,12 @@ function _computeMarketHardGuard(generatedAt, lastSnapshotAt, viewDate, nowMs) {
   return { block: false, reason: null, label: lastSnapLabel, minutesAgo };
 }
 
-// Q-CYCLE20-P2 (2026-05-20) — kiwoom 마지막 폴링 시각 freshness chip (SPEC-001 §I.4 확장).
-// 본질: 장중 polling 9시간 정지 사고(2026-05-20 09:14 KST `/tmp/100m1s-pipeline.lock` stale)
-//       사용자 가시화. last_snapshot_at = kiwoom raw JSON 필드 (KST offset 명시 ISO "+09:00").
-// 임계: 10분 (cron 1~3분 주기 → 5분은 false-positive 다발, 10분이 보수적 타당).
-// 분기:
-//   (1) 오늘 + 장중(09:00~15:30 KST) + 10분+ stale → state='stale' (빨강 강조)
-//   (2) 오늘 + 장중 + 10분 이내 → state='fresh' (정상 회색)
-//   (3) 그 외 (장 시작 전 / 장 마감 후 / 과거 viewDate / 휴장) → state='info' (회색, stale 판정 무의미)
-//   (4) last_snapshot_at 부재 → null 반환 = chip 미표시 (FLR-AGT-002 거짓 충실성 차단)
-// 반환: { label: 'HH:MM 폴링', state: 'fresh'|'stale'|'info', minutesAgo: number|null }
-function _computeSnapshotFreshness(lastSnapshotAt, viewDate, nowMs) {
-  if (!lastSnapshotAt || typeof lastSnapshotAt !== 'string') return null;
-  // ISO with offset (e.g. "2026-05-20T09:19:37+09:00") — Date 직접 파싱 가능.
-  const snapMs = Date.parse(lastSnapshotAt);
-  if (isNaN(snapMs)) return null;
-  const m = lastSnapshotAt.match(/T(\d{2}):(\d{2})/);
-  if (!m) return null;
-  const label = `${m[1]}:${m[2]} 폴링`;
-  // KST = UTC+9. nowMs 에 9시간 가산 후 UTC 메서드로 읽으면 브라우저 timezone과 무관하게 KST 시각 확보.
-  const kstMs = nowMs + 9 * 60 * 60 * 1000;
-  const kstNow = new Date(kstMs);
-  const todayKst = `${kstNow.getUTCFullYear()}-${String(kstNow.getUTCMonth() + 1).padStart(2, '0')}-${String(kstNow.getUTCDate()).padStart(2, '0')}`;
-  const hourKst = kstNow.getUTCHours();
-  const minKst = kstNow.getUTCMinutes();
-  const isToday = (viewDate === todayKst);
-  // 장중 = 09:00 ~ 15:30 KST (한국 정규 거래시간)
-  const totalMin = hourKst * 60 + minKst;
-  const isMarketOpen = (totalMin >= 9 * 60 && totalMin < 15 * 60 + 30);
-  const minutesAgo = Math.floor((nowMs - snapMs) / 60000);
-  if (isToday && isMarketOpen) {
-    return { label, state: (minutesAgo >= 10 ? 'stale' : 'fresh'), minutesAgo };
-  }
-  // 장 시작 전 / 장 마감 후 / 과거 viewDate / 휴장 — 정보 chip만
-  return { label, state: 'info', minutesAgo };
-}
+// Q-CYCLE23 (2026-05-22) — `_computeSnapshotFreshness` 폴링 chip 본문 제거.
+//   대표 발화 (2026-05-22 16:19 KST): "업데이트 시간과 폴링 시간이 차이가 나는 이유를 모르겠다.
+//   둘은 원래 같고 폴링 시간은 굳이 보여줄 필요 없지 않나?".
+//   본질: generatedAt (build_daily) vs last_snapshot_at (kiwoom raw) 양 source 다름 → UX 혼란.
+//   hard guard 30분 차단 (`_computeMarketHardGuard`)은 유지 — 장중 polling 정지 사고 대응 본질.
+//   chip 10분 fresh/stale 가시화는 hard guard로 흡수, 사용자 노출 0건. CSS `.cal-day-meta__snapshot*` 동시 제거.
 
 // buildSparkline → js/lib/sparkline.js (REQ-001 §3 Phase 1 분리)
 // buildCandles20 → js/lib/mini-candle.js (REQ-001 §3 Phase 1 분리)
@@ -602,18 +573,14 @@ function renderCalExpandContent(date, data) {
   const generatedSuffix = generatedAt
     ? ` · <span class="cal-day-meta__updated">${escapeHtml(_formatGeneratedAt(generatedAt))} 업데이트</span>`
     : '';
-  // Q-CYCLE20-P2 (2026-05-20) — kiwoom 마지막 폴링 시각 freshness chip (SPEC-001 §I.4 확장).
+  // Q-CYCLE23 (2026-05-22) — 폴링 chip 본문 제거. lastSnapshotAt은 hard guard 30분 차단용 유지.
   const lastSnapshotAt = data.lastSnapshotAt || '';
   // 테스트 hook: window._freshnessNow 설정 시 해당 시각으로 평가 (시뮬레이션용)
   const _nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number') ? window._freshnessNow : Date.now();
-  const freshness = _computeSnapshotFreshness(lastSnapshotAt, date, _nowMs);
-  const snapshotSuffix = freshness
-    ? ` · <span class="cal-day-meta__snapshot cal-day-meta__snapshot--${freshness.state}" title="${freshness.minutesAgo != null ? freshness.minutesAgo + '분 전' : ''}">${escapeHtml(freshness.label)}${freshness.state === 'stale' ? ' (' + freshness.minutesAgo + '분 전)' : ''}</span>`
-    : '';
   // Q-CYCLE20-P0 hard guard (2026-05-20 09:51 KST 대표 직접 발화 격상) — 장중 stale 차단.
   const hardGuard = _computeMarketHardGuard(generatedAt, lastSnapshotAt, date, _nowMs);
   const metaText = todayStocks.length > 0
-    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}${snapshotSuffix}`
+    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
     : '—';
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
