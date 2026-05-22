@@ -43,6 +43,7 @@ import { attachFibonacci, detachFibonacci } from './plugins/fibonacci.js';
 import { VolumeByDecilePrimitive } from './plugins/volume-by-decile.js';
 import { attachMarkers, detachMarkers } from './plugins/markers.js';
 import { PinkSignalPrimitive } from './plugins/pink-signal.js';
+import { RSIOverboughtCloudPrimitive } from './plugins/rsi-overbought-cloud.js';
 import { buildTogglePanel, INDICATOR_CHIPS } from './toggle-panel.js';
 
 const STORAGE_KEY = 'm100s.chart.tv.indicators.global';
@@ -550,6 +551,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     tradingValue: null, // ISeriesApi (sub-pane 1)
     macd: null,         // { line, signal, hist }
     rsi: null,          // ISeriesApi (sub-pane 3)
+    rsiSignal: null,    // ISeriesApi (sub-pane 3, signal 9 line)
+    rsiOverboughtCloud: null, // ISeriesPrimitive (cycle23: RSI 14 ≥ 70 cloud fill)
     seriesMarkers: null,
     pinkSignal: null,   // ISeriesPrimitive (P0-4 분홍 vertical line)
     // Phase 7d-2 신축 — fibonacci 자석 drawing tool controller (signature 변경, Array → single instance)
@@ -886,12 +889,33 @@ function renderChartTV(container, dailyArr, options = {}) {
       try {
         chart.priceScale('right', 3).applyOptions({ invertScale: true });
       } catch (err) { /* noop fallback */ }
+
+      // cycle23 — RSI 14 ≥ 70 과매수 cloud fill primitive attach (대표 verbatim 2026-05-22 17:15 KST)
+      //   "확대 차트 하단 보조지표 중 rsi 에서 rsi 14 값이 70이상을 경우에는
+      //    rsi 선과 시그널 선 사이를 구름대처럼 채워줘"
+      //   §11.15 외부 spec 사전 검증 PASS (ISeriesApi.attachPrimitive + paneViews 본문 RSI pane=3 draw 정합)
+      //   §16 self-catch: invertScale 본질 priceToCoordinate 본문 자동 cascade (별도 handling 0건 정합)
+      if (signalData.length > 0) {
+        try {
+          layers.rsiOverboughtCloud = new RSIOverboughtCloudPrimitive(
+            chart, layers.rsi, rsiData, signalData,
+          );
+          layers.rsi.attachPrimitive(layers.rsiOverboughtCloud);
+        } catch (err) {
+          layers.rsiOverboughtCloud = null;
+        }
+      }
     } catch (err) {
       layers.rsi = null;
     }
   }
   function removeRSI() {
     if (!layers.rsi) return;
+    // cycle23 RSI cloud primitive detach 선행 (RSI series remove 전 본문 본질)
+    if (layers.rsiOverboughtCloud) {
+      try { layers.rsi.detachPrimitive(layers.rsiOverboughtCloud); } catch (e) { /* noop */ }
+      layers.rsiOverboughtCloud = null;
+    }
     try { chart.removeSeries(layers.rsi); } catch (e) { /* noop */ }
     if (layers.rsiSignal) {
       try { chart.removeSeries(layers.rsiSignal); } catch (e) { /* noop */ }
