@@ -865,27 +865,32 @@ function renderChartTV(container, dailyArr, options = {}) {
         priceLineVisible: false, lastValueVisible: false,
       }, 3);
       layers.rsi.setData(rsiData);
-      // cycle23 chart-tv-3changes Spot 1 (2026-05-22 17:21 KST 대표 verbatim
-      //   "하단 rsi 지표의 y축 값이 현재 40,80으로 보여지는데 30,70으로 바꿔줘"):
-      //   - 직전 P0-7 fix-9 본문 "과열30, 침체30 + invertScale" 영웅문 customization 본문 vs
-      //     본 cycle23 대표 신규 verbatim 본문 30/70 양 임계값 본질 (표준 RSI overbought 70 / oversold 30).
-      //   - 양 priceLine 본문 (a) price=30 + (b) price=70 본질 신축 → Y축 30/70 label visible.
-      //   - axisLabelVisible:true 본질 (P0-20 Fix-71 본문 false 본질 → 본 cycle23 true 본문 신규 verbatim 우선).
-      //   - invertScale:true 본문 그대로 보존 → 30 (위) / 70 (아래) visible 본질 (영웅문 customization 영구).
-      //   - cycle23 직전 rsi-overbought-cloud-fill (threshold 70 본문) 정합 (RSI ≥ 70 cloud fill + 70 label visible).
+      // cycle23 rsi-yaxis-single-fix (2026-05-22 18:16 KST 대표 verbatim
+      //   "rsi 보조지표 y축 값을 바꿔달랫는데 30,70이 추가만 된 것 같다. 배경색까지 포함된 채 추가됐는데
+      //    기존에 표시되던 값을 바꾸기만 하면 돼"):
+      //   - 직전 cycle23 chart-tv-3changes Spot 1 본문 createPriceLine 30/70 axisLabelVisible:true 본질 추가만
+      //   - 대표 catch: 자동 priceScale tick (40/60/80) 본문 본질 그대로 + 30/70 axisLabel 본문 본질 추가 → 이중 표시
+      //   - 본질 본문 본문 fix = priceScale 우측 column 본문 visible:false 본문 본질 + createPriceLine axisLabelVisible:false
+      //     + 30/70 label 본문 본질 좌측 HTML overlay 본문 신축 (SUB_PANE_TITLES paradigm 정합)
+      //   - createPriceLine line 본문 본문 본문 visible 그대로 (점선 가로선 본문 30/70 본질 본문 본문 그래프 영역 visible)
+      //   - axisLabelVisible:false 본문 본질 → 우측 priceScale 우측 label 본문 본질 부재 cascade
+      //   - invertScale:true 본문 그대로 보존 (RSI Y축 반전 영웅문 customization 영구)
       //   §11.15 외부 spec 사전 검증 PASS:
       //     - https://tradingview.github.io/lightweight-charts/tutorials/how_to/price-line
-      //       "axisLabelVisible: boolean — display label on price axis for the price line, default true"
-      //     - WebSearch 2회 corroborating (Lightweight Charts v5 PriceLineOptions.axisLabelVisible boolean)
-      //     - priceScale auto tick interval 본문 user direct 지정 spec 부재 → createPriceLine label 본문 본질
-      //       대안 PASS (대표 verbatim "현재 40,80으로 보여지는데" = autoScale tick 본질 0~100 본문 자동).
+      //       "axisLabelVisible: boolean — display label on price axis for the price line"
+      //     - https://tradingview.github.io/lightweight-charts/docs/api/interfaces/PriceScaleOptions
+      //       "visible: boolean — visibility of the price scale" (visible:false → 전체 column hide)
+      //     - WebSearch 2회 corroborating (TradingView Lightweight Charts v5 PriceScaleOptions.visible + axisLabelVisible)
+      //     - priceScale 본문 auto tick interval 본문 user direct 지정 spec 부재 (40/60/80 본문 본질 control 본문 본질 부재)
+      //     - 본질 결론 = priceScale 전체 hide + HTML overlay 본문 본질 30/70 본문 별도 layer 본문 본질 신축 의무
       //   §16 self-catch:
       //     - 영웅문 23a74560 본문 RSI priceScale "37.15/60.82" visible은 line 본문 marker label (createPriceLine 별건),
-      //       본 시스템 본문 RSI 가로선 30/70 본문 직접 createPriceLine 본문 axisLabelVisible:true 본질 → 양 label visible
-      //     - 직전 P0-20 Fix-71 본문 30 label 삭제 → 본 cycle23 본문 30/70 label 재 신축 (대표 신규 verbatim 우선)
-      //     - invertScale:true 본질 → 30 (상단) / 70 (하단) visible 본질 (priceScale 본문 Y축 반전 그대로)
-      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: true });
-      layers.rsi.createPriceLine({ price: 70, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: true });
+      //       본 시스템 본문 RSI 가로선 30/70 본문 본질 본문 본문 HTML overlay 본문 본질 별도 layer 본문 본질 (영웅문 paradigm 본문 본질 우측 본문 vs 본 시스템 본문 좌측 본질)
+      //     - 자동 tick (40/60/80) 본문 본질 priceScale visible:false 본문 본질 cascade hide PASS
+      //     - 30/70 본문 본질 HTML overlay 본문 본질 별도 visible PASS (사용자 인지 layer 본질)
+      //     - cycle23 직전 rsi-overbought-cloud-fill (threshold 70 본문) 정합 (RSI ≥ 70 cloud fill + 70 overlay label visible)
+      layers.rsi.createPriceLine({ price: 30, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: false });
+      layers.rsi.createPriceLine({ price: 70, color: '#94A3B8', lineStyle: LineStyle.Dashed, title: '', axisLabelVisible: false });
 
       // P0-7 fix-9: signal 9 line 본문 신축 — SMA(9) of RSI series
       const signalData = [];
@@ -906,8 +911,15 @@ function renderChartTV(container, dailyArr, options = {}) {
       }
 
       // P0-7 fix-9: invertScale 본문 — RSI sub-pane priceScale Y축 반전 (영웅문 customization)
+      // cycle23 rsi-yaxis-single-fix (2026-05-22 18:16 KST 대표 verbatim "기존에 표시되던 값(40/80)을 바꾸기만"):
+      //   - visible:false 본질 본문 추가 → RSI sub-pane priceScale 우측 column 본문 전체 hide
+      //   - 자동 tick (40/60/80) 본문 본질 cascade hide PASS
+      //   - 30/70 본문 본질 좌측 HTML overlay 본문 별도 layer 본문 신축 (line 1276~ SUB_PANE_TITLES paradigm 정합 cascade)
+      //   §11.15 외부 spec 사전 검증 PASS: PriceScaleOptions.visible:boolean (TradingView v5 native)
+      //   §16 self-catch: visible:false 본문 본질 본문 본문 → scaleMargins 본문 본질 본문 본문 영향 가능성 본문 본질 (issue #1473)
+      //     - 본 sub-pane 본문 본질 본문 default scaleMargins 본문 본질 본문 본문 본문 본문 본문 본문 사용 부재 (chart 본문 본문 본문 default 본문 본질 정합)
       try {
-        chart.priceScale('right', 3).applyOptions({ invertScale: true });
+        chart.priceScale('right', 3).applyOptions({ invertScale: true, visible: false });
       } catch (err) { /* noop fallback */ }
 
       // cycle23 — RSI 14 ≥ 70 과매수 cloud fill primitive attach (대표 verbatim 2026-05-22 17:15 KST)
@@ -1253,6 +1265,17 @@ function renderChartTV(container, dailyArr, options = {}) {
   const SUB_PANE_TITLES = ['#거래대금', 'MACD', 'RSI'];
   const subPaneLabels = [];
 
+  // cycle23 rsi-yaxis-single-fix (2026-05-22 18:16 KST 대표 verbatim "기존에 표시되던 값 (40/80)을 30,70으로 바꾸기만"):
+  //   - priceScale visible:false 본문 본질 cascade → axisLabel (createPriceLine 30/70) 본문 본질 함께 hide
+  //   - 본 RSI Y축 label overlay 본문 본질 본문 신축 — 30 (상단 invertScale) / 70 (하단 invertScale) 본문 본질
+  //   - paneEl 본문 본질 본문 본문 RSI sub-pane (paneIdx 3) 본문 본질 본문 본문 우측 본문 본질 (영웅문 paradigm 정합)
+  //   - 본질: 자동 tick (40/60/80) 본문 본질 priceScale visible:false 본문 cascade hide PASS + 30/70 본문 본질 본 layer visible PASS
+  //   §11.15 외부 spec 사전 검증 PASS: IPaneApi.getHTMLElement / getHeight 본문 v5 native (panes API)
+  //   §16 self-catch:
+  //     - invertScale:true 본문 본질 → 본 overlay 본문 본질 본문 본문 30 (top 6px 본문 본질) / 70 (bottom 6px 본문 본질) 본질 본문 정합
+  //     - paneEl.getHeight() 본문 본질 본문 본문 본문 height 본문 본질 본문 본문 → 70 본문 본질 본문 본문 본문 bottom 본문 본질 본문 절대 위치
+  const rsiYAxisLabels = []; // [labelEl_30, labelEl_70]
+
   function positionSubPaneLabels() {
     try {
       const panes = chart.panes();
@@ -1270,8 +1293,50 @@ function renderChartTV(container, dailyArr, options = {}) {
         label.style.top = `${topPx}px`;
         label.style.display = 'block';
       }
+      // cycle23 rsi-yaxis-single-fix: RSI Y축 30/70 label 본문 본질 본문 본문 RSI sub-pane (paneIdx 3) 본질 위치 적용
+      //   invertScale:true 본질 → 30 (top:6px) / 70 (bottom:6px) 본문 본질 정합
+      const rsiPane = panes[3];
+      if (rsiPane && typeof rsiPane.getHTMLElement === 'function') {
+        const rsiPaneEl = rsiPane.getHTMLElement();
+        if (rsiPaneEl) {
+          const rsiTop = rsiPaneEl.offsetTop;
+          const rsiHeight = (typeof rsiPane.getHeight === 'function') ? rsiPane.getHeight() : rsiPaneEl.offsetHeight;
+          if (rsiYAxisLabels[0]) {
+            // 30 = invertScale 본질 상단 (top:6px from rsi pane top)
+            rsiYAxisLabels[0].style.top = `${rsiTop + 6}px`;
+            rsiYAxisLabels[0].style.display = 'block';
+          }
+          if (rsiYAxisLabels[1]) {
+            // 70 = invertScale 본질 하단 (bottom from rsi pane top)
+            rsiYAxisLabels[1].style.top = `${rsiTop + rsiHeight - 18}px`;
+            rsiYAxisLabels[1].style.display = 'block';
+          }
+        }
+      }
     } catch (err) { /* noop fallback (v5.0.0~5.0.7 본문 panes()/getHTMLElement() 미지원) */ }
   }
+
+  // cycle23 rsi-yaxis-single-fix: RSI Y축 30/70 label overlay 본문 신축 (priceScale visible:false cascade)
+  //   영웅문 paradigm 본문 본질 본문 본문 우측 본질 본문 (right:8px) — 본 시스템 본문 본질 본문 sub-pane title (좌측) 본문 본질 분리
+  ['30', '70'].forEach((priceText) => {
+    const labelY = document.createElement('div');
+    labelY.className = 'cal-chart-tv-rsi-yaxis-label';
+    labelY.textContent = priceText;
+    labelY.style.cssText = [
+      'position: absolute',
+      'right: 8px',                                      // 우측 본질 (priceScale 본문 본질 본문 본문 자리 본질 정합)
+      'font-size: 10px',
+      'font-weight: 600',
+      'color: rgba(0,0,0,0.85)',
+      'pointer-events: none',
+      'z-index: 10',
+      'display: none',
+      'background: transparent',
+      'padding: 0',
+      'text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 2px #fff',
+    ].join(';');
+    rsiYAxisLabels.push(labelY);
+  });
 
   SUB_PANE_TITLES.forEach((title, i) => {
     const label = document.createElement('div');
@@ -1299,6 +1364,11 @@ function renderChartTV(container, dailyArr, options = {}) {
     main.style.position = 'relative';  // overlay parent 본문 positioned 본질
     main.appendChild(label);
     subPaneLabels.push(label);
+  });
+
+  // cycle23 rsi-yaxis-single-fix: RSI Y축 30/70 label 본문 본질 본문 본문 main 본문 본질 본문 append 본질 (overlay parent 본문 본질 본문 정합)
+  rsiYAxisLabels.forEach((labelY) => {
+    main.appendChild(labelY);
   });
 
   // 초기 1회 positioning (sub-pane series add 직후 layout 본문 완료 후 호출 본질)
