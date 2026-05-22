@@ -580,8 +580,10 @@ function renderCalExpandContent(date, data) {
   if (_isSingleCardMode && _singleCardCode) {
     const _filtered = todayStocks.filter(s => (s.ticker || s.code) === _singleCardCode);
     todayStocks = _filtered;
-    // rank 재산정 (단일 카드 1)
-    todayStocks.forEach((s, i) => { s.rank = i + 1; });
+    // cycle23 (2026-05-23) — original rank 보존. 본질: 다중 카드 mode 본 거래대금 정렬+rank 부여 (line 555-556)
+    //   완료 후 filter만 수행 → 본 종목 원래 순위 (예: #5, #12 등) 그대로 유지.
+    //   이전: filter 직후 forEach((s, i) => { s.rank = i + 1; }) → 본 종목 rank 무조건 #1로 덮어쓰기 = 사고.
+    //   대표 verbatim "단독 카드를 공유할 때 #1이라고 순위가 바뀌는데 원래 숫자를 그대로 보여줄 수 있어?" (2026-05-23 07:24 KST).
     // cycle23 Q-CYCLE23-002 Phase 2c-1-extend — single-card mode 페이지 frame 완전 격리.
     // 본질: body class `single-card-mode` 부여 → CSS `body.single-card-mode header/nav/footer/page-header/cal-side/theme-tree/limit-up-trend/theme-trend/theme-map` hide.
     // 대표 verbatim "정말로 종목카드만 하나 존재" (2026-05-23 02:15 KST) 정합.
