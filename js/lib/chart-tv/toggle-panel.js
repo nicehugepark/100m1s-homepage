@@ -1,45 +1,42 @@
-/* ───── lib/chart-tv/toggle-panel.js — 보조지표 토글 UI chip bar (cycle23 chart-tv-3changes) ─────
-   REQ DOC-20260521-REQ-001 §5 + 대표 verbatim 2026-05-21 14:57 KST + 2026-05-22 17:21 KST 정합.
+/* ───── lib/chart-tv/toggle-panel.js — 보조지표 토글 UI chip bar (cycle23 toggle-fibonacci-only) ─────
+   REQ DOC-20260521-REQ-001 §5 + 대표 verbatim 2026-05-21 14:57 KST + 2026-05-22 17:21 KST + 2026-05-22 17:58 KST 정합.
 
    본질 (cycle22 P0-16 verbatim "일목균형표는 도저히 안되겠다 제거해줘"):
-   - **5 chip** (일목 chip 제거 본질 cascade)
    - 대표 verbatim 09:15:50 KST: "그리고 하단 지표인 거래대금 rsi macd는 토글뱌튼 필요없이 기본 출력이야"
    - → tradingValue/macd/rsi chip 제거 (base 영구 ON, expanded-chart.js addTradingValue/addMACD/addRSI 1회 호출)
-   - 5 chip = MA + 매물대 + 분홍 + 배당락 + 피보 (P0-16 Fix-50/Fix-51 본질)
 
    cycle23 chart-tv-3changes Spot 2 (2026-05-22 17:22 KST 대표 verbatim
      "배당락 토글이 있는데 아직 한번도 검증되진 않았지만 기본기능으로 판단하고 항상 표시해주는걸로
       한 다음 토글 버튼은 제거해줘"):
-   - **4 chip** (배당락 chip 제거 cascade)
-   - exDividend = DEFAULT_INDICATORS 본문 true 유지 (영구 ON, 기본 기능 본질)
-   - expanded-chart.js 본문 state.exDividend !== false 본문 본질 → toggle 부재 시 default true 본문 정합
-   - chip 4개 = MA + 매물대 + 분홍 + 피보 (배당락 chip 제거 cascade)
+   - 배당락 chip 제거 cascade (exDividend 영구 ON)
 
-   schema (cycle23 정정):
+   cycle23 toggle-fibonacci-only (2026-05-22 17:58 KST 대표 verbatim
+     "기능 검증을 위해 피보나치 토글 버튼만 남기고 나머지는 기본으로 항상 표시 시킨 후 토글 버튼을 모두 제거해줘.
+      그리고 터글버튼의 글자와 크기가 상대적으로 너무 크다"):
+   - **1 chip** (fibonacci 본문 본질만 유지 본문 — MA + 매물대 + 분홍 chip 본문 모두 제거 cascade)
+   - ma6 / volumeByDecile / pinkSignal = 영구 ON (expanded-chart.js applyState 본문 force, state 본문 무시)
+   - fibonacci = 사용자 toggle 본문 본문 유지 (기능 검증 본질 + drawing tool 본질 visual disruption 본문 옵션 본질)
+   - CSS chip 크기/글자 축소 (news.css §11.27 cascade)
+
+   schema (cycle23 toggle-fibonacci-only 정정):
    localStorage key 'm100s.chart.tv.indicators.global' value:
    {
-     "ma6": true, "volumeByDecile": true,
-     "pinkSignal": true, "exDividend": true, "fibonacci": true
+     "fibonacci": true  // 사용자 toggle 가능 본문 본질 (default true)
    }
-   tradingValue/macd/rsi/exDividend는 state 본문 외 chip layer (base 영구 ON).
+   ma6/volumeByDecile/pinkSignal/exDividend/tradingValue/macd/rsi = state 본문 외 영구 ON layer (base 본문).
 
-   §16 self-catch (cycle23):
-   - chip 4개 = 배당락 chip 제거 cascade (대표 verbatim destructive ack 정합)
-   - exDividend default true 영구 ON (DEFAULT_INDICATORS 본문 보존 + localStorage backward 호환 본질)
-   - expanded-chart.js line 933 본문 `state.exDividend !== false` 본질 → toggle 부재 + default true 본문 정합
-   - localStorage 본문 기존 exDividend false 본문 user 잔존 가능 but cycle23 본질 영구 ON 본문 → backward override 부재 정합
-     (대표 verbatim "기본기능으로 판단하고 항상 표시" = 기존 localStorage state 본문 무시 + 강제 ON 본질)
+   §16 self-catch (cycle23 toggle-fibonacci-only):
+   - chip 1개 = fibonacci 본문만 (MA/매물대/분홍 chip 본문 모두 제거 cascade)
+   - ma6/volumeByDecile/pinkSignal 본문 expanded-chart.js applyState 본문 force ON (state 본문 무시)
+     → 사용자 localStorage 본문 false 잔존 본문 봉쇄 본문 정합 (배당락 본문 본질 본문 정합)
+   - fibonacci chip 본문 본문 유지 = 기능 검증 본문 (대표 verbatim "기능 검증을 위해 피보나치 토글 버튼만 남기고")
+   - CSS chip 크기 축소 = 글자 font-size 12→10 / min-width 48→36 / height 28→20 / padding 0 10→0 6 본문 본질
 */
 
-// cycle23 chart-tv-3changes Spot 2 본질 — 4 chip (배당락 chip 제거 cascade)
-// chip 순서 = 카테고리 본질 (overlay / marker / drawing)
+// cycle23 toggle-fibonacci-only 본질 — 1 chip (fibonacci 본문만, 나머지 chip 모두 제거 cascade)
 export const INDICATOR_CHIPS = [
-  // overlay (캔들 위)
-  { key: 'ma6', label: 'MA', name: 'MA 7선', category: 'overlay' },
-  { key: 'volumeByDecile', label: '매물대', name: '매물대 10등분', category: 'overlay' },
-  // marker
-  { key: 'pinkSignal', label: '강세', name: '분홍 강세', category: 'marker' },
   // drawing tool (P0-16 Fix-51: default ON + auto-anchor 본문)
+  // cycle23 toggle-fibonacci-only: 사용자 toggle 본문 본질 유지 (기능 검증 본질)
   { key: 'fibonacci', label: '피보', name: '피보나치', category: 'drawing' },
 ];
 

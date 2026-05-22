@@ -3451,9 +3451,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 .cal-chart-tv-toggle-bar {
+  /* cycle23 toggle-fibonacci-only (2026-05-22 17:58 KST 대표 verbatim "터글버튼의 글자와 크기가 상대적으로 너무 크다"):
+     gap 6→4 / padding 4 8→2 6 본문 축소 본질 (chip 1개 본문 본질 cascade) */
   display: flex;
-  gap: 6px;
-  padding: 4px 8px;
+  gap: 4px;
+  padding: 2px 6px;
   flex-wrap: nowrap;
   white-space: nowrap;
 }
@@ -3465,19 +3467,22 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 .cal-chart-tv-chip {
+  /* cycle23 toggle-fibonacci-only (2026-05-22 17:58 KST 대표 verbatim "터글버튼의 글자와 크기가 상대적으로 너무 크다"):
+     min-width 48→36 / height 28→20 / padding 0 10→0 6 / font-size 12→10 / border-radius 14→10 본문 축소 본질
+     chip 1개 본문 본질 (fibonacci만) → 본문 본문 visual 본문 작게 본질 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 48px;
-  height: 28px;
-  padding: 0 10px;
-  font-size: 12px;
+  min-width: 36px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 10px;
   font-weight: 500;
   line-height: 1;
   color: rgba(0,0,0,0.6);
   background: rgba(0,0,0,0.04);
   border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
+  border-radius: 10px;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
@@ -3538,11 +3543,13 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 
 @media (max-width: 360px) {
+  /* cycle23 toggle-fibonacci-only: base 축소 cascade 본문 정합
+     min-width 40→32 / height 24→18 / font-size 11→9 / padding 0 8→0 5 본문 본질 */
   .cal-chart-tv-chip {
-    min-width: 40px;
-    height: 24px;
-    font-size: 11px;
-    padding: 0 8px;
+    min-width: 32px;
+    height: 18px;
+    font-size: 9px;
+    padding: 0 5px;
   }
 }
 

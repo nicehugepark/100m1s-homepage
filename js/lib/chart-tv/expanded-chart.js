@@ -1114,13 +1114,18 @@ function renderChartTV(container, dailyArr, options = {}) {
   }
 
   function applyState(s) {
-    if (s.ma6) addMA6(); else removeMA6();
-    // P0-16 Fix-50: 일목 제거 cascade (s.ichimoku branch 폐기)
-    if (s.volumeByDecile) addVolumeByDecile(); else removeVolumeByDecile();
+    // cycle23 toggle-fibonacci-only (2026-05-22 17:58 KST 대표 verbatim
+    //   "기능 검증을 위해 피보나치 토글 버튼만 남기고 나머지는 기본으로 항상 표시 시킨 후 토글 버튼을 모두 제거해줘"):
+    //   - ma6 / volumeByDecile / pinkSignal 본문 영구 ON 본질 (state 본문 무시 본문 force 본질)
+    //   - 사용자 localStorage 본문 false 잔존 봉쇄 본문 정합 (배당락 본문 본질 본문 정합)
+    //   - INDICATOR_CHIPS 본문 fibonacci 1 entry만 본문 본질 → ma6/volumeByDecile/pinkSignal chip 본문 부재 cascade
+    addMA6();              // 영구 ON (chip 제거 cascade, state.ma6 무시)
+    addVolumeByDecile();   // 영구 ON (chip 제거 cascade, state.volumeByDecile 무시)
+    addPinkSignal();       // 영구 ON (chip 제거 cascade, state.pinkSignal 무시)
     // 하단 sub-pane 3종 = base 영구 ON (lead 옵션 A-3 회신 verbatim 09:15:50 KST 대표 정정)
     // chip 부재 + toggle 불가 + state 본문 외 layer 본질
     // P0-4 영웅문 정합 정정 (2026-05-21 10:02 KST):
-    //   분홍 강세 = vertical line primitive (별건 layer, state.pinkSignal chip toggle 본질 정합)
+    //   분홍 강세 = vertical line primitive (별건 layer, cycle23 toggle-fibonacci-only 본문 force ON cascade)
     //   배당락 + RSI 과매도 = markers.js 통합 layer (createSeriesMarkers 본문)
     //   RSI 과매도 marker = 영웅문 본질 visible 영구 (RSI<30 자동 추출, 사용자 toggle 불가, 영웅문 reference 정합)
     // cycle23 chart-tv-3changes Spot 2 (2026-05-22 17:22 KST 대표 verbatim "배당락 ... 토글 버튼은 제거"):
@@ -1128,7 +1133,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     //   - addMarkers() 본문 1회 호출 본문 본질 (state.exDividend 본문 본문 무시 본질 본문 addMarkers 본문 force)
     removeMarkers();
     addMarkers();
-    if (s.pinkSignal) addPinkSignal(); else removePinkSignal();
+    // cycle23 toggle-fibonacci-only: fibonacci 본문 본질 사용자 toggle 유지 (기능 검증 본문)
     if (s.fibonacci) addFibonacci(); else removeFibonacci();
   }
 
