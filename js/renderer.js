@@ -1631,14 +1631,19 @@ function renderCalExpandContent(date, data) {
       const dateParam = urlParams.get('date');
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
-      // P0-3 옵션 A (2026-05-21 09:42 KST 대표 직접 발화 catch):
-      //   공유 URL = 단일 페이지 + #stock-{ticker} anchor scroll 본질.
-      //   기존 `/news/stock/{date}/{code}.html` redirect path는 cron pipeline 산출물 부재 시 404.
-      //   feedback_share_url_ticker_only.md 정합 — DOM id `stock-${code}` 본질 매칭 (renderer.js L1165/L1233 일치).
-      const hashPart = code ? `#stock-${code}` : '';
-      const shareUrl = dateStr
-        ? `${window.location.origin}/news.html?date=${dateStr}${hashPart}`
-        : `${window.location.origin}/news.html${hashPart}`;
+      // Phase 2c-1 (2026-05-23 00:21 KST 대표 결정 "그럼 풍부한 쪽으로 해야지" catch):
+      //   공유 URL = Phase 2c-1 single-card mode query param URL.
+      //   기존 `#stock-{ticker}` hash anchor scroll → `?stock={code}&date={date}` query param 전환.
+      //   본 종목 1개만 render (sparkline + chart-tv + bullish + 보조지표 + status_badges 풍부 카드).
+      //   backward compat: 기존 `#stock-{code}` legacy URL은 renderer.js L1673-1702 anchor scroll handler 보존.
+      //   feedback_share_url_ticker_only.md 정합 — code 6자리만 노출 (한글 이름 제외).
+      const shareUrl = code
+        ? (dateStr
+          ? `${window.location.origin}/news.html?stock=${code}&date=${dateStr}`
+          : `${window.location.origin}/news.html?stock=${code}`)
+        : (dateStr
+          ? `${window.location.origin}/news.html?date=${dateStr}`
+          : `${window.location.origin}/news.html`);
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
           // URL만 공유 — 메신저가 title+text+url을 모두 붙여 중복 생기는 이슈 회피
