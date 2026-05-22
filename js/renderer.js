@@ -1522,15 +1522,25 @@ function renderCalExpandContent(date, data) {
       const ticker = card.getAttribute('data-stock-code') || '';
       // 슬롯 lazy 생성 — SPEC-001 v2 §5.2/§5.3 옵션 B 채택 (Phase 5 design-lead 본질 갱신, cluster v21 99회차 critical FLR-001 catch).
       // `.cal-feature-details`는 `.cal-feature-body` 직접 자식 (card 직접 자식 아님). 따라서 `insertBefore(slot, details)` 호출 시 NotFoundError throw.
-      // 옵션 B: `card.appendChild(slot)` 단일 분기 — details/hasDetails 분기 자체 제거. slot 위치 = card 마지막 자식 (body sibling).
+      // 옵션 B: `card.appendChild(slot)` 단일 분기 — details/hasDetails 분기 자체 제거.
       // selector `:scope >` 명시 — card 직접 자식만 매칭 (body 내부 잘못된 위치 슬롯 검색 회피).
+      // cycle23 layout 정정 (2026-05-22 15:56 KST 대표 verbatim "현대 확대용 차트가 상세보기 버튼 아래쪽에 있는데 종목이름과 미니캔들 로우의 바로 아래로 옮기고 싶다"):
+      //   slot 위치 본문 = card 마지막 자식 (body sibling) → cal-feature-head 직후 (rangeHtml 위) insert 본질.
+      //   `card.appendChild(slot)` → `card.insertBefore(slot, headEl.nextSibling)` 본질 (head 부재 시 graceful appendChild fallback).
       let slot = card.querySelector(':scope > .cal-feature-chart-expanded');
       if (!slot) {
         slot = document.createElement('div');
         slot.className = 'cal-feature-chart-expanded';
         slot.id = `chart-${ticker}`; // SPEC §5.6 MINOR-1 — stable id (aria-controls anchor)
         slot.setAttribute('aria-live', 'polite');
-        card.appendChild(slot); // SPEC §5.2 옵션 B — 단일 분기, body sibling, card 마지막 자식
+        const headEl = card.querySelector(':scope > .cal-feature-head');
+        if (headEl && headEl.nextSibling) {
+          card.insertBefore(slot, headEl.nextSibling); // cycle23 layout — head row 바로 아래
+        } else if (headEl) {
+          card.appendChild(slot); // head 마지막 자식 케이스 fallback
+        } else {
+          card.appendChild(slot); // head 부재 graceful fallback (SPEC §5.2 옵션 B 원본 동작)
+        }
       }
       let exDividendDates = [];
       try {
