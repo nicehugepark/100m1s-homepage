@@ -439,25 +439,6 @@ a.cal-credit-row:hover,
 }
 
 /* 다크모드 */
-@media (prefers-color-scheme: dark) {
-  .cal-credit-group { color: #E2E8F0; }
-  .cal-credit-group__heading { color: #94A3B8; }
-  .cal-credit-group__source { color: #64748B; }
-  .cal-credit-row__label { background: #334155; color: #E2E8F0; }
-  .cal-credit-row__label.sev-caution { background: #422006; color: #FCD34D; }
-  .cal-credit-row__label.sev-warning { background: #431407; color: #FB923C; }
-  .cal-credit-row__label.sev-danger,
-  .cal-credit-row__label.sev-credit  { background: #450A0A; color: #F87171; }
-  .cal-credit-row__label.sev-hot     { background: #4C0519; color: #F472B6; }
-  .cal-credit-row__period { color: #94A3B8; }
-  .cal-credit-row__period::before { color: #475569; }
-  .cal-credit-row__ext { color: #60A5FA; }
-  /* REQ-029 §2 — 다크모드 .cal-status-detail.v3 base는 다른 컨텍스트(상태 디테일 등)에서 사용 가능하므로 잔존 */
-  .cal-status-detail.v3 {
-    background: rgba(255, 255, 255, 0.03);
-    border-left-color: rgba(255, 255, 255, 0.1);
-  }
-}
 /* 2026-04-22 핫픽스: DART 공시 원문 링크 — 공시 기반 배지 상세 하단 */
 .cal-status-detail.v3 .cal-status-dart-link {
   display: inline-flex; align-items: center; gap: 4px;
@@ -1378,11 +1359,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-left: 26px; padding-right: 26px;
   padding-top: 8px;
 }
-@media (prefers-color-scheme: dark) {
-  /* REQ-073 — dark 미운영. light 통일. */
-  /* REQ-075 — frosted glass 복원, 0.92 → 0.7. */
-  .cal-content-head { background: rgba(255, 255, 255, 0.7); }
-}
 /* REQ-pm320-ux-cycle #1 — cal-content-head 클릭 가능 (→ #toss-cal scrollIntoView).
    hover 햇살 톤(#C49930 6%) + focus outline + active pulse. */
 .cal-content-head[data-scroll-to-cal] {
@@ -1417,9 +1393,6 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   color: #94A3B8;
   font-weight: 400;
   letter-spacing: 0.01em;
-}
-@media (prefers-color-scheme: dark) {
-  .cal-day-meta__updated { color: #64748B; }
 }
 /* Q-CYCLE23 (2026-05-22) — `.cal-day-meta__snapshot*` 폴링 chip CSS 본문 제거.
    본 chip render 본문 (renderer.js) + `_computeSnapshotFreshness` 함수 동시 제거.
@@ -1638,9 +1611,6 @@ body.single-card-mode { background: transparent !important; }
 @media (max-width: 640px) {
   .share-toast { bottom: 24px; font-size: 12.5px; padding: 9px 16px; }
 }
-@media (prefers-color-scheme: dark) {
-  .share-toast { background: rgba(255,255,255,0.92); color: #1A1D26; }
-}
 .cal-feature-head {
   display: flex;
   align-items: center;
@@ -1795,19 +1765,6 @@ body.single-card-mode { background: transparent !important; }
   color: #0F172A;
   border-color: #94A3B8;
 }
-@media (prefers-color-scheme: dark) {
-  .cal-disclosure-badge {
-    color: #E2E8F0;
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-  .cal-disclosure-badge:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #F1F5F9;
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-}
-
 /* REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
    대표 발화 (2026-04-28 01:30 KST): 키움 강세 수식 + "강세" 배지 + 연속 카운트.
    햇살 정체성 그라데이션 (AGENT.md §2.3 + REQ-035-rev 정합). 글자 #92400E 진한 호박색.
@@ -1826,14 +1783,6 @@ body.single-card-mode { background: transparent !important; }
   /* REQ-062 — margin-left 제거. 부모 .cal-feature-badges flex gap 사용 (들여쓰기 결함 fix). */
   vertical-align: middle;
 }
-@media (prefers-color-scheme: dark) {
-  .cal-bullish-badge {
-    color: #FBBF24;
-    background: rgba(251, 191, 36, 0.15);
-    border-color: rgba(251, 191, 36, 0.3);
-  }
-}
-
 .cal-feature-reason {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
   white-space: pre-wrap;
@@ -2651,21 +2600,6 @@ body.single-card-mode { background: transparent !important; }
 }
 
 /* 다크모드 — lightness +12% */
-@media (prefers-color-scheme: dark) {
-  .dsn-v9-stage-flow__node--current {
-    background: rgba(31, 111, 235, 0.18);
-  }
-  .dsn-v9-stage-flow__node--predicted {
-    background: rgba(229, 90, 43, 0.14);
-  }
-  .dsn-v9-current-state {
-    background: rgba(31, 111, 235, 0.12);
-  }
-  .dsn-v9-causal-line {
-    background: rgba(229, 90, 43, 0.10);
-  }
-}
-
 /* 고대비 — 보더 두께 강화 */
 @media (prefers-contrast: more) {
   .dsn-v9-stage-flow__node--current { border-width: 3px; border-left-width: 5px; }
@@ -2704,18 +2638,6 @@ body.single-card-mode { background: transparent !important; }
 }
 
 /* v9.3 다크모드 */
-@media (prefers-color-scheme: dark) {
-  .dsn-v9-stage-flow__node--upcoming {
-    background: rgba(31, 111, 235, 0.16);
-  }
-  .dsn-v9-stage-flow__node--predicted-imminent {
-    background: rgba(229, 90, 43, 0.14);
-    border-color: #FF7A4A;
-    color: #FF7A4A;
-  }
-  /* v9.3.1 §II — ::before 다크모드 무효 selector 제거 (휴지 사이클 0 결정 B=b). */
-}
-
 /* v9.3 고대비 — 두께 +1px (current/predicted 비례 강화) */
 @media (prefers-contrast: more) {
   .dsn-v9-stage-flow__node--upcoming { border-width: 3.5px; }
@@ -2815,29 +2737,6 @@ body.single-card-mode { background: transparent !important; }
 }
 
 /* 다크모드 — lightness +12% 톤 보정 (DSN-005 §IV 정합) */
-@media (prefers-color-scheme: dark) {
-  .dsn-v95-effect-badge--trade-halt {
-    background: rgba(248, 113, 113, 0.18);
-    color: #F87171;
-    border-color: rgba(248, 113, 113, 0.45);
-  }
-  .dsn-v95-effect-badge--limit-up {
-    background: linear-gradient(135deg, rgba(232, 192, 99, 0.20) 0%, rgba(232, 192, 99, 0.10) 100%);
-    color: #FCA5A5;
-    border-color: rgba(232, 192, 99, 0.50);
-  }
-  .dsn-v95-effect-badge--credit-block {
-    background: rgba(245, 158, 11, 0.16);
-    color: #F59E0B;
-    border-color: rgba(245, 158, 11, 0.45);
-  }
-  .dsn-v95-effect-badge--single-price {
-    background: rgba(96, 165, 250, 0.14);
-    color: #60A5FA;
-    border-color: rgba(96, 165, 250, 0.40);
-  }
-}
-
 /* 고대비 모드 (a11y) */
 @media (prefers-contrast: more) {
   .dsn-v95-effect-badge {
@@ -2848,13 +2747,6 @@ body.single-card-mode { background: transparent !important; }
     border-width: 2px;
     background: transparent;
     color: #B91C1C;
-  }
-}
-
-/* 고대비 + 다크 — 다크 surface 대비 보강 (WCAG AA, qa-2 측정 2.74:1 → ~6.5:1) */
-@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  .dsn-v95-effect-badge--limit-up {
-    color: #FCA5A5;
   }
 }
 
@@ -2870,11 +2762,6 @@ body.single-card-mode { background: transparent !important; }
   border-left: 3px solid #C53939;
 }
 /* 다크모드 — 톤 보정 (effect-badge limit-up 다크모드 color #FCA5A5와 일관) */
-@media (prefers-color-scheme: dark) {
-  .cal-feature-card--lu {
-    border-left-color: #FCA5A5;
-  }
-}
 /* 고대비 모드 — border 강조 (a11y) */
 @media (prefers-contrast: more) {
   .cal-feature-card--lu {
@@ -2948,29 +2835,7 @@ body.single-card-mode { background: transparent !important; }
   display: inline-block;
   margin-right: 3px;
 }
-@media (prefers-color-scheme: dark) {
-  .dsn-v98-micro-disclaimer {
-    border-top-color: var(--border-subtle, rgba(255,255,255,0.10));
-    color: var(--text-secondary, #9CA3AF);
-  }
-}
-
 /* 다크모드 — imminent 칩 lightness +12% / 푸터 var 자동 보정 */
-@media (prefers-color-scheme: dark) {
-  .dsn-v9-tense-chip--imminent {
-    background: rgba(229, 90, 43, 0.22);
-    border-color: #FF7A4A;
-    color: #FF7A4A;
-  }
-  .dsn-v91-disclaimer-footer {
-    border-top-color: var(--border-subtle, rgba(255,255,255,0.10));
-    color: var(--text-secondary, #9CA3AF);
-  }
-  .dsn-v91-disclaimer-footer__icon {
-    color: var(--text-secondary, #9CA3AF);
-  }
-}
-
 /* 고대비 — 점선/구분선 두께 강화 */
 @media (prefers-contrast: more) {
   .dsn-v9-tense-chip--imminent { border-width: 2px; font-weight: 800; }
@@ -3033,22 +2898,6 @@ body.single-card-mode { background: transparent !important; }
 }
 
 /* 다크모드 — predicted 점선 색 lightness +12% (DSN-005 §VIII) */
-@media (prefers-color-scheme: dark) {
-  .dsn-v92-stage-flow__node-effect {
-    border-top-color: var(--border-subtle, rgba(255,255,255,0.10));
-    color: var(--text-secondary, #9CA3AF);
-  }
-  .dsn-v92-stage-flow__node-effect--current {
-    color: var(--text-primary, #E5E7EB);
-  }
-  .dsn-v92-stage-flow__node-effect--upcoming {
-    color: #4D90FF;
-  }
-  .dsn-v92-stage-flow__node-effect--predicted {
-    color: #FF7A4A;
-  }
-}
-
 /* REQ-019 §III (DSN-004 v9.4) — 투자경고 예고 upcoming 노드 진입 임계가 5줄 영역.
    __node-effect 형제 영역 (1줄 효과는 잔존, 그 아래 5줄 추가).
    P0 차단: max-width 130px 유지 (노드 컨테이너 align-items: stretch — 자식 너비가 부모를 확장.
@@ -3105,23 +2954,6 @@ body.single-card-mode { background: transparent !important; }
 }
 
 /* 다크모드 — DSN-005 v9.2 정합 (lightness +12%) */
-@media (prefers-color-scheme: dark) {
-  .dsn-v94-stage-flow__entry-window {
-    background: rgba(77, 144, 255, 0.10);
-    border-top-color: #4D90FF;
-    color: var(--text-secondary, #9CA3AF);
-  }
-  .dsn-v94-stage-flow__entry-window-line--primary {
-    color: var(--text-primary, #E5E7EB);
-  }
-  .dsn-v94-stage-flow__entry-window-line--threshold {
-    color: #4D90FF;
-  }
-  .dsn-v94-stage-flow__entry-window-line--assumption {
-    color: var(--text-tertiary, #6B7280);
-  }
-}
-
 /* 고대비 */
 @media (prefers-contrast: more) {
   .dsn-v94-stage-flow__entry-window {
@@ -3153,16 +2985,6 @@ body.single-card-mode { background: transparent !important; }
   font-size: 0.85rem;
   line-height: 1.5;
   padding: 4px 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  .dsn-v92-predicted-detail-only {
-    background: rgba(229, 90, 43, 0.10);
-    border-left-color: #FF7A4A;
-  }
-  .dsn-v92-predicted-detail-only__title {
-    color: #FF7A4A;
-  }
 }
 
 /* REQ-064 (2026-04-28): §III 트리거 핀(.dsn-v92-trigger-pin) CSS rule 제거 — 라벨 모호성 (대표 라이브 발화).
@@ -3412,43 +3234,6 @@ body.single-card-mode { background: transparent !important; }
 }
 
 /* 다크모드 (SPEC §3.3 보정) */
-@media (prefers-color-scheme: dark) {
-  .cal-feature-chart-expanded {
-    background: #1A1D26;
-    border-color: rgba(196, 153, 48, 0.3);
-  }
-  .cal-chart-toggle {
-    border-color: rgba(196, 153, 48, 0.3);
-    color: #8B95A8;
-  }
-  .cal-chart-toggle.on {
-    background: rgba(196, 153, 48, 0.2);
-    color: #FBE9B5;
-  }
-  .cal-chart-sub-label {
-    background: rgba(26, 29, 38, 0.85);
-    color: #8B95A8;
-  }
-  .cal-chart-close {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(196, 153, 48, 0.3);
-    color: #8B95A8;
-  }
-  .cal-chart-empty {
-    background: rgba(255, 255, 255, 0.04);
-    color: #8B95A8;
-  }
-  .cal-chart-tooltip {
-    background: rgba(26, 29, 38, 0.95);
-    border-color: rgba(196, 153, 48, 0.4);
-    color: #E2E8F0;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-  }
-  .cal-chart-tooltip-date { color: #FBE9B5; }
-  .cal-chart-tooltip-row span { color: #8B95A8; }
-  .cal-chart-tooltip-row strong { color: #E2E8F0; }
-}
-
 /* ─────────────────────────────────────────────────────────────────
    cycle22 P1 END
 ─────────────────────────────────────────────────────────────────── */
