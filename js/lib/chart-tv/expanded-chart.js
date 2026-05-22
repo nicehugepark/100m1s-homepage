@@ -368,10 +368,13 @@ function buildContainer(slot, ticker) {
   attr.className = 'cal-chart-tv-attr';
   attr.innerHTML = '<a href="https://www.tradingview.com/" target="_blank" rel="noopener" style="color:#6B7A99; font-size:10px; text-decoration:none;">Charts by TradingView</a>';
 
+  // cycle23 layout 정정 (2026-05-22 15:56 KST 대표 verbatim "확대 차트의 접기 버튼 또한 charts by tradingview 글자 위에 있는데 라이센스 글자보다 아래쪽에 위치시켜줘"):
+  //   기존 order: togglesHost → main → close → attr (close가 attr 위)
+  //   신규 order: togglesHost → main → attr → close (close가 attr 아래, license 글자 아래 위치 본질)
   wrap.appendChild(togglesHost);
   wrap.appendChild(main);
-  wrap.appendChild(close);
   wrap.appendChild(attr);
+  wrap.appendChild(close);
   slot.appendChild(wrap);
 
   return { wrap, togglesHost, main, close };
