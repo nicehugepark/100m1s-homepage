@@ -1,6 +1,6 @@
 {
   "date": "2026-05-27",
-  "generated_at": "2026-05-27T13:02:03.155190",
+  "generated_at": "2026-05-27T13:25:53.069430",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -10,6 +10,10 @@
     {
       "title": "AI부품",
       "summary": "AI 기판·MLCC 수요 급증 → 삼성전기·LG이노텍 등 반도체 부품주 초강세 지속"
+    },
+    {
+      "title": "반도체호황",
+      "summary": "글로벌 AI 수요 회복 → 반도체 메모리칩 부흥 → SK하이닉스 시총 1조달러 진입, 삼성전자 영업익 500조 전망 → K-반도체 섹터 강세"
     },
     {
       "title": "AI메모리",
@@ -38,10 +42,6 @@
     {
       "title": "기판호황",
       "summary": "AI 데이터센터 수요 폭증 → 고주파·고전력 기판·MLCC 공급 부족 심화 → 반도체 부품 기업 실적 호황"
-    },
-    {
-      "title": "로봇산업",
-      "summary": "AI·자동화 수요 확산 → 제조·운송업 로봇 도입 가속화 → 로봇 부품·핵심 반도체 기업 매출 확대"
     }
   ],
   "narratives": [],
@@ -79,16 +79,56 @@
   ],
   "themes_tree": {
     "date": "2026-05-27",
-    "roots": []
+    "roots": [
+      {
+        "name": "반도체",
+        "children": [
+          {
+            "name": "AI 메모리 반도체",
+            "summary": "SK하이닉스 시총 1조달러 클럽 진입·삼성전자 영업익 500조 전망에 외국계·국내 증권사 목표가 대폭 상향되며 코스피 8450선 돌파, 메모리 슈퍼사이클 수혜가 대형 반도체주로 집중.",
+            "source_count": 9,
+            "verdict": "pass"
+          },
+          {
+            "name": "AI 인프라",
+            "summary": "AI 서버 수요 폭증으로 기판·PCB·전원공급장치 밸류체인이 ‘제2의 메모리’로 재평가되며 후공정·부품주에 목표가 상향과 매수세 유입.",
+            "source_count": 4,
+            "verdict": "pass"
+          }
+        ]
+      },
+      {
+        "name": "AI",
+        "children": [
+          {
+            "name": "피지컬 AI",
+            "summary": "로봇·자율주행용 뎁스 카메라·라이다 칩 개발 착수와 AI·로봇 중심 사업 재편 소식이 잇따르며 물리 AI 부품주로 기대감 확산.",
+            "source_count": 4,
+            "verdict": "weak"
+          }
+        ]
+      },
+      {
+        "name": "AI 인프라",
+        "children": [
+          {
+            "name": "데이터센터 전력",
+            "summary": "AI 데이터센터 전력 수요 급증으로 선박엔진·중전기 업체가 전력 솔루션·ESS 사업으로 외연을 확장하며 목표가 상향과 해외 수주 기대가 부각.",
+            "source_count": 2,
+            "verdict": "weak"
+          }
+        ]
+      }
+    ]
   },
   "stocks": [
     {
       "code": "005935",
       "name": "삼성전자우",
       "rank": 1,
-      "trade_amount": 885500000000,
-      "change_pct": 4.97,
-      "close_price": 196500,
+      "trade_amount": 929156000000,
+      "change_pct": 5.07,
+      "close_price": 196700,
       "open_price": 196400,
       "high_price": 199700,
       "low_price": 195100,
@@ -173,11 +213,11 @@
       "range_240d": {
         "high": 199700,
         "high_date": "2026-05-27",
-        "high_pct": -1.6,
+        "high_pct": -1.5,
         "low": 45900,
         "low_date": "2025-06-02",
-        "low_pct": 328.1,
-        "current": 196500
+        "low_pct": 328.54,
+        "current": 196700
       },
       "daily_20": [
         {
@@ -318,7 +358,7 @@
           "o": 196400,
           "h": 199700,
           "l": 195100,
-          "c": 196500
+          "c": 196700
         }
       ],
       "intraday": {
@@ -349,7 +389,10 @@
           196750,
           197000,
           197100,
-          196500
+          196400,
+          196800,
+          197100,
+          196700
         ]
       },
       "credit_risk": true,
@@ -359,9 +402,9 @@
       "code": "001740",
       "name": "SK네트웍스",
       "rank": 2,
-      "trade_amount": 661988000000,
-      "change_pct": 11.72,
-      "close_price": 12200,
+      "trade_amount": 730407000000,
+      "change_pct": 15.48,
+      "close_price": 12610,
       "open_price": 11460,
       "high_price": 13960,
       "low_price": 11400,
@@ -392,12 +435,13 @@
         "change_pct": 30.0,
         "trade_amount": 659689000000
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
+      "bullish_today": true,
+      "bullish_streak": 2,
       "bullish_dates": [
         "2026-05-04",
         "2026-05-14",
-        "2026-05-26"
+        "2026-05-26",
+        "2026-05-27"
       ],
       "news": [
         {
@@ -477,17 +521,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 2.62,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 4.06,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 13960,
         "high_date": "2026-05-27",
-        "high_pct": -12.61,
+        "high_pct": -9.67,
         "low": 4090,
         "low_date": "2025-06-02",
-        "low_pct": 198.29,
-        "current": 12200
+        "low_pct": 208.31,
+        "current": 12610
       },
       "daily_20": [
         {
@@ -628,7 +672,7 @@
           "o": 11460,
           "h": 13960,
           "l": 11400,
-          "c": 12200
+          "c": 12610
         }
       ],
       "intraday": {
@@ -659,7 +703,10 @@
           12890,
           12490,
           12220,
-          12060
+          12160,
+          12590,
+          12710,
+          12720
         ]
       }
     },
@@ -667,9 +714,9 @@
       "code": "018880",
       "name": "한온시스템",
       "rank": 3,
-      "trade_amount": 429165000000,
-      "change_pct": 3.24,
-      "close_price": 5410,
+      "trade_amount": 446596000000,
+      "change_pct": 1.53,
+      "close_price": 5320,
       "open_price": 5250,
       "high_price": 5940,
       "low_price": 5060,
@@ -786,17 +833,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 0.72,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 0.4,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 5940,
         "high_date": "2026-05-27",
-        "high_pct": -8.92,
+        "high_pct": -10.44,
         "low": 2733,
         "low_date": "2025-06-02",
-        "low_pct": 97.95,
-        "current": 5410
+        "low_pct": 94.66,
+        "current": 5320
       },
       "daily_20": [
         {
@@ -937,7 +984,7 @@
           "o": 5250,
           "h": 5940,
           "l": 5060,
-          "c": 5410
+          "c": 5320
         }
       ],
       "intraday": {
@@ -968,7 +1015,10 @@
           5450,
           5490,
           5410,
-          5400
+          5410,
+          5370,
+          5330,
+          5310
         ]
       },
       "credit_risk": true,
@@ -978,9 +1028,9 @@
       "code": "036930",
       "name": "주성엔지니어링",
       "rank": 4,
-      "trade_amount": 345761000000,
-      "change_pct": -2.35,
-      "close_price": 229000,
+      "trade_amount": 359387000000,
+      "change_pct": -2.56,
+      "close_price": 228500,
       "open_price": 243000,
       "high_price": 250000,
       "low_price": 228000,
@@ -1107,17 +1157,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": 0.94,
+      "index_change_pct": -2.7,
+      "index_multiple_current": 0.95,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 250000,
         "high_date": "2026-05-27",
-        "high_pct": -8.4,
+        "high_pct": -8.6,
         "low": 26050,
         "low_date": "2025-08-04",
-        "low_pct": 779.08,
-        "current": 229000
+        "low_pct": 777.16,
+        "current": 228500
       },
       "daily_20": [
         {
@@ -1258,7 +1308,7 @@
           "o": 243000,
           "h": 250000,
           "l": 228000,
-          "c": 229000
+          "c": 228500
         }
       ],
       "intraday": {
@@ -1289,7 +1339,257 @@
           231000,
           232000,
           230500,
-          229500
+          229000,
+          230500,
+          229000,
+          228500
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
+    },
+    {
+      "code": "001820",
+      "name": "삼화콘덴서",
+      "rank": 5,
+      "trade_amount": 333379000000,
+      "change_pct": 4.83,
+      "close_price": 139000,
+      "open_price": 160100,
+      "high_price": 163400,
+      "low_price": 136000,
+      "industry": "전자부품 제조업",
+      "sector": "콘덴서(축전기) 제조",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 5,
+      "prev_pick": {
+        "date": "2026-05-26",
+        "rank": 7,
+        "change_pct": 30.0,
+        "trade_amount": 247005000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [
+        "2026-05-20",
+        "2026-05-22"
+      ],
+      "news": [],
+      "fallback": true,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 1.27,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 163400,
+        "high_date": "2026-05-27",
+        "high_pct": -14.93,
+        "low": 24200,
+        "low_date": "2025-06-02",
+        "low_pct": 474.38,
+        "current": 139000
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-27",
+          "o": 64300,
+          "h": 64700,
+          "l": 62500,
+          "c": 62900
+        },
+        {
+          "date": "2026-04-28",
+          "o": 64400,
+          "h": 65500,
+          "l": 63500,
+          "c": 64800
+        },
+        {
+          "date": "2026-04-29",
+          "o": 66000,
+          "h": 73000,
+          "l": 65400,
+          "c": 71000
+        },
+        {
+          "date": "2026-04-30",
+          "o": 70000,
+          "h": 70000,
+          "l": 66500,
+          "c": 67200
+        },
+        {
+          "date": "2026-05-04",
+          "o": 69700,
+          "h": 70100,
+          "l": 68100,
+          "c": 68400
+        },
+        {
+          "date": "2026-05-06",
+          "o": 70700,
+          "h": 70700,
+          "l": 63800,
+          "c": 66900
+        },
+        {
+          "date": "2026-05-07",
+          "o": 67500,
+          "h": 69000,
+          "l": 66000,
+          "c": 67900
+        },
+        {
+          "date": "2026-05-08",
+          "o": 66100,
+          "h": 67600,
+          "l": 64300,
+          "c": 66000
+        },
+        {
+          "date": "2026-05-11",
+          "o": 64800,
+          "h": 65500,
+          "l": 63000,
+          "c": 64100
+        },
+        {
+          "date": "2026-05-12",
+          "o": 64900,
+          "h": 67000,
+          "l": 60000,
+          "c": 63500
+        },
+        {
+          "date": "2026-05-13",
+          "o": 61800,
+          "h": 65200,
+          "l": 60800,
+          "c": 64000
+        },
+        {
+          "date": "2026-05-14",
+          "o": 63600,
+          "h": 70000,
+          "l": 60900,
+          "c": 67100
+        },
+        {
+          "date": "2026-05-15",
+          "o": 69100,
+          "h": 72900,
+          "l": 63400,
+          "c": 65200
+        },
+        {
+          "date": "2026-05-18",
+          "o": 64000,
+          "h": 64000,
+          "l": 55000,
+          "c": 62500
+        },
+        {
+          "date": "2026-05-19",
+          "o": 61700,
+          "h": 66100,
+          "l": 58000,
+          "c": 63900
+        },
+        {
+          "date": "2026-05-20",
+          "o": 63200,
+          "h": 80400,
+          "l": 63000,
+          "c": 78600
+        },
+        {
+          "date": "2026-05-21",
+          "o": 75200,
+          "h": 83700,
+          "l": 74400,
+          "c": 78500
+        },
+        {
+          "date": "2026-05-22",
+          "o": 82000,
+          "h": 102000,
+          "l": 77400,
+          "c": 102000
+        },
+        {
+          "date": "2026-05-26",
+          "o": 121500,
+          "h": 132600,
+          "l": 120400,
+          "c": 132600
+        },
+        {
+          "date": "2026-05-27",
+          "o": 160100,
+          "h": 163400,
+          "l": 136000,
+          "c": 139000
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-19) 대비 +60%↑",
+              "base_price": 63900,
+              "threshold": 102240,
+              "current": 139000,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-28",
+          "period_end": "2026-05-29",
+          "start": "2026-05-28",
+          "end": "2026-05-29",
+          "view_date": "2026-05-27",
+          "next_trading_day": "2026-05-28",
+          "next_trading_day_for_predicted": "2026-05-28",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 160100,
+        "base": 160100,
+        "prices": [
+          160100,
+          143400,
+          144400,
+          141200,
+          144000,
+          138800,
+          141800,
+          143600,
+          142300,
+          146100,
+          144200,
+          151600,
+          151200,
+          150900,
+          147400,
+          145600,
+          146500,
+          145200,
+          144000,
+          145700,
+          143600,
+          144300,
+          146200,
+          143500,
+          139100,
+          139700,
+          138300
         ]
       },
       "credit_risk": true,
@@ -1298,8 +1598,8 @@
     {
       "code": "347850",
       "name": "디앤디파마텍",
-      "rank": 5,
-      "trade_amount": 322015000000,
+      "rank": 6,
+      "trade_amount": 322300000000,
       "change_pct": 30.0,
       "close_price": 98800,
       "open_price": 72200,
@@ -1384,8 +1684,8 @@
           "raw_title": "[기재정정]투자판단관련주요경영사항(임상시험결과)              (대사이상지방간염 (MASH) 치료제 DD01의 미국 임상 제2상 Topline data 수령)"
         }
       ],
-      "index_change_pct": -2.49,
-      "index_multiple_current": -12.05,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -11.11,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 113700,
@@ -1617,251 +1917,10 @@
           98800,
           98800,
           98800,
+          98800,
+          98800,
+          98800,
           98800
-        ]
-      },
-      "credit_risk": true,
-      "credit_reason": "회사한도초과"
-    },
-    {
-      "code": "001820",
-      "name": "삼화콘덴서",
-      "rank": 6,
-      "trade_amount": 316695000000,
-      "change_pct": 8.3,
-      "close_price": 143600,
-      "open_price": 160100,
-      "high_price": 163400,
-      "low_price": 136000,
-      "industry": "전자부품 제조업",
-      "sector": "콘덴서(축전기) 제조",
-      "themes": [],
-      "theme_paths": [],
-      "pick_count": 5,
-      "prev_pick": {
-        "date": "2026-05-26",
-        "rank": 7,
-        "change_pct": 30.0,
-        "trade_amount": 247005000000
-      },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [
-        "2026-05-20",
-        "2026-05-22"
-      ],
-      "news": [],
-      "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 1.85,
-      "index_multiple_eligible": true,
-      "range_240d": {
-        "high": 163400,
-        "high_date": "2026-05-27",
-        "high_pct": -12.12,
-        "low": 24200,
-        "low_date": "2025-06-02",
-        "low_pct": 493.39,
-        "current": 143600
-      },
-      "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 64300,
-          "h": 64700,
-          "l": 62500,
-          "c": 62900
-        },
-        {
-          "date": "2026-04-28",
-          "o": 64400,
-          "h": 65500,
-          "l": 63500,
-          "c": 64800
-        },
-        {
-          "date": "2026-04-29",
-          "o": 66000,
-          "h": 73000,
-          "l": 65400,
-          "c": 71000
-        },
-        {
-          "date": "2026-04-30",
-          "o": 70000,
-          "h": 70000,
-          "l": 66500,
-          "c": 67200
-        },
-        {
-          "date": "2026-05-04",
-          "o": 69700,
-          "h": 70100,
-          "l": 68100,
-          "c": 68400
-        },
-        {
-          "date": "2026-05-06",
-          "o": 70700,
-          "h": 70700,
-          "l": 63800,
-          "c": 66900
-        },
-        {
-          "date": "2026-05-07",
-          "o": 67500,
-          "h": 69000,
-          "l": 66000,
-          "c": 67900
-        },
-        {
-          "date": "2026-05-08",
-          "o": 66100,
-          "h": 67600,
-          "l": 64300,
-          "c": 66000
-        },
-        {
-          "date": "2026-05-11",
-          "o": 64800,
-          "h": 65500,
-          "l": 63000,
-          "c": 64100
-        },
-        {
-          "date": "2026-05-12",
-          "o": 64900,
-          "h": 67000,
-          "l": 60000,
-          "c": 63500
-        },
-        {
-          "date": "2026-05-13",
-          "o": 61800,
-          "h": 65200,
-          "l": 60800,
-          "c": 64000
-        },
-        {
-          "date": "2026-05-14",
-          "o": 63600,
-          "h": 70000,
-          "l": 60900,
-          "c": 67100
-        },
-        {
-          "date": "2026-05-15",
-          "o": 69100,
-          "h": 72900,
-          "l": 63400,
-          "c": 65200
-        },
-        {
-          "date": "2026-05-18",
-          "o": 64000,
-          "h": 64000,
-          "l": 55000,
-          "c": 62500
-        },
-        {
-          "date": "2026-05-19",
-          "o": 61700,
-          "h": 66100,
-          "l": 58000,
-          "c": 63900
-        },
-        {
-          "date": "2026-05-20",
-          "o": 63200,
-          "h": 80400,
-          "l": 63000,
-          "c": 78600
-        },
-        {
-          "date": "2026-05-21",
-          "o": 75200,
-          "h": 83700,
-          "l": 74400,
-          "c": 78500
-        },
-        {
-          "date": "2026-05-22",
-          "o": 82000,
-          "h": 102000,
-          "l": 77400,
-          "c": 102000
-        },
-        {
-          "date": "2026-05-26",
-          "o": 121500,
-          "h": 132600,
-          "l": 120400,
-          "c": 132600
-        },
-        {
-          "date": "2026-05-27",
-          "o": 160100,
-          "h": 163400,
-          "l": 136000,
-          "c": 143600
-        }
-      ],
-      "status_badges": [
-        {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-05-19) 대비 +60%↑",
-              "base_price": 63900,
-              "threshold": 102240,
-              "current": 143600,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-28",
-          "period_end": "2026-05-29",
-          "start": "2026-05-28",
-          "end": "2026-05-29",
-          "view_date": "2026-05-27",
-          "next_trading_day": "2026-05-28",
-          "next_trading_day_for_predicted": "2026-05-28",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 160100,
-        "base": 160100,
-        "prices": [
-          160100,
-          143400,
-          144400,
-          141200,
-          144000,
-          138800,
-          141800,
-          143600,
-          142300,
-          146100,
-          144200,
-          151600,
-          151200,
-          150900,
-          147400,
-          145600,
-          146500,
-          145200,
-          144000,
-          145700,
-          143600,
-          144300,
-          146200,
-          144300
         ]
       },
       "credit_risk": true,
@@ -1871,9 +1930,9 @@
       "code": "010060",
       "name": "OCI홀딩스",
       "rank": 7,
-      "trade_amount": 273666000000,
-      "change_pct": 10.97,
-      "close_price": 399500,
+      "trade_amount": 295279000000,
+      "change_pct": 9.58,
+      "close_price": 394500,
       "open_price": 351000,
       "high_price": 414000,
       "low_price": 345000,
@@ -2012,17 +2071,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 2.45,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 2.51,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 414000,
         "high_date": "2026-05-27",
-        "high_pct": -3.5,
+        "high_pct": -4.71,
         "low": 70000,
         "low_date": "2025-06-02",
-        "low_pct": 470.71,
-        "current": 399500
+        "low_pct": 463.57,
+        "current": 394500
       },
       "daily_20": [
         {
@@ -2163,7 +2222,7 @@
           "o": 351000,
           "h": 414000,
           "l": 345000,
-          "c": 399500
+          "c": 394500
         }
       ],
       "intraday": {
@@ -2194,7 +2253,10 @@
           406000,
           406000,
           399500,
-          400000
+          399500,
+          395500,
+          394000,
+          394000
         ]
       },
       "credit_risk": true,
@@ -2204,9 +2266,9 @@
       "code": "456010",
       "name": "아이씨티케이",
       "rank": 8,
-      "trade_amount": 234483000000,
-      "change_pct": 19.64,
-      "close_price": 36850,
+      "trade_amount": 239055000000,
+      "change_pct": 20.62,
+      "close_price": 37150,
       "open_price": 31550,
       "high_price": 39950,
       "low_price": 30950,
@@ -2308,17 +2370,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -7.89,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -7.64,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 39950,
         "high_date": "2026-05-27",
-        "high_pct": -7.76,
+        "high_pct": -7.01,
         "low": 10460,
         "low_date": "2025-08-20",
-        "low_pct": 252.29,
-        "current": 36850
+        "low_pct": 255.16,
+        "current": 37150
       },
       "daily_20": [
         {
@@ -2459,7 +2521,7 @@
           "o": 31550,
           "h": 39950,
           "l": 30950,
-          "c": 36850
+          "c": 37150
         }
       ],
       "intraday": {
@@ -2490,7 +2552,10 @@
           36750,
           36950,
           36350,
-          36500
+          36750,
+          37300,
+          37450,
+          37200
         ]
       },
       "credit_risk": true,
@@ -2500,9 +2565,9 @@
       "code": "353200",
       "name": "대덕전자",
       "rank": 9,
-      "trade_amount": 199464000000,
-      "change_pct": -0.53,
-      "close_price": 168300,
+      "trade_amount": 209041000000,
+      "change_pct": -1.83,
+      "close_price": 166100,
       "open_price": 180200,
       "high_price": 185000,
       "low_price": 162900,
@@ -2599,17 +2664,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": -0.12,
+      "index_change_pct": 3.81,
+      "index_multiple_current": -0.48,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 185000,
         "high_date": "2026-05-27",
-        "high_pct": -9.03,
+        "high_pct": -10.22,
         "low": 14800,
         "low_date": "2025-06-02",
-        "low_pct": 1037.16,
-        "current": 168300
+        "low_pct": 1022.3,
+        "current": 166100
       },
       "daily_20": [
         {
@@ -2750,7 +2815,7 @@
           "o": 180200,
           "h": 185000,
           "l": 162900,
-          "c": 168300
+          "c": 166100
         }
       ],
       "intraday": {
@@ -2781,7 +2846,10 @@
           169800,
           169200,
           169600,
-          168300
+          168100,
+          168300,
+          167300,
+          166400
         ]
       },
       "credit_risk": true,
@@ -2791,9 +2859,9 @@
       "code": "048410",
       "name": "현대바이오",
       "rank": 10,
-      "trade_amount": 179652000000,
-      "change_pct": 8.33,
-      "close_price": 14765,
+      "trade_amount": 188725000000,
+      "change_pct": 7.19,
+      "close_price": 14610,
       "open_price": 13640,
       "high_price": 16690,
       "low_price": 13190,
@@ -2877,17 +2945,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -3.35,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -2.66,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 21500,
         "high_date": "2026-02-24",
-        "high_pct": -31.33,
+        "high_pct": -32.05,
         "low": 4325,
         "low_date": "2025-06-20",
-        "low_pct": 241.39,
-        "current": 14765
+        "low_pct": 237.8,
+        "current": 14610
       },
       "daily_20": [
         {
@@ -3028,7 +3096,7 @@
           "o": 13640,
           "h": 16690,
           "l": 13190,
-          "c": 14765
+          "c": 14610
         }
       ],
       "intraday": {
@@ -3059,7 +3127,10 @@
           15160,
           14820,
           14710,
-          14740
+          14820,
+          14510,
+          14740,
+          14620
         ]
       },
       "credit_risk": true,
@@ -3069,9 +3140,9 @@
       "code": "356680",
       "name": "엑스게이트",
       "rank": 11,
-      "trade_amount": 153097000000,
-      "change_pct": -7.26,
-      "close_price": 25550,
+      "trade_amount": 156497000000,
+      "change_pct": -7.44,
+      "close_price": 25500,
       "open_price": 26700,
       "high_price": 30550,
       "low_price": 25450,
@@ -3173,17 +3244,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": 2.92,
+      "index_change_pct": -2.7,
+      "index_multiple_current": 2.76,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 30550,
         "high_date": "2026-05-27",
-        "high_pct": -16.37,
+        "high_pct": -16.53,
         "low": 6100,
         "low_date": "2026-03-04",
-        "low_pct": 318.85,
-        "current": 25550
+        "low_pct": 318.03,
+        "current": 25500
       },
       "daily_20": [
         {
@@ -3324,7 +3395,7 @@
           "o": 26700,
           "h": 30550,
           "l": 25450,
-          "c": 25550
+          "c": 25500
         }
       ],
       "intraday": {
@@ -3355,6 +3426,9 @@
           25950,
           26100,
           25650,
+          25650,
+          25650,
+          25800,
           25600
         ]
       },
@@ -3362,607 +3436,12 @@
       "credit_reason": "회사한도초과"
     },
     {
-      "code": "232680",
-      "name": "라온로보틱스",
-      "rank": 12,
-      "trade_amount": 125802000000,
-      "change_pct": 27.99,
-      "close_price": 23550,
-      "open_price": 18420,
-      "high_price": 23900,
-      "low_price": 18420,
-      "industry": "특수 목적용 기계 제조업",
-      "sector": "반도체 및 FPD용 로봇시스템",
-      "themes": [
-        "로봇",
-        "실적"
-      ],
-      "theme_paths": [
-        {
-          "name": "로봇",
-          "path": [
-            "로봇"
-          ]
-        },
-        {
-          "name": "실적",
-          "path": [
-            "실적"
-          ]
-        }
-      ],
-      "pick_count": 1,
-      "prev_pick": null,
-      "bullish_today": true,
-      "bullish_streak": 1,
-      "bullish_dates": [
-        "2026-05-21",
-        "2026-05-27"
-      ],
-      "news": [
-        {
-          "title": "라온로보틱스, 1분기 영업익 9억…전년비 349% 증가",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=06058166645421368",
-          "source": "이데일리",
-          "published_at": "2026-04-30T07:24:29",
-          "causal_chain": "1분기 영업이익이 전년 동기 대비 349% 급증 → 반도체·FPD용 로봇시스템 본업의 수익성 개선이 수치로 확인 → 단기 실적 모멘텀 부각.",
-          "macro_event": "라온로보틱스 1분기 영업이익 9억원, 전년 동기 대비 349% 증가 — 실적 개선",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -11.24,
-      "index_multiple_eligible": false,
-      "range_240d": {
-        "high": 23950,
-        "high_date": "2026-02-02",
-        "high_pct": -1.67,
-        "low": 6610,
-        "low_date": "2025-08-20",
-        "low_pct": 256.28,
-        "current": 23550
-      },
-      "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 17340,
-          "h": 17960,
-          "l": 16870,
-          "c": 17610
-        },
-        {
-          "date": "2026-04-28",
-          "o": 17660,
-          "h": 17750,
-          "l": 16930,
-          "c": 16970
-        },
-        {
-          "date": "2026-04-29",
-          "o": 16970,
-          "h": 17200,
-          "l": 16360,
-          "c": 17000
-        },
-        {
-          "date": "2026-04-30",
-          "o": 17530,
-          "h": 18210,
-          "l": 16500,
-          "c": 16640
-        },
-        {
-          "date": "2026-05-04",
-          "o": 17060,
-          "h": 17570,
-          "l": 16960,
-          "c": 17210
-        },
-        {
-          "date": "2026-05-06",
-          "o": 17720,
-          "h": 17800,
-          "l": 16870,
-          "c": 17330
-        },
-        {
-          "date": "2026-05-07",
-          "o": 17340,
-          "h": 17710,
-          "l": 16800,
-          "c": 17000
-        },
-        {
-          "date": "2026-05-08",
-          "o": 17140,
-          "h": 18750,
-          "l": 17000,
-          "c": 17700
-        },
-        {
-          "date": "2026-05-11",
-          "o": 17890,
-          "h": 18620,
-          "l": 16600,
-          "c": 17510
-        },
-        {
-          "date": "2026-05-12",
-          "o": 17520,
-          "h": 18520,
-          "l": 16440,
-          "c": 16930
-        },
-        {
-          "date": "2026-05-13",
-          "o": 16930,
-          "h": 18280,
-          "l": 16460,
-          "c": 17400
-        },
-        {
-          "date": "2026-05-14",
-          "o": 17500,
-          "h": 17670,
-          "l": 16010,
-          "c": 16300
-        },
-        {
-          "date": "2026-05-15",
-          "o": 16310,
-          "h": 17530,
-          "l": 15250,
-          "c": 15710
-        },
-        {
-          "date": "2026-05-18",
-          "o": 15710,
-          "h": 16190,
-          "l": 14690,
-          "c": 15800
-        },
-        {
-          "date": "2026-05-19",
-          "o": 15900,
-          "h": 15900,
-          "l": 14610,
-          "c": 14700
-        },
-        {
-          "date": "2026-05-20",
-          "o": 14680,
-          "h": 14680,
-          "l": 13700,
-          "c": 14080
-        },
-        {
-          "date": "2026-05-21",
-          "o": 14410,
-          "h": 18300,
-          "l": 14410,
-          "c": 18300
-        },
-        {
-          "date": "2026-05-22",
-          "o": 18310,
-          "h": 18930,
-          "l": 17610,
-          "c": 18320
-        },
-        {
-          "date": "2026-05-26",
-          "o": 18700,
-          "h": 19230,
-          "l": 17300,
-          "c": 18400
-        },
-        {
-          "date": "2026-05-27",
-          "o": 18420,
-          "h": 23900,
-          "l": 18420,
-          "c": 23550
-        }
-      ],
-      "status_badges": [
-        {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-05-19) 대비 +60%↑",
-              "base_price": 14700,
-              "threshold": 23520,
-              "current": 23550,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-28",
-          "period_end": "2026-05-29",
-          "start": "2026-05-28",
-          "end": "2026-05-29",
-          "view_date": "2026-05-27",
-          "next_trading_day": "2026-05-28",
-          "next_trading_day_for_predicted": "2026-05-28",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 18420,
-        "base": 18420,
-        "prices": [
-          18420,
-          19700,
-          20250,
-          21150,
-          21000,
-          21800,
-          22700,
-          23450,
-          23750,
-          23400,
-          23300,
-          22950,
-          23200,
-          22725,
-          22650,
-          22400,
-          22200,
-          22850,
-          23100,
-          22950,
-          22950,
-          23650,
-          23800,
-          23400
-        ]
-      }
-    },
-    {
-      "code": "009420",
-      "name": "한올바이오파마",
-      "rank": 13,
-      "trade_amount": 123366000000,
-      "change_pct": 19.97,
-      "close_price": 70900,
-      "open_price": 58900,
-      "high_price": 73000,
-      "low_price": 58800,
-      "industry": "의약품 제조업",
-      "sector": "의약품 제조,도매/부동산 임대",
-      "themes": [
-        "바이오"
-      ],
-      "theme_paths": [
-        {
-          "name": "바이오",
-          "path": [
-            "바이오"
-          ]
-        }
-      ],
-      "pick_count": 1,
-      "prev_pick": {
-        "date": "2026-05-22",
-        "rank": 15,
-        "change_pct": 11.98,
-        "trade_amount": 103784000000
-      },
-      "bullish_today": true,
-      "bullish_streak": 1,
-      "bullish_dates": [
-        "2026-05-27"
-      ],
-      "news": [
-        {
-          "title": "한올바이오파마, 난치성 류마티스관절염 임상 성과…“1차 치료제 확장 가능성”[Why 바이오]",
-          "url": "https://www.sedaily.com/article/20048030",
-          "source": "서울경제",
-          "published_at": "2026-05-25T23:43:31",
-          "causal_chain": "IMVT-1402가 기존 TNF-α·JAK 억제제 모두 실패한 난치성 RA 환자군에서 ACR70 35.8% 달성(JAK 억제제 대비 우수) → 임상 실패 리스크 대폭 해소 + 1차 치료제 적응증 확대 가능성 부각 → FcRn 억제제 파이프라인 가치 재평가(그레이브즈병 2027년 탑라인 데이터 예정 포함) + 목표주가 8만5000원 상향.",
-          "macro_event": "한올바이오파마 FcRn 억제제 IMVT-1402, 난치성 류마티스관절염 임상에서 ACR70 35.8% 기록 — 기존 치료제 실패 환자군에서도 높은 효능 확인",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "개발 신약의 류마티스관절염 효능 확인…한올바이오파마 연속 급등[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03421046645451544",
-          "source": "이데일리",
-          "published_at": "2026-05-22T00:42:46",
-          "causal_chain": "IMVT-1402가 기존 TNF-α·JAK 억제제 모두 실패한 난치성 RA 환자군에서 ACR70 35.8% 달성(JAK 억제제 대비 우수) → 임상 실패 리스크 대폭 해소 + 1차 치료제 적응증 확대 가능성 부각 → FcRn 억제제 파이프라인 가치 재평가(그레이브즈병 2027년 탑라인 데이터 예정 포함) + 목표주가 8만5000원 상향.",
-          "macro_event": "한올바이오파마 FcRn 억제제 IMVT-1402, 난치성 류마티스관절염 임상에서 ACR70 35.8% 기록 — 기존 치료제 실패 환자군에서도 높은 효능 확인",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "“한올바이오파마, 개발 신약 류마티스관절염서 효능 확인”",
-          "url": "https://biz.chosun.com/science-chosun/bio/2026/05/21/O7KT36ARUVCPZOAN4LT3U2XU7M/",
-          "source": "조선비즈",
-          "published_at": "2026-05-20T23:36:57",
-          "causal_chain": "IMVT-1402가 기존 TNF-α·JAK 억제제 모두 실패한 난치성 RA 환자군에서 ACR70 35.8% 달성(JAK 억제제 대비 우수) → 임상 실패 리스크 대폭 해소 + 1차 치료제 적응증 확대 가능성 부각 → FcRn 억제제 파이프라인 가치 재평가(그레이브즈병 2027년 탑라인 데이터 예정 포함) + 목표주가 8만5000원 상향.",
-          "macro_event": "한올바이오파마 FcRn 억제제 IMVT-1402, 난치성 류마티스관절염 임상에서 ACR70 35.8% 기록 — 기존 치료제 실패 환자군에서도 높은 효능 확인",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한올바이오파마, 1분기 영업익 8억원…흑자전환 성공",
-          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/29/LBDSOZSKIBFIRCL44WWGZ4ZCKE/",
-          "source": "조선비즈",
-          "published_at": "2026-04-29T08:33:18",
-          "causal_chain": "의약품 사업 매출 12% 성장(바이오탑·노르믹스·엘리가드) + 1분기 영업이익 8억 흑자전환 → 한올바이오파마 본업 실적 턴어라운드 + 하반기 FcRn 신약 아이메로프루바트 임상 결과 모멘텀 직접 수혜.",
-          "macro_event": "1분기 흑자전환 + 의약품 매출 성장 + FcRn 억제제 아이메로프루바트 임상 모멘텀",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "한올바이오파마, 1분기 매출 400억…흑자전환 성공",
-          "url": "https://www.sedaily.com/article/20038689",
-          "source": "서울경제",
-          "published_at": "2026-04-29T07:54:13",
-          "causal_chain": "의약품 사업 매출 12% 성장(바이오탑·노르믹스·엘리가드) + 1분기 영업이익 8억 흑자전환 → 한올바이오파마 본업 실적 턴어라운드 + 하반기 FcRn 신약 아이메로프루바트 임상 결과 모멘텀 직접 수혜.",
-          "macro_event": "1분기 흑자전환 + 의약품 매출 성장 + FcRn 억제제 아이메로프루바트 임상 모멘텀",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 4.46,
-      "index_multiple_eligible": true,
-      "range_240d": {
-        "high": 73000,
-        "high_date": "2026-05-27",
-        "high_pct": -2.88,
-        "low": 24000,
-        "low_date": "2025-06-30",
-        "low_pct": 195.42,
-        "current": 70900
-      },
-      "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 51300,
-          "h": 53500,
-          "l": 50400,
-          "c": 51800
-        },
-        {
-          "date": "2026-04-28",
-          "o": 51400,
-          "h": 52400,
-          "l": 50800,
-          "c": 51500
-        },
-        {
-          "date": "2026-04-29",
-          "o": 51100,
-          "h": 51800,
-          "l": 48700,
-          "c": 49500
-        },
-        {
-          "date": "2026-04-30",
-          "o": 49200,
-          "h": 49200,
-          "l": 46700,
-          "c": 47400
-        },
-        {
-          "date": "2026-05-04",
-          "o": 48100,
-          "h": 48800,
-          "l": 46100,
-          "c": 46300
-        },
-        {
-          "date": "2026-05-06",
-          "o": 46300,
-          "h": 46750,
-          "l": 44050,
-          "c": 44950
-        },
-        {
-          "date": "2026-05-07",
-          "o": 45350,
-          "h": 46500,
-          "l": 43950,
-          "c": 44350
-        },
-        {
-          "date": "2026-05-08",
-          "o": 44950,
-          "h": 45500,
-          "l": 43900,
-          "c": 44050
-        },
-        {
-          "date": "2026-05-11",
-          "o": 44600,
-          "h": 46850,
-          "l": 43850,
-          "c": 46100
-        },
-        {
-          "date": "2026-05-12",
-          "o": 46300,
-          "h": 48750,
-          "l": 45000,
-          "c": 46650
-        },
-        {
-          "date": "2026-05-13",
-          "o": 47500,
-          "h": 47800,
-          "l": 44000,
-          "c": 44050
-        },
-        {
-          "date": "2026-05-14",
-          "o": 44150,
-          "h": 47100,
-          "l": 44100,
-          "c": 46500
-        },
-        {
-          "date": "2026-05-15",
-          "o": 46600,
-          "h": 48050,
-          "l": 45450,
-          "c": 46350
-        },
-        {
-          "date": "2026-05-18",
-          "o": 45800,
-          "h": 45800,
-          "l": 40000,
-          "c": 41450
-        },
-        {
-          "date": "2026-05-19",
-          "o": 40800,
-          "h": 42300,
-          "l": 38750,
-          "c": 41200
-        },
-        {
-          "date": "2026-05-20",
-          "o": 40450,
-          "h": 42550,
-          "l": 38400,
-          "c": 39200
-        },
-        {
-          "date": "2026-05-21",
-          "o": 50900,
-          "h": 50900,
-          "l": 50900,
-          "c": 50900
-        },
-        {
-          "date": "2026-05-22",
-          "o": 53800,
-          "h": 60500,
-          "l": 48850,
-          "c": 57000
-        },
-        {
-          "date": "2026-05-26",
-          "o": 57900,
-          "h": 64500,
-          "l": 56500,
-          "c": 59100
-        },
-        {
-          "date": "2026-05-27",
-          "o": 58900,
-          "h": 73000,
-          "l": 58800,
-          "c": 70900
-        }
-      ],
-      "status_badges": [
-        {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-05-19) 대비 +60%↑",
-              "base_price": 41200,
-              "threshold": 65920,
-              "current": 70900,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-28",
-          "period_end": "2026-05-29",
-          "start": "2026-05-28",
-          "end": "2026-05-29",
-          "view_date": "2026-05-27",
-          "next_trading_day": "2026-05-28",
-          "next_trading_day_for_predicted": "2026-05-28",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 58900,
-        "base": 58900,
-        "prices": [
-          58900,
-          60400,
-          61800,
-          63400,
-          65000,
-          66900,
-          68100,
-          69700,
-          71700,
-          69800,
-          68600,
-          69900,
-          70400,
-          70700,
-          69900,
-          71100,
-          70800,
-          70800,
-          71300,
-          71000,
-          71100,
-          70500,
-          71300,
-          70900
-        ]
-      }
-    },
-    {
       "code": "052710",
       "name": "아모텍",
-      "rank": 14,
-      "trade_amount": 123015000000,
-      "change_pct": 6.93,
-      "close_price": 31650,
+      "rank": 12,
+      "trade_amount": 136571000000,
+      "change_pct": 5.57,
+      "close_price": 31250,
       "open_price": 34800,
       "high_price": 35950,
       "low_price": 28800,
@@ -4034,17 +3513,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -2.78,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -2.06,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 35950,
         "high_date": "2026-05-27",
-        "high_pct": -11.96,
+        "high_pct": -13.07,
         "low": 8240,
         "low_date": "2026-01-21",
-        "low_pct": 284.1,
-        "current": 31650
+        "low_pct": 279.25,
+        "current": 31250
       },
       "daily_20": [
         {
@@ -4185,7 +3664,7 @@
           "o": 34800,
           "h": 35950,
           "l": 28800,
-          "c": 31650
+          "c": 31250
         }
       ],
       "status_badges": [
@@ -4198,7 +3677,7 @@
               "desc": "5일 전(2026-05-19) 대비 +60%↑",
               "base_price": 16880,
               "threshold": 27008,
-              "current": 31650,
+              "current": 31250,
               "triggered": true
             }
           ],
@@ -4243,22 +3722,599 @@
           30900,
           32100,
           32450,
-          31700
+          32400,
+          32200,
+          32050,
+          31400
         ]
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과"
     },
     {
+      "code": "232680",
+      "name": "라온로보틱스",
+      "rank": 13,
+      "trade_amount": 134642000000,
+      "change_pct": 27.72,
+      "close_price": 23500,
+      "open_price": 18420,
+      "high_price": 23900,
+      "low_price": 18420,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "반도체 및 FPD용 로봇시스템",
+      "themes": [
+        "로봇",
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "로봇",
+          "path": [
+            "로봇"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-05-21",
+        "2026-05-27"
+      ],
+      "news": [
+        {
+          "title": "라온로보틱스, 1분기 영업익 9억…전년비 349% 증가",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=06058166645421368",
+          "source": "이데일리",
+          "published_at": "2026-04-30T07:24:29",
+          "causal_chain": "1분기 영업이익이 전년 동기 대비 349% 급증 → 반도체·FPD용 로봇시스템 본업의 수익성 개선이 수치로 확인 → 단기 실적 모멘텀 부각.",
+          "macro_event": "라온로보틱스 1분기 영업이익 9억원, 전년 동기 대비 349% 증가 — 실적 개선",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -10.27,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 23950,
+        "high_date": "2026-02-02",
+        "high_pct": -1.88,
+        "low": 6610,
+        "low_date": "2025-08-20",
+        "low_pct": 255.52,
+        "current": 23500
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-27",
+          "o": 17340,
+          "h": 17960,
+          "l": 16870,
+          "c": 17610
+        },
+        {
+          "date": "2026-04-28",
+          "o": 17660,
+          "h": 17750,
+          "l": 16930,
+          "c": 16970
+        },
+        {
+          "date": "2026-04-29",
+          "o": 16970,
+          "h": 17200,
+          "l": 16360,
+          "c": 17000
+        },
+        {
+          "date": "2026-04-30",
+          "o": 17530,
+          "h": 18210,
+          "l": 16500,
+          "c": 16640
+        },
+        {
+          "date": "2026-05-04",
+          "o": 17060,
+          "h": 17570,
+          "l": 16960,
+          "c": 17210
+        },
+        {
+          "date": "2026-05-06",
+          "o": 17720,
+          "h": 17800,
+          "l": 16870,
+          "c": 17330
+        },
+        {
+          "date": "2026-05-07",
+          "o": 17340,
+          "h": 17710,
+          "l": 16800,
+          "c": 17000
+        },
+        {
+          "date": "2026-05-08",
+          "o": 17140,
+          "h": 18750,
+          "l": 17000,
+          "c": 17700
+        },
+        {
+          "date": "2026-05-11",
+          "o": 17890,
+          "h": 18620,
+          "l": 16600,
+          "c": 17510
+        },
+        {
+          "date": "2026-05-12",
+          "o": 17520,
+          "h": 18520,
+          "l": 16440,
+          "c": 16930
+        },
+        {
+          "date": "2026-05-13",
+          "o": 16930,
+          "h": 18280,
+          "l": 16460,
+          "c": 17400
+        },
+        {
+          "date": "2026-05-14",
+          "o": 17500,
+          "h": 17670,
+          "l": 16010,
+          "c": 16300
+        },
+        {
+          "date": "2026-05-15",
+          "o": 16310,
+          "h": 17530,
+          "l": 15250,
+          "c": 15710
+        },
+        {
+          "date": "2026-05-18",
+          "o": 15710,
+          "h": 16190,
+          "l": 14690,
+          "c": 15800
+        },
+        {
+          "date": "2026-05-19",
+          "o": 15900,
+          "h": 15900,
+          "l": 14610,
+          "c": 14700
+        },
+        {
+          "date": "2026-05-20",
+          "o": 14680,
+          "h": 14680,
+          "l": 13700,
+          "c": 14080
+        },
+        {
+          "date": "2026-05-21",
+          "o": 14410,
+          "h": 18300,
+          "l": 14410,
+          "c": 18300
+        },
+        {
+          "date": "2026-05-22",
+          "o": 18310,
+          "h": 18930,
+          "l": 17610,
+          "c": 18320
+        },
+        {
+          "date": "2026-05-26",
+          "o": 18700,
+          "h": 19230,
+          "l": 17300,
+          "c": 18400
+        },
+        {
+          "date": "2026-05-27",
+          "o": 18420,
+          "h": 23900,
+          "l": 18420,
+          "c": 23500
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 18420,
+        "base": 18420,
+        "prices": [
+          18420,
+          19700,
+          20250,
+          21150,
+          21000,
+          21800,
+          22700,
+          23450,
+          23750,
+          23400,
+          23300,
+          22950,
+          23200,
+          22725,
+          22650,
+          22400,
+          22200,
+          22850,
+          23100,
+          22950,
+          22950,
+          23650,
+          23800,
+          23650,
+          23750,
+          23550,
+          23550
+        ]
+      }
+    },
+    {
+      "code": "009420",
+      "name": "한올바이오파마",
+      "rank": 14,
+      "trade_amount": 127875000000,
+      "change_pct": 19.12,
+      "close_price": 70400,
+      "open_price": 58900,
+      "high_price": 73000,
+      "low_price": 58800,
+      "industry": "의약품 제조업",
+      "sector": "의약품 제조,도매/부동산 임대",
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-22",
+        "rank": 15,
+        "change_pct": 11.98,
+        "trade_amount": 103784000000
+      },
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-05-27"
+      ],
+      "news": [
+        {
+          "title": "한올바이오파마, 난치성 류마티스관절염 임상 성과…“1차 치료제 확장 가능성”[Why 바이오]",
+          "url": "https://www.sedaily.com/article/20048030",
+          "source": "서울경제",
+          "published_at": "2026-05-25T23:43:31",
+          "causal_chain": "IMVT-1402가 기존 TNF-α·JAK 억제제 모두 실패한 난치성 RA 환자군에서 ACR70 35.8% 달성(JAK 억제제 대비 우수) → 임상 실패 리스크 대폭 해소 + 1차 치료제 적응증 확대 가능성 부각 → FcRn 억제제 파이프라인 가치 재평가(그레이브즈병 2027년 탑라인 데이터 예정 포함) + 목표주가 8만5000원 상향.",
+          "macro_event": "한올바이오파마 FcRn 억제제 IMVT-1402, 난치성 류마티스관절염 임상에서 ACR70 35.8% 기록 — 기존 치료제 실패 환자군에서도 높은 효능 확인",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "개발 신약의 류마티스관절염 효능 확인…한올바이오파마 연속 급등[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03421046645451544",
+          "source": "이데일리",
+          "published_at": "2026-05-22T00:42:46",
+          "causal_chain": "IMVT-1402가 기존 TNF-α·JAK 억제제 모두 실패한 난치성 RA 환자군에서 ACR70 35.8% 달성(JAK 억제제 대비 우수) → 임상 실패 리스크 대폭 해소 + 1차 치료제 적응증 확대 가능성 부각 → FcRn 억제제 파이프라인 가치 재평가(그레이브즈병 2027년 탑라인 데이터 예정 포함) + 목표주가 8만5000원 상향.",
+          "macro_event": "한올바이오파마 FcRn 억제제 IMVT-1402, 난치성 류마티스관절염 임상에서 ACR70 35.8% 기록 — 기존 치료제 실패 환자군에서도 높은 효능 확인",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "“한올바이오파마, 개발 신약 류마티스관절염서 효능 확인”",
+          "url": "https://biz.chosun.com/science-chosun/bio/2026/05/21/O7KT36ARUVCPZOAN4LT3U2XU7M/",
+          "source": "조선비즈",
+          "published_at": "2026-05-20T23:36:57",
+          "causal_chain": "IMVT-1402가 기존 TNF-α·JAK 억제제 모두 실패한 난치성 RA 환자군에서 ACR70 35.8% 달성(JAK 억제제 대비 우수) → 임상 실패 리스크 대폭 해소 + 1차 치료제 적응증 확대 가능성 부각 → FcRn 억제제 파이프라인 가치 재평가(그레이브즈병 2027년 탑라인 데이터 예정 포함) + 목표주가 8만5000원 상향.",
+          "macro_event": "한올바이오파마 FcRn 억제제 IMVT-1402, 난치성 류마티스관절염 임상에서 ACR70 35.8% 기록 — 기존 치료제 실패 환자군에서도 높은 효능 확인",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한올바이오파마, 1분기 영업익 8억원…흑자전환 성공",
+          "url": "https://biz.chosun.com/science-chosun/bio/2026/04/29/LBDSOZSKIBFIRCL44WWGZ4ZCKE/",
+          "source": "조선비즈",
+          "published_at": "2026-04-29T08:33:18",
+          "causal_chain": "의약품 사업 매출 12% 성장(바이오탑·노르믹스·엘리가드) + 1분기 영업이익 8억 흑자전환 → 한올바이오파마 본업 실적 턴어라운드 + 하반기 FcRn 신약 아이메로프루바트 임상 결과 모멘텀 직접 수혜.",
+          "macro_event": "1분기 흑자전환 + 의약품 매출 성장 + FcRn 억제제 아이메로프루바트 임상 모멘텀",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "한올바이오파마, 1분기 매출 400억…흑자전환 성공",
+          "url": "https://www.sedaily.com/article/20038689",
+          "source": "서울경제",
+          "published_at": "2026-04-29T07:54:13",
+          "causal_chain": "의약품 사업 매출 12% 성장(바이오탑·노르믹스·엘리가드) + 1분기 영업이익 8억 흑자전환 → 한올바이오파마 본업 실적 턴어라운드 + 하반기 FcRn 신약 아이메로프루바트 임상 결과 모멘텀 직접 수혜.",
+          "macro_event": "1분기 흑자전환 + 의약품 매출 성장 + FcRn 억제제 아이메로프루바트 임상 모멘텀",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 5.02,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 73000,
+        "high_date": "2026-05-27",
+        "high_pct": -3.56,
+        "low": 24000,
+        "low_date": "2025-06-30",
+        "low_pct": 193.33,
+        "current": 70400
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-27",
+          "o": 51300,
+          "h": 53500,
+          "l": 50400,
+          "c": 51800
+        },
+        {
+          "date": "2026-04-28",
+          "o": 51400,
+          "h": 52400,
+          "l": 50800,
+          "c": 51500
+        },
+        {
+          "date": "2026-04-29",
+          "o": 51100,
+          "h": 51800,
+          "l": 48700,
+          "c": 49500
+        },
+        {
+          "date": "2026-04-30",
+          "o": 49200,
+          "h": 49200,
+          "l": 46700,
+          "c": 47400
+        },
+        {
+          "date": "2026-05-04",
+          "o": 48100,
+          "h": 48800,
+          "l": 46100,
+          "c": 46300
+        },
+        {
+          "date": "2026-05-06",
+          "o": 46300,
+          "h": 46750,
+          "l": 44050,
+          "c": 44950
+        },
+        {
+          "date": "2026-05-07",
+          "o": 45350,
+          "h": 46500,
+          "l": 43950,
+          "c": 44350
+        },
+        {
+          "date": "2026-05-08",
+          "o": 44950,
+          "h": 45500,
+          "l": 43900,
+          "c": 44050
+        },
+        {
+          "date": "2026-05-11",
+          "o": 44600,
+          "h": 46850,
+          "l": 43850,
+          "c": 46100
+        },
+        {
+          "date": "2026-05-12",
+          "o": 46300,
+          "h": 48750,
+          "l": 45000,
+          "c": 46650
+        },
+        {
+          "date": "2026-05-13",
+          "o": 47500,
+          "h": 47800,
+          "l": 44000,
+          "c": 44050
+        },
+        {
+          "date": "2026-05-14",
+          "o": 44150,
+          "h": 47100,
+          "l": 44100,
+          "c": 46500
+        },
+        {
+          "date": "2026-05-15",
+          "o": 46600,
+          "h": 48050,
+          "l": 45450,
+          "c": 46350
+        },
+        {
+          "date": "2026-05-18",
+          "o": 45800,
+          "h": 45800,
+          "l": 40000,
+          "c": 41450
+        },
+        {
+          "date": "2026-05-19",
+          "o": 40800,
+          "h": 42300,
+          "l": 38750,
+          "c": 41200
+        },
+        {
+          "date": "2026-05-20",
+          "o": 40450,
+          "h": 42550,
+          "l": 38400,
+          "c": 39200
+        },
+        {
+          "date": "2026-05-21",
+          "o": 50900,
+          "h": 50900,
+          "l": 50900,
+          "c": 50900
+        },
+        {
+          "date": "2026-05-22",
+          "o": 53800,
+          "h": 60500,
+          "l": 48850,
+          "c": 57000
+        },
+        {
+          "date": "2026-05-26",
+          "o": 57900,
+          "h": 64500,
+          "l": 56500,
+          "c": 59100
+        },
+        {
+          "date": "2026-05-27",
+          "o": 58900,
+          "h": 73000,
+          "l": 58800,
+          "c": 70400
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-19) 대비 +60%↑",
+              "base_price": 41200,
+              "threshold": 65920,
+              "current": 70400,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-28",
+          "period_end": "2026-05-29",
+          "start": "2026-05-28",
+          "end": "2026-05-29",
+          "view_date": "2026-05-27",
+          "next_trading_day": "2026-05-28",
+          "next_trading_day_for_predicted": "2026-05-28",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 58900,
+        "base": 58900,
+        "prices": [
+          58900,
+          60400,
+          61800,
+          63400,
+          65000,
+          66900,
+          68100,
+          69700,
+          71700,
+          69800,
+          68600,
+          69900,
+          70400,
+          70700,
+          69900,
+          71100,
+          70800,
+          70800,
+          71300,
+          71000,
+          71100,
+          70500,
+          71300,
+          70800,
+          70700,
+          70200,
+          70700
+        ]
+      }
+    },
+    {
       "code": "115500",
       "name": "케이씨에스",
       "rank": 15,
-      "trade_amount": 114229000000,
-      "change_pct": -5.87,
-      "close_price": 19390,
+      "trade_amount": 117233000000,
+      "change_pct": -5.73,
+      "close_price": 19420,
       "open_price": 19630,
       "high_price": 23750,
-      "low_price": 19350,
+      "low_price": 19200,
       "industry": "컴퓨터 프로그래밍, 시스템 통합 및 관리업",
       "sector": "컴퓨터시스템 통합 구축 및 철도 도로 교통인프라",
       "themes": [
@@ -4302,17 +4358,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": 2.36,
+      "index_change_pct": -2.7,
+      "index_multiple_current": 2.12,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 27500,
         "high_date": "2026-04-21",
-        "high_pct": -29.49,
+        "high_pct": -29.38,
         "low": 7780,
         "low_date": "2026-03-04",
-        "low_pct": 149.23,
-        "current": 19390
+        "low_pct": 149.61,
+        "current": 19420
       },
       "daily_20": [
         {
@@ -4452,8 +4508,8 @@
           "date": "2026-05-27",
           "o": 19630,
           "h": 23750,
-          "l": 19350,
-          "c": 19390
+          "l": 19200,
+          "c": 19420
         }
       ],
       "intraday": {
@@ -4484,19 +4540,321 @@
           20100,
           20150,
           19540,
-          19460
+          19290,
+          19510,
+          19590,
+          19470
         ]
       },
       "causal_chain": "",
       "parent_theme": ""
     },
     {
+      "code": "007390",
+      "name": "네이처셀",
+      "rank": 16,
+      "trade_amount": 108687000000,
+      "change_pct": 23.25,
+      "close_price": 36050,
+      "open_price": 33600,
+      "high_price": 36950,
+      "low_price": 30550,
+      "industry": "기초 의약물질 제조업",
+      "sector": "닥터쥬크르",
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
+      "pick_count": 3,
+      "prev_pick": {
+        "date": "2026-05-26",
+        "rank": 39,
+        "change_pct": 30.0,
+        "trade_amount": 2227000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "네이처셀, FDA 직행 기대감에 '上'...지아이이노·현대바이오도↑[바이오맥짚기]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02722406645453184",
+          "source": "이데일리",
+          "published_at": "2026-05-26T23:01:02",
+          "causal_chain": "줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식 → FDA 직행(IND 없이 BLA/NDA 직접 신청) 기대감 → 미국 시장 진출 모멘텀으로 2연속 상한가.",
+          "macro_event": "줄기세포 치료제 미국 FDA 정식 허가 신청 가능 소식",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "네이처셀, 줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식에 2연상[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02387846645452856",
+          "source": "이데일리",
+          "published_at": "2026-05-26T00:17:31",
+          "causal_chain": "줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식 → FDA 직행(IND 없이 BLA/NDA 직접 신청) 기대감 → 미국 시장 진출 모멘텀으로 2연속 상한가.",
+          "macro_event": "줄기세포 치료제 미국 FDA 정식 허가 신청 가능 소식",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        },
+        {
+          "title": "[급등락주 짚어보기] 네이처셀 날고, ‘급등 피로’ 마키나락스 추락…반도체·전력주 랠리",
+          "url": "https://www.etoday.co.kr/news/view/2587260",
+          "source": "이투데이",
+          "published_at": "2026-05-22T07:24:00",
+          "causal_chain": "줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식 → FDA 직행(IND 없이 BLA/NDA 직접 신청) 기대감 → 미국 시장 진출 모멘텀으로 2연속 상한가.",
+          "macro_event": "줄기세포 치료제 미국 FDA 정식 허가 신청 가능 소식",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -8.61,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 39350,
+        "high_date": "2025-07-31",
+        "high_pct": -8.39,
+        "low": 16550,
+        "low_date": "2026-05-18",
+        "low_pct": 117.82,
+        "current": 36050
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-27",
+          "o": 20000,
+          "h": 20550,
+          "l": 20000,
+          "c": 20100
+        },
+        {
+          "date": "2026-04-28",
+          "o": 20100,
+          "h": 20300,
+          "l": 19930,
+          "c": 20200
+        },
+        {
+          "date": "2026-04-29",
+          "o": 20200,
+          "h": 20200,
+          "l": 19590,
+          "c": 19820
+        },
+        {
+          "date": "2026-04-30",
+          "o": 19630,
+          "h": 19800,
+          "l": 19110,
+          "c": 19150
+        },
+        {
+          "date": "2026-05-04",
+          "o": 19470,
+          "h": 20500,
+          "l": 19300,
+          "c": 20400
+        },
+        {
+          "date": "2026-05-06",
+          "o": 20450,
+          "h": 20450,
+          "l": 19620,
+          "c": 19880
+        },
+        {
+          "date": "2026-05-07",
+          "o": 19630,
+          "h": 19750,
+          "l": 19040,
+          "c": 19040
+        },
+        {
+          "date": "2026-05-08",
+          "o": 19480,
+          "h": 19490,
+          "l": 19010,
+          "c": 19070
+        },
+        {
+          "date": "2026-05-11",
+          "o": 18960,
+          "h": 19500,
+          "l": 18680,
+          "c": 18720
+        },
+        {
+          "date": "2026-05-12",
+          "o": 18850,
+          "h": 19960,
+          "l": 18500,
+          "c": 19190
+        },
+        {
+          "date": "2026-05-13",
+          "o": 19200,
+          "h": 19500,
+          "l": 17960,
+          "c": 18140
+        },
+        {
+          "date": "2026-05-14",
+          "o": 18330,
+          "h": 18640,
+          "l": 17840,
+          "c": 18260
+        },
+        {
+          "date": "2026-05-15",
+          "o": 18290,
+          "h": 18430,
+          "l": 17410,
+          "c": 18000
+        },
+        {
+          "date": "2026-05-18",
+          "o": 17760,
+          "h": 17800,
+          "l": 16550,
+          "c": 17500
+        },
+        {
+          "date": "2026-05-19",
+          "o": 18260,
+          "h": 19400,
+          "l": 17950,
+          "c": 19010
+        },
+        {
+          "date": "2026-05-20",
+          "o": 18830,
+          "h": 18840,
+          "l": 17720,
+          "c": 18040
+        },
+        {
+          "date": "2026-05-21",
+          "o": 18350,
+          "h": 18800,
+          "l": 16710,
+          "c": 17310
+        },
+        {
+          "date": "2026-05-22",
+          "o": 22500,
+          "h": 22500,
+          "l": 22500,
+          "c": 22500
+        },
+        {
+          "date": "2026-05-26",
+          "o": 29250,
+          "h": 29250,
+          "l": 29250,
+          "c": 29250
+        },
+        {
+          "date": "2026-05-27",
+          "o": 33600,
+          "h": 36950,
+          "l": 30550,
+          "c": 36050
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-19) 대비 +60%↑",
+              "base_price": 19010,
+              "threshold": 30416,
+              "current": 36050,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-05-28",
+          "period_end": "2026-05-29",
+          "start": "2026-05-28",
+          "end": "2026-05-29",
+          "view_date": "2026-05-27",
+          "next_trading_day": "2026-05-28",
+          "next_trading_day_for_predicted": "2026-05-28",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 10,
+        "open": 33600,
+        "base": 33600,
+        "prices": [
+          33600,
+          33800,
+          32900,
+          31900,
+          31600,
+          31600,
+          32450,
+          33000,
+          32800,
+          32500,
+          33500,
+          33200,
+          32800,
+          33000,
+          33050,
+          32400,
+          32450,
+          33000,
+          33750,
+          34050,
+          34600,
+          34300,
+          35400,
+          35250,
+          36150,
+          36200,
+          36000
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과"
+    },
+    {
       "code": "226950",
       "name": "올릭스",
-      "rank": 16,
-      "trade_amount": 93499000000,
-      "change_pct": 11.9,
-      "close_price": 185300,
+      "rank": 17,
+      "trade_amount": 97656000000,
+      "change_pct": 10.87,
+      "close_price": 183600,
       "open_price": 161100,
       "high_price": 188500,
       "low_price": 157400,
@@ -4601,17 +4959,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -4.78,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -4.03,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 217000,
         "high_date": "2026-03-06",
-        "high_pct": -14.61,
+        "high_pct": -15.39,
         "low": 34500,
         "low_date": "2025-06-30",
-        "low_pct": 437.1,
-        "current": 185300
+        "low_pct": 432.17,
+        "current": 183600
       },
       "daily_20": [
         {
@@ -4752,7 +5110,7 @@
           "o": 161100,
           "h": 188500,
           "l": 157400,
-          "c": 185300
+          "c": 183600
         }
       ],
       "intraday": {
@@ -4783,303 +5141,10 @@
           186000,
           186000,
           185700,
-          185300
-        ]
-      },
-      "credit_risk": true,
-      "credit_reason": "회사한도초과"
-    },
-    {
-      "code": "007390",
-      "name": "네이처셀",
-      "rank": 17,
-      "trade_amount": 89363000000,
-      "change_pct": 21.03,
-      "close_price": 35400,
-      "open_price": 33600,
-      "high_price": 36150,
-      "low_price": 30550,
-      "industry": "기초 의약물질 제조업",
-      "sector": "닥터쥬크르",
-      "themes": [
-        "바이오"
-      ],
-      "theme_paths": [
-        {
-          "name": "바이오",
-          "path": [
-            "바이오"
-          ]
-        }
-      ],
-      "pick_count": 3,
-      "prev_pick": {
-        "date": "2026-05-26",
-        "rank": 39,
-        "change_pct": 30.0,
-        "trade_amount": 2227000000
-      },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
-      "news": [
-        {
-          "title": "네이처셀, FDA 직행 기대감에 '上'...지아이이노·현대바이오도↑[바이오맥짚기]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02722406645453184",
-          "source": "이데일리",
-          "published_at": "2026-05-26T23:01:02",
-          "causal_chain": "줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식 → FDA 직행(IND 없이 BLA/NDA 직접 신청) 기대감 → 미국 시장 진출 모멘텀으로 2연속 상한가.",
-          "macro_event": "줄기세포 치료제 미국 FDA 정식 허가 신청 가능 소식",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "네이처셀, 줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식에 2연상[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02387846645452856",
-          "source": "이데일리",
-          "published_at": "2026-05-26T00:17:31",
-          "causal_chain": "줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식 → FDA 직행(IND 없이 BLA/NDA 직접 신청) 기대감 → 미국 시장 진출 모멘텀으로 2연속 상한가.",
-          "macro_event": "줄기세포 치료제 미국 FDA 정식 허가 신청 가능 소식",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        },
-        {
-          "title": "[급등락주 짚어보기] 네이처셀 날고, ‘급등 피로’ 마키나락스 추락…반도체·전력주 랠리",
-          "url": "https://www.etoday.co.kr/news/view/2587260",
-          "source": "이투데이",
-          "published_at": "2026-05-22T07:24:00",
-          "causal_chain": "줄기세포 치료제 美 FDA 정식 허가 신청 가능 소식 → FDA 직행(IND 없이 BLA/NDA 직접 신청) 기대감 → 미국 시장 진출 모멘텀으로 2연속 상한가.",
-          "macro_event": "줄기세포 치료제 미국 FDA 정식 허가 신청 가능 소식",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null
-        }
-      ],
-      "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -8.45,
-      "index_multiple_eligible": false,
-      "range_240d": {
-        "high": 39350,
-        "high_date": "2025-07-31",
-        "high_pct": -10.04,
-        "low": 16550,
-        "low_date": "2026-05-18",
-        "low_pct": 113.9,
-        "current": 35400
-      },
-      "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 20000,
-          "h": 20550,
-          "l": 20000,
-          "c": 20100
-        },
-        {
-          "date": "2026-04-28",
-          "o": 20100,
-          "h": 20300,
-          "l": 19930,
-          "c": 20200
-        },
-        {
-          "date": "2026-04-29",
-          "o": 20200,
-          "h": 20200,
-          "l": 19590,
-          "c": 19820
-        },
-        {
-          "date": "2026-04-30",
-          "o": 19630,
-          "h": 19800,
-          "l": 19110,
-          "c": 19150
-        },
-        {
-          "date": "2026-05-04",
-          "o": 19470,
-          "h": 20500,
-          "l": 19300,
-          "c": 20400
-        },
-        {
-          "date": "2026-05-06",
-          "o": 20450,
-          "h": 20450,
-          "l": 19620,
-          "c": 19880
-        },
-        {
-          "date": "2026-05-07",
-          "o": 19630,
-          "h": 19750,
-          "l": 19040,
-          "c": 19040
-        },
-        {
-          "date": "2026-05-08",
-          "o": 19480,
-          "h": 19490,
-          "l": 19010,
-          "c": 19070
-        },
-        {
-          "date": "2026-05-11",
-          "o": 18960,
-          "h": 19500,
-          "l": 18680,
-          "c": 18720
-        },
-        {
-          "date": "2026-05-12",
-          "o": 18850,
-          "h": 19960,
-          "l": 18500,
-          "c": 19190
-        },
-        {
-          "date": "2026-05-13",
-          "o": 19200,
-          "h": 19500,
-          "l": 17960,
-          "c": 18140
-        },
-        {
-          "date": "2026-05-14",
-          "o": 18330,
-          "h": 18640,
-          "l": 17840,
-          "c": 18260
-        },
-        {
-          "date": "2026-05-15",
-          "o": 18290,
-          "h": 18430,
-          "l": 17410,
-          "c": 18000
-        },
-        {
-          "date": "2026-05-18",
-          "o": 17760,
-          "h": 17800,
-          "l": 16550,
-          "c": 17500
-        },
-        {
-          "date": "2026-05-19",
-          "o": 18260,
-          "h": 19400,
-          "l": 17950,
-          "c": 19010
-        },
-        {
-          "date": "2026-05-20",
-          "o": 18830,
-          "h": 18840,
-          "l": 17720,
-          "c": 18040
-        },
-        {
-          "date": "2026-05-21",
-          "o": 18350,
-          "h": 18800,
-          "l": 16710,
-          "c": 17310
-        },
-        {
-          "date": "2026-05-22",
-          "o": 22500,
-          "h": 22500,
-          "l": 22500,
-          "c": 22500
-        },
-        {
-          "date": "2026-05-26",
-          "o": 29250,
-          "h": 29250,
-          "l": 29250,
-          "c": 29250
-        },
-        {
-          "date": "2026-05-27",
-          "o": 33600,
-          "h": 36150,
-          "l": 30550,
-          "c": 35400
-        }
-      ],
-      "status_badges": [
-        {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-05-19) 대비 +60%↑",
-              "base_price": 19010,
-              "threshold": 30416,
-              "current": 35400,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-05-28",
-          "period_end": "2026-05-29",
-          "start": "2026-05-28",
-          "end": "2026-05-29",
-          "view_date": "2026-05-27",
-          "next_trading_day": "2026-05-28",
-          "next_trading_day_for_predicted": "2026-05-28",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
-        }
-      ],
-      "intraday": {
-        "step_min": 10,
-        "open": 33600,
-        "base": 33600,
-        "prices": [
-          33600,
-          33800,
-          32900,
-          31900,
-          31600,
-          31600,
-          32450,
-          33000,
-          32800,
-          32500,
-          33500,
-          33200,
-          32800,
-          33000,
-          33050,
-          32400,
-          32450,
-          33000,
-          33750,
-          34050,
-          34600,
-          34300,
-          35400,
-          35450
+          183800,
+          185000,
+          185100,
+          183600
         ]
       },
       "credit_risk": true,
@@ -5089,9 +5154,9 @@
       "code": "032580",
       "name": "피델릭스",
       "rank": 18,
-      "trade_amount": 81009000000,
-      "change_pct": -22.58,
-      "close_price": 6550,
+      "trade_amount": 85424000000,
+      "change_pct": -22.7,
+      "close_price": 6540,
       "open_price": 9750,
       "high_price": 9790,
       "low_price": 6270,
@@ -5126,17 +5191,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": 9.07,
+      "index_change_pct": -2.7,
+      "index_multiple_current": 8.41,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9790,
         "high_date": "2026-05-27",
-        "high_pct": -33.09,
+        "high_pct": -33.2,
         "low": 850,
         "low_date": "2026-03-04",
-        "low_pct": 670.59,
-        "current": 6550
+        "low_pct": 669.41,
+        "current": 6540
       },
       "daily_20": [
         {
@@ -5277,7 +5342,7 @@
           "o": 9750,
           "h": 9790,
           "l": 6270,
-          "c": 6550
+          "c": 6540
         }
       ],
       "intraday": {
@@ -5308,7 +5373,10 @@
           6950,
           6770,
           6600,
-          6480
+          6560,
+          6690,
+          6710,
+          6430
         ]
       },
       "credit_risk": true,
@@ -5320,9 +5388,9 @@
       "code": "242040",
       "name": "나무기술",
       "rank": 19,
-      "trade_amount": 77389000000,
-      "change_pct": 5.09,
-      "close_price": 6610,
+      "trade_amount": 79333000000,
+      "change_pct": 4.13,
+      "close_price": 6550,
       "open_price": 6470,
       "high_price": 7410,
       "low_price": 6350,
@@ -5344,17 +5412,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -2.04,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -1.53,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7970,
         "high_date": "2026-03-17",
-        "high_pct": -17.06,
+        "high_pct": -17.82,
         "low": 1308,
         "low_date": "2025-12-30",
-        "low_pct": 405.35,
-        "current": 6610
+        "low_pct": 400.76,
+        "current": 6550
       },
       "daily_20": [
         {
@@ -5495,7 +5563,7 @@
           "o": 6470,
           "h": 7410,
           "l": 6350,
-          "c": 6610
+          "c": 6550
         }
       ],
       "intraday": {
@@ -5526,7 +5594,10 @@
           6670,
           6690,
           6640,
-          6650
+          6600,
+          6540,
+          6570,
+          6570
         ]
       },
       "credit_risk": true,
@@ -5536,9 +5607,9 @@
       "code": "417840",
       "name": "저스템",
       "rank": 20,
-      "trade_amount": 58908000000,
-      "change_pct": 4.37,
-      "close_price": 19350,
+      "trade_amount": 60362000000,
+      "change_pct": 3.78,
+      "close_price": 19240,
       "open_price": 20000,
       "high_price": 22250,
       "low_price": 19200,
@@ -5612,17 +5683,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -1.76,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -1.4,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 22250,
         "high_date": "2026-05-27",
-        "high_pct": -13.03,
+        "high_pct": -13.53,
         "low": 3009,
         "low_date": "2025-11-24",
-        "low_pct": 543.07,
-        "current": 19350
+        "low_pct": 539.42,
+        "current": 19240
       },
       "daily_20": [
         {
@@ -5763,7 +5834,7 @@
           "o": 20000,
           "h": 22250,
           "l": 19200,
-          "c": 19350
+          "c": 19240
         }
       ],
       "intraday": {
@@ -5794,7 +5865,10 @@
           19450,
           19630,
           19490,
-          19360
+          19370,
+          19350,
+          19380,
+          19220
         ]
       }
     },
@@ -5802,12 +5876,12 @@
       "code": "215790",
       "name": "이노인스트루먼트",
       "rank": 21,
-      "trade_amount": 58131000000,
-      "change_pct": -2.34,
-      "close_price": 2300,
+      "trade_amount": 59816000000,
+      "change_pct": -1.91,
+      "close_price": 2310,
       "open_price": 2445,
       "high_price": 2860,
-      "low_price": 2290,
+      "low_price": 2285,
       "industry": "통신 및 방송 장비 제조업",
       "sector": "기업 인수 합병",
       "themes": [
@@ -5847,17 +5921,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": 0.94,
+      "index_change_pct": -2.7,
+      "index_multiple_current": 0.71,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5080,
         "high_date": "2026-04-16",
-        "high_pct": -54.72,
+        "high_pct": -54.53,
         "low": 252,
         "low_date": "2026-03-04",
-        "low_pct": 812.7,
-        "current": 2300
+        "low_pct": 816.67,
+        "current": 2310
       },
       "daily_20": [
         {
@@ -5997,8 +6071,8 @@
           "date": "2026-05-27",
           "o": 2445,
           "h": 2860,
-          "l": 2290,
-          "c": 2300
+          "l": 2285,
+          "c": 2310
         }
       ],
       "intraday": {
@@ -6029,7 +6103,10 @@
           2380,
           2360,
           2305,
-          2295
+          2295,
+          2305,
+          2315,
+          2310
         ]
       },
       "credit_risk": true,
@@ -6041,9 +6118,9 @@
       "code": "381620",
       "name": "제닉스로보틱스",
       "rank": 22,
-      "trade_amount": 57730000000,
-      "change_pct": 1.61,
-      "close_price": 13920,
+      "trade_amount": 58894000000,
+      "change_pct": 1.68,
+      "close_price": 13930,
       "open_price": 13800,
       "high_price": 15170,
       "low_price": 13300,
@@ -6124,17 +6201,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -0.65,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -0.62,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 19940,
         "high_date": "2025-11-03",
-        "high_pct": -30.19,
+        "high_pct": -30.14,
         "low": 6500,
         "low_date": "2025-08-20",
-        "low_pct": 114.15,
-        "current": 13920
+        "low_pct": 114.31,
+        "current": 13930
       },
       "daily_20": [
         {
@@ -6275,7 +6352,7 @@
           "o": 13800,
           "h": 15170,
           "l": 13300,
-          "c": 13920
+          "c": 13930
         }
       ],
       "intraday": {
@@ -6306,7 +6383,10 @@
           14020,
           14410,
           14030,
-          13920
+          13920,
+          14060,
+          13950,
+          13930
         ]
       },
       "credit_risk": true,
@@ -6316,9 +6396,9 @@
       "code": "437730",
       "name": "삼현",
       "rank": 23,
-      "trade_amount": 53974000000,
-      "change_pct": 4.17,
-      "close_price": 62500,
+      "trade_amount": 56413000000,
+      "change_pct": 2.83,
+      "close_price": 61700,
       "open_price": 61500,
       "high_price": 66700,
       "low_price": 60000,
@@ -6418,17 +6498,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -1.67,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -1.05,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 76900,
         "high_date": "2026-01-16",
-        "high_pct": -18.73,
+        "high_pct": -19.77,
         "low": 11000,
         "low_date": "2025-08-20",
-        "low_pct": 468.18,
-        "current": 62500
+        "low_pct": 460.91,
+        "current": 61700
       },
       "daily_20": [
         {
@@ -6569,7 +6649,7 @@
           "o": 61500,
           "h": 66700,
           "l": 60000,
-          "c": 62500
+          "c": 61700
         }
       ],
       "intraday": {
@@ -6600,7 +6680,10 @@
           63100,
           62800,
           63100,
-          62600
+          62400,
+          61700,
+          62200,
+          61700
         ]
       },
       "causal_chain": "",
@@ -6657,8 +6740,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 6.67,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 7.85,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 6400,
@@ -6890,6 +6973,9 @@
           4520,
           4520,
           4520,
+          4520,
+          4520,
+          4520,
           4520
         ]
       },
@@ -6931,8 +7017,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 4.48,
-      "index_multiple_current": 6.69,
+      "index_change_pct": 3.81,
+      "index_multiple_current": 7.87,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 17250,
@@ -7139,6 +7225,9 @@
           15520,
           15520,
           15520,
+          15520,
+          15520,
+          15520,
           15520
         ]
       },
@@ -7231,8 +7320,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -12.01,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -11.07,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4605,
@@ -7464,6 +7553,9 @@
           4605,
           4605,
           4605,
+          4605,
+          4605,
+          4605,
           4605
         ]
       },
@@ -7586,8 +7678,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -12.0,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -11.07,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 418,
@@ -7794,6 +7886,9 @@
           239,
           239,
           239,
+          239,
+          239,
+          239,
           239
         ]
       },
@@ -7834,8 +7929,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -12.02,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -11.09,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5090,
@@ -8042,6 +8137,9 @@
           4775,
           4775,
           4775,
+          4775,
+          4775,
+          4775,
           4775
         ]
       },
@@ -8133,8 +8231,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.49,
-      "index_multiple_current": -11.98,
+      "index_change_pct": -2.7,
+      "index_multiple_current": -11.05,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 2555,
@@ -8343,6 +8441,9 @@
         "open": 2555,
         "base": 1968,
         "prices": [
+          2555,
+          2555,
+          2555,
           2555,
           2555,
           2555,
