@@ -1571,19 +1571,19 @@ function renderCalExpandContent(date, data) {
       const dateParam = urlParams.get('date');
       // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
       const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
-      // Phase 2c-1 (2026-05-23 00:21 KST 대표 결정 "그럼 풍부한 쪽으로 해야지" catch):
-      //   공유 URL = Phase 2c-1 single-card mode query param URL.
-      //   기존 `#stock-{ticker}` hash anchor scroll → `?stock={code}&date={date}` query param 전환.
-      //   본 종목 1개만 render (sparkline + chart-tv + bullish + 보조지표 + status_badges 풍부 카드).
-      //   backward compat: 기존 `#stock-{code}` legacy URL은 renderer.js L1673-1702 anchor scroll handler 보존.
-      //   feedback_share_url_ticker_only.md 정합 — code 6자리만 노출 (한글 이름 제외).
-      const shareUrl = code
-        ? (dateStr
-          ? `${window.location.origin}/news.html?stock=${code}&date=${dateStr}`
-          : `${window.location.origin}/news.html?stock=${code}`)
-        : (dateStr
-          ? `${window.location.origin}/news.html?date=${dateStr}`
-          : `${window.location.origin}/news.html`);
+      // 2026-05-27 (대표 결정, 카톡 미리보기 개선): 공유 URL = OG landing 경로
+      //   `/news/stock/{date}/{code}.html` (generate_stock_og.py 산출, OG 메타 + 미니캔들 PNG).
+      //   기존 `?stock={code}&date={date}` query는 OG 메타 부재 → 카톡 미리보기 안 뜸.
+      //   landing HTML이 `?stock={code}&date={date}` single-card mode로 JS redirect (Phase 2c-1 정합).
+      //   feedback_share_url_ticker_only.md 정합 — URL 경로엔 code 6자리만 (한글 X). 한글은 OG title만.
+      //   fallback: date 없으면 OG landing 경로 불가(날짜 디렉토리 필수) → 기존 query URL 유지.
+      const shareUrl = (code && dateStr)
+        ? `${window.location.origin}/news/stock/${dateStr}/${code}.html`
+        : code
+          ? `${window.location.origin}/news.html?stock=${code}`
+          : (dateStr
+            ? `${window.location.origin}/news.html?date=${dateStr}`
+            : `${window.location.origin}/news.html`);
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
           // URL만 공유 — 메신저가 title+text+url을 모두 붙여 중복 생기는 이슈 회피
