@@ -1388,11 +1388,20 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-family: 'SF Mono', monospace;
 }
 /* REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). 보조 정보 회색 톤. */
+/* 2026-05-27 — "HH:MM 기준" freshness 라벨. stale(장중 30분+ 지연)일 때만 황금색 + 앞에 점(•). 차단 없음. */
 .cal-day-meta__updated {
   font-size: 11px;
   color: #94A3B8;
   font-weight: 400;
   letter-spacing: 0.01em;
+}
+.cal-day-meta__updated.is-stale {
+  color: #B8860B;
+}
+.cal-day-meta__dot {
+  color: #E8C063;
+  margin-right: 3px;
+  font-size: 11px;
 }
 /* Q-CYCLE23 (2026-05-22) — `.cal-day-meta__snapshot*` 폴링 chip CSS 본문 제거.
    본 chip render 본문 (renderer.js) + `_computeSnapshotFreshness` 함수 동시 제거.

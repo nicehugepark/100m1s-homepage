@@ -11,19 +11,14 @@ function _formatGeneratedAt(generatedAt) {
   return `${m[1]}:${m[2]} KST`;
 }
 
-// Q-CYCLE20-P0 hard guard (2026-05-20 09:51 KST 대표 직접 발화 격상) — 장중 stale 데이터 차단.
-// 대표 verbatim: "장 시작하고 나서 어제 날짜 종목들이 보이는건 절대 안돼."
-// 사고 배경: 2026-05-20 09:14 KST `/tmp/100m1s-pipeline.lock` 9시간 stale → kiwoom-scraper 9시간 SKIP →
-//   장중에 어제 종가 종목 (코스모로보틱스 등) 노출. 본 hard guard = defense in depth 다층 봉쇄.
-// 차단 조건 (3종 OR, 모두 KST 장중 09:00~15:30 한정):
-//   (a) last_snapshot_at < KST 오늘 09:00 → 어제 polling 데이터
-//   (b) generated_at < KST 오늘 09:00 → 어제 빌드 산출물
-//   (c) (now() - last_snapshot_at) > 30분 → polling 30분+ 지연 (chip 10분 임계 ≠ hard guard 30분 임계)
-// 차단 동작: 종목 카드/차트/표 표시 차단 + placeholder ("장중 데이터 미수신 — 마지막 폴링: HH:MM (N분 전)").
-// 차단 해제: 장중 + last_snapshot_at >= 오늘 09:00 + generated_at >= 오늘 09:00 → 정상 (자동).
-// 예외: 장 시작 전 (09:00 이전) / 장 마감 후 (15:30 이후) / 휴장 / 과거 viewDate → guard 비활성 (chip만 표시).
-// 반환: { block: true|false, reason: string|null, label: string|null, minutesAgo: number|null }
-function _computeMarketHardGuard(generatedAt, lastSnapshotAt, viewDate, nowMs) {
+// 신선도 라벨 (2026-05-27 대표 직접 발화) — 차단(blackout) 없이 stale 여부만 산출.
+// 대표 verbatim: "폴링 오류 화면(장중 데이터 갱신 중)이 존재하는 것 자체가 잘못."
+//   기존 `_computeMarketHardGuard`(종목 카드/차트 차단)를 제거하고, 항상 마지막 데이터를 렌더하되
+//   헤더에 정직한 신선도 라벨(점 • + "HH:MM 기준" + is-stale)만 표시한다 (FLR-20260527-TEC-001 정합).
+// stale 조건: KST 장중 09:00~15:30 + 오늘 view + (now - last_snapshot_at) > 30분.
+//   그 외(장 시작 전/장 마감 후/휴장/과거 viewDate/30분 이내) = stale:false.
+// 반환: { stale: boolean }  (차단 정보 없음 — 단순 신선도 플래그)
+function _computeFreshnessLabel(generatedAt, lastSnapshotAt, viewDate, nowMs) {
   // KST = UTC+9. nowMs(UTC) 에 9시간 가산 후 UTC 메서드로 읽으면 브라우저 timezone과 무관하게 KST 시각 확보.
   const kstMs = nowMs + 9 * 60 * 60 * 1000;
   const kstNow = new Date(kstMs);
@@ -36,65 +31,20 @@ function _computeMarketHardGuard(generatedAt, lastSnapshotAt, viewDate, nowMs) {
   const totalMin = hourKst * 60 + minKst;
   const isToday = (viewDate === todayKst);
   const isMarketOpen = (totalMin >= 9 * 60 && totalMin < 15 * 60 + 30);
-  // 장중 + 오늘 view 일 때만 guard 활성
+  // 장중 + 오늘 view 일 때만 신선도 판정 (그 외는 stale 개념 무의미 → false)
   if (!isToday || !isMarketOpen) {
-    return { block: false, reason: null, label: null, minutesAgo: null };
+    return { stale: false };
   }
-  // 오늘 KST 09:00 UTC ms (KST 09:00 == UTC 00:00 of today KST)
-  const todayOpenKstMs = Date.UTC(yyyy, kstNow.getUTCMonth(), kstNow.getUTCDate(), 0, 0, 0);
-  // last_snapshot_at 차단 조건 (a), (c)
-  let lastSnapMs = null;
-  let lastSnapLabel = null;
-  let minutesAgo = null;
+  // (now - last_snapshot_at) > 30분 → stale
   if (lastSnapshotAt && typeof lastSnapshotAt === 'string') {
     const parsed = Date.parse(lastSnapshotAt);
     if (!isNaN(parsed)) {
-      lastSnapMs = parsed;
-      const m = lastSnapshotAt.match(/T(\d{2}):(\d{2})/);
-      if (m) lastSnapLabel = `${m[1]}:${m[2]}`;
-      minutesAgo = Math.floor((nowMs - parsed) / 60000);
+      const minutesAgo = Math.floor((nowMs - parsed) / 60000);
+      if (minutesAgo > 30) return { stale: true };
     }
   }
-  // generated_at은 build_daily.py naive ISO (timezone 미명시, KST 가정).
-  // 오늘 KST 09:00 이전이면 차단 → "YYYY-MM-DDTHH" substring 비교가 timezone-safe.
-  const todayOpenIso = `${todayKst}T09:00`;
-  const generatedAtIso = (generatedAt && typeof generatedAt === 'string') ? generatedAt.slice(0, 16) : '';
-  // (a) last_snapshot_at < KST 오늘 09:00
-  if (lastSnapMs !== null && lastSnapMs < todayOpenKstMs) {
-    return {
-      block: true,
-      reason: 'stale_snapshot',
-      label: lastSnapLabel,
-      minutesAgo,
-    };
-  }
-  // (c) (now - last_snapshot_at) > 30분
-  if (lastSnapMs !== null && minutesAgo !== null && minutesAgo > 30) {
-    return {
-      block: true,
-      reason: 'snapshot_delayed',
-      label: lastSnapLabel,
-      minutesAgo,
-    };
-  }
-  // (b) generated_at < KST 오늘 09:00 — generated_at 부재는 차단 안 함 (이미 _fallback_date 안내가 별도)
-  if (generatedAtIso && generatedAtIso < todayOpenIso) {
-    return {
-      block: true,
-      reason: 'stale_build',
-      label: lastSnapLabel,
-      minutesAgo,
-    };
-  }
-  return { block: false, reason: null, label: lastSnapLabel, minutesAgo };
+  return { stale: false };
 }
-
-// Q-CYCLE23 (2026-05-22) — `_computeSnapshotFreshness` 폴링 chip 본문 제거.
-//   대표 발화 (2026-05-22 16:19 KST): "업데이트 시간과 폴링 시간이 차이가 나는 이유를 모르겠다.
-//   둘은 원래 같고 폴링 시간은 굳이 보여줄 필요 없지 않나?".
-//   본질: generatedAt (build_daily) vs last_snapshot_at (kiwoom raw) 양 source 다름 → UX 혼란.
-//   hard guard 30분 차단 (`_computeMarketHardGuard`)은 유지 — 장중 polling 정지 사고 대응 본질.
-//   chip 10분 fresh/stale 가시화는 hard guard로 흡수, 사용자 노출 0건. CSS `.cal-day-meta__snapshot*` 동시 제거.
 
 // buildSparkline → js/lib/sparkline.js (REQ-001 §3 Phase 1 분리)
 // buildCandles20 → js/lib/mini-candle.js (REQ-001 §3 Phase 1 분리)
@@ -194,46 +144,36 @@ function _stopPreMarketTimer() {
   }
 }
 
-// Q-CYCLE20-P0 (2026-05-20 10:01 KST 대표 직접 발화 — 기존 PRE_MARKET UI 재사용 의무).
-// staleInfo 옵션: { mode: 'stale_snapshot' | 'snapshot_delayed' | 'stale_build', label: 'HH:MM', minutesAgo: N }
-//   미지정 시 = 기존 PRE_MARKET (장 시작 전) 모드. 지정 시 = 장중 신선도 차단 모드 (텍스트만 다름).
-function renderPreMarketEmpty(container, date, prevDate, prevData, staleInfo) {
+// PRE_MARKET (장 시작 전, 09:00 이전 + 오늘 view) 빈 상태 — 당일 표출 데이터가 아직 없는 정상 상태.
+// 2026-05-27 대표 발화로 장중 stale 차단(staleInfo) 경로 제거 → PRE_MARKET 단일 모드만 남김.
+function renderPreMarketEmpty(container, date, prevDate, prevData) {
   _stopPreMarketTimer();
   const prevLabel = prevDate ? formatKoDate(prevDate) : '';
   const inner = container || document.getElementById('cal-content');
   if (!inner) return;
-  const isStale = !!(staleInfo && staleInfo.mode);
-  const _staleReasonMap = {
-    stale_snapshot: { title: '장중 데이터 갱신 중', sub: '마지막 폴링 데이터가 어제 기준입니다 — 잠시 후 자동 갱신' },
-    snapshot_delayed: { title: '장중 데이터 갱신 중', sub: '키움 폴링이 30분+ 지연 중입니다 — 잠시 후 자동 갱신' },
-    stale_build: { title: '장중 빌드 갱신 중', sub: '오늘 빌드 산출 대기 중 — 잠시 후 자동 갱신' },
-  };
-  const titleText = isStale ? (_staleReasonMap[staleInfo.mode]?.title || '장중 데이터 갱신 중') : '장 시작 전';
-  const subText = isStale ? (_staleReasonMap[staleInfo.mode]?.sub || '잠시 후 자동 갱신') : '09:00에 신규 데이터가 표출됩니다';
-  const metaText = isStale ? '장중 데이터 갱신 중' : '장 시작 전';
-  // 신선도 모드: 카운트다운 대신 "마지막 폴링: HH:MM (N분 전)" 표시
-  const liveText = isStale
-    ? `마지막 폴링: ${staleInfo.label || '확인 불가'}${staleInfo.minutesAgo != null ? ' (' + staleInfo.minutesAgo + '분 전)' : ''}`
-    : _formatCountdownToOpen();
+  const titleText = '장 시작 전';
+  const subText = '09:00에 신규 데이터가 표출됩니다';
+  const metaText = '장 시작 전';
+  const liveText = _formatCountdownToOpen();
   inner.innerHTML = `
     <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">${metaText}</div>
     </div>
-    <div class="cal-pre-market-empty" role="status" aria-live="polite" data-stale-mode="${isStale ? staleInfo.mode : ''}">
+    <div class="cal-pre-market-empty" role="status" aria-live="polite">
       <svg class="cal-pre-market-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="9"></circle>
         <polyline points="12 7 12 12 15 14"></polyline>
       </svg>
       <div class="cal-pre-market-title">${escapeHtml(titleText)}</div>
       <div class="cal-pre-market-sub">${escapeHtml(subText)}</div>
-      <div class="cal-pre-market-countdown" ${isStale ? '' : 'data-cd="1"'}>${escapeHtml(liveText)}</div>
+      <div class="cal-pre-market-countdown" data-cd="1">${escapeHtml(liveText)}</div>
       ${prevDate ? `<button type="button" class="cal-pre-market-toggle" data-pre-toggle="1" aria-expanded="false">전일(${prevLabel}) 데이터 보기 ▾</button>` : ''}
       <div class="cal-pre-market-prev" data-pre-prev hidden></div>
     </div>
   `;
-  // 카운트다운 1초 단위 + Page Visibility API (PRE_MARKET 모드만 — 신선도 모드는 카운트다운 무의미)
-  if (!isStale) {
+  // 카운트다운 1초 단위 + Page Visibility API
+  {
     const cdEl = inner.querySelector('[data-cd]');
     const tick = () => {
       if (!cdEl || !document.body.contains(cdEl)) { _stopPreMarketTimer(); return; }
@@ -304,16 +244,15 @@ function renderCalExpandContent(date, data) {
   // design-news-time-state-v1 (catch 1) — 시점 분기 PRE_MARKET 빈 상태.
   // 본 함수 진입점에서 getMarketState로 분기. 거래일 09:00 미만 시 카드 list 미렌더.
   // 09:00 이후 OPEN/POST_MARKET 또는 비거래일 HOLIDAY는 기존 로직 유지.
-  // Q-CYCLE20-P0 (2026-05-20 10:01 KST 대표 발화) — OPEN 상태 + 데이터 신선도 실패 시
-  //   기존 PRE_MARKET UI 재사용 (UI preservation 정합). 진입 분기 확장.
+  // 대표 발화 (2026-05-27): "폴링 오류 화면(장중 데이터 갱신 중)이 존재하는 것 자체가 잘못."
+  //   장중 stale 데이터 차단(blackout) 제거 — stale/지연 무관 항상 마지막 데이터를 렌더하고,
+  //   신선도는 헤더 freshness 라벨(점 + "HH:MM 기준")로만 정직하게 표시한다 (FLR-20260527-TEC-001 정합).
+  //   PRE_MARKET (09:00 이전 + 오늘 view) 만 빈 상태 유지 — 표출할 당일 데이터가 아직 없는 정상 상태.
   try {
     const state = (typeof getMarketState === 'function') ? getMarketState(date) : null;
     const _now = new Date();
     const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
-    // 신선도 hard guard 산출 (OPEN 상태 + 오늘 view 일 때만 의미)
-    const _nowMsForGuard = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number') ? window._freshnessNow : Date.now();
-    const _hg = _computeMarketHardGuard(data && data.generatedAt, data && data.lastSnapshotAt, date, _nowMsForGuard);
-    if ((state === 'PRE_MARKET' && date === _todayIso) || (_hg && _hg.block)) {
+    if (state === 'PRE_MARKET' && date === _todayIso) {
       // 전일 거래일 = date 하루씩 뒤로 가며 첫 비휴장일
       let prev = null;
       const dt = new Date(date + 'T00:00:00');
@@ -323,16 +262,7 @@ function renderCalExpandContent(date, data) {
         if (typeof isMarketClosed === 'function' && !isMarketClosed(iso)) { prev = iso; break; }
       }
       const inner = document.getElementById('cal-content');
-      // PRE_MARKET (시각 기반) vs 신선도 차단 (데이터 기반) 분기
-      if (_hg && _hg.block) {
-        renderPreMarketEmpty(inner, date, prev, null, {
-          mode: _hg.reason,
-          label: _hg.label,
-          minutesAgo: _hg.minutesAgo,
-        });
-      } else {
-        renderPreMarketEmpty(inner, date, prev, null);
-      }
+      renderPreMarketEmpty(inner, date, prev, null);
       return;
     } else {
       // 다른 시점 진입 시 PRE_MARKET 타이머 정리
@@ -605,17 +535,16 @@ function renderCalExpandContent(date, data) {
   const sourceSuffix = '';
   // REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). build_daily.py generated_at 표시.
   // 시간대 정합 (개발팀 비판): naive ISO("YYYY-MM-DDTHH:MM:SS.fff") 직접 substring 추출 — Date 파싱 시 브라우저 timezone 의존성 회피. KST 가정 명시.
-  // REQ-070 — 라벨 축약 ("마지막 업데이트 HH:MM" → "HH:MM 업데이트"). sticky 헤더 폭 축소.
+  // 대표 발화 (2026-05-27) — 라벨 "HH:MM 업데이트" → "HH:MM 기준" (live 오인 방지).
+  //   stale (장중 30분+ 지연 등) 일 때만 앞에 점(•) + is-stale 클래스 → 정직한 신선도 표시. 차단 없음.
   const generatedAt = data.generatedAt || '';
-  const generatedSuffix = generatedAt
-    ? ` · <span class="cal-day-meta__updated">${escapeHtml(_formatGeneratedAt(generatedAt))} 업데이트</span>`
-    : '';
-  // Q-CYCLE23 (2026-05-22) — 폴링 chip 본문 제거. lastSnapshotAt은 hard guard 30분 차단용 유지.
   const lastSnapshotAt = data.lastSnapshotAt || '';
   // 테스트 hook: window._freshnessNow 설정 시 해당 시각으로 평가 (시뮬레이션용)
   const _nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number') ? window._freshnessNow : Date.now();
-  // Q-CYCLE20-P0 hard guard (2026-05-20 09:51 KST 대표 직접 발화 격상) — 장중 stale 차단.
-  const hardGuard = _computeMarketHardGuard(generatedAt, lastSnapshotAt, date, _nowMs);
+  const _fresh = _computeFreshnessLabel(generatedAt, lastSnapshotAt, date, _nowMs);
+  const generatedSuffix = generatedAt
+    ? ` · ${_fresh.stale ? '<span class="cal-day-meta__dot" aria-hidden="true">•</span>' : ''}<span class="cal-day-meta__updated${_fresh.stale ? ' is-stale' : ''}">${escapeHtml(_formatGeneratedAt(generatedAt))} 기준</span>`
+    : '';
   const metaText = todayStocks.length > 0
     ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
     : '—';
