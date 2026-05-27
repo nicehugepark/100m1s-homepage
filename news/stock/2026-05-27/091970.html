@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>나노캠텍 (091970) · 100M1S</title>
-<meta property="og:title" content="나노캠텍 (091970) · 100M1S">
+<title>나노캠텍</title>
+<meta property="og:title" content="나노캠텍">
 <meta property="og:description" content="나노캠텍, 172억 현금 확보…AI·로봇 중심 사업 재편 속도">
 <meta property="og:image" content="https://100m1s.com/og/news/stock/2026-05-27/091970.png">
 <meta property="og:image:width" content="1200">
@@ -18,16 +18,17 @@
   var params = new URLSearchParams(location.search);
   var date = params.get('date') || '2026-05-27';
   var code = '091970';
-  var defaultName = '나노캠텍';
-  var rawHash = location.hash.replace(/^#/, '');
-  // Q-20260515-STOCK-DETAIL-SCROLL-FIX: anchor format = '#stock-091970' (한글 name 폐기, feedback_share_url_ticker_only.md 정합)
-  // main news.html scrollIntoView는 '#stock-091970' prefix만 처리. 한글 name 포함 시 카드 mismatch → 자동 scroll 실패.
-  var targetHash = '#stock-' + code;
-  location.replace('/news.html?date=' + encodeURIComponent(date) + targetHash);
+  // Phase 2c-1 single-card mode 정합 (renderer.js L1574~1586): redirect target =
+  //   `?stock={code}&date={date}` query (구 `#stock-{code}` hash anchor 폐기).
+  //   본 종목 1개만 풍부 카드 render. URL엔 한글 X (code 6자리만).
+  location.replace(
+    '/news.html?stock=' + encodeURIComponent(code) +
+    '&date=' + encodeURIComponent(date)
+  );
 })();
 </script>
 </head>
 <body>
-<p>리다이렉트 중... <a href="/news.html?date=2026-05-27#stock-091970">나노캠텍 (091970) 뉴스 보기</a></p>
+<p>리다이렉트 중... <a href="/news.html?stock=091970&date=2026-05-27">나노캠텍 (091970) 뉴스 보기</a></p>
 </body>
 </html>
