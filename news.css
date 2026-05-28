@@ -1911,6 +1911,13 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 2px solid var(--dm); border-radius: 50%;
   margin-bottom: 12px; opacity: 0.4;
 }
+/* DSN-frontend §3.6.2.2 (2026-05-28) — 시간대별 sub-message. 메인 텍스트(13px) 대비 11px 보조. */
+.cal-empty-sub {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--dm);
+  opacity: 0.75;
+}
 
 @media (max-width: 880px) {
   .cal-layout {

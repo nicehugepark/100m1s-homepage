@@ -318,14 +318,31 @@ function renderCalExpandContent(date, data) {
           <div style="font-size:12px;color:var(--dm);">${nextLabel ? '다음 거래일 ' + escapeHtml(nextLabel) : ''}</div>
         </div>`;
     } else {
+      // DSN-frontend §3.6.2.2 (2026-05-28 대표 직접 발화) — 오늘 view + 09:00+ 데이터 없음 시간대별 정직 고지.
+      // 대표 verbatim: "9시부터 종목검색 결과가 있을 때까지 어제걸 보여주는게 과연 맞는걸까? 무슨 이점이 있지?"
+      //                "없으면 없다고 알려주는게 더 신뢰도나 활용면에서 좋자않나?"
+      // 기존: yesterday data fallback (data-loader.js) → "수집된 데이터가 없습니다" 1줄.
+      // 신규: data-loader.js fallback 차단 + 시간대별 sub-message로 사용자 즉시 인지.
+      //   - 09:00~11:00 KST: 장 시작 직후 수집 진행 중 (정상 상황)
+      //   - 11:00 KST 이후: 파이프라인 이상 또는 새로고침 권장
+      //   - 그 외 (과거 날짜 등): 기존 메시지 유지
       const now = new Date();
       const todayIso = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       const isToday = (date === todayIso);
       const hour = now.getHours();
-      const isMarketHours = isToday && (hour < 16);
+      let titleText = '수집된 데이터가 없습니다';
+      let subText = '';
+      if (isToday && hour >= 9 && hour < 11) {
+        titleText = '장 시작 직후 데이터 수집 중';
+        subText = '잠시 후 자동 갱신됩니다';
+      } else if (isToday && hour >= 11 && hour < 16) {
+        titleText = '데이터 수집이 지연되고 있습니다';
+        subText = '새로고침하거나 잠시 후 다시 확인해 주세요';
+      }
       emptyMsg = `<div class="cal-empty">
             <div class="cal-empty-circle"></div>
-            <div>수집된 데이터가 없습니다</div>
+            <div>${escapeHtml(titleText)}</div>
+            ${subText ? `<div class="cal-empty-sub">${escapeHtml(subText)}</div>` : ''}
           </div>`;
     }
     // 휴장일이라도 매크로 이벤트가 있으면 표시
@@ -2637,6 +2654,12 @@ async function initThemeTree(dateOverride) {
             const dd = String(dt.getDate()).padStart(2, '0');
             return `${y}-${m}-${dd}`;
           };
+          // DSN-frontend §3.6.2.2 (2026-05-28) — 오늘 view + 09:00 이후 시 7일 fallback 차단.
+          //   기존 동작 (어제 데이터 자동 호출) → 사용자 매매 판단 misread risk.
+          //   테마트리는 종목카드와 동일 정책 cumulative — '테마 데이터가 없습니다' 표시 default.
+          const _nowLocal = new Date();
+          const _todayLocal = _localYmd(_nowLocal);
+          const _isTodayPastOpenLocal = (d0 === _todayLocal && _nowLocal.getHours() >= 9);
           const tryDate = async (d) => {
             try {
               const r = await fetch(`/data/interpreted/stock-${d}.json`);
@@ -2647,6 +2670,7 @@ async function initThemeTree(dateOverride) {
           };
           let j = await tryDate(d0);
           if (j) return j;
+          if (_isTodayPastOpenLocal) return null; // 본 fallback 차단
           const dt = new Date(d0 + 'T00:00:00');
           for (let i = 1; i <= 7; i++) {
             const prev = new Date(dt);

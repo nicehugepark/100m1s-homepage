@@ -35,6 +35,23 @@ async function loadKiwoomIndex() {
   return _kiwoomIndexPromise;
 }
 
+// DSN-frontend §3.6.2.2 (2026-05-28 대표 직접 발화) — 오늘 view + 장 시작 후 어제 데이터 fallback 차단.
+// 대표 verbatim: "9시부터 종목검색 결과가 있을 때까지 어제걸 보여주는게 과연 맞는걸까? 무슨 이점이 있지?"
+//                "없으면 없다고 알려주는게 더 신뢰도나 활용면에서 좋자않나?"
+// 본 helper — date === today (KST) + 09:00 이후 일 때 true.
+// PRE_MARKET (09:00 미만)은 renderPreMarketEmpty의 사용자 opt-in 토글 path가 별도로 처리하므로 본 guard 대상 아님.
+// 과거 viewDate (date < today)는 정상적으로 해당일 데이터 표시 (fallback 자체가 부적절).
+// timezone: 브라우저 로컬 가정 (KST 사용자 기준). 5/27 freshness 라벨 _computeFreshnessLabel과 동일 가정.
+function _isTodayPastOpen(date) {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  const todayKst = `${y}-${m}-${d}`;
+  if (date !== todayKst) return false;
+  return now.getHours() >= 9; // KST 장 시작 시각
+}
+
 async function loadKiwoomDate(date) {
   const dateHash = date.replace(/-/g, '');
   // v6: index 선행 조회하여 존재하지 않는 날짜는 fetch 자체를 건너뛴다 (404 소음 제거).
@@ -61,7 +78,10 @@ async function loadKiwoomDate(date) {
     }
   } catch (e) { /* ignore */ }
   // 폴백 2: index의 가장 최근 날짜로 kiwoom 데이터 폴백 (오늘 파이프라인 수집 전)
-  if (!dateExists && idxDates && idxDates.length > 0) {
+  // DSN-frontend §3.6.2.2 (2026-05-28) — 오늘 view + 09:00 이후 시 본 fallback 차단.
+  //   기존 동작 (어제 데이터 표시) → 사용자 매매 판단 misread risk.
+  //   휴장일/과거 viewDate에 한해 fallback 유지 (해당 날짜에 데이터 부재 시 가장 가까운 데이터 보충).
+  if (!dateExists && idxDates && idxDates.length > 0 && !_isTodayPastOpen(date)) {
     const latest = [...idxDates].sort().pop();
     if (latest && latest !== date) {
       try {
@@ -110,7 +130,10 @@ async function loadCalDayData(date) {
   const _hasStockEntries = (sd) => !!(sd && Array.isArray(sd.stocks) && sd.stocks.length > 0);
   // 당일 데이터 없거나 stocks 비었으면 최근 7일 이내 이전 날짜 fallback (병렬)
   // 단, 휴장일/주말은 fallback 자체를 비활성화 (옵션 A: 휴장 안내만 표시)
-  if (!_hasStockEntries(stockDailyData) && !isMarketClosed(date)) {
+  // DSN-frontend §3.6.2.2 (2026-05-28) — 오늘 view + 09:00 이후 시 본 fallback 차단.
+  //   기존 동작 (어제 stock-daily 데이터 표시) → 사용자 매매 판단 misread risk.
+  //   renderer.js empty-state path가 시간대별 메시지 ("데이터 수집 중" / "수집 이상")로 정직하게 고지.
+  if (!_hasStockEntries(stockDailyData) && !isMarketClosed(date) && !_isTodayPastOpen(date)) {
     // REQ-055 P0 — toISOString()는 KST→UTC 변환되어 하루 전 날짜를 반환하는 버그.
     //   `new Date('2026-04-28T00:00:00')` (KST 자정) → UTC `2026-04-27T15:00:00Z`
     //   → `setDate(-1)` 후 toISOString() → '2026-04-26' (4/27 건너뜀, 4/24가 첫 PASS로 잡힘 사례).
