@@ -1,4 +1,4 @@
-const CACHE_NAME = 'news-v258';
+const CACHE_NAME = 'news-v259';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
@@ -19,10 +19,6 @@ const STATIC_ASSETS = [
   '/js/lib/chart-tv/plugins/volume-by-decile.js',
   '/js/lib/chart-tv/plugins/markers.js',
   '/js/lib/chart-tv/plugins/pink-signal.js',
-  '/spec/',
-  '/spec/feature.html',
-  '/spec/design.html',
-  '/spec/spec.css',
 ];
 
 self.addEventListener('install', (e) => {
