@@ -1,6 +1,6 @@
 {
   "date": "2026-06-01",
-  "generated_at": "2026-06-01T11:49:19.209259",
+  "generated_at": "2026-06-01T11:58:59.637368",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -18,6 +18,10 @@
     {
       "title": "삼성시총강세",
       "summary": "삼성전자 시총 사상 첫 2000조원 돌파 → 한국 시가총액 사상 최고 기록 수립 → 시장 전반 강세 심리 확산"
+    },
+    {
+      "title": "삼성시총2000조",
+      "summary": "삼성전자 사상 첫 단일종목 시총 2000조원 돌파 → 코스피 8800선 사상 첫 진입 → 대형주·반도체 섹터 강세"
     },
     {
       "title": "가전재평",
@@ -38,10 +42,6 @@
     {
       "title": "K2전차",
       "summary": "국방력 강화 정책 → K2 전차 글로벌 수출 추진 → 방위산업 섹터 강세"
-    },
-    {
-      "title": "스테이블",
-      "summary": "스테이블코인 해외 규제당국 정식 허가 → 디지털자산 정책 불확실성 감소 → 핀테크·블록체인 섹터 긍정신호"
     }
   ],
   "narratives": [],
@@ -52,12 +52,12 @@
       "code": "066570",
       "name": "LG전자",
       "rank": 1,
-      "trade_amount": 1732265000000,
+      "trade_amount": 1736344000000,
       "change_pct": 29.86,
       "close_price": 380500,
-      "open_price": 380500,
+      "open_price": 375000,
       "high_price": 380500,
-      "low_price": 380500,
+      "low_price": 358500,
       "industry": "통신 및 방송 장비 제조업",
       "sector": "이동통신단말기,C-TV,V.C.R.,컴퓨터,완전평면 TV,플라즈마 디스플레이 패널 TV,전자제품(세탁기외),CDMA(코드분할다중접속)이동통신,전자교환기,전송기기",
       "themes": [
@@ -105,7 +105,11 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-05-12",
+        "2026-05-21",
+        "2026-05-29"
+      ],
       "news": [
         {
           "title": "젠슨 황 방한에 LG그룹株 들썩…LG전자 24% 급등 [종목Pick]",
@@ -173,8 +177,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 4.32,
-      "index_multiple_current": 6.91,
+      "index_change_pct": 4.11,
+      "index_multiple_current": 7.27,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 380500,
@@ -321,9 +325,9 @@
         },
         {
           "date": "2026-06-01",
-          "o": 380500,
+          "o": 375000,
           "h": 380500,
-          "l": 380500,
+          "l": 358500,
           "c": 380500
         }
       ],
@@ -361,8 +365,8 @@
           "summary": "LG전자 상한가 (29.86%)",
           "cur_prc": 380500,
           "flu_rt": 29.86,
-          "trde_qty": 4633515,
-          "trde_prica_calc": 1732265000000,
+          "trde_qty": 4644233,
+          "trde_prica_calc": 1736344000000,
           "consecutive_count": 2,
           "estimated": false,
           "effect_badges": [
@@ -378,6 +382,48 @@
           "next_trading_day": "2026-06-02"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 375000,
+        "base": 293008,
+        "prices": [
+          375000,
+          380500,
+          375500,
+          366500,
+          371500,
+          376000,
+          374500,
+          372500,
+          377000,
+          370000,
+          361500,
+          365500,
+          368500,
+          371000,
+          372500,
+          372500,
+          372750,
+          373500,
+          368500,
+          372000,
+          373000,
+          373000,
+          373000,
+          378500,
+          377500,
+          378000,
+          378000,
+          379000,
+          380500,
+          380500,
+          380500,
+          380500,
+          380500,
+          380500,
+          380500
+        ]
+      },
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
       "hugepark_grade": "적극",
@@ -388,9 +434,9 @@
       "code": "005935",
       "name": "삼성전자우",
       "rank": 1,
-      "trade_amount": 1618160000000,
-      "change_pct": 12.1,
-      "close_price": 227000,
+      "trade_amount": 1649810000000,
+      "change_pct": 11.85,
+      "close_price": 226500,
       "open_price": 203500,
       "high_price": 235000,
       "low_price": 203000,
@@ -432,12 +478,60 @@
       ],
       "news": [
         {
+          "title": "[속보] 삼성전자, 사상 첫 단일종목 시가총액 2000조원 돌파",
+          "url": "https://www.fnnews.com/news/202606011127291929",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-06-01T11:50:12.124655",
+          "causal_chain": "AI 반도체 슈퍼사이클과 HBM·메모리 공급 부족·가격 상승 기대로 본주 삼성전자가 +9.46% 급등해 사상 첫 보통주 시총 2000조원을 돌파(34만7000원)했다 → 의결권이 없는 대신 배당 우선권을 가진 우선주는 본주 재평가·강세에 동반해 보통주 대비 할인 괴리율 축소 기대가 형성된다 → 최근 20영업일 누적 +43.1%에 이어 당일 +11.85%(종가 226,500원)로 구간 신고가를 경신하며 강세 캔들이 나왔고, 주주환원 확대 전망은 배당 우선권의 안정성까지 더해 시세차익·배당 양면 매력으로 연결된다.",
+          "macro_event": "AI 반도체 슈퍼사이클·HBM 수요로 본주 삼성전자 +9.46% 급등, 사상 첫 단일종목 시총 2000조원 돌파",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "호재"
+        },
+        {
+          "title": "[속보] 삼성전자 시총 2000조 돌파…‘35만전자’ 눈앞",
+          "url": "https://www.sedaily.com/article/20050509",
+          "source": "서울경제",
+          "published_at": "2026-06-01T02:31:30",
+          "causal_chain": "AI 반도체 슈퍼사이클과 HBM·메모리 공급 부족·가격 상승 기대로 본주 삼성전자가 +9.46% 급등해 사상 첫 보통주 시총 2000조원을 돌파(34만7000원)했다 → 의결권이 없는 대신 배당 우선권을 가진 우선주는 본주 재평가·강세에 동반해 보통주 대비 할인 괴리율 축소 기대가 형성된다 → 최근 20영업일 누적 +43.1%에 이어 당일 +11.85%(종가 226,500원)로 구간 신고가를 경신하며 강세 캔들이 나왔고, 주주환원 확대 전망은 배당 우선권의 안정성까지 더해 시세차익·배당 양면 매력으로 연결된다.",
+          "macro_event": "AI 반도체 슈퍼사이클·HBM 수요로 본주 삼성전자 +9.46% 급등, 사상 첫 단일종목 시총 2000조원 돌파",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "호재"
+        },
+        {
+          "title": "“27년 철옹성 흔들리나 했더니”…삼성전자, 사상 첫 시총 2000조 돌파",
+          "url": "https://www.mk.co.kr/news/stock/12062685",
+          "source": "매경",
+          "published_at": "2026-06-01T02:27:58",
+          "causal_chain": "AI 반도체 슈퍼사이클과 HBM·메모리 공급 부족·가격 상승 기대로 본주 삼성전자가 +9.46% 급등해 사상 첫 보통주 시총 2000조원을 돌파(34만7000원)했다 → 의결권이 없는 대신 배당 우선권을 가진 우선주는 본주 재평가·강세에 동반해 보통주 대비 할인 괴리율 축소 기대가 형성된다 → 최근 20영업일 누적 +43.1%에 이어 당일 +11.85%(종가 226,500원)로 구간 신고가를 경신하며 강세 캔들이 나왔고, 주주환원 확대 전망은 배당 우선권의 안정성까지 더해 시세차익·배당 양면 매력으로 연결된다.",
+          "macro_event": "AI 반도체 슈퍼사이클·HBM 수요로 본주 삼성전자 +9.46% 급등, 사상 첫 단일종목 시총 2000조원 돌파",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "호재"
+        },
+        {
           "title": "[속보] 삼성전자 시총 2000조 첫 돌파…35만전자 향해 진격",
           "url": "https://www.mk.co.kr/news/business/12062666",
           "source": "매경",
           "published_at": "2026-06-01T02:11:11",
-          "causal_chain": "본주 삼성전자가 메모리 호황 사이클·HBM/AI데이터센터 수요 재평가로 +9.46% 급등해 보통주 기준 시총 2000조원을 처음 돌파 → 의결권이 없는 본 우선주(삼성전자우)는 본주 강세에 동반 상승하며 보통주 대비 할인 괴리율 축소 기대가 형성 → 무산됐던 특별 주주환원 재추진 가능성은 배당 우선권을 가진 우선주의 배당 매력을 강화 → 시세차익·배당 양면 기대로 매수세가 집중되며 당일 +12.10%(종가 227,000원), 최근 20영업일 누적 +43.4% 상승 흐름의 연장선에서 구간 신고가(52주 고가 235,000원 근접)를 형성.",
-          "macro_event": "삼성전자 보통주 시총 첫 2000조원 돌파(장중 +9.46%)",
+          "causal_chain": "AI 반도체 슈퍼사이클과 HBM·메모리 공급 부족·가격 상승 기대로 본주 삼성전자가 +9.46% 급등해 사상 첫 보통주 시총 2000조원을 돌파(34만7000원)했다 → 의결권이 없는 대신 배당 우선권을 가진 우선주는 본주 재평가·강세에 동반해 보통주 대비 할인 괴리율 축소 기대가 형성된다 → 최근 20영업일 누적 +43.1%에 이어 당일 +11.85%(종가 226,500원)로 구간 신고가를 경신하며 강세 캔들이 나왔고, 주주환원 확대 전망은 배당 우선권의 안정성까지 더해 시세차익·배당 양면 매력으로 연결된다.",
+          "macro_event": "AI 반도체 슈퍼사이클·HBM 수요로 본주 삼성전자 +9.46% 급등, 사상 첫 단일종목 시총 2000조원 돌파",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -452,8 +546,8 @@
           "url": "https://view.asiae.co.kr/article/2026060110573053291",
           "source": "아시아경제",
           "published_at": "2026-06-01T01:57:30",
-          "causal_chain": "본주 삼성전자가 메모리 호황 사이클·HBM/AI데이터센터 수요 재평가로 +9.46% 급등해 보통주 기준 시총 2000조원을 처음 돌파 → 의결권이 없는 본 우선주(삼성전자우)는 본주 강세에 동반 상승하며 보통주 대비 할인 괴리율 축소 기대가 형성 → 무산됐던 특별 주주환원 재추진 가능성은 배당 우선권을 가진 우선주의 배당 매력을 강화 → 시세차익·배당 양면 기대로 매수세가 집중되며 당일 +12.10%(종가 227,000원), 최근 20영업일 누적 +43.4% 상승 흐름의 연장선에서 구간 신고가(52주 고가 235,000원 근접)를 형성.",
-          "macro_event": "삼성전자 보통주 시총 첫 2000조원 돌파(장중 +9.46%)",
+          "causal_chain": "AI 반도체 슈퍼사이클과 HBM·메모리 공급 부족·가격 상승 기대로 본주 삼성전자가 +9.46% 급등해 사상 첫 보통주 시총 2000조원을 돌파(34만7000원)했다 → 의결권이 없는 대신 배당 우선권을 가진 우선주는 본주 재평가·강세에 동반해 보통주 대비 할인 괴리율 축소 기대가 형성된다 → 최근 20영업일 누적 +43.1%에 이어 당일 +11.85%(종가 226,500원)로 구간 신고가를 경신하며 강세 캔들이 나왔고, 주주환원 확대 전망은 배당 우선권의 안정성까지 더해 시세차익·배당 양면 매력으로 연결된다.",
+          "macro_event": "AI 반도체 슈퍼사이클·HBM 수요로 본주 삼성전자 +9.46% 급등, 사상 첫 단일종목 시총 2000조원 돌파",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -462,65 +556,17 @@
           "newzy_score": null,
           "newzy_verdict": null,
           "article_type": "호재"
-        },
-        {
-          "title": "삼성전자, 보통주 시총 첫 2000조원 돌파…8%대 급등[특징주]",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03083206645477456",
-          "source": "이데일리",
-          "published_at": "2026-06-01T01:43:37",
-          "causal_chain": "본주 삼성전자가 메모리 호황 사이클·HBM/AI데이터센터 수요 재평가로 +9.46% 급등해 보통주 기준 시총 2000조원을 처음 돌파 → 의결권이 없는 본 우선주(삼성전자우)는 본주 강세에 동반 상승하며 보통주 대비 할인 괴리율 축소 기대가 형성 → 무산됐던 특별 주주환원 재추진 가능성은 배당 우선권을 가진 우선주의 배당 매력을 강화 → 시세차익·배당 양면 기대로 매수세가 집중되며 당일 +12.10%(종가 227,000원), 최근 20영업일 누적 +43.4% 상승 흐름의 연장선에서 구간 신고가(52주 고가 235,000원 근접)를 형성.",
-          "macro_event": "삼성전자 보통주 시총 첫 2000조원 돌파(장중 +9.46%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "호재"
-        },
-        {
-          "title": "[속보]삼성전자, 보통주 기준 시총 첫 2000조원 돌파",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03070086645477456",
-          "source": "이데일리",
-          "published_at": "2026-06-01T01:37:15",
-          "causal_chain": "본주 삼성전자가 메모리 호황 사이클·HBM/AI데이터센터 수요 재평가로 +9.46% 급등해 보통주 기준 시총 2000조원을 처음 돌파 → 의결권이 없는 본 우선주(삼성전자우)는 본주 강세에 동반 상승하며 보통주 대비 할인 괴리율 축소 기대가 형성 → 무산됐던 특별 주주환원 재추진 가능성은 배당 우선권을 가진 우선주의 배당 매력을 강화 → 시세차익·배당 양면 기대로 매수세가 집중되며 당일 +12.10%(종가 227,000원), 최근 20영업일 누적 +43.4% 상승 흐름의 연장선에서 구간 신고가(52주 고가 235,000원 근접)를 형성.",
-          "macro_event": "삼성전자 보통주 시총 첫 2000조원 돌파(장중 +9.46%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "호재"
-        },
-        {
-          "title": "한울반도체 \"삼성전자 부사장 출신 김기원 부회장, 자사주 매입\"",
-          "url": "https://www.fnnews.com/news/202606010806481507",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-06-01T08:20:03.378388",
-          "causal_chain": "본주 삼성전자가 메모리 호황 사이클·HBM/AI데이터센터 수요 재평가로 +9.46% 급등해 보통주 기준 시총 2000조원을 처음 돌파 → 의결권이 없는 본 우선주(삼성전자우)는 본주 강세에 동반 상승하며 보통주 대비 할인 괴리율 축소 기대가 형성 → 무산됐던 특별 주주환원 재추진 가능성은 배당 우선권을 가진 우선주의 배당 매력을 강화 → 시세차익·배당 양면 기대로 매수세가 집중되며 당일 +12.10%(종가 227,000원), 최근 20영업일 누적 +43.4% 상승 흐름의 연장선에서 구간 신고가(52주 고가 235,000원 근접)를 형성.",
-          "macro_event": "삼성전자 보통주 시총 첫 2000조원 돌파(장중 +9.46%)",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "공시"
         }
       ],
       "fallback": false,
       "range_240d": {
         "high": 235000,
         "high_date": "2026-06-01",
-        "high_pct": -3.4,
+        "high_pct": -3.62,
         "low": 46800,
         "low_date": "2025-06-16",
-        "low_pct": 385.04,
-        "current": 227000
+        "low_pct": 383.97,
+        "current": 226500
       },
       "daily_20": [
         {
@@ -661,7 +707,7 @@
           "o": 203500,
           "h": 235000,
           "l": 203000,
-          "c": 227000
+          "c": 226500
         }
       ],
       "intraday": {
@@ -697,7 +743,13 @@
           226500,
           228500,
           228250,
-          227500
+          226500,
+          228000,
+          225000,
+          228000,
+          228000,
+          227000,
+          226500
         ]
       },
       "credit_risk": true,
@@ -710,9 +762,9 @@
       "code": "064400",
       "name": "LG씨엔에스",
       "rank": 2,
-      "trade_amount": 842792000000,
-      "change_pct": 27.94,
-      "close_price": 145600,
+      "trade_amount": 860817000000,
+      "change_pct": 28.3,
+      "close_price": 146000,
       "open_price": 143100,
       "high_price": 147000,
       "low_price": 135300,
@@ -807,17 +859,17 @@
           "raw_title": "기업지배구조보고서공시              "
         }
       ],
-      "index_change_pct": 4.32,
-      "index_multiple_current": 6.47,
+      "index_change_pct": 4.11,
+      "index_multiple_current": 6.89,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 147000,
         "high_date": "2026-06-01",
-        "high_pct": -0.95,
+        "high_pct": -0.68,
         "low": 51800,
         "low_date": "2025-06-09",
-        "low_pct": 181.08,
-        "current": 145600
+        "low_pct": 181.85,
+        "current": 146000
       },
       "daily_20": [
         {
@@ -958,7 +1010,7 @@
           "o": 143100,
           "h": 147000,
           "l": 135300,
-          "c": 145600
+          "c": 146000
         }
       ],
       "status_badges": [
@@ -971,7 +1023,7 @@
               "desc": "5일 전(2026-05-22) 대비 +60%↑",
               "base_price": 83200,
               "threshold": 133120,
-              "current": 145600,
+              "current": 146000,
               "triggered": true
             }
           ],
@@ -1021,7 +1073,13 @@
           143200,
           143000,
           143900,
-          145500
+          145700,
+          146600,
+          146500,
+          146400,
+          145900,
+          145400,
+          145900
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1032,7 +1090,7 @@
       "code": "454910",
       "name": "두산로보틱스",
       "rank": 4,
-      "trade_amount": 458064000000,
+      "trade_amount": 458382000000,
       "change_pct": 29.95,
       "close_price": 138400,
       "open_price": 123900,
@@ -1102,8 +1160,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 4.32,
-      "index_multiple_current": 6.93,
+      "index_change_pct": 4.11,
+      "index_multiple_current": 7.29,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 138800,
@@ -1265,8 +1323,8 @@
           "summary": "두산로보틱스 상한가 (29.95%)",
           "cur_prc": 138400,
           "flu_rt": 29.95,
-          "trde_qty": 3432971,
-          "trde_prica_calc": 458064000000,
+          "trde_qty": 3435262,
+          "trde_prica_calc": 458382000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1315,6 +1373,12 @@
           138400,
           138400,
           138400,
+          138400,
+          138400,
+          138400,
+          138400,
+          138400,
+          138400,
           138400
         ]
       },
@@ -1328,9 +1392,9 @@
       "code": "307950",
       "name": "현대오토에버",
       "rank": 3,
-      "trade_amount": 445803000000,
-      "change_pct": 4.08,
-      "close_price": 969000,
+      "trade_amount": 454704000000,
+      "change_pct": 4.73,
+      "close_price": 975000,
       "open_price": 931000,
       "high_price": 1066000,
       "low_price": 905000,
@@ -1390,17 +1454,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 4.32,
-      "index_multiple_current": 0.94,
+      "index_change_pct": 4.11,
+      "index_multiple_current": 1.15,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 1066000,
         "high_date": "2026-06-01",
-        "high_pct": -9.1,
+        "high_pct": -8.54,
         "low": 139400,
         "low_date": "2025-06-09",
-        "low_pct": 595.12,
-        "current": 969000
+        "low_pct": 599.43,
+        "current": 975000
       },
       "daily_20": [
         {
@@ -1541,7 +1605,7 @@
           "o": 931000,
           "h": 1066000,
           "l": 905000,
-          "c": 969000
+          "c": 975000
         }
       ],
       "intraday": {
@@ -1577,7 +1641,13 @@
           968000,
           966000,
           971000,
-          969000
+          989000,
+          994000,
+          983000,
+          985000,
+          970000,
+          967000,
+          975000
         ]
       },
       "togusa_verdict": "neutral",
@@ -1588,11 +1658,11 @@
       "code": "108490",
       "name": "로보티즈",
       "rank": 4,
-      "trade_amount": 402889000000,
-      "change_pct": 27.19,
-      "close_price": 414000,
+      "trade_amount": 406628000000,
+      "change_pct": 25.81,
+      "close_price": 409500,
       "open_price": 353000,
-      "high_price": 415500,
+      "high_price": 416500,
       "low_price": 352500,
       "industry": "특수 목적용 기계 제조업",
       "sector": "솔루션(로봇 엑츄에이터 모듈과 구동 소프트웨어), 에듀테인먼트 로봇, 로봇 플랫폼",
@@ -1649,17 +1719,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.91,
-      "index_multiple_current": -14.24,
+      "index_change_pct": -1.96,
+      "index_multiple_current": -13.17,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 415500,
+        "high": 416500,
         "high_date": "2026-06-01",
-        "high_pct": -0.36,
+        "high_pct": -1.68,
         "low": 51806,
         "low_date": "2025-06-16",
-        "low_pct": 699.14,
-        "current": 414000
+        "low_pct": 690.45,
+        "current": 409500
       },
       "daily_20": [
         {
@@ -1798,9 +1868,9 @@
         {
           "date": "2026-06-01",
           "o": 353000,
-          "h": 415500,
+          "h": 416500,
           "l": 352500,
-          "c": 414000
+          "c": 409500
         }
       ],
       "intraday": {
@@ -1836,7 +1906,13 @@
           411500,
           414000,
           412500,
-          413500
+          413000,
+          412000,
+          412500,
+          412000,
+          409000,
+          409000,
+          410000
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1847,11 +1923,11 @@
       "code": "066575",
       "name": "LG전자우",
       "rank": 5,
-      "trade_amount": 226800000000,
-      "change_pct": 29.15,
-      "close_price": 123600,
+      "trade_amount": 232585000000,
+      "change_pct": 28.53,
+      "close_price": 123000,
       "open_price": 104500,
-      "high_price": 123700,
+      "high_price": 124200,
       "low_price": 103000,
       "industry": null,
       "sector": null,
@@ -1903,8 +1979,8 @@
           "url": "https://biz.heraldcorp.com/article/10760587",
           "source": "헤럴드경제",
           "published_at": "2026-06-01T10:19:26",
-          "causal_chain": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')와 1분기 역대 최대 실적·로봇/HVAC 재평가로 본주 LG전자 보통주가 27~29% 급등 → 의결권 없는 우선주(LG전자우)의 보통주 대비 할인 괴리율 축소 기대가 형성되고, 본업 이익체력 회복은 배당 우선권의 안정성도 뒷받침 → 시세차익·배당 양면 매수세가 집중되며 당일 +29.15% 상한가·52주 신고가(123,600원)를 갱신, 거래대금 2,122억원. 최근 20영업일 누적 +105%·강세 캔들 2영업일 연속으로 이어진 상승 흐름의 연장이자 구간 신고가 돌파다.",
-          "macro_event": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')로 LG그룹주 동반 급등",
+          "causal_chain": "젠슨 황 방한·'제2의 깐부회동' 기대와 LG전자 1분기 역대 최대 실적·로봇(클로이드)·HVAC 재평가로 본주 LG전자가 24~29% 급등 → 의결권 없는 LG전자우는 보통주 재평가·강세에 따라 보통주 대비 할인 괴리율 축소 기대가 형성되며 동반 강세. 이 흐름이 최근 20영업일 누적 +104%·2영업일 연속 강세 캔들의 연장으로 이어져 당일 +28.53% 급등·구간 신고가(종가 123,000원, 52주 고가 대비 -1.0%)·거래대금 2,317억원으로 나타났다.",
+          "macro_event": "젠슨 황(엔비디아) 방한 기대 + '제2의 깐부회동'으로 LG그룹주 동반 급등",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1919,8 +1995,8 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02597766645477456",
           "source": "이데일리",
           "published_at": "2026-06-01T00:13:09",
-          "causal_chain": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')와 1분기 역대 최대 실적·로봇/HVAC 재평가로 본주 LG전자 보통주가 27~29% 급등 → 의결권 없는 우선주(LG전자우)의 보통주 대비 할인 괴리율 축소 기대가 형성되고, 본업 이익체력 회복은 배당 우선권의 안정성도 뒷받침 → 시세차익·배당 양면 매수세가 집중되며 당일 +29.15% 상한가·52주 신고가(123,600원)를 갱신, 거래대금 2,122억원. 최근 20영업일 누적 +105%·강세 캔들 2영업일 연속으로 이어진 상승 흐름의 연장이자 구간 신고가 돌파다.",
-          "macro_event": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')로 LG그룹주 동반 급등",
+          "causal_chain": "젠슨 황 방한·'제2의 깐부회동' 기대와 LG전자 1분기 역대 최대 실적·로봇(클로이드)·HVAC 재평가로 본주 LG전자가 24~29% 급등 → 의결권 없는 LG전자우는 보통주 재평가·강세에 따라 보통주 대비 할인 괴리율 축소 기대가 형성되며 동반 강세. 이 흐름이 최근 20영업일 누적 +104%·2영업일 연속 강세 캔들의 연장으로 이어져 당일 +28.53% 급등·구간 신고가(종가 123,000원, 52주 고가 대비 -1.0%)·거래대금 2,317억원으로 나타났다.",
+          "macro_event": "젠슨 황(엔비디아) 방한 기대 + '제2의 깐부회동'으로 LG그룹주 동반 급등",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1935,8 +2011,8 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/06/01/HE4TMMBWHE3DSZLDMQ4GIMLDGY/",
           "source": "조선비즈",
           "published_at": "2026-06-01T00:30:03",
-          "causal_chain": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')와 1분기 역대 최대 실적·로봇/HVAC 재평가로 본주 LG전자 보통주가 27~29% 급등 → 의결권 없는 우선주(LG전자우)의 보통주 대비 할인 괴리율 축소 기대가 형성되고, 본업 이익체력 회복은 배당 우선권의 안정성도 뒷받침 → 시세차익·배당 양면 매수세가 집중되며 당일 +29.15% 상한가·52주 신고가(123,600원)를 갱신, 거래대금 2,122억원. 최근 20영업일 누적 +105%·강세 캔들 2영업일 연속으로 이어진 상승 흐름의 연장이자 구간 신고가 돌파다.",
-          "macro_event": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')로 LG그룹주 동반 급등",
+          "causal_chain": "젠슨 황 방한·'제2의 깐부회동' 기대와 LG전자 1분기 역대 최대 실적·로봇(클로이드)·HVAC 재평가로 본주 LG전자가 24~29% 급등 → 의결권 없는 LG전자우는 보통주 재평가·강세에 따라 보통주 대비 할인 괴리율 축소 기대가 형성되며 동반 강세. 이 흐름이 최근 20영업일 누적 +104%·2영업일 연속 강세 캔들의 연장으로 이어져 당일 +28.53% 급등·구간 신고가(종가 123,000원, 52주 고가 대비 -1.0%)·거래대금 2,317억원으로 나타났다.",
+          "macro_event": "젠슨 황(엔비디아) 방한 기대 + '제2의 깐부회동'으로 LG그룹주 동반 급등",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1951,8 +2027,8 @@
           "url": "https://www.mk.co.kr/news/business/12062583",
           "source": "매경",
           "published_at": "2026-06-01T01:08:16",
-          "causal_chain": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')와 1분기 역대 최대 실적·로봇/HVAC 재평가로 본주 LG전자 보통주가 27~29% 급등 → 의결권 없는 우선주(LG전자우)의 보통주 대비 할인 괴리율 축소 기대가 형성되고, 본업 이익체력 회복은 배당 우선권의 안정성도 뒷받침 → 시세차익·배당 양면 매수세가 집중되며 당일 +29.15% 상한가·52주 신고가(123,600원)를 갱신, 거래대금 2,122억원. 최근 20영업일 누적 +105%·강세 캔들 2영업일 연속으로 이어진 상승 흐름의 연장이자 구간 신고가 돌파다.",
-          "macro_event": "젠슨 황 방한·엔비디아 협력 기대('제2의 깐부회동')로 LG그룹주 동반 급등",
+          "causal_chain": "젠슨 황 방한·'제2의 깐부회동' 기대와 LG전자 1분기 역대 최대 실적·로봇(클로이드)·HVAC 재평가로 본주 LG전자가 24~29% 급등 → 의결권 없는 LG전자우는 보통주 재평가·강세에 따라 보통주 대비 할인 괴리율 축소 기대가 형성되며 동반 강세. 이 흐름이 최근 20영업일 누적 +104%·2영업일 연속 강세 캔들의 연장으로 이어져 당일 +28.53% 급등·구간 신고가(종가 123,000원, 52주 고가 대비 -1.0%)·거래대금 2,317억원으로 나타났다.",
+          "macro_event": "젠슨 황(엔비디아) 방한 기대 + '제2의 깐부회동'으로 LG그룹주 동반 급등",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1965,13 +2041,13 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 123700,
+        "high": 124200,
         "high_date": "2026-06-01",
-        "high_pct": -0.08,
+        "high_pct": -0.97,
         "low": 35800,
         "low_date": "2025-06-17",
-        "low_pct": 245.25,
-        "current": 123600
+        "low_pct": 243.58,
+        "current": 123000
       },
       "daily_20": [
         {
@@ -2110,9 +2186,9 @@
         {
           "date": "2026-06-01",
           "o": 104500,
-          "h": 123700,
+          "h": 124200,
           "l": 103000,
-          "c": 123600
+          "c": 123000
         }
       ],
       "intraday": {
@@ -2148,7 +2224,13 @@
           121800,
           121800,
           122000,
-          123400
+          123800,
+          123600,
+          123900,
+          123950,
+          124200,
+          123200,
+          123100
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -2159,7 +2241,7 @@
       "code": "090360",
       "name": "로보스타",
       "rank": 6,
-      "trade_amount": 89270000000,
+      "trade_amount": 89291000000,
       "change_pct": 30.0,
       "close_price": 122200,
       "open_price": 122200,
@@ -2210,8 +2292,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.91,
-      "index_multiple_current": -15.71,
+      "index_change_pct": -1.96,
+      "index_multiple_current": -15.31,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 122200,
@@ -2373,8 +2455,8 @@
           "summary": "로보스타 상한가 (30.0%)",
           "cur_prc": 122200,
           "flu_rt": 30.0,
-          "trde_qty": 736565,
-          "trde_prica_calc": 89271000000,
+          "trde_qty": 736757,
+          "trde_prica_calc": 89294000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2423,6 +2505,12 @@
           122200,
           122200,
           122200,
+          122200,
+          122200,
+          122200,
+          122200,
+          122200,
+          122200,
           122200
         ]
       },
@@ -2434,9 +2522,9 @@
       "code": "242040",
       "name": "나무기술",
       "rank": 7,
-      "trade_amount": 81344000000,
-      "change_pct": 19.19,
-      "close_price": 10465,
+      "trade_amount": 82086000000,
+      "change_pct": 19.25,
+      "close_price": 10470,
       "open_price": 9000,
       "high_price": 11100,
       "low_price": 9000,
@@ -2461,17 +2549,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.91,
-      "index_multiple_current": -10.05,
+      "index_change_pct": -1.96,
+      "index_multiple_current": -9.82,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 11100,
         "high_date": "2026-06-01",
-        "high_pct": -5.72,
+        "high_pct": -5.68,
         "low": 1308,
         "low_date": "2025-12-30",
-        "low_pct": 700.08,
-        "current": 10465
+        "low_pct": 700.46,
+        "current": 10470
       },
       "daily_20": [
         {
@@ -2612,7 +2700,7 @@
           "o": 9000,
           "h": 11100,
           "l": 9000,
-          "c": 10465
+          "c": 10470
         }
       ],
       "status_badges": [
@@ -2625,7 +2713,7 @@
               "desc": "5일 전(2026-05-22) 대비 +60%↑",
               "base_price": 5040,
               "threshold": 8064,
-              "current": 10465,
+              "current": 10470,
               "triggered": true
             }
           ],
@@ -2675,6 +2763,12 @@
           10670,
           10680,
           10350,
+          10450,
+          10540,
+          10540,
+          10450,
+          10450,
+          10455,
           10470
         ]
       },
@@ -2688,7 +2782,7 @@
       "code": "037560",
       "name": "LG헬로비전",
       "rank": 10,
-      "trade_amount": 35887000000,
+      "trade_amount": 36270000000,
       "change_pct": 30.0,
       "close_price": 2860,
       "open_price": 2300,
@@ -2779,8 +2873,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.32,
-      "index_multiple_current": 6.94,
+      "index_change_pct": 4.11,
+      "index_multiple_current": 7.3,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 3535,
@@ -2942,8 +3036,8 @@
           "summary": "LG헬로비전 상한가 (30.0%)",
           "cur_prc": 2860,
           "flu_rt": 30.0,
-          "trde_qty": 13284991,
-          "trde_prica_calc": 35887000000,
+          "trde_qty": 13418907,
+          "trde_prica_calc": 36270000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2992,6 +3086,12 @@
           2820,
           2860,
           2860,
+          2860,
+          2860,
+          2860,
+          2860,
+          2860,
+          2860,
           2860
         ]
       },
@@ -3003,7 +3103,7 @@
       "code": "040350",
       "name": "크레오에스지",
       "rank": 11,
-      "trade_amount": 10599000000,
+      "trade_amount": 10605000000,
       "change_pct": 29.87,
       "close_price": 6130,
       "open_price": 5000,
@@ -3093,8 +3193,8 @@
           "raw_title": "대규모기업집단현황공시[연1회공시및1/4분기용(개별회사)]"
         }
       ],
-      "index_change_pct": -1.91,
-      "index_multiple_current": -15.64,
+      "index_change_pct": -1.96,
+      "index_multiple_current": -15.24,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 7621,
@@ -3256,8 +3356,8 @@
           "summary": "크레오에스지 상한가 (29.87%)",
           "cur_prc": 6130,
           "flu_rt": 29.87,
-          "trde_qty": 1785947,
-          "trde_prica_calc": 10599000000,
+          "trde_qty": 1786947,
+          "trde_prica_calc": 10605000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3305,6 +3405,12 @@
           6130,
           6130,
           6130,
+          6130,
+          6130,
+          6130,
+          6130,
+          6130,
+          6130,
           6130
         ]
       },
@@ -3315,10 +3421,222 @@
       "hugepark_grade": "관찰"
     },
     {
+      "code": "355390",
+      "name": "크라우드웍스",
+      "rank": 12,
+      "trade_amount": 4443000000,
+      "change_pct": 29.86,
+      "close_price": 3305,
+      "open_price": 3305,
+      "high_price": 3305,
+      "low_price": 3305,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "인공지능 데이터 구축 서비스",
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-04-14",
+        "rank": 43,
+        "change_pct": 29.92,
+        "trade_amount": 2655000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -1.96,
+      "index_multiple_current": -12.37,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 11914,
+        "high_date": "2025-06-19",
+        "high_pct": -72.26,
+        "low": 2265,
+        "low_date": "2026-03-04",
+        "low_pct": 45.92,
+        "current": 3305
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-27",
+          "o": 3325,
+          "h": 3480,
+          "l": 3310,
+          "c": 3450
+        },
+        {
+          "date": "2026-04-28",
+          "o": 3550,
+          "h": 4095,
+          "l": 3460,
+          "c": 3775
+        },
+        {
+          "date": "2026-04-29",
+          "o": 3615,
+          "h": 3720,
+          "l": 3480,
+          "c": 3525
+        },
+        {
+          "date": "2026-04-30",
+          "o": 3525,
+          "h": 3525,
+          "l": 3400,
+          "c": 3425
+        },
+        {
+          "date": "2026-05-04",
+          "o": 3580,
+          "h": 3580,
+          "l": 3225,
+          "c": 3345
+        },
+        {
+          "date": "2026-05-06",
+          "o": 3345,
+          "h": 3455,
+          "l": 3205,
+          "c": 3385
+        },
+        {
+          "date": "2026-05-07",
+          "o": 3450,
+          "h": 3590,
+          "l": 3315,
+          "c": 3450
+        },
+        {
+          "date": "2026-05-08",
+          "o": 3450,
+          "h": 3560,
+          "l": 3320,
+          "c": 3450
+        },
+        {
+          "date": "2026-05-11",
+          "o": 3450,
+          "h": 3485,
+          "l": 3260,
+          "c": 3310
+        },
+        {
+          "date": "2026-05-12",
+          "o": 3310,
+          "h": 3440,
+          "l": 3020,
+          "c": 3150
+        },
+        {
+          "date": "2026-05-13",
+          "o": 3300,
+          "h": 3300,
+          "l": 3125,
+          "c": 3125
+        },
+        {
+          "date": "2026-05-14",
+          "o": 3125,
+          "h": 3460,
+          "l": 3125,
+          "c": 3360
+        },
+        {
+          "date": "2026-05-15",
+          "o": 3360,
+          "h": 3365,
+          "l": 3115,
+          "c": 3225
+        },
+        {
+          "date": "2026-05-18",
+          "o": 3185,
+          "h": 3185,
+          "l": 2750,
+          "c": 2955
+        },
+        {
+          "date": "2026-05-19",
+          "o": 2955,
+          "h": 3060,
+          "l": 2800,
+          "c": 2800
+        },
+        {
+          "date": "2026-05-20",
+          "o": 2780,
+          "h": 2795,
+          "l": 2550,
+          "c": 2585
+        },
+        {
+          "date": "2026-05-21",
+          "o": 2595,
+          "h": 2820,
+          "l": 2595,
+          "c": 2685
+        },
+        {
+          "date": "2026-05-22",
+          "o": 2800,
+          "h": 2800,
+          "l": 2600,
+          "c": 2725
+        },
+        {
+          "date": "2026-05-26",
+          "o": 2750,
+          "h": 2892,
+          "l": 2640,
+          "c": 2660
+        },
+        {
+          "date": "2026-06-01",
+          "o": 3305,
+          "h": 3305,
+          "l": 3305,
+          "c": 3305
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-06-01",
+          "summary": "크라우드웍스 상한가 (29.86%)",
+          "cur_prc": 3305,
+          "flu_rt": 29.86,
+          "trde_qty": 1435597,
+          "trde_prica_calc": 4443000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-02"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
+    },
+    {
       "code": "271830",
       "name": "팸텍",
-      "rank": 12,
-      "trade_amount": 329000000,
+      "rank": 13,
+      "trade_amount": 330000000,
       "change_pct": 29.95,
       "close_price": 1397,
       "open_price": 1280,
@@ -3396,8 +3714,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.91,
-      "index_multiple_current": -15.68,
+      "index_change_pct": -1.96,
+      "index_multiple_current": -15.28,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 2965,
@@ -3559,8 +3877,8 @@
           "summary": "팸텍 상한가 (29.95%)",
           "cur_prc": 1397,
           "flu_rt": 29.95,
-          "trde_qty": 239263,
-          "trde_prica_calc": 329000000,
+          "trde_qty": 240312,
+          "trde_prica_calc": 330000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3582,6 +3900,8 @@
         "base": 1075,
         "prices": [
           1280,
+          1397,
+          1397,
           1397,
           1397,
           1397,
