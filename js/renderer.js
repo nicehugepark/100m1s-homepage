@@ -1594,13 +1594,19 @@ function renderCalExpandContent(date, data) {
       //   landing HTML이 `?stock={code}&date={date}` single-card mode로 JS redirect (Phase 2c-1 정합).
       //   feedback_share_url_ticker_only.md 정합 — URL 경로엔 code 6자리만 (한글 X). 한글은 OG title만.
       //   fallback: date 없으면 OG landing 경로 불가(날짜 디렉토리 필수) → 기존 query URL 유지.
+      // 2026-06-01 (대표 catch, FLR-AGT-002 meta 변종 — 메신저 OG scraper HTML 캐시 stale 봉쇄):
+      //   shareUrl 에 `?v=YYYYMMDDHH` query (시간 단위) 추가 → 매 시간 신규 URL → 메신저가
+      //   landing HTML re-fetch → 새 og:image content (generate_stock_og.py L1014 ?v={mtime}) 적용.
+      //   URL path는 그대로 유지 (서버 routing 무관, query param은 정적 파일 fetch에 영향 없음).
+      //   양 layer cascade 봉쇄 — HTML 캐시 stale + PNG 캐시 stale 모두 break.
+      const _cacheToken = new Date().toISOString().slice(0, 13).replace(/[-T]/g, '');
       const shareUrl = (code && dateStr)
-        ? `${window.location.origin}/news/stock/${dateStr}/${code}.html`
+        ? `${window.location.origin}/news/stock/${dateStr}/${code}.html?v=${_cacheToken}`
         : code
-          ? `${window.location.origin}/news.html?stock=${code}`
+          ? `${window.location.origin}/news.html?stock=${code}&v=${_cacheToken}`
           : (dateStr
-            ? `${window.location.origin}/news.html?date=${dateStr}`
-            : `${window.location.origin}/news.html`);
+            ? `${window.location.origin}/news.html?date=${dateStr}&v=${_cacheToken}`
+            : `${window.location.origin}/news.html?v=${_cacheToken}`);
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
           // URL만 공유 — 메신저가 title+text+url을 모두 붙여 중복 생기는 이슈 회피
