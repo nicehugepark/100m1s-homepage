@@ -1,6 +1,6 @@
 {
   "date": "2026-06-01",
-  "generated_at": "2026-06-01T09:07:27.127420",
+  "generated_at": "2026-06-01T09:17:21.552618",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -52,15 +52,16 @@
       "code": "005935",
       "name": "삼성전자우",
       "rank": 1,
-      "trade_amount": 134981000000,
-      "change_pct": 6.67,
-      "close_price": null,
+      "trade_amount": 255569000000,
+      "change_pct": 6.42,
+      "close_price": 215500,
       "open_price": 203500,
-      "high_price": 216500,
+      "high_price": 218000,
       "low_price": 203000,
       "industry": null,
       "sector": null,
       "themes": [
+        "AI데이터센터",
         "HBM",
         "AI",
         "반도체",
@@ -68,16 +69,17 @@
       ],
       "theme_paths": [
         {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
           "name": "HBM",
           "path": [
             "반도체",
             "HBM"
-          ]
-        },
-        {
-          "name": "AI",
-          "path": [
-            "AI"
           ]
         },
         {
@@ -103,8 +105,8 @@
           "url": "https://www.fnnews.com/news/202606010806481507",
           "source": "파이낸셜뉴스",
           "published_at": "2026-06-01T08:20:03.378388",
-          "causal_chain": "삼성전자가 7세대 HBM4E 샘플을 출하하며 차세대 AI 메모리 주도권이 부각 → 보통주가 장 초반 6.5%까지 급등하고 우선주 포함 시총 2000조를 돌파하는 재평가 흐름 발생 → 의결권이 없는 삼성전자우는 보통주 강세에 연동돼 보통주 대비 할인(괴리) 축소 기대가 형성되며, 당일 +6.08%(202,500원)로 최근 20영업일 최고가이자 52주 고가 턱밑(-2.4%)까지 동반 상승. 구간 저점(4/30, 158,300원) 이후 +27.9% 반등의 연장선에서 박스권 상단을 돌파했고, 거래대금 1.9조원으로 매수세가 집중됐다.",
-          "macro_event": "삼성전자, 7세대 HBM4E(고대역폭 메모리) 샘플 출하 — 차세대 AI 메모리 주도권 부각",
+          "causal_chain": "본주 삼성전자가 차세대 AI 메모리 핵심인 HBM4E(7세대) 샘플을 출하하며 'AI 메모리 주도주'로 부각되고 앤트로픽·젠슨 황 모멘텀이 겹쳐 급등, 우선주 포함 시총 2000조원을 처음 돌파했다 → 의결권이 없는 삼성전자우는 이 보통주 재평가·강세에 동반해 보통주 대비 할인 괴리율 축소 기대가 형성된다 → 본업(메모리) 이익체력 회복은 배당 우선권의 안정성도 뒷받침해, 당일 +6.42%(종가 215,500원)·최근 20영업일 누적 +36.1%로 이어진 상승 흐름의 연장에서 구간 신고가(52주 고가 218,000원 턱밑)를 경신했다.",
+          "macro_event": "AI 메모리(HBM) 수요 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -117,13 +119,13 @@
       ],
       "fallback": false,
       "range_240d": {
-        "high": 216500,
+        "high": 218000,
         "high_date": "2026-06-01",
-        "high_pct": -6.47,
+        "high_pct": -1.15,
         "low": 46800,
         "low_date": "2025-06-16",
-        "low_pct": 332.69,
-        "current": 202500
+        "low_pct": 360.47,
+        "current": 215500
       },
       "daily_20": [
         {
@@ -262,11 +264,23 @@
         {
           "date": "2026-06-01",
           "o": 203500,
-          "h": 216500,
+          "h": 218000,
           "l": 203000,
-          "c": 216000
+          "c": 215500
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 203500,
+        "base": 203500,
+        "prices": [
+          203500,
+          214500,
+          215000
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
       "hugepark_grade": "적극"
@@ -275,11 +289,11 @@
       "code": "064400",
       "name": "LG씨엔에스",
       "rank": 2,
-      "trade_amount": 81433000000,
-      "change_pct": 26.54,
-      "close_price": null,
+      "trade_amount": 215495000000,
+      "change_pct": 28.47,
+      "close_price": 146200,
       "open_price": 143100,
-      "high_price": 145000,
+      "high_price": 147000,
       "low_price": 140200,
       "industry": "컴퓨터 프로그래밍, 시스템 통합 및 관리업",
       "sector": "컨설팅, 시스템 구축/운영, 토탈 아웃소싱 및 AI, 클라우드·스마트팩토리 등 IT신기술 기반의 DX사업",
@@ -305,7 +319,11 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-05-14",
+        "2026-05-27",
+        "2026-05-29"
+      ],
       "news": [
         {
           "title": "SK證 \"LG씨엔에스, AX수요 증가·해외 진출 가속이 핵심 성장 동력\"",
@@ -357,17 +375,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.11,
-      "index_multiple_current": 241.27,
+      "index_change_pct": 1.35,
+      "index_multiple_current": 21.09,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 145000,
+        "high": 147000,
         "high_date": "2026-06-01",
-        "high_pct": -21.52,
-        "low": 51000,
-        "low_date": "2025-06-05",
-        "low_pct": 123.14,
-        "current": 113800
+        "high_pct": -0.54,
+        "low": 51800,
+        "low_date": "2025-06-09",
+        "low_pct": 182.24,
+        "current": 146200
       },
       "daily_20": [
         {
@@ -506,9 +524,322 @@
         {
           "date": "2026-06-01",
           "o": 143100,
-          "h": 145000,
+          "h": 147000,
           "l": 140200,
-          "c": 144000
+          "c": 146200
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-22) 대비 +60%↑",
+              "base_price": 83200,
+              "threshold": 133120,
+              "current": 146200,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-02",
+          "period_end": "2026-06-03",
+          "start": "2026-06-02",
+          "end": "2026-06-03",
+          "view_date": "2026-06-01",
+          "next_trading_day": "2026-06-02",
+          "next_trading_day_for_predicted": "2026-06-02",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 5,
+        "open": 143100,
+        "base": 143100,
+        "prices": [
+          143100,
+          146900,
+          145600
+        ]
+      },
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "307950",
+      "name": "현대오토에버",
+      "rank": 3,
+      "trade_amount": 147639000000,
+      "change_pct": 10.63,
+      "close_price": null,
+      "open_price": 931000,
+      "high_price": 1066000,
+      "low_price": 905000,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "차량SW, 내비게이션, 스마트팩토리, AI·클라우드 기반 솔루션, 디지털 전환 컨설팅 및 IT서비스",
+      "themes": [
+        "로봇",
+        "휴머노이드 로봇"
+      ],
+      "theme_paths": [
+        {
+          "name": "휴머노이드 로봇",
+          "path": [
+            "로봇",
+            "휴머노이드 로봇"
+          ]
+        }
+      ],
+      "pick_count": 4,
+      "prev_pick": {
+        "date": "2026-05-29",
+        "rank": 4,
+        "change_pct": 24.8,
+        "trade_amount": 874322000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "현대오토에버, 로보틱스 최대 수혜주…목표가↑ -유진證",
+          "url": "https://www.fnnews.com/news/202605290913418306",
+          "source": "파이낸셜뉴스",
+          "published_at": "2026-05-29T09:20:08.786306",
+          "causal_chain": "휴머노이드 로봇이 스마트팩토리에 투입되면 로봇 운영·유지보수·관제 소프트웨어 수요가 발생 → 스마트팩토리·AI클라우드 솔루션·IT서비스가 핵심사업인 현대오토에버가 로봇 관제 SW를 공급하는 직접 수혜 → 외부 고객사와 보스턴다이내믹스를 잇는 브릿지 역할로 비계열 확장성까지 확보.",
+          "macro_event": "휴머노이드 로봇의 스마트팩토리 투입 본격화",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "현대오토에버, 피지컬 AI 기대감에 장중 12% ‘쑥’…주가 70만 원선 회복 [줍줍리포트]",
+          "url": "https://www.sedaily.com/article/20048816",
+          "source": "서울경제",
+          "published_at": "2026-05-27T06:01:08",
+          "causal_chain": "현대차그룹의 피지컬 AI 신사업(자율주행·로보틱스·데이터센터) 가시성 확대 → 그룹 내 유일한 소프트웨어 전문 그룹사인 현대오토에버가 AI 데이터센터 구축·로봇 생산 IT 인프라(RMAC·로보틱스 아메리카·아틀라스 생산 IT 인프라 및 AS)·SW 역량 강화의 핵심 역할 담당 → IT서비스·AI·클라우드 핵심사업이 매크로의 직접 수혜축으로 부각.",
+          "macro_event": "현대차그룹 피지컬 AI 신사업(자율주행·로보틱스·AI 데이터센터) 가시성 확대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "피지컬 AI 바람에 주가 급등한 현대오토에버… 1분기 수익성 악화, 신사업 불확실",
+          "url": "https://biz.chosun.com/it-science/ict/2026/05/27/S5JEEOYNARFP3BQG4J6V62MUT4/",
+          "source": "조선비즈",
+          "published_at": "2026-05-27T05:10:48",
+          "causal_chain": "현대차그룹의 로보틱스·피지컬 AI 사업 확대 → 그룹 내 IT·SW 시스템 통합(SI)을 담당하는 현대오토에버가 로봇 SI 기업으로 사업 모델 변화 → 피지컬 AI 밸류체인 직접 수혜 기대로 증권사 목표가 상향(LS증권 27.9%↑).",
+          "macro_event": "현대차그룹 로보틱스·피지컬 AI 사업 확대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "LS證 “현대오토에버, 로봇 SI 기업 변화… 목표가 27.9%↑”",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/05/27/HG45QS3TDBHNJAQESYRPIQMA3Q/",
+          "source": "조선비즈",
+          "published_at": "2026-05-26T23:44:39",
+          "causal_chain": "현대차그룹의 로보틱스·피지컬 AI 사업 확대 → 그룹 내 IT·SW 시스템 통합(SI)을 담당하는 현대오토에버가 로봇 SI 기업으로 사업 모델 변화 → 피지컬 AI 밸류체인 직접 수혜 기대로 증권사 목표가 상향(LS증권 27.9%↑).",
+          "macro_event": "현대차그룹 로보틱스·피지컬 AI 사업 확대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "[클릭 e종목]현대오토에버, 밸류 부담에도 주목해야 할 이유는",
+          "url": "https://www.asiae.co.kr/article/2026052015552483505",
+          "source": "아시아경제",
+          "published_at": "2026-05-20T21:00:00",
+          "causal_chain": "현대차그룹의 로보틱스·피지컬 AI 사업 확대 → 그룹 내 IT·SW 시스템 통합(SI)을 담당하는 현대오토에버가 로봇 SI 기업으로 사업 모델 변화 → 피지컬 AI 밸류체인 직접 수혜 기대로 증권사 목표가 상향(LS증권 27.9%↑).",
+          "macro_event": "현대차그룹 로보틱스·피지컬 AI 사업 확대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": 1.35,
+      "index_multiple_current": 7.87,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 1066000,
+        "high_date": "2026-06-01",
+        "high_pct": -12.66,
+        "low": 138000,
+        "low_date": "2025-06-05",
+        "low_pct": 574.64,
+        "current": 931000
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-30",
+          "o": 484000,
+          "h": 484000,
+          "l": 450000,
+          "c": 450500
+        },
+        {
+          "date": "2026-05-04",
+          "o": 457500,
+          "h": 457500,
+          "l": 444000,
+          "c": 446000
+        },
+        {
+          "date": "2026-05-06",
+          "o": 449000,
+          "h": 455000,
+          "l": 437500,
+          "c": 441000
+        },
+        {
+          "date": "2026-05-07",
+          "o": 460000,
+          "h": 481000,
+          "l": 447500,
+          "c": 455500
+        },
+        {
+          "date": "2026-05-08",
+          "o": 490000,
+          "h": 592000,
+          "l": 481000,
+          "c": 592000
+        },
+        {
+          "date": "2026-05-11",
+          "o": 574000,
+          "h": 676000,
+          "l": 560000,
+          "c": 635000
+        },
+        {
+          "date": "2026-05-12",
+          "o": 652000,
+          "h": 670000,
+          "l": 561000,
+          "c": 615000
+        },
+        {
+          "date": "2026-05-13",
+          "o": 633000,
+          "h": 723000,
+          "l": 616000,
+          "c": 699000
+        },
+        {
+          "date": "2026-05-14",
+          "o": 702000,
+          "h": 709000,
+          "l": 670000,
+          "c": 689000
+        },
+        {
+          "date": "2026-05-15",
+          "o": 693000,
+          "h": 723000,
+          "l": 624000,
+          "c": 648000
+        },
+        {
+          "date": "2026-05-18",
+          "o": 626000,
+          "h": 637000,
+          "l": 579000,
+          "c": 596000
+        },
+        {
+          "date": "2026-05-19",
+          "o": 592000,
+          "h": 594000,
+          "l": 523000,
+          "c": 536000
+        },
+        {
+          "date": "2026-05-20",
+          "o": 537000,
+          "h": 567000,
+          "l": 521000,
+          "c": 558000
+        },
+        {
+          "date": "2026-05-21",
+          "o": 580000,
+          "h": 646000,
+          "l": 578000,
+          "c": 629000
+        },
+        {
+          "date": "2026-05-22",
+          "o": 621000,
+          "h": 638000,
+          "l": 599000,
+          "c": 631000
+        },
+        {
+          "date": "2026-05-26",
+          "o": 647000,
+          "h": 652000,
+          "l": 623000,
+          "c": 638000
+        },
+        {
+          "date": "2026-05-27",
+          "o": 630000,
+          "h": 768000,
+          "l": 610000,
+          "c": 765000
+        },
+        {
+          "date": "2026-05-28",
+          "o": 756000,
+          "h": 783000,
+          "l": 696000,
+          "c": 746000
+        },
+        {
+          "date": "2026-05-29",
+          "o": 783000,
+          "h": 953000,
+          "l": 775000,
+          "c": 931000
+        },
+        {
+          "date": "2026-06-01",
+          "o": 931000,
+          "h": 1066000,
+          "l": 905000,
+          "c": 1030000
         }
       ],
       "togusa_verdict": "neutral",
@@ -516,14 +847,235 @@
       "hugepark_grade": "관찰"
     },
     {
+      "code": "108490",
+      "name": "로보티즈",
+      "rank": 4,
+      "trade_amount": 113991000000,
+      "change_pct": 20.89,
+      "close_price": null,
+      "open_price": 353000,
+      "high_price": 401500,
+      "low_price": 352500,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "솔루션(로봇 엑츄에이터 모듈과 구동 소프트웨어), 에듀테인먼트 로봇, 로봇 플랫폼",
+      "themes": [
+        "로봇",
+        "AI",
+        "휴머노이드 로봇"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI",
+          "path": [
+            "AI"
+          ]
+        },
+        {
+          "name": "휴머노이드 로봇",
+          "path": [
+            "로봇",
+            "휴머노이드 로봇"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-12",
+        "rank": 9,
+        "change_pct": 12.86,
+        "trade_amount": 380215735000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "[특징주] 로보티즈, 자체 개발 휴머노이드 공개…피지컬 AI 사업 확장 기대감에 상승세",
+          "url": "https://www.etoday.co.kr/news/view/2589427",
+          "source": "이투데이",
+          "published_at": "2026-06-01T00:04:00",
+          "causal_chain": "휴머노이드 로봇·피지컬(체화) AI 상용화 기대가 로봇 액츄에이터·구동 소프트웨어 핵심 사업을 영위하는 로보티즈로 직접 연결 → 자체 개발 휴머노이드 공개·피지컬 AI 사업 확장 기대가 반등 동력으로 작용. 구간 저점(258,500원, 5/20) 이후 +19.0% 반등한 흐름의 연장선이나, 당일(5/27)은 반등 구간 속 소폭 조정으로 종가 307,500원(-1.76%, 구간 고저 41% 위치)에 마감.",
+          "macro_event": "휴머노이드 로봇·피지컬 AI 사업 확장 기대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "호재"
+        }
+      ],
+      "fallback": false,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -10.04,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 401500,
+        "high_date": "2026-06-01",
+        "high_pct": -23.41,
+        "low": 51806,
+        "low_date": "2025-06-16",
+        "low_pct": 493.56,
+        "current": 307500
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-28",
+          "o": 345000,
+          "h": 345000,
+          "l": 325500,
+          "c": 326500
+        },
+        {
+          "date": "2026-04-29",
+          "o": 337500,
+          "h": 352000,
+          "l": 322000,
+          "c": 328500
+        },
+        {
+          "date": "2026-04-30",
+          "o": 343000,
+          "h": 343000,
+          "l": 316000,
+          "c": 316500
+        },
+        {
+          "date": "2026-05-04",
+          "o": 328000,
+          "h": 329000,
+          "l": 310500,
+          "c": 313500
+        },
+        {
+          "date": "2026-05-06",
+          "o": 316000,
+          "h": 319500,
+          "l": 303500,
+          "c": 310000
+        },
+        {
+          "date": "2026-05-07",
+          "o": 316500,
+          "h": 324000,
+          "l": 300500,
+          "c": 302000
+        },
+        {
+          "date": "2026-05-08",
+          "o": 315500,
+          "h": 342500,
+          "l": 313000,
+          "c": 334500
+        },
+        {
+          "date": "2026-05-11",
+          "o": 335500,
+          "h": 394000,
+          "l": 324000,
+          "c": 377500
+        },
+        {
+          "date": "2026-05-12",
+          "o": 378500,
+          "h": 389500,
+          "l": 320000,
+          "c": 345000
+        },
+        {
+          "date": "2026-05-13",
+          "o": 347500,
+          "h": 369000,
+          "l": 337500,
+          "c": 355500
+        },
+        {
+          "date": "2026-05-14",
+          "o": 363000,
+          "h": 363000,
+          "l": 334500,
+          "c": 341000
+        },
+        {
+          "date": "2026-05-15",
+          "o": 348000,
+          "h": 371000,
+          "l": 315000,
+          "c": 328500
+        },
+        {
+          "date": "2026-05-18",
+          "o": 334000,
+          "h": 338000,
+          "l": 300000,
+          "c": 306000
+        },
+        {
+          "date": "2026-05-19",
+          "o": 303000,
+          "h": 303500,
+          "l": 267000,
+          "c": 274000
+        },
+        {
+          "date": "2026-05-20",
+          "o": 271500,
+          "h": 272000,
+          "l": 247000,
+          "c": 258500
+        },
+        {
+          "date": "2026-05-21",
+          "o": 278000,
+          "h": 307000,
+          "l": 268500,
+          "c": 303500
+        },
+        {
+          "date": "2026-05-22",
+          "o": 304000,
+          "h": 312000,
+          "l": 297500,
+          "c": 304500
+        },
+        {
+          "date": "2026-05-26",
+          "o": 319000,
+          "h": 323500,
+          "l": 309000,
+          "c": 313000
+        },
+        {
+          "date": "2026-05-27",
+          "o": 311500,
+          "h": 312000,
+          "l": 301000,
+          "c": 307500
+        },
+        {
+          "date": "2026-06-01",
+          "o": 353000,
+          "h": 401500,
+          "l": 352500,
+          "c": 393500
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
+    },
+    {
       "code": "066575",
       "name": "LG전자우",
-      "rank": 3,
-      "trade_amount": 64570000000,
-      "change_pct": 20.38,
-      "close_price": null,
+      "rank": 5,
+      "trade_amount": 111278000000,
+      "change_pct": 27.17,
+      "close_price": 121700,
       "open_price": 104500,
-      "high_price": 117000,
+      "high_price": 122200,
       "low_price": 103000,
       "industry": null,
       "sector": null,
@@ -554,9 +1106,14 @@
         "change_pct": 21.91,
         "trade_amount": 228007000000
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_today": true,
+      "bullish_streak": 2,
+      "bullish_dates": [
+        "2026-05-12",
+        "2026-05-21",
+        "2026-05-29",
+        "2026-06-01"
+      ],
       "news": [
         {
           "title": "코스피, 사상 최고치 8476…LG전자·삼성전기도 역대 최고가 [fn마감시황]",
@@ -641,13 +1198,13 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 117000,
+        "high": 122200,
         "high_date": "2026-06-01",
-        "high_pct": -18.21,
+        "high_pct": -0.41,
         "low": 35800,
         "low_date": "2025-06-17",
-        "low_pct": 167.32,
-        "current": 95700
+        "low_pct": 239.94,
+        "current": 121700
       },
       "daily_20": [
         {
@@ -786,20 +1343,30 @@
         {
           "date": "2026-06-01",
           "o": 104500,
-          "h": 117000,
+          "h": 122200,
           "l": 103000,
-          "c": 115200
+          "c": 121700
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 104500,
+        "base": 104500,
+        "prices": [
+          104500,
+          121500,
+          121400
+        ]
+      },
       "togusa_verdict": "neutral",
-      "theme_leader": true,
+      "theme_leader": false,
       "hugepark_grade": "관찰"
     },
     {
       "code": "090360",
       "name": "로보스타",
-      "rank": 4,
-      "trade_amount": 7263000000,
+      "rank": 6,
+      "trade_amount": 9664000000,
       "change_pct": 30.0,
       "close_price": 122200,
       "open_price": 122200,
@@ -827,7 +1394,10 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-05-21",
+        "2026-05-29"
+      ],
       "news": [
         {
           "title": "[특징주] 로보스타, 최대주주 LG전자 로봇 사업 부각…협력 기대감에 상승세",
@@ -847,8 +1417,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.19,
-      "index_multiple_current": -259.95,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -14.42,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 122200,
@@ -860,20 +1430,6 @@
         "current": 122200
       },
       "daily_20": [
-        {
-          "date": "2026-04-28",
-          "o": 74800,
-          "h": 75700,
-          "l": 71000,
-          "c": 71900
-        },
-        {
-          "date": "2026-04-29",
-          "o": 72300,
-          "h": 73700,
-          "l": 69800,
-          "c": 70500
-        },
         {
           "date": "2026-04-30",
           "o": 75300,
@@ -990,8 +1546,22 @@
           "date": "2026-05-27",
           "o": 84200,
           "h": 84700,
-          "l": 79800,
-          "c": 81800
+          "l": 79000,
+          "c": 81000
+        },
+        {
+          "date": "2026-05-28",
+          "o": 81700,
+          "h": 83700,
+          "l": 73800,
+          "c": 77700
+        },
+        {
+          "date": "2026-05-29",
+          "o": 83700,
+          "h": 97400,
+          "l": 80100,
+          "c": 94000
         },
         {
           "date": "2026-06-01",
@@ -1003,31 +1573,6 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-05-20) 대비 +60%↑",
-              "base_price": 70300,
-              "threshold": 112480,
-              "current": 122200,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-06-02",
-          "period_end": "2026-06-03",
-          "start": "2026-06-02",
-          "end": "2026-06-03",
-          "view_date": "2026-06-01",
-          "next_trading_day": "2026-06-02",
-          "next_trading_day_for_predicted": "2026-06-02",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
-        },
-        {
           "label": "상한가",
           "severity": "hot",
           "source": "kiwoom_ka10017",
@@ -1035,8 +1580,8 @@
           "summary": "로보스타 상한가 (30.0%)",
           "cur_prc": 122200,
           "flu_rt": 30.0,
-          "trde_qty": 59434,
-          "trde_prica_calc": 7263000000,
+          "trde_qty": 79082,
+          "trde_prica_calc": 9664000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1052,8 +1597,16 @@
           "next_trading_day": "2026-06-02"
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "intraday": {
+        "step_min": 5,
+        "open": 122200,
+        "base": 94000,
+        "prices": [
+          122200,
+          122200,
+          122200
+        ]
+      },
       "togusa_verdict": "neutral",
       "theme_leader": false,
       "hugepark_grade": "관찰"
@@ -1061,13 +1614,13 @@
     {
       "code": "271830",
       "name": "팸텍",
-      "rank": 5,
-      "trade_amount": 198000000,
+      "rank": 7,
+      "trade_amount": 276000000,
       "change_pct": 29.95,
       "close_price": 1397,
-      "open_price": 1397,
+      "open_price": 1280,
       "high_price": 1397,
-      "low_price": 1397,
+      "low_price": 1212,
       "industry": "특수 목적용 기계 제조업",
       "sector": "카메라모듈 검사장비, 반도체 검사장비",
       "themes": [
@@ -1100,9 +1653,11 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-06-01"
+      ],
       "news": [
         {
           "title": "팸텍, 웨이퍼 로봇 기업 TIS 인수…\"유리기판 장비 사업 확대\"",
@@ -1138,40 +1693,19 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.19,
-      "index_multiple_current": -45.0,
+      "index_change_pct": -2.08,
+      "index_multiple_current": -14.4,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 2965,
         "high_date": "2025-10-20",
         "high_pct": -52.88,
-        "low": 1183,
-        "low_date": "2026-05-18",
-        "low_pct": 18.09,
+        "low": 1013,
+        "low_date": "2026-05-29",
+        "low_pct": 37.91,
         "current": 1397
       },
       "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 1664,
-          "h": 1664,
-          "l": 1629,
-          "c": 1648
-        },
-        {
-          "date": "2026-04-28",
-          "o": 1655,
-          "h": 1655,
-          "l": 1611,
-          "c": 1643
-        },
-        {
-          "date": "2026-04-29",
-          "o": 1659,
-          "h": 1659,
-          "l": 1608,
-          "c": 1632
-        },
         {
           "date": "2026-04-30",
           "o": 1633,
@@ -1285,10 +1819,31 @@
           "c": 1287
         },
         {
+          "date": "2026-05-27",
+          "o": 1287,
+          "h": 1287,
+          "l": 1130,
+          "c": 1204
+        },
+        {
+          "date": "2026-05-28",
+          "o": 1253,
+          "h": 1253,
+          "l": 1148,
+          "c": 1178
+        },
+        {
+          "date": "2026-05-29",
+          "o": 1179,
+          "h": 1197,
+          "l": 1013,
+          "c": 1075
+        },
+        {
           "date": "2026-06-01",
-          "o": 1397,
+          "o": 1280,
           "h": 1397,
-          "l": 1397,
+          "l": 1212,
           "c": 1397
         }
       ],
@@ -1301,8 +1856,8 @@
           "summary": "팸텍 상한가 (29.95%)",
           "cur_prc": 1397,
           "flu_rt": 29.95,
-          "trde_qty": 145627,
-          "trde_prica_calc": 198000000,
+          "trde_qty": 201712,
+          "trde_prica_calc": 276000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1318,8 +1873,18 @@
           "next_trading_day": "2026-06-02"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 1280,
+        "base": 1075,
+        "prices": [
+          1280,
+          1397,
+          1397
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
