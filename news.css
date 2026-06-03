@@ -1701,8 +1701,8 @@ body.single-card-mode { background: var(--bg) !important; }
   cursor: pointer;
   width: 100%;
   padding: 5px 12px;             /* REQ-061 — page-eyebrow 정합 (5/16 → 5/12, 대표 발화 11:43) */
-  /* min-height 제거 — page-eyebrow가 min-height 미설정. 자연 height = 12*1.5 + 5*2 ≈ 28px */
-  border-radius: 9999px;
+  min-height: 36px;              /* DSN-001 §3.1 옵션 squircle (2026-06-03 21:31 KST design-lead 4차 권고, 대표 verbatim 21:28 "애플의 스쿼클 같이") — 28↔44 산술 중간 */
+  border-radius: 12px;           /* DSN-001 §3.1 옵션 squircle — pill 9999px → 12px (Apple squircle CSS 근사, 36px 높이 기준 33%) */
   background: #F8FAFC;
   border: 1px solid #64748B;      /* REQ-045 §D — #94A3B8 → #64748B (데스크탑 가독성) */
   font-size: 12px;                /* 풀폭 버튼이라 가독성 우선 (eyebrow 10px와 차등) */
@@ -1725,9 +1725,11 @@ body.single-card-mode { background: var(--bg) !important; }
   outline-offset: 2px;
 }
 @media (max-width: 640px) {
-  /* REQ-061 — 모바일도 page-eyebrow 정합 (padding 5/12, min-height 제거, 대표 발화 11:43) */
+  /* REQ-061 — 모바일도 page-eyebrow 정합 (padding 5/12, 대표 발화 11:43)
+     DSN-001 §3.1 옵션 squircle (2026-06-03 21:31 KST) — 모바일 터치 정확도 절충 min-height 40px (design-lead 4차 권고). */
   .cal-detail-toggle {
     padding: 5px 12px;
+    min-height: 40px;
   }
 }
 .cal-toggle-text {
@@ -1849,19 +1851,20 @@ body.single-card-mode { background: var(--bg) !important; }
   opacity: 1;
 }
 .pm320-rec-toggle {
-  /* DSN-001 §3.1 정정 옵션 B (2026-06-03 20:46 KST design-lead 3차 권고, 대표 critical catch 20:41 "통일성 미려함도 없고") —
+  /* DSN-001 §3.1 정정 옵션 squircle (2026-06-03 21:31 KST design-lead 4차 권고, 대표 verbatim 21:28 "상세 버튼과 매매 버튼 높이를 두 버튼의 중간 크기로 맞추고 두 버튼 모두 라운드형 버튼에서 모서리만 라운드인 버튼으로 번경해줘. 애플의 스쿼클 같이.") —
      cal-detail-toggle 완전 정합 (background #F8FAFC + justify-content center + text-align center) +
-     font-weight 700 (위계 강조, 매매 = 결단) + chevron 폐기 (텍스트 토글로 대체). */
+     font-weight 700 (위계 강조, 매매 = 결단 button 보존) + squircle CSS 근사 12px (Apple 스타일) +
+     min-height 36px (28↔44 산술 중간, 두 button 동일 높이 통일). */
   display: flex;
   align-items: center;
   justify-content: center;                       /* 옵션 B 정합 (space-between → center, cal-detail-toggle 정합) */
   gap: 6px;                                      /* cal-detail-toggle 정합 (8px → 6px) */
   width: 100%;
-  min-height: 44px;                              /* Apple HIG 터치 (매매 = 결단 button, 시각 위계 critical 보존) */
+  min-height: 36px;                              /* DSN-001 §3.1 옵션 squircle — 28↔44 산술 중간 (cal-detail-toggle 정합, 통일 높이) */
   padding: 5px 12px;                             /* cal-detail-toggle 정합 */
   background: #F8FAFC;                           /* 옵션 B 정합 (transparent → #F8FAFC, cal-detail-toggle 정합) */
   border: 1px solid #64748B;                     /* cal-detail-toggle 정합 (var --g08 → #64748B, WCAG AA) */
-  border-radius: 9999px;                         /* cal-detail-toggle 정합 (10px → 9999px pill) */
+  border-radius: 12px;                           /* DSN-001 §3.1 옵션 squircle — pill 9999px → 12px (Apple squircle CSS 근사, font-weight 700 위계 보존) */
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;                              /* 옵션 B 위계 강조 (600 → 700, cal-detail-toggle 대비 한 단계 강) */
