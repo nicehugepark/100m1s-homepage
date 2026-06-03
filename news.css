@@ -1835,13 +1835,18 @@ body.single-card-mode { background: var(--bg) !important; }
 .pm320-rec-row {
   margin-top: 8px;
 }
-/* §3.3 — non-PICK 매매 차등 (muted background + opacity, FLR-AGT-002 거짓 충실성 차단 본질 유지).
-   대표 verbatim 2026-06-03 19:42 KST: "매매 버튼의 왼쪽 라인으로 점선으로 그려져있는데 점선을 없애고
-   버튼의 크기를 점선까지 확장" → border-left dashed + padding-left 제거, 매매 버튼이 row 전체 너비 차지. */
-.pm320-rec-row--virtual {
-  opacity: 0.85;
-  background: var(--g04, #F2F4F8);
-  border-radius: 6px;
+/* §3.3 정정 (2026-06-03 20:25 KST design-lead 권고 옵션 C, 대표 verbatim 20:22 "디자인이 이게 맞는건가?") —
+   row wrapper 회색 박스 제거. 시각 차등은 아래 .pm320-rec-row--virtual .pm320-rec-toggle button 자체 layer 재배치.
+   FLR-AGT-002 거짓 충실성 차단 3 layer 본질 유지: (a) button border + color + opacity 시각 (b) aria-label "가상" 명시 (c) detail 본문 4 row 라벨. */
+.pm320-rec-row--virtual .pm320-rec-toggle {
+  border-color: #94A3B8;                         /* PICK #64748B 대비 한 단계 연하게 */
+  color: #475569;                                /* PICK #0F172A 대비 한 단계 muted */
+  opacity: 0.92;
+}
+.pm320-rec-row--virtual .pm320-rec-toggle:hover {
+  border-color: #64748B;
+  color: #0F172A;
+  opacity: 1;
 }
 .pm320-rec-toggle {
   /* DSN-001 §3.1 정정 (2026-06-03 design-lead 권고) — cal-detail-toggle 시각 정합 + min-height 44px Apple HIG 보존 */
@@ -1973,8 +1978,10 @@ body.single-card-mode { background: var(--bg) !important; }
     color: #E89098;
     border-color: #5C2A30;
   }
-  .pm320-rec-row--virtual {
-    background: rgba(255,255,255,0.03);
+  /* §3.3 정정 (2026-06-03 20:25 KST 옵션 C 다크모드 정합) — row wrapper background 제거, button 자체 차등 */
+  .pm320-rec-row--virtual .pm320-rec-toggle {
+    border-color: rgba(255,255,255,0.06);
+    opacity: 0.92;
   }
 }
 
