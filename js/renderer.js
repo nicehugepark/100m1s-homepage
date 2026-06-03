@@ -464,13 +464,13 @@ function renderCalExpandContent(date, data) {
     return `${s}${p.toFixed(2)}%`;
   };
   // 한국어 매핑 (DSN-001 §1 영어 enum → §3.5 한국어 label)
-  // running = 잠정 / taken_profit = 익절 / expired_gain = 만기익절 / expired_loss = 만기손실
+  // running = 잠정 / taken_profit = 익절 / expired_gain = 만기청산 (이익) / expired_loss = 만기청산 (손실)
   const _pm320StateLabel = (state) => {
     switch (state) {
       case 'running': return '잠정';
       case 'taken_profit': return '익절';
-      case 'expired_gain': return '만기익절';
-      case 'expired_loss': return '만기손실';
+      case 'expired_gain': return '만기청산 (이익)';
+      case 'expired_loss': return '만기청산 (손실)';
       default: return '';
     }
   };
@@ -509,7 +509,7 @@ function renderCalExpandContent(date, data) {
         ? _fmtPctSigned(pk.result.final_pnl_pct)
         : _fmtPctSigned(pnl);
       return {
-        html: `✅ 만기익절 ${pnlText}`,
+        html: `✅ 만기청산 (이익) ${pnlText}`,
         mod: 'profit',
         aria: `만기 도달, 평단 상회, ${pnlText}`,
       };
@@ -519,7 +519,7 @@ function renderCalExpandContent(date, data) {
         ? _fmtPctSigned(pk.result.final_pnl_pct)
         : _fmtPctSigned(pnl);
       return {
-        html: `⚠️ 만기손실 ${pnlText}`,
+        html: `⚠️ 만기청산 (손실) ${pnlText}`,
         mod: 'loss',
         aria: `만기 도달, 손실 ${pnlText}`,
       };
@@ -550,10 +550,10 @@ function renderCalExpandContent(date, data) {
         mark = `✅ 익절 ${finalPct}`;
         mod = 'profit';
       } else if (state === 'expired_gain') {
-        mark = `✅ 만기익절 ${finalPct}`;
+        mark = `✅ 만기청산 (이익) ${finalPct}`;
         mod = 'profit';
       } else if (state === 'expired_loss') {
-        mark = `⚠️ 만기손실 ${finalPct}`;
+        mark = `⚠️ 만기청산 (손실) ${finalPct}`;
         mod = 'loss';
       } else {
         mark = `${_pm320StateLabel(state)} ${finalPct}`;
