@@ -1968,7 +1968,8 @@ body.single-card-mode { background: var(--bg) !important; }
   /* 모바일 라벨 단축 — §5.4 ASCII 모형 "PM320 추천" */
   .cal-pm320-pick-label::before { content: ''; }
   .pm320-rec-toggle {
-    padding: 10px 10px;
+    padding: 5px 12px;        /* cal-detail-toggle 정합 (대표 verbatim 23:22 KST height mismatch catch) */
+    min-height: 40px;         /* cal-detail-toggle 모바일 정합 (40px 통일) */
     font-size: 12px;          /* §8.5 12px 모바일 폰트 catch (11.5px → 12px 상향) */
   }
   .pm320-rec-result-mark {
