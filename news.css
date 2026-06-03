@@ -1835,12 +1835,12 @@ body.single-card-mode { background: var(--bg) !important; }
 .pm320-rec-row {
   margin-top: 8px;
 }
-/* §3.3 — non-PICK 매매 차등 (muted, 좌측 점선 — FLR-AGT-002 거짓 충실성 차단, 대표 verbatim 2026-06-03) */
+/* §3.3 — non-PICK 매매 차등 (muted background + opacity, FLR-AGT-002 거짓 충실성 차단 본질 유지).
+   대표 verbatim 2026-06-03 19:42 KST: "매매 버튼의 왼쪽 라인으로 점선으로 그려져있는데 점선을 없애고
+   버튼의 크기를 점선까지 확장" → border-left dashed + padding-left 제거, 매매 버튼이 row 전체 너비 차지. */
 .pm320-rec-row--virtual {
   opacity: 0.85;
   background: var(--g04, #F2F4F8);
-  border-left: 2px dashed var(--g08, #E0E4ED);
-  padding-left: 8px;
   border-radius: 6px;
 }
 .pm320-rec-toggle {
@@ -1968,7 +1968,6 @@ body.single-card-mode { background: var(--bg) !important; }
   }
   .pm320-rec-row--virtual {
     background: rgba(255,255,255,0.03);
-    border-left-color: rgba(255,255,255,0.12);
   }
 }
 
