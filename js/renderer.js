@@ -451,7 +451,7 @@ function renderCalExpandContent(date, data) {
   // DOC-20260603-DSN-001 §1+§3+§4 — PM320 추천/결과 row HTML build helper.
   // 본문 영어 enum (running / taken_profit / expired_gain / expired_loss) → 한국어 매핑.
   // 카톡 6차 본문 verbatim 정합 (매수 / 물타기 / 익절 / 만기청산 4 row).
-  // non-PICK = 가상 시뮬레이션 muted 차등 (FLR-AGT-002 거짓 충실성 차단).
+  // non-PICK = 매매 결과 muted 차등 (FLR-AGT-002 거짓 충실성 차단, 대표 verbatim 2026-06-03).
   // 입력: pm320_pick 객체 (data-loader.js 합성 패스스루) + viewDate (카드 일자).
   // 출력: HTML string (배지 / row), 부재 시 빈 string.
   const _fmtKRW = (n) => {
@@ -599,10 +599,10 @@ function renderCalExpandContent(date, data) {
     if (!pk) return '';
     const isPick = !!pk.is_pick;
     const variantClass = isPick ? '' : ' pm320-rec-row--virtual';
-    const labelText = isPick ? '추천/결과' : '가상 시뮬레이션';
+    const labelText = '매매 결과';
     const labelAria = isPick
-      ? 'PM320 추천 정보 상세 보기'
-      : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 가상 시뮬레이션';
+      ? 'PM320 추천 매매 결과 상세 보기'
+      : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 매매 결과';
     const mark = _pm320ResultMark(pk);
     const markHtml = mark
       ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</span>`
