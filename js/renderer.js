@@ -448,6 +448,180 @@ function renderCalExpandContent(date, data) {
     return false;
   };
 
+  // DOC-20260603-DSN-001 §1+§3+§4 — PM320 추천/결과 row HTML build helper.
+  // 본문 영어 enum (running / taken_profit / expired_gain / expired_loss) → 한국어 매핑.
+  // 카톡 6차 본문 verbatim 정합 (매수 / 물타기 / 익절 / 만기청산 4 row).
+  // non-PICK = 가상 시뮬레이션 muted 차등 (FLR-AGT-002 거짓 충실성 차단).
+  // 입력: pm320_pick 객체 (data-loader.js 합성 패스스루) + viewDate (카드 일자).
+  // 출력: HTML string (배지 / row), 부재 시 빈 string.
+  const _fmtKRW = (n) => {
+    if (n == null || !Number.isFinite(n)) return '—';
+    return n.toLocaleString('ko-KR') + '원';
+  };
+  const _fmtPctSigned = (p) => {
+    if (p == null || !Number.isFinite(p)) return '—';
+    const s = p >= 0 ? '+' : '';
+    return `${s}${p.toFixed(2)}%`;
+  };
+  // 한국어 매핑 (DSN-001 §1 영어 enum → §3.5 한국어 label)
+  // running = 잠정 / taken_profit = 익절 / expired_gain = 만기익절 / expired_loss = 만기손실
+  const _pm320StateLabel = (state) => {
+    switch (state) {
+      case 'running': return '잠정';
+      case 'taken_profit': return '익절';
+      case 'expired_gain': return '만기익절';
+      case 'expired_loss': return '만기손실';
+      default: return '';
+    }
+  };
+  // 결과 mark inline (default 접힘 상태에서도 1초 catch — DSN-001 §3.2 / §4.1 본질)
+  const _pm320ResultMark = (pk) => {
+    if (!pk || !pk.current_state) return '';
+    const state = pk.current_state;
+    const pnl = pk.current_pnl_pct;
+    const dOffset = pk.d_offset;
+    if (state === 'running') {
+      if (dOffset === 0) {
+        return { html: '🕐 진입 D+0', mod: 'running', aria: '오늘 진입 시점' };
+      }
+      // D+1/+2/+3 진행 중 — 잠정 명시 (FLR-AGT-002 §4.4)
+      const pnlText = _fmtPctSigned(pnl);
+      const dText = (dOffset != null && dOffset <= 3) ? ` (D+${dOffset}/+3)` : '';
+      return {
+        html: `⏳ 잠정 ${pnlText}${dText}`,
+        mod: 'running',
+        aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}`,
+      };
+    }
+    if (state === 'taken_profit') {
+      const pnlText = pk.result && pk.result.final_pnl_pct != null
+        ? _fmtPctSigned(pk.result.final_pnl_pct)
+        : _fmtPctSigned(pnl);
+      const resultDate = pk.result && pk.result.result_date ? ` (${pk.result.result_date})` : '';
+      return {
+        html: `✅ 익절 ${pnlText}${resultDate}`,
+        mod: 'profit',
+        aria: `익절 도달, 수익률 ${pnlText}${resultDate}`,
+      };
+    }
+    if (state === 'expired_gain') {
+      const pnlText = pk.result && pk.result.final_pnl_pct != null
+        ? _fmtPctSigned(pk.result.final_pnl_pct)
+        : _fmtPctSigned(pnl);
+      return {
+        html: `✅ 만기익절 ${pnlText}`,
+        mod: 'profit',
+        aria: `만기 도달, 평단 상회, ${pnlText}`,
+      };
+    }
+    if (state === 'expired_loss') {
+      const pnlText = pk.result && pk.result.final_pnl_pct != null
+        ? _fmtPctSigned(pk.result.final_pnl_pct)
+        : _fmtPctSigned(pnl);
+      return {
+        html: `⚠️ 만기손실 ${pnlText}`,
+        mod: 'loss',
+        aria: `만기 도달, 손실 ${pnlText}`,
+      };
+    }
+    return '';
+  };
+  // 펼침 본문 4 row (DSN-001 §3.4 카톡 6차 verbatim 정합)
+  const _pm320DetailRows = (pk) => {
+    if (!pk) return '';
+    const buyDate = pk.pick_date || '';
+    const entryPrice = _fmtKRW(pk.entry_price);
+    const wateringPrice = pk.watering_target_price != null ? `약 ${_fmtKRW(pk.watering_target_price)}` : '—';
+    const wateringWeight = pk.watering_weight || '첫 매수의 2배';
+    const tpPrice = pk.take_profit_target_price != null ? `약 ${_fmtKRW(pk.take_profit_target_price)}` : '—';
+    const tpAfterPrice = pk.take_profit_after_watering_price != null
+      ? `약 ${_fmtKRW(pk.take_profit_after_watering_price)}`
+      : '—';
+    const expiryDate = pk.expiry_date || '';
+    // 결과 strip (state != running 시만)
+    let resultStrip = '';
+    if (pk.current_state && pk.current_state !== 'running' && pk.result) {
+      const state = pk.current_state;
+      const finalPrice = pk.result.final_price != null ? _fmtKRW(pk.result.final_price) : '';
+      const finalPct = pk.result.final_pnl_pct != null ? _fmtPctSigned(pk.result.final_pnl_pct) : '';
+      const resDate = pk.result.result_date || '';
+      let mark, mod;
+      if (state === 'taken_profit') {
+        mark = `✅ 익절 ${finalPct}`;
+        mod = 'profit';
+      } else if (state === 'expired_gain') {
+        mark = `✅ 만기익절 ${finalPct}`;
+        mod = 'profit';
+      } else if (state === 'expired_loss') {
+        mark = `⚠️ 만기손실 ${finalPct}`;
+        mod = 'loss';
+      } else {
+        mark = `${_pm320StateLabel(state)} ${finalPct}`;
+        mod = '';
+      }
+      const cls = mod ? `pm320-rec-result-strip pm320-rec-result-strip--${mod}` : 'pm320-rec-result-strip';
+      resultStrip = `<div class="${cls}" aria-label="${escapeHtml(`${_pm320StateLabel(state)}, 수익률 ${finalPct}${resDate ? ', ' + resDate : ''}`)}">${escapeHtml(mark)}${resDate ? ` · ${escapeHtml(resDate)} 종가 ${escapeHtml(finalPrice)}` : ''}</div>`;
+    }
+    return `
+      <div class="pm320-rec-detail-row pm320-rec-detail-row--buy">
+        <span class="pm320-rec-label">💰 매수</span>
+        <span class="pm320-rec-value">${escapeHtml(buyDate)} 종가 ${escapeHtml(entryPrice)}</span>
+      </div>
+      <div class="pm320-rec-detail-row pm320-rec-detail-row--watering">
+        <span class="pm320-rec-label">📉 물타기</span>
+        <span class="pm320-rec-value">${escapeHtml(wateringPrice)}</span>
+      </div>
+      <div class="pm320-rec-detail-row pm320-rec-detail-sub">
+        <span class="pm320-rec-label"></span>
+        <span class="pm320-rec-value pm320-rec-value--sub">└ 비중: ${escapeHtml(wateringWeight)}</span>
+      </div>
+      <div class="pm320-rec-detail-row pm320-rec-detail-row--profit">
+        <span class="pm320-rec-label">📈 익절</span>
+        <span class="pm320-rec-value">${escapeHtml(tpPrice)}</span>
+      </div>
+      <div class="pm320-rec-detail-row pm320-rec-detail-sub">
+        <span class="pm320-rec-label"></span>
+        <span class="pm320-rec-value pm320-rec-value--sub">└ 물타기 시: ${escapeHtml(tpAfterPrice)}</span>
+      </div>
+      <div class="pm320-rec-detail-row pm320-rec-detail-row--expiry">
+        <span class="pm320-rec-label">⏰ 만기청산</span>
+        <span class="pm320-rec-value">${escapeHtml(expiryDate)} 종가</span>
+      </div>
+      ${resultStrip}`;
+  };
+  // PICK 배지 (DSN-001 §2 — 헤더 .cal-feature-badges 좌측 첫 자리)
+  const _buildPm320PickBadge = (pk) => {
+    if (!pk || !pk.is_pick) return '';
+    return `<span class="cal-pm320-pick-badge" aria-label="오늘 15:20에 PM320이 추천한 종목" title="오늘 15:20 카톡 6차 추천"><svg class="cal-pm320-pick-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="cal-pm320-pick-label">오늘 PM320 추천</span></span>`;
+  };
+  // 추천/결과 row (DSN-001 §3 — .cal-feature-summary 마지막 줄)
+  const _buildPm320RecRow = (pk, code) => {
+    if (!pk) return '';
+    const isPick = !!pk.is_pick;
+    const variantClass = isPick ? '' : ' pm320-rec-row--virtual';
+    const labelText = isPick ? '추천/결과' : '가상 시뮬레이션';
+    const labelAria = isPick
+      ? 'PM320 추천 정보 상세 보기'
+      : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 가상 시뮬레이션';
+    const mark = _pm320ResultMark(pk);
+    const markHtml = mark
+      ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</span>`
+      : '<span class="pm320-rec-result-mark pm320-rec-result-mark--running"></span>';
+    const detailId = `pm320-rec-detail-${escapeHtml(code || '')}`;
+    const detailRows = _pm320DetailRows(pk);
+    return `<div class="pm320-rec-row${variantClass}" data-rec-state="${escapeHtml(pk.current_state || 'running')}" data-d-offset="${pk.d_offset != null ? pk.d_offset : ''}">
+      <button class="pm320-rec-toggle" type="button" aria-expanded="false" aria-controls="${detailId}" aria-label="${escapeHtml(labelAria)}">
+        <span class="pm320-rec-toggle-label">
+          <svg class="pm320-rec-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 16l4-4 4 4 5-5"/></svg>
+          ${escapeHtml(labelText)}
+        </span>
+        ${markHtml}
+        <span class="pm320-rec-chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="pm320-rec-detail" id="${detailId}" hidden>${detailRows}</div>
+    </div>`;
+  };
+
   // 오늘의 종목: 거래대금 TOP을 base로, 카페·해석 정보 join
   let todayStocks;
   if (kiwoomStocks.length > 0) {
@@ -979,9 +1153,14 @@ function renderCalExpandContent(date, data) {
         : '';
       // REQ-064 (2026-04-28): v9.2 §III 트리거 핀 제거 — renderTriggerPin은 빈 문자열 반환 (utils.js).
       // v92TriggerPinHtml은 항상 ''이므로 조건/삽입 모두 무영향. 호출 보존(미래 부활 안전성).
-      const badgesRowHtml = (pickBadge || bullishBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
-        ? `<div class="cal-feature-badges">${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
+      // DOC-20260603-DSN-001 §2 — PM320 PICK 배지 (좌측 첫 자리 prepend, 기존 배지 0건 수정).
+      const pm320Pick = st.pm320_pick || null;
+      const pm320PickBadge = _buildPm320PickBadge(pm320Pick);
+      const badgesRowHtml = (pm320PickBadge || pickBadge || bullishBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
+        ? `<div class="cal-feature-badges">${pm320PickBadge}${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
+      // DOC-20260603-DSN-001 §3 — PM320 추천/결과 row (default 접힘, 모든 카드).
+      const pm320RecRowHtml = _buildPm320RecRow(pm320Pick, it.code || '');
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
         ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
@@ -1160,8 +1339,20 @@ function renderCalExpandContent(date, data) {
       const _isLU_full = it._source_union === 'limit_up' || _hasLimitUpEffect(it.interp);
       const _luClass_full = _isLU_full ? ' cal-feature-card--lu' : '';
       const _luAria_full = _isLU_full ? ' aria-label="상한가 종목"' : '';
+      // DOC-20260603-DSN-001 §2.3 — PICK 좌측 액센트바 골드 (--lu 빨강 우선, §7.2 정합)
+      const _isPm320Pick_full = !!(pm320Pick && pm320Pick.is_pick);
+      const _pm320PickClass_full = _isPm320Pick_full ? ' cal-feature-card--pm320-pick' : '';
+      // aria-label 결합 (--lu + PICK)
+      let _ariaCombined_full = '';
+      if (_isLU_full && _isPm320Pick_full) {
+        _ariaCombined_full = ' aria-label="상한가 · PM320 추천 종목"';
+      } else if (_isPm320Pick_full) {
+        _ariaCombined_full = ' aria-label="PM320 추천 종목"';
+      } else if (_isLU_full) {
+        _ariaCombined_full = _luAria_full;
+      }
       return `
-        <div class="cal-feature-card v2${_luClass_full}"${_idAttr_full}${_luAria_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+        <div class="cal-feature-card v2${_luClass_full}${_pm320PickClass_full}"${_idAttr_full}${_ariaCombined_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
           ${renderShareButton(it)}
           <div class="cal-feature-head v2">
             <div class="cal-feature-head-left">
@@ -1181,8 +1372,8 @@ function renderCalExpandContent(date, data) {
           ${rangeHtml}
           ${badgesRowHtml}
           <div class="cal-feature-body">
-            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
+            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta || pm320RecRowHtml
+              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${pm320RecRowHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
@@ -1308,6 +1499,29 @@ function renderCalExpandContent(date, data) {
       toggle.setAttribute('aria-label', isExpanded ? '접기' : '상세 보기');
     });
     window._cardCollapseInit = true;
+  }
+
+  // DOC-20260603-DSN-001 §3.2 — PM320 추천/결과 row 토글 (default 접힘, 클릭 시 expand).
+  // 기존 cal-detail-toggle 핸들러와 독립 (.pm320-rec-toggle 별 selector).
+  if (!window._pm320RecToggleInit) {
+    document.addEventListener('click', e => {
+      const toggle = e.target.closest('.pm320-rec-toggle');
+      if (!toggle) return;
+      e.stopPropagation();
+      const row = toggle.closest('.pm320-rec-row');
+      if (!row) return;
+      const detail = row.querySelector('.pm320-rec-detail');
+      const isExpanded = row.classList.toggle('pm320-rec-row--expanded');
+      toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+      if (detail) {
+        if (isExpanded) {
+          detail.removeAttribute('hidden');
+        } else {
+          detail.setAttribute('hidden', '');
+        }
+      }
+    });
+    window._pm320RecToggleInit = true;
   }
 
   // REQ-pm320-ux-cycle #1 — cal-content-head 클릭/Enter/Space → #toss-cal scrollIntoView.
