@@ -1844,26 +1844,33 @@ body.single-card-mode { background: var(--bg) !important; }
   border-radius: 6px;
 }
 .pm320-rec-toggle {
+  /* DSN-001 §3.1 정정 (2026-06-03 design-lead 권고) — cal-detail-toggle 시각 정합 + min-height 44px Apple HIG 보존 */
   display: flex;
   align-items: center;
+  justify-content: space-between;                /* 좌측 라벨 / 중앙 mark / 우측 chevron 3축 */
   gap: 8px;
   width: 100%;
-  min-height: 44px;                              /* Apple HIG 터치 */
-  padding: 8px 12px;
+  min-height: 44px;                              /* Apple HIG 터치 (매매 = 결단 button, 시각 위계 critical 보존) */
+  padding: 5px 12px;                             /* cal-detail-toggle 정합 (8px → 5px) */
   background: transparent;
-  border: 1px solid var(--g08, #E0E4ED);
-  border-radius: 10px;
+  border: 1px solid #64748B;                     /* cal-detail-toggle 정합 (var --g08 → #64748B, WCAG AA) */
+  border-radius: 9999px;                         /* cal-detail-toggle 정합 (10px → 9999px pill) */
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  color: var(--g80, #1A1D26);
-  transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  color: #0F172A;                                /* cal-detail-toggle 정합 (var --g80 → #0F172A) */
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
   text-align: left;
   font-family: inherit;
 }
-.pm320-rec-toggle:hover { background: var(--g04, #F2F4F8); }
+.pm320-rec-toggle:hover {
+  background: #E2E8F0;                           /* cal-detail-toggle 정합 */
+  border-color: #475569;
+  color: #0F172A;
+}
+.pm320-rec-toggle:active { background: #CBD5E1; }
 .pm320-rec-toggle:focus-visible {
-  outline: 2px solid #0064FF;
+  outline: 2px solid #2563EB;                    /* cal-detail-toggle 정합 (#0064FF → #2563EB) */
   outline-offset: 2px;
 }
 .pm320-rec-toggle-label {
