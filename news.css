@@ -1957,39 +1957,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 1px solid #E5A4AB;
 }
 
-/* §7.5 — 다크모드 (햇살 톤 변형, WCAG AA PASS) */
-@media (prefers-color-scheme: dark) {
-  .cal-pm320-pick-badge {
-    color: #FFE0A0;
-    background: linear-gradient(90deg, #5C4A1F, #6B5328);
-    border-color: #8B6B30;
-  }
-  .pm320-rec-detail {
-    background: linear-gradient(180deg, #2A2410, #1F1B0A);
-    border-color: #5C4A1F;
-  }
-  .pm320-rec-label { color: #E8C063; }
-  .pm320-rec-toggle {
-    color: rgba(255,255,255,0.8);
-    border-color: rgba(255,255,255,0.08);
-  }
-  .pm320-rec-toggle:hover { background: rgba(255,255,255,0.04); }
-  .pm320-rec-result-strip--profit {
-    background: #1A3A22;
-    color: #80D898;
-    border-color: #2A5C32;
-  }
-  .pm320-rec-result-strip--loss {
-    background: #3A1A1F;
-    color: #E89098;
-    border-color: #5C2A30;
-  }
-  /* §3.3 정정 (2026-06-03 20:25 KST 옵션 C 다크모드 정합) — row wrapper background 제거, button 자체 차등 */
-  .pm320-rec-row--virtual .pm320-rec-toggle {
-    border-color: rgba(255,255,255,0.06);
-    opacity: 0.92;
-  }
-}
+/* §7.5 — 다크모드 폐기 (2026-06-03 22:50 KST 대표 verbatim "다크모드는 없다. 매매 버튼에 다크모드가 적용된 게 있다면 모두 제거"). 본 서비스 라이트 고정. */
 
 /* §7.6 / §8.5 — 모바일 ≤640px (12px 폰트 catch 정합) */
 @media (max-width: 640px) {
