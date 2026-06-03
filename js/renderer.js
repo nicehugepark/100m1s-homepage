@@ -493,35 +493,44 @@ function renderCalExpandContent(date, data) {
         aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}`,
       };
     }
+    // 22:11 (대표 verbatim "물타기 된 종목은 이익이든 손실이든 물타기 정보도 추가") —
+    // watered=true 시 라벨 끝에 " (물타기)" or " (이익+물타기)" / " (손실+물타기)" suffix 추가.
+    const watered = !!(pk.result && pk.result.watered);
     if (state === 'taken_profit') {
       const pnlText = pk.result && pk.result.final_pnl_pct != null
         ? _fmtPctSigned(pk.result.final_pnl_pct)
         : _fmtPctSigned(pnl);
       const resultDate = pk.result && pk.result.result_date ? ` (${pk.result.result_date})` : '';
+      const label = watered ? '익절 (물타기)' : '익절';
+      const ariaSuffix = watered ? ', 물타기 진입' : '';
       return {
-        html: `✅ 익절 ${pnlText}${resultDate}`,
+        html: `✅ ${label} ${pnlText}${resultDate}`,
         mod: 'profit',
-        aria: `익절 도달, 수익률 ${pnlText}${resultDate}`,
+        aria: `${label.replace(' (물타기)', '')} 도달${ariaSuffix}, 수익률 ${pnlText}${resultDate}`,
       };
     }
     if (state === 'expired_gain') {
       const pnlText = pk.result && pk.result.final_pnl_pct != null
         ? _fmtPctSigned(pk.result.final_pnl_pct)
         : _fmtPctSigned(pnl);
+      const label = watered ? '만기청산 (이익+물타기)' : '만기청산 (이익)';
+      const ariaSuffix = watered ? ', 물타기 진입' : '';
       return {
-        html: `✅ 만기청산 (이익) ${pnlText}`,
+        html: `✅ ${label} ${pnlText}`,
         mod: 'profit',
-        aria: `만기 도달, 평단 상회, ${pnlText}`,
+        aria: `만기 도달, 평단 상회${ariaSuffix}, ${pnlText}`,
       };
     }
     if (state === 'expired_loss') {
       const pnlText = pk.result && pk.result.final_pnl_pct != null
         ? _fmtPctSigned(pk.result.final_pnl_pct)
         : _fmtPctSigned(pnl);
+      const label = watered ? '만기청산 (손실+물타기)' : '만기청산 (손실)';
+      const ariaSuffix = watered ? ', 물타기 진입' : '';
       return {
-        html: `⚠️ 만기청산 (손실) ${pnlText}`,
+        html: `⚠️ ${label} ${pnlText}`,
         mod: 'loss',
-        aria: `만기 도달, 손실 ${pnlText}`,
+        aria: `만기 도달${ariaSuffix}, 손실 ${pnlText}`,
       };
     }
     return '';
@@ -545,15 +554,17 @@ function renderCalExpandContent(date, data) {
       const finalPrice = pk.result.final_price != null ? _fmtKRW(pk.result.final_price) : '';
       const finalPct = pk.result.final_pnl_pct != null ? _fmtPctSigned(pk.result.final_pnl_pct) : '';
       const resDate = pk.result.result_date || '';
+      // 22:11 — 물타기 정보 suffix (watered=true 시).
+      const watered = !!pk.result.watered;
       let mark, mod;
       if (state === 'taken_profit') {
-        mark = `✅ 익절 ${finalPct}`;
+        mark = watered ? `✅ 익절 (물타기) ${finalPct}` : `✅ 익절 ${finalPct}`;
         mod = 'profit';
       } else if (state === 'expired_gain') {
-        mark = `✅ 만기청산 (이익) ${finalPct}`;
+        mark = watered ? `✅ 만기청산 (이익+물타기) ${finalPct}` : `✅ 만기청산 (이익) ${finalPct}`;
         mod = 'profit';
       } else if (state === 'expired_loss') {
-        mark = `⚠️ 만기청산 (손실) ${finalPct}`;
+        mark = watered ? `⚠️ 만기청산 (손실+물타기) ${finalPct}` : `⚠️ 만기청산 (손실) ${finalPct}`;
         mod = 'loss';
       } else {
         mark = `${_pm320StateLabel(state)} ${finalPct}`;
@@ -601,7 +612,7 @@ function renderCalExpandContent(date, data) {
     const variantClass = isPick ? '' : ' pm320-rec-row--virtual';
     const labelText = '매매';
     const labelAria = isPick
-      ? 'PM320 추천 매매 상세 보기'
+      ? 'PM320 추천 매매 상세'
       : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 매매';
     const mark = _pm320ResultMark(pk);
     const markHtml = mark
@@ -610,13 +621,14 @@ function renderCalExpandContent(date, data) {
     const detailId = `pm320-rec-detail-${escapeHtml(code || '')}`;
     const detailRows = _pm320DetailRows(pk);
     // §3.1 정정 (2026-06-03 design-lead 옵션 B 권고, 대표 critical catch 20:41 "통일성 미려함도 없고") —
-    // chevron 폐기 + 텍스트 토글 "매매 보기" ↔ "접기" (cal-detail-toggle 완전 정합).
+    // chevron 폐기 + 텍스트 토글 "매매" ↔ "접기" (cal-detail-toggle 완전 정합).
+    // 22:11 정정 (대표 verbatim "매매 보기 대신 매매 라고 이름 바꿔") — " 보기" suffix 폐기.
     // mark inline 우측 (라벨 우측 gap 6px), justify-content center, font-weight 700 (위계 강조).
     return `<div class="pm320-rec-row${variantClass}" data-rec-state="${escapeHtml(pk.current_state || 'running')}" data-d-offset="${pk.d_offset != null ? pk.d_offset : ''}">
       <button class="pm320-rec-toggle" type="button" aria-expanded="false" aria-controls="${detailId}" aria-label="${escapeHtml(labelAria)}">
         <span class="pm320-rec-toggle-label">
           <svg class="pm320-rec-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 16l4-4 4 4 5-5"/></svg>
-          <span class="pm320-rec-toggle-text">${escapeHtml(labelText)} 보기</span>
+          <span class="pm320-rec-toggle-text">${escapeHtml(labelText)}</span>
         </span>
         ${markHtml}
       </button>
@@ -1374,9 +1386,8 @@ function renderCalExpandContent(date, data) {
           ${rangeHtml}
           ${badgesRowHtml}
           <div class="cal-feature-body">
-            ${pm320RecRowHtml}
-            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
-              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
+            ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta || pm320RecRowHtml
+              ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${pm320RecRowHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
           </div>
         </div>`;
@@ -1516,10 +1527,11 @@ function renderCalExpandContent(date, data) {
       const detail = row.querySelector('.pm320-rec-detail');
       const isExpanded = row.classList.toggle('pm320-rec-row--expanded');
       toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-      // §3.1 정정 옵션 B (2026-06-03) — chevron 폐기 후 텍스트 토글 "매매 보기" ↔ "접기".
+      // §3.1 정정 옵션 B (2026-06-03) — chevron 폐기 후 텍스트 토글 "매매" ↔ "접기".
+      // 22:11 정정 (대표 verbatim "매매 보기 대신 매매 라고 이름 바꿔") — " 보기" suffix 폐기.
       const toggleText = toggle.querySelector('.pm320-rec-toggle-text');
       if (toggleText) {
-        toggleText.textContent = isExpanded ? '접기' : '매매 보기';
+        toggleText.textContent = isExpanded ? '접기' : '매매';
       }
       if (detail) {
         if (isExpanded) {
