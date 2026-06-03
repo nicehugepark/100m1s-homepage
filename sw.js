@@ -1,9 +1,10 @@
-const CACHE_NAME = 'news-v259';
+const CACHE_NAME = 'news-v260';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
   /\/data\/kiwoom\//,
   /\/data\/calendar\//,
+  /\/data\/pm320_history\//,  // DOC-20260603-DSN-001 — PM320 추천/결과 data fetch path
 ];
 const STATIC_ASSETS = [
   '/news.html',

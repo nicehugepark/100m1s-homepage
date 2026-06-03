@@ -1800,6 +1800,201 @@ body.single-card-mode { background: var(--bg) !important; }
   /* REQ-062 — margin-left 제거. 부모 .cal-feature-badges flex gap 사용 (들여쓰기 결함 fix). */
   vertical-align: middle;
 }
+
+/* DOC-20260603-DSN-001 §2 / §7.1 — PM320 PICK 배지 (헤더, 카드 첫 자리).
+   햇살 정체성 그라데이션 (AGENT.md §2.3 정합). 강세보다 1단계 강조 (weight 700).
+   라벨 "오늘 PM320 추천" — 영어 회피 (DSN-001 §6 의미 명확성 4축 §1 정합). */
+.cal-pm320-pick-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #92400E;
+  background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
+  border: 1px solid #E8C063;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  vertical-align: middle;
+}
+.cal-pm320-pick-icon { color: #C49930; flex-shrink: 0; }
+.cal-pm320-pick-label { display: inline; }
+
+/* DOC-20260603-DSN-001 §2.3 / §7.2 — PICK 좌측 액센트바 골드 강조 (이중 강조).
+   --lu (상한가) 동시 존재 시 빨강 우선 (DSN-001 §2.3 / §7.2 정합). */
+.cal-feature-card.cal-feature-card--pm320-pick {
+  border-left: 4px solid #E8C063;
+}
+.cal-feature-card.cal-feature-card--lu.cal-feature-card--pm320-pick {
+  border-left-color: #C53939;
+}
+
+/* DOC-20260603-DSN-001 §3 / §7.3 — PM320 추천/결과 row (default 접힘).
+   .cal-feature-summary 마지막 줄에 위치 (cal-detail-toggle 앞). */
+.pm320-rec-row {
+  margin-top: 8px;
+}
+/* §3.3 — non-PICK 가상 시뮬레이션 차등 (muted, 좌측 점선 — FLR-AGT-002 거짓 충실성 차단) */
+.pm320-rec-row--virtual {
+  opacity: 0.85;
+  background: var(--g04, #F2F4F8);
+  border-left: 2px dashed var(--g08, #E0E4ED);
+  padding-left: 8px;
+  border-radius: 6px;
+}
+.pm320-rec-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;                              /* Apple HIG 터치 */
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid var(--g08, #E0E4ED);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--g80, #1A1D26);
+  transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  font-family: inherit;
+}
+.pm320-rec-toggle:hover { background: var(--g04, #F2F4F8); }
+.pm320-rec-toggle:focus-visible {
+  outline: 2px solid #0064FF;
+  outline-offset: 2px;
+}
+.pm320-rec-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.pm320-rec-icon { color: var(--g60, #6B7280); flex-shrink: 0; }
+.pm320-rec-result-mark {
+  flex: 1;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+}
+.pm320-rec-result-mark--profit { color: #1A7F37; }
+.pm320-rec-result-mark--loss { color: #C53939; }
+.pm320-rec-result-mark--running { color: var(--g60, #6B7280); }
+.pm320-rec-result-mark--imminent { color: #92400E; }
+.pm320-rec-chevron {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--g60, #6B7280);
+  flex-shrink: 0;
+}
+.pm320-rec-row--expanded .pm320-rec-chevron {
+  transform: rotate(180deg);
+}
+
+/* §3.4 / §7.4 — 펼침 본문 (햇살 톤, 4 row 매수·물타기·익절·만기청산) */
+.pm320-rec-detail {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #FFFBEF, #FFF9E8);
+  border: 1px solid #E8C063;
+  border-radius: 10px;
+}
+.pm320-rec-detail[hidden] { display: none; }
+.pm320-rec-detail-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--g80, #1A1D26);
+}
+.pm320-rec-detail-row + .pm320-rec-detail-row {
+  margin-top: 4px;
+}
+.pm320-rec-label {
+  font-weight: 700;
+  color: #6B4A0A;
+}
+.pm320-rec-value { font-weight: 500; }
+.pm320-rec-value--sub {
+  color: var(--g60, #6B7280);
+  font-size: 12px;          /* §8.5 모바일 12px 정합 (sub 11.5px → 12px 상향) */
+}
+.pm320-rec-result-strip {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pm320-rec-result-strip--profit {
+  background: #E8F5E9;
+  color: #1A7F37;
+  border: 1px solid #B8DDC2;
+}
+.pm320-rec-result-strip--loss {
+  background: #FCE7E9;
+  color: #C53939;
+  border: 1px solid #E5A4AB;
+}
+
+/* §7.5 — 다크모드 (햇살 톤 변형, WCAG AA PASS) */
+@media (prefers-color-scheme: dark) {
+  .cal-pm320-pick-badge {
+    color: #FFE0A0;
+    background: linear-gradient(90deg, #5C4A1F, #6B5328);
+    border-color: #8B6B30;
+  }
+  .pm320-rec-detail {
+    background: linear-gradient(180deg, #2A2410, #1F1B0A);
+    border-color: #5C4A1F;
+  }
+  .pm320-rec-label { color: #E8C063; }
+  .pm320-rec-toggle {
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .pm320-rec-toggle:hover { background: rgba(255,255,255,0.04); }
+  .pm320-rec-result-strip--profit {
+    background: #1A3A22;
+    color: #80D898;
+    border-color: #2A5C32;
+  }
+  .pm320-rec-result-strip--loss {
+    background: #3A1A1F;
+    color: #E89098;
+    border-color: #5C2A30;
+  }
+  .pm320-rec-row--virtual {
+    background: rgba(255,255,255,0.03);
+    border-left-color: rgba(255,255,255,0.12);
+  }
+}
+
+/* §7.6 / §8.5 — 모바일 ≤640px (12px 폰트 catch 정합) */
+@media (max-width: 640px) {
+  .cal-pm320-pick-badge {
+    font-size: 10.5px;
+    padding: 2px 8px;
+  }
+  /* 모바일 라벨 단축 — §5.4 ASCII 모형 "PM320 추천" */
+  .cal-pm320-pick-label::before { content: ''; }
+  .pm320-rec-toggle {
+    padding: 10px 10px;
+    font-size: 12px;          /* §8.5 12px 모바일 폰트 catch (11.5px → 12px 상향) */
+  }
+  .pm320-rec-result-mark {
+    font-size: 12px;          /* §8.5 12px 모바일 폰트 catch */
+  }
+  .pm320-rec-detail-row {
+    grid-template-columns: 64px 1fr;
+    font-size: 12px;          /* 12.5px → 12px (모바일 최소 12px 정합) */
+  }
+  .pm320-rec-result-strip {
+    font-size: 12px;          /* §8.5 12px 모바일 폰트 catch (11.5px → 12px 상향) */
+  }
+}
 .cal-feature-reason {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
   white-space: pre-wrap;

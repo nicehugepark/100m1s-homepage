@@ -114,14 +114,37 @@ async function loadHolidayData() {
   } catch (e) { return null; }
 }
 
+// DOC-20260603-DSN-001 §1 — PM320 추천/결과 데이터 fetch (별 path 격리).
+// 본문: build_card_history.py + backfill_card_history.py 산출 (메인 worktree projects/pm320/data/history/)
+//       → cron worktree 미러 /data/pm320_history/{date}.json 사이트 도메인 serve.
+// 404 graceful (PICK 부재 일자) → null. Phase 1 dev 위임 본문 (2026-06-03 dev-pm320-frontend-implementation).
+async function loadPm320History(date) {
+  const dateHash = date.replace(/-/g, '');
+  try {
+    const res = await fetch(`/data/pm320_history/${date}.json?v=${dateHash}`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) { return null; }
+}
+
 async function loadCalDayData(date) {
   if (calDayCache[date]) return calDayCache[date];
-  // kiwoom + stock-daily를 병렬 fetch
+  // kiwoom + stock-daily + pm320_history 병렬 fetch
+  // DOC-20260603-DSN-001 §1 — pm320_history는 별 path (메인 worktree → cron 미러), 404 graceful (PICK 부재 일자)
   const dateHash = date.replace(/-/g, '');
-  const [kiwoom, stockDailyDirect] = await Promise.all([
+  const [kiwoom, stockDailyDirect, pm320Data] = await Promise.all([
     loadKiwoomDate(date),
-    fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null)
+    fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
+    loadPm320History(date)
   ]);
+  // pm320 stocks → code 기반 lookup map 신축 (interpretedByName 합성 시 사용)
+  // schema: { code, name, pm320_pick: { is_pick, entry_price, watering_target_price, ... } }
+  const pm320ByCode = new Map();
+  if (pm320Data && Array.isArray(pm320Data.stocks)) {
+    for (const ps of pm320Data.stocks) {
+      if (ps.code) pm320ByCode.set(ps.code, ps.pm320_pick);
+    }
+  }
   let stockDailyData = stockDailyDirect;
   // REQ-055 P0 — 당일 stock JSON이 stocks=[] 빈 데이터인 경우도 fallback 대상.
   //   배포 직후/장 시작 전 build_daily.py가 빈 stocks=[] 파일을 생성하면 truthy로 평가되어
@@ -270,6 +293,10 @@ async function loadCalDayData(date) {
             //     - build_daily.py L3188 entry["bullish_dates"] = bullish_dates verbatim grep
             //     - curl 라이브 evidence (제주반도체 4건 visible)
             bullish_dates: Array.isArray(st.bullish_dates) ? st.bullish_dates : null,
+            // DOC-20260603-DSN-001 §1 — PM320 추천/결과 합성 패스스루.
+            // pm320_history 별 path → code 기반 lookup → interp.pm320_pick 합성.
+            // 부재 시 null (404 / non-PICK universe 아닌 일자 / IPO 전 일자 등) → renderer.js graceful.
+            pm320_pick: (st.code && pm320ByCode.get(st.code)) || null,
           });
         }
       }
