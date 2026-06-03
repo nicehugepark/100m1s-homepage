@@ -540,11 +540,12 @@ function renderCalExpandContent(date, data) {
     if (!pk) return '';
     const buyDate = pk.pick_date || '';
     const entryPrice = _fmtKRW(pk.entry_price);
-    const wateringPrice = pk.watering_target_price != null ? `약 ${_fmtKRW(pk.watering_target_price)}` : '—';
+    // 22:29 — 가격 우측 ratio % 표기 (대표 verbatim): 물타기 (-6.4%) / 익절 (+3.2%) / 물타기 시 익절 (+3.2%)
+    const wateringPrice = pk.watering_target_price != null ? `약 ${_fmtKRW(pk.watering_target_price)} (-6.4%)` : '—';
     const wateringWeight = pk.watering_weight || '첫 매수의 2배';
-    const tpPrice = pk.take_profit_target_price != null ? `약 ${_fmtKRW(pk.take_profit_target_price)}` : '—';
+    const tpPrice = pk.take_profit_target_price != null ? `약 ${_fmtKRW(pk.take_profit_target_price)} (+3.2%)` : '—';
     const tpAfterPrice = pk.take_profit_after_watering_price != null
-      ? `약 ${_fmtKRW(pk.take_profit_after_watering_price)}`
+      ? `약 ${_fmtKRW(pk.take_profit_after_watering_price)} (+3.2%)`
       : '—';
     const expiryDate = pk.expiry_date || '';
     // 결과 strip (state != running 시만)
