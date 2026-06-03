@@ -609,14 +609,16 @@ function renderCalExpandContent(date, data) {
       : '<span class="pm320-rec-result-mark pm320-rec-result-mark--running"></span>';
     const detailId = `pm320-rec-detail-${escapeHtml(code || '')}`;
     const detailRows = _pm320DetailRows(pk);
+    // §3.1 정정 (2026-06-03 design-lead 옵션 B 권고, 대표 critical catch 20:41 "통일성 미려함도 없고") —
+    // chevron 폐기 + 텍스트 토글 "매매 보기" ↔ "접기" (cal-detail-toggle 완전 정합).
+    // mark inline 우측 (라벨 우측 gap 6px), justify-content center, font-weight 700 (위계 강조).
     return `<div class="pm320-rec-row${variantClass}" data-rec-state="${escapeHtml(pk.current_state || 'running')}" data-d-offset="${pk.d_offset != null ? pk.d_offset : ''}">
       <button class="pm320-rec-toggle" type="button" aria-expanded="false" aria-controls="${detailId}" aria-label="${escapeHtml(labelAria)}">
         <span class="pm320-rec-toggle-label">
           <svg class="pm320-rec-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 16l4-4 4 4 5-5"/></svg>
-          ${escapeHtml(labelText)}
+          <span class="pm320-rec-toggle-text">${escapeHtml(labelText)} 보기</span>
         </span>
         ${markHtml}
-        <span class="pm320-rec-chevron" aria-hidden="true">▼</span>
       </button>
       <div class="pm320-rec-detail" id="${detailId}" hidden>${detailRows}</div>
     </div>`;
@@ -1375,8 +1377,8 @@ function renderCalExpandContent(date, data) {
             ${headlineHtml || ishikawaHtml || causalHtml || linksHtml || discListHtml || themesHtml || pickMeta
               ? `<div class="cal-feature-summary">${causalHtml || ishikawaHtml}${themesHtml ? `<div class="cal-theme-row">${themesHtml}</div>` : ''}${linksHtml}${hasDetails ? `<div class="cal-detail-toggle" aria-label="상세 보기"><span class="cal-toggle-text">상세 보기</span></div>` : ''}</div>${hasDetails ? `<div class="cal-feature-details">${statusDetailHtml}${discListHtml}${creditReasonHtml}${causalHtml ? ishikawaHtml : ''}${pickMeta}${(typeof renderMicroDisclaimerIfShared === 'function') ? renderMicroDisclaimerIfShared() : ''}</div>` : ''}`
               : `<div class="cal-feature-news-empty">뉴스 분석 대기 중</div>`}
+            ${pm320RecRowHtml}
           </div>
-          ${pm320RecRowHtml}
         </div>`;
     }
 
@@ -1514,6 +1516,11 @@ function renderCalExpandContent(date, data) {
       const detail = row.querySelector('.pm320-rec-detail');
       const isExpanded = row.classList.toggle('pm320-rec-row--expanded');
       toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+      // §3.1 정정 옵션 B (2026-06-03) — chevron 폐기 후 텍스트 토글 "매매 보기" ↔ "접기".
+      const toggleText = toggle.querySelector('.pm320-rec-toggle-text');
+      if (toggleText) {
+        toggleText.textContent = isExpanded ? '접기' : '매매 보기';
+      }
       if (detail) {
         if (isExpanded) {
           detail.removeAttribute('hidden');
