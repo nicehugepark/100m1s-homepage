@@ -1367,7 +1367,7 @@ function renderCalExpandContent(date, data) {
         _ariaCombined_full = _luAria_full;
       }
       return `
-        <div class="cal-feature-card v2${_luClass_full}${_pm320PickClass_full}"${_idAttr_full}${_ariaCombined_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+        <div class="cal-feature-card v2${_luClass_full}${_pm320PickClass_full}"${_idAttr_full}${_ariaCombined_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}" data-card-date="${escapeHtml(date || '')}">
           ${renderShareButton(it)}
           <div class="cal-feature-head v2">
             <div class="cal-feature-head-left">
@@ -1434,7 +1434,7 @@ function renderCalExpandContent(date, data) {
     const _luClass_nointerp = _isLU_nointerp ? ' cal-feature-card--lu' : '';
     const _luAria_nointerp = _isLU_nointerp ? ' aria-label="상한가 종목"' : '';
     return `
-      <div class="cal-feature-card v2 no-interp${_luClass_nointerp}"${_idAttr_nointerp}${_luAria_nointerp} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}">
+      <div class="cal-feature-card v2 no-interp${_luClass_nointerp}"${_idAttr_nointerp}${_luAria_nointerp} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}" data-card-date="${escapeHtml(date || '')}">
         ${renderShareButton(it)}
         <div class="cal-feature-head v2">
           <div class="cal-feature-head-left">
@@ -1821,8 +1821,15 @@ function renderCalExpandContent(date, data) {
       const name = card.getAttribute('data-stock-name') || '';
       const urlParams = new URLSearchParams(window.location.search);
       const dateParam = urlParams.get('date');
-      // date 파라미터 없으면 현재 선택된 날짜(전역) 또는 오늘 사용
-      const dateStr = dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
+      // 2026-06-05 (대표 catch, P1 라이브 버그 — 공유 URL 잘못된 날짜 404):
+      //   공유 URL 날짜 = "보고 있는 그 카드가 실제로 속한 날짜" 여야 한다. 종래엔 전역
+      //   calSelectedDate(현재 선택 셀=오늘)를 썼는데, PRE_MARKET "전일 데이터 보기" 토글은
+      //   전일(예: 6/4) 카드를 렌더하면서도 calSelectedDate는 오늘(6/5) → 공유 URL이 6/5 →
+      //   6/5 종목페이지 미생성(장 전) → 404 + OG 미표시. 본질 fix: 각 카드에 렌더 시점의
+      //   실제 날짜(renderCalExpandContent(date,...))를 data-card-date 로 박제 → 그 값을 1순위.
+      //   폴백 chain: data-card-date > ?date= 쿼리 > calSelectedDate(전역) > ''.
+      const cardDate = card.getAttribute('data-card-date') || '';
+      const dateStr = cardDate || dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
       // 2026-05-27 (대표 결정, 카톡 미리보기 개선): 공유 URL = OG landing 경로
       //   `/news/stock/{date}/{code}.html` (generate_stock_og.py 산출, OG 메타 + 미니캔들 PNG).
       //   기존 `?stock={code}&date={date}` query는 OG 메타 부재 → 카톡 미리보기 안 뜸.
@@ -1835,10 +1842,20 @@ function renderCalExpandContent(date, data) {
       //   URL path는 그대로 유지 (서버 routing 무관, query param은 정적 파일 fetch에 영향 없음).
       //   양 layer cascade 봉쇄 — HTML 캐시 stale + PNG 캐시 stale 모두 break.
       const _cacheToken = new Date().toISOString().slice(0, 13).replace(/[-T]/g, '');
-      const shareUrl = (code && dateStr)
+      // 🔴 404 가드 (2026-06-05): 카드 날짜의 OG landing 페이지가 아직 미생성이면 OG 경로 금지.
+      //   당일(오늘 KST) 페이지는 장중 generate_stock_og.py 산출 전(장 시작 전·09:00 이전 등)엔
+      //   `/news/stock/{today}/{code}.html`이 미생성 → 404. 정상 과거 거래일 카드는 항상 생성됨.
+      //   미생성 가능성 있는 "오늘 카드 + 장 미개시" 시엔 OG 경로 대신 query URL(news.html)로 폴백.
+      //   query URL은 항상 200 (정적 news.html). 정상 과거 카드는 OG 경로 그대로(=fix 목적).
+      const _nowKst = new Date(Date.now() + 9 * 3600 * 1000);
+      const _todayKst = `${_nowKst.getUTCFullYear()}-${String(_nowKst.getUTCMonth() + 1).padStart(2, '0')}-${String(_nowKst.getUTCDate()).padStart(2, '0')}`;
+      const _ogPageMayMissing = dateStr === _todayKst
+        && (typeof getMarketState === 'function' ? getMarketState(dateStr) === 'PRE_MARKET' : false);
+      const _useOgLanding = code && dateStr && !_ogPageMayMissing;
+      const shareUrl = _useOgLanding
         ? `${window.location.origin}/news/stock/${dateStr}/${code}.html?v=${_cacheToken}`
         : code
-          ? `${window.location.origin}/news.html?stock=${code}&v=${_cacheToken}`
+          ? `${window.location.origin}/news.html?stock=${code}${dateStr ? `&date=${dateStr}` : ''}&v=${_cacheToken}`
           : (dateStr
             ? `${window.location.origin}/news.html?date=${dateStr}&v=${_cacheToken}`
             : `${window.location.origin}/news.html?v=${_cacheToken}`);
