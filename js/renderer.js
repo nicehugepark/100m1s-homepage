@@ -3101,7 +3101,11 @@ async function initThemeTree(dateOverride) {
       const pct = node._avgPct;
       const descStocks = node.descendant_stock_count || (Array.isArray(node.stocks) ? node.stocks.length : 0);
       const isZero = amt === 0 && descStocks === 0;
-      const barW = isZero ? 0 : Math.max(4, (amt / globalMax) * 120);
+      // design-theme-tree-bar-sqrt-scale-v1 (2026-06-04 design-lead 권고 채택)
+      // 라이브 86 roots 중 76개 (88%) linear MIN 4px clamp 균질화 catch → sqrt scale 채택
+      // sqrt: 상위 비율 합리적 유지 + 하위 분해능 회복 + MIN 4px clamp 유지 (amt>0 본격 0px 회피)
+      // 모바일 ≤720px CSS max-width 80px cap 정합 (news.css:978)
+      const barW = isZero ? 0 : Math.max(4, Math.sqrt(amt / globalMax) * 120);
       const barColor = depth === 0 ? rootColor : lighten(rootColor, depth * 0.2);
       const pctColor = pct >= 0 ? '#EF4444' : '#3B82F6';
       const indent = depth * 24;
