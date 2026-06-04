@@ -1,6 +1,6 @@
 {
   "date": "2026-05-29",
-  "generated_at": "2026-06-04T18:00:03+09:00",
+  "generated_at": "2026-06-04T18:08:14+09:00",
   "picked_code": "353200",
   "stocks": [
     {
@@ -97,10 +97,15 @@
         "take_profit_target_price": 960792,
         "take_profit_after_watering_price": 919798,
         "expiry_date": "2026-06-04",
-        "current_state": "running",
-        "current_pnl_pct": 0.0,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
         "d_offset": 3,
-        "result": null
+        "result": {
+          "final_price": 960792,
+          "final_pnl_pct": 3.2,
+          "watered": false,
+          "result_date": "2026-06-01"
+        }
       }
     },
     {
@@ -115,10 +120,15 @@
         "take_profit_target_price": 197009,
         "take_profit_after_watering_price": 188603,
         "expiry_date": "2026-06-04",
-        "current_state": "running",
-        "current_pnl_pct": 0.0,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
         "d_offset": 3,
-        "result": null
+        "result": {
+          "final_price": 197009,
+          "final_pnl_pct": 3.2,
+          "watered": false,
+          "result_date": "2026-06-01"
+        }
       }
     },
     {
@@ -282,10 +292,15 @@
         "take_profit_target_price": 52529,
         "take_profit_after_watering_price": 50288,
         "expiry_date": "2026-06-04",
-        "current_state": "running",
-        "current_pnl_pct": 0.0,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
         "d_offset": 3,
-        "result": null
+        "result": {
+          "final_price": 52529,
+          "final_pnl_pct": 3.2,
+          "watered": false,
+          "result_date": "2026-06-01"
+        }
       }
     },
     {
@@ -384,7 +399,7 @@
     "virtual_count": 19,
     "skip_count": 0,
     "total_cards": 20,
-    "expired_count": 3,
-    "running_count": 17
+    "expired_count": 6,
+    "running_count": 14
   }
 }
