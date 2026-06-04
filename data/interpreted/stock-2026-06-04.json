@@ -1,6 +1,6 @@
 {
   "date": "2026-06-04",
-  "generated_at": "2026-06-04T09:39:00.790547",
+  "generated_at": "2026-06-04T09:48:58.334272",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -52,7 +52,7 @@
       "code": "043260",
       "name": "성호전자",
       "rank": 1,
-      "trade_amount": 246362000000,
+      "trade_amount": 296434000000,
       "change_pct": 15.16,
       "close_price": 54700,
       "open_price": 47450,
@@ -202,8 +202,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 12.74,
+      "index_change_pct": 1.08,
+      "index_multiple_current": 14.04,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 59600,
@@ -367,7 +367,9 @@
           52200,
           52500,
           54000,
-          54300
+          54000,
+          54300,
+          54500
         ]
       },
       "credit_risk": true,
@@ -380,12 +382,12 @@
       "code": "240810",
       "name": "원익IPS",
       "rank": 2,
-      "trade_amount": 122084000000,
+      "trade_amount": 126648000000,
       "change_pct": 29.93,
       "close_price": 127200,
-      "open_price": 127200,
+      "open_price": 112500,
       "high_price": 127200,
-      "low_price": 127200,
+      "low_price": 108700,
       "industry": "특수 목적용 기계 제조업",
       "sector": "반도체 제조용 기계",
       "themes": [
@@ -422,9 +424,11 @@
         "change_pct": 6.55,
         "trade_amount": 166744903200
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-06-04"
+      ],
       "news": [
         {
           "title": "원익IPS, 1Q 연결 영업익 107억…전년비 흑자전환",
@@ -476,54 +480,19 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 3.58,
+      "index_change_pct": 1.08,
+      "index_multiple_current": 27.71,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 151500,
         "high_date": "2026-05-11",
         "high_pct": -16.04,
-        "low": 22150,
-        "low_date": "2025-05-30",
-        "low_pct": 474.27,
+        "low": 24150,
+        "low_date": "2025-06-11",
+        "low_pct": 426.71,
         "current": 127200
       },
       "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 116600,
-          "h": 122000,
-          "l": 114700,
-          "c": 121500
-        },
-        {
-          "date": "2026-04-28",
-          "o": 121600,
-          "h": 122300,
-          "l": 118000,
-          "c": 121100
-        },
-        {
-          "date": "2026-04-29",
-          "o": 119600,
-          "h": 120900,
-          "l": 118200,
-          "c": 120800
-        },
-        {
-          "date": "2026-04-30",
-          "o": 120800,
-          "h": 123300,
-          "l": 117000,
-          "c": 117100
-        },
-        {
-          "date": "2026-05-04",
-          "o": 118300,
-          "h": 122500,
-          "l": 117500,
-          "c": 122500
-        },
         {
           "date": "2026-05-06",
           "o": 123100,
@@ -623,10 +592,45 @@
           "c": 122000
         },
         {
+          "date": "2026-05-27",
+          "o": 123700,
+          "h": 127000,
+          "l": 110500,
+          "c": 112300
+        },
+        {
+          "date": "2026-05-28",
+          "o": 111200,
+          "h": 112300,
+          "l": 103600,
+          "c": 108300
+        },
+        {
+          "date": "2026-05-29",
+          "o": 108700,
+          "h": 110900,
+          "l": 102300,
+          "c": 106000
+        },
+        {
+          "date": "2026-06-01",
+          "o": 104300,
+          "h": 105900,
+          "l": 101000,
+          "c": 102700
+        },
+        {
+          "date": "2026-06-02",
+          "o": 100400,
+          "h": 100700,
+          "l": 96000,
+          "c": 97900
+        },
+        {
           "date": "2026-06-04",
-          "o": 127200,
+          "o": 112500,
           "h": 127200,
-          "l": 127200,
+          "l": 108700,
           "c": 127200
         }
       ],
@@ -639,8 +643,256 @@
           "summary": "원익IPS 상한가 (29.93%)",
           "cur_prc": 127200,
           "flu_rt": 29.93,
-          "trde_qty": 1003838,
-          "trde_prica_calc": 122084000000,
+          "trde_qty": 1039757,
+          "trde_prica_calc": 126648000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-05"
+        }
+      ],
+      "intraday": {
+        "step_min": 5,
+        "open": 112500,
+        "base": 97899,
+        "prices": [
+          112500,
+          118200,
+          121000,
+          123000,
+          124100,
+          125900,
+          127200,
+          127200,
+          127200
+        ]
+      },
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "084370",
+      "name": "유진테크",
+      "rank": 3,
+      "trade_amount": 39842000000,
+      "change_pct": 29.97,
+      "close_price": 155700,
+      "open_price": 155700,
+      "high_price": 155700,
+      "low_price": 155700,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "실리콘질화막증착용LP-CVD",
+      "themes": [
+        "반도체 박막 장비"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 박막 장비",
+          "path": [
+            "반도체",
+            "반도체 박막 장비"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "21일 코스닥 시장 공매도 비중 상위 종목. 유진테크, 티씨케이 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/05/22/G44DAYJUMI2DSOBSHBTDANJUME/",
+          "source": "조선비즈",
+          "published_at": "2026-05-21T23:01:09",
+          "causal_chain": "제공된 헤드라인은 '21일 코스닥 공매도 비중 상위 종목'에 유진테크가 티씨케이 등과 함께 나열된 수급성 시황 기사로, 별도의 실적·수주·정책 등 펀더멘털 호재 사유가 제시되지 않았다. 공매도 비중 상위는 매도 우위 수급 부담을 시사하며, 당일(2026-05-27) 종가는 132,100원으로 전일比 -4.76% 하락(시가 148,100 → 저가 131,700 근처 마감)해 52주 고가 158,000원 대비 -16.4% 수준에 머물렀다.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "시세정형"
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": 1.08,
+      "index_multiple_current": 16.55,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 158000,
+        "high_date": "2026-05-11",
+        "high_pct": -1.46,
+        "low": 32200,
+        "low_date": "2025-06-02",
+        "low_pct": 383.54,
+        "current": 155700
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-28",
+          "o": 136000,
+          "h": 145400,
+          "l": 134200,
+          "c": 142000
+        },
+        {
+          "date": "2026-04-29",
+          "o": 139500,
+          "h": 143500,
+          "l": 137400,
+          "c": 140000
+        },
+        {
+          "date": "2026-04-30",
+          "o": 138400,
+          "h": 140000,
+          "l": 127000,
+          "c": 130000
+        },
+        {
+          "date": "2026-05-04",
+          "o": 131600,
+          "h": 135900,
+          "l": 130100,
+          "c": 132000
+        },
+        {
+          "date": "2026-05-06",
+          "o": 135700,
+          "h": 149400,
+          "l": 133400,
+          "c": 138700
+        },
+        {
+          "date": "2026-05-07",
+          "o": 139800,
+          "h": 152500,
+          "l": 137500,
+          "c": 146900
+        },
+        {
+          "date": "2026-05-08",
+          "o": 142700,
+          "h": 156600,
+          "l": 140900,
+          "c": 148600
+        },
+        {
+          "date": "2026-05-11",
+          "o": 150600,
+          "h": 158000,
+          "l": 148800,
+          "c": 150300
+        },
+        {
+          "date": "2026-05-12",
+          "o": 149300,
+          "h": 149400,
+          "l": 126200,
+          "c": 133100
+        },
+        {
+          "date": "2026-05-13",
+          "o": 127600,
+          "h": 133800,
+          "l": 120700,
+          "c": 133600
+        },
+        {
+          "date": "2026-05-14",
+          "o": 132300,
+          "h": 145200,
+          "l": 128500,
+          "c": 145200
+        },
+        {
+          "date": "2026-05-15",
+          "o": 143100,
+          "h": 143100,
+          "l": 117400,
+          "c": 117400
+        },
+        {
+          "date": "2026-05-18",
+          "o": 115000,
+          "h": 122800,
+          "l": 108000,
+          "c": 115900
+        },
+        {
+          "date": "2026-05-19",
+          "o": 116700,
+          "h": 121000,
+          "l": 111000,
+          "c": 114900
+        },
+        {
+          "date": "2026-05-20",
+          "o": 117600,
+          "h": 125000,
+          "l": 114500,
+          "c": 122200
+        },
+        {
+          "date": "2026-05-21",
+          "o": 123000,
+          "h": 130500,
+          "l": 123000,
+          "c": 129500
+        },
+        {
+          "date": "2026-05-22",
+          "o": 129500,
+          "h": 139400,
+          "l": 128500,
+          "c": 138700
+        },
+        {
+          "date": "2026-05-26",
+          "o": 146500,
+          "h": 149300,
+          "l": 135500,
+          "c": 138700
+        },
+        {
+          "date": "2026-05-27",
+          "o": 148100,
+          "h": 148100,
+          "l": 131700,
+          "c": 132100
+        },
+        {
+          "date": "2026-06-04",
+          "o": 155700,
+          "h": 155700,
+          "l": 155700,
+          "c": 155700
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-06-04",
+          "summary": "유진테크 상한가 (29.97%)",
+          "cur_prc": 155700,
+          "flu_rt": 29.97,
+          "trde_qty": 270920,
+          "trde_prica_calc": 39842000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -658,15 +910,15 @@
       ],
       "credit_risk": true,
       "credit_reason": "신용거래 제한 종목",
-      "togusa_verdict": "weak_bull",
-      "theme_leader": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
       "hugepark_grade": "관찰"
     },
     {
       "code": "051630",
       "name": "진양화학",
-      "rank": 3,
-      "trade_amount": 5328000000,
+      "rank": 4,
+      "trade_amount": 5339000000,
       "change_pct": 29.92,
       "close_price": 2045,
       "open_price": 2045,
@@ -685,8 +937,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.46,
-      "index_multiple_current": -20.49,
+      "index_change_pct": -0.76,
+      "index_multiple_current": -39.37,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3515,
@@ -848,8 +1100,8 @@
           "summary": "진양화학 상한가 (29.92%)",
           "cur_prc": 2045,
           "flu_rt": 29.92,
-          "trde_qty": 2650026,
-          "trde_prica_calc": 5328000000,
+          "trde_qty": 2655537,
+          "trde_prica_calc": 5339000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -876,6 +1128,8 @@
           1989,
           2045,
           2045,
+          2045,
+          2045,
           2045
         ]
       },
@@ -888,8 +1142,8 @@
     {
       "code": "476080",
       "name": "M83",
-      "rank": 4,
-      "trade_amount": 1039000000,
+      "rank": 5,
+      "trade_amount": 1737000000,
       "change_pct": 29.98,
       "close_price": 7760,
       "open_price": 7760,
@@ -898,30 +1152,13 @@
       "industry": "영화, 비디오물, 방송프로그램 제작 및 배급업",
       "sector": "VFX",
       "themes": [
-        "엔터테인먼트",
-        "AI",
-        "AI 인프라",
-        "AI데이터센터"
+        "엔터테인먼트"
       ],
       "theme_paths": [
         {
           "name": "엔터테인먼트",
           "path": [
             "엔터테인먼트"
-          ]
-        },
-        {
-          "name": "AI 인프라",
-          "path": [
-            "AI",
-            "AI 인프라"
-          ]
-        },
-        {
-          "name": "AI데이터센터",
-          "path": [
-            "AI",
-            "AI데이터센터"
           ]
         }
       ],
@@ -939,76 +1176,12 @@
       ],
       "news": [
         {
-          "title": "M83 자회사 피앤티링크, 네이버클라우드에 500억 규모 AI 서버 공급",
-          "url": "https://www.fnnews.com/news/202606021058043131",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-06-02T11:10:09.600809",
-          "causal_chain": "생성형 AI 확산으로 고성능 AI 서버·GPU 인프라 수요가 급증하는 가운데, M83 자회사 피앤티링크가 네이버클라우드에 연 약 500억원(내년 3월까지) 규모의 AI 인프라용 표준 서버 공급을 개시 → 단순 서버 공급을 넘어 AI 인프라 구축·유지보수 영역까지 사업 확장 → 향후 AI 데이터센터 증설·생성형 AI 서비스 확대에 따른 서버·유지보수 수요 기대 → 매수세 집중으로 당일 상한가(+29.92%, 종가 5,970원) 기록.",
-          "macro_event": "생성형 AI 확산에 따른 고성능 AI 서버·GPU 인프라 수요 급증",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "호재"
-        },
-        {
-          "title": "M83 子 피앤티링크, AI 인프라용 표준 서버 공급 개시",
-          "url": "https://www.sedaily.com/article/20051013",
-          "source": "서울경제",
-          "published_at": "2026-06-02T03:34:20",
-          "causal_chain": "생성형 AI 확산·AI 데이터센터 증설로 고성능 서버 수요가 증가하는 가운데, M83 자회사 피앤티링크가 네이버클라우드향 AI 인프라용 표준 서버 공급을 개시(연간 계약 약 500억원, 내년 3월까지)했다. 피앤티링크는 GPU 서버·AI 스토리지·AI 인프라 구축을 핵심사업으로 하고 본 종목의 누적 도메인(AI 인프라·AI데이터센터)과 직접 정합하므로 단순 납품이 아닌 직접 수혜로 해석된다 → 실적 기대에 매수세 집중 → 당일 상한가(+29.92%) 마감.",
-          "macro_event": "생성형 AI 확산에 따른 고성능 서버 수요 증가",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "호재"
-        },
-        {
-          "title": "M83 자회사 피앤티링크, 네이버클라우드향 500억 규모 AI 서버 공급 개시",
-          "url": "https://www.mk.co.kr/news/stock/12063899",
-          "source": "매경",
-          "published_at": "2026-06-02T02:19:00",
-          "causal_chain": "생성형 AI 확산으로 고성능 AI 서버·GPU 인프라 수요가 급증하는 가운데, M83 자회사 피앤티링크가 네이버클라우드에 연 약 500억원(내년 3월까지) 규모의 AI 인프라용 표준 서버 공급을 개시 → 단순 서버 공급을 넘어 AI 인프라 구축·유지보수 영역까지 사업 확장 → 향후 AI 데이터센터 증설·생성형 AI 서비스 확대에 따른 서버·유지보수 수요 기대 → 매수세 집중으로 당일 상한가(+29.92%, 종가 5,970원) 기록.",
-          "macro_event": "생성형 AI 확산에 따른 고성능 AI 서버·GPU 인프라 수요 급증",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "호재"
-        },
-        {
-          "title": "M83, AI 기반 VFX 제작 솔루션 '디클롭스' 개발 속도",
-          "url": "https://www.fnnews.com/news/202605191046366550",
-          "source": "파이낸셜뉴스",
-          "published_at": "2026-05-19T12:10:42.985324",
-          "causal_chain": "AI 생산성 혁신 흐름이 VFX·영상 제작 핵심사업과 직접 맞물려 M83이 AI 기반 VFX 제작 솔루션 '디클롭스'를 자체 개발하고, 자회사 피앤티링크는 B2B IT 인프라 플랫폼 '베스트서버'로 AI 인프라 수요를 직접 공략하는 'AI+VFX 투트랙'을 형성한다. 다만 이런 재료에도 당일 거래대금은 2억원에 그쳐 매수세 유입이 제한적이었고, 주가는 종가 5,530원으로 전일比 -4.49% 하락 마감해 52주 고가(16,150원) 대비 -65.8% 수준에 머물렀다.",
-          "macro_event": "AI 생산성 혁신 → 콘텐츠·VFX 제작 효율화",
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": "호재"
-        },
-        {
-          "title": "M83 子 피앤티링크, B2B IT 인프라 플랫폼 '베스트서버' 오픈...\"AI 인프라 수요 공략&q...",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02000806645445640",
-          "source": "이데일리",
-          "published_at": "2026-05-04T01:35:30",
-          "causal_chain": "AI 생산성 혁신 흐름이 VFX·영상 제작 핵심사업과 직접 맞물려 M83이 AI 기반 VFX 제작 솔루션 '디클롭스'를 자체 개발하고, 자회사 피앤티링크는 B2B IT 인프라 플랫폼 '베스트서버'로 AI 인프라 수요를 직접 공략하는 'AI+VFX 투트랙'을 형성한다. 다만 이런 재료에도 당일 거래대금은 2억원에 그쳐 매수세 유입이 제한적이었고, 주가는 종가 5,530원으로 전일比 -4.49% 하락 마감해 52주 고가(16,150원) 대비 -65.8% 수준에 머물렀다.",
-          "macro_event": "AI 생산성 혁신 → 콘텐츠·VFX 제작 효율화",
+          "title": "[특징주] M83, 자회사 500억 공급 계약 호재에 ‘上’",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/06/04/YTL6ALURUZG4LC3YXUV7QNEFVQ/",
+          "source": "조선비즈",
+          "published_at": "2026-06-04T00:35:41",
+          "causal_chain": "M83 자회사의 500억원 규모 공급 계약 체결 소식이 호재로 부각 → 실적 기대에 매수세 집중 → 당일 시초가부터 점상한가(시=고=저=종 7,760원, +29.98%) 형성. 다만 이는 회사 개별 수주·계약 이벤트로, 별도의 매크로 산업 모멘텀과는 직접 연결되지 않는다.",
+          "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -1019,9 +1192,9 @@
           "article_type": "호재"
         }
       ],
-      "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 25.19,
+      "fallback": false,
+      "index_change_pct": 1.08,
+      "index_multiple_current": 27.76,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 16150,
@@ -1183,8 +1356,8 @@
           "summary": "M83 상한가 (29.98%)",
           "cur_prc": 7760,
           "flu_rt": 29.98,
-          "trde_qty": 133890,
-          "trde_prica_calc": 1039000000,
+          "trde_qty": 223797,
+          "trde_prica_calc": 1737000000,
           "consecutive_count": 2,
           "estimated": false,
           "effect_badges": [
@@ -1211,13 +1384,264 @@
           7760,
           7760,
           7760,
+          7760,
+          7760,
           7760
         ]
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": false,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "113810",
+      "name": "디젠스",
+      "rank": 6,
+      "trade_amount": 985000000,
+      "change_pct": 30.0,
+      "close_price": 689,
+      "open_price": 689,
+      "high_price": 689,
+      "low_price": 689,
+      "industry": "자동차 신품 부품 제조업",
+      "sector": "자동차용 소음기(머플러)",
+      "themes": [
+        "전기차"
+      ],
+      "theme_paths": [
+        {
+          "name": "전기차",
+          "path": [
+            "전기차"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "[오늘의 증시일정] 아모텍·디젠스·KNN·쏘카 등",
+          "url": "https://www.etoday.co.kr/news/view/2590321",
+          "source": "이투데이",
+          "published_at": "2026-06-03T23:23:00",
+          "causal_chain": "디젠스가 5대 1 주식병합(감자가 아닌 액면병합 성격의 주식 수 축소)을 결정 → 발행주식수 축소로 주당 가격 정상화(동전주 탈피) 목적의 자본구조 조정 사건으로, 산업·정책 매크로와는 무관한 단발성 기업행위 → 당일 종가 661원(전일比 +0.00%)·거래대금 0억원으로 시세 반응 부재, 52주 고가 1,220원 대비 -45.8% 부진한 위치에 머묾.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "시세정형"
+        },
+        {
+          "title": "디젠스, 5대 1 주식병합 결정",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05090566645418416",
+          "source": "이데일리",
+          "published_at": "2026-04-21T08:51:16",
+          "causal_chain": "디젠스가 5대 1 주식병합(감자가 아닌 액면병합 성격의 주식 수 축소)을 결정 → 발행주식수 축소로 주당 가격 정상화(동전주 탈피) 목적의 자본구조 조정 사건으로, 산업·정책 매크로와는 무관한 단발성 기업행위 → 당일 종가 661원(전일比 +0.00%)·거래대금 0억원으로 시세 반응 부재, 52주 고가 1,220원 대비 -45.8% 부진한 위치에 머묾.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "공시"
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": 1.08,
+      "index_multiple_current": 3.93,
+      "index_multiple_eligible": true,
+      "range_240d": {
+        "high": 1220,
+        "high_date": "2025-06-04",
+        "high_pct": -43.52,
+        "low": 633,
+        "low_date": "2026-05-21",
+        "low_pct": 8.85,
+        "current": 689
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-28",
+          "o": 725,
+          "h": 729,
+          "l": 717,
+          "c": 717
+        },
+        {
+          "date": "2026-04-29",
+          "o": 717,
+          "h": 734,
+          "l": 710,
+          "c": 731
+        },
+        {
+          "date": "2026-04-30",
+          "o": 732,
+          "h": 732,
+          "l": 718,
+          "c": 719
+        },
+        {
+          "date": "2026-05-04",
+          "o": 715,
+          "h": 720,
+          "l": 708,
+          "c": 711
+        },
+        {
+          "date": "2026-05-06",
+          "o": 714,
+          "h": 714,
+          "l": 694,
+          "c": 698
+        },
+        {
+          "date": "2026-05-07",
+          "o": 698,
+          "h": 720,
+          "l": 682,
+          "c": 710
+        },
+        {
+          "date": "2026-05-08",
+          "o": 703,
+          "h": 715,
+          "l": 691,
+          "c": 694
+        },
+        {
+          "date": "2026-05-11",
+          "o": 694,
+          "h": 706,
+          "l": 681,
+          "c": 685
+        },
+        {
+          "date": "2026-05-12",
+          "o": 690,
+          "h": 694,
+          "l": 661,
+          "c": 663
+        },
+        {
+          "date": "2026-05-13",
+          "o": 669,
+          "h": 677,
+          "l": 655,
+          "c": 660
+        },
+        {
+          "date": "2026-05-14",
+          "o": 660,
+          "h": 690,
+          "l": 650,
+          "c": 679
+        },
+        {
+          "date": "2026-05-15",
+          "o": 738,
+          "h": 738,
+          "l": 654,
+          "c": 654
+        },
+        {
+          "date": "2026-05-18",
+          "o": 653,
+          "h": 664,
+          "l": 636,
+          "c": 652
+        },
+        {
+          "date": "2026-05-19",
+          "o": 663,
+          "h": 663,
+          "l": 637,
+          "c": 644
+        },
+        {
+          "date": "2026-05-20",
+          "o": 633,
+          "h": 684,
+          "l": 633,
+          "c": 658
+        },
+        {
+          "date": "2026-05-21",
+          "o": 652,
+          "h": 690,
+          "l": 633,
+          "c": 659
+        },
+        {
+          "date": "2026-05-22",
+          "o": 658,
+          "h": 677,
+          "l": 640,
+          "c": 666
+        },
+        {
+          "date": "2026-05-26",
+          "o": 666,
+          "h": 680,
+          "l": 661,
+          "c": 661
+        },
+        {
+          "date": "2026-05-27",
+          "o": 662,
+          "h": 662,
+          "l": 650,
+          "c": 661
+        },
+        {
+          "date": "2026-06-04",
+          "o": 689,
+          "h": 689,
+          "l": 689,
+          "c": 689
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-06-04",
+          "summary": "디젠스 상한가 (30.0%)",
+          "cur_prc": 689,
+          "flu_rt": 30.0,
+          "trde_qty": 1503832,
+          "trde_prica_calc": 985000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-05"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
       "hugepark_grade": "관찰"
     }
   ]
