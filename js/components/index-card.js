@@ -134,6 +134,10 @@
 
     var candle = idx.candle && typeof idx.candle === 'object' ? idx.candle : null;
 
+    // ⚠️ 캔들↔스파크 색 통일(대표 4차 catch) = 디자인 판별 완료 버그 확정이나 **fix 방향(A 시가대비 통일 /
+    //   B 전일대비 통일) 대표 확정 대기 중 — 색 변경 코드 착수 금지(타치코마 21:22 통지).** rev8 본 commit 미포함.
+    //   현 상태(=종전): 캔들 = miniCandle 내부 (close>open) 시가 대비 / 스파크 = dir(change_pct) 전일 대비.
+
     // 당일 캔들 (.cal-trade-candle) — 국내 종목카드와 동일하게 global miniCandle(o,h,l,c,pct) 재사용.
     //   국내 카드: candleHtml = miniCandle(lastBar o/h/l/c, pct). 지수: candle{o,h,l,c} 동일 호출.
     var todayCandleHtml = '';
