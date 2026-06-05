@@ -118,6 +118,54 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
     .finally(() => { window.__koreaHolidaysLoading = false; });
 }
 
+// Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 빌더.
+//   DSN §3.6.9. 입력 us = data.nightlyUs (data-loader.loadNightlyUsSummary 검증 산출).
+//   null/부재/지수 0건 시 '' 반환 → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단, 빈 카드/mock 금지).
+//   3카드(나스닥/S&P 500/다우존스) 가로 1열 flex 1:1:1. renderIndexCard(components/index-card.js) 재사용.
+//   뉴스 로우: 기존 .cal-narr-pill 칩 스타일 공유 (중복 render 함수 0건) + source 약어·원문 링크 (법무 조건).
+function _buildNightlyUsHtml(us) {
+  if (!us || typeof us !== 'object') return '';
+  if (!Array.isArray(us.indices) || us.indices.length === 0) return '';
+  if (typeof renderIndexCard !== 'function') return '';
+
+  const cardsHtml = us.indices.map(renderIndexCard).filter(Boolean).join('');
+  if (!cardsHtml) return '';
+
+  // 우측 라벨 — trade_date_local SSOT (백엔드 제공 현지 마감일). M/D 표기.
+  let dateLabel = '';
+  if (typeof us.trade_date_local === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(us.trade_date_local)) {
+    const md = us.trade_date_local.slice(5).replace('-', '/').replace(/^0/, '');
+    dateLabel = `<span class="nightly-us-datelabel">${escapeHtml(md)} (현지 마감)</span>`;
+  }
+
+  // 미국발 뉴스 요약 — source 약어 + 원문 딥링크 (법무 조건: 출처+링크 필수).
+  let newsHtml = '';
+  if (Array.isArray(us.news_chips) && us.news_chips.length > 0) {
+    const chips = us.news_chips.map(c => {
+      const safeUrl = (typeof c.url === 'string' && /^https?:\/\//i.test(c.url)) ? c.url : '';
+      if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
+      const summary = escapeHtml(sanitize(c.summary || ''));
+      const source = escapeHtml(sanitize(c.source || ''));
+      return `<a class="cal-narr-pill nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
+        + `<span class="nightly-us-news-summary">${summary}</span>`
+        + `<span class="nightly-us-news-source">${source}</span></a>`;
+    }).filter(Boolean).join('');
+    if (chips) {
+      newsHtml = `<div class="nightly-us-news"><div class="nightly-us-news-title">미국발 뉴스 요약</div>`
+        + `<div class="cal-narr-stack nightly-us-news-stack">${chips}</div></div>`;
+    }
+  }
+
+  return `<section class="nightly-us-summary" aria-label="야간 미국증시 요약">`
+    + `<div class="nightly-us-head">`
+    + `<div class="nightly-us-title">야간 미국증시</div>`
+    + dateLabel
+    + `</div>`
+    + `<div class="nightly-us-cards">${cardsHtml}</div>`
+    + newsHtml
+    + `</section>`;
+}
+
 // design-news-time-state-v1 — PRE_MARKET 빈 상태 (Option A).
 // 거래일 09:00 미만 시 카드 list 미렌더 + 시계 아이콘 + 카운트다운 + 보조 토글 (전일 데이터 보기).
 // stale 라벨 자연 봉쇄 (catch 2): PRE_MARKET 진입 시 데이터 자체가 안 보이므로 라벨 노출 0.
@@ -1531,6 +1579,12 @@ function renderCalExpandContent(date, data) {
   };
 
   const rankingBanner = '';
+
+  // Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 (날짜 헤드 ↔ "오늘의 뉴스요약" 사이).
+  //   DSN §3.6.9. data.nightlyUs 부재/null 시 빈 문자열 → 섹션 전체 미렌더 (FLR-AGT-002).
+  //   single-card mode 에서도 미표시 (외부 임베딩 단독 카드 = 미국증시 무관).
+  const _nightlyUsHtml = (!_isSingleCardMode) ? _buildNightlyUsHtml(data && data.nightlyUs) : '';
+
   // Phase 2c-1 (2026-05-23) — single-card mode 본 본 section title / 뉴스요약 / macro / ranking 본 본 hide.
   // 단독 카드 본 본 본 본 본 본 sparkline + chart-tv + bullish lines + status_badges 전체 본 본 본 본 본 본.
   const _sectionTitleHtml = _isSingleCardMode ? '' : '<div class="cal-section-title">오늘의 뉴스요약</div>';
@@ -1577,6 +1631,7 @@ function renderCalExpandContent(date, data) {
         <div class="cal-content-date">${formatKoDate(date)}</div>
         <div class="cal-content-meta">${metaText}</div>
       </div>
+      ${_nightlyUsHtml}
       ${todayHtml}
     `;
   }

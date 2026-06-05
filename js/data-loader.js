@@ -127,6 +127,43 @@ async function loadPm320History(date) {
   } catch (e) { return null; }
 }
 
+// Q-20260605-103 Phase 3 — 야간 미국증시 요약 (us-indices/{kstDate}.json).
+//   DSN §3.6.9. 부재/파싱 실패/schema 불일치 시 null → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단).
+//   schema: { trade_date_local, indices:[{name, point, change_pct, spark[], candle:{o,h,l,c}}], news_chips:[{summary, source, url}] }
+async function loadNightlyUsSummary(date) {
+  const dateHash = date.replace(/-/g, '');
+  let raw;
+  try {
+    const res = await fetch(`/data/us-indices/${date}.json?v=${dateHash}`);
+    if (!res.ok) return null;
+    raw = await res.json();
+  } catch (e) { return null; }
+  // schema validation — 최소 필수 필드 미충족 시 미신뢰 → null (빈 카드/mock 노출 차단)
+  if (!raw || typeof raw !== 'object') return null;
+  if (typeof raw.trade_date_local !== 'string' || !raw.trade_date_local) return null;
+  if (!Array.isArray(raw.indices) || raw.indices.length === 0) return null;
+  const validIndices = raw.indices.filter(ix =>
+    ix && typeof ix === 'object'
+    && typeof ix.name === 'string' && ix.name
+    && typeof ix.point === 'number'
+    && typeof ix.change_pct === 'number'
+  );
+  if (validIndices.length === 0) return null;
+  // news_chips는 선택 — 부재/형식불일치 시 빈 배열 (지수 카드는 정상 렌더)
+  const newsChips = Array.isArray(raw.news_chips)
+    ? raw.news_chips.filter(c =>
+      c && typeof c === 'object'
+      && typeof c.summary === 'string' && c.summary
+      && typeof c.source === 'string' && c.source
+      && typeof c.url === 'string' && c.url)
+    : [];
+  return {
+    trade_date_local: raw.trade_date_local,
+    indices: validIndices,
+    news_chips: newsChips
+  };
+}
+
 async function loadCalDayData(date) {
   // §3.6.2.3 (FLR-20260605-TEC-001 P1-2) — 세션 구간 키로 read/write (calendar.js _cacheKey 단일 출처).
   //   장 시작/마감 경계를 넘으면 키 불일치 → cache miss → 네트워크 재로드(이전 구간 데이터 재사용 0).
@@ -135,10 +172,11 @@ async function loadCalDayData(date) {
   // kiwoom + stock-daily + pm320_history 병렬 fetch
   // DOC-20260603-DSN-001 §1 — pm320_history는 별 path (메인 worktree → cron 미러), 404 graceful (PICK 부재 일자)
   const dateHash = date.replace(/-/g, '');
-  const [kiwoom, stockDailyDirect, pm320Data] = await Promise.all([
+  const [kiwoom, stockDailyDirect, pm320Data, nightlyUs] = await Promise.all([
     loadKiwoomDate(date),
     fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
-    loadPm320History(date)
+    loadPm320History(date),
+    loadNightlyUsSummary(date)
   ]);
   // pm320 stocks → code 기반 lookup map 신축 (interpretedByName 합성 시 사용)
   // schema: { code, name, pm320_pick: { is_pick, entry_price, watering_target_price, ... } }
@@ -360,7 +398,8 @@ async function loadCalDayData(date) {
     generatedAt,
     lastSnapshotAt,
     _fallbackDate: fallbackDate,
-    pm320NoPick
+    pm320NoPick,
+    nightlyUs  // Q-20260605-103 Phase 3 — null이면 섹션 미렌더 (FLR-AGT-002)
   };
   // §3.6.2.3 — read 와 동일 세션 구간 키로 write (장경계 무효화 정합).
   calDayCache[_key] = result;
