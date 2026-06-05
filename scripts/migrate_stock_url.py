@@ -61,15 +61,35 @@ def make_stub(rel_path: str) -> str:
 """
 
 
+def _direct_redirect(content: str) -> str:
+    """이식분 내부 redirect 직행화 (대표 22:15 QA 정리 #1): 복사된 상세 페이지가 verbatim 원본이라
+    내부 redirect 가 /news.html?... → 4-hop(pm320/stock→news.html→pm320.html). 모든 redirect target
+    /news.html → /pm320.html 치환으로 2-hop 통일(신규 생성기 출력과 동일).
+      - date/code: location.replace('/news.html?stock=...) + <a href="/news.html?stock=...
+      - date-level: <meta refresh url=/news.html?date=...> + <a href="/news.html#...
+    og:image / og:url(옛 og·페이지 경로)은 무변경 — 이미 발행된 OG 메타 무파손 (대표 21:55 정합)."""
+    return content.replace("/news.html", "/pm320.html")
+
+
 def _migrate_one(src: Path, rel: str, stats: dict[str, int]) -> None:
-    """src(옛 경로) → 새 경로 복사 + 옛 경로 stub 치환. rel = SRC_BASE 기준 상대경로."""
+    """src(옛 경로) → 새 경로 복사(redirect 직행화) + 옛 경로 stub 치환. rel = SRC_BASE 기준 상대경로."""
     content = src.read_text(encoding="utf-8")
     if REDIRECT_MARKER in content:
-        stats["skipped"] += 1  # 이미 stub (재실행 idempotent)
+        # 옛 경로는 이미 stub (재실행 idempotent) → 이식분(새 경로)이 직행화 됐는지만 보정.
+        stats["skipped"] += 1
+        dst = DST_BASE / rel
+        if dst.exists():
+            cur = dst.read_text(encoding="utf-8")
+            fixed = _direct_redirect(cur)
+            if fixed != cur:
+                dst.write_text(fixed, encoding="utf-8")
+                stats["redirect_fixed"] += 1
         return
     dst = DST_BASE / rel
     dst.parent.mkdir(parents=True, exist_ok=True)
-    dst.write_text(content, encoding="utf-8")  # 1) 새 경로 복사 (내용 그대로)
+    dst.write_text(
+        _direct_redirect(content), encoding="utf-8"
+    )  # 1) 새 경로 복사 + redirect 직행화
     stats["copied"] += 1
     src.write_text(make_stub(rel), encoding="utf-8")  # 2) 옛 경로 → stub
     stats["stubbed"] += 1
@@ -79,7 +99,7 @@ def main() -> int:
     if not SRC_BASE.is_dir():
         print(f"ERROR: {SRC_BASE} 부재", file=sys.stderr)
         return 1
-    stats = {"copied": 0, "stubbed": 0, "skipped": 0}
+    stats = {"copied": 0, "stubbed": 0, "skipped": 0, "redirect_fixed": 0}
     # date/code 상세 (1043) + date-level (277, calendar pushState 타깃) 둘 다 이전.
     for src in sorted(SRC_BASE.glob("*/*.html")):
         rel = src.relative_to(SRC_BASE).as_posix()
@@ -91,7 +111,8 @@ def main() -> int:
             _migrate_one(src, rel, stats)
     print(
         f"copied(new path)={stats['copied']} "
-        f"stubbed(old path)={stats['stubbed']} skipped(already stub)={stats['skipped']}"
+        f"stubbed(old path)={stats['stubbed']} skipped(already stub)={stats['skipped']} "
+        f"redirect_fixed(이식분 직행화)={stats['redirect_fixed']}"
     )
     return 0
 
