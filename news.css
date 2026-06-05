@@ -1468,25 +1468,26 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 
 /* ───── Q-20260605-103 Phase 3 — 야간 미국증시 요약 (DSN §3.6.9) ─────
-   보조 위계: --bg2 muted 배경, 타이틀 1단계 축소, 여백 압축, 펼침 고정.
-   "오늘의 뉴스요약"(주 위계, --am 골드 타이틀)보다 시각적으로 한 단계 낮게. */
-/* 보조 위계 muted 컨테이너. 단 대표 20:26 "정렬 1:1" — 지수 카드가 국내 카드(998px)와 동일 폭이 되도록
-   좌우 padding 0 (세로 padding만 유지). border 폭(1px×2)도 카드 폭에서 제외되므로 box-sizing 보정 불요.
-   muted --bg2 배경은 full-bleed band 로 유지(국내 종목카드 list 대비 한 단계 낮은 위계 시각 유지). */
+   대표 20:43 catch "뉴스 요약이 종목카드 안으로 들어가면 안된다" + 20:45 "박스 크기·폰트 국내와 다르다":
+   muted 박스 컨테이너 폐기 → 국내 .cal-section 와 동일 flat 구조 (배경/테두리/padding 없음).
+   타이틀 → 미국발 뉴스 요약(.cal-section-title+.cal-narr-pill) → 지수 카드 list 가 모두 동일 DOM 깊이 sibling
+   → 뉴스 칩이 박스 안에 갇히지 않고, 컨테이너 상속 차이도 제거되어 국내 칩과 computed style 동일. */
 .nightly-us-summary {
-  background: var(--bg2);
-  border: 1px solid var(--bd);
-  border-radius: 12px;
-  padding: 14px 0;
-  margin-bottom: 16px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 22px;  /* 국내 .cal-section margin-bottom:22px 정합 */
 }
 .nightly-us-head {
   display: flex; align-items: baseline; justify-content: space-between;
   gap: 10px; margin-bottom: 12px;
 }
 .nightly-us-title {
-  font-size: 12px; font-weight: 800; color: var(--tx2);
-  letter-spacing: 0.4px;
+  /* 섹션 eyebrow (페이지 영역 라벨). 디자인 워크스루 P2 (대표 20:47) — 섹션 시작 인지 위해 앰버 1단계 상향
+     (11px muted → 12px --am). 하위 "미국발 뉴스 요약"(.cal-section-title)도 앰버 금색 바이나 그쪽은 11px
+     uppercase 바-prefix 라 위계 구분 유지 (eyebrow=섹션 라벨 / section-title=뉴스 블록 타이틀). */
+  font-size: 12px; font-weight: 800; color: var(--am);
+  text-transform: uppercase; letter-spacing: 0.8px;
 }
 .nightly-us-datelabel {
   font-size: 11px; color: var(--dm); font-weight: 600;
@@ -1513,17 +1514,13 @@ body.single-card-mode { background: var(--bg) !important; }
    + 칩 .cal-narr-stack/.cal-narr-pill 클래스 그대로 (배경/테두리/radius/폰트/줄간격/여백 전부 국내 칩 상속).
    본 블록은 (a) 칩 list ↔ 카드 list 사이 간격 + (b) 출처 약어 span 최소 스타일 + (c) a 링크 밑줄 제거 만.
    칩 배경/hover/radius override 0건 (.cal-narr-pill 원본 유지 — 이질감 0). */
-.nightly-us-summary .cal-section-title { margin-bottom: 8px; }
 .nightly-us-summary .cal-narr-stack { margin-bottom: 14px; }
+/* 칩 = .cal-narr-pill 원본 그대로 (배경/테두리/radius/폰트/줄간격/여백 0 override). a 링크 밑줄만 제거 + 출처 약어 span. */
 .nightly-us-newschip { text-decoration: none; }
 .nightly-us-news-source {
   margin-left: 8px;
   font-size: 10px; font-weight: 700; color: var(--am);
   white-space: nowrap;
-}
-
-@media (max-width: 767px) {
-  .nightly-us-summary { padding: 12px; }
 }
 
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }

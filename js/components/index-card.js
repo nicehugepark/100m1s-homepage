@@ -128,12 +128,18 @@
     //     slot id "chart-{idxCode}" + aria-controls anchor 정합. _fetchDailybars(idxCode) 는 /data/dailybars 404
     //     → prototype(data-daily20) 유지 (graceful, 거짓 데이터 0).
     var idxCode = 'idx-' + String(idx.name).replace(/[^A-Za-z0-9가-힣]/g, '').slice(0, 20);
-    var expandSeries = (Array.isArray(idx.daily_expanded) && idx.daily_expanded.length >= 1)
-      ? idx.daily_expanded
-      : (Array.isArray(idx.daily20) ? idx.daily20 : []);
+    var hasExpanded = Array.isArray(idx.daily_expanded) && idx.daily_expanded.length >= 1;
+    var expandSeries = hasExpanded ? idx.daily_expanded : (Array.isArray(idx.daily20) ? idx.daily20 : []);
+    // 미니 일봉(20봉) — daily20 우선, 부재/빈배열 시 daily_expanded 마지막 20봉으로 derive.
+    //   디자인 워크스루 P1 (대표 20:47): 라이브 daily20=[] → 110px 회색 빈 박스 상시 노출 = "데이터 있는데 빈 박스".
+    //   root fix: daily_expanded(1y) 존재 시 그 tail 20봉으로 미니캔들 정상 렌더 (FLR-AGT-002 — 빈 박스 대신 실데이터).
+    //   derive 불가(둘 다 0)일 때만 셀 미렌더 + 확대 trigger 비활성.
+    var miniSeries = (Array.isArray(idx.daily20) && idx.daily20.length >= 1)
+      ? idx.daily20
+      : (hasExpanded ? idx.daily_expanded.slice(-20) : []);
     var miniHtml = '';
-    if (Array.isArray(idx.daily20) && idx.daily20.length >= 1 && typeof root.buildCandles20 === 'function') {
-      miniHtml = root.buildCandles20(idx.daily20);
+    if (miniSeries.length >= 1 && typeof root.buildCandles20 === 'function') {
+      miniHtml = root.buildCandles20(miniSeries);
     }
     var candles20Cell;
     if (miniHtml && expandSeries.length >= 1) {
