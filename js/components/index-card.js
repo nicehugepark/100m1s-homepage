@@ -62,28 +62,21 @@
       miniHtml = root.buildCandles20(idx.daily20);
     }
 
-    // 당일 캔들 — buildCandles20 단일봉 재사용 (mini-candle.js isFlat 분기 자동 적용).
-    var todayCandleHtml = '';
-    if (candle && typeof candle.o === 'number' && typeof candle.c === 'number'
-      && typeof candle.h === 'number' && typeof candle.l === 'number'
-      && typeof root.buildCandles20 === 'function') {
-      todayCandleHtml = root.buildCandles20([{
-        date: '당일', o: candle.o, h: candle.h, l: candle.l, c: candle.c
-      }]);
-    }
-
     var label = idx.name + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
       + ' ' + fmtPoint(idx.point) + ' (' + (pct == null ? '등락률 없음' : fmtPct(pct)) + ')';
 
+    // 레이아웃 (대표 2026-06-05 20:01 요청): 카드명 상단 → 2열 grid. 당일캔들 제거.
+    //   좌상 스파크라인 / 좌하 등락률(▲▼) | 우상 미니 일봉캔들 / 우하 포인트.
     return '<div class="idx-card" role="img" aria-label="' + esc(label) + '">'
       + '<div class="idx-card-name">' + esc(idx.name) + '</div>'
-      + (sparkHtml ? '<div class="idx-card-spark">' + sparkHtml + '</div>' : '')
-      + (miniHtml ? '<div class="idx-card-mini">' + miniHtml + '</div>' : '')
-      + (todayCandleHtml ? '<div class="idx-card-today">' + todayCandleHtml + '</div>' : '')
-      + '<div class="idx-card-point">' + esc(fmtPoint(idx.point)) + '</div>'
-      + '<div class="idx-card-pct ' + dir + '" style="color:' + color + ';">'
+      + '<div class="idx-card-grid">'
+      + '<div class="idx-card-cell idx-card-spark">' + sparkHtml + '</div>'
+      + '<div class="idx-card-cell idx-card-mini">' + miniHtml + '</div>'
+      + '<div class="idx-card-cell idx-card-pct ' + dir + '" style="color:' + color + ';">'
       + '<span class="idx-card-arrow" aria-hidden="true">' + arrow + '</span>'
       + esc(fmtPct(pct)) + '</div>'
+      + '<div class="idx-card-cell idx-card-point">' + esc(fmtPoint(idx.point)) + '</div>'
+      + '</div>'
       + '</div>';
   }
 
