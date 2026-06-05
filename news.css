@@ -1530,15 +1530,15 @@ body.single-card-mode { background: var(--bg) !important; }
 
 /* 미국발 뉴스 요약 (대표 20:29) — 국내 "오늘의 뉴스요약" 템플릿 1:1: 타이틀 .cal-section-title(금색 바)
    + 칩 .cal-narr-stack/.cal-narr-pill 클래스 그대로 (배경/테두리/radius/폰트/줄간격/여백 전부 국내 칩 상속).
-   본 블록은 (a) 칩 list ↔ 카드 list 사이 간격 + (b) 출처 약어 span 최소 스타일 + (c) a 링크 밑줄 제거 만.
-   칩 배경/hover/radius override 0건 (.cal-narr-pill 원본 유지 — 이질감 0). */
-.nightly-us-summary .cal-narr-stack { margin-bottom: 14px; }
-/* 칩 = .cal-narr-pill 원본 그대로 (배경/테두리/radius/폰트/줄간격/여백 0 override). a 링크 밑줄만 제거 + 출처 약어 span. */
+   대표 21:09 catch — 칩 = 국내 .cal-macro-chip 클래스 그대로 (스타일 복제 0, news.css:2103-2108 상속:
+   11px/700/그라데이션 #FFF4D1→#FFE9A8/border #E8C063/color #6B4A0A). 본 블록은 (a) strip 하단 간격
+   + (b) a 링크 밑줄 제거 + (c) 출처 약어 span (칩 톤(#6B4A0A) 조화) 만. 배경/테두리/radius/폰트 override 0. */
+.nightly-us-summary .cal-macro-strip { margin-bottom: 14px; }
 .nightly-us-newschip { text-decoration: none; }
 .nightly-us-news-source {
-  margin-left: 8px;
-  font-size: 10px; font-weight: 700; color: var(--am);
-  white-space: nowrap;
+  margin-left: 6px;
+  font-size: 9px; font-weight: 800; color: #8A6510;  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
+  opacity: 0.85; white-space: nowrap;
 }
 
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
