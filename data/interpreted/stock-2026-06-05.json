@@ -1,6 +1,6 @@
 {
   "date": "2026-06-05",
-  "generated_at": "2026-06-05T10:18:58.607375",
+  "generated_at": "2026-06-05T10:25:55.677911",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -52,9 +52,9 @@
       "code": "085620",
       "name": "미래에셋생명",
       "rank": 1,
-      "trade_amount": 87051000000,
-      "change_pct": 20.56,
-      "close_price": 23400,
+      "trade_amount": 93458000000,
+      "change_pct": 21.33,
+      "close_price": 23550,
       "open_price": 21200,
       "high_price": 24200,
       "low_price": 20100,
@@ -169,17 +169,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -6.84,
-      "index_multiple_current": -3.01,
+      "index_change_pct": -6.53,
+      "index_multiple_current": -3.27,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 24200,
         "high_date": "2026-06-05",
-        "high_pct": -3.31,
+        "high_pct": -2.69,
         "low": 5630,
         "low_date": "2025-06-23",
-        "low_pct": 315.63,
-        "current": 23400
+        "low_pct": 318.29,
+        "current": 23550
       },
       "daily_20": [
         {
@@ -320,7 +320,34 @@
           "o": 21200,
           "h": 24200,
           "l": 20100,
-          "c": 23400
+          "c": 23550
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-05-28) 대비 +60%↑",
+              "base_price": 14670,
+              "threshold": 23472,
+              "current": 23550,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-08",
+          "period_end": "2026-06-09",
+          "start": "2026-06-08",
+          "end": "2026-06-09",
+          "view_date": "2026-06-05",
+          "next_trading_day": "2026-06-08",
+          "next_trading_day_for_predicted": "2026-06-08",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -342,7 +369,9 @@
           23800,
           23750,
           23100,
-          23400
+          23350,
+          23400,
+          23550
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -353,9 +382,9 @@
       "code": "377480",
       "name": "마음AI",
       "rank": 2,
-      "trade_amount": 71026000000,
-      "change_pct": 5.4,
-      "close_price": 18550,
+      "trade_amount": 73522000000,
+      "change_pct": 1.76,
+      "close_price": 17910,
       "open_price": 17060,
       "high_price": 21500,
       "low_price": 16630,
@@ -426,17 +455,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -5.34,
-      "index_multiple_current": -1.01,
+      "index_change_pct": -5.03,
+      "index_multiple_current": -0.35,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 26700,
         "high_date": "2025-06-25",
-        "high_pct": -30.52,
+        "high_pct": -32.92,
         "low": 12180,
         "low_date": "2026-05-28",
-        "low_pct": 52.3,
-        "current": 18550
+        "low_pct": 47.04,
+        "current": 17910
       },
       "daily_20": [
         {
@@ -577,7 +606,7 @@
           "o": 17060,
           "h": 21500,
           "l": 16630,
-          "c": 18550
+          "c": 17910
         }
       ],
       "intraday": {
@@ -599,7 +628,9 @@
           18690,
           18750,
           18290,
-          18550
+          18060,
+          18060,
+          17910
         ]
       },
       "credit_risk": true,
@@ -612,7 +643,7 @@
       "code": "066430",
       "name": "아이로보틱스",
       "rank": 3,
-      "trade_amount": 9713000000,
+      "trade_amount": 9785000000,
       "change_pct": 29.84,
       "close_price": 3285,
       "open_price": 2495,
@@ -669,8 +700,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -5.34,
-      "index_multiple_current": -5.59,
+      "index_change_pct": -5.03,
+      "index_multiple_current": -5.93,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5080,
@@ -832,8 +863,8 @@
           "summary": "아이로보틱스 상한가 (29.84%)",
           "cur_prc": 3285,
           "flu_rt": 29.84,
-          "trde_qty": 3127853,
-          "trde_prica_calc": 9713000000,
+          "trde_qty": 3149836,
+          "trde_prica_calc": 9785000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -868,6 +899,8 @@
           3285,
           3285,
           3285,
+          3285,
+          3285,
           3285
         ]
       },
@@ -881,21 +914,23 @@
       "code": "291810",
       "name": "핀텔",
       "rank": 4,
-      "trade_amount": 761000000,
+      "trade_amount": 787000000,
       "change_pct": 29.94,
       "close_price": 1406,
-      "open_price": 1406,
+      "open_price": 1110,
       "high_price": 1406,
-      "low_price": 1406,
+      "low_price": 1089,
       "industry": "소프트웨어 개발 및 공급업",
       "sector": "AI 영상 분석 솔루션 및 소프트웨어",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
       "prev_pick": null,
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-06-05"
+      ],
       "news": [
         {
           "title": "핀텔, 공시번복으로 불성실공시법인 지정 예고",
@@ -931,61 +966,19 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -5.34,
-      "index_multiple_current": -0.72,
+      "index_change_pct": -5.03,
+      "index_multiple_current": -5.95,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5190,
         "high_date": "2025-11-13",
         "high_pct": -72.91,
-        "low": 1240,
-        "low_date": "2026-05-21",
-        "low_pct": 13.39,
+        "low": 1016,
+        "low_date": "2026-06-04",
+        "low_pct": 38.39,
         "current": 1406
       },
       "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 2005,
-          "h": 2055,
-          "l": 1980,
-          "c": 2025
-        },
-        {
-          "date": "2026-04-28",
-          "o": 2025,
-          "h": 2035,
-          "l": 1967,
-          "c": 1998
-        },
-        {
-          "date": "2026-04-29",
-          "o": 1981,
-          "h": 2030,
-          "l": 1940,
-          "c": 1971
-        },
-        {
-          "date": "2026-04-30",
-          "o": 1971,
-          "h": 1971,
-          "l": 1850,
-          "c": 1875
-        },
-        {
-          "date": "2026-05-04",
-          "o": 1875,
-          "h": 1959,
-          "l": 1875,
-          "c": 1915
-        },
-        {
-          "date": "2026-05-06",
-          "o": 1896,
-          "h": 1896,
-          "l": 1800,
-          "c": 1801
-        },
         {
           "date": "2026-05-07",
           "o": 1800,
@@ -1078,10 +1071,52 @@
           "c": 1354
         },
         {
+          "date": "2026-05-27",
+          "o": 1380,
+          "h": 1485,
+          "l": 1320,
+          "c": 1462
+        },
+        {
+          "date": "2026-05-28",
+          "o": 1468,
+          "h": 1468,
+          "l": 1256,
+          "c": 1275
+        },
+        {
+          "date": "2026-05-29",
+          "o": 1279,
+          "h": 1340,
+          "l": 1228,
+          "c": 1267
+        },
+        {
+          "date": "2026-06-01",
+          "o": 1264,
+          "h": 1264,
+          "l": 1051,
+          "c": 1081
+        },
+        {
+          "date": "2026-06-02",
+          "o": 1081,
+          "h": 1405,
+          "l": 1050,
+          "c": 1054
+        },
+        {
+          "date": "2026-06-04",
+          "o": 1044,
+          "h": 1161,
+          "l": 1016,
+          "c": 1082
+        },
+        {
           "date": "2026-06-05",
-          "o": 1406,
+          "o": 1110,
           "h": 1406,
-          "l": 1406,
+          "l": 1089,
           "c": 1406
         }
       ],
@@ -1094,8 +1129,8 @@
           "summary": "핀텔 상한가 (29.94%)",
           "cur_prc": 1406,
           "flu_rt": 29.94,
-          "trde_qty": 575468,
-          "trde_prica_calc": 761000000,
+          "trde_qty": 594187,
+          "trde_prica_calc": 787000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1111,8 +1146,32 @@
           "next_trading_day": "2026-06-08"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 1110,
+        "base": 1082,
+        "prices": [
+          1110,
+          1137,
+          1132,
+          1180,
+          1146,
+          1152,
+          1144,
+          1176,
+          1171,
+          1175,
+          1169,
+          1246,
+          1324,
+          1389,
+          1406,
+          1406,
+          1406
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -1121,7 +1180,7 @@
       "code": "003220",
       "name": "대원제약",
       "rank": 5,
-      "trade_amount": 710000000,
+      "trade_amount": 713000000,
       "change_pct": 29.94,
       "close_price": 11240,
       "open_price": 11240,
@@ -1230,8 +1289,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -6.84,
-      "index_multiple_current": -4.38,
+      "index_change_pct": -6.53,
+      "index_multiple_current": -4.58,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 14090,
@@ -1393,8 +1452,8 @@
           "summary": "대원제약 상한가 (29.94%)",
           "cur_prc": 11240,
           "flu_rt": 29.94,
-          "trde_qty": 63205,
-          "trde_prica_calc": 710000000,
+          "trde_qty": 63440,
+          "trde_prica_calc": 713000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1415,6 +1474,9 @@
         "open": 11240,
         "base": 8650,
         "prices": [
+          11240,
+          11240,
+          11240,
           11240,
           11240,
           11240,
