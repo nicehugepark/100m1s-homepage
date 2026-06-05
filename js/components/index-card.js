@@ -93,8 +93,37 @@
       + '</div>';
   }
 
-  // idx 1종 → 카드 HTML 문자열. 입력 부적합 시 '' (호출측에서 섹션 미렌더 판단).
-  function renderIndexCard(idx) {
+  // 장중 선물 줄 (Phase 4, 대표 20:37) — futureInfo = { fut:{name,label_note,point,change_pct,spark[]}, ageMin }.
+  //   카드 헤더 아래, 마감 지수 카드는 유지하고 그 위에 1줄 오버레이. "N분 전 기준" 필수(stale 실시간 위장 금지).
+  //   futureInfo null(장외/주말/stale/매핑불명) 시 '' → 선물 줄 미렌더.
+  function buildFuturesRow(futureInfo) {
+    if (!futureInfo || !futureInfo.fut || typeof futureInfo.fut !== 'object') return '';
+    var f = futureInfo.fut;
+    if (typeof f.point !== 'number' || typeof f.change_pct !== 'number') return '';
+    var fp = f.change_pct;
+    var fdir = fp > 0 ? 'up' : (fp < 0 ? 'down' : 'flat');
+    var fcolor = fdir === 'up' ? UP : (fdir === 'down' ? DOWN : FLAT);
+    var farrow = fdir === 'up' ? '▲' : (fdir === 'down' ? '▼' : '·');
+    var label = (typeof f.label_note === 'string' && f.label_note) ? f.label_note : (f.name + ' 선물');
+    // 미니 스파크라인 — spark[] 유효 시. base = spark 첫값(시초 기준 라인 근사). dir 일치.
+    var spk = '';
+    if (Array.isArray(f.spark) && f.spark.length >= 2 && typeof root.buildSparkline === 'function') {
+      spk = root.buildSparkline(f.spark, f.spark[0], fdir);
+    }
+    var ageMin = (typeof futureInfo.ageMin === 'number') ? futureInfo.ageMin : null;
+    var ageText = ageMin == null ? '' : (ageMin <= 0 ? '방금 전 기준' : (ageMin + '분 전 기준'));
+    return '<div class="idx-futures-row" aria-label="' + esc(label + ' 장중 선물 ' + fmtPct(fp)) + '">'
+      + '<span class="idx-futures-label">' + esc(label) + '</span>'
+      + (spk ? '<span class="idx-futures-spark">' + spk + '</span>' : '')
+      + '<span class="idx-futures-point">' + esc(fmtPoint(f.point)) + '</span>'
+      + '<span class="idx-futures-pct ' + fdir + '" style="color:' + fcolor + ';">'
+      + '<span class="idx-card-arrow" aria-hidden="true">' + farrow + '</span>' + esc(fmtPct(fp)) + '</span>'
+      + (ageText ? '<span class="idx-futures-age">' + esc(ageText) + '</span>' : '')
+      + '</div>';
+  }
+
+  // idx 1종 + (선택)futureInfo → 카드 HTML 문자열. 입력 부적합 시 '' (호출측에서 섹션 미렌더 판단).
+  function renderIndexCard(idx, futureInfo) {
     if (!idx || typeof idx !== 'object') return '';
     if (typeof idx.name !== 'string' || !idx.name) return '';
 
@@ -193,6 +222,7 @@
       + '</div>'
       + '</div>'
       + '</div>'
+      + buildFuturesRow(futureInfo)
       + rangeHtml
       + newsBodyHtml
       + '</div>';

@@ -118,6 +118,54 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
     .finally(() => { window.__koreaHolidaysLoading = false; });
 }
 
+// Q-20260605-103 Phase 4 — 장중 미 선물 게이트 (대표 20:37). DSN §3.6.9.
+//   조건: (a) 클라이언트 KST 가 평일 09:00~15:30 (국내장 중) AND (b) futures.as_of_kst 신선(now 대비 ≤30분).
+//   둘 다 충족 시 { byName, ageMin } 반환, 아니면 null (장외/주말/stale/부재 → 선물 줄 미렌더).
+//   as_of_kst 형식: "YYYY-MM-DD HH:MM:SS" (KST 로컬, tz suffix 없음) 또는 ISO. Date 파싱 graceful.
+function _matchFuturesToIndices(us) {
+  const fu = us && us.futures;
+  if (!fu || !Array.isArray(fu.futures) || fu.futures.length === 0) return null;
+  // 클라이언트 현재 KST. (브라우저 로컬이 KST 가정 — 대표 사용 환경. 비 KST 환경은 보수적 미표시 가능하나
+  //  Asia/Seoul 고정 계산으로 환경 무관 일관화.)
+  const now = new Date();
+  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const dow = kstNow.getDay();  // 0=일 6=토
+  if (dow === 0 || dow === 6) return null;  // 주말 미표시
+  const mins = kstNow.getHours() * 60 + kstNow.getMinutes();
+  const OPEN = 9 * 60, CLOSE = 15 * 60 + 30;  // 09:00~15:30
+  if (mins < OPEN || mins > CLOSE) return null;  // 장외 미표시
+  // as_of_kst 신선도 — KST 로컬 시각 파싱. "YYYY-MM-DD HH:MM:SS" → "YYYY-MM-DDTHH:MM:SS" 로 보정.
+  let asOf = null;
+  const s = String(fu.as_of_kst).trim();
+  const isoish = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/.test(s) ? s.replace(' ', 'T') : s;
+  const parsed = new Date(isoish);
+  if (!isNaN(parsed.getTime())) asOf = parsed;
+  if (!asOf) return null;  // 파싱 실패 → 미표시 (stale 가장 금지)
+  // asOf 도 KST 로컬 벽시계로 파싱됨 → kstNow 와 동일 기준 차이 계산.
+  const ageMin = Math.round((kstNow.getTime() - asOf.getTime()) / 60000);
+  if (ageMin < 0 || ageMin > 30) return null;  // 미래 시각(오류) 또는 30분 초과 stale → 미표시
+  const byName = new Map();
+  fu.futures.forEach(f => { if (f && f.name) byName.set(String(f.name).toLowerCase(), f); });
+  return { byName, list: fu.futures, ageMin };
+}
+
+// 지수(ix) 에 대응하는 선물 entry 해소 — name 부분일치(나스닥↔나스닥100 선물 등) 우선, position fallback.
+//   매칭 실패 시 null (해당 카드 선물 줄 미렌더 — 허위 매핑 금지).
+function _resolveFutureFor(ix, matched) {
+  if (!matched || !ix) return null;
+  const nm = String(ix.name || '').toLowerCase();
+  // 1) 정확/부분 일치 (지수명이 선물명에 포함되거나 그 역).
+  for (const [k, f] of matched.byName.entries()) {
+    if (k.includes(nm) || nm.includes(k)) return { fut: f, ageMin: matched.ageMin };
+  }
+  // 2) label_note 에 지수명 포함 케이스.
+  for (const f of matched.list) {
+    const ln = String(f.label_note || '').toLowerCase();
+    if (nm && ln.includes(nm)) return { fut: f, ageMin: matched.ageMin };
+  }
+  return null;  // 매핑 불명 → 미렌더 (position fallback 미사용: 잘못된 선물-지수 연결 위험)
+}
+
 // Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 빌더.
 //   DSN §3.6.9. 입력 us = data.nightlyUs (data-loader.loadNightlyUsSummary 검증 산출).
 //   null/부재/지수 0건 시 '' 반환 → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단, 빈 카드/mock 금지).
@@ -129,7 +177,10 @@ function _buildNightlyUsHtml(us) {
   if (!Array.isArray(us.indices) || us.indices.length === 0) return '';
   if (typeof renderIndexCard !== 'function') return '';
 
-  const cardsHtml = us.indices.map(renderIndexCard).filter(Boolean).join('');
+  // Phase 4 (대표 20:37) — 국내장 중(평일 09:00~15:30 KST) + futures.as_of_kst 신선(≤30분)이면
+  //   각 지수 카드에 장중 선물 줄 오버레이 (마감 지수 카드 유지). 장외/주말/stale/부재 시 미렌더.
+  const _futMatched = _matchFuturesToIndices(us);  // { byName: Map, ageMin: number } | null
+  const cardsHtml = us.indices.map(ix => renderIndexCard(ix, _futMatched ? _resolveFutureFor(ix, _futMatched) : null)).filter(Boolean).join('');
   if (!cardsHtml) return '';
 
   // 우측 라벨 — trade_date_local SSOT (백엔드 제공 현지 마감일). M/D 표기.
