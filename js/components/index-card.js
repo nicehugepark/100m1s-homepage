@@ -3,11 +3,12 @@
    IIFE + window 전역 등록 (SW cache 호환, lib/* 동일 패턴).
 
    renderIndexCard(idx) — 미국 지수 1종(나스닥/S&P 500/다우존스)을 종목카드 동일형 카드 1장으로 렌더.
-   - 대표 2026-06-05 20:11 결정 (B안): 섹션 = 타이틀 → 미국발 뉴스 → 지수 카드 세로 나열
-     (국내장 뉴스요약 → 종목카드 순서 동일). 카드는 종목카드 형태:
-       상단 헤더 = 미니 일봉캔들 + 스파크라인 + 지수명 + 등락률 + 현재 포인트(거래대금 자리 대체).
-       하단 = 240일 레인지 바 (좌 최저/중앙 현재/우 최고 + 그라데이션 + 현재 마커).
-   - lib/sparkline.js buildSparkline + lib/mini-candle.js buildCandles20 재사용 (중복 구현 0건).
+   - 대표 2026-06-05 20:11 결정(B안) + 20:26 catch 정정: 국내 종목카드 헤더 DOM 1:1 복제.
+     섹션 = 타이틀 → 미국발 뉴스 → 지수 카드 세로 나열 (국내장 뉴스요약 → 종목카드 순서 동일).
+     카드 헤더 head-left 4-child (renderer.js L1419-1435 verbatim):
+       .cal-trade-rank(지수=빈 슬롯) → .cal-trade-candle(당일캔들 miniCandle) → .cal-feature-sparkline → .cal-feature-candles20.
+     head-right: .cal-feature-name + .cal-feature-meta(등락률 | 포인트). 하단 = 240일 레인지 바.
+   - global miniCandle(당일캔들) + lib/sparkline.js buildSparkline + lib/mini-candle.js buildCandles20 재사용 (중복 구현 0건).
    - 레인지 바는 종목카드 .stock-range.v2 클래스/시각 재사용 (기존 renderCalExpandContent 무수정 — 변형 builder, ui-preservation §1).
    - 색: 한국 증시 관습 상승 #C53939 / 하락 #1958C7 / 보합 #94A3B8 (mini-candle.js 정합). role="img" + aria-label.
 
@@ -103,6 +104,16 @@
     var arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
 
     var candle = idx.candle && typeof idx.candle === 'object' ? idx.candle : null;
+
+    // 당일 캔들 (.cal-trade-candle) — 국내 종목카드와 동일하게 global miniCandle(o,h,l,c,pct) 재사용.
+    //   국내 카드: candleHtml = miniCandle(lastBar o/h/l/c, pct). 지수: candle{o,h,l,c} 동일 호출.
+    var todayCandleHtml = '';
+    if (candle && typeof candle.o === 'number' && typeof candle.h === 'number'
+      && typeof candle.l === 'number' && typeof candle.c === 'number'
+      && typeof root.miniCandle === 'function') {
+      todayCandleHtml = root.miniCandle(candle.o, candle.h, candle.l, candle.c, pct == null ? 0 : pct);
+    }
+
     var sparkHtml = '';
     if (Array.isArray(idx.spark) && idx.spark.length >= 2 && candle && typeof candle.o === 'number'
       && typeof root.buildSparkline === 'function') {
@@ -113,19 +124,23 @@
       miniHtml = root.buildCandles20(idx.daily20);
     }
     var rangeHtml = buildRangeBar(idx.range_240d);
+    var newsBodyHtml = buildCardNews(idx.news);
 
     var label = idx.name + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
       + ' ' + fmtPoint(idx.point) + ' (' + (pct == null ? '등락률 없음' : fmtPct(pct)) + ')';
 
-    // 대표 20:12 — 종목카드 CSS 클래스·폰트 그대로 재사용 (이질감 0). 지수 전용 = .cal-feature-card--idx
-    //   modifier 1개만(랭크/공유/뱃지/body 미사용 구조 차이용). 폰트·색·여백·radius는 종목카드 클래스가 결정.
-    //   head-left: 미니 일봉캔들(.cal-trade-candle 슬롯) + 스파크라인. head-right: 지수명(.cal-feature-name)
-    //   + 메타(.cal-feature-pct 등락률 | .cal-trade-amount 포인트 — 거래대금 골드 슬롯 재사용).
+    // 대표 20:26 catch 정정 — 국내 종목카드 헤더 DOM 1:1 복제 (renderer.js L1419-1435 verbatim 구조).
+    //   head-left 4-child 순서 동일: .cal-trade-rank → .cal-trade-candle(당일캔들) → .cal-feature-sparkline
+    //   → .cal-feature-candles20. rank 슬롯은 지수에 순위 개념 부재 → 빈 placeholder(정렬 column 유지, 허수 0).
+    //   head-right: .cal-feature-namecell(.cal-feature-name) + .cal-feature-meta(.cal-feature-pct | .cal-trade-amount).
+    //   국내 카드 대비 미사용: 공유버튼/badges/body (지수 무관). modifier 1개(.cal-feature-card--idx).
     return '<div class="cal-feature-card v2 cal-feature-card--idx" role="img" aria-label="' + esc(label) + '">'
       + '<div class="cal-feature-head v2">'
       + '<div class="cal-feature-head-left">'
+      + '<div class="cal-trade-rank"></div>'
+      + '<div class="cal-trade-candle">' + todayCandleHtml + '</div>'
       + (sparkHtml ? '<div class="cal-feature-sparkline">' + sparkHtml + '</div>' : '<div class="cal-feature-sparkline cal-spark-empty"></div>')
-      + (miniHtml ? '<div class="cal-feature-candles20">' + miniHtml + '</div>' : '')
+      + (miniHtml ? '<div class="cal-feature-candles20">' + miniHtml + '</div>' : '<div class="cal-feature-candles20 cal-candles20-empty"></div>')
       + '</div>'
       + '<div class="cal-feature-head-right">'
       + '<div class="cal-feature-namecell">'
@@ -139,6 +154,29 @@
       + '</div>'
       + '</div>'
       + rangeHtml
+      + newsBodyHtml
+      + '</div>';
+  }
+
+  // 지수별 주요 기사 — 국내 종목카드 뉴스 영역 (.cal-feature-body > .cal-feature-summary >
+  //   .cal-causal 요약 + .cal-feature-links > .cal-feature-link) 템플릿 1:1 (대표 20:31).
+  //   데이터: idx.news = {summary, sources:[{name,url}]}. 부재/요약·소스 모두 0 시 '' (블록 전체 생략, placeholder 0).
+  function buildCardNews(news) {
+    if (!news || typeof news !== 'object') return '';
+    var summary = (typeof news.summary === 'string') ? news.summary.trim() : '';
+    var sources = Array.isArray(news.sources) ? news.sources : [];
+    var linksHtml = sources.map(function (s) {
+      if (!s || typeof s !== 'object') return '';
+      var url = (typeof s.url === 'string' && /^https?:\/\//i.test(s.url)) ? s.url : '';
+      var name = (typeof s.name === 'string') ? s.name : '';
+      if (!url || !name) return '';  // 출처명·유효 URL 둘 다 필수 (법무 + placeholder 금지)
+      return '<a class="cal-feature-link" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(name) + '</a>';
+    }).filter(Boolean).join('');
+    if (!summary && !linksHtml) return '';  // 둘 다 없으면 블록 생략
+    var summaryHtml = summary ? '<div class="cal-causal">' + esc(summary) + '</div>' : '';
+    var linksBlock = linksHtml ? '<div class="cal-feature-links">' + linksHtml + '</div>' : '';
+    return '<div class="cal-feature-body">'
+      + '<div class="cal-feature-summary">' + summaryHtml + linksBlock + '</div>'
       + '</div>';
   }
 
