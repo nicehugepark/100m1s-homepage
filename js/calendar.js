@@ -238,9 +238,31 @@ async function initCalendar() {
   renderCalendar();
 
   // 3단계: 캐시된 당일 데이터로 즉시 카드 렌더 (있으면)
-  if (calDayCache[initialDate]) {
+  // DSN-frontend §3.6.2.2 (2026-06-05 P0 라이브 재발) — OPEN 시점 stale fallback 캐시 차단.
+  //   PRE_MARKET 에 박제된 fallback 캐시(_fallbackDate)를 09:00 이후 reload 시 stage-3 동기 렌더가
+  //   "오늘 데이터인 양" 즉시 표시하던 결함(어제 뉴스/PM320 종목카드 노출, 대표 catch 09:05/09:15).
+  //   data-loader.js 의 fetch-time 가드(_isTodayPastOpen)와 동일 기준으로, 캐시 엔트리도 OPEN+today+fallback
+  //   3조건 동시 충족 시 stage-3 렌더를 건너뛰고 캐시를 폐기 → 4단계 네트워크 갱신(정직한 빈 상태)으로 위임.
+  //   과거 viewDate / 휴장 / PRE_MARKET 의 정상 fallback 표시는 영향 없음. PRE_MARKET opt-in 토글도 별 path 유지.
+  const _cachedEntry = calDayCache[initialDate];
+  // _fallbackDate 마커 (신규 캐시) 또는 macroEvents 안내 배너 (구 스키마 캐시) 양쪽으로 fallback 탐지.
+  //   구 캐시는 _fallbackDate 필드가 없으므로 "기준 데이터를 표시" 배너 문구로 보강 탐지.
+  const _cacheIsFallback =
+    _cachedEntry &&
+    (!!_cachedEntry._fallbackDate ||
+      (Array.isArray(_cachedEntry.macroEvents) &&
+        _cachedEntry.macroEvents.some(m => m && typeof m.summary === 'string' && m.summary.includes('기준 데이터를 표시'))));
+  const _isStaleOpenFallback =
+    _cacheIsFallback &&
+    typeof _isTodayPastOpen === 'function' &&
+    _isTodayPastOpen(initialDate);
+  if (_isStaleOpenFallback) {
+    delete calDayCache[initialDate];
+    _persistCache();
+  }
+  if (_cachedEntry && !_isStaleOpenFallback) {
     toggleThemeSections(initialDate);
-    renderCalExpandContent(initialDate, calDayCache[initialDate]);
+    renderCalExpandContent(initialDate, _cachedEntry);
   } else {
     // 캐시 없음 — 로딩 표시
     toggleThemeSections(initialDate);

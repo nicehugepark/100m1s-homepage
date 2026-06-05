@@ -323,6 +323,17 @@ async function loadCalDayData(date) {
   //   장중 stale 데이터 가시화. kiwoom 폴백 path(stocks 합성 객체)는 last_snapshot_at 없음 →
   //   자연 미표시 (FLR-AGT-002 거짓 충실성 차단).
   const lastSnapshotAt = (kiwoom && typeof kiwoom.last_snapshot_at === 'string') ? kiwoom.last_snapshot_at : '';
+  // DSN-frontend §3.6.2.2 (2026-06-05 P0 라이브 재발) — fallback 여부 명시 마커.
+  //   data-loader 의 _isTodayPastOpen 가드는 fetch 시점에만 fallback 을 차단한다. 그러나
+  //   PRE_MARKET(09:00 미만) 에 정상 생성된 fallback 결과가 localStorage(calDayCache)에 박제된 뒤,
+  //   사용자가 09:00 이후 reload 하면 calendar.js 의 stage-3 동기 렌더(L241)가 이 stale fallback 을
+  //   "오늘 데이터인 양" 즉시 표시 → 어제 뉴스/PM320 종목카드 노출 (대표 catch 09:05/09:15).
+  //   본 마커로 calendar.js 가 OPEN 시점에 fallback 캐시 엔트리를 식별·차단한다.
+  //   소스: kiwoom._fallback_date (L92) 또는 stockDailyData._fallback_date (L187).
+  const fallbackDate =
+    (stockDailyData && stockDailyData._fallback_date) ||
+    (kiwoom && kiwoom._fallback_date) ||
+    null;
   const result = {
     kiwoom,
     cafePosts: [],
@@ -331,7 +342,8 @@ async function loadCalDayData(date) {
     macroEvents,
     dataSource,
     generatedAt,
-    lastSnapshotAt
+    lastSnapshotAt,
+    _fallbackDate: fallbackDate
   };
   calDayCache[date] = result;
   _persistCache();
