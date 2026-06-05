@@ -128,7 +128,10 @@ async function loadPm320History(date) {
 }
 
 async function loadCalDayData(date) {
-  if (calDayCache[date]) return calDayCache[date];
+  // §3.6.2.3 (FLR-20260605-TEC-001 P1-2) — 세션 구간 키로 read/write (calendar.js _cacheKey 단일 출처).
+  //   장 시작/마감 경계를 넘으면 키 불일치 → cache miss → 네트워크 재로드(이전 구간 데이터 재사용 0).
+  const _key = (typeof _cacheKey === 'function') ? _cacheKey(date) : date;
+  if (calDayCache[_key]) return calDayCache[_key];
   // kiwoom + stock-daily + pm320_history 병렬 fetch
   // DOC-20260603-DSN-001 §1 — pm320_history는 별 path (메인 worktree → cron 미러), 404 graceful (PICK 부재 일자)
   const dateHash = date.replace(/-/g, '');
@@ -345,7 +348,8 @@ async function loadCalDayData(date) {
     lastSnapshotAt,
     _fallbackDate: fallbackDate
   };
-  calDayCache[date] = result;
+  // §3.6.2.3 — read 와 동일 세션 구간 키로 write (장경계 무효화 정합).
+  calDayCache[_key] = result;
   _persistCache();
 
   // 전일 전파는 비동기 (초기 렌더 차단 안 함)
@@ -367,7 +371,8 @@ async function _propagatePrevDay(date, result) {
     }
     for (const prevDate of prevPickDates) {
       // 전일 해석 전파: 캐시 우선, 없으면 stock JSON만 직접 fetch (재귀 방지)
-      let prevData = calDayCache[prevDate];
+      // §3.6.2.3 — 동일 키 스킴으로 조회(전일은 과거일이므로 flat date 키, 정합 유지).
+      let prevData = calDayCache[(typeof _cacheKey === 'function') ? _cacheKey(prevDate) : prevDate];
       if (!prevData) {
         const prevHash = prevDate.replace(/-/g, '');
         const prevStock = await fetch(`/data/interpreted/${calCategory}-${prevDate}.json?v=${prevHash}`).then(r => r.ok ? r.json() : null).catch(() => null);
