@@ -1467,6 +1467,90 @@ body.single-card-mode { background: var(--bg) !important; }
   width: fit-content; max-width: 100%;
 }
 
+/* ───── Q-20260605-103 Phase 3 — 야간 미국증시 요약 (DSN §3.6.9) ─────
+   보조 위계: --bg2 muted 배경, 타이틀 1단계 축소, 여백 압축, 펼침 고정.
+   "오늘의 뉴스요약"(주 위계, --am 골드 타이틀)보다 시각적으로 한 단계 낮게. */
+.nightly-us-summary {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.nightly-us-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px; margin-bottom: 12px;
+}
+.nightly-us-title {
+  font-size: 12px; font-weight: 800; color: var(--tx2);
+  letter-spacing: 0.4px;
+}
+.nightly-us-datelabel {
+  font-size: 11px; color: var(--dm); font-weight: 600;
+  white-space: nowrap;
+}
+/* 3카드 가로 1열 flex 1:1:1 — 데스크탑·모바일 공통 (숨김 0건) */
+.nightly-us-cards {
+  display: flex; gap: 8px; align-items: stretch;
+}
+.idx-card {
+  flex: 1 1 0; min-width: 0;
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 10px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  text-align: center;
+}
+.idx-card-name {
+  font-size: 12px; font-weight: 700; color: var(--tx);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+.idx-card-spark svg, .idx-card-mini svg, .idx-card-today svg {
+  display: block; width: 100%; height: auto;
+}
+.idx-card-spark { width: 100%; max-width: 80px; }
+.idx-card-mini { width: 100%; max-width: 100px; }
+.idx-card-today { width: 18px; }
+.idx-card-point {
+  font-size: 14px; font-weight: 800; color: var(--tx);
+  font-family: 'SF Mono', monospace; margin-top: 2px;
+}
+.idx-card-pct {
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; gap: 2px;
+}
+.idx-card-arrow { font-size: 9px; }
+
+/* 미국발 뉴스 요약 — .cal-narr-pill 스타일 공유 + source 약어·딥링크 */
+.nightly-us-news { margin-top: 12px; }
+.nightly-us-news-title {
+  font-size: 11px; font-weight: 800; color: var(--dm);
+  letter-spacing: 0.4px; margin-bottom: 6px;
+}
+.nightly-us-newschip {
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.nightly-us-newschip:hover { background: var(--am3); }
+.nightly-us-news-source {
+  font-size: 10px; font-weight: 700; color: var(--am);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* 모바일 — 폰트/패딩/자릿수 축소만, 숨김 0건 (3카드 가로 유지) */
+@media (max-width: 880px) {
+  .nightly-us-summary { padding: 12px; }
+  .nightly-us-cards { gap: 6px; }
+  .idx-card { padding: 8px 5px; gap: 3px; }
+  .idx-card-name { font-size: 10px; }
+  .idx-card-point { font-size: 12px; }
+  .idx-card-pct { font-size: 10px; }
+  .idx-card-spark { max-width: 60px; }
+  .idx-card-mini { max-width: 72px; }
+  .nightly-us-news-summary { font-size: 11px; }
+}
+
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
 .cal-trade-row {
   display: grid;
