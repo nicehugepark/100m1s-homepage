@@ -135,7 +135,9 @@ function _buildNightlyUsHtml(us) {
   // 우측 라벨 — trade_date_local SSOT (백엔드 제공 현지 마감일). M/D 표기.
   let dateLabel = '';
   if (typeof us.trade_date_local === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(us.trade_date_local)) {
-    const md = us.trade_date_local.slice(5).replace('-', '/').replace(/^0/, '');
+    // QA (대표 20:50) — 월·일 양쪽 leading-zero 제거 (종전 /^0/ 는 월만 → "6/04" 비대칭 → "6/4" 통일).
+    const _mdParts = us.trade_date_local.slice(5).split('-');
+    const md = `${parseInt(_mdParts[0], 10)}/${parseInt(_mdParts[1], 10)}`;
     dateLabel = `<span class="nightly-us-datelabel">${escapeHtml(md)} (현지 마감)</span>`;
   }
 
