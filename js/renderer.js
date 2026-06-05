@@ -979,13 +979,23 @@ function renderCalExpandContent(date, data) {
   //     2) kiwoom 마지막 폴링 last_snapshot_at (장중/장후 최신 스냅샷)
   //     3) 야간 미국증시 built_at_kst (주말·휴장일 = 국내장 데이터 부재 시 최신 갱신 = 미장 빌드)
   //   세 소스 모두 부재 시 빈 문자열 → 미표시(거짓 추정 금지).
+  //   디자인 사후 워크스루 P2 (08:03) — 라벨 출처 분기로 오인 차단.
+  //   주말·휴장(suppress) 시: 국내장은 거래가 없어 generated_at 부재 + kiwoom snapshot(00:29 등)은
+  //     장외 1회 폴링이라 "국내장 갱신"으로 보기 부적절 → 야간 미국증시 built_at 을 1순위로 쓰고
+  //     라벨도 "마지막 갱신 (야간 미국증시)" 로 출처 명시 (미장 빌드 시각 오인 차단).
+  //   평일/거래일 시: 국내장 generated_at → snapshot 우선, 라벨 "마지막 갱신" (무회귀).
+  //   실존 값만 사용 (FLR-AGT-002 거짓 표시 차단).
   const _nightlyBuiltAt = (data && data.nightlyUs && typeof data.nightlyUs.built_at_kst === 'string')
     ? data.nightlyUs.built_at_kst : '';
-  const _updatedFull = _formatGeneratedAtFull(generatedAt)
-    || _formatGeneratedAtFull(lastSnapshotAt)
-    || _formatGeneratedAtFull(_nightlyBuiltAt);
+  const _updatedDomestic = _formatGeneratedAtFull(generatedAt) || _formatGeneratedAtFull(lastSnapshotAt);
+  const _updatedNightly = _formatGeneratedAtFull(_nightlyBuiltAt);
+  const _updatedFull = _metaSuppressDomestic
+    ? (_updatedNightly || _updatedDomestic)
+    : (_updatedDomestic || _updatedNightly);
+  const _updatedIsNightly = _metaSuppressDomestic ? !!_updatedNightly : !_updatedDomestic;
+  const _updatedLabel = _updatedIsNightly ? '마지막 갱신 (야간 미국증시)' : '마지막 갱신';
   const lastUpdatedHtml = _updatedFull
-    ? `<div class="cal-content-updated">마지막 갱신: ${escapeHtml(_updatedFull)}</div>`
+    ? `<div class="cal-content-updated">${_updatedLabel}: ${escapeHtml(_updatedFull)}</div>`
     : '';
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
