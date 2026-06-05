@@ -400,11 +400,11 @@ function _computeShareUrl(origin, code, dateStr, cacheToken, manifest, nowMs, ge
     _ogPageMayMissing = _ogPageMayMissingHeuristic; // manifest 미신뢰 → 보수적 degrade
   }
   const _useOgLanding = code && dateStr && !_ogPageMayMissing;
-  // Q-20260605-104 (대표 2026-06-05 21:31) — fallback URL news.html → pm320.html (News 페이지 이전).
-  //   OG landing 경로(/news/stock/{date}/{code}.html)는 무변경(상세 OG 페이지 별도 산출물). news.html 은
-  //   redirect stub 으로 query 보존되나, 신규 공유 URL 은 최종 목적지 pm320.html 직접 발급(불필요 hop 제거).
+  // Q-20260605-104 (21:31) — fallback URL news.html → pm320.html. Q-20260605-105 (21:52) — OG landing
+  //   경로 /news/stock → /pm320/stock 이전(신규 공유 URL = 새 경로 직접 발급). 옛 경로는 redirect stub 으로
+  //   무파손(과거 공유 링크 GET → /pm320/stock 동일 상대경로 + query 보존).
   return _useOgLanding
-    ? `${origin}/news/stock/${dateStr}/${code}.html?v=${cacheToken}`
+    ? `${origin}/pm320/stock/${dateStr}/${code}.html?v=${cacheToken}`
     : code
       ? `${origin}/pm320.html?stock=${code}${dateStr ? `&date=${dateStr}` : ''}&v=${cacheToken}`
       : (dateStr
