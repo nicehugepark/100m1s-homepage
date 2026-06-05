@@ -55,6 +55,20 @@ function deriveDate(post) {
   return '날짜 미상';
 }
 
+// Q-20260606-111 — 카드 마감 종가 SSOT = dailybars close (daily_20[-1].c). interp.close_price snapshot 은
+//   장중 cur_prc 가 섞여 마감 종가와 괴리(001440 close_price=74000=고가 사고). 일봉캔들(Q-20260515-CANDLE-
+//   SOURCE-UNIFY) 과 동일 source 로 통일. daily_20 부재 시 close_price → range_240d.current fallback (graceful).
+function _dailybarsClose(interp) {
+  if (!interp) return null;
+  const d20 = interp.daily_20;
+  if (Array.isArray(d20) && d20.length > 0 && typeof d20[d20.length - 1].c === 'number') {
+    return d20[d20.length - 1].c;
+  }
+  if (typeof interp.close_price === 'number') return interp.close_price;
+  if (interp.range_240d && typeof interp.range_240d.current === 'number') return interp.range_240d.current;
+  return null;
+}
+
 function renderNewsCard(card) {
   const j = card.judgment || '중립';
   // 강도 — % 숫자 대신 카테고리. 구버전 호환: confidence가 있으면 임계값으로 변환
@@ -707,16 +721,29 @@ function renderCalExpandContent(date, data) {
     return '';
   };
   // 펼침 본문 4 row (DSN-001 §3.4 카톡 6차 verbatim 정합)
-  const _pm320DetailRows = (pk) => {
+  const _pm320DetailRows = (pk, authClose) => {
     if (!pk) return '';
     const buyDate = pk.pick_date || '';
-    const entryPrice = _fmtKRW(pk.entry_price);
-    // 22:29 — 가격 우측 ratio % 표기 (대표 verbatim): 물타기 (-6.4%) / 익절 (+3.2%) / 물타기 시 익절 (+3.2%)
-    const wateringPrice = pk.watering_target_price != null ? `약 ${_fmtKRW(pk.watering_target_price)} (-6.4%)` : '—';
+    // Q-20260606-111 종가 SSOT 통일 (대표 02:11 + lead 02:15) — 매매 진입가(버튼)를 카드 종가(authClose =
+    //   daily_20[-1].c = 마감 dailybars close)로 통일. pk.entry_price(pick 시점 stale 가능) 가 authClose 와
+    //   다르면 authClose 우선 + 물타기·익절·물타기후익절 전부 authClose 기반 재계산 (build_card_history 동일 식:
+    //   watering=round(P0*0.936) / tp=round(P0*1.032) / tpAfterWatering=round((P0+2*P0*0.936)/3*1.032)).
+    //   authClose 미존재(과거 카드 daily_20 부재 등) 시 저장값 fallback (graceful, 추정 0).
+    const WATERING_RATIO = 0.936, TAKE_PROFIT_RATIO = 1.032;
+    const _p0 = (typeof authClose === 'number' && authClose > 0) ? authClose : pk.entry_price;
+    const _useRecompute = (typeof authClose === 'number' && authClose > 0 && authClose !== pk.entry_price);
+    const _watering = _useRecompute ? Math.round(_p0 * WATERING_RATIO) : pk.watering_target_price;
+    const _tp = _useRecompute ? Math.round(_p0 * TAKE_PROFIT_RATIO) : pk.take_profit_target_price;
+    const _tpAfter = _useRecompute
+      ? Math.round(((_p0 + 2 * _p0 * WATERING_RATIO) / 3) * TAKE_PROFIT_RATIO)
+      : pk.take_profit_after_watering_price;
+    const entryPrice = _fmtKRW(_p0);
+    // 표기 "약 X원" → "X원 부근" (대표 02:10, 카톡 f107de3 표기 통일). 22:29 ratio % 표기 유지.
+    const wateringPrice = _watering != null ? `${_fmtKRW(_watering)} 부근 (-6.4%)` : '—';
     const wateringWeight = pk.watering_weight || '첫 매수의 2배';
-    const tpPrice = pk.take_profit_target_price != null ? `약 ${_fmtKRW(pk.take_profit_target_price)} (+3.2%)` : '—';
-    const tpAfterPrice = pk.take_profit_after_watering_price != null
-      ? `약 ${_fmtKRW(pk.take_profit_after_watering_price)} (+3.2%)`
+    const tpPrice = _tp != null ? `${_fmtKRW(_tp)} 부근 (+3.2%)` : '—';
+    const tpAfterPrice = _tpAfter != null
+      ? `${_fmtKRW(_tpAfter)} 부근 (+3.2%)`
       : '—';
     const expiryDate = pk.expiry_date || '';
     // 결과 strip (state != running 시만)
@@ -778,7 +805,7 @@ function renderCalExpandContent(date, data) {
     return `<span class="cal-pm320-pick-badge" aria-label="오늘 15:20에 PM320이 추천한 종목" title="오늘 15:20 카톡 6차 추천"><svg class="cal-pm320-pick-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="cal-pm320-pick-label">오늘 PM320 추천</span></span>`;
   };
   // 추천/결과 row (DSN-001 §3 — .cal-feature-summary 마지막 줄)
-  const _buildPm320RecRow = (pk, code) => {
+  const _buildPm320RecRow = (pk, code, authClose) => {
     if (!pk) return '';
     const isPick = !!pk.is_pick;
     const variantClass = isPick ? '' : ' pm320-rec-row--virtual';
@@ -791,7 +818,7 @@ function renderCalExpandContent(date, data) {
       ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</span>`
       : '<span class="pm320-rec-result-mark pm320-rec-result-mark--running"></span>';
     const detailId = `pm320-rec-detail-${escapeHtml(code || '')}`;
-    const detailRows = _pm320DetailRows(pk);
+    const detailRows = _pm320DetailRows(pk, authClose);
     // §3.1 정정 (2026-06-03 design-lead 옵션 B 권고, 대표 critical catch 20:41 "통일성 미려함도 없고") —
     // chevron 폐기 + 텍스트 토글 "매매" ↔ "접기" (cal-detail-toggle 완전 정합).
     // 22:11 정정 (대표 verbatim "매매 보기 대신 매매 라고 이름 바꿔") — " 보기" suffix 폐기.
@@ -823,8 +850,9 @@ function renderCalExpandContent(date, data) {
       } else {
         themes = (themesData?.stocks?.[s.ticker]?.themes || []).slice(0, 2);
       }
-      // price도 limit-up 시 cur_prc 우선 (candle direction 정합)
-      const _priceBase = s.last_price ?? s.price ?? interp?.close_price;
+      // price도 limit-up 시 cur_prc 우선 (candle direction 정합). 비-limit = 마감 종가 SSOT(dailybars
+      //   daily_20[-1].c, Q-20260606-111) 우선 → kiwoom last_price snapshot 보다 정본. (limit-up 라이브는 cur_prc 유지.)
+      const _priceBase = _dailybarsClose(interp) ?? s.last_price ?? s.price ?? interp?.close_price;
       const price = _limitEff ? _limitEff.cur_prc : _priceBase;
       return { rank: i + 1, name: s.name, ticker: s.ticker, code: s.ticker, pct, amount: s.max_trade_amount ?? s.trade_amount, themes, interp, links: [], open: s.open ?? interp?.open_price, high: s.high ?? interp?.high_price, low: s.low ?? interp?.low_price, price, _source_union: s._source_union };
     });
@@ -841,7 +869,8 @@ function renderCalExpandContent(date, data) {
       // cycle20 P1 — limit-up/down status_badges 우선 (no-kiwoom 분기)
       const _limitEff = _extractLimitEffect(interp);
       const _pct = _limitEff ? _limitEff.flu_rt : (interp.change_pct ?? null);
-      const _price = _limitEff ? _limitEff.cur_prc : (interp.close_price ?? null);
+      // Q-20260606-111 — 비-limit 종가 = dailybars SSOT(daily_20[-1].c) 우선 (interp.close_price snapshot 폐기).
+      const _price = _limitEff ? _limitEff.cur_prc : (_dailybarsClose(interp) ?? null);
       todayStocks.push({
         rank: interp.rank || idx,
         name,
@@ -1346,7 +1375,15 @@ function renderCalExpandContent(date, data) {
         ? `<div class="cal-feature-badges">${pm320PickBadge}${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
       // DOC-20260603-DSN-001 §3 — PM320 추천/결과 row (default 접힘, 모든 카드).
-      const pm320RecRowHtml = _buildPm320RecRow(pm320Pick, it.code || '');
+      // Q-20260606-111 — 매매 진입가 SSOT = 카드 마감 종가(daily_20[-1].c = dailybars close, Q-20260515-CANDLE-
+      //   SOURCE-UNIFY 정합). pk.entry_price(pick 시점 stale 가능)와 다르면 본 값 우선 + 물타기·익절 재계산.
+      //   chain: daily_20[-1].c → interp.close_price → range_240d.current (모두 dailybars close 동일 소스).
+      const _d20Last = (Array.isArray(it.interp?.daily_20) && it.interp.daily_20.length > 0)
+        ? it.interp.daily_20[it.interp.daily_20.length - 1] : null;
+      const _pm320AuthClose = (_d20Last && typeof _d20Last.c === 'number') ? _d20Last.c
+        : (typeof it.interp?.close_price === 'number' ? it.interp.close_price
+          : (typeof it.interp?.range_240d?.current === 'number' ? it.interp.range_240d.current : null));
+      const pm320RecRowHtml = _buildPm320RecRow(pm320Pick, it.code || '', _pm320AuthClose);
       // 테마 칩은 링크 아래 별도 줄
       const sparkHtml = it.interp?.intraday
         ? `<div class="cal-feature-sparkline">${buildSparkline(it.interp.intraday.prices, it.interp.intraday.base ?? it.interp.intraday.open, candleDir)}</div>`
