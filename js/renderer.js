@@ -11,6 +11,17 @@ function _formatGeneratedAt(generatedAt) {
   return `${m[1]}:${m[2]} KST`;
 }
 
+// Q-20260606-113 (대표 verbatim "마지막 수정 시간이 보이지 않는다") — 날짜 포함 전체 형식.
+//   기존 _formatGeneratedAt 은 "HH:MM KST"(시:분만) → 날짜 정보 부재. 헤더에 "YYYY-MM-DD HH:MM KST"
+//   전체 형식으로 항상 표시한다(국내장 카드 유무·주말 무관). naive ISO / +09:00 offset 둘 다 동일 substring
+//   추출(timezone 의존성 회피, KST 가정 명시). 형식 불일치 시 빈 문자열(FLR-AGT-002 거짓 표시 차단).
+function _formatGeneratedAtFull(generatedAt) {
+  if (!generatedAt || typeof generatedAt !== 'string') return '';
+  const m = generatedAt.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+  if (!m) return '';
+  return `${m[1]} ${m[2]}:${m[3]} KST`;
+}
+
 // 신선도 라벨 (2026-05-27 대표 직접 발화) — 차단(blackout) 없이 stale 여부만 산출.
 // 대표 verbatim: "폴링 오류 화면(장중 데이터 갱신 중)이 존재하는 것 자체가 잘못."
 //   기존 `_computeMarketHardGuard`(종목 카드/차트 차단)를 제거하고, 항상 마지막 데이터를 렌더하되
@@ -951,9 +962,31 @@ function renderCalExpandContent(date, data) {
   const generatedSuffix = generatedAt
     ? ` · ${_fresh.stale ? '<span class="cal-day-meta__dot" aria-hidden="true">•</span>' : ''}<span class="cal-day-meta__updated${_fresh.stale ? ' is-stale' : ''}">${escapeHtml(_formatGeneratedAt(generatedAt))} 기준</span>`
     : '';
-  const metaText = todayStocks.length > 0
-    ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
-    : '—';
+  // Q-20260606-113 — 주말·휴장 suppress 상태에서는 국내장 종목 수("N개")를 헤더에 노출하지 않는다
+  //   (카드가 숨겨졌는데 "오늘의 종목 N개"는 모순). suppress 시 "주말·휴장" 라벨로 대체.
+  const _metaSuppressDomestic = (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true);
+  const metaText = _metaSuppressDomestic
+    ? '주말·휴장'
+    : (todayStocks.length > 0
+      ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
+      : '—');
+  // Q-20260606-113 (대표 verbatim "마지막 수정 시간이 보이지 않는다") — 날짜 헤더에 항상 표시.
+  //   기존 generatedSuffix("HH:MM 기준")는 metaText 안에 있어 국내장 카드 없는 날(주말·휴장 = todayStocks 0)
+  //   에는 metaText="—" 로 사라졌다. 별도 라인으로 분리하여 카드 유무·주말 무관 "마지막 갱신: YYYY-MM-DD HH:MM KST"
+  //   전체 형식으로 노출.
+  //   소스 우선순위(실제 존재하는 값만 사용 — FLR-AGT-002 거짓 표시 차단):
+  //     1) 국내장 build generated_at (평일 PM320 데이터 생성 시각)
+  //     2) kiwoom 마지막 폴링 last_snapshot_at (장중/장후 최신 스냅샷)
+  //     3) 야간 미국증시 built_at_kst (주말·휴장일 = 국내장 데이터 부재 시 최신 갱신 = 미장 빌드)
+  //   세 소스 모두 부재 시 빈 문자열 → 미표시(거짓 추정 금지).
+  const _nightlyBuiltAt = (data && data.nightlyUs && typeof data.nightlyUs.built_at_kst === 'string')
+    ? data.nightlyUs.built_at_kst : '';
+  const _updatedFull = _formatGeneratedAtFull(generatedAt)
+    || _formatGeneratedAtFull(lastSnapshotAt)
+    || _formatGeneratedAtFull(_nightlyBuiltAt);
+  const lastUpdatedHtml = _updatedFull
+    ? `<div class="cal-content-updated">마지막 갱신: ${escapeHtml(_updatedFull)}</div>`
+    : '';
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
   const macroEvents = (data.macroEvents || [])
@@ -1687,6 +1720,20 @@ function renderCalExpandContent(date, data) {
   const _pm320NoPickHtml = (!_isSingleCardMode && data && data.pm320NoPick === true && !isMarketClosed(date))
     ? `<div class="cal-pm320-no-pick" role="status" aria-label="오늘은 추천 종목이 없습니다"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg><span>오늘은 추천 종목이 없습니다</span></div>`
     : '';
+  // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
+  //   suppress 플래그(calendar.js initCalendar 자동 폴백 시 set, 사용자 날짜 클릭 시 clear)가 true 면
+  //   국내장 종목 카드 list 를 렌더하지 않고 graceful 안내 한 줄로 대체한다. 야간 미국증시 섹션
+  //   (_nightlyUsHtml) 은 본 분기 밖 별 path → 토요일 아침 최신 미장 데이터 그대로 유지.
+  //   안내 톤 = 기존 "오늘은 장이 쉽니다"(휴장 안내) + DSN §3.6.8(추천 부재 안내) 패턴과 통일.
+  const _suppressDomestic = !_isSingleCardMode
+    && (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true);
+  const _suppressDomesticHtml = (() => {
+    const dl = formatKoDate(date);   // 표시 중 데이터 기준일(직전 거래일)
+    return `<div style="text-align:center;padding:32px 0;">`
+      + `<div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">주말·휴장일에는 국내장 종목을 표시하지 않습니다</div>`
+      + `<div style="font-size:12px;color:var(--dm);line-height:1.6;">직전 거래일${dl ? ' (' + escapeHtml(dl) + ')' : ''} 데이터는 위 야간 미국증시 아래에서 확인하거나, 왼쪽 달력에서 날짜를 선택하세요</div>`
+      + `</div>`;
+  })();
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
@@ -1694,7 +1741,7 @@ function renderCalExpandContent(date, data) {
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
       ${_rankingBannerOut}
-      ${todayStocks.length > 0 ? `
+      ${_suppressDomestic ? _suppressDomesticHtml : (todayStocks.length > 0 ? `
         <div class="cal-trade-list" style="margin-top:10px;">
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
@@ -1702,7 +1749,7 @@ function renderCalExpandContent(date, data) {
         ${_isSingleCardMode
           ? `<div class="cal-empty" style="padding:24px 0;">단독 카드 mode — 종목 코드 ${escapeHtml(_singleCardCode || '')} 본 본 데이터 없음</div>`
           : (isMarketClosed(date) ? (() => { const nd = getNextTradingDate(date); const nl = nd ? formatKoDate(nd) : ''; return `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nl ? '다음 거래일 ' + escapeHtml(nl) : ''}</div></div>`; })() : '<div class="cal-empty" style="padding:24px 0;">조건검색 데이터 없음 — 장 마감 후 또는 파이프라인 실행 후 업데이트</div>')}
-      `}
+      `)}
     </div>
   `;
 
@@ -1717,6 +1764,7 @@ function renderCalExpandContent(date, data) {
       <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
         <div class="cal-content-date">${formatKoDate(date)}</div>
         <div class="cal-content-meta">${metaText}</div>
+        ${lastUpdatedHtml}
       </div>
       ${_nightlyUsHtml}
       ${todayHtml}

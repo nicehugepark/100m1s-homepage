@@ -204,6 +204,9 @@ function renderCalendar() {
 
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
+  // Q-20260606-113 — 사용자가 달력 날짜를 직접 선택하면 주말·휴장 국내장 카드 suppress 해제.
+  //   (자동 폴백 진입과 달리 명시적 과거 거래일 조회는 그 날 국내장 카드를 정상 표시해야 함)
+  window._pm320SuppressDomesticCards = false;
   toggleThemeSections(date);
   // Static URL — /pm320/stock/{date}.html (Q-20260605-105, News→PM320 이전). 날짜별 OG 이미지 매칭.
   //   옛 /news/stock/{date}.html 은 redirect stub 으로 무파손(과거 공유 링크 GET → 새 경로 + query).
@@ -247,9 +250,18 @@ async function initCalendar() {
   const hasUrlDate = (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate))
     || (hashDate && /^\d{4}-\d{2}-\d{2}$/.test(hashDate));
   let initialDate = hasUrlDate ? (urlDate || hashDate) : todayStr;
+  // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
+  //   판정 = 단순 요일이 아닌 isMarketClosed(주말 + KRX market_closed 휴장일 SSOT). 오늘이 비거래일이고
+  //   URL 명시 날짜가 없을 때(=자동 폴백 진입)만 suppress 플래그를 세운다. 사용자가 달력에서 과거 거래일을
+  //   직접 클릭하면(onCalCellClick) 플래그 해제 → 그 날 국내장 카드는 정상 표시(무회귀). 야간 미국증시 섹션은
+  //   본 플래그와 무관(renderer _nightlyUsHtml 별 path) → 토요일 아침 최신 미장 데이터는 항상 유지.
+  const _todayClosed = (typeof isMarketClosed === 'function')
+    ? isMarketClosed(todayStr)
+    : (isWeekendDate(todayStr) || isHoliday(todayStr));
+  window._pm320SuppressDomesticCards = (!hasUrlDate && _todayClosed);
   // URL 날짜가 없고, 오늘이 주말/휴장이면 최근 거래일로 폴백
   // 오늘이 평일이면 calIndex에 없어도 항상 오늘 선택 (데이터 비동기 로드)
-  if (!hasUrlDate && (isWeekendDate(todayStr) || isHoliday(todayStr))) {
+  if (!hasUrlDate && _todayClosed) {
     if (calIndex && calIndex.days) {
       const collectedDays = Object.keys(calIndex.days)
         .filter(d => d <= todayStr)
