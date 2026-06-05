@@ -121,7 +121,8 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
 // Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 빌더.
 //   DSN §3.6.9. 입력 us = data.nightlyUs (data-loader.loadNightlyUsSummary 검증 산출).
 //   null/부재/지수 0건 시 '' 반환 → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단, 빈 카드/mock 금지).
-//   3카드(나스닥/S&P 500/다우존스) 가로 1열 flex 1:1:1. renderIndexCard(components/index-card.js) 재사용.
+//   순서 (대표 2026-06-05 20:11 B안): 타이틀 → 미국발 뉴스 요약 → 지수 카드 세로 나열
+//     (국내장 "오늘의 뉴스요약 → 종목카드 list" 순서·구조 동일). 카드 = 종목카드 동일형 (renderIndexCard).
 //   뉴스 로우: 기존 .cal-narr-pill 칩 스타일 공유 (중복 render 함수 0건) + source 약어·원문 링크 (법무 조건).
 function _buildNightlyUsHtml(us) {
   if (!us || typeof us !== 'object') return '';
@@ -161,8 +162,8 @@ function _buildNightlyUsHtml(us) {
     + `<div class="nightly-us-title">야간 미국증시</div>`
     + dateLabel
     + `</div>`
-    + `<div class="nightly-us-cards">${cardsHtml}</div>`
     + newsHtml
+    + `<div class="nightly-us-cards">${cardsHtml}</div>`
     + `</section>`;
 }
 
