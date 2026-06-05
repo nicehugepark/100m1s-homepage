@@ -205,9 +205,10 @@ function renderCalendar() {
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
   toggleThemeSections(date);
-  // Static URL — /news/{date}.html로 공유 시 날짜별 OG 이미지 매칭
+  // Static URL — /pm320/stock/{date}.html (Q-20260605-105, News→PM320 이전). 날짜별 OG 이미지 매칭.
+  //   옛 /news/stock/{date}.html 은 redirect stub 으로 무파손(과거 공유 링크 GET → 새 경로 + query).
   if (pushState !== false) {
-    history.pushState(null, '', '/news/stock/' + date + '.html');
+    history.pushState(null, '', '/pm320/stock/' + date + '.html');
   }
   renderCalendar();
   const inner = document.getElementById('cal-content');
