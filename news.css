@@ -1489,7 +1489,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px; color: var(--dm); font-weight: 600;
   white-space: nowrap;
 }
-/* 3카드 가로 1열 flex 1:1:1 — 데스크탑·모바일 공통 (숨김 0건) */
+/* 데스크탑 3카드 가로 1열 flex 1:1:1 (숨김 0건). 모바일은 1줄 1카드 세로 stack(아래 @media). */
 .nightly-us-cards {
   display: flex; gap: 8px; align-items: stretch;
 }
@@ -1498,27 +1498,35 @@ body.single-card-mode { background: var(--bg) !important; }
   background: var(--sf);
   border: 1px solid var(--bd);
   border-radius: 10px;
-  padding: 10px 8px;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  text-align: center;
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 6px;
 }
 .idx-card-name {
   font-size: 12px; font-weight: 700; color: var(--tx);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
-.idx-card-spark svg, .idx-card-mini svg, .idx-card-today svg {
+/* 카드 내부 2열 grid — 좌상 스파크라인/좌하 등락률 | 우상 일봉캔들/우하 포인트 */
+.idx-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  column-gap: 10px; row-gap: 4px;
+}
+.idx-card-cell { min-width: 0; }
+.idx-card-spark svg, .idx-card-mini svg {
   display: block; width: 100%; height: auto;
 }
-.idx-card-spark { width: 100%; max-width: 80px; }
-.idx-card-mini { width: 100%; max-width: 100px; }
-.idx-card-today { width: 18px; }
-.idx-card-point {
-  font-size: 14px; font-weight: 800; color: var(--tx);
-  font-family: 'SF Mono', monospace; margin-top: 2px;
-}
+.idx-card-spark { grid-column: 1; grid-row: 1; max-width: 90px; }
+.idx-card-mini { grid-column: 2; grid-row: 1; max-width: 110px; justify-self: end; }
 .idx-card-pct {
+  grid-column: 1; grid-row: 2;
   font-size: 12px; font-weight: 700;
   display: flex; align-items: center; gap: 2px;
+}
+.idx-card-point {
+  grid-column: 2; grid-row: 2;
+  font-size: 14px; font-weight: 800; color: var(--tx);
+  font-family: 'SF Mono', monospace; justify-self: end; text-align: right;
 }
 .idx-card-arrow { font-size: 9px; }
 
@@ -1538,17 +1546,16 @@ body.single-card-mode { background: var(--bg) !important; }
   white-space: nowrap; flex-shrink: 0;
 }
 
-/* 모바일 — 폰트/패딩/자릿수 축소만, 숨김 0건 (3카드 가로 유지) */
-@media (max-width: 880px) {
+/* 모바일 (대표 2026-06-05 20:02 요청) — 1줄 1지수 세로 stack (가로 3분할 폐기, 숨김 0건).
+   1줄 1카드면 폭 여유 충분 → 카드 내부 2열([스파크라인/등락률]|[일봉캔들/포인트]) 동일 유지. */
+@media (max-width: 767px) {
   .nightly-us-summary { padding: 12px; }
-  .nightly-us-cards { gap: 6px; }
-  .idx-card { padding: 8px 5px; gap: 3px; }
-  .idx-card-name { font-size: 10px; }
-  .idx-card-point { font-size: 12px; }
-  .idx-card-pct { font-size: 10px; }
-  .idx-card-spark { max-width: 60px; }
-  .idx-card-mini { max-width: 72px; }
-  .nightly-us-news-summary { font-size: 11px; }
+  .nightly-us-cards { flex-direction: column; gap: 8px; }
+  .idx-card { padding: 10px 12px; }
+  .idx-card-name { font-size: 12px; }
+  .idx-card-spark { max-width: 110px; }
+  .idx-card-mini { max-width: 140px; }
+  .nightly-us-news-summary { font-size: 12px; }
 }
 
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
