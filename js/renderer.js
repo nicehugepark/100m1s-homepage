@@ -240,6 +240,81 @@ function renderPreMarketEmpty(container, date, prevDate, prevData) {
   }
 }
 
+// 🔴 P0-2 (FLR-20260605-TEC-001) — 공유 링크 존재 보장 manifest (모듈 스코프, 1회 정의).
+//   `data/page-manifest.json` = 배포된 종목페이지 목록 { pages: { "{date}": ["{code}", …] } }.
+//   빌드/sync(scripts/build-page-manifest.js, kiwoom_cron push add-set 시점)가 라이브 디렉토리
+//   `news/stock/{date}/{code}.html` 실파일을 스캔해 생성 → manifest = 실제 배포 상태 SSOT.
+//   공유 URL 생성 시 대상 페이지가 manifest 에 있으면 OG landing 경로, 없으면 news.html 폴백
+//   → 404 URL 절대 생성 금지. manifest 부재/parse 실패 시 = 보수적 폴백(PRE_MARKET 휴리스틱
+//   으로 degrade — 과거 카드 OG 무회귀 + 오늘·장전 404 회피).
+//   prefetch: 핸들러 등록 시 비동기 1회 로드 → window._pageManifest (Promise 캐시).
+function _loadPageManifest() {
+  if (window._pageManifestPromise) return window._pageManifestPromise;
+  const _v = (typeof window.SW_VERSION !== 'undefined' && window.SW_VERSION)
+    ? window.SW_VERSION
+    : new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  window._pageManifestPromise = fetch(`/data/page-manifest.json?v=${_v}`)
+    .then(r => (r && r.ok ? r.json() : null))
+    .then(j => {
+      // schema validation — pages 가 object 여야 신뢰. 아니면 null(보수적 폴백).
+      if (j && typeof j === 'object' && j.pages && typeof j.pages === 'object') {
+        window._pageManifest = j;
+        return j;
+      }
+      window._pageManifest = null;
+      return null;
+    })
+    .catch(() => { window._pageManifest = null; return null; });
+  return window._pageManifestPromise;
+}
+window._loadPageManifest = _loadPageManifest;
+
+// 대상 종목페이지가 라이브에 존재하는지 manifest 로 판정 (순수 함수, 테스트용 window 노출).
+//   return true  = manifest 가 존재 명시 → OG 경로 사용 가능
+//   return false = manifest 가 부재 명시 → 폴백(news.html)
+//   return null  = manifest 자체 없음/미신뢰 → 판정 불가(호출부가 PRE_MARKET 가드로 degrade)
+function _manifestHasPage(date, code, manifest) {
+  const m = manifest || window._pageManifest;
+  if (!m || !m.pages || typeof m.pages !== 'object') return null;
+  const list = m.pages[date];
+  if (!Array.isArray(list)) {
+    // 해당 날짜 키 자체가 없음 = 그 날짜 페이지 0건 배포 = 부재 확정.
+    return false;
+  }
+  return list.indexOf(code) !== -1;
+}
+window._manifestHasPage = _manifestHasPage;
+
+// 🔴 P0-2 공유 URL 단일 출처(SSOT) 순수 함수 — 핸들러·셀프테스트 공용(drift 봉쇄).
+//   입력: origin, code, dateStr, cacheToken, manifest, nowMs, getMarketStateFn
+//   manifest 가 페이지 존재/부재를 명시하면 PRE_MARKET 휴리스틱보다 정밀(라이브 실파일 기준).
+//   manifest 미신뢰(null) 시에만 기존 PRE_MARKET 휴리스틱으로 degrade (보수적 폴백·무회귀).
+//   404 URL 절대 생성 안 함 — 미배포 확정 시 항상 정적 news.html(200) 폴백.
+function _computeShareUrl(origin, code, dateStr, cacheToken, manifest, nowMs, getMarketStateFn) {
+  const _nowKst = new Date((typeof nowMs === 'number' ? nowMs : Date.now()) + 9 * 3600 * 1000);
+  const _todayKst = `${_nowKst.getUTCFullYear()}-${String(_nowKst.getUTCMonth() + 1).padStart(2, '0')}-${String(_nowKst.getUTCDate()).padStart(2, '0')}`;
+  const _ogPageMayMissingHeuristic = dateStr === _todayKst
+    && (typeof getMarketStateFn === 'function' ? getMarketStateFn(dateStr) === 'PRE_MARKET' : false);
+  const _verdict = (code && dateStr) ? _manifestHasPage(dateStr, code, manifest) : null;
+  let _ogPageMayMissing;
+  if (_verdict === true) {
+    _ogPageMayMissing = false;           // 배포 확정 → OG 경로 (휴리스틱 무시, OG 미리보기 유지)
+  } else if (_verdict === false) {
+    _ogPageMayMissing = true;            // 미배포 확정 → 폴백 (404 봉쇄)
+  } else {
+    _ogPageMayMissing = _ogPageMayMissingHeuristic; // manifest 미신뢰 → 보수적 degrade
+  }
+  const _useOgLanding = code && dateStr && !_ogPageMayMissing;
+  return _useOgLanding
+    ? `${origin}/news/stock/${dateStr}/${code}.html?v=${cacheToken}`
+    : code
+      ? `${origin}/news.html?stock=${code}${dateStr ? `&date=${dateStr}` : ''}&v=${cacheToken}`
+      : (dateStr
+        ? `${origin}/news.html?date=${dateStr}&v=${cacheToken}`
+        : `${origin}/news.html?v=${cacheToken}`);
+}
+window._computeShareUrl = _computeShareUrl;
+
 function renderCalExpandContent(date, data) {
   // design-news-time-state-v1 (catch 1) — 시점 분기 PRE_MARKET 빈 상태.
   // 본 함수 진입점에서 getMarketState로 분기. 거래일 09:00 미만 시 카드 list 미렌더.
@@ -1810,6 +1885,7 @@ function renderCalExpandContent(date, data) {
 
   // 공유 버튼 이벤트 위임 (1회만 등록)
   if (!window._cardShareInit) {
+    _loadPageManifest(); // prefetch (논블로킹) — 첫 공유 클릭 전 캐시 워밍
     document.addEventListener('click', async e => {
       const btn = e.target.closest('.cal-share-btn');
       if (!btn) return;
@@ -1842,23 +1918,18 @@ function renderCalExpandContent(date, data) {
       //   URL path는 그대로 유지 (서버 routing 무관, query param은 정적 파일 fetch에 영향 없음).
       //   양 layer cascade 봉쇄 — HTML 캐시 stale + PNG 캐시 stale 모두 break.
       const _cacheToken = new Date().toISOString().slice(0, 13).replace(/[-T]/g, '');
-      // 🔴 404 가드 (2026-06-05): 카드 날짜의 OG landing 페이지가 아직 미생성이면 OG 경로 금지.
-      //   당일(오늘 KST) 페이지는 장중 generate_stock_og.py 산출 전(장 시작 전·09:00 이전 등)엔
-      //   `/news/stock/{today}/{code}.html`이 미생성 → 404. 정상 과거 거래일 카드는 항상 생성됨.
-      //   미생성 가능성 있는 "오늘 카드 + 장 미개시" 시엔 OG 경로 대신 query URL(news.html)로 폴백.
-      //   query URL은 항상 200 (정적 news.html). 정상 과거 카드는 OG 경로 그대로(=fix 목적).
-      const _nowKst = new Date(Date.now() + 9 * 3600 * 1000);
-      const _todayKst = `${_nowKst.getUTCFullYear()}-${String(_nowKst.getUTCMonth() + 1).padStart(2, '0')}-${String(_nowKst.getUTCDate()).padStart(2, '0')}`;
-      const _ogPageMayMissing = dateStr === _todayKst
-        && (typeof getMarketState === 'function' ? getMarketState(dateStr) === 'PRE_MARKET' : false);
-      const _useOgLanding = code && dateStr && !_ogPageMayMissing;
-      const shareUrl = _useOgLanding
-        ? `${window.location.origin}/news/stock/${dateStr}/${code}.html?v=${_cacheToken}`
-        : code
-          ? `${window.location.origin}/news.html?stock=${code}${dateStr ? `&date=${dateStr}` : ''}&v=${_cacheToken}`
-          : (dateStr
-            ? `${window.location.origin}/news.html?date=${dateStr}&v=${_cacheToken}`
-            : `${window.location.origin}/news.html?v=${_cacheToken}`);
+      // 🔴 404 가드 (2026-06-05) + P0-2 manifest (FLR-20260605-TEC-001):
+      //   카드 날짜의 OG landing 페이지가 라이브에 실제 배포돼 있는지 manifest 로 검증 →
+      //   배포돼 있으면 OG 경로(`/news/stock/{date}/{code}.html`, OG 미리보기 유지),
+      //   없으면 정적 news.html(200) 폴백 → 404 URL 절대 생성 금지.
+      //   manifest 미신뢰 시엔 기존 PRE_MARKET 휴리스틱으로 degrade (보수적·무회귀).
+      //   결정 로직 = _computeShareUrl SSOT (핸들러·셀프테스트 공용, drift 봉쇄).
+      await _loadPageManifest();
+      const shareUrl = _computeShareUrl(
+        window.location.origin, code, dateStr, _cacheToken,
+        window._pageManifest, Date.now(),
+        (typeof getMarketState === 'function' ? getMarketState : null),
+      );
       try {
         if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
           // URL만 공유 — 메신저가 title+text+url을 모두 붙여 중복 생기는 이슈 회피
