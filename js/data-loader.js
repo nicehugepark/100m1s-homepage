@@ -178,7 +178,10 @@ async function loadNightlyUsSummary(date) {
     trade_date_local: raw.trade_date_local,
     indices: validIndices,
     news_chips: newsChips,
-    futures  // null이면 선물 줄 미렌더 (장외/stale/미합류)
+    futures,  // null이면 선물 줄 미렌더 (장외/stale/미합류)
+    // Q-20260606-113 — 야간 미국증시 생성 시각 (us-indices/{date}.json built_at_kst).
+    //   주말·휴장일 국내장 generated_at 부재 시 헤더 "마지막 갱신" 폴백 소스로 사용.
+    built_at_kst: (typeof raw.built_at_kst === 'string') ? raw.built_at_kst : ''
   };
 }
 
