@@ -350,6 +350,19 @@ section.block {
   border-radius: 4px;
   letter-spacing: 0.5px;
 }
+.product-card.preview::before {
+  content: 'BETA';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--am);
+  background: var(--am3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
 .product-card .code {
   font-size: 11px;
   font-weight: 700;
@@ -553,6 +566,13 @@ footer .copyright {
         <div class="name">PM320</div>
         <div class="ko">오후 3시 20분</div>
         <div class="desc">장 마감 10분 전. 하루 단 한 종목, 데이터로 선별합니다.</div>
+      </a>
+      <!-- DNS 연결 시 bybias.100m1s.com 교체 -->
+      <a href="https://nicehugepark.github.io/100m1s-bybias/" target="_blank" rel="noopener" class="product-card preview">
+        <div class="code">P006</div>
+        <div class="name">ByBias</div>
+        <div class="ko">바이바이어스</div>
+        <div class="desc">팬이 모이는 일정 → 미리 싸게 잡는 법. K-pop 공연 원정 항공·숙박 타이밍 가이드.</div>
       </a>
       <div class="product-card coming">
         <div class="code">P001</div>
