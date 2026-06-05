@@ -139,7 +139,8 @@ function _buildNightlyUsHtml(us) {
     dateLabel = `<span class="nightly-us-datelabel">${escapeHtml(md)} (현지 마감)</span>`;
   }
 
-  // 미국발 뉴스 요약 — source 약어 + 원문 딥링크 (법무 조건: 출처+링크 필수).
+  // 미국발 뉴스 요약 — 국내 "오늘의 뉴스요약" 템플릿 1:1 (대표 20:29). 타이틀 = .cal-section-title(금색 바)
+  //   + 칩 = .cal-narr-stack/.cal-narr-pill (국내 내러티브 칩 클래스 그대로, 변형 0). 차이 = 내용 + 출처 약어·딥링크만.
   let newsHtml = '';
   if (Array.isArray(us.news_chips) && us.news_chips.length > 0) {
     const chips = us.news_chips.map(c => {
@@ -147,13 +148,13 @@ function _buildNightlyUsHtml(us) {
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
       const summary = escapeHtml(sanitize(c.summary || ''));
       const source = escapeHtml(sanitize(c.source || ''));
+      // 국내 .cal-narr-pill 칩 시각 그대로 + 출처 약어(칩 끝 최소 형태, 칩 문법 무파괴) + 딥링크(a 래핑).
       return `<a class="cal-narr-pill nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
-        + `<span class="nightly-us-news-summary">${summary}</span>`
-        + `<span class="nightly-us-news-source">${source}</span></a>`;
+        + `${summary}<span class="nightly-us-news-source">${source}</span></a>`;
     }).filter(Boolean).join('');
     if (chips) {
-      newsHtml = `<div class="nightly-us-news"><div class="nightly-us-news-title">미국발 뉴스 요약</div>`
-        + `<div class="cal-narr-stack nightly-us-news-stack">${chips}</div></div>`;
+      newsHtml = `<div class="cal-section-title">미국발 뉴스 요약</div>`
+        + `<div class="cal-narr-stack">${chips}</div>`;
     }
   }
 

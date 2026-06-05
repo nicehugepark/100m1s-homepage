@@ -1470,11 +1470,14 @@ body.single-card-mode { background: var(--bg) !important; }
 /* ───── Q-20260605-103 Phase 3 — 야간 미국증시 요약 (DSN §3.6.9) ─────
    보조 위계: --bg2 muted 배경, 타이틀 1단계 축소, 여백 압축, 펼침 고정.
    "오늘의 뉴스요약"(주 위계, --am 골드 타이틀)보다 시각적으로 한 단계 낮게. */
+/* 보조 위계 muted 컨테이너. 단 대표 20:26 "정렬 1:1" — 지수 카드가 국내 카드(998px)와 동일 폭이 되도록
+   좌우 padding 0 (세로 padding만 유지). border 폭(1px×2)도 카드 폭에서 제외되므로 box-sizing 보정 불요.
+   muted --bg2 배경은 full-bleed band 로 유지(국내 종목카드 list 대비 한 단계 낮은 위계 시각 유지). */
 .nightly-us-summary {
   background: var(--bg2);
   border: 1px solid var(--bd);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 14px 0;
   margin-bottom: 16px;
 }
 .nightly-us-head {
@@ -1496,32 +1499,31 @@ body.single-card-mode { background: var(--bg) !important; }
 .nightly-us-cards {
   display: flex; flex-direction: column; gap: 6px;
 }
-/* 지수 전용 modifier — 종목카드와 동일 클래스 사용, 차이(공유버튼 부재)만 보정. 폰트 override 0건. */
+/* 지수 전용 modifier — 종목카드와 동일 클래스 사용, 차이(공유버튼 부재)만 보정. 폰트 override 0건.
+   대표 20:26 catch: 헤더 DOM 1:1 복제 — head-left 4-child(rank/당일캔들/스파크라인/candles20) 동일. */
 .cal-feature-card--idx { background: var(--sf); }
 .cal-feature-card--idx .cal-feature-head.v2 {
-  padding-right: 12px;  /* 공유버튼 없음 → 종목카드 40px 우측 여백 회수 */
+  padding-right: 12px;  /* 공유버튼 없음 → 종목카드 40px 우측 여백 회수 (국내는 공유버튼 absolute) */
 }
+/* 지수는 거래대금 rank 개념 부재 → 빈 rank 슬롯. 국내 rank('#NN') actual width 12px 와 동일 폭 고정(정렬 Δx=0). */
+.cal-feature-card--idx .cal-trade-rank { width: 12px; flex-shrink: 0; }
 .idx-card-arrow { font-size: 0.8em; margin-right: 1px; }
 
-/* 미국발 뉴스 요약 — .cal-narr-pill 스타일 공유 + source 약어·딥링크 (지수 카드 위에 위치) */
-.nightly-us-news { margin-bottom: 12px; }
-.nightly-us-news-title {
-  font-size: 11px; font-weight: 800; color: var(--dm);
-  letter-spacing: 0.4px; margin-bottom: 6px;
-}
-.nightly-us-newschip {
-  text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.nightly-us-newschip:hover { background: var(--am3); }
+/* 미국발 뉴스 요약 (대표 20:29) — 국내 "오늘의 뉴스요약" 템플릿 1:1: 타이틀 .cal-section-title(금색 바)
+   + 칩 .cal-narr-stack/.cal-narr-pill 클래스 그대로 (배경/테두리/radius/폰트/줄간격/여백 전부 국내 칩 상속).
+   본 블록은 (a) 칩 list ↔ 카드 list 사이 간격 + (b) 출처 약어 span 최소 스타일 + (c) a 링크 밑줄 제거 만.
+   칩 배경/hover/radius override 0건 (.cal-narr-pill 원본 유지 — 이질감 0). */
+.nightly-us-summary .cal-section-title { margin-bottom: 8px; }
+.nightly-us-summary .cal-narr-stack { margin-bottom: 14px; }
+.nightly-us-newschip { text-decoration: none; }
 .nightly-us-news-source {
+  margin-left: 8px;
   font-size: 10px; font-weight: 700; color: var(--am);
-  white-space: nowrap; flex-shrink: 0;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
   .nightly-us-summary { padding: 12px; }
-  .nightly-us-news-summary { font-size: 12px; }
 }
 
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
