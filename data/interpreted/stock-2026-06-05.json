@@ -1,6 +1,6 @@
 {
   "date": "2026-06-05",
-  "generated_at": "2026-06-05T09:15:30.136978",
+  "generated_at": "2026-06-05T09:27:14.967309",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -18,10 +18,6 @@
     {
       "title": "중동재건",
       "summary": "이란 휴전 신호 → 중동 지역 재건·에너지 투자 본격 기대 → 건설·에너지 섹터 수혜"
-    },
-    {
-      "title": "AI기판",
-      "summary": "AI 데이터센터 수요 급증 → 반도체 기판 공급 부족 심화 → 반도체 기판·부품 섹터 수혜"
     },
     {
       "title": "배당자사주",
@@ -42,6 +38,10 @@
     {
       "title": "칩약세",
       "summary": "반도체 공급 과잉 신호 본격화 → 마이크론·브로드컴 선물 약세 + LG전자 22% 급락 → 칩 가격 인하 압박 장기화"
+    },
+    {
+      "title": "AI조정",
+      "summary": "AI 투자 정점 우려 → 라모프 지출억제 + 블랙스톤 사모펀드 인출제한 → 실물자산 회피 신호 강화"
     }
   ],
   "narratives": [],
@@ -49,46 +49,53 @@
   "themes_tree": null,
   "stocks": [
     {
-      "code": "225430",
-      "name": "케이엠제약",
+      "code": "377480",
+      "name": "마음AI",
       "rank": 1,
-      "trade_amount": 2579000000,
-      "change_pct": 29.85,
-      "close_price": 2675,
-      "open_price": 2675,
-      "high_price": 2675,
-      "low_price": 2675,
-      "industry": "기타 화학제품 제조업",
-      "sector": "구강제품, 화장품,기타 생활용품",
+      "trade_amount": 52301000000,
+      "change_pct": 5.4,
+      "close_price": null,
+      "open_price": 17060,
+      "high_price": 21500,
+      "low_price": 16630,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "종합 인공지능 엔진 및 플랫폼",
       "themes": [
-        "K-뷰티"
+        "AI",
+        "로봇"
       ],
       "theme_paths": [
         {
-          "name": "K-뷰티",
+          "name": "AI",
           "path": [
-            "K-뷰티"
+            "AI"
+          ]
+        },
+        {
+          "name": "로봇",
+          "path": [
+            "로봇"
           ]
         }
       ],
-      "pick_count": 1,
+      "pick_count": 2,
       "prev_pick": {
-        "date": "2026-06-02",
+        "date": "2026-06-04",
         "rank": 13,
-        "change_pct": 29.8,
-        "trade_amount": 1140000000
+        "change_pct": 29.99,
+        "trade_amount": 21969000000
       },
       "bullish_today": false,
       "bullish_streak": 0,
       "bullish_dates": [],
       "news": [
         {
-          "title": "케이엠제약, 美시장 공략 본격화…현지 파트너와 전략적 협력 추진",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02719126645477456",
-          "source": "이데일리",
-          "published_at": "2026-06-01T00:29:18",
-          "causal_chain": "케이엠제약의 미국시장 공략 본격화(현지 파트너 전략적 협력)와 '뽀로로 치약' 리뉴얼 등 자체 사업 확장 기대가 매수 심리를 자극 → 당일 종가 2,690원(+9.80%)으로 상승. 다만 거래대금이 11억원에 그쳐 수급은 제한적이었고, 52주 고가 6,850원 대비 -60.7% 낮은 수준에서의 반등이다.",
-          "macro_event": null,
+          "title": "한국피지컬AI협회·IACT·마음AI, 대구 피지컬AI 기술확산·산단AX 가속화 협력",
+          "url": "https://www.etnews.com/20260521000011",
+          "source": "전자신문",
+          "published_at": "2026-05-21T07:00:00",
+          "causal_chain": "피지컬AI(현실에서 물리적으로 작동하는 AI)·로봇 SW 두뇌 산업이 부각되며, 종합 AI 엔진·플랫폼을 자체 보유한 마음AI가 직접 수혜 영역에 위치 → 한국피지컬AI협회(회장=마음AI 대표 유태준)·경북대 IACT와 MOU로 공동 R&D·산단 AX 확산 추진, '진도봇' 등 SW로 역할이 정의되는 피지컬AI 로봇 플랫폼 보유 → 다만 협약·전시 단서는 단발 모멘텀에 그쳐, 당일 종가 13,850원(-2.67%)·거래대금 13억원으로 거래 위축, 52주 고가(27,950원) 대비 -50.4% 부진한 흐름.",
+          "macro_event": "피지컬AI(현실 구현형 AI)·로봇 두뇌 SW 산업 확산",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -99,12 +106,12 @@
           "article_type": "호재"
         },
         {
-          "title": "케이엠제약, ‘뽀로로 치약’ 리뉴얼…연령별 맞춤 구강케어 강화",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02784726645451216",
-          "source": "이데일리",
-          "published_at": "2026-05-20T23:59:09",
-          "causal_chain": "케이엠제약의 미국시장 공략 본격화(현지 파트너 전략적 협력)와 '뽀로로 치약' 리뉴얼 등 자체 사업 확장 기대가 매수 심리를 자극 → 당일 종가 2,690원(+9.80%)으로 상승. 다만 거래대금이 11억원에 그쳐 수급은 제한적이었고, 52주 고가 6,850원 대비 -60.7% 낮은 수준에서의 반등이다.",
-          "macro_event": null,
+          "title": "마음AI, 소프트웨어 두뇌 끼운 'AI 로봇'…스스로 임무 수행",
+          "url": "https://www.hankyung.com/article/2026042151661",
+          "source": "한경",
+          "published_at": "2026-04-21T06:31:58",
+          "causal_chain": "피지컬AI(현실에서 물리적으로 작동하는 AI)·로봇 SW 두뇌 산업이 부각되며, 종합 AI 엔진·플랫폼을 자체 보유한 마음AI가 직접 수혜 영역에 위치 → 한국피지컬AI협회(회장=마음AI 대표 유태준)·경북대 IACT와 MOU로 공동 R&D·산단 AX 확산 추진, '진도봇' 등 SW로 역할이 정의되는 피지컬AI 로봇 플랫폼 보유 → 다만 협약·전시 단서는 단발 모멘텀에 그쳐, 당일 종가 13,850원(-2.67%)·거래대금 13억원으로 거래 위축, 52주 고가(27,950원) 대비 -50.4% 부진한 흐름.",
+          "macro_event": "피지컬AI(현실 구현형 AI)·로봇 두뇌 SW 산업 확산",
           "newzy_freshness": null,
           "newzy_persistence": null,
           "newzy_magnitude": null,
@@ -113,209 +120,375 @@
           "newzy_score": null,
           "newzy_verdict": null,
           "article_type": "호재"
-        },
-        {
-          "title": "케이엠제약, 한울바이오와 MPC 소재 기반 마우스 워시 공동개발 업무협약",
-          "url": "https://www.sedaily.com/article/20045849",
-          "source": "서울경제",
-          "published_at": "2026-05-19T06:16:50",
-          "causal_chain": "프리미엄 구강케어 수요 확대 → 케이엠제약 MPC 소재 차세대 마우스워시 공동개발(한울바이오·삼양KCI) + 뽀로로 치약 중국·베트남 수출 확대 → 구강케어 본업 제품 라인업·해외 매출 동시 성장 모멘텀.",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": null
-        },
-        {
-          "title": "케이엠제약, ‘뽀로로 치약’ 中·베트남 공급 확대",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04250886645448592",
-          "source": "이데일리",
-          "published_at": "2026-05-13T02:32:19",
-          "causal_chain": "프리미엄 구강케어 수요 확대 → 케이엠제약 MPC 소재 차세대 마우스워시 공동개발(한울바이오·삼양KCI) + 뽀로로 치약 중국·베트남 수출 확대 → 구강케어 본업 제품 라인업·해외 매출 동시 성장 모멘텀.",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": null
-        },
-        {
-          "title": "케이엠제약, 주식병합에 따른 매매거래 정지…14일부터",
-          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05087286645414480",
-          "source": "이데일리",
-          "published_at": "2026-04-09T09:15:13",
-          "causal_chain": "한울바이오와 MPC 소재 마우스워시 공동개발 MOU 체결 및 뽀로로 치약 중국·베트남 공급 확대 단계로, 제품 출시·매출 인식 전 초기 협력·유통 단계이며 본업 직접 수혜로 단정할 매출 모멘텀 단서는 본문에 미명시.",
-          "macro_event": null,
-          "newzy_freshness": null,
-          "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
-          "newzy_tradability": null,
-          "newzy_score": null,
-          "newzy_verdict": null,
-          "article_type": null
         }
       ],
       "fallback": true,
-      "index_change_pct": -2.8,
-      "index_multiple_current": -0.54,
+      "index_change_pct": -3.67,
+      "index_multiple_current": -1.47,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 6850,
-        "high_date": "2026-03-31",
-        "high_pct": -60.95,
-        "low": 1680,
-        "low_date": "2026-03-09",
-        "low_pct": 59.23,
-        "current": 2675
+        "high": 26700,
+        "high_date": "2025-06-25",
+        "high_pct": -34.08,
+        "low": 12180,
+        "low_date": "2026-05-28",
+        "low_pct": 44.5,
+        "current": 17600
       },
       "daily_20": [
         {
-          "date": "2026-05-06",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
-        },
-        {
           "date": "2026-05-07",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 16010,
+          "h": 19760,
+          "l": 15150,
+          "c": 17450
         },
         {
           "date": "2026-05-08",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 18080,
+          "h": 19600,
+          "l": 17610,
+          "c": 18060
         },
         {
           "date": "2026-05-11",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 17990,
+          "h": 17990,
+          "l": 16790,
+          "c": 16990
         },
         {
           "date": "2026-05-12",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 17150,
+          "h": 17650,
+          "l": 15410,
+          "c": 16170
         },
         {
           "date": "2026-05-13",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 16160,
+          "h": 16200,
+          "l": 15420,
+          "c": 15720
         },
         {
           "date": "2026-05-14",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 15720,
+          "h": 16800,
+          "l": 15380,
+          "c": 15850
         },
         {
           "date": "2026-05-15",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 15870,
+          "h": 16210,
+          "l": 14400,
+          "c": 14590
         },
         {
           "date": "2026-05-18",
-          "o": 2585,
-          "h": 2585,
-          "l": 2585,
-          "c": 2585
+          "o": 14500,
+          "h": 14530,
+          "l": 13300,
+          "c": 14250
         },
         {
           "date": "2026-05-19",
-          "o": 2835,
-          "h": 3010,
-          "l": 2165,
-          "c": 2335
+          "o": 14010,
+          "h": 14240,
+          "l": 13500,
+          "c": 13830
         },
         {
           "date": "2026-05-20",
-          "o": 2370,
-          "h": 3035,
-          "l": 2345,
-          "c": 3035
+          "o": 13800,
+          "h": 13820,
+          "l": 12780,
+          "c": 12920
         },
         {
           "date": "2026-05-21",
-          "o": 3040,
-          "h": 3105,
-          "l": 2440,
-          "c": 2440
+          "o": 13040,
+          "h": 13910,
+          "l": 13040,
+          "c": 13430
         },
         {
           "date": "2026-05-22",
-          "o": 2510,
-          "h": 2640,
-          "l": 2380,
-          "c": 2450
+          "o": 13970,
+          "h": 14440,
+          "l": 13510,
+          "c": 14230
         },
         {
           "date": "2026-05-26",
-          "o": 2450,
-          "h": 2775,
-          "l": 2390,
-          "c": 2690
+          "o": 14340,
+          "h": 14540,
+          "l": 13720,
+          "c": 13850
         },
         {
           "date": "2026-05-27",
-          "o": 2690,
-          "h": 2702,
-          "l": 2405,
-          "c": 2530
+          "o": 13720,
+          "h": 13720,
+          "l": 12760,
+          "c": 12760
         },
         {
           "date": "2026-05-28",
-          "o": 2530,
-          "h": 2540,
-          "l": 2280,
-          "c": 2360
+          "o": 12760,
+          "h": 13600,
+          "l": 12180,
+          "c": 12540
         },
         {
           "date": "2026-05-29",
-          "o": 2430,
-          "h": 2430,
-          "l": 2015,
-          "c": 2105
+          "o": 13960,
+          "h": 13960,
+          "l": 12700,
+          "c": 13310
         },
         {
           "date": "2026-06-01",
-          "o": 2105,
-          "h": 2230,
-          "l": 1900,
-          "c": 2030
+          "o": 13840,
+          "h": 16860,
+          "l": 13400,
+          "c": 14630
         },
         {
           "date": "2026-06-02",
-          "o": 2035,
-          "h": 2635,
-          "l": 2035,
-          "c": 2635
+          "o": 14630,
+          "h": 14640,
+          "l": 13230,
+          "c": 13540
+        },
+        {
+          "date": "2026-06-04",
+          "o": 13680,
+          "h": 17600,
+          "l": 12900,
+          "c": 17600
         },
         {
           "date": "2026-06-05",
-          "o": 2675,
-          "h": 2675,
-          "l": 2675,
-          "c": 2675
+          "o": 17060,
+          "h": 21500,
+          "l": 16630,
+          "c": 18550
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
+      "code": "066430",
+      "name": "아이로보틱스",
+      "rank": 2,
+      "trade_amount": 9185000000,
+      "change_pct": 29.84,
+      "close_price": 3285,
+      "open_price": 3285,
+      "high_price": 3285,
+      "low_price": 3285,
+      "industry": "기타 전문 도매업",
+      "sector": "VCI,LDPE필름 외",
+      "themes": [
+        "휴머노이드 로봇",
+        "로봇"
+      ],
+      "theme_paths": [
+        {
+          "name": "휴머노이드 로봇",
+          "path": [
+            "로봇",
+            "휴머노이드 로봇"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-05-20",
+        "rank": 4,
+        "change_pct": 7.38,
+        "trade_amount": 301037000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "아이로보틱스, 질화규소 베어링 감속기 개발 소식에 24%↑[특징주]",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03214406645478768",
+          "source": "이데일리",
+          "published_at": "2026-06-05T00:14:28",
+          "causal_chain": "휴머노이드 로봇 시장 본격 확대 → 관절 구동 핵심부품인 정밀 감속기·베어링 수요 증가 → 아이로보틱스가 질화규소 베어링 감속기를 개발해 휴머노이드 부품 공급 기대가 부각되며 신제품 개발 소식에 장중 급등(헤드라인 24%↑). 다만 당일(2026-05-27) 종가는 3,215원(-7.61%)으로 마감, 거래대금 37억원의 얕은 거래 속 단기 급등분에 대한 차익실현이 우세했다.",
+          "macro_event": "휴머노이드 로봇 핵심부품 정밀 감속기 신제품(질화규소 베어링 감속기) 개발",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "호재"
+        }
+      ],
+      "fallback": false,
+      "index_change_pct": -3.67,
+      "index_multiple_current": -0.59,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 5080,
+        "high_date": "2026-05-19",
+        "high_pct": -35.33,
+        "low": 1002,
+        "low_date": "2025-12-02",
+        "low_pct": 227.84,
+        "current": 3285
+      },
+      "daily_20": [
+        {
+          "date": "2026-04-28",
+          "o": 2220,
+          "h": 2245,
+          "l": 2050,
+          "c": 2080
+        },
+        {
+          "date": "2026-04-29",
+          "o": 2080,
+          "h": 2270,
+          "l": 2040,
+          "c": 2135
+        },
+        {
+          "date": "2026-04-30",
+          "o": 2210,
+          "h": 2530,
+          "l": 2180,
+          "c": 2220
+        },
+        {
+          "date": "2026-05-04",
+          "o": 2300,
+          "h": 2310,
+          "l": 2150,
+          "c": 2220
+        },
+        {
+          "date": "2026-05-06",
+          "o": 2205,
+          "h": 2205,
+          "l": 2070,
+          "c": 2080
+        },
+        {
+          "date": "2026-05-07",
+          "o": 2085,
+          "h": 2180,
+          "l": 2055,
+          "c": 2125
+        },
+        {
+          "date": "2026-05-08",
+          "o": 2130,
+          "h": 2540,
+          "l": 2125,
+          "c": 2415
+        },
+        {
+          "date": "2026-05-11",
+          "o": 2420,
+          "h": 2435,
+          "l": 2245,
+          "c": 2300
+        },
+        {
+          "date": "2026-05-12",
+          "o": 2350,
+          "h": 2890,
+          "l": 2345,
+          "c": 2650
+        },
+        {
+          "date": "2026-05-13",
+          "o": 2830,
+          "h": 3095,
+          "l": 2485,
+          "c": 2530
+        },
+        {
+          "date": "2026-05-14",
+          "o": 2605,
+          "h": 2635,
+          "l": 2340,
+          "c": 2370
+        },
+        {
+          "date": "2026-05-15",
+          "o": 2400,
+          "h": 3080,
+          "l": 2325,
+          "c": 3080
+        },
+        {
+          "date": "2026-05-18",
+          "o": 3410,
+          "h": 4000,
+          "l": 2950,
+          "c": 4000
+        },
+        {
+          "date": "2026-05-19",
+          "o": 4050,
+          "h": 5080,
+          "l": 3655,
+          "c": 4295
+        },
+        {
+          "date": "2026-05-20",
+          "o": 4100,
+          "h": 4870,
+          "l": 3500,
+          "c": 3660
+        },
+        {
+          "date": "2026-05-21",
+          "o": 3660,
+          "h": 4295,
+          "l": 3390,
+          "c": 3575
+        },
+        {
+          "date": "2026-05-22",
+          "o": 3750,
+          "h": 4000,
+          "l": 3510,
+          "c": 3615
+        },
+        {
+          "date": "2026-05-26",
+          "o": 3675,
+          "h": 3690,
+          "l": 3410,
+          "c": 3480
+        },
+        {
+          "date": "2026-05-27",
+          "o": 3540,
+          "h": 3545,
+          "l": 3185,
+          "c": 3215
+        },
+        {
+          "date": "2026-06-05",
+          "o": 3285,
+          "h": 3285,
+          "l": 3285,
+          "c": 3285
         }
       ],
       "status_badges": [
@@ -324,11 +497,11 @@
           "severity": "hot",
           "source": "kiwoom_ka10017",
           "view_date": "2026-06-05",
-          "summary": "케이엠제약 상한가 (29.85%)",
-          "cur_prc": 2675,
-          "flu_rt": 29.85,
-          "trde_qty": 981653,
-          "trde_prica_calc": 2579000000,
+          "summary": "아이로보틱스 상한가 (29.84%)",
+          "cur_prc": 3285,
+          "flu_rt": 29.84,
+          "trde_qty": 2967064,
+          "trde_prica_calc": 9185000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -346,15 +519,15 @@
       ],
       "credit_risk": true,
       "credit_reason": "신용거래 제한 종목",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "strong_bull",
       "theme_leader": true,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "적극"
     },
     {
       "code": "003220",
       "name": "대원제약",
-      "rank": 2,
-      "trade_amount": 591000000,
+      "rank": 3,
+      "trade_amount": 650000000,
       "change_pct": 29.94,
       "close_price": 11240,
       "open_price": 11240,
@@ -463,8 +636,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -4.35,
-      "index_multiple_current": -6.88,
+      "index_change_pct": -5.65,
+      "index_multiple_current": -5.3,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 14090,
@@ -626,8 +799,8 @@
           "summary": "대원제약 상한가 (29.94%)",
           "cur_prc": 11240,
           "flu_rt": 29.94,
-          "trde_qty": 52611,
-          "trde_prica_calc": 591000000,
+          "trde_qty": 57820,
+          "trde_prica_calc": 650000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -648,6 +821,8 @@
         "open": 11240,
         "base": 8650,
         "prices": [
+          11240,
+          11240,
           11240,
           11240,
           11240
