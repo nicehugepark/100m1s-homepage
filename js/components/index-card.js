@@ -119,11 +119,42 @@
       && typeof root.buildSparkline === 'function') {
       sparkHtml = root.buildSparkline(idx.spark, candle.o, dir);
     }
+    // 미니 일봉캔들 + 확대 차트 trigger (대표 20:47 — 국내 일봉캔들 클릭 → 확장 차트 인터랙션 1:1).
+    //   국내: candles20Html = <div .cal-feature-candles20 data-expand-trigger="chart" data-daily20=... role=button
+    //         tabindex=0 aria-expanded=false aria-controls="chart-{code}">. 지수도 동일 emit → 기존 delegated
+    //         핸들러(_openChartExpand, [data-expand-trigger="chart"] 위임)가 그대로 발화 (핸들러 0줄 수정).
+    //   확대용 series: idx.daily_expanded(백엔드 1y 일봉, range_240d 산출 source) 우선, 부재 시 daily20(20봉)
+    //     graceful fallback (국내 Phase 2 prototype 동작 동형). data-stock-code = 합성 code(지수=idxCode) →
+    //     slot id "chart-{idxCode}" + aria-controls anchor 정합. _fetchDailybars(idxCode) 는 /data/dailybars 404
+    //     → prototype(data-daily20) 유지 (graceful, 거짓 데이터 0).
+    var idxCode = 'idx-' + String(idx.name).replace(/[^A-Za-z0-9가-힣]/g, '').slice(0, 20);
+    var expandSeries = (Array.isArray(idx.daily_expanded) && idx.daily_expanded.length >= 1)
+      ? idx.daily_expanded
+      : (Array.isArray(idx.daily20) ? idx.daily20 : []);
     var miniHtml = '';
     if (Array.isArray(idx.daily20) && idx.daily20.length >= 1 && typeof root.buildCandles20 === 'function') {
       miniHtml = root.buildCandles20(idx.daily20);
     }
-    var rangeHtml = buildRangeBar(idx.range_240d);
+    var candles20Cell;
+    if (miniHtml && expandSeries.length >= 1) {
+      // data-daily20 = 확대 차트 1차 render payload (JSON). attribute 안전 위해 " escape.
+      var d20Json = esc(JSON.stringify(expandSeries));
+      candles20Cell = '<div class="cal-feature-candles20" data-expand-trigger="chart" data-daily20="' + d20Json + '"'
+        + ' role="button" tabindex="0" aria-label="' + esc(idx.name) + ' 일봉, 클릭 시 확대 차트"'
+        + ' aria-expanded="false" aria-controls="chart-' + esc(idxCode) + '">' + miniHtml + '</div>';
+    } else if (miniHtml) {
+      candles20Cell = '<div class="cal-feature-candles20">' + miniHtml + '</div>';
+    } else {
+      candles20Cell = '<div class="cal-feature-candles20 cal-candles20-empty"></div>';
+    }
+    // QA P1 (대표 20:50) — range_240d.current 백엔드 미포함 → buildRangeBar L59 '' (레인지 바 전부 미렌더).
+    //   fix: current 부재 시 idx.point(현재 지수 포인트 = SSOT) 주입. 원본 무변이 위해 shallow copy.
+    //   백엔드 schema 무변경(프론트 단독). low/high 가 있는데 current 만 없는 정상 케이스 해결.
+    var r240in = idx.range_240d;
+    if (r240in && typeof r240in === 'object' && typeof r240in.current !== 'number' && typeof idx.point === 'number') {
+      r240in = Object.assign({}, r240in, { current: idx.point });
+    }
+    var rangeHtml = buildRangeBar(r240in);
     var newsBodyHtml = buildCardNews(idx.news);
 
     var label = idx.name + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
@@ -131,16 +162,19 @@
 
     // 대표 20:26 catch 정정 — 국내 종목카드 헤더 DOM 1:1 복제 (renderer.js L1419-1435 verbatim 구조).
     //   head-left 4-child 순서 동일: .cal-trade-rank → .cal-trade-candle(당일캔들) → .cal-feature-sparkline
-    //   → .cal-feature-candles20. rank 슬롯은 지수에 순위 개념 부재 → 빈 placeholder(정렬 column 유지, 허수 0).
+    //   → .cal-feature-candles20(확대 trigger). rank 슬롯 = 지수 순위 부재 → 빈 placeholder(정렬 column 유지).
     //   head-right: .cal-feature-namecell(.cal-feature-name) + .cal-feature-meta(.cal-feature-pct | .cal-trade-amount).
-    //   국내 카드 대비 미사용: 공유버튼/badges/body (지수 무관). modifier 1개(.cal-feature-card--idx).
-    return '<div class="cal-feature-card v2 cal-feature-card--idx" role="img" aria-label="' + esc(label) + '">'
+    //   data-stock-code = idxCode (확대 slot id/aria anchor). 국내 미사용: 공유버튼/badges/상세 body (지수 무관).
+    // role="img" 제거 (대표 20:47 확대 trigger 추가 → 카드 내 interactive button 존재. img role 은
+    //   interactive 자식 비호환). 국내 종목카드도 카드 자체 role 없음(1:1). aria-label 은 card에 두되 group 의미.
+    return '<div class="cal-feature-card v2 cal-feature-card--idx" aria-label="' + esc(label) + '"'
+      + ' data-stock-code="' + esc(idxCode) + '" data-stock-name="' + esc(idx.name) + '">'
       + '<div class="cal-feature-head v2">'
       + '<div class="cal-feature-head-left">'
       + '<div class="cal-trade-rank"></div>'
       + '<div class="cal-trade-candle">' + todayCandleHtml + '</div>'
       + (sparkHtml ? '<div class="cal-feature-sparkline">' + sparkHtml + '</div>' : '<div class="cal-feature-sparkline cal-spark-empty"></div>')
-      + (miniHtml ? '<div class="cal-feature-candles20">' + miniHtml + '</div>' : '<div class="cal-feature-candles20 cal-candles20-empty"></div>')
+      + candles20Cell
       + '</div>'
       + '<div class="cal-feature-head-right">'
       + '<div class="cal-feature-namecell">'
