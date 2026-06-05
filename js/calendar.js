@@ -20,7 +20,15 @@ const calDayCache = (() => {
 
 function _persistCache() {
   try {
-    const keys = Object.keys(calDayCache).sort().reverse().slice(0, 7);
+    // §3.6.2.3 (FLR-20260605-TEC-001 P1-2) — 캐시 키가 'date' 또는 'date@SEGMENT' 혼재.
+    //   종래 키 단위 상위 7개 trim 은 오늘 date 가 최대 3구간(PRE/OPEN/POST)을 점유해
+    //   유효 보존 거래일이 줄 수 있다. 거래일(키의 '@' 앞 date 부분) 기준 최근 7일을 보존하여
+    //   종전 보존 폭(7거래일) 무회귀 + 구간 키 공존.
+    const _dateOf = (k) => k.split('@')[0];
+    const recentDates = new Set(
+      Array.from(new Set(Object.keys(calDayCache).map(_dateOf))).sort().reverse().slice(0, 7)
+    );
+    const keys = Object.keys(calDayCache).filter((k) => recentDates.has(_dateOf(k)));
     const trimmed = {};
     for (const k of keys) {
       const entry = calDayCache[k];
@@ -64,6 +72,27 @@ function getMarketState(iso, now) {
   if (hm < 9 * 60) return 'PRE_MARKET';
   if (hm < 15 * 60 + 30) return 'OPEN';
   return 'POST_MARKET';
+}
+
+// DSN-frontend §3.6.2.3 (2026-06-05 P1-2, FLR-20260605-TEC-001) — 장경계 캐시 키 구조화.
+//   stage-3 즉시 캐시 렌더가 장 시작/마감 경계를 넘어 이전 구간 캐시를 "현재인 양" 재표시하던
+//   부분상태(stale) 클래스의 구조적 봉쇄. 캐시 키에 세션 구간(getMarketState 단일 출처)을 인코딩하면
+//   경계를 넘는 순간 키가 자동 불일치 → 이전 구간 캐시는 자연 폐기(재표시 0). 09:05 stale fix
+//   (f27625e66, OPEN+today+fallback 3조건 폐기 휴리스틱)를 일반화·대체한다.
+//   원칙: getMarketState(calendar.js)가 PRE_MARKET/OPEN/POST_MARKET/HOLIDAY 단일 출처.
+//   - 오늘(KST) 날짜만 세션 구간을 키에 인코딩한다. 오늘은 시각 경과로 구간이 바뀌므로 무효화 필요.
+//   - 과거/미래 viewDate는 일자가 이미 확정되어 세션 구간과 무관(getMarketState(pastDate,now)는
+//     그 과거일 기준이라 부적절) → date 단일 키 유지 = 과거 카드 캐시 무회귀 + cold load 최소화.
+//   - 구 스키마(flat date 키) 잔존 캐시는 read miss + _persistCache trim 으로 자연 폐기(1회 cold load 무해).
+function _isTodayIso(iso, now) {
+  const _now = now || new Date();
+  return iso === ymd(_now.getFullYear(), _now.getMonth() + 1, _now.getDate());
+}
+
+function _cacheKey(date, now) {
+  // 오늘 날짜만 세션 구간 토큰을 부착. 과거/미래는 date 단일 키.
+  if (!_isTodayIso(date, now)) return date;
+  return `${date}@${getMarketState(date, now)}`;
 }
 
 function formatKoDate(iso) {
@@ -244,7 +273,9 @@ async function initCalendar() {
   //   data-loader.js 의 fetch-time 가드(_isTodayPastOpen)와 동일 기준으로, 캐시 엔트리도 OPEN+today+fallback
   //   3조건 동시 충족 시 stage-3 렌더를 건너뛰고 캐시를 폐기 → 4단계 네트워크 갱신(정직한 빈 상태)으로 위임.
   //   과거 viewDate / 휴장 / PRE_MARKET 의 정상 fallback 표시는 영향 없음. PRE_MARKET opt-in 토글도 별 path 유지.
-  const _cachedEntry = calDayCache[initialDate];
+  // §3.6.2.3 — 세션 구간 키로 조회. 장경계를 넘었으면 이전 구간 키와 불일치 → cache miss(재표시 0).
+  const _initialKey = _cacheKey(initialDate);
+  const _cachedEntry = calDayCache[_initialKey];
   // _fallbackDate 마커 (신규 캐시) 또는 macroEvents 안내 배너 (구 스키마 캐시) 양쪽으로 fallback 탐지.
   //   구 캐시는 _fallbackDate 필드가 없으므로 "기준 데이터를 표시" 배너 문구로 보강 탐지.
   const _cacheIsFallback =
@@ -256,8 +287,12 @@ async function initCalendar() {
     _cacheIsFallback &&
     typeof _isTodayPastOpen === 'function' &&
     _isTodayPastOpen(initialDate);
+  // §3.6.2.3 — 세션 구간 키 구조화가 stale OPEN fallback 을 구조적으로 봉쇄(PRE_MARKET fallback 은
+  //   date@PRE_MARKET 키에 박제 → OPEN 시 date@OPEN 조회 = miss). 본 3조건 가드는 구 스키마 잔존
+  //   캐시(flat date 키 = _cacheKey가 오늘이면 date@SEGMENT 반환하므로 자연 miss이나, 만약을 위한)
+  //   defense-in-depth 로 유지. 폐기 대상은 실제 조회 키(_initialKey).
   if (_isStaleOpenFallback) {
-    delete calDayCache[initialDate];
+    delete calDayCache[_initialKey];
     _persistCache();
   }
   if (_cachedEntry && !_isStaleOpenFallback) {
@@ -314,7 +349,8 @@ async function _refreshDataAsync(initialDate) {
     renderCalendar();
 
     // 당일 데이터 강제 재로드 (캐시 무시) + 카드 렌더
-    delete calDayCache[initialDate];
+    // §3.6.2.3 — loadCalDayData 가 읽고 쓰는 세션 구간 키를 폐기해야 강제 재로드가 동작.
+    delete calDayCache[_cacheKey(initialDate)];
     const data = await loadCalDayData(initialDate);
     renderCalExpandContent(initialDate, data);
 
