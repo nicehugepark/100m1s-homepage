@@ -1489,49 +1489,22 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px; color: var(--dm); font-weight: 600;
   white-space: nowrap;
 }
-/* 데스크탑 3카드 가로 1열 flex 1:1:1 (숨김 0건). 모바일은 1줄 1카드 세로 stack(아래 @media). */
+/* B안 (대표 2026-06-05 20:11~20:12 결정): 지수 카드 = 종목카드 동일형, 전폭 세로 나열
+   (국내장 뉴스요약 → 종목카드 list 순서·구조 동일). 데스크탑·모바일 공통 1장씩 세로.
+   카드 자체는 .cal-feature-card 클래스가 폰트·색·여백·radius 결정 (이질감 0, 대표 20:12).
+   본 블록은 (a) 세로 list 컨테이너 + (b) 공유버튼 부재분 padding 회수 modifier 만. */
 .nightly-us-cards {
-  display: flex; gap: 8px; align-items: stretch;
-}
-.idx-card {
-  flex: 1 1 0; min-width: 0;
-  background: var(--sf);
-  border: 1px solid var(--bd);
-  border-radius: 10px;
-  padding: 10px 12px;
   display: flex; flex-direction: column; gap: 6px;
 }
-.idx-card-name {
-  font-size: 12px; font-weight: 700; color: var(--tx);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+/* 지수 전용 modifier — 종목카드와 동일 클래스 사용, 차이(공유버튼 부재)만 보정. 폰트 override 0건. */
+.cal-feature-card--idx { background: var(--sf); }
+.cal-feature-card--idx .cal-feature-head.v2 {
+  padding-right: 12px;  /* 공유버튼 없음 → 종목카드 40px 우측 여백 회수 */
 }
-/* 카드 내부 2열 grid — 좌상 스파크라인/좌하 등락률 | 우상 일봉캔들/우하 포인트 */
-.idx-card-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  column-gap: 10px; row-gap: 4px;
-}
-.idx-card-cell { min-width: 0; }
-.idx-card-spark svg, .idx-card-mini svg {
-  display: block; width: 100%; height: auto;
-}
-.idx-card-spark { grid-column: 1; grid-row: 1; max-width: 90px; }
-.idx-card-mini { grid-column: 2; grid-row: 1; max-width: 110px; justify-self: end; }
-.idx-card-pct {
-  grid-column: 1; grid-row: 2;
-  font-size: 12px; font-weight: 700;
-  display: flex; align-items: center; gap: 2px;
-}
-.idx-card-point {
-  grid-column: 2; grid-row: 2;
-  font-size: 14px; font-weight: 800; color: var(--tx);
-  font-family: 'SF Mono', monospace; justify-self: end; text-align: right;
-}
-.idx-card-arrow { font-size: 9px; }
+.idx-card-arrow { font-size: 0.8em; margin-right: 1px; }
 
-/* 미국발 뉴스 요약 — .cal-narr-pill 스타일 공유 + source 약어·딥링크 */
-.nightly-us-news { margin-top: 12px; }
+/* 미국발 뉴스 요약 — .cal-narr-pill 스타일 공유 + source 약어·딥링크 (지수 카드 위에 위치) */
+.nightly-us-news { margin-bottom: 12px; }
 .nightly-us-news-title {
   font-size: 11px; font-weight: 800; color: var(--dm);
   letter-spacing: 0.4px; margin-bottom: 6px;
@@ -1546,15 +1519,8 @@ body.single-card-mode { background: var(--bg) !important; }
   white-space: nowrap; flex-shrink: 0;
 }
 
-/* 모바일 (대표 2026-06-05 20:02 요청) — 1줄 1지수 세로 stack (가로 3분할 폐기, 숨김 0건).
-   1줄 1카드면 폭 여유 충분 → 카드 내부 2열([스파크라인/등락률]|[일봉캔들/포인트]) 동일 유지. */
 @media (max-width: 767px) {
   .nightly-us-summary { padding: 12px; }
-  .nightly-us-cards { flex-direction: column; gap: 8px; }
-  .idx-card { padding: 10px 12px; }
-  .idx-card-name { font-size: 12px; }
-  .idx-card-spark { max-width: 110px; }
-  .idx-card-mini { max-width: 140px; }
   .nightly-us-news-summary { font-size: 12px; }
 }
 
