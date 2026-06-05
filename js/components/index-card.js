@@ -134,12 +134,15 @@
 
     var candle = idx.candle && typeof idx.candle === 'object' ? idx.candle : null;
 
-    // ⚠️ 캔들↔스파크 색 통일(대표 4차 catch) = 디자인 판별 완료 버그 확정이나 **fix 방향(A 시가대비 통일 /
-    //   B 전일대비 통일) 대표 확정 대기 중 — 색 변경 코드 착수 금지(타치코마 21:22 통지).** rev8 본 commit 미포함.
-    //   현 상태(=종전): 캔들 = miniCandle 내부 (close>open) 시가 대비 / 스파크 = dir(change_pct) 전일 대비.
+    // 색 정책 확정 (대표 2026-06-05 21:32 verbatim, 국내·미장 공통): "하루치 캔들은 양봉/음봉 기준이 있다.
+    //   스파크라인도 캔들의 확장이다 → 스파크 색 = 캔들 방향(시가 대비). 등락률은 전일보다 올랐으면 양봉색/
+    //   내렸으면 음봉색." → candleDir = (close >= open) 시가 대비 = 캔들·스파크 공통 색. 등락률(dir/color/arrow)
+    //   = change_pct 전일 대비 = 텍스트 색만(현행 유지). NASDAQ(o<c 양봉 red 캔들·스파크 / change_pct<0 ▼파랑 텍스트) 정합.
+    var candleDir = (candle && typeof candle.o === 'number' && typeof candle.c === 'number')
+      ? (candle.c >= candle.o ? 'up' : 'down')
+      : dir;
 
-    // 당일 캔들 (.cal-trade-candle) — 국내 종목카드와 동일하게 global miniCandle(o,h,l,c,pct) 재사용.
-    //   국내 카드: candleHtml = miniCandle(lastBar o/h/l/c, pct). 지수: candle{o,h,l,c} 동일 호출.
+    // 당일 캔들 (.cal-trade-candle) — global miniCandle(o,h,l,c,pct). OHLC 존재 시 색 = (close > open) 시가 대비.
     var todayCandleHtml = '';
     if (candle && typeof candle.o === 'number' && typeof candle.h === 'number'
       && typeof candle.l === 'number' && typeof candle.c === 'number'
@@ -150,7 +153,8 @@
     var sparkHtml = '';
     if (Array.isArray(idx.spark) && idx.spark.length >= 2 && candle && typeof candle.o === 'number'
       && typeof root.buildSparkline === 'function') {
-      sparkHtml = root.buildSparkline(idx.spark, candle.o, dir);
+      // 스파크 = 캔들의 확장 → candleDir(시가 대비) 추종 (대표 21:32). base = candle.o (당일 시가 기준선).
+      sparkHtml = root.buildSparkline(idx.spark, candle.o, candleDir);
     }
     // 미니 일봉캔들 + 확대 차트 trigger (대표 20:47 — 국내 일봉캔들 클릭 → 확장 차트 인터랙션 1:1).
     //   국내: candles20Html = <div .cal-feature-candles20 data-expand-trigger="chart" data-daily20=... role=button
