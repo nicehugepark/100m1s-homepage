@@ -1823,6 +1823,26 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-pick-icon { color: #C49930; flex-shrink: 0; }
 .cal-pm320-pick-label { display: inline; }
 
+/* DSN-frontend §3.6.8 (2026-06-05) — PM320 추천 부재(보류일) 안내 라인.
+   매크로/내러티브 칩(amber: --am4/--am2)과 색을 구분하는 중립 슬레이트(--neu/--neu-bg).
+   경보가 아닌 정보성 빈 상태 톤. WCAG: #6B7A99 on #F2F4F8 = 3.6:1 (large/icon 정합). */
+.cal-pm320-no-pick {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: var(--neu-bg);
+  border: 1px solid #D7DEEA;
+  color: var(--neu);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+.cal-pm320-no-pick-icon { flex-shrink: 0; opacity: 0.85; }
+
 /* DOC-20260603-DSN-001 §2.3 / §7.2 — PICK 좌측 액센트바 골드 강조 (이중 강조).
    --lu (상한가) 동시 존재 시 빨강 우선 (DSN-001 §2.3 / §7.2 정합). */
 .cal-feature-card.cal-feature-card--pm320-pick {

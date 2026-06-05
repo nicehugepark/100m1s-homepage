@@ -1539,9 +1539,19 @@ function renderCalExpandContent(date, data) {
   const _narrPillsHtmlOut = _isSingleCardMode ? '' : narrPillsHtml;
   const _macroHtmlOut = _isSingleCardMode ? '' : macroHtml;
   const _rankingBannerOut = _isSingleCardMode ? '' : rankingBanner;
+  // DSN-frontend §3.6.8 (2026-06-05) — PM320 추천 부재(보류일) 안내.
+  //   통합 모델 보류일(선제거로 잔존<2 → PICK 0건, 예: 4/16)에는 추천 종목 카드가 없어
+  //   화면이 빈 것처럼 보인다. data.pm320NoPick===true(보류 확정) + 거래일 + 비단독모드 시
+  //   뉴스요약 섹션 상단에 안내 라인 1줄을 띄운다. 색은 매크로/내러티브 칩(amber)과 구분되는
+  //   중립 슬레이트(--neu/--neu-bg)로 표시. pm320NoPick===null(404·미신뢰)이면 미표시
+  //   (FLR-AGT-002 거짓 충실성 차단 — 추정 고지 금지). 추천 있는 날(false)도 미표시(무회귀).
+  const _pm320NoPickHtml = (!_isSingleCardMode && data && data.pm320NoPick === true && !isMarketClosed(date))
+    ? `<div class="cal-pm320-no-pick" role="status" aria-label="오늘은 추천 종목이 없습니다"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg><span>오늘은 추천 종목이 없습니다</span></div>`
+    : '';
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
+      ${_pm320NoPickHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
       ${_rankingBannerOut}
