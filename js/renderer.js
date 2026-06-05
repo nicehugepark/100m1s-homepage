@@ -183,14 +183,9 @@ function _buildNightlyUsHtml(us) {
   const cardsHtml = us.indices.map(ix => renderIndexCard(ix, _futMatched ? _resolveFutureFor(ix, _futMatched) : null)).filter(Boolean).join('');
   if (!cardsHtml) return '';
 
-  // 우측 라벨 — trade_date_local SSOT (백엔드 제공 현지 마감일). M/D 표기.
-  let dateLabel = '';
-  if (typeof us.trade_date_local === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(us.trade_date_local)) {
-    // QA (대표 20:50) — 월·일 양쪽 leading-zero 제거 (종전 /^0/ 는 월만 → "6/04" 비대칭 → "6/4" 통일).
-    const _mdParts = us.trade_date_local.slice(5).split('-');
-    const md = `${parseInt(_mdParts[0], 10)}/${parseInt(_mdParts[1], 10)}`;
-    dateLabel = `<span class="nightly-us-datelabel">${escapeHtml(md)} (현지 마감)</span>`;
-  }
+  // 섹션 헤더 줄("야간 미국증시" eyebrow + "M/D (현지 마감)" 라벨) 전체 제거 (대표 2026-06-05 21:23 verbatim
+  //   "'야간 미국증시' 로우는 없애는게 좋을 것 같다. 6/4 (현지 마감) 포함해서."). 섹션은 "미국발 뉴스 요약"
+  //   금색 바 타이틀부터 바로 시작. 날짜 라벨 이전 배치 금지(부활은 lead 결정). trade_date_local 은 데이터로만 보존.
 
   // 미국발 뉴스 요약 — 국내 "오늘의 뉴스요약" 칩 클래스 1:1 (대표 21:09 catch — 직전 .cal-narr-pill 비교 오류 정정).
   //   국내 실제 칩 = .cal-macro-strip > .cal-macro-chip (news.css:2099-2108: 11px/700/그라데이션 #FFF4D1→#FFE9A8/
@@ -213,10 +208,6 @@ function _buildNightlyUsHtml(us) {
   }
 
   return `<section class="nightly-us-summary" aria-label="야간 미국증시 요약">`
-    + `<div class="nightly-us-head">`
-    + `<div class="nightly-us-title">야간 미국증시</div>`
-    + dateLabel
-    + `</div>`
     + newsHtml
     + `<div class="nightly-us-cards">${cardsHtml}</div>`
     + `</section>`;

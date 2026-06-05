@@ -1478,21 +1478,9 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 0;
   margin-bottom: 22px;  /* 국내 .cal-section margin-bottom:22px 정합 */
 }
-.nightly-us-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 10px; margin-bottom: 12px;
-}
-.nightly-us-title {
-  /* 섹션 eyebrow (페이지 영역 라벨). 디자인 워크스루 P2 (대표 20:47) — 섹션 시작 인지 위해 앰버 1단계 상향
-     (11px muted → 12px --am). 하위 "미국발 뉴스 요약"(.cal-section-title)도 앰버 금색 바이나 그쪽은 11px
-     uppercase 바-prefix 라 위계 구분 유지 (eyebrow=섹션 라벨 / section-title=뉴스 블록 타이틀). */
-  font-size: 12px; font-weight: 800; color: var(--am);
-  text-transform: uppercase; letter-spacing: 0.8px;
-}
-.nightly-us-datelabel {
-  font-size: 11px; color: var(--dm); font-weight: 600;
-  white-space: nowrap;
-}
+/* 섹션 헤더 줄(.nightly-us-head/.nightly-us-title/.nightly-us-datelabel) 제거됨
+   (대표 2026-06-05 21:23 "'야간 미국증시' 로우 + '6/4 (현지 마감)' 없애라"). 섹션은 "미국발 뉴스 요약"
+   .cal-section-title 부터 바로 시작. 부활 시 본 위치에 재추가. */
 /* B안 (대표 2026-06-05 20:11~20:12 결정): 지수 카드 = 종목카드 동일형, 전폭 세로 나열
    (국내장 뉴스요약 → 종목카드 list 순서·구조 동일). 데스크탑·모바일 공통 1장씩 세로.
    카드 자체는 .cal-feature-card 클래스가 폰트·색·여백·radius 결정 (이질감 0, 대표 20:12).
