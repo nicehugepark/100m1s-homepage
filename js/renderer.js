@@ -556,12 +556,10 @@ function renderCalExpandContent(date, data) {
     const pnl = pk.current_pnl_pct;
     const dOffset = pk.d_offset;
     if (state === 'running') {
-      if (dOffset === 0) {
-        return { html: '🕐 진입 D+0', mod: 'running', aria: '오늘 진입 시점' };
-      }
-      // D+1/+2/+3 진행 중 — 잠정 명시 (FLR-AGT-002 §4.4)
+      // D+0~D+3 진행 중 통합 — 전부 "⏳ 잠정 {pnl} (D+offset/+3)" 단일 형태 (FLR-AGT-002 §4.4)
+      // 대표 지시 2026-06-05: D+0(당일 진입)도 "🕐 진입 D+0" 별도 문구 폐지, 잠정 형태로 통일
       const pnlText = _fmtPctSigned(pnl);
-      const dText = (dOffset != null && dOffset <= 3) ? ` (D+${dOffset}/+3)` : '';
+      const dText = (dOffset != null && dOffset >= 0 && dOffset <= 3) ? ` (D+${dOffset}/+3)` : '';
       return {
         html: `⏳ 잠정 ${pnlText}${dText}`,
         mod: 'running',
