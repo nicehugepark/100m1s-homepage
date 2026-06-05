@@ -9,11 +9,11 @@ playwright(headless chromium)로 renderer.js + calendar.js 를 실제 브라우�
 fetch 를 인터셉트해 manifest 를 주입하고 실 함수를 호출해 판정.
 
 검증 3종:
-  (a) 존재하는 과거 카드 공유 → OG landing URL (/news/stock/{date}/{code}.html)
-  (b) manifest 에 없는 종목/날짜 공유 → news.html 폴백 (404 경로 아님)
+  (a) 존재하는 과거 카드 공유 → OG landing URL (/pm320/stock/{date}/{code}.html, Q-20260605-105)
+  (b) manifest 에 없는 종목/날짜 공유 → pm320.html 폴백 (404 경로 아님)
   (c) 무회귀:
       c1. OPEN 시간 오늘 카드 + manifest 에 페이지 존재 → OG URL (OG 미리보기 유지)
-      c2. manifest null(부재/parse 실패) + 오늘+PRE_MARKET → news.html 폴백 (휴리스틱 degrade)
+      c2. manifest null(부재/parse 실패) + 오늘+PRE_MARKET → pm320.html 폴백 (휴리스틱 degrade)
       c3. manifest null + 과거 카드 → OG URL (과거 카드 무회귀)
   (d) _loadPageManifest schema validation: pages 누락 JSON → null (보수적)
 
@@ -86,9 +86,10 @@ def run():
             # initCalendar 가 load 시 네트워크 init 하지 않게 stub (renderer.js L끝 호출).
             page.add_init_script("window.initCalendar = function(){};")
 
-            # renderer.js + calendar.js 로드 (calendar.js 의 실 getMarketState 사용 가능)
-            page.goto(f"{ORIGIN}/news.html")
-            # news.html 의 defer 스크립트 로드 완료 대기
+            # renderer.js + calendar.js 로드 (calendar.js 의 실 getMarketState 사용 가능).
+            #   Q-20260605-104/105 — news.html 은 redirect stub 이므로 본 페이지 pm320.html 로드.
+            page.goto(f"{ORIGIN}/pm320.html")
+            # pm320.html 의 defer 스크립트 로드 완료 대기
             page.wait_for_function(
                 "typeof window._computeShareUrl === 'function'", timeout=10000
             )
@@ -107,11 +108,11 @@ def run():
             check(
                 "(a) 과거 카드 존재 → OG",
                 url_a,
-                "/news/stock/2026-06-04/000650.html",
-                "news.html?stock",
+                "/pm320/stock/2026-06-04/000650.html",
+                "pm320.html?stock",
             )
 
-            # ---- (b) manifest 에 없는 종목 → news.html 폴백 (404 아님) ----
+            # ---- (b) manifest 에 없는 종목 → pm320.html 폴백 (404 아님) ----
             url_b = page.evaluate(
                 "([o,t,m]) => window._computeShareUrl(o,'999999','2026-06-04',t,m,Date.now(),null)",
                 [origin, tok, MANIFEST],
@@ -119,8 +120,8 @@ def run():
             check(
                 "(b) 미배포 종목 → 폴백",
                 url_b,
-                "/news.html?stock=999999",
-                "/news/stock/",
+                "/pm320.html?stock=999999",
+                "/pm320/stock/",
             )
 
             # ---- (b2) 날짜 키 자체 없음 → 폴백 ----
@@ -131,8 +132,8 @@ def run():
             check(
                 "(b2) manifest 없는 날짜 → 폴백",
                 url_b2,
-                "/news.html?stock=000650",
-                "/news/stock/",
+                "/pm320.html?stock=000650",
+                "/pm320/stock/",
             )
 
             # ---- (c1) OPEN 시간 오늘 카드 + manifest 페이지 존재 → OG URL (무회귀) ----
@@ -145,8 +146,8 @@ def run():
             check(
                 "(c1) OPEN 오늘 카드+페이지존재 → OG 유지",
                 url_c1,
-                "/news/stock/2026-06-05/000660.html",
-                "news.html?stock",
+                "/pm320/stock/2026-06-05/000660.html",
+                "pm320.html?stock",
             )
 
             # ---- (c2) manifest null + 오늘+PRE_MARKET → 폴백 (휴리스틱 degrade) ----
@@ -157,8 +158,8 @@ def run():
             check(
                 "(c2) manifest null+오늘 PRE_MARKET → 폴백",
                 url_c2,
-                "/news.html?stock=000660",
-                "/news/stock/",
+                "/pm320.html?stock=000660",
+                "/pm320/stock/",
             )
 
             # ---- (c3) manifest null + 과거 카드 → OG URL (과거 무회귀) ----
@@ -169,8 +170,8 @@ def run():
             check(
                 "(c3) manifest null+과거 카드 → OG",
                 url_c3,
-                "/news/stock/2026-06-04/000650.html",
-                "news.html?stock",
+                "/pm320/stock/2026-06-04/000650.html",
+                "pm320.html?stock",
             )
 
             # ---- (d) _loadPageManifest fetch + schema validation ----
