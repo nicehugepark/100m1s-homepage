@@ -7,7 +7,8 @@ const DATA_PATTERNS = [
   /\/data\/pm320_history\//,  // DOC-20260603-DSN-001 — PM320 추천/결과 data fetch path
 ];
 const STATIC_ASSETS = [
-  '/news.html',
+  '/pm320.html',  // Q-20260605-104 — PM320 본 페이지 (News 이전 후 주 진입점)
+  '/news.html',   // redirect stub 유지 (과거 공유 링크 query 보존 → pm320.html)
   '/news.css',
   '/menu.js',
   '/js/utils.js',
