@@ -148,6 +148,19 @@ async function loadCalDayData(date) {
       if (ps.code) pm320ByCode.set(ps.code, ps.pm320_pick);
     }
   }
+  // DSN-frontend §3.6.8 (2026-06-05) — 당일 PM320 추천 부재(보류일) 일-레벨 마커.
+  //   통합 모델 보류일(선제거로 잔존<2 → PICK 0건, 예: 4/16)에는 picked_code=null + 모든
+  //   stocks[].pm320_pick.is_pick=false 다. 이 경우 renderer 가 "추천 종목 없음" 안내를 띄운다.
+  //   3상태: true=추천 부재 확정(보류일) / false=추천 존재 / null=데이터 미신뢰(404·미생성).
+  //   FLR-AGT-002 거짓 충실성 차단 — pm320_history 404(미생성)는 null 로 두어 추정 고지 금지.
+  let pm320NoPick = null;
+  if (pm320Data && Array.isArray(pm320Data.stocks)) {
+    // 보류일 = pm320_history 가 로드됐고(404 아님) is_pick=true 종목이 0건.
+    //   라이브 데이터(4/16)는 picked_code=null 도 동반하나, is_pick 합산이 단일 출처(SoT)다.
+    pm320NoPick = !pm320Data.stocks.some(
+      (ps) => ps && ps.pm320_pick && ps.pm320_pick.is_pick === true,
+    );
+  }
   let stockDailyData = stockDailyDirect;
   // REQ-055 P0 — 당일 stock JSON이 stocks=[] 빈 데이터인 경우도 fallback 대상.
   //   배포 직후/장 시작 전 build_daily.py가 빈 stocks=[] 파일을 생성하면 truthy로 평가되어
@@ -346,7 +359,8 @@ async function loadCalDayData(date) {
     dataSource,
     generatedAt,
     lastSnapshotAt,
-    _fallbackDate: fallbackDate
+    _fallbackDate: fallbackDate,
+    pm320NoPick
   };
   // §3.6.2.3 — read 와 동일 세션 구간 키로 write (장경계 무효화 정합).
   calDayCache[_key] = result;
