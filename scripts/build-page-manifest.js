@@ -4,7 +4,7 @@
 //
 // 목적:
 //   라이브에 실제 배포된 종목 OG landing 페이지 목록을 단일 JSON 으로 박제.
-//   `news/stock/{date}/{code}.html` 실파일을 스캔 → `data/page-manifest.json` 생성.
+//   `pm320/{date}/{code}.html` 실파일을 스캔 → `data/page-manifest.json` 생성 (Q-119 stock 제거).
 //   manifest = "실제 배포 상태" SSOT (DB/카드 카운트 아님, 디스크 실파일 기준).
 //   renderer.js 공유 URL 생성부가 이 manifest 로 대상 페이지 존재를 검증 → 404 URL 봉쇄.
 //
@@ -18,7 +18,7 @@
 //   manifest 자체가 없거나 parse 실패면 renderer 는 기존 PRE_MARKET 휴리스틱으로 degrade.
 //
 // Usage:
-//   node scripts/build-page-manifest.js              # repo 루트의 news/stock 스캔
+//   node scripts/build-page-manifest.js              # repo 루트의 pm320 스캔
 //   M1S_HOMEPAGE=/path node scripts/build-page-manifest.js   # 대상 repo override (cron worktree)
 //
 // DSN: records/2026-04/DOC-20260430-DSN-001-arch-frontend.md §3.2 (공유 URL)
@@ -30,7 +30,10 @@ const path = require('path');
 
 // 스캔 대상 repo 루트 — M1S_HOMEPAGE env 우선(cron worktree 격리 정합), 없으면 본 스크립트 기준 repo 루트.
 const REPO_ROOT = process.env.M1S_HOMEPAGE || path.resolve(__dirname, '..');
-const STOCK_HTML_BASE = path.join(REPO_ROOT, 'news', 'stock');
+// Q-20260606-119 — 종목페이지 경로 /pm320/stock/{date}/{code} → /pm320/{date}/{code} (stock 세그먼트 제거).
+//   스캔 대상 = pm320/ 하위 {date}/ 디렉토리. 같은 폴더의 {date}.html 날짜 스텁 파일은 DATE_RE 디렉토리
+//   매칭에서 자연 제외(파일이지 디렉토리 아님). og/sw/calendar/renderer 경로와 정합.
+const STOCK_HTML_BASE = path.join(REPO_ROOT, 'pm320');
 const OUT_PATH = path.join(REPO_ROOT, 'data', 'page-manifest.json');
 
 // {date}/{code}.html 패턴 검증 — date = YYYY-MM-DD, code = 6자리 숫자(우선주 5+1자리 포함 6자리).
@@ -45,8 +48,8 @@ function buildManifest() {
   try {
     dateDirs = fs.readdirSync(STOCK_HTML_BASE, { withFileTypes: true });
   } catch (e) {
-    // news/stock 자체가 없으면 빈 manifest (보수적). 종목페이지 0건 배포 상태.
-    console.error(`[page-manifest] news/stock 디렉토리 없음(${STOCK_HTML_BASE}) — 빈 manifest 생성`);
+    // pm320 자체가 없으면 빈 manifest (보수적). 종목페이지 0건 배포 상태.
+    console.error(`[page-manifest] pm320 디렉토리 없음(${STOCK_HTML_BASE}) — 빈 manifest 생성`);
     dateDirs = [];
   }
 

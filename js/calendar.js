@@ -202,7 +202,7 @@ function renderCalendar() {
   });
 }
 
-// Q-20260606-118 결함(B) — 해당 날짜의 정적 OG 랜딩 페이지(`/pm320/stock/{date}.html`)가 라이브에
+// Q-20260606-118 결함(B) — 해당 날짜의 정적 OG 랜딩 페이지(`/pm320/{date}.html`)가 라이브에
 //   배포되어 있는지 판정. 1순위 = page-manifest(FLR-20260605-TEC-001 P0-2, 라이브 실파일 SSOT)에 그
 //   날짜 키 존재 여부. manifest 미신뢰 시 = calHasData(데이터 인덱스) 보수적 폴백. 둘 다 불가면 false
 //   (보수적 — 404 URL 생성 금지 우선). 정적 페이지는 데이터 생성일에만 빌드되므로 휴장/미생성일 = false.
@@ -224,15 +224,14 @@ async function onCalCellClick(date, pushState) {
   //   거래일이면 해제(그 날 국내장 카드 정상 표시 — 무회귀).
   window._pm320SuppressDomesticCards = (typeof isMarketClosed === 'function') ? isMarketClosed(date) : false;
   toggleThemeSections(date);
-  // Static URL — /pm320/stock/{date}.html (Q-20260605-105, News→PM320 이전). 날짜별 OG 이미지 매칭.
-  //   옛 /news/stock/{date}.html 은 redirect stub 으로 무파손(과거 공유 링크 GET → 새 경로 + query).
+  // Static URL — /pm320/{date}.html (Q-20260606-119, stock 세그먼트 제거 — "pm320 자체가 주식"). 날짜별 OG 매칭.
   // Q-20260606-118 결함(B) — 정적 페이지 부재 날짜로 URL 갱신 금지 (FLR-20260605-TEC-001 "링크 존재 미보장"
-  //   동형 변종). 휴장일/데이터 미생성일(예 6/6 토)은 `/pm320/stock/{date}.html` 빌드 산출물이 없어
+  //   동형 변종). 휴장일/데이터 미생성일(예 6/6 토)은 `/pm320/{date}.html` 빌드 산출물이 없어
   //   새로고침 시 GitHub Pages 404. 정적 페이지 존재가 확인된 날(_dateHasStaticPage)만 URL 갱신하고,
   //   그 외에는 base(`/pm320.html`)로 유지 → 새로고침 200 + 휴장 suppress 진입(initCalendar 경로) 정합.
   if (pushState !== false) {
     if (_dateHasStaticPage(date)) {
-      history.pushState(null, '', '/pm320/stock/' + date + '.html');
+      history.pushState(null, '', '/pm320/' + date + '.html');
     } else {
       history.pushState(null, '', '/pm320.html');
     }
