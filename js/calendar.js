@@ -202,16 +202,40 @@ function renderCalendar() {
   });
 }
 
+// Q-20260606-118 결함(B) — 해당 날짜의 정적 OG 랜딩 페이지(`/pm320/stock/{date}.html`)가 라이브에
+//   배포되어 있는지 판정. 1순위 = page-manifest(FLR-20260605-TEC-001 P0-2, 라이브 실파일 SSOT)에 그
+//   날짜 키 존재 여부. manifest 미신뢰 시 = calHasData(데이터 인덱스) 보수적 폴백. 둘 다 불가면 false
+//   (보수적 — 404 URL 생성 금지 우선). 정적 페이지는 데이터 생성일에만 빌드되므로 휴장/미생성일 = false.
+function _dateHasStaticPage(date) {
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const m = (typeof window !== 'undefined') ? window._pageManifest : null;
+  if (m && m.pages && typeof m.pages === 'object') {
+    return Array.isArray(m.pages[date]) && m.pages[date].length > 0;
+  }
+  // manifest 미신뢰 → 데이터 인덱스 보수적 폴백
+  return (typeof calHasData === 'function') ? calHasData(date) : false;
+}
+
 async function onCalCellClick(date, pushState) {
   calSelectedDate = date;
-  // Q-20260606-113 — 사용자가 달력 날짜를 직접 선택하면 주말·휴장 국내장 카드 suppress 해제.
-  //   (자동 폴백 진입과 달리 명시적 과거 거래일 조회는 그 날 국내장 카드를 정상 표시해야 함)
-  window._pm320SuppressDomesticCards = false;
+  // Q-20260606-118 결함(A) — suppress 재평가. Q-113 은 클릭 시 무조건 해제했으나, 휴장일(오늘=토 등)을
+  //   명시 클릭하면 그 날 국내장 데이터가 없어 직전 거래일 fallback 이 표시되어 "6/6 라벨 + 6/5 카드"
+  //   불일치가 발생했다. 클릭 대상이 휴장(isMarketClosed)이면 자동 폴백과 동일하게 suppress 유지,
+  //   거래일이면 해제(그 날 국내장 카드 정상 표시 — 무회귀).
+  window._pm320SuppressDomesticCards = (typeof isMarketClosed === 'function') ? isMarketClosed(date) : false;
   toggleThemeSections(date);
   // Static URL — /pm320/stock/{date}.html (Q-20260605-105, News→PM320 이전). 날짜별 OG 이미지 매칭.
   //   옛 /news/stock/{date}.html 은 redirect stub 으로 무파손(과거 공유 링크 GET → 새 경로 + query).
+  // Q-20260606-118 결함(B) — 정적 페이지 부재 날짜로 URL 갱신 금지 (FLR-20260605-TEC-001 "링크 존재 미보장"
+  //   동형 변종). 휴장일/데이터 미생성일(예 6/6 토)은 `/pm320/stock/{date}.html` 빌드 산출물이 없어
+  //   새로고침 시 GitHub Pages 404. 정적 페이지 존재가 확인된 날(_dateHasStaticPage)만 URL 갱신하고,
+  //   그 외에는 base(`/pm320.html`)로 유지 → 새로고침 200 + 휴장 suppress 진입(initCalendar 경로) 정합.
   if (pushState !== false) {
-    history.pushState(null, '', '/pm320/stock/' + date + '.html');
+    if (_dateHasStaticPage(date)) {
+      history.pushState(null, '', '/pm320/stock/' + date + '.html');
+    } else {
+      history.pushState(null, '', '/pm320.html');
+    }
   }
   renderCalendar();
   const inner = document.getElementById('cal-content');
@@ -231,6 +255,10 @@ async function onCalCellClick(date, pushState) {
 async function initCalendar() {
   const meta = document.getElementById('meta');
   if (meta) meta.textContent = '';
+
+  // Q-20260606-118 결함(B) — page-manifest 조기 prefetch (논블로킹). 첫 달력 클릭 전 window._pageManifest
+  //   워밍 → _dateHasStaticPage 가 manifest(라이브 SSOT)로 판정. 미도착 시 calHasData 보수 폴백(무파손).
+  try { if (typeof _loadPageManifest === 'function') _loadPageManifest(); } catch (_) { /* graceful */ }
 
   // 1단계: localStorage 캐시에서 즉시 복원 (fetch 0건, ~10ms)
   const cachedCalIndex = (() => { try { return JSON.parse(localStorage.getItem('calIndex') || 'null'); } catch { return null; } })();
