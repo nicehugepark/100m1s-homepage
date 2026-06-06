@@ -363,7 +363,7 @@ function renderPreMarketEmpty(container, date, prevDate, prevData) {
 // 🔴 P0-2 (FLR-20260605-TEC-001) — 공유 링크 존재 보장 manifest (모듈 스코프, 1회 정의).
 //   `data/page-manifest.json` = 배포된 종목페이지 목록 { pages: { "{date}": ["{code}", …] } }.
 //   빌드/sync(scripts/build-page-manifest.js, kiwoom_cron push add-set 시점)가 라이브 디렉토리
-//   `news/stock/{date}/{code}.html` 실파일을 스캔해 생성 → manifest = 실제 배포 상태 SSOT.
+//   `pm320/{date}/{code}.html` 실파일을 스캔해 생성 → manifest = 실제 배포 상태 SSOT (Q-119 stock 제거).
 //   공유 URL 생성 시 대상 페이지가 manifest 에 있으면 OG landing 경로, 없으면 news.html 폴백
 //   → 404 URL 절대 생성 금지. manifest 부재/parse 실패 시 = 보수적 폴백(PRE_MARKET 휴리스틱
 //   으로 degrade — 과거 카드 OG 무회귀 + 오늘·장전 404 회피).
@@ -425,11 +425,11 @@ function _computeShareUrl(origin, code, dateStr, cacheToken, manifest, nowMs, ge
     _ogPageMayMissing = _ogPageMayMissingHeuristic; // manifest 미신뢰 → 보수적 degrade
   }
   const _useOgLanding = code && dateStr && !_ogPageMayMissing;
-  // Q-20260605-104 (21:31) — fallback URL news.html → pm320.html. Q-20260605-105 (21:52) — OG landing
-  //   경로 /news/stock → /pm320/stock 이전(신규 공유 URL = 새 경로 직접 발급). 옛 경로는 redirect stub 으로
-  //   무파손(과거 공유 링크 GET → /pm320/stock 동일 상대경로 + query 보존).
+  // Q-20260605-104 (21:31) — fallback URL news.html → pm320.html.
+  // Q-20260606-119 — OG landing 경로에서 stock 세그먼트 제거 (/pm320/stock/{date}/{code} → /pm320/{date}/{code},
+  //   "pm320 자체가 주식"). 신규 공유 URL = 새 경로 직접 발급. 구경로 stub 불요(대표 "이미 공유된 링크 신경쓰지마").
   return _useOgLanding
-    ? `${origin}/pm320/stock/${dateStr}/${code}.html?v=${cacheToken}`
+    ? `${origin}/pm320/${dateStr}/${code}.html?v=${cacheToken}`
     : code
       ? `${origin}/pm320.html?stock=${code}${dateStr ? `&date=${dateStr}` : ''}&v=${cacheToken}`
       : (dateStr
@@ -2115,7 +2115,7 @@ function renderCalExpandContent(date, data) {
       const cardDate = card.getAttribute('data-card-date') || '';
       const dateStr = cardDate || dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
       // 2026-05-27 (대표 결정, 카톡 미리보기 개선): 공유 URL = OG landing 경로
-      //   `/news/stock/{date}/{code}.html` (generate_stock_og.py 산출, OG 메타 + 미니캔들 PNG).
+      //   `/pm320/{date}/{code}.html` (generate_stock_og.py 산출, OG 메타 + 미니캔들 PNG, Q-119 stock 제거).
       //   기존 `?stock={code}&date={date}` query는 OG 메타 부재 → 카톡 미리보기 안 뜸.
       //   landing HTML이 `?stock={code}&date={date}` single-card mode로 JS redirect (Phase 2c-1 정합).
       //   feedback_share_url_ticker_only.md 정합 — URL 경로엔 code 6자리만 (한글 X). 한글은 OG title만.
@@ -2128,7 +2128,7 @@ function renderCalExpandContent(date, data) {
       const _cacheToken = new Date().toISOString().slice(0, 13).replace(/[-T]/g, '');
       // 🔴 404 가드 (2026-06-05) + P0-2 manifest (FLR-20260605-TEC-001):
       //   카드 날짜의 OG landing 페이지가 라이브에 실제 배포돼 있는지 manifest 로 검증 →
-      //   배포돼 있으면 OG 경로(`/news/stock/{date}/{code}.html`, OG 미리보기 유지),
+      //   배포돼 있으면 OG 경로(`/pm320/{date}/{code}.html`, OG 미리보기 유지),
       //   없으면 정적 news.html(200) 폴백 → 404 URL 절대 생성 금지.
       //   manifest 미신뢰 시엔 기존 PRE_MARKET 휴리스틱으로 degrade (보수적·무회귀).
       //   결정 로직 = _computeShareUrl SSOT (핸들러·셀프테스트 공용, drift 봉쇄).
