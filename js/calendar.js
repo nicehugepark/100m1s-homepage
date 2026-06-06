@@ -286,18 +286,13 @@ async function initCalendar() {
     ? isMarketClosed(todayStr)
     : (isWeekendDate(todayStr) || isHoliday(todayStr));
   window._pm320SuppressDomesticCards = (!hasUrlDate && _todayClosed);
-  // URL 날짜가 없고, 오늘이 주말/휴장이면 최근 거래일로 폴백
-  // 오늘이 평일이면 calIndex에 없어도 항상 오늘 선택 (데이터 비동기 로드)
-  if (!hasUrlDate && _todayClosed) {
-    if (calIndex && calIndex.days) {
-      const collectedDays = Object.keys(calIndex.days)
-        .filter(d => d <= todayStr)
-        .sort();
-      if (collectedDays.length > 0) {
-        initialDate = collectedDays[collectedDays.length - 1];
-      }
-    }
-  }
+  // Q-20260606-121 (대표 verbatim "6월 6일인데 6월 5일로 기본 선택되고 ... 일치가 안되는 중") —
+  //   주말·휴장 기본 진입 시 기본 선택 날짜 = 오늘(todayStr) 유지. 종래엔 직전 거래일(6/5)로 폴백했으나
+  //   suppress 로 국내장 카드를 어차피 숨기므로 직전 거래일 데이터가 불필요하고, 라벨/달력 하이라이트가
+  //   "6월 5일 (금) 주말·휴장" 으로 표시되어 라벨(거래일)·동작(숨김) 불일치 + 미장(토 아침 최신) 시제 어긋남.
+  //   기본 날짜를 오늘로 두면 헤더 "6월 6일 (토) 주말·휴장" + 국내장 suppress + 미장 6/6 데이터(us-indices
+  //   /{today}.json) 로 시제 정합. 직전 거래일 데이터는 안내문구대로 달력에서 선택(Q-118 명시 클릭 무회귀).
+  //   (구 폴백 로직 제거 — 평일은 종전대로 todayStr 유지, 휴장도 todayStr 유지.)
   const [iy, im] = initialDate.split('-').map(Number);
   calViewYear = iy;
   calViewMonth = im;
