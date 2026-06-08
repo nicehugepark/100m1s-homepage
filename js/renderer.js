@@ -3656,3 +3656,29 @@ async function initThemeTree(dateOverride) {
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
 initCalendar();
+
+/* Q-20260608-144 — 날짜 헤더(.cal-content-head) sticky top을 nav(header) 실제 height에 바인딩.
+   하드코딩 top:68px(데스크탑)/72px(모바일)는 뷰포트별 실제 nav height(69~73px 변동, 특히
+   landscape Samsung)와 불일치 → nav 아래 간격/겹침 발생. nav offsetHeight 측정 → CSS 변수
+   --nav-h 노출 → news.css에서 top: var(--nav-h)로 바인딩. 기기·뷰포트 무관 flush 보장. */
+(function _syncNavHeightVar() {
+  var _raf = 0;
+  function apply() {
+    _raf = 0;
+    var nav = document.querySelector('header');
+    if (!nav) return;
+    var h = Math.round(nav.getBoundingClientRect().height);
+    if (h > 0) document.documentElement.style.setProperty('--nav-h', h + 'px');
+  }
+  function schedule() {
+    if (_raf) return;
+    _raf = window.requestAnimationFrame ? window.requestAnimationFrame(apply) : setTimeout(apply, 16);
+  }
+  apply();
+  window.addEventListener('resize', schedule);
+  window.addEventListener('orientationchange', schedule);
+  // 폰트 로드 완료 시 nav 높이 재측정 (웹폰트 metrics로 height 변동 가능)
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+    document.fonts.ready.then(schedule);
+  }
+})();
