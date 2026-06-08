@@ -50,9 +50,11 @@
   }
 
   // 240일 레인지 바 — 종목카드 .stock-range.v2 시각 재사용 (renderCalExpandContent L1346-1390 패턴).
-  //   지수: '원' 대신 포인트. 중앙 라벨 = trade_date_local 거래일(YYYY-MM-DD, 좌우 끝 날짜와 동일 포맷, Q-20260608-135).
+  //   지수: '원' 대신 포인트. 중앙 라벨 = 정규장/국내 종목 = trade_date 거래일(YYYY-MM-DD, Q-20260608-135).
+  //   선물(isFutures=true) = 실시간 거래중이라 중앙 마커가 현재 시세 → 날짜 대신 '현재'(Q-20260608-142).
+  //     양 끝(low_date/high_date)은 선물도 과거 실제 일자 유지. 중앙 가격 숫자(현재가)는 유지, 그 아래 라벨만.
   //   range_240d 부재/불완전 시 '' (카드는 헤더만 렌더).
-  function buildRangeBar(r, tradeDate) {
+  function buildRangeBar(r, tradeDate, isFutures) {
     if (!r || typeof r !== 'object') return '';
     var low = r.low, high = r.high;
     var current = (typeof r.current === 'number') ? r.current : undefined;
@@ -88,7 +90,7 @@
       + '</div>'
       + '<div class="range-row range-dates">'
       + '<span class="r-low">' + esc(r.low_date || '') + '</span>'
-      + '<span class="r-now">' + esc(tradeDate || '') + '</span>'
+      + '<span class="r-now">' + esc(isFutures ? '현재' : (tradeDate || '')) + '</span>'
       + '<span class="r-high">' + esc(r.high_date || '') + '</span>'
       + '</div>'
       + '</div>';
@@ -209,7 +211,7 @@
     if (r240in && typeof r240in === 'object' && typeof r240in.current !== 'number' && typeof idx.point === 'number') {
       r240in = Object.assign({}, r240in, { current: idx.point });
     }
-    var rangeHtml = buildRangeBar(r240in, tradeDate);
+    var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant);
     var newsBodyHtml = buildCardNews(idx.news);
 
     var label = displayName + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
