@@ -228,8 +228,9 @@ function _buildNightlyUsHtml(us) {
     if (_hasFutures && typeof renderIndexFuturesCard === 'function') {
       const resolved = _resolveFutureFor(ix, _futMatched);  // { fut, ageMin, display } | null
       if (resolved) {
+        // Q-20260608-141 (§3) — 선물 전용 뉴스 부재 → 대응 정규장 지수(ix)의 news 를 선물 카드에 공유 렌더.
         futCard = renderIndexFuturesCard(
-          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display
+          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, ix.news
         );
       }
     }
@@ -241,7 +242,7 @@ function _buildNightlyUsHtml(us) {
   }).filter(Boolean).join('');
   if (!groupsHtml) return '';
 
-  // 토글 세그먼트(§2) — 선물 데이터 가용 시에만 노출. 3-state [정규장|선물|둘 다]. 터치 ≥44px(CSS).
+  // 토글 세그먼트(§2) → Q-20260608-141 (§2) — "둘 다" 제거. 2-state [정규장|선물]만. 터치 ≥44px(CSS).
   //   초기 active = 자동 기본값(_futAutoDefault). data-fut-view 동기화는 inline init script(_wireUsFutToggle).
   const autoView = _hasFutures ? _futAutoDefault(_futMatched) : 'regular';
   let toggleHtml = '';
@@ -249,7 +250,6 @@ function _buildNightlyUsHtml(us) {
     toggleHtml = `<div class="idx-fut-toggle" role="tablist" aria-label="미장 표시 전환">`
       + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="regular" role="tab">정규장</button>`
       + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="futures" role="tab">선물</button>`
-      + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="both" role="tab">둘 다</button>`
       + `</div>`;
   }
 
@@ -295,7 +295,9 @@ function _wireUsFutToggle() {
   let view = sec.getAttribute('data-fut-auto') || 'regular';
   try {
     const saved = localStorage.getItem('pm320-us-fut-view');
-    if (saved === 'regular' || saved === 'futures' || saved === 'both') view = saved;
+    // Q-20260608-141 (§2) — "both" 폐기. 과거 'both' override 저장분은 무시(자동 기본값으로 fallback) + 정리.
+    if (saved === 'regular' || saved === 'futures') view = saved;
+    else if (saved === 'both') { try { localStorage.removeItem('pm320-us-fut-view'); } catch (e2) { /* 무시 */ } }
   } catch (e) { /* localStorage 차단 환경 → 자동값 유지 */ }
   const apply = (v) => {
     sec.setAttribute('data-fut-view', v);
@@ -309,7 +311,7 @@ function _wireUsFutToggle() {
   sec.querySelectorAll('.idx-fut-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const v = btn.getAttribute('data-fut-set');
-      if (v !== 'regular' && v !== 'futures' && v !== 'both') return;
+      if (v !== 'regular' && v !== 'futures') return;  // Q-20260608-141 (§2) — "both" 제거
       apply(v);
       try { localStorage.setItem('pm320-us-fut-view', v); } catch (e) { /* 무시 */ }
     });

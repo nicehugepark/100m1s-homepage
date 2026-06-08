@@ -94,74 +94,50 @@
       + '</div>';
   }
 
-  // Q-20260608-140 (A안 페어 카드, DSN-001 §1) — 선물 별개 카드 builder.
-  //   삽입형(.idx-futures-row 카드 내 오버레이) 전면 폐기 → 정규장 카드와 동일 골격의 별개 카드 1장.
-  //   데이터 제약(§5): 선물엔 candle(OHLC)·range_240d·daily_expanded 부재 → 해당 셀 미렌더(빈 박스 0, graceful).
-  //   가용분만 채움: 인트라데이 스파크라인(40봉) + 포인트 + 등락률 + 거래상태 도트 + 갱신시각.
-  //   fut = { name, label_note, point, change_pct, spark[] }. ageMin(신선도, renderer 게이트 통과분).
-  //   sessionOpen = 섹션 단위 거래중/마감 (true=거래중 / false=마감 / undefined=도트 미렌더).
-  //   displayName = 페어 식별용 짧은 제목(예 'NASDAQ 선물'). 입력 부적합 시 '' (호출측 graceful).
-  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName) {
+  // Q-20260608-140 (A안 페어 카드) → Q-20260608-141 (선물 풀차트·뉴스공유·배지제거) — 선물 별개 카드 builder.
+  //   삽입형(.idx-futures-row 오버레이) 폐기 → 정규장 카드와 동일 골격의 별개 카드 1장 (renderIndexCard 재사용).
+  //   §Q-141: B안 수집기로 선물 JSON에 candle·range_240d·daily_expanded 합류됨 → 정규장과 동일 템플릿으로
+  //     캔들+스파크+일봉20+240레인지+(확대 클릭) 풀 렌더 (시각 일관, 이질감 0). 데이터 부재(stale) 시 candle/range
+  //     셀은 정규장과 동일하게 graceful 미렌더(빈 박스 0). 배지 [선물] 제거(제목 "NASDAQ 선물"과 중복).
+  //     뉴스(§3): 선물 전용 뉴스 부재 → 호출측이 대응 정규장 지수의 news 를 sharedNews 로 주입(공유 렌더).
+  //   fut = { name, point, change_pct, spark[], candle?, range_240d?, daily_expanded? }.
+  //   ageMin(신선도, renderer 게이트 통과분) → "N분 전 기준". sessionOpen = 거래중/마감 도트.
+  //   displayName = 페어 식별 짧은 제목(예 'NASDAQ 선물'). sharedNews = 대응 정규장 지수 news(공유).
+  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName, sharedNews) {
     if (!fut || typeof fut !== 'object') return '';
     if (typeof fut.point !== 'number' || typeof fut.change_pct !== 'number') return '';
-    var fp = fut.change_pct;
-    var dir = fp > 0 ? 'up' : (fp < 0 ? 'down' : 'flat');
-    var arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
-    // 제목: 짧은 식별명 우선(displayName). 부재 시 fut.name(예 '나스닥100 선물'). label_note(풀 고지문)는 제목 ❌(§1).
-    var title = (typeof displayName === 'string' && displayName) ? displayName
-      : ((typeof fut.name === 'string' && fut.name) ? fut.name : '선물');
-
-    // 인트라데이 스파크 — 캔들 OHLC 부재 → spark 첫값 기준 방향 추종(§6 색 정책: 선물 스파크 = spark 첫값 기준).
-    //   2봉 이상 필요. 라이브 선물 spark = [open, last] 2봉(희소) → 직선이라도 방향 표현.
-    var sparkHtml = '';
-    if (Array.isArray(fut.spark) && fut.spark.length >= 2 && typeof root.buildSparkline === 'function') {
-      sparkHtml = root.buildSparkline(fut.spark, fut.spark[0], dir);
-    }
-
-    // 거래상태 도트(§4) — sessionOpen true=거래중(초록)/false=마감(회색). undefined 시 미렌더.
-    var statusHtml = '';
-    if (sessionOpen === true) {
-      statusHtml = '<span class="idx-fut-status open" title="거래중"><span class="idx-fut-dot" aria-hidden="true"></span>거래중</span>';
-    } else if (sessionOpen === false) {
-      statusHtml = '<span class="idx-fut-status closed" title="거래 마감"><span class="idx-fut-dot" aria-hidden="true"></span>거래 마감</span>';
-    }
-
-    // 갱신시각(§4) — "N분 전 기준" (stale 실시간 위장 금지, FLR-AGT-002). ageMin null 시 미렌더.
-    var am = (typeof ageMin === 'number') ? ageMin : null;
-    var ageText = am == null ? '' : (am <= 0 ? '방금 전 기준' : (am + '분 전 기준'));
-
-    var label = title + ' ' + (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합')
-      + ' ' + fmtPoint(fut.point) + ' (' + fmtPct(fp) + ')';
-
-    // 정규장 카드 동일 골격(.cal-feature-card.v2 + head-left 4-child) — 단 candle/range/expanded 셀은 데이터 부재로
-    //   미렌더(빈 placeholder 박스 0). rank 슬롯·candles20 셀 생략 → 정보 밀도 자연 축소(선물 = 데이터 적음 의도 노출).
-    return '<div class="cal-feature-card v2 cal-feature-card--idx cal-feature-card--fut" aria-label="' + esc(label) + '">'
-      + '<div class="cal-feature-head v2">'
-      + '<div class="cal-feature-head-left">'
-      + '<div class="cal-trade-rank"></div>'
-      + (sparkHtml ? '<div class="cal-feature-sparkline">' + sparkHtml + '</div>' : '<div class="cal-feature-sparkline cal-spark-empty"></div>')
-      + '</div>'
-      + '<div class="cal-feature-head-right">'
-      + '<div class="cal-feature-namecell">'
-      + '<span class="cal-feature-name">' + esc(title) + '</span>'
-      + '<span class="idx-fut-badge">선물</span>'
-      + (statusHtml ? statusHtml : '')
-      + '</div>'
-      + '<div class="cal-feature-meta">'
-      + '<span class="cal-feature-pct ' + dir + '"><span class="idx-card-arrow" aria-hidden="true">' + arrow + '</span>' + esc(fmtPct(fp)) + '</span>'
-      + '<span class="cal-meta-sep">|</span>'
-      + '<span class="cal-trade-amount">' + esc(fmtPoint(fut.point)) + ' p</span>'
-      + '</div>'
-      + (ageText ? '<div class="idx-fut-age">' + esc(ageText) + '</div>' : '')
-      + '</div>'
-      + '</div>'
-      + '</div>';
+    // 선물 데이터를 정규장 idx schema 로 사용 — name 은 displayName(제목) override 로 처리.
+    //   news 는 선물 전용 부재 → 대응 정규장 지수 news 공유(§3). 색 SSOT(candle 시가대비/스파크 캔들추종/등락률 전일대비)
+    //   는 renderIndexCard 내부 로직 그대로 (정규장과 100% 동일).
+    var idxLike = {
+      name: (typeof fut.name === 'string' && fut.name) ? fut.name : '선물',
+      point: fut.point,
+      change_pct: fut.change_pct,
+      spark: fut.spark,
+      candle: fut.candle,
+      range_240d: fut.range_240d,
+      daily_expanded: fut.daily_expanded,
+      daily20: fut.daily20,
+      news: (sharedNews && typeof sharedNews === 'object') ? sharedNews : undefined
+    };
+    return renderIndexCard(idxLike, null, tradeDate, {
+      futVariant: true,
+      ageMin: ageMin,
+      sessionOpen: sessionOpen,
+      displayName: (typeof displayName === 'string' && displayName) ? displayName : idxLike.name
+    });
   }
 
   // idx 1종 + (선택)futureInfo → 카드 HTML 문자열. 입력 부적합 시 '' (호출측에서 섹션 미렌더 판단).
-  function renderIndexCard(idx, futureInfo, tradeDate) {
+  //   opts (Q-20260608-141, 선물 풀차트) = { futVariant, ageMin, sessionOpen, displayName }.
+  //     futVariant=true 시 선물 카드 변종 — 정규장과 동일 골격(candle·spark·일봉20·240레인지·뉴스) +
+  //     선물 식별(좌측 보더 클래스) + 거래상태 도트 + "N분 전 기준" 갱신시각 + 제목 override(displayName).
+  //     candle/range_240d 부재 시 해당 셀은 정규장과 동일하게 graceful 미렌더(빈 박스 0).
+  function renderIndexCard(idx, futureInfo, tradeDate, opts) {
     if (!idx || typeof idx !== 'object') return '';
     if (typeof idx.name !== 'string' || !idx.name) return '';
+    var futVariant = !!(opts && opts.futVariant);
+    var displayName = (opts && typeof opts.displayName === 'string' && opts.displayName) ? opts.displayName : idx.name;
 
     var pct = (typeof idx.change_pct === 'number' && isFinite(idx.change_pct)) ? idx.change_pct : null;
     var dir = pct == null ? 'flat' : (pct > 0 ? 'up' : (pct < 0 ? 'down' : 'flat'));
@@ -200,7 +176,7 @@
     //     graceful fallback (국내 Phase 2 prototype 동작 동형). data-stock-code = 합성 code(지수=idxCode) →
     //     slot id "chart-{idxCode}" + aria-controls anchor 정합. _fetchDailybars(idxCode) 는 /data/dailybars 404
     //     → prototype(data-daily20) 유지 (graceful, 거짓 데이터 0).
-    var idxCode = 'idx-' + String(idx.name).replace(/[^A-Za-z0-9가-힣]/g, '').slice(0, 20);
+    var idxCode = 'idx-' + String(displayName).replace(/[^A-Za-z0-9가-힣]/g, '').slice(0, 20);
     var hasExpanded = Array.isArray(idx.daily_expanded) && idx.daily_expanded.length >= 1;
     var expandSeries = hasExpanded ? idx.daily_expanded : (Array.isArray(idx.daily20) ? idx.daily20 : []);
     // 미니 일봉(20봉) — daily20 우선, 부재/빈배열 시 daily_expanded 마지막 20봉으로 derive.
@@ -236,8 +212,26 @@
     var rangeHtml = buildRangeBar(r240in, tradeDate);
     var newsBodyHtml = buildCardNews(idx.news);
 
-    var label = idx.name + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
+    var label = displayName + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
       + ' ' + fmtPoint(idx.point) + ' (' + (pct == null ? '등락률 없음' : fmtPct(pct)) + ')';
+
+    // 선물 변종(§Q-20260608-141) — 거래상태 도트 + "N분 전 기준" 갱신시각. 제목줄에 도트, namecell 아래 갱신시각.
+    var futStatusHtml = '';
+    var futAgeHtml = '';
+    if (futVariant) {
+      var so = opts.sessionOpen;
+      if (so === true) {
+        futStatusHtml = '<span class="idx-fut-status open" title="거래중"><span class="idx-fut-dot" aria-hidden="true"></span>거래중</span>';
+      } else if (so === false) {
+        futStatusHtml = '<span class="idx-fut-status closed" title="거래 마감"><span class="idx-fut-dot" aria-hidden="true"></span>거래 마감</span>';
+      }
+      var am = (typeof opts.ageMin === 'number') ? opts.ageMin : null;
+      if (am != null) {
+        var ageText = am <= 0 ? '방금 전 기준' : (am + '분 전 기준');
+        futAgeHtml = '<div class="idx-fut-age">' + esc(ageText) + '</div>';
+      }
+    }
+    var cardCls = 'cal-feature-card v2 cal-feature-card--idx' + (futVariant ? ' cal-feature-card--fut' : '');
 
     // 대표 20:26 catch 정정 — 국내 종목카드 헤더 DOM 1:1 복제 (renderer.js L1419-1435 verbatim 구조).
     //   head-left 4-child 순서 동일: .cal-trade-rank → .cal-trade-candle(당일캔들) → .cal-feature-sparkline
@@ -246,8 +240,8 @@
     //   data-stock-code = idxCode (확대 slot id/aria anchor). 국내 미사용: 공유버튼/badges/상세 body (지수 무관).
     // role="img" 제거 (대표 20:47 확대 trigger 추가 → 카드 내 interactive button 존재. img role 은
     //   interactive 자식 비호환). 국내 종목카드도 카드 자체 role 없음(1:1). aria-label 은 card에 두되 group 의미.
-    return '<div class="cal-feature-card v2 cal-feature-card--idx" aria-label="' + esc(label) + '"'
-      + ' data-stock-code="' + esc(idxCode) + '" data-stock-name="' + esc(idx.name) + '">'
+    return '<div class="' + cardCls + '" aria-label="' + esc(label) + '"'
+      + ' data-stock-code="' + esc(idxCode) + '" data-stock-name="' + esc(displayName) + '">'
       + '<div class="cal-feature-head v2">'
       + '<div class="cal-feature-head-left">'
       + '<div class="cal-trade-rank"></div>'
@@ -257,13 +251,15 @@
       + '</div>'
       + '<div class="cal-feature-head-right">'
       + '<div class="cal-feature-namecell">'
-      + '<span class="cal-feature-name">' + esc(idx.name) + '</span>'
+      + '<span class="cal-feature-name">' + esc(displayName) + '</span>'
+      + futStatusHtml
       + '</div>'
       + '<div class="cal-feature-meta">'
       + '<span class="cal-feature-pct ' + dir + '"><span class="idx-card-arrow" aria-hidden="true">' + arrow + '</span>' + esc(fmtPct(pct)) + '</span>'
       + '<span class="cal-meta-sep">|</span>'
       + '<span class="cal-trade-amount">' + esc(fmtPoint(idx.point)) + ' p</span>'
       + '</div>'
+      + futAgeHtml
       + '</div>'
       + '</div>'
       + rangeHtml

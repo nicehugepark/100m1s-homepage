@@ -1523,25 +1523,16 @@ body.single-card-mode { background: var(--bg) !important; }
 .idx-pair-group { display: flex; flex-direction: column; gap: 4px; }
 .nightly-us-cards { gap: 10px; }  /* 그룹 간 간격(기본 6px → 10px, 페어 시각 분리) */
 
-/* 토글 가시성 — data-fut-view 별 정규장/선물 카드 show/hide. */
+/* 토글 가시성 — data-fut-view 별 정규장/선물 카드 show/hide. Q-20260608-141(§2): "both" 제거(2-state). */
 .nightly-us-summary[data-fut-view="regular"] .idx-card-futures { display: none; }
 .nightly-us-summary[data-fut-view="futures"] .idx-card-regular { display: none; }
-/* "둘 다"(both) = 양쪽 모두 표시 (display 기본값 유지). */
 
-/* 선물 카드 식별(§1) — 종목카드 동일 골격 + 좌측 회색 hairline 보더(정규장 = plain) + 들여쓰기. */
+/* 선물 카드 식별(§1) — 종목카드 동일 골격 + 좌측 회색 hairline 보더(정규장 = plain).
+   Q-20260608-141(§1): [선물] 배지 제거(제목 "NASDAQ 선물"과 중복) → 식별은 좌측 보더 + 제목 텍스트로만. */
 .cal-feature-card--fut {
   border-left: 3px solid var(--g08);
 }
-.nightly-us-summary[data-fut-view="both"] .idx-card-futures { margin-left: 8px; }
 
-/* 선물 배지(§1) — 중립 슬레이트 톤(추천색 아님, 파생=참고 위계). 제목 우측. */
-.idx-fut-badge {
-  display: inline-block; margin-left: 6px;
-  font-size: 11px; font-weight: 700; line-height: 1;
-  padding: 3px 7px; border-radius: 999px;
-  background: var(--g04); color: var(--tx2);
-  vertical-align: middle;
-}
 /* 거래상태 도트(§4) — 거래중(초록)/마감(회색). 제목 줄 내. */
 .idx-fut-status {
   display: inline-flex; align-items: center; gap: 3px; margin-left: 6px;
