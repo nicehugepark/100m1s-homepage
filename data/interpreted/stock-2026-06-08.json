@@ -1,11 +1,11 @@
 {
   "date": "2026-06-08",
-  "generated_at": "2026-06-08T13:36:21.466073",
+  "generated_at": "2026-06-08T13:46:36.928130",
   "data_source": "kiwoom",
   "macro_events": [
     {
       "title": "반도체약세",
-      "summary": "글로벌 AI 수요 둔화 → 반도체 주가 급락 → 삼성전자·SK하이닉스 10%대 낙폭, 코스피 '검은 월요일' 공포"
+      "summary": "글로벌 기술주 약세 → 삼성전자·SK하이닉스·LG전자 10%대 낙폭 → 반도체 섹터 '검은 월요일' 위기"
     },
     {
       "title": "유동성백화점",
@@ -52,11 +52,11 @@
       "code": "001740",
       "name": "SK네트웍스",
       "rank": 1,
-      "trade_amount": 582838000000,
-      "change_pct": 23.58,
-      "close_price": 13470,
+      "trade_amount": 636572000000,
+      "change_pct": 30.0,
+      "close_price": 14170,
       "open_price": 9500,
-      "high_price": 13990,
+      "high_price": 14170,
       "low_price": 9500,
       "industry": "기타 전문 도매업",
       "sector": "정보통신 유통, 자동차 관리, 글로벌 트레이딩, 호텔&리조트",
@@ -176,17 +176,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -5.21,
-      "index_multiple_current": -4.53,
+      "index_change_pct": -5.43,
+      "index_multiple_current": -5.05,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 13990,
+        "high": 14170,
         "high_date": "2026-06-08",
-        "high_pct": -3.72,
+        "high_pct": 0.0,
         "low": 4235,
         "low_date": "2025-06-18",
-        "low_pct": 218.06,
-        "current": 13470
+        "low_pct": 234.59,
+        "current": 14170
       },
       "daily_20": [
         {
@@ -327,7 +327,33 @@
           "o": 9500,
           "h": 13990,
           "l": 9500,
-          "c": 13470
+          "c": 13890
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-06-08",
+          "summary": "SK네트웍스 상한가 (30.0%)",
+          "cur_prc": 14170,
+          "flu_rt": 30.0,
+          "trde_qty": 48727603,
+          "trde_prica_calc": 637013000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-09"
         }
       ],
       "intraday": {
@@ -384,7 +410,9 @@
           13570,
           13510,
           13510,
-          13470
+          13530,
+          13740,
+          13840
         ]
       },
       "credit_risk": true,
@@ -397,9 +425,9 @@
       "code": "457370",
       "name": "한켐",
       "rank": 2,
-      "trade_amount": 208911000000,
-      "change_pct": -2.66,
-      "close_price": 14280,
+      "trade_amount": 210019000000,
+      "change_pct": -3.68,
+      "close_price": 14130,
       "open_price": 13940,
       "high_price": 17040,
       "low_price": 13660,
@@ -432,17 +460,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": 0.41,
+      "index_change_pct": -6.62,
+      "index_multiple_current": 0.56,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 17040,
         "high_date": "2026-06-08",
-        "high_pct": -16.2,
+        "high_pct": -17.08,
         "low": 7070,
         "low_date": "2025-11-21",
-        "low_pct": 101.98,
-        "current": 14280
+        "low_pct": 99.86,
+        "current": 14130
       },
       "daily_20": [
         {
@@ -583,7 +611,7 @@
           "o": 13940,
           "h": 17040,
           "l": 13660,
-          "c": 14280
+          "c": 14130
         }
       ],
       "intraday": {
@@ -645,7 +673,9 @@
           14200,
           14120,
           14240,
-          14280
+          14140,
+          14060,
+          14140
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -658,7 +688,7 @@
       "code": "388790",
       "name": "라이콤",
       "rank": 3,
-      "trade_amount": 83308000000,
+      "trade_amount": 84056000000,
       "change_pct": 17.77,
       "close_price": 6960,
       "open_price": 5650,
@@ -783,8 +813,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -2.74,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -2.68,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 9330,
@@ -996,6 +1026,8 @@
           6810,
           7000,
           6940,
+          7010,
+          6970,
           6960
         ]
       },
@@ -1009,7 +1041,7 @@
       "code": "066430",
       "name": "아이로보틱스",
       "rank": 4,
-      "trade_amount": 70857000000,
+      "trade_amount": 70874000000,
       "change_pct": 29.98,
       "close_price": 4270,
       "open_price": 3380,
@@ -1099,8 +1131,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.63,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.53,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5080,
@@ -1262,8 +1294,8 @@
           "summary": "아이로보틱스 상한가 (29.98%)",
           "cur_prc": 4270,
           "flu_rt": 29.98,
-          "trde_qty": 17766408,
-          "trde_prica_calc": 70857000000,
+          "trde_qty": 17770324,
+          "trde_prica_calc": 70874000000,
           "consecutive_count": 2,
           "estimated": false,
           "effect_badges": [
@@ -1338,6 +1370,8 @@
           4270,
           4270,
           4270,
+          4270,
+          4270,
           4270
         ]
       },
@@ -1351,9 +1385,9 @@
       "code": "006220",
       "name": "제주은행",
       "rank": 4,
-      "trade_amount": 57454000000,
-      "change_pct": 4.87,
-      "close_price": 11200,
+      "trade_amount": 57983000000,
+      "change_pct": 4.4,
+      "close_price": 11150,
       "open_price": 11700,
       "high_price": 12550,
       "low_price": 10690,
@@ -1415,17 +1449,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -5.21,
-      "index_multiple_current": -0.93,
+      "index_change_pct": -5.43,
+      "index_multiple_current": -0.81,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 19350,
         "high_date": "2025-07-10",
-        "high_pct": -42.12,
+        "high_pct": -42.38,
         "low": 9160,
         "low_date": "2026-06-04",
-        "low_pct": 22.27,
-        "current": 11200
+        "low_pct": 21.72,
+        "current": 11150
       },
       "daily_20": [
         {
@@ -1566,7 +1600,7 @@
           "o": 11700,
           "h": 12550,
           "l": 10690,
-          "c": 11200
+          "c": 11150
         }
       ],
       "intraday": {
@@ -1623,7 +1657,9 @@
           11190,
           11360,
           11200,
-          11200
+          11180,
+          11170,
+          11160
         ]
       },
       "togusa_verdict": "neutral",
@@ -1634,7 +1670,7 @@
       "code": "271830",
       "name": "팸텍",
       "rank": 6,
-      "trade_amount": 27518000000,
+      "trade_amount": 27524000000,
       "change_pct": 29.98,
       "close_price": 2710,
       "open_price": 2045,
@@ -1759,8 +1795,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.63,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.53,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3045,
@@ -1947,8 +1983,8 @@
           "summary": "팸텍 상한가 (29.98%)",
           "cur_prc": 2710,
           "flu_rt": 29.98,
-          "trde_qty": 11154423,
-          "trde_prica_calc": 27518000000,
+          "trde_qty": 11156534,
+          "trde_prica_calc": 27524000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2023,6 +2059,8 @@
           2710,
           2710,
           2710,
+          2710,
+          2710,
           2710
         ]
       },
@@ -2036,7 +2074,7 @@
       "code": "417860",
       "name": "오브젠",
       "rank": 7,
-      "trade_amount": 9387000000,
+      "trade_amount": 9401000000,
       "change_pct": 30.0,
       "close_price": 13650,
       "open_price": 9860,
@@ -2151,8 +2189,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.63,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.53,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 33200,
@@ -2314,8 +2352,8 @@
           "summary": "오브젠 상한가 (30.0%)",
           "cur_prc": 13650,
           "flu_rt": 30.0,
-          "trde_qty": 747166,
-          "trde_prica_calc": 9387000000,
+          "trde_qty": 748195,
+          "trde_prica_calc": 9401000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2390,6 +2428,8 @@
           13650,
           13650,
           13650,
+          13650,
+          13650,
           13650
         ]
       },
@@ -2403,7 +2443,7 @@
       "code": "126640",
       "name": "화신정공",
       "rank": 8,
-      "trade_amount": 6047000000,
+      "trade_amount": 6052000000,
       "change_pct": 29.95,
       "close_price": 2625,
       "open_price": 2625,
@@ -2431,8 +2471,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.62,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.52,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 2625,
@@ -2594,8 +2634,8 @@
           "summary": "화신정공 상한가 (29.95%)",
           "cur_prc": 2625,
           "flu_rt": 29.95,
-          "trde_qty": 2303796,
-          "trde_prica_calc": 6047000000,
+          "trde_qty": 2305469,
+          "trde_prica_calc": 6052000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2616,6 +2656,8 @@
         "open": 2625,
         "base": 2020,
         "prices": [
+          2625,
+          2625,
           2625,
           2625,
           2625,
@@ -2742,8 +2784,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.62,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.52,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 5190,
@@ -2905,7 +2947,7 @@
           "summary": "핀텔 상한가 (29.94%)",
           "cur_prc": 1827,
           "flu_rt": 29.94,
-          "trde_qty": 3034203,
+          "trde_qty": 3034449,
           "trde_prica_calc": 5390000000,
           "consecutive_count": 2,
           "estimated": false,
@@ -2981,6 +3023,8 @@
           1827,
           1827,
           1827,
+          1827,
+          1827,
           1827
         ]
       },
@@ -2994,7 +3038,7 @@
       "code": "001000",
       "name": "신라섬유",
       "rank": 10,
-      "trade_amount": 4570000000,
+      "trade_amount": 4573000000,
       "change_pct": 29.97,
       "close_price": 1622,
       "open_price": 1366,
@@ -3022,8 +3066,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.62,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.53,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 3085,
@@ -3185,8 +3229,8 @@
           "summary": "신라섬유 상한가 (29.97%)",
           "cur_prc": 1622,
           "flu_rt": 29.97,
-          "trde_qty": 2909910,
-          "trde_prica_calc": 4570000000,
+          "trde_qty": 2911459,
+          "trde_prica_calc": 4573000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3260,6 +3304,9 @@
           1622,
           1622,
           1622,
+          1622,
+          1622,
+          1622,
           1622
         ]
       },
@@ -3294,8 +3341,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -6.48,
-      "index_multiple_current": -4.62,
+      "index_change_pct": -6.62,
+      "index_multiple_current": -4.52,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 1829,
@@ -3457,7 +3504,7 @@
           "summary": "엔피 상한가 (29.92%)",
           "cur_prc": 647,
           "flu_rt": 29.92,
-          "trde_qty": 676485,
+          "trde_qty": 676989,
           "trde_prica_calc": 428000000,
           "consecutive_count": 1,
           "estimated": false,
@@ -3482,6 +3529,8 @@
           498,
           509,
           593,
+          647,
+          647,
           647,
           647,
           647,
