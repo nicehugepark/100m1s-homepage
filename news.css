@@ -2190,8 +2190,10 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-news-tense--realtime { color: #1f7a3d; background: rgba(31, 122, 61, 0.12); }
 .cal-news-tense--close { color: #6b6256; background: rgba(107, 98, 86, 0.12); }
-/* Q-20260608 정규장 장중 — 개장 중 "장중" 배지. 마감(--close, 회색)과 구분되는 활성 톤. */
-.cal-news-tense--live { color: #c0392b; background: rgba(192, 57, 43, 0.12); }
+/* Q-20260608 정규장 장중 — 개장 중 "장중" 배지. P2(design): 가격 상승색(#C53939 빨강)·하락색
+   (#1958C7 파랑) 어느 쪽과도 명확히 구분되는 앰버 계열(중립). 빨강(#c0392b)은 상승빨강과 인접해
+   하락 카드에서 "상승?" 오인 → 앰버로 분리. 마감(--close, 회색)·realtime(녹)과도 대비. */
+.cal-news-tense--live { color: #B45309; background: rgba(180, 83, 9, 0.12); }
 .cal-factors {
   display: flex; flex-wrap: wrap; gap: 8px 16px;
   font-size: 12px; color: var(--tx2);
