@@ -194,7 +194,7 @@ function _buildNightlyUsHtml(us) {
   // Phase 4 (대표 20:37) — 국내장 중(평일 09:00~15:30 KST) + futures.as_of_kst 신선(≤30분)이면
   //   각 지수 카드에 장중 선물 줄 오버레이 (마감 지수 카드 유지). 장외/주말/stale/부재 시 미렌더.
   const _futMatched = _matchFuturesToIndices(us);  // { byName: Map, ageMin: number } | null
-  const cardsHtml = us.indices.map(ix => renderIndexCard(ix, _futMatched ? _resolveFutureFor(ix, _futMatched) : null)).filter(Boolean).join('');
+  const cardsHtml = us.indices.map(ix => renderIndexCard(ix, _futMatched ? _resolveFutureFor(ix, _futMatched) : null, us.trade_date_local)).filter(Boolean).join('');
   if (!cardsHtml) return '';
 
   // 섹션 헤더 줄("야간 미국증시" eyebrow + "M/D (현지 마감)" 라벨) 전체 제거 (대표 2026-06-05 21:23 verbatim
@@ -1556,12 +1556,12 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="range-row range-pcts">
             <span class="r-low ${lowCls}">${lowText}</span>
-            <span class="r-now r-now-label">현재가</span>
+            <span class="r-now r-now-label"></span>
             <span class="r-high ${highCls}">${highText}</span>
           </div>
           <div class="range-row range-dates">
             <span class="r-low">${escapeHtml(r240.low_date || '')}</span>
-            <span class="r-now"></span>
+            <span class="r-now">${escapeHtml(date || '')}</span>
             <span class="r-high">${escapeHtml(r240.high_date || '')}</span>
           </div>
         </div>`;
