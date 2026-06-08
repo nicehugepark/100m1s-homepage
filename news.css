@@ -2071,6 +2071,10 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--g60, #6B7280);
   font-size: 12px;          /* §8.5 모바일 12px 정합 (sub 11.5px → 12px 상향) */
 }
+/* mdd_pct===0 안내문구 continuation — "└ " 들여쓰기 정합(괄호 제거 + 다음 줄). 대표 지시 2026-06-08 */
+.pm320-rec-value--sub-cont {
+  padding-left: 1.1em;
+}
 /* 최대 낙폭(MDD) — 낙폭은 손실 방향, 파란/회색 톤 (익절 초록과 구분). 대표 지시 2026-06-08 */
 .pm320-rec-value--mdd {
   color: #2563A8;

@@ -872,10 +872,10 @@ function renderCalExpandContent(date, data) {
         && pk.result.mdd_peak_pct != null && Number.isFinite(pk.result.mdd_peak_pct)) {
       const peakText = _fmtDrawdown(pk.result.mdd_peak_pct);
       const hasEntry = pk.result.mdd_pct != null && Number.isFinite(pk.result.mdd_pct);
+      // mdd_pct===0 시: 값은 "0%", 안내문구("진입가 아래로 안 빠짐")는 괄호 없이 다음 줄로 분리(대표 지시 2026-06-08).
+      const zeroEntry = hasEntry && pk.result.mdd_pct === 0;
       const entrySub = hasEntry
-        ? (pk.result.mdd_pct === 0
-            ? '0% (진입가 아래로 안 빠짐)'
-            : _fmtDrawdown(pk.result.mdd_pct))
+        ? (zeroEntry ? '0%' : _fmtDrawdown(pk.result.mdd_pct))
         : '';
       mddRow = `
       <div class="pm320-rec-detail-row pm320-rec-detail-row--mdd">
@@ -885,7 +885,11 @@ function renderCalExpandContent(date, data) {
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
         <span class="pm320-rec-label"></span>
         <span class="pm320-rec-value pm320-rec-value--sub">└ 진입 후 최대 평가손실: ${escapeHtml(entrySub)}</span>
-      </div>` : ''}`;
+      </div>${zeroEntry ? `
+      <div class="pm320-rec-detail-row pm320-rec-detail-sub">
+        <span class="pm320-rec-label"></span>
+        <span class="pm320-rec-value pm320-rec-value--sub pm320-rec-value--sub-cont">진입가 아래로 안 빠짐</span>
+      </div>` : ''}` : ''}`;
     }
     if (pk.current_state && pk.current_state !== 'running' && pk.result) {
       const state = pk.current_state;
