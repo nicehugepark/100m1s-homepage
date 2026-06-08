@@ -105,7 +105,8 @@
   //   fut = { name, point, change_pct, spark[], candle?, range_240d?, daily_expanded? }.
   //   ageMin(신선도, renderer 게이트 통과분) → "N분 전 기준". sessionOpen = 거래중/마감 도트.
   //   displayName = 페어 식별 짧은 제목(예 'NASDAQ 선물'). sharedNews = 대응 정규장 지수 news(공유).
-  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName, sharedNews) {
+  //   isStale(Q-20260608-145) = 30분 초과 → "지연" 배지(카드 숨김 ❌, 정직 명시). renderer 게이트 폐기 후 상시 노출.
+  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName, sharedNews, isStale) {
     if (!fut || typeof fut !== 'object') return '';
     if (typeof fut.point !== 'number' || typeof fut.change_pct !== 'number') return '';
     // 선물 데이터를 정규장 idx schema 로 사용 — name 은 displayName(제목) override 로 처리.
@@ -126,6 +127,7 @@
       futVariant: true,
       ageMin: ageMin,
       sessionOpen: sessionOpen,
+      isStale: !!isStale,  // Q-20260608-145 — 30분 초과 지연 배지 분기
       displayName: (typeof displayName === 'string' && displayName) ? displayName : idxLike.name,
       // Q-20260608-143 — 선물 카드 뉴스는 *실시간* (한국 장중=미 야간 선물 거래시간대). 시제 라벨 분리.
       newsTense: 'realtime'
@@ -234,7 +236,9 @@
       var am = (typeof opts.ageMin === 'number') ? opts.ageMin : null;
       if (am != null) {
         var ageText = am <= 0 ? '방금 전 기준' : (am + '분 전 기준');
-        futAgeHtml = '<div class="idx-fut-age">' + esc(ageText) + '</div>';
+        // Q-20260608-145 — 30분 초과(opts.isStale) 시 "지연" 칩으로 stale 정직 명시(숨김 ❌, FLR-AGT-002).
+        var staleChip = opts.isStale ? '<span class="idx-fut-delay" title="갱신 지연(데이터가 최신이 아님)">지연</span>' : '';
+        futAgeHtml = '<div class="idx-fut-age' + (opts.isStale ? ' idx-fut-age--stale' : '') + '">' + staleChip + esc(ageText) + '</div>';
       }
     }
     var cardCls = 'cal-feature-card v2 cal-feature-card--idx' + (futVariant ? ' cal-feature-card--fut' : '');

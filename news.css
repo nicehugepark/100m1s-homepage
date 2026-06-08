@@ -1549,7 +1549,14 @@ body.single-card-mode { background: var(--bg) !important; }
 .idx-fut-status.closed { color: var(--dm); }
 .idx-fut-status.closed .idx-fut-dot { background: var(--dm); }
 /* 갱신시각(§4) — namecell 아래 메타. "N분 전 기준" (stale 위장 금지). */
-.idx-fut-age { font-size: 10px; color: var(--dm); font-weight: 600; margin-top: 2px; }
+.idx-fut-age { font-size: 10px; color: var(--dm); font-weight: 600; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+/* Q-20260608-145 — 선물 갱신 지연(30분 초과) 명시 칩. stale 를 숨기지 않고 정직 표시(FLR-AGT-002).
+   앰버 톤(경고 위계, 추천 햇살색 아님). WCAG AA: #92560A on #FDF3DE ≈ 5.6:1. */
+.idx-fut-delay {
+  flex-shrink: 0; font-size: 9.5px; font-weight: 700; line-height: 1;
+  padding: 2px 5px; border-radius: 999px; color: #92560A; background: #FDF3DE;
+}
+.idx-fut-age--stale { color: #92560A; }
 /* 선물 카드 namecell — 배지·상태가 제목 줄에 함께 들어가되 줄바꿈 허용(390px ellipsis 금지). */
 .cal-feature-card--fut .cal-feature-namecell { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 0; }
 
