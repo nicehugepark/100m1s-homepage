@@ -50,9 +50,10 @@
   }
 
   // 240일 레인지 바 — 종목카드 .stock-range.v2 시각 재사용 (renderCalExpandContent L1346-1390 패턴).
-  //   지수: '원' 대신 포인트. 중앙 라벨 = 정규장/국내 종목 = trade_date 거래일(YYYY-MM-DD, Q-20260608-135).
-  //   선물(isFutures=true) = 실시간 거래중이라 중앙 마커가 현재 시세 → 날짜 대신 '현재'(Q-20260608-142).
-  //     양 끝(low_date/high_date)은 선물도 과거 실제 일자 유지. 중앙 가격 숫자(현재가)는 유지, 그 아래 라벨만.
+  //   지수: '원' 대신 포인트. 중앙 라벨 (Option A, 대표 지시 2026-06-08):
+  //     range-pcts 행 중앙 = '현재' 라벨 (전 카드 공통 — 종목/정규장/선물).
+  //     range-dates 행 중앙 = 정규장 → 거래일 날짜(tradeDate) 유지(Q-135), 선물 → 비움(실시간이라 거래일 무의미, Q-142).
+  //     양 끝(low_date/high_date)은 실제 일자 유지. 중앙 가격 숫자(현재가)는 유지.
   //   range_240d 부재/불완전 시 '' (카드는 헤더만 렌더).
   function buildRangeBar(r, tradeDate, isFutures) {
     if (!r || typeof r !== 'object') return '';
@@ -85,12 +86,12 @@
       + '</div>'
       + '<div class="range-row range-pcts">'
       + '<span class="r-low ' + lowCls + '">' + esc(lowText) + '</span>'
-      + '<span class="r-now r-now-label"></span>'
+      + '<span class="r-now r-now-label">현재</span>'
       + '<span class="r-high ' + highCls + '">' + esc(highText) + '</span>'
       + '</div>'
       + '<div class="range-row range-dates">'
       + '<span class="r-low">' + esc(r.low_date || '') + '</span>'
-      + '<span class="r-now">' + esc(isFutures ? '현재' : (tradeDate || '')) + '</span>'
+      + '<span class="r-now">' + esc(isFutures ? '' : (tradeDate || '')) + '</span>'
       + '<span class="r-high">' + esc(r.high_date || '') + '</span>'
       + '</div>'
       + '</div>';

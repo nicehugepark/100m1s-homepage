@@ -1695,7 +1695,7 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="range-row range-pcts">
             <span class="r-low ${lowCls}">${lowText}</span>
-            <span class="r-now r-now-label"></span>
+            <span class="r-now r-now-label">현재</span>
             <span class="r-high ${highCls}">${highText}</span>
           </div>
           <div class="range-row range-dates">
