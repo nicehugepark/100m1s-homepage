@@ -53,9 +53,12 @@
   //   지수: '원' 대신 포인트. 중앙 라벨 (Option A, 대표 지시 2026-06-08):
   //     range-pcts 행 중앙 = '현재' 라벨 (전 카드 공통 — 종목/정규장/선물).
   //     range-dates 행 중앙 = 정규장 → 거래일 날짜(tradeDate) 유지(Q-135), 선물 → 비움(실시간이라 거래일 무의미, Q-142).
+  //       정규장 개장 중(liveOpen=true, Q-20260608 정규장 장중) → 비움(선물 동형). 중앙 마커가 당일
+  //       장중 현재가인데 마감 거래일 날짜(6/5) 출력 시 "장중"과 시제 모순(거짓 충실성, FLR-AGT-002).
+  //       윗줄 range-pcts "현재" 라벨이 이미 시제 명시 → range-dates 빈칸이면 충분(중복 회피). 폐장/주말이면 날짜 복귀.
   //     양 끝(low_date/high_date)은 실제 일자 유지. 중앙 가격 숫자(현재가)는 유지.
   //   range_240d 부재/불완전 시 '' (카드는 헤더만 렌더).
-  function buildRangeBar(r, tradeDate, isFutures) {
+  function buildRangeBar(r, tradeDate, isFutures, liveOpen) {
     if (!r || typeof r !== 'object') return '';
     var low = r.low, high = r.high;
     var current = (typeof r.current === 'number') ? r.current : undefined;
@@ -91,7 +94,7 @@
       + '</div>'
       + '<div class="range-row range-dates">'
       + '<span class="r-low">' + esc(r.low_date || '') + '</span>'
-      + '<span class="r-now">' + esc(isFutures ? '' : (tradeDate || '')) + '</span>'
+      + '<span class="r-now">' + esc((isFutures || liveOpen) ? '' : (tradeDate || '')) + '</span>'
       + '<span class="r-high">' + esc(r.high_date || '') + '</span>'
       + '</div>'
       + '</div>';
@@ -216,7 +219,11 @@
     if (r240in && typeof r240in === 'object' && typeof r240in.current !== 'number' && typeof idx.point === 'number') {
       r240in = Object.assign({}, r240in, { current: idx.point });
     }
-    var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant);
+    // Q-20260608 정규장 장중 — 정규장(비선물) 카드가 개장 중(idx.session_open===true)이면
+    //   범위바 range-dates 중앙 빈칸(마감 거래일 6/5 날짜 숨김, 시제 모순 차단). 선물은 futVariant
+    //   분기로 이미 빈칸 — liveOpen 은 정규장 전용 한정(선물 Q-142 회귀 0).
+    var liveOpen = !futVariant && !!(idx && idx.session_open === true);
+    var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant, liveOpen);
     // Q-20260608-143 — 뉴스 시제 라벨. 선물 변종 = '실시간', 정규장 = '미장 마감'.
     // Q-20260608 정규장 장중 — 정규장 개장 중(idx.session_open === true)이면 'live'(장중)로 분기.
     //   백엔드 build_us_digest refresh_intraday 가 indices[].session_open 부착(개장 판정).
