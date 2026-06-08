@@ -136,7 +136,8 @@ async function loadPm320History(date) {
 //   이때 섹션 전체가 사라지면 "지난 금요장(현지 목요 마감)" 미장 정보까지 월요일 내내 미표시 (사용자 손실).
 //   대응: 오늘 파일 부재/무효 시 직전 거래일로 최대 N일 역탐색 (주말·미 휴장 자연 건너뜀 — 파일 존재 = 거래일).
 //   trade_date_local 라벨이 실제 마감일(예 금요장)을 정직 표기하므로 stale 오인 위험 없음.
-//   선물(futures)은 renderer가 as_of_kst≤30분 게이트로 별도 차단 → fallback 파일의 묵은 선물은 자연 미렌더.
+//   선물(futures)은 renderer 가 거래일 범위 게이트(미래시각 + 좀비 ~49h 초과 차단)로 별도 판정 → 묵은 fallback
+//   선물도 거래일 범위면 "N분 전 기준"+"지연" 배지로 상시 표시(Q-20260608-145, 숨김 폐기). 수일 좀비만 미렌더.
 async function loadNightlyUsSummary(date) {
   // 1) 오늘 파일 우선 — 유효하면 그대로 사용 (fallback 미발동).
   const today = _parseNightlyUs(await _fetchUsIndices(date));

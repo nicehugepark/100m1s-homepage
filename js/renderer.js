@@ -132,11 +132,16 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
     .finally(() => { window.__koreaHolidaysLoading = false; });
 }
 
-// Q-20260605-103 Phase 4 → Q-20260608-140 (A안 페어 카드) — 미 선물 신선도 게이트. DSN-001 §2/§4.
-//   변경: 하드 시간대 게이트(09:00~15:30 한국장중) 폐기 → 신선도(as_of_kst ≤30분)만 판정.
-//     사유: A안 토글([정규장|선물|둘다])에서 사용자가 선물을 능동 선택 가능해야 함. 시간대는 토글 "자동 기본값"
-//     선택(_futAutoDefault)으로만 사용하고, 데이터 가용은 신선도로만 결정. 거래중/마감은 session_open 도트로 노출.
-//   조건: futures.as_of_kst 신선(now 대비 0~30분). 충족 시 { byName, list, ageMin, sessionOpen } 반환, 아니면 null.
+// Q-20260605-103 Phase 4 → Q-20260608-140 (A안 페어 카드) → Q-20260608-145 (선물 상시 표시) — 미 선물 게이트. DSN-001 §2/§4.
+//   변경 이력: (1) 하드 시간대 게이트(09:00~15:30 한국장중) 폐기 → 신선도(as_of_kst ≤30분)만 판정.
+//     (2) Q-145: 30분 신선도 게이트 폐기 → 선물 데이터 있고 *유효 거래일 범위*면 항상 표시(토글·카드 상시 노출).
+//   사유(Q-145): us-intraday cron 이 국내장(08:50~15:30 KST) 에만 갱신 → 15:30 후 30분이면 선물 토글이 사라져
+//     "선물 장 끝났냐"(대표) 오해. 그러나 CME 선물은 ~23h 거래(거의 항상 open) → 데이터 stale ≠ 시장 마감.
+//     stale 는 숨기지 않고 "N분 전 기준" + (30분↑) "지연" 배지로 *정직하게 명시*(FLR-AGT-002 거짓 충실성: 숨김도
+//     허위실시간도 금지). 거래중/마감 위계는 데이터 session_open 도트로 별도 노출(신선도와 직교).
+//   가드(유지): (a) ageMin < 0(미래시각=데이터 오류) → 미표시. (b) ageMin > STALE_MAX_MIN(주말 휴장 ~49h 초과 =
+//     "수일 전 좀비 데이터") → 미표시. 정당한 거래일 간극(평일 마감~다음 갱신, 주말)은 모두 graceful 표시.
+//   반환에 isStale(30분 초과) 추가 → index-card 가 "지연" 배지 분기.
 //   as_of_kst 형식: ISO(tz offset 有, 라이브 "...+09:00") 또는 "YYYY-MM-DD HH:MM:SS"(tz 無, KST 로컬) graceful.
 function _matchFuturesToIndices(us) {
   const fu = us && us.futures;
@@ -157,12 +162,17 @@ function _matchFuturesToIndices(us) {
     const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
     ageMin = Math.round((kstNow.getTime() - parsed.getTime()) / 60000);
   }
-  if (ageMin < 0 || ageMin > 30) return null;  // 미래 시각(오류) 또는 30분 초과 stale → 미표시
+  // Q-20260608-145 — 30분 게이트 폐기. 미래시각(오류) + "수일 전 좀비" 만 차단, 거래일 간극은 graceful 표시.
+  //   STALE_MAX_MIN: CME 선물 최장 정당 휴장 = 주말(토 06:00 KST ~ 월 08:00 KST 경) ~49h. 여유 포함 49h=2940분.
+  //   초과 = 데이터 파이프라인 수일 정지(좀비) → 허위 노출 방지 위해 미표시.
+  const STALE_MAX_MIN = 49 * 60;
+  if (ageMin < 0 || ageMin > STALE_MAX_MIN) return null;
+  const isStale = ageMin > 30;  // 30분 초과 → index-card "지연" 배지 (cron 갱신 주기 ~10분 기준 비정상)
   const byName = new Map();
   fu.futures.forEach(f => { if (f && f.name) byName.set(String(f.name).toLowerCase(), f); });
   // session_open — 섹션 단위 거래중/마감 (data-loader 통과). boolean 아니면 undefined(도트 미렌더).
   const sessionOpen = (typeof fu.session_open === 'boolean') ? fu.session_open : undefined;
-  return { byName, list: fu.futures, ageMin, sessionOpen };
+  return { byName, list: fu.futures, ageMin, sessionOpen, isStale };
 }
 
 // Q-20260608-140 (A안, DSN-001 §2) — 토글 시간대 자동 기본값. KST(Asia/Seoul) 고정, 클라이언트 환경 무관.
@@ -192,7 +202,7 @@ const _IDX_FUT_MAP = {
 };
 
 // 지수(ix) → 대응 선물 entry. 명시 매핑 테이블 기준 정확 해소. 미매칭 시 null (허위 매핑 금지).
-//   반환 { fut, ageMin, display } — display = 페어 카드 제목.
+//   반환 { fut, ageMin, display, isStale } — display = 페어 카드 제목, isStale = 30분 초과(Q-145 지연 배지).
 function _resolveFutureFor(ix, matched) {
   if (!matched || !ix) return null;
   const nm = String(ix.name || '').trim().toLowerCase();
@@ -200,7 +210,7 @@ function _resolveFutureFor(ix, matched) {
   if (!m) return null;  // 매핑 테이블에 없는 지수 → 선물 카드 미생성
   const fut = matched.byName.get(String(m.futName).toLowerCase());
   if (!fut) return null;  // 선물 데이터에 해당 name 부재 → 미렌더
-  return { fut, ageMin: matched.ageMin, display: m.display };
+  return { fut, ageMin: matched.ageMin, display: m.display, isStale: matched.isStale };
 }
 
 // Q-20260605-103 Phase 3 → Q-20260608-140 (A안 페어 카드) — 야간 미국증시 요약 섹션 빌더.
@@ -234,7 +244,8 @@ function _buildNightlyUsHtml(us) {
         //   시제 혼동 재발 차단, FLR-AGT-002). Q-141 의 ix.news 공유는 폐기.
         const futNews = (resolved.fut && typeof resolved.fut.news === 'object') ? resolved.fut.news : undefined;
         futCard = renderIndexFuturesCard(
-          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, futNews
+          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, futNews,
+          resolved.isStale  // Q-145 — 30분 초과 시 "지연" 배지 (selectorless graceful, 카드 숨김 ❌)
         );
       }
     }
