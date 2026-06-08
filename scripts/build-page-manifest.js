@@ -39,9 +39,14 @@ const OUT_PATH = path.join(REPO_ROOT, 'data', 'page-manifest.json');
 // {date}/{code}.html 패턴 검증 — date = YYYY-MM-DD, code = 6자리 숫자(우선주 5+1자리 포함 6자리).
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const CODE_RE = /^\d{5,6}[0-9A-Z]?\.html$/i; // 6자리 숫자 또는 우선주 코드(예 066575). 안전하게 폭 허용.
+// Q-20260608-404fix — 날짜 랜딩 파일 `pm320/{date}.html` 검증(FLR-20260605-TEC-001 "링크 존재 보장" 동형).
+//   종목 디렉토리(pages)와 별개로, calendar.js `_dateHasStaticPage` 가 실배포 랜딩만 true 판정하도록
+//   landings 키에 라이브 디스크의 날짜 랜딩 실파일을 박제. 데이터 존재(calHasData)≠랜딩 배포 봉쇄.
+const LANDING_RE = /^(\d{4}-\d{2}-\d{2})\.html$/;
 
 function buildManifest() {
   const pages = {};
+  const landings = []; // Q-20260608-404fix — 라이브 배포된 날짜 랜딩 `pm320/{date}.html` (ISO date 배열).
   let total = 0;
 
   let dateDirs;
@@ -54,6 +59,12 @@ function buildManifest() {
   }
 
   for (const d of dateDirs) {
+    // 날짜 랜딩 파일 `pm320/{date}.html` — 디렉토리 아닌 파일. 실배포된 랜딩만 landings 에 박제.
+    if (d.isFile()) {
+      const lm = LANDING_RE.exec(d.name);
+      if (lm) landings.push(lm[1]);
+      continue;
+    }
     if (!d.isDirectory() || !DATE_RE.test(d.name)) continue;
     const dateDir = path.join(STOCK_HTML_BASE, d.name);
     let files;
@@ -75,11 +86,14 @@ function buildManifest() {
     }
   }
 
+  landings.sort();
   return {
     schema: 'page-manifest/v1',
     generated_at: new Date().toISOString(),
     total_pages: total,
+    total_landings: landings.length,
     pages,
+    landings, // 실배포 날짜 랜딩(`pm320/{date}.html`) — calendar._dateHasStaticPage SSOT.
   };
 }
 
@@ -89,7 +103,7 @@ function main() {
   fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
   fs.writeFileSync(OUT_PATH, JSON.stringify(manifest, null, 0) + '\n', 'utf-8');
   const dates = Object.keys(manifest.pages).length;
-  console.log(`[page-manifest] ${OUT_PATH} 생성 — ${dates}일 ${manifest.total_pages}페이지`);
+  console.log(`[page-manifest] ${OUT_PATH} 생성 — ${dates}일 ${manifest.total_pages}페이지 + 랜딩 ${manifest.total_landings}일`);
 }
 
 if (require.main === module) {

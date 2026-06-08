@@ -202,18 +202,23 @@ function renderCalendar() {
   });
 }
 
-// Q-20260606-118 결함(B) — 해당 날짜의 정적 OG 랜딩 페이지(`/pm320/{date}.html`)가 라이브에
-//   배포되어 있는지 판정. 1순위 = page-manifest(FLR-20260605-TEC-001 P0-2, 라이브 실파일 SSOT)에 그
-//   날짜 키 존재 여부. manifest 미신뢰 시 = calHasData(데이터 인덱스) 보수적 폴백. 둘 다 불가면 false
-//   (보수적 — 404 URL 생성 금지 우선). 정적 페이지는 데이터 생성일에만 빌드되므로 휴장/미생성일 = false.
+// Q-20260606-118 결함(B) / Q-20260608-404fix — 해당 날짜의 정적 OG 랜딩 페이지(`/pm320/{date}.html`)가
+//   라이브에 실제 배포돼 있는지 판정. 유일 기준 = page-manifest(FLR-20260605-TEC-001 P0-2, 라이브
+//   실파일 SSOT)의 `landings` 배열(빌드 스크립트가 디스크의 `pm320/{date}.html` 실파일을 스캔해 박제).
+//   🔴 calHasData(데이터 인덱스) 낙관 폴백 제거 — "데이터 존재 ≠ 랜딩 배포". 데이터는 있으나 랜딩이
+//   아직 미배포인 날(예: today 랜딩 빌드/배포 지연)에 calHasData 폴백이 true 를 내면 미배포 URL 을
+//   pushState → 새로고침 404 (본 버그의 ROOT ①). manifest 미도착·landings 부재·날짜 부재 = 모두 false
+//   → URL push 안 함 → base `/pm320.html` 유지 → 새로고침 200 (보수적, 무파손).
+//   호환: 구버전 manifest(landings 키 없음) 도착 시도 false(보수적). 정적 랜딩은 데이터 생성일에만
+//   빌드되므로 휴장/미생성일은 자연히 landings 에서 빠짐.
 function _dateHasStaticPage(date) {
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
   const m = (typeof window !== 'undefined') ? window._pageManifest : null;
-  if (m && m.pages && typeof m.pages === 'object') {
-    return Array.isArray(m.pages[date]) && m.pages[date].length > 0;
+  if (m && Array.isArray(m.landings)) {
+    return m.landings.indexOf(date) !== -1;
   }
-  // manifest 미신뢰 → 데이터 인덱스 보수적 폴백
-  return (typeof calHasData === 'function') ? calHasData(date) : false;
+  // manifest 미신뢰/landings 부재 → 보수적 false (미배포 URL push 금지 우선).
+  return false;
 }
 
 async function onCalCellClick(date, pushState) {
