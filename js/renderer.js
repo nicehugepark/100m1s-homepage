@@ -175,20 +175,28 @@ function _matchFuturesToIndices(us) {
   return { byName, list: fu.futures, ageMin, sessionOpen, isStale };
 }
 
-// Q-20260608-140 (A안, DSN-001 §2) — 토글 시간대 자동 기본값. KST(Asia/Seoul) 고정, 클라이언트 환경 무관.
-//   반환 'regular'(정규장) | 'futures'(선물). "둘 다"는 자동 기본 ❌(사용자 능동 선택만).
-//   표(§2): 23:30~06:00 미 정규장중 → 정규장 / 06:00~08:00 마감직후 → 정규장 / 08:00~23:30 한국장중 → 선물 /
-//     주말 → 정규장. 선물 데이터(matched) 부재 시 항상 정규장.
-function _futAutoDefault(matched) {
-  if (!matched) return 'regular';  // 선물 데이터 없으면 정규장만
-  const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  const dow = kstNow.getDay();  // 0=일 6=토
-  if (dow === 0 || dow === 6) return 'regular';  // 주말 → 정규장(마지막 마감)
-  const mins = kstNow.getHours() * 60 + kstNow.getMinutes();
-  // 08:00~23:30 = 한국 장중 포함, 미 정규장 휴장 + 선물 거래중 → 선물 기본.
-  const FUT_START = 8 * 60, FUT_END = 23 * 60 + 30;
-  if (mins >= FUT_START && mins < FUT_END) return 'futures';
-  return 'regular';  // 23:30~08:00 = 미 정규장중/마감직후 → 정규장
+// 클라이언트 ET 벽시계 미 정규장 개장 판정 (평일 09:30~16:00 ET). 서버 regular_open 부재 시 fallback.
+//   ZoneInfo 대신 toLocaleString('en-US',{timeZone:'America/New_York'}) → EDT/EST 자동(DST 분기 불요,
+//   collect_us_indices.is_us_regular_open 백엔드 판정 동형). 주말 휴장. best-effort(공휴일 미반영 —
+//   휴장일 true 여도 그 외 시간 선물 기본이라 영향 경미).
+function _isUsRegularOpenClient() {
+  const etNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  const dow = etNow.getDay();  // 0=일 6=토
+  if (dow === 0 || dow === 6) return false;
+  const mins = etNow.getHours() * 60 + etNow.getMinutes();
+  return mins >= 9 * 60 + 30 && mins < 16 * 60;  // [09:30, 16:00)
+}
+
+// Q-20260609 (대표 verbatim 2026-06-09 05:48) — 토글 자동 기본값 단순화. 시계 시간표(23:30~08:00 등) 폐기.
+//   "미 정규장 시간대만 정규장 토글, 그 외 시간엔 선물 토글을 기본." regular_open 단일 기준.
+//   반환 'regular'(정규장) | 'futures'(선물). "둘 다" 자동 기본 ❌(사용자 능동 선택만).
+//   규칙: (1) 선물 데이터(matched) 부재 → 'regular'(빈 화면 방지 graceful, 기존 L183 유지) /
+//     (2) 미 정규장 개장 중(regularOpen) → 'regular' / (3) 그 외 모든 시간 → 'futures'.
+//   regularOpen 판정 = 서버 us.regular_open(P0 부착, boolean) 우선 → 미부착 시 클라이언트 ET fallback.
+function _futAutoDefault(matched, regularOpen) {
+  if (!matched) return 'regular';  // 선물 데이터 없으면 정규장만 (graceful, 빈 화면 방지)
+  const isRegularOpen = (typeof regularOpen === 'boolean') ? regularOpen : _isUsRegularOpenClient();
+  return isRegularOpen ? 'regular' : 'futures';  // 정규장 개장 중=정규장, 그 외=선물 기본
 }
 
 // Q-20260608-140 (A안, DSN-001 §1 #4 + §7 비판 4) — 지수↔선물 명시 매핑 테이블 (부분일치 폐기).
@@ -259,7 +267,8 @@ function _buildNightlyUsHtml(us) {
 
   // 토글 세그먼트(§2) → Q-20260608-141 (§2) — "둘 다" 제거. 2-state [정규장|선물]만. 터치 ≥44px(CSS).
   //   초기 active = 자동 기본값(_futAutoDefault). data-fut-view 동기화는 inline init script(_wireUsFutToggle).
-  const autoView = _hasFutures ? _futAutoDefault(_futMatched) : 'regular';
+  // Q-20260609 — 서버 regular_open(P0 부착) 전달. 미부착(구 데이터) 시 _futAutoDefault 가 클라 ET fallback.
+  const autoView = _hasFutures ? _futAutoDefault(_futMatched, us && us.regular_open) : 'regular';
   let toggleHtml = '';
   if (_hasFutures) {
     toggleHtml = `<div class="idx-fut-toggle" role="tablist" aria-label="미장 표시 전환">`
