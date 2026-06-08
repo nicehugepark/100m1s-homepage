@@ -94,32 +94,67 @@
       + '</div>';
   }
 
-  // 장중 선물 줄 (Phase 4, 대표 20:37) — futureInfo = { fut:{name,label_note,point,change_pct,spark[]}, ageMin }.
-  //   카드 헤더 아래, 마감 지수 카드는 유지하고 그 위에 1줄 오버레이. "N분 전 기준" 필수(stale 실시간 위장 금지).
-  //   futureInfo null(장외/주말/stale/매핑불명) 시 '' → 선물 줄 미렌더.
-  function buildFuturesRow(futureInfo) {
-    if (!futureInfo || !futureInfo.fut || typeof futureInfo.fut !== 'object') return '';
-    var f = futureInfo.fut;
-    if (typeof f.point !== 'number' || typeof f.change_pct !== 'number') return '';
-    var fp = f.change_pct;
-    var fdir = fp > 0 ? 'up' : (fp < 0 ? 'down' : 'flat');
-    var fcolor = fdir === 'up' ? UP : (fdir === 'down' ? DOWN : FLAT);
-    var farrow = fdir === 'up' ? '▲' : (fdir === 'down' ? '▼' : '·');
-    var label = (typeof f.label_note === 'string' && f.label_note) ? f.label_note : (f.name + ' 선물');
-    // 미니 스파크라인 — spark[] 유효 시. base = spark 첫값(시초 기준 라인 근사). dir 일치.
-    var spk = '';
-    if (Array.isArray(f.spark) && f.spark.length >= 2 && typeof root.buildSparkline === 'function') {
-      spk = root.buildSparkline(f.spark, f.spark[0], fdir);
+  // Q-20260608-140 (A안 페어 카드, DSN-001 §1) — 선물 별개 카드 builder.
+  //   삽입형(.idx-futures-row 카드 내 오버레이) 전면 폐기 → 정규장 카드와 동일 골격의 별개 카드 1장.
+  //   데이터 제약(§5): 선물엔 candle(OHLC)·range_240d·daily_expanded 부재 → 해당 셀 미렌더(빈 박스 0, graceful).
+  //   가용분만 채움: 인트라데이 스파크라인(40봉) + 포인트 + 등락률 + 거래상태 도트 + 갱신시각.
+  //   fut = { name, label_note, point, change_pct, spark[] }. ageMin(신선도, renderer 게이트 통과분).
+  //   sessionOpen = 섹션 단위 거래중/마감 (true=거래중 / false=마감 / undefined=도트 미렌더).
+  //   displayName = 페어 식별용 짧은 제목(예 'NASDAQ 선물'). 입력 부적합 시 '' (호출측 graceful).
+  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName) {
+    if (!fut || typeof fut !== 'object') return '';
+    if (typeof fut.point !== 'number' || typeof fut.change_pct !== 'number') return '';
+    var fp = fut.change_pct;
+    var dir = fp > 0 ? 'up' : (fp < 0 ? 'down' : 'flat');
+    var arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
+    // 제목: 짧은 식별명 우선(displayName). 부재 시 fut.name(예 '나스닥100 선물'). label_note(풀 고지문)는 제목 ❌(§1).
+    var title = (typeof displayName === 'string' && displayName) ? displayName
+      : ((typeof fut.name === 'string' && fut.name) ? fut.name : '선물');
+
+    // 인트라데이 스파크 — 캔들 OHLC 부재 → spark 첫값 기준 방향 추종(§6 색 정책: 선물 스파크 = spark 첫값 기준).
+    //   2봉 이상 필요. 라이브 선물 spark = [open, last] 2봉(희소) → 직선이라도 방향 표현.
+    var sparkHtml = '';
+    if (Array.isArray(fut.spark) && fut.spark.length >= 2 && typeof root.buildSparkline === 'function') {
+      sparkHtml = root.buildSparkline(fut.spark, fut.spark[0], dir);
     }
-    var ageMin = (typeof futureInfo.ageMin === 'number') ? futureInfo.ageMin : null;
-    var ageText = ageMin == null ? '' : (ageMin <= 0 ? '방금 전 기준' : (ageMin + '분 전 기준'));
-    return '<div class="idx-futures-row" aria-label="' + esc(label + ' 장중 선물 ' + fmtPct(fp)) + '">'
-      + '<span class="idx-futures-label">' + esc(label) + '</span>'
-      + (spk ? '<span class="idx-futures-spark">' + spk + '</span>' : '')
-      + '<span class="idx-futures-point">' + esc(fmtPoint(f.point)) + '</span>'
-      + '<span class="idx-futures-pct ' + fdir + '" style="color:' + fcolor + ';">'
-      + '<span class="idx-card-arrow" aria-hidden="true">' + farrow + '</span>' + esc(fmtPct(fp)) + '</span>'
-      + (ageText ? '<span class="idx-futures-age">' + esc(ageText) + '</span>' : '')
+
+    // 거래상태 도트(§4) — sessionOpen true=거래중(초록)/false=마감(회색). undefined 시 미렌더.
+    var statusHtml = '';
+    if (sessionOpen === true) {
+      statusHtml = '<span class="idx-fut-status open" title="거래중"><span class="idx-fut-dot" aria-hidden="true"></span>거래중</span>';
+    } else if (sessionOpen === false) {
+      statusHtml = '<span class="idx-fut-status closed" title="거래 마감"><span class="idx-fut-dot" aria-hidden="true"></span>거래 마감</span>';
+    }
+
+    // 갱신시각(§4) — "N분 전 기준" (stale 실시간 위장 금지, FLR-AGT-002). ageMin null 시 미렌더.
+    var am = (typeof ageMin === 'number') ? ageMin : null;
+    var ageText = am == null ? '' : (am <= 0 ? '방금 전 기준' : (am + '분 전 기준'));
+
+    var label = title + ' ' + (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합')
+      + ' ' + fmtPoint(fut.point) + ' (' + fmtPct(fp) + ')';
+
+    // 정규장 카드 동일 골격(.cal-feature-card.v2 + head-left 4-child) — 단 candle/range/expanded 셀은 데이터 부재로
+    //   미렌더(빈 placeholder 박스 0). rank 슬롯·candles20 셀 생략 → 정보 밀도 자연 축소(선물 = 데이터 적음 의도 노출).
+    return '<div class="cal-feature-card v2 cal-feature-card--idx cal-feature-card--fut" aria-label="' + esc(label) + '">'
+      + '<div class="cal-feature-head v2">'
+      + '<div class="cal-feature-head-left">'
+      + '<div class="cal-trade-rank"></div>'
+      + (sparkHtml ? '<div class="cal-feature-sparkline">' + sparkHtml + '</div>' : '<div class="cal-feature-sparkline cal-spark-empty"></div>')
+      + '</div>'
+      + '<div class="cal-feature-head-right">'
+      + '<div class="cal-feature-namecell">'
+      + '<span class="cal-feature-name">' + esc(title) + '</span>'
+      + '<span class="idx-fut-badge">선물</span>'
+      + (statusHtml ? statusHtml : '')
+      + '</div>'
+      + '<div class="cal-feature-meta">'
+      + '<span class="cal-feature-pct ' + dir + '"><span class="idx-card-arrow" aria-hidden="true">' + arrow + '</span>' + esc(fmtPct(fp)) + '</span>'
+      + '<span class="cal-meta-sep">|</span>'
+      + '<span class="cal-trade-amount">' + esc(fmtPoint(fut.point)) + ' p</span>'
+      + '</div>'
+      + (ageText ? '<div class="idx-fut-age">' + esc(ageText) + '</div>' : '')
+      + '</div>'
+      + '</div>'
       + '</div>';
   }
 
@@ -231,7 +266,6 @@
       + '</div>'
       + '</div>'
       + '</div>'
-      + buildFuturesRow(futureInfo)
       + rangeHtml
       + newsBodyHtml
       + '</div>';
@@ -260,4 +294,5 @@
   }
 
   root.renderIndexCard = renderIndexCard;
+  root.renderIndexFuturesCard = renderIndexFuturesCard;  // Q-20260608-140 A안 페어 카드
 })(typeof window !== 'undefined' ? window : this);

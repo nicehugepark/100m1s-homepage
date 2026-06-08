@@ -192,9 +192,10 @@ function _parseNightlyUs(raw) {
       && typeof c.url === 'string' && c.url)
     : [];
   // Phase 4 (Q-20260605-103, 백엔드 commit 3969bf9) — 장중 미 선물 (선택).
-  //   schema: { as_of_kst, futures:[{name, label_note, point, change_pct, spark[]}] }.
+  //   schema: { as_of_kst, session_open?, futures:[{name, label_note, point, change_pct, spark[]}] }.
   //   부재/형식불일치/유효 선물 0건 시 null → 선물 줄 미렌더 (장외/주말/미합류 graceful, FLR-AGT-002).
   //   신선도(stale) 판정은 렌더 시점(renderer)에서 as_of_kst vs now — 로더는 형식만 검증.
+  //   Q-20260608-140 (A안 페어 카드) — session_open(섹션 단위 거래중/마감) 통과. 부재 시 undefined → 도트 미렌더.
   let futures = null;
   if (raw.futures && typeof raw.futures === 'object'
     && typeof raw.futures.as_of_kst === 'string' && raw.futures.as_of_kst
@@ -205,7 +206,11 @@ function _parseNightlyUs(raw) {
       && typeof f.point === 'number'
       && typeof f.change_pct === 'number');
     if (vf.length > 0) {
-      futures = { as_of_kst: raw.futures.as_of_kst, futures: vf };
+      futures = {
+        as_of_kst: raw.futures.as_of_kst,
+        session_open: (typeof raw.futures.session_open === 'boolean') ? raw.futures.session_open : undefined,
+        futures: vf
+      };
     }
   }
   return {
