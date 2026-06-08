@@ -1392,16 +1392,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 11px; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
-/* Q-20260606-113 (대표 "마지막 수정 시간이 보이지 않는다") — 날짜 헤더 마지막 갱신 라인.
-   국내장 카드 유무·주말 무관 항상 노출. cal-content-meta 보다 더 옅은 보조 톤. */
-.cal-content-updated {
-  margin-top: 2px;
-  /* Q-20260606-113 디자인 사후 워크스루 P1 (08:03) — 12px 미만 금지. 10px → 12px 상향. */
-  font-size: 12px;
-  color: #94A3B8;
-  font-family: 'SF Mono', monospace;
-  letter-spacing: 0.01em;
-}
+/* Q-20260608-134 (대표 "마지막 갱신 라인은 필요가 없다") — Q-113 별도 마지막 갱신 라인(.cal-content-updated) 폐기.
+   헤더 인라인 "HH:MM 기준"(.cal-day-meta__updated)이 주말·휴장 포함 항상 노출되도록 renderer 에서 보장. */
 /* REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). 보조 정보 회색 톤. */
 /* 2026-05-27 — "HH:MM 기준" freshness 라벨. stale(장중 30분+ 지연)일 때만 황금색 + 앞에 점(•). 차단 없음. */
 .cal-day-meta__updated {

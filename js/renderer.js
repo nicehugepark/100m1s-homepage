@@ -11,17 +11,6 @@ function _formatGeneratedAt(generatedAt) {
   return `${m[1]}:${m[2]} KST`;
 }
 
-// Q-20260606-113 (대표 verbatim "마지막 수정 시간이 보이지 않는다") — 날짜 포함 전체 형식.
-//   기존 _formatGeneratedAt 은 "HH:MM KST"(시:분만) → 날짜 정보 부재. 헤더에 "YYYY-MM-DD HH:MM KST"
-//   전체 형식으로 항상 표시한다(국내장 카드 유무·주말 무관). naive ISO / +09:00 offset 둘 다 동일 substring
-//   추출(timezone 의존성 회피, KST 가정 명시). 형식 불일치 시 빈 문자열(FLR-AGT-002 거짓 표시 차단).
-function _formatGeneratedAtFull(generatedAt) {
-  if (!generatedAt || typeof generatedAt !== 'string') return '';
-  const m = generatedAt.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
-  if (!m) return '';
-  return `${m[1]} ${m[2]}:${m[3]} KST`;
-}
-
 // 신선도 라벨 (2026-05-27 대표 직접 발화) — 차단(blackout) 없이 stale 여부만 산출.
 // 대표 verbatim: "폴링 오류 화면(장중 데이터 갱신 중)이 존재하는 것 자체가 잘못."
 //   기존 `_computeMarketHardGuard`(종목 카드/차트 차단)를 제거하고, 항상 마지막 데이터를 렌더하되
@@ -959,44 +948,29 @@ function renderCalExpandContent(date, data) {
   // 테스트 hook: window._freshnessNow 설정 시 해당 시각으로 평가 (시뮬레이션용)
   const _nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number') ? window._freshnessNow : Date.now();
   const _fresh = _computeFreshnessLabel(generatedAt, lastSnapshotAt, date, _nowMs);
-  const generatedSuffix = generatedAt
-    ? ` · ${_fresh.stale ? '<span class="cal-day-meta__dot" aria-hidden="true">•</span>' : ''}<span class="cal-day-meta__updated${_fresh.stale ? ' is-stale' : ''}">${escapeHtml(_formatGeneratedAt(generatedAt))} 기준</span>`
-    : '';
-  // Q-20260606-113 — 주말·휴장 suppress 상태에서는 국내장 종목 수("N개")를 헤더에 노출하지 않는다
-  //   (카드가 숨겨졌는데 "오늘의 종목 N개"는 모순). suppress 시 "주말·휴장" 라벨로 대체.
-  const _metaSuppressDomestic = (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true);
-  const metaText = _metaSuppressDomestic
-    ? '주말·휴장'
-    : (todayStocks.length > 0
-      ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
-      : '—');
-  // Q-20260606-113 (대표 verbatim "마지막 수정 시간이 보이지 않는다") — 날짜 헤더에 항상 표시.
-  //   기존 generatedSuffix("HH:MM 기준")는 metaText 안에 있어 국내장 카드 없는 날(주말·휴장 = todayStocks 0)
-  //   에는 metaText="—" 로 사라졌다. 별도 라인으로 분리하여 카드 유무·주말 무관 "마지막 갱신: YYYY-MM-DD HH:MM KST"
-  //   전체 형식으로 노출.
-  //   소스 우선순위(실제 존재하는 값만 사용 — FLR-AGT-002 거짓 표시 차단):
-  //     1) 국내장 build generated_at (평일 PM320 데이터 생성 시각)
-  //     2) kiwoom 마지막 폴링 last_snapshot_at (장중/장후 최신 스냅샷)
-  //     3) 야간 미국증시 built_at_kst (주말·휴장일 = 국내장 데이터 부재 시 최신 갱신 = 미장 빌드)
-  //   세 소스 모두 부재 시 빈 문자열 → 미표시(거짓 추정 금지).
-  //   디자인 사후 워크스루 P2 (08:03) — 라벨 출처 분기로 오인 차단.
-  //   주말·휴장(suppress) 시: 국내장은 거래가 없어 generated_at 부재 + kiwoom snapshot(00:29 등)은
-  //     장외 1회 폴링이라 "국내장 갱신"으로 보기 부적절 → 야간 미국증시 built_at 을 1순위로 쓰고
-  //     라벨도 "마지막 갱신 (야간 미국증시)" 로 출처 명시 (미장 빌드 시각 오인 차단).
-  //   평일/거래일 시: 국내장 generated_at → snapshot 우선, 라벨 "마지막 갱신" (무회귀).
-  //   실존 값만 사용 (FLR-AGT-002 거짓 표시 차단).
+  // Q-20260608-134 (대표 verbatim "마지막 갱신 라인은 필요가 없다. 이미 시간이 표시되고 있었으니까.
+  //   시간이 표시가 되지않는 주말이나 휴장이 문제였던거지") — 별도 "마지막 갱신" 라인(Q-113) 폐기.
+  //   본질 fix = 헤더 인라인 "HH:MM 기준" 시각을 주말·휴장에도 항상 노출.
+  //   기존엔 generatedSuffix 가 국내장 generated_at 에만 의존 → 주말·휴장(거래 부재)엔 빈 값으로 사라졌다.
+  //   소스 우선순위(실존 값만 — FLR-AGT-002 거짓 표시 차단):
+  //     1) 국내장 build generated_at (평일 PM320 생성 시각)
+  //     2) kiwoom 마지막 폴링 last_snapshot_at (장중/장후 스냅샷)
+  //     3) 야간 미국증시 built_at_kst (주말·휴장 = 국내장 부재 시 최신 갱신 = 미장 빌드)
+  //   세 소스 모두 부재 시 빈 값 → 미표시(거짓 추정 금지).
   const _nightlyBuiltAt = (data && data.nightlyUs && typeof data.nightlyUs.built_at_kst === 'string')
     ? data.nightlyUs.built_at_kst : '';
-  const _updatedDomestic = _formatGeneratedAtFull(generatedAt) || _formatGeneratedAtFull(lastSnapshotAt);
-  const _updatedNightly = _formatGeneratedAtFull(_nightlyBuiltAt);
-  const _updatedFull = _metaSuppressDomestic
-    ? (_updatedNightly || _updatedDomestic)
-    : (_updatedDomestic || _updatedNightly);
-  const _updatedIsNightly = _metaSuppressDomestic ? !!_updatedNightly : !_updatedDomestic;
-  const _updatedLabel = _updatedIsNightly ? '마지막 갱신 (야간 미국증시)' : '마지막 갱신';
-  const lastUpdatedHtml = _updatedFull
-    ? `<div class="cal-content-updated">${_updatedLabel}: ${escapeHtml(_updatedFull)}</div>`
+  const _freshSrc = generatedAt || lastSnapshotAt || _nightlyBuiltAt;
+  const generatedSuffix = _freshSrc
+    ? ` · ${_fresh.stale ? '<span class="cal-day-meta__dot" aria-hidden="true">•</span>' : ''}<span class="cal-day-meta__updated${_fresh.stale ? ' is-stale' : ''}">${escapeHtml(_formatGeneratedAt(_freshSrc))} 기준</span>`
     : '';
+  // Q-20260606-113 — 주말·휴장 suppress 상태에서는 국내장 종목 수("N개")를 헤더에 노출하지 않는다
+  //   (카드가 숨겨졌는데 "오늘의 종목 N개"는 모순). suppress 시 "주말·휴장" 라벨 + 항상 기준 시각.
+  const _metaSuppressDomestic = (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true);
+  const metaText = _metaSuppressDomestic
+    ? `주말·휴장${generatedSuffix}`
+    : (todayStocks.length > 0
+      ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
+      : `—${generatedSuffix}`);
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
   const macroEvents = (data.macroEvents || [])
@@ -1774,7 +1748,6 @@ function renderCalExpandContent(date, data) {
       <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
         <div class="cal-content-date">${formatKoDate(date)}</div>
         <div class="cal-content-meta">${metaText}</div>
-        ${lastUpdatedHtml}
       </div>
       ${_nightlyUsHtml}
       ${todayHtml}
