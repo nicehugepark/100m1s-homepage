@@ -1351,7 +1351,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   /* REQ-homepage-news-polish #2 — z:10 → z:50 (섹션 sticky 헤더 위계 통일, design-lead-2 spec). */
   position: -webkit-sticky;
   position: sticky;
-  top: 68px;
+  /* Q-20260608-144 — top 하드코딩(68px) 제거, nav 실제 height에 바인딩(--nav-h, renderer.js).
+     뷰포트별 nav height 변동(69~73px, landscape Samsung)과 정합 → nav 아래 flush, 간격/겹침 0.
+     var 미로드(JS 차단) 시 fallback 68px. 모바일 override(@media 880px)도 동일 변수 사용. */
+  top: var(--nav-h, 68px);
   z-index: 50;
   /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
   /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255. */
@@ -2249,9 +2252,11 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-content { padding: 20px 18px; }
   /* REQ-074 — 모바일 폰트 위계 축소. 20px → 13px (데스크탑 15px 대비 모바일 -2px). */
   .cal-content-date { font-size: 13px; }
-  /* REQ-069 — 모바일 sticky 헤더 높이 정합 + cal-content padding(20px 18px) 보정 */
+  /* REQ-069 — 모바일 cal-content padding(20px 18px) 보정.
+     Q-20260608-144 — top 하드코딩(72px) 제거. nav 실제 height는 --nav-h(renderer.js)가
+     모바일 breakpoint에서도 정확히 측정하므로 단일 변수 사용 (하드코딩 override 제거 = 미스싱 fix 봉쇄). */
   .cal-content-head {
-    top: 72px;
+    top: var(--nav-h, 72px);
     margin-left: -18px; margin-right: -18px;
     padding-left: 18px; padding-right: 18px;
   }
