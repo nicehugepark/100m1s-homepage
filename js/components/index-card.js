@@ -126,7 +126,9 @@
       futVariant: true,
       ageMin: ageMin,
       sessionOpen: sessionOpen,
-      displayName: (typeof displayName === 'string' && displayName) ? displayName : idxLike.name
+      displayName: (typeof displayName === 'string' && displayName) ? displayName : idxLike.name,
+      // Q-20260608-143 — 선물 카드 뉴스는 *실시간* (한국 장중=미 야간 선물 거래시간대). 시제 라벨 분리.
+      newsTense: 'realtime'
     });
   }
 
@@ -212,7 +214,9 @@
       r240in = Object.assign({}, r240in, { current: idx.point });
     }
     var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant);
-    var newsBodyHtml = buildCardNews(idx.news);
+    // Q-20260608-143 — 뉴스 시제 라벨. 선물 변종 = '실시간', 정규장 = '미장 마감'. 시제 혼동 차단.
+    var newsTense = (opts.newsTense === 'realtime') ? 'realtime' : (futVariant ? 'realtime' : 'close');
+    var newsBodyHtml = buildCardNews(idx.news, newsTense);
 
     var label = displayName + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
       + ' ' + fmtPoint(idx.point) + ' (' + (pct == null ? '등락률 없음' : fmtPct(pct)) + ')';
@@ -272,7 +276,7 @@
   // 지수별 주요 기사 — 국내 종목카드 뉴스 영역 (.cal-feature-body > .cal-feature-summary >
   //   .cal-causal 요약 + .cal-feature-links > .cal-feature-link) 템플릿 1:1 (대표 20:31).
   //   데이터: idx.news = {summary, sources:[{name,url}]}. 부재/요약·소스 모두 0 시 '' (블록 전체 생략, placeholder 0).
-  function buildCardNews(news) {
+  function buildCardNews(news, newsTense) {
     if (!news || typeof news !== 'object') return '';
     var summary = (typeof news.summary === 'string') ? news.summary.trim() : '';
     var sources = Array.isArray(news.sources) ? news.sources : [];
@@ -284,7 +288,14 @@
       return '<a class="cal-feature-link" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(name) + '</a>';
     }).filter(Boolean).join('');
     if (!summary && !linksHtml) return '';  // 둘 다 없으면 블록 생략
-    var summaryHtml = summary ? '<div class="cal-causal">' + esc(summary) + '</div>' : '';
+    // Q-20260608-143 — 시제 라벨(선물 '실시간' / 정규장 '미장 마감'). 같은 뉴스 영역이라도 데이터
+    //   시제가 다름을 명시(전일 마감 뉴스를 실시간으로 오인 차단). 라벨은 summary 가 있을 때만.
+    var tenseHtml = '';
+    if (summary && (newsTense === 'realtime' || newsTense === 'close')) {
+      var tenseTxt = (newsTense === 'realtime') ? '실시간' : '미장 마감';
+      tenseHtml = '<span class="cal-news-tense cal-news-tense--' + newsTense + '">' + esc(tenseTxt) + '</span>';
+    }
+    var summaryHtml = summary ? '<div class="cal-causal">' + tenseHtml + esc(summary) + '</div>' : '';
     var linksBlock = linksHtml ? '<div class="cal-feature-links">' + linksHtml + '</div>' : '';
     return '<div class="cal-feature-body">'
       + '<div class="cal-feature-summary">' + summaryHtml + linksBlock + '</div>'

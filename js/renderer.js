@@ -228,9 +228,13 @@ function _buildNightlyUsHtml(us) {
     if (_hasFutures && typeof renderIndexFuturesCard === 'function') {
       const resolved = _resolveFutureFor(ix, _futMatched);  // { fut, ageMin, display } | null
       if (resolved) {
-        // Q-20260608-141 (§3) — 선물 전용 뉴스 부재 → 대응 정규장 지수(ix)의 news 를 선물 카드에 공유 렌더.
+        // Q-20260608-143 — 선물 카드 = 선물 전용 *실시간* 뉴스(resolved.fut.news, us-intraday 가 한국
+        //   장중=미 야간 선물 거래시간대 RSS 로 생성). 정규장 지수(ix.news, 전일 미장 마감)와 시제 분리.
+        //   선물 실시간 뉴스 부재 시 undefined → 선물 카드 뉴스 블록 미렌더(정규장 마감 뉴스 fallback 금지,
+        //   시제 혼동 재발 차단, FLR-AGT-002). Q-141 의 ix.news 공유는 폐기.
+        const futNews = (resolved.fut && typeof resolved.fut.news === 'object') ? resolved.fut.news : undefined;
         futCard = renderIndexFuturesCard(
-          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, ix.news
+          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, futNews
         );
       }
     }
