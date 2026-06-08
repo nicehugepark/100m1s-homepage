@@ -361,7 +361,7 @@ function _stopPreMarketTimer() {
 
 // PRE_MARKET (장 시작 전, 09:00 이전 + 오늘 view) 빈 상태 — 당일 표출 데이터가 아직 없는 정상 상태.
 // 2026-05-27 대표 발화로 장중 stale 차단(staleInfo) 경로 제거 → PRE_MARKET 단일 모드만 남김.
-function renderPreMarketEmpty(container, date, prevDate, prevData) {
+function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   _stopPreMarketTimer();
   const prevLabel = prevDate ? formatKoDate(prevDate) : '';
   const inner = container || document.getElementById('cal-content');
@@ -370,11 +370,19 @@ function renderPreMarketEmpty(container, date, prevDate, prevData) {
   const subText = '09:00에 신규 데이터가 표출됩니다';
   const metaText = '장 시작 전';
   const liveText = _formatCountdownToOpen();
+  // P0 (Q-20260609) — 국내 PRE_MARKET 빈 상태여도 미국증시 섹션은 독립 렌더.
+  //   국내 종목(stock-{date}.json)이 아직 없는 새벽/장전에도 미 정규장/선물은 살아있음
+  //   (한국 02:30~05:00 = 미 정규장 장중). 기존: 본 함수가 국내 빈상태만 그리고 early-return
+  //   → renderCalExpandContent L1833 미장 합류부 도달 못 함 → 미장 통째 누락(design DOM probe usSection:false).
+  //   fix: _buildNightlyUsHtml(국내와 동일 SSOT 함수)을 빈상태 안내 아래 삽입. nightlyUs 부재/null
+  //   시 빈 문자열 반환(graceful 생략 — 빈 카드 금지, FLR-AGT-002). 국내 빈상태 안내는 그대로 유지.
+  const _usHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(nightlyUs) : '';
   inner.innerHTML = `
     <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">${metaText}</div>
     </div>
+    ${_usHtml}
     <div class="cal-pre-market-empty" role="status" aria-live="polite">
       <svg class="cal-pre-market-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="9"></circle>
@@ -555,7 +563,8 @@ function renderCalExpandContent(date, data) {
         if (typeof isMarketClosed === 'function' && !isMarketClosed(iso)) { prev = iso; break; }
       }
       const inner = document.getElementById('cal-content');
-      renderPreMarketEmpty(inner, date, prev, null);
+      // P0 (Q-20260609) — data.nightlyUs 전달: 국내 빈상태에서도 미국증시 섹션 독립 렌더.
+      renderPreMarketEmpty(inner, date, prev, null, data && data.nightlyUs);
       return;
     } else {
       // 다른 시점 진입 시 PRE_MARKET 타이머 정리
