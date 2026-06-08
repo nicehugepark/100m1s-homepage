@@ -50,8 +50,9 @@
   }
 
   // 240일 레인지 바 — 종목카드 .stock-range.v2 시각 재사용 (renderCalExpandContent L1346-1390 패턴).
-  //   지수: '원' 대신 포인트, '현재가' 대신 '현재'. range_240d 부재/불완전 시 '' (카드는 헤더만 렌더).
-  function buildRangeBar(r) {
+  //   지수: '원' 대신 포인트. 중앙 라벨 = trade_date_local 거래일(YYYY-MM-DD, 좌우 끝 날짜와 동일 포맷, Q-20260608-135).
+  //   range_240d 부재/불완전 시 '' (카드는 헤더만 렌더).
+  function buildRangeBar(r, tradeDate) {
     if (!r || typeof r !== 'object') return '';
     var low = r.low, high = r.high;
     var current = (typeof r.current === 'number') ? r.current : undefined;
@@ -82,12 +83,12 @@
       + '</div>'
       + '<div class="range-row range-pcts">'
       + '<span class="r-low ' + lowCls + '">' + esc(lowText) + '</span>'
-      + '<span class="r-now r-now-label">현재</span>'
+      + '<span class="r-now r-now-label"></span>'
       + '<span class="r-high ' + highCls + '">' + esc(highText) + '</span>'
       + '</div>'
       + '<div class="range-row range-dates">'
       + '<span class="r-low">' + esc(r.low_date || '') + '</span>'
-      + '<span class="r-now"></span>'
+      + '<span class="r-now">' + esc(tradeDate || '') + '</span>'
       + '<span class="r-high">' + esc(r.high_date || '') + '</span>'
       + '</div>'
       + '</div>';
@@ -123,7 +124,7 @@
   }
 
   // idx 1종 + (선택)futureInfo → 카드 HTML 문자열. 입력 부적합 시 '' (호출측에서 섹션 미렌더 판단).
-  function renderIndexCard(idx, futureInfo) {
+  function renderIndexCard(idx, futureInfo, tradeDate) {
     if (!idx || typeof idx !== 'object') return '';
     if (typeof idx.name !== 'string' || !idx.name) return '';
 
@@ -197,7 +198,7 @@
     if (r240in && typeof r240in === 'object' && typeof r240in.current !== 'number' && typeof idx.point === 'number') {
       r240in = Object.assign({}, r240in, { current: idx.point });
     }
-    var rangeHtml = buildRangeBar(r240in);
+    var rangeHtml = buildRangeBar(r240in, tradeDate);
     var newsBodyHtml = buildCardNews(idx.news);
 
     var label = idx.name + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
