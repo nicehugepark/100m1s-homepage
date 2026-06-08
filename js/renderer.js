@@ -843,6 +843,26 @@ function renderCalExpandContent(date, data) {
     const expiryDate = pk.expiry_date || '';
     // 결과 strip (state != running 시만)
     let resultStrip = '';
+    // MDD row (대표 지시 2026-06-08 — 완결 픽 매매 결과에 최대 낙폭 1줄 추가).
+    //   주 표시 = result.mdd_pct (진입평단 대비 최대낙폭, "내 진입가에서 최대 얼마 빠졌나"). 음수 = 낙폭(손실 방향).
+    //   보조 = result.mdd_peak_pct (보유고점 대비). 둘 다 없거나 null이면 미표시(graceful, 거짓값 금지).
+    //   완결 픽(state != running && result 존재)에만 표시. running·보류는 미표시.
+    let mddRow = '';
+    if (pk.current_state && pk.current_state !== 'running' && pk.result
+        && pk.result.mdd_pct != null && Number.isFinite(pk.result.mdd_pct)) {
+      const mddText = _fmtPctSigned(pk.result.mdd_pct);
+      const hasPeak = pk.result.mdd_peak_pct != null && Number.isFinite(pk.result.mdd_peak_pct);
+      const peakSub = hasPeak ? _fmtPctSigned(pk.result.mdd_peak_pct) : '';
+      mddRow = `
+      <div class="pm320-rec-detail-row pm320-rec-detail-row--mdd">
+        <span class="pm320-rec-label">📉 최대 낙폭</span>
+        <span class="pm320-rec-value pm320-rec-value--mdd">${escapeHtml(mddText)}</span>
+      </div>${hasPeak ? `
+      <div class="pm320-rec-detail-row pm320-rec-detail-sub">
+        <span class="pm320-rec-label"></span>
+        <span class="pm320-rec-value pm320-rec-value--sub">└ 보유 고점 대비: ${escapeHtml(peakSub)}</span>
+      </div>` : ''}`;
+    }
     if (pk.current_state && pk.current_state !== 'running' && pk.result) {
       const state = pk.current_state;
       const finalPrice = pk.result.final_price != null ? _fmtKRW(pk.result.final_price) : '';
@@ -891,7 +911,7 @@ function renderCalExpandContent(date, data) {
       <div class="pm320-rec-detail-row pm320-rec-detail-row--expiry">
         <span class="pm320-rec-label">⏰ 만기청산</span>
         <span class="pm320-rec-value">${escapeHtml(expiryDate)} 종가</span>
-      </div>
+      </div>${mddRow}
       ${resultStrip}`;
   };
   // PICK 배지 (DSN-001 §2 — 헤더 .cal-feature-badges 좌측 첫 자리)
