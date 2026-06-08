@@ -132,78 +132,134 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
     .finally(() => { window.__koreaHolidaysLoading = false; });
 }
 
-// Q-20260605-103 Phase 4 — 장중 미 선물 게이트 (대표 20:37). DSN §3.6.9.
-//   조건: (a) 클라이언트 KST 가 평일 09:00~15:30 (국내장 중) AND (b) futures.as_of_kst 신선(now 대비 ≤30분).
-//   둘 다 충족 시 { byName, ageMin } 반환, 아니면 null (장외/주말/stale/부재 → 선물 줄 미렌더).
-//   as_of_kst 형식: "YYYY-MM-DD HH:MM:SS" (KST 로컬, tz suffix 없음) 또는 ISO. Date 파싱 graceful.
+// Q-20260605-103 Phase 4 → Q-20260608-140 (A안 페어 카드) — 미 선물 신선도 게이트. DSN-001 §2/§4.
+//   변경: 하드 시간대 게이트(09:00~15:30 한국장중) 폐기 → 신선도(as_of_kst ≤30분)만 판정.
+//     사유: A안 토글([정규장|선물|둘다])에서 사용자가 선물을 능동 선택 가능해야 함. 시간대는 토글 "자동 기본값"
+//     선택(_futAutoDefault)으로만 사용하고, 데이터 가용은 신선도로만 결정. 거래중/마감은 session_open 도트로 노출.
+//   조건: futures.as_of_kst 신선(now 대비 0~30분). 충족 시 { byName, list, ageMin, sessionOpen } 반환, 아니면 null.
+//   as_of_kst 형식: ISO(tz offset 有, 라이브 "...+09:00") 또는 "YYYY-MM-DD HH:MM:SS"(tz 無, KST 로컬) graceful.
 function _matchFuturesToIndices(us) {
   const fu = us && us.futures;
   if (!fu || !Array.isArray(fu.futures) || fu.futures.length === 0) return null;
-  // 클라이언트 현재 KST. (브라우저 로컬이 KST 가정 — 대표 사용 환경. 비 KST 환경은 보수적 미표시 가능하나
-  //  Asia/Seoul 고정 계산으로 환경 무관 일관화.)
-  const now = new Date();
-  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  const dow = kstNow.getDay();  // 0=일 6=토
-  if (dow === 0 || dow === 6) return null;  // 주말 미표시
-  const mins = kstNow.getHours() * 60 + kstNow.getMinutes();
-  const OPEN = 9 * 60, CLOSE = 15 * 60 + 30;  // 09:00~15:30
-  if (mins < OPEN || mins > CLOSE) return null;  // 장외 미표시
-  // as_of_kst 신선도 — KST 로컬 시각 파싱. "YYYY-MM-DD HH:MM:SS" → "YYYY-MM-DDTHH:MM:SS" 로 보정.
-  let asOf = null;
+  // as_of_kst 신선도 — tz offset 有(라이브) 시 Date 가 절대시각으로 정확 파싱 → Date.now() 와 직접 비교.
+  //   tz 無("YYYY-MM-DD HH:MM:SS") 시 KST 로컬 벽시계로 해석되므로 kstNow 벽시계와 비교(환경 무관).
   const s = String(fu.as_of_kst).trim();
-  const isoish = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/.test(s) ? s.replace(' ', 'T') : s;
-  const parsed = new Date(isoish);
-  if (!isNaN(parsed.getTime())) asOf = parsed;
-  if (!asOf) return null;  // 파싱 실패 → 미표시 (stale 가장 금지)
-  // asOf 도 KST 로컬 벽시계로 파싱됨 → kstNow 와 동일 기준 차이 계산.
-  const ageMin = Math.round((kstNow.getTime() - asOf.getTime()) / 60000);
+  const hasTz = /[zZ]$|[+\-]\d{2}:?\d{2}$/.test(s);
+  let ageMin;
+  if (hasTz) {
+    const parsed = new Date(s);
+    if (isNaN(parsed.getTime())) return null;  // 파싱 실패 → 미표시 (stale 가장 금지)
+    ageMin = Math.round((Date.now() - parsed.getTime()) / 60000);
+  } else {
+    const isoish = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/.test(s) ? s.replace(' ', 'T') : s;
+    const parsed = new Date(isoish);
+    if (isNaN(parsed.getTime())) return null;
+    const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    ageMin = Math.round((kstNow.getTime() - parsed.getTime()) / 60000);
+  }
   if (ageMin < 0 || ageMin > 30) return null;  // 미래 시각(오류) 또는 30분 초과 stale → 미표시
   const byName = new Map();
   fu.futures.forEach(f => { if (f && f.name) byName.set(String(f.name).toLowerCase(), f); });
-  return { byName, list: fu.futures, ageMin };
+  // session_open — 섹션 단위 거래중/마감 (data-loader 통과). boolean 아니면 undefined(도트 미렌더).
+  const sessionOpen = (typeof fu.session_open === 'boolean') ? fu.session_open : undefined;
+  return { byName, list: fu.futures, ageMin, sessionOpen };
 }
 
-// 지수(ix) 에 대응하는 선물 entry 해소 — name 부분일치(나스닥↔나스닥100 선물 등) 우선, position fallback.
-//   매칭 실패 시 null (해당 카드 선물 줄 미렌더 — 허위 매핑 금지).
+// Q-20260608-140 (A안, DSN-001 §2) — 토글 시간대 자동 기본값. KST(Asia/Seoul) 고정, 클라이언트 환경 무관.
+//   반환 'regular'(정규장) | 'futures'(선물). "둘 다"는 자동 기본 ❌(사용자 능동 선택만).
+//   표(§2): 23:30~06:00 미 정규장중 → 정규장 / 06:00~08:00 마감직후 → 정규장 / 08:00~23:30 한국장중 → 선물 /
+//     주말 → 정규장. 선물 데이터(matched) 부재 시 항상 정규장.
+function _futAutoDefault(matched) {
+  if (!matched) return 'regular';  // 선물 데이터 없으면 정규장만
+  const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const dow = kstNow.getDay();  // 0=일 6=토
+  if (dow === 0 || dow === 6) return 'regular';  // 주말 → 정규장(마지막 마감)
+  const mins = kstNow.getHours() * 60 + kstNow.getMinutes();
+  // 08:00~23:30 = 한국 장중 포함, 미 정규장 휴장 + 선물 거래중 → 선물 기본.
+  const FUT_START = 8 * 60, FUT_END = 23 * 60 + 30;
+  if (mins >= FUT_START && mins < FUT_END) return 'futures';
+  return 'regular';  // 23:30~08:00 = 미 정규장중/마감직후 → 정규장
+}
+
+// Q-20260608-140 (A안, DSN-001 §1 #4 + §7 비판 4) — 지수↔선물 명시 매핑 테이블 (부분일치 폐기).
+//   부분일치(`NASDAQ` lower vs `나스닥100 선물`)는 라이브에서 NASDAQ·DOW 미매칭 사고 원인 → 결정적 매핑.
+//   key = 지수 카드 제목(us-indices indices[].name), value = { futName: 선물 데이터 name, display: 페어 카드 제목 }.
+//   futName 은 us-indices futures[].name 과 정확 일치(소문자 비교). display 는 짧은 식별명(label_note 풀 고지문 ❌).
+const _IDX_FUT_MAP = {
+  'nasdaq': { futName: '나스닥100 선물', display: 'NASDAQ 선물' },
+  's&p500': { futName: 'S&P500 선물', display: 'S&P500 선물' },
+  'dow': { futName: '다우 선물', display: 'DOW 선물' }
+};
+
+// 지수(ix) → 대응 선물 entry. 명시 매핑 테이블 기준 정확 해소. 미매칭 시 null (허위 매핑 금지).
+//   반환 { fut, ageMin, display } — display = 페어 카드 제목.
 function _resolveFutureFor(ix, matched) {
   if (!matched || !ix) return null;
-  const nm = String(ix.name || '').toLowerCase();
-  // 1) 정확/부분 일치 (지수명이 선물명에 포함되거나 그 역).
-  for (const [k, f] of matched.byName.entries()) {
-    if (k.includes(nm) || nm.includes(k)) return { fut: f, ageMin: matched.ageMin };
-  }
-  // 2) label_note 에 지수명 포함 케이스.
-  for (const f of matched.list) {
-    const ln = String(f.label_note || '').toLowerCase();
-    if (nm && ln.includes(nm)) return { fut: f, ageMin: matched.ageMin };
-  }
-  return null;  // 매핑 불명 → 미렌더 (position fallback 미사용: 잘못된 선물-지수 연결 위험)
+  const nm = String(ix.name || '').trim().toLowerCase();
+  const m = _IDX_FUT_MAP[nm];
+  if (!m) return null;  // 매핑 테이블에 없는 지수 → 선물 카드 미생성
+  const fut = matched.byName.get(String(m.futName).toLowerCase());
+  if (!fut) return null;  // 선물 데이터에 해당 name 부재 → 미렌더
+  return { fut, ageMin: matched.ageMin, display: m.display };
 }
 
-// Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 빌더.
-//   DSN §3.6.9. 입력 us = data.nightlyUs (data-loader.loadNightlyUsSummary 검증 산출).
+// Q-20260605-103 Phase 3 → Q-20260608-140 (A안 페어 카드) — 야간 미국증시 요약 섹션 빌더.
+//   DSN-001 §1~§4. 입력 us = data.nightlyUs (data-loader.loadNightlyUsSummary 검증 산출).
 //   null/부재/지수 0건 시 '' 반환 → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단, 빈 카드/mock 금지).
-//   순서 (대표 2026-06-05 20:11 B안): 타이틀 → 미국발 뉴스 요약 → 지수 카드 세로 나열
-//     (국내장 "오늘의 뉴스요약 → 종목카드 list" 순서·구조 동일). 카드 = 종목카드 동일형 (renderIndexCard).
-//   뉴스 로우: 기존 .cal-narr-pill 칩 스타일 공유 (중복 render 함수 0건) + source 약어·원문 링크 (법무 조건).
+//   구조 (A안): 정규장 카드 + 선물 카드 = 별개 페어. 섹션 단위 토글 [정규장|선물|둘 다] + 시간대 자동 기본값.
+//     삽입형(.idx-futures-row 카드 내 오버레이) 전면 폐기 (라이브 깨짐·NASDAQ/DOW 미노출 원인).
+//   토글 = data-fut-view attribute(regular|futures|both) + CSS 가시성 제어(JS는 attribute만 토글, 재렌더 0).
+//     기본 진입 = _futAutoDefault(시간대 자동). 사용자 클릭 시 localStorage('pm320-us-fut-view') override.
 function _buildNightlyUsHtml(us) {
   if (!us || typeof us !== 'object') return '';
   if (!Array.isArray(us.indices) || us.indices.length === 0) return '';
   if (typeof renderIndexCard !== 'function') return '';
 
-  // Phase 4 (대표 20:37) — 국내장 중(평일 09:00~15:30 KST) + futures.as_of_kst 신선(≤30분)이면
-  //   각 지수 카드에 장중 선물 줄 오버레이 (마감 지수 카드 유지). 장외/주말/stale/부재 시 미렌더.
-  const _futMatched = _matchFuturesToIndices(us);  // { byName: Map, ageMin: number } | null
-  const cardsHtml = us.indices.map(ix => renderIndexCard(ix, _futMatched ? _resolveFutureFor(ix, _futMatched) : null, us.trade_date_local)).filter(Boolean).join('');
-  if (!cardsHtml) return '';
+  // 선물 신선도 매칭 (≤30분). 부재/stale 시 null → 선물 카드·토글 미렌더 (정규장 카드만, 현행 동일).
+  const _futMatched = _matchFuturesToIndices(us);
+  const _hasFutures = !!_futMatched;
 
-  // 섹션 헤더 줄("야간 미국증시" eyebrow + "M/D (현지 마감)" 라벨) 전체 제거 (대표 2026-06-05 21:23 verbatim
-  //   "'야간 미국증시' 로우는 없애는게 좋을 것 같다. 6/4 (현지 마감) 포함해서."). 섹션은 "미국발 뉴스 요약"
-  //   금색 바 타이틀부터 바로 시작. 날짜 라벨 이전 배치 금지(부활은 lead 결정). trade_date_local 은 데이터로만 보존.
+  // 지수별 페어 그룹 — 정규장 카드(renderIndexCard) + (가용 시)선물 카드(renderIndexFuturesCard) 묶음.
+  //   futureInfo 인자 제거(삽입형 폐기) → renderIndexCard 2번째 인자 null.
+  const groupsHtml = us.indices.map(ix => {
+    const regularCard = renderIndexCard(ix, null, us.trade_date_local);
+    if (!regularCard) return '';
+    let futCard = '';
+    if (_hasFutures && typeof renderIndexFuturesCard === 'function') {
+      const resolved = _resolveFutureFor(ix, _futMatched);  // { fut, ageMin, display } | null
+      if (resolved) {
+        futCard = renderIndexFuturesCard(
+          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display
+        );
+      }
+    }
+    // .idx-pair-group — 정규장(.idx-card-regular) + 선물(.idx-card-futures) 래핑. 토글 CSS가 가시성 제어.
+    return `<div class="idx-pair-group">`
+      + `<div class="idx-card-regular">${regularCard}</div>`
+      + (futCard ? `<div class="idx-card-futures">${futCard}</div>` : '')
+      + `</div>`;
+  }).filter(Boolean).join('');
+  if (!groupsHtml) return '';
 
-  // 미국발 뉴스 요약 — 국내 "오늘의 뉴스요약" 칩 클래스 1:1 (대표 21:09 catch — 직전 .cal-narr-pill 비교 오류 정정).
-  //   국내 실제 칩 = .cal-macro-strip > .cal-macro-chip (news.css:2099-2108: 11px/700/그라데이션 #FFF4D1→#FFE9A8/
-  //   border #E8C063/color #6B4A0A). 본 클래스 그대로 재사용(스타일 복제 금지 — 향후 분기 차단). a 래핑 + 출처 약어만 추가.
+  // 토글 세그먼트(§2) — 선물 데이터 가용 시에만 노출. 3-state [정규장|선물|둘 다]. 터치 ≥44px(CSS).
+  //   초기 active = 자동 기본값(_futAutoDefault). data-fut-view 동기화는 inline init script(_wireUsFutToggle).
+  const autoView = _hasFutures ? _futAutoDefault(_futMatched) : 'regular';
+  let toggleHtml = '';
+  if (_hasFutures) {
+    toggleHtml = `<div class="idx-fut-toggle" role="tablist" aria-label="미장 표시 전환">`
+      + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="regular" role="tab">정규장</button>`
+      + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="futures" role="tab">선물</button>`
+      + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="both" role="tab">둘 다</button>`
+      + `</div>`;
+  }
+
+  // 선물 고지(§4) — 섹션 1회 공통 각주 (카드마다 반복 ❌, 깨짐 원인 제거). 선물 가용 시에만.
+  const disclaimerHtml = _hasFutures
+    ? `<div class="idx-fut-disclaimer">선물은 현물 지수와 별개 기초자산입니다. 갱신 주기 약 10분.</div>`
+    : '';
+
+  // 미국발 뉴스 요약 — 국내 "오늘의 뉴스요약" 칩 클래스 1:1 (대표 21:09 catch).
+  //   국내 실제 칩 = .cal-macro-strip > .cal-macro-chip. 본 클래스 그대로 재사용(스타일 복제 금지). a 래핑 + 출처 약어.
   let newsHtml = '';
   if (Array.isArray(us.news_chips) && us.news_chips.length > 0) {
     const chips = us.news_chips.map(c => {
@@ -211,7 +267,6 @@ function _buildNightlyUsHtml(us) {
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
       const summary = escapeHtml(sanitize(c.summary || ''));
       const source = escapeHtml(sanitize(c.source || ''));
-      // 국내 .cal-macro-chip 클래스 그대로 + 출처 약어(칩 끝 최소 span) + 딥링크(a 래핑, .cal-macro-chip 시각 상속).
       return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
         + `${summary}<span class="nightly-us-news-source">${source}</span></a>`;
     }).filter(Boolean).join('');
@@ -221,10 +276,44 @@ function _buildNightlyUsHtml(us) {
     }
   }
 
-  return `<section class="nightly-us-summary" aria-label="야간 미국증시 요약">`
+  // data-fut-view = 초기 가시성(CSS). data-fut-auto = 자동 기본값(localStorage 없을 때 fallback, init script 사용).
+  return `<section class="nightly-us-summary" aria-label="야간 미국증시 요약" data-fut-view="${autoView}" data-fut-auto="${autoView}" data-has-fut="${_hasFutures ? '1' : '0'}">`
     + newsHtml
-    + `<div class="nightly-us-cards">${cardsHtml}</div>`
+    + toggleHtml
+    + `<div class="nightly-us-cards">${groupsHtml}</div>`
+    + disclaimerHtml
     + `</section>`;
+}
+
+// Q-20260608-140 (A안, DSN-001 §2) — 미장 토글 wiring. 섹션 렌더 후 1회 호출(_renderCalendar 말미).
+//   localStorage('pm320-us-fut-view') 우선 → 없으면 data-fut-auto(시간대 자동). 클릭 시 attribute + localStorage 갱신.
+//   재렌더 0 (data-fut-view attribute만 변경, CSS 가 가시성 제어). 멱등(중복 호출 안전 — dataset flag 가드).
+function _wireUsFutToggle() {
+  const sec = document.querySelector('.nightly-us-summary[data-has-fut="1"]');
+  if (!sec || sec.dataset.futWired === '1') return;
+  sec.dataset.futWired = '1';
+  let view = sec.getAttribute('data-fut-auto') || 'regular';
+  try {
+    const saved = localStorage.getItem('pm320-us-fut-view');
+    if (saved === 'regular' || saved === 'futures' || saved === 'both') view = saved;
+  } catch (e) { /* localStorage 차단 환경 → 자동값 유지 */ }
+  const apply = (v) => {
+    sec.setAttribute('data-fut-view', v);
+    sec.querySelectorAll('.idx-fut-toggle-btn').forEach(b => {
+      const on = b.getAttribute('data-fut-set') === v;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  };
+  apply(view);
+  sec.querySelectorAll('.idx-fut-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.getAttribute('data-fut-set');
+      if (v !== 'regular' && v !== 'futures' && v !== 'both') return;
+      apply(v);
+      try { localStorage.setItem('pm320-us-fut-view', v); } catch (e) { /* 무시 */ }
+    });
+  });
 }
 
 // design-news-time-state-v1 — PRE_MARKET 빈 상태 (Option A).
@@ -1753,6 +1842,10 @@ function renderCalExpandContent(date, data) {
       ${todayHtml}
     `;
   }
+
+  // Q-20260608-140 (A안) — 미장 정규장/선물 토글 wiring. innerHTML 갱신 직후 매 렌더 호출.
+  //   섹션 DOM 새로 그려지므로(data-fut-wired 가드 자동 리셋) 매 호출 안전. 선물 부재 시 no-op.
+  if (typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
 
   // 접기/펼치기 이벤트 위임 (1회만 등록)
   // REQ-046 — CSS font-size:0 + ::after content trick 폐기 → JS textContent 직접 변경.
