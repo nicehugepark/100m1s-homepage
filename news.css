@@ -1356,7 +1356,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
   /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255. */
   /* REQ-075 — frosted glass 효과 복원. 0.92 (거의 솔리드) → 0.7 (뒤 콘텐츠 비침 + blur 가시성). */
-  background: rgba(255, 255, 255, 0.7);
+  /* Q-20260608-144 — 0.7 투명도가 스크롤 콘텐츠(따뜻한 톤 뉴스카드)를 날짜 텍스트 위쪽으로 비치게 해
+     "헤더 위 공간이 뜬다"는 시각적 갭으로 읽힘(대표 catch). 0.7 → 0.92 (nav 0.85 대비 약간 더 솔리드,
+     blur 유지). 콘텐츠 bleed-through 제거 → sticky 앵커 시 깨끗한 단색 띠. */
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   /* cal-content padding(24px 26px) 보정: sticky 시 좌우 가장자리까지 배경 채움 */
