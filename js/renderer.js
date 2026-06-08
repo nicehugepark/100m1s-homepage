@@ -395,6 +395,12 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
       <div class="cal-pre-market-prev" data-pre-prev hidden></div>
     </div>
   `;
+  // P0 (Q-20260609) — PRE_MARKET path 에 주입한 미장 섹션의 선물 토글 wiring.
+  //   정상 path 는 renderCalExpandContent 말미(L1911)에서 _wireUsFutToggle() 호출하나, PRE_MARKET 은
+  //   early-return 으로 그곳에 도달 못 함 → 어제 P0(15dc4b465)가 미장 HTML 은 주입했지만 토글 바인딩 누락
+  //   → 선물 토글 이벤트 0 + data-fut-view=auto('regular') 고정 → CSS 가 선물 카드 숨김 → "선물 버튼
+  //   사라짐"(대표 catch, Q-145 선물 상시 표시 위반). fix: 미장 HTML 주입 시 토글 wiring 동반 호출(멱등).
+  if (_usHtml && typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
   // 카운트다운 1초 단위 + Page Visibility API
   {
     const cdEl = inner.querySelector('[data-cd]');
