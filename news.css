@@ -1359,13 +1359,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
   /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255. */
   /* REQ-075 — frosted glass 효과 복원. 0.92 (거의 솔리드) → 0.7 (뒤 콘텐츠 비침 + blur 가시성). */
-  /* Q-20260608-144 — 0.7 투명도가 스크롤 콘텐츠(따뜻한 톤 뉴스카드)를 날짜 텍스트 위쪽으로 비치게 해
-     "헤더 위 공간이 뜬다"는 시각적 갭으로 읽힘(대표 catch). 0.7 → 0.92 (nav 0.85 대비 약간 더 솔리드,
-     blur 유지). 콘텐츠 bleed-through 제거 → sticky 앵커 시 깨끗한 단색 띠. */
-  /* Q-20260608-144 후속 — 0.92로도 8% 투명도로 뒤 뉴스 텍스트 비침 잔존(대표 2차 지적
-     "여전히 헤더 간격이 띄어져있고"). → 1.0 완전 불투명. 날짜 헤더는 frosted보다 가독·비침0 우선.
-     불투명 배경이면 backdrop-filter blur는 시각 효과 없음 → 렌더 비용 절감 위해 제거. */
-  background: rgb(255, 255, 255);
+  /* 대표 2026-06-08 — 완전불투명→프로스티드 복원(0.7+blur). 간격은 --nav-h 바인딩으로 별도 해결,
+     투명도는 시각 선호로 복원. (REQ-075 원본 프로스티드 값 rgba(255,255,255,0.7) + blur(16px)) */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   /* cal-content padding(24px 26px) 보정: sticky 시 좌우 가장자리까지 배경 채움 */
   margin-left: -26px; margin-right: -26px;
   padding-left: 26px; padding-right: 26px;
