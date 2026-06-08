@@ -291,9 +291,10 @@
     // Q-20260608-143 — 시제 라벨(선물 '실시간' / 정규장 '미장 마감'). 같은 뉴스 영역이라도 데이터
     //   시제가 다름을 명시(전일 마감 뉴스를 실시간으로 오인 차단). 라벨은 summary 가 있을 때만.
     var tenseHtml = '';
-    if (summary && (newsTense === 'realtime' || newsTense === 'close')) {
-      var tenseTxt = (newsTense === 'realtime') ? '실시간' : '미장 마감';
-      tenseHtml = '<span class="cal-news-tense cal-news-tense--' + newsTense + '">' + esc(tenseTxt) + '</span>';
+    // Q-20260608-143 후속(대표 2026-06-08) — '실시간' 배지 제거(실시간은 당연, 국내장 무표시 정합).
+    //   '미장 마감'만 유지(전일 미장 마감 뉴스를 당일로 오인 차단, 비자명 정보).
+    if (summary && newsTense === 'close') {
+      tenseHtml = '<span class="cal-news-tense cal-news-tense--close">' + esc('미장 마감') + '</span>';
     }
     var summaryHtml = summary ? '<div class="cal-causal">' + tenseHtml + esc(summary) + '</div>' : '';
     var linksBlock = linksHtml ? '<div class="cal-feature-links">' + linksHtml + '</div>' : '';
