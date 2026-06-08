@@ -2161,6 +2161,14 @@ body.single-card-mode { background: var(--bg) !important; }
   text-align: left; white-space: normal; overflow: visible; text-overflow: unset;
 }
 .cal-causal .arrow { color: #C49930; margin: 0 4px; font-weight: 700; }
+/* Q-20260608-143 — 뉴스 시제 라벨(선물=실시간 / 정규장=미장 마감). 같은 영역 데이터 시제 분리 명시. */
+.cal-news-tense {
+  display: inline-block; font-size: 10.5px; font-weight: 700; line-height: 1;
+  padding: 2px 5px; margin-right: 6px; border-radius: 4px; vertical-align: 1px;
+  letter-spacing: -0.2px; white-space: nowrap;
+}
+.cal-news-tense--realtime { color: #1f7a3d; background: rgba(31, 122, 61, 0.12); }
+.cal-news-tense--close { color: #6b6256; background: rgba(107, 98, 86, 0.12); }
 .cal-factors {
   display: flex; flex-wrap: wrap; gap: 8px 16px;
   font-size: 12px; color: var(--tx2);
