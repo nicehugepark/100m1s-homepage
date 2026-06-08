@@ -756,6 +756,12 @@ function renderCalExpandContent(date, data) {
     const s = p >= 0 ? '+' : '';
     return `${s}${p.toFixed(2)}%`;
   };
+  // 낙폭(drawdown) 전용 포매터: 낙폭은 음수/0만 의미 있음 → '+' 부호 제거(고장 오인 차단).
+  //   0 = 해당 기준선 아래로 안 빠짐(정상). 음수 = 그 기준 대비 최대 평가손실.
+  const _fmtDrawdown = (p) => {
+    if (p == null || !Number.isFinite(p)) return '—';
+    return `${p.toFixed(2)}%`;
+  };
   // 한국어 매핑 (DSN-001 §1 영어 enum → §3.5 한국어 label)
   // running = 잠정 / taken_profit = 익절 / expired_gain = 만기청산 (이익) / expired_loss = 만기청산 (손실)
   const _pm320StateLabel = (state) => {
@@ -854,24 +860,31 @@ function renderCalExpandContent(date, data) {
     const expiryDate = pk.expiry_date || '';
     // 결과 strip (state != running 시만)
     let resultStrip = '';
-    // MDD row (대표 지시 2026-06-08 — 완결 픽 매매 결과에 최대 낙폭 1줄 추가).
-    //   주 표시 = result.mdd_pct (진입평단 대비 최대낙폭, "내 진입가에서 최대 얼마 빠졌나"). 음수 = 낙폭(손실 방향).
-    //   보조 = result.mdd_peak_pct (보유고점 대비). 둘 다 없거나 null이면 미표시(graceful, 거짓값 금지).
-    //   완결 픽(state != running && result 존재)에만 표시. running·보류는 미표시.
+    // MDD row (대표 지시 2026-06-08 정정 — "최대 낙폭"이 죄다 +0.00% 로 고장처럼 읽힘).
+    //   원인: 헤드라인이 mdd_pct(진입가 대비)였는데, 강세장 픽은 진입 후 바로 올라 익절 →
+    //         진입가 아래로 안 빠져 mdd_pct=0(정상). 실제 변동은 mdd_peak_pct(보유 고점 대비)에 있음.
+    //   ⇒ 헤드라인 "최대 낙폭" = result.mdd_peak_pct (표준 MDD 정의, 고점→저점, 항상 의미있는 값).
+    //   ⇒ 보조 = result.mdd_pct (진입 후 최대 평가손실). 0이면 "진입가 아래로 안 빠짐" 명시(고장 오인 차단).
+    //   낙폭은 음수/0만 의미 → _fmtDrawdown 으로 '+' 부호 제거.
+    //   완결 픽(state != running && result 존재 && mdd_peak_pct finite)에만 표시. running·보류·null은 미표시(graceful).
     let mddRow = '';
     if (pk.current_state && pk.current_state !== 'running' && pk.result
-        && pk.result.mdd_pct != null && Number.isFinite(pk.result.mdd_pct)) {
-      const mddText = _fmtPctSigned(pk.result.mdd_pct);
-      const hasPeak = pk.result.mdd_peak_pct != null && Number.isFinite(pk.result.mdd_peak_pct);
-      const peakSub = hasPeak ? _fmtPctSigned(pk.result.mdd_peak_pct) : '';
+        && pk.result.mdd_peak_pct != null && Number.isFinite(pk.result.mdd_peak_pct)) {
+      const peakText = _fmtDrawdown(pk.result.mdd_peak_pct);
+      const hasEntry = pk.result.mdd_pct != null && Number.isFinite(pk.result.mdd_pct);
+      const entrySub = hasEntry
+        ? (pk.result.mdd_pct === 0
+            ? '0% (진입가 아래로 안 빠짐)'
+            : _fmtDrawdown(pk.result.mdd_pct))
+        : '';
       mddRow = `
       <div class="pm320-rec-detail-row pm320-rec-detail-row--mdd">
         <span class="pm320-rec-label">📉 최대 낙폭</span>
-        <span class="pm320-rec-value pm320-rec-value--mdd">${escapeHtml(mddText)}</span>
-      </div>${hasPeak ? `
+        <span class="pm320-rec-value pm320-rec-value--mdd">${escapeHtml(peakText)}</span>
+      </div>${hasEntry ? `
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
         <span class="pm320-rec-label"></span>
-        <span class="pm320-rec-value pm320-rec-value--sub">└ 보유 고점 대비: ${escapeHtml(peakSub)}</span>
+        <span class="pm320-rec-value pm320-rec-value--sub">└ 진입 후 최대 평가손실: ${escapeHtml(entrySub)}</span>
       </div>` : ''}`;
     }
     if (pk.current_state && pk.current_state !== 'running' && pk.result) {
