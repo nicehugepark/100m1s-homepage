@@ -215,7 +215,7 @@
     }
     var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant);
     // Q-20260608-143 — 뉴스 시제 라벨. 선물 변종 = '실시간', 정규장 = '미장 마감'. 시제 혼동 차단.
-    var newsTense = (opts.newsTense === 'realtime') ? 'realtime' : (futVariant ? 'realtime' : 'close');
+    var newsTense = (opts && opts.newsTense === 'realtime') ? 'realtime' : (futVariant ? 'realtime' : 'close');
     var newsBodyHtml = buildCardNews(idx.news, newsTense);
 
     var label = displayName + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
