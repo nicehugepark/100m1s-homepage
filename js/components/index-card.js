@@ -217,8 +217,21 @@
       r240in = Object.assign({}, r240in, { current: idx.point });
     }
     var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant);
-    // Q-20260608-143 — 뉴스 시제 라벨. 선물 변종 = '실시간', 정규장 = '미장 마감'. 시제 혼동 차단.
-    var newsTense = (opts && opts.newsTense === 'realtime') ? 'realtime' : (futVariant ? 'realtime' : 'close');
+    // Q-20260608-143 — 뉴스 시제 라벨. 선물 변종 = '실시간', 정규장 = '미장 마감'.
+    // Q-20260608 정규장 장중 — 정규장 개장 중(idx.session_open === true)이면 'live'(장중)로 분기.
+    //   백엔드 build_us_digest refresh_intraday 가 indices[].session_open 부착(개장 판정).
+    //   개장 시 point/change_pct/candle/daily_expanded 가 당일 장중값으로 갱신됨 → 라벨도 정합.
+    //   폐장/주말이면 session_open=false → 'close'(미장 마감) 복귀(회귀 0). 시제 혼동 차단.
+    var newsTense;
+    if (opts && opts.newsTense === 'realtime') {
+      newsTense = 'realtime';
+    } else if (futVariant) {
+      newsTense = 'realtime';
+    } else if (idx && idx.session_open === true) {
+      newsTense = 'live';  // 정규장 개장 중 = 장중
+    } else {
+      newsTense = 'close';
+    }
     var newsBodyHtml = buildCardNews(idx.news, newsTense);
 
     var label = displayName + ' ' + (pct == null ? '' : (dir === 'up' ? '상승' : dir === 'down' ? '하락' : '보합'))
@@ -300,6 +313,10 @@
     //   '미장 마감'만 유지(전일 미장 마감 뉴스를 당일로 오인 차단, 비자명 정보).
     if (summary && newsTense === 'close') {
       tenseHtml = '<span class="cal-news-tense cal-news-tense--close">' + esc('미장 마감') + '</span>';
+    } else if (summary && newsTense === 'live') {
+      // Q-20260608 정규장 장중 — 개장 중 배지("장중", 대표 결정: '실시간' 단어 회피).
+      //   "미장 마감"(폐장)과 시각적 구분 = 정규장 진행 중을 정직 표시(FLR-AGT-002 정합).
+      tenseHtml = '<span class="cal-news-tense cal-news-tense--live">' + esc('장중') + '</span>';
     }
     var summaryHtml = summary ? '<div class="cal-causal">' + tenseHtml + esc(summary) + '</div>' : '';
     var linksBlock = linksHtml ? '<div class="cal-feature-links">' + linksHtml + '</div>' : '';

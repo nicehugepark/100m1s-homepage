@@ -2190,6 +2190,8 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-news-tense--realtime { color: #1f7a3d; background: rgba(31, 122, 61, 0.12); }
 .cal-news-tense--close { color: #6b6256; background: rgba(107, 98, 86, 0.12); }
+/* Q-20260608 정규장 장중 — 개장 중 "장중" 배지. 마감(--close, 회색)과 구분되는 활성 톤. */
+.cal-news-tense--live { color: #c0392b; background: rgba(192, 57, 43, 0.12); }
 .cal-factors {
   display: flex; flex-wrap: wrap; gap: 8px 16px;
   font-size: 12px; color: var(--tx2);
