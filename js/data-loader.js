@@ -130,14 +130,48 @@ async function loadPm320History(date) {
 // Q-20260605-103 Phase 3 — 야간 미국증시 요약 (us-indices/{kstDate}.json).
 //   DSN §3.6.9. 부재/파싱 실패/schema 불일치 시 null → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단).
 //   schema: { trade_date_local, indices:[{name, point, change_pct, spark[], candle:{o,h,l,c}}], news_chips:[{summary, source, url}] }
+//
+// Q-20260608-133 (FLR-20260606-TEC-001 정합) — 직전 미장 거래일 fallback.
+//   미 일요일 휴장 + 월요일 모닝 빌드 부재(us-digest plist Weekday 2~6) → 오늘(KST) us-indices 파일 부재 → 404.
+//   이때 섹션 전체가 사라지면 "지난 금요장(현지 목요 마감)" 미장 정보까지 월요일 내내 미표시 (사용자 손실).
+//   대응: 오늘 파일 부재/무효 시 직전 거래일로 최대 N일 역탐색 (주말·미 휴장 자연 건너뜀 — 파일 존재 = 거래일).
+//   trade_date_local 라벨이 실제 마감일(예 금요장)을 정직 표기하므로 stale 오인 위험 없음.
+//   선물(futures)은 renderer가 as_of_kst≤30분 게이트로 별도 차단 → fallback 파일의 묵은 선물은 자연 미렌더.
 async function loadNightlyUsSummary(date) {
+  // 1) 오늘 파일 우선 — 유효하면 그대로 사용 (fallback 미발동).
+  const today = _parseNightlyUs(await _fetchUsIndices(date));
+  if (today) return today;
+  // 2) 오늘 파일 부재/무효 → 직전 거래일 역탐색 (최대 7 캘린더일: 주말 + 단일 휴장 커버).
+  //    날짜 산술은 로컬(KST 사용자 가정) getFullYear/getMonth/getDate 사용 — loadKiwoomDate 폴백과 동일 가정.
+  const base = new Date(`${date}T00:00:00`);
+  for (let i = 1; i <= 7; i++) {
+    const dt = new Date(base);
+    dt.setDate(dt.getDate() - i);
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth() + 1).padStart(2, '0');
+    const d = String(dt.getDate()).padStart(2, '0');
+    const prevDate = `${y}-${m}-${d}`;
+    const prev = _parseNightlyUs(await _fetchUsIndices(prevDate));
+    if (prev) {
+      prev._fallback_date = prevDate;  // 렌더/디버그용 (UI 라벨은 trade_date_local 사용)
+      return prev;
+    }
+  }
+  return null;
+}
+
+// us-indices/{date}.json fetch — 404/네트워크 오류 시 null (호출부에서 fallback 판정).
+async function _fetchUsIndices(date) {
   const dateHash = date.replace(/-/g, '');
-  let raw;
   try {
     const res = await fetch(`/data/us-indices/${date}.json?v=${dateHash}`);
     if (!res.ok) return null;
-    raw = await res.json();
+    return await res.json();
   } catch (e) { return null; }
+}
+
+// raw us-indices 페이로드 → 검증된 구조 (무효 시 null). loadNightlyUsSummary + fallback 공용.
+function _parseNightlyUs(raw) {
   // schema validation — 최소 필수 필드 미충족 시 미신뢰 → null (빈 카드/mock 노출 차단)
   if (!raw || typeof raw !== 'object') return null;
   if (typeof raw.trade_date_local !== 'string' || !raw.trade_date_local) return null;
