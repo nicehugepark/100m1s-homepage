@@ -668,15 +668,27 @@ function renderCalExpandContent(date, data) {
       ? `<div class="cal-macro-strip">${closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
       : '';
     const _emptyVerBanner = _buildRulesVersionBanner(data && data.rules_version);
+    // P0 (Q-20260609 2회차) — 국내 빈상태(휴장 / "데이터 없음" / "장 시작 직후 수집 중" / "수집 지연")
+    //   에서도 미국증시 섹션은 국내 종목 상태와 완전 독립으로 렌더한다. 어제 P0(15dc4b465)는 PRE_MARKET
+    //   path 만 미장을 삽입 → 09:00 직후 국내 OPEN 이지만 당일 stock-*.json 미생성 시 본 !hasAny early-return
+    //   path 로 falls-through → 미장 통째 누락 재발(대표 catch 09:05 "이 순간에도 미장은 계속 보여야지").
+    //   미 동부 20:05 ET = 정규장 마감 + 선물 거래 중이므로 미장은 항상 표출돼야 함.
+    //   fix: PRE_MARKET path(L388/L412)와 동형 — _buildNightlyUsHtml(국내와 동일 SSOT 함수) 삽입 +
+    //   _wireUsFutToggle() 동반(어제 wiring 누락 회귀 교훈 FLR-20260609-TEC-001). nightlyUs 부재/null 시
+    //   빈 문자열 graceful 생략(빈 카드 금지, FLR-AGT-002). 본 path 는 closed/past/today-empty 모두 커버.
+    const _emptyUsHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(data && data.nightlyUs) : '';
     inner.innerHTML = `
       ${_emptyVerBanner}
       <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
         <div class="cal-content-date">${formatKoDate(date)}</div>
         <div class="cal-content-meta">${closed ? '휴장' : '데이터 없음'}</div>
       </div>
+      ${_emptyUsHtml}
       ${closedMacroHtml}
       ${emptyMsg}
     `;
+    // 미장 섹션 주입 시 선물 토글 wiring 동반(멱등). 본 path 는 early-return 이라 L1926 말미 호출에 도달 못 함.
+    if (_emptyUsHtml && typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
     return;
   }
 
