@@ -3334,6 +3334,14 @@ async function initThemeTree(dateOverride) {
 
     // 날짜 지정 시: 해당 날짜의 stock JSON에서 테마 필터링
     const targetDate = dateOverride || data.date;
+    // P0/P1 (Q-20260609) — 테마트리 날짜 종속 정직 라벨. dateOverride(오늘) 의 당일 stock JSON 이
+    //   아직 없으면(09:00~수집완료 전 OPEN-empty 윈도우) tree 는 theme-tree.json 의 source_date(전일
+    //   종가) 데이터로 렌더된다. 이때 날짜 표시 없이 노출 → 사용자가 오늘 것으로 오인(대표 catch 09:0x
+    //   "테마트리 여전히 어제거 아니야? 날짜 종속이잖아"). backend(build_theme_stats.py L818-823)는
+    //   date(발효일) ≠ source_date(stocks 실 source 시점) 를 명시적으로 분리 emit 하며 frontend 가
+    //   source_date 를 표시해 오해를 차단하라고 contract 화돼 있으나, 종래 renderer 는 source_date 미참조.
+    //   → tree 가 실제로 표출 중인 데이터 시점(_themeRenderedSourceDate)을 추적해 캡션으로 정직 명시한다.
+    let _themeStockLoadedForToday = false;     // 당일 live stock JSON 으로 tree 를 채웠는가
     if (dateOverride) {
       try {
         // REQ-055 P0 — 빈 stocks=[] 파일도 200 OK로 반환되므로 stocks 비어있으면 7일 이내 fallback.
@@ -3376,6 +3384,7 @@ async function initThemeTree(dateOverride) {
         }
         const stockData = await _loadStockJsonWithFallback(dateOverride);
         if (stockData) {
+          _themeStockLoadedForToday = true;  // 당일 live 데이터로 채움 → 캡션 불필요
           // 해당 날짜 종목들의 테마 이름 수집
           const activeThemes = new Set();
           const themeStocks = {}; // theme_name -> [{code, name, change_pct, trade_amount}]
@@ -3546,6 +3555,28 @@ async function initThemeTree(dateOverride) {
     const container = document.getElementById('theme-tree-container');
     if (!container) return;
     container.innerHTML = '';  // 날짜 변경 시 기존 트리 제거 (누적 방지)
+
+    // P0/P1 (Q-20260609) — 날짜 종속 정직 라벨. tree 가 실제 표출 중인 데이터 시점 결정:
+    //   - dateOverride(오늘) 인데 당일 live stock JSON 미적재 → theme-tree.json 의 source_date(전일
+    //     종가) 데이터로 채워짐 → 그 source_date 를 캡션으로 명시("N월 N일 종가 기준").
+    //   - 당일 live 적재 성공(_themeStockLoadedForToday) → 오늘 데이터 → 캡션 불필요.
+    //   - 특정 과거 날짜 조회(dateOverride ≠ today) → 이미 그 날짜 데이터이므로 캡션 불필요(달력 컨텍스트가 날짜 제공).
+    //   미장 빈상태 fix(1ff66c780)와 동형 — "어떤 날짜 데이터인지 화면에 정직히"(FLR-AGT-002 거짓 충실성 차단).
+    try {
+      const _nowCap = new Date();
+      const _todayCap = `${_nowCap.getFullYear()}-${String(_nowCap.getMonth()+1).padStart(2,'0')}-${String(_nowCap.getDate()).padStart(2,'0')}`;
+      const _isTodayView = !dateOverride || dateOverride === _todayCap;
+      const _srcDate = data.source_date || data.date || null;
+      if (_isTodayView && !_themeStockLoadedForToday && _srcDate && _srcDate !== _todayCap) {
+        const _srcLabel = (typeof formatKoDate === 'function') ? formatKoDate(_srcDate) : _srcDate;
+        const cap = document.createElement('div');
+        cap.className = 'theme-tree-source-caption';
+        cap.setAttribute('role', 'note');
+        cap.setAttribute('aria-label', '테마트리 데이터 기준 시점');
+        cap.textContent = `${_srcLabel} 종가 기준 · 오늘 데이터는 장 마감 후 갱신됩니다`;
+        container.appendChild(cap);
+      }
+    } catch (_) { /* graceful — 캡션 실패해도 트리 렌더는 유지 */ }
 
     function renderNode(node, depth, rootColor) {
       const hasChildren = node.children.length > 0 && node.children.some(c => c._totalAmt > 0 || c.trade_amount > 0);

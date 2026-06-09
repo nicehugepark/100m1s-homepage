@@ -910,6 +910,17 @@ a.cal-credit-row:hover,
 .theme-tree-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
 .theme-tree-title { font-size: 14px; font-weight: 800; color: var(--am); }
 .theme-tree-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
+/* Q-20260609 — 테마트리 데이터 시점 정직 캡션 (전일 종가 기준 노출 시). 미장 빈상태 fix 동형. */
+.theme-tree-source-caption {
+  font-size: 11px; font-weight: 700; color: var(--dm);
+  background: var(--bg2, rgba(0,0,0,0.03)); border: 1px solid var(--bd);
+  border-radius: 8px; padding: 6px 10px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.theme-tree-source-caption::before {
+  content: ''; flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--dm); opacity: 0.6;
+}
 .theme-tree-container {
   background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
   padding: 12px 16px; max-height: 400px; overflow-y: auto;
