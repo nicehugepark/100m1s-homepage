@@ -1,6 +1,6 @@
 {
   "date": "2026-06-09",
-  "generated_at": "2026-06-09T12:37:53.787262",
+  "generated_at": "2026-06-09T12:46:11.601307",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -52,12 +52,12 @@
       "code": "001740",
       "name": "SK네트웍스",
       "rank": 1,
-      "trade_amount": 601570000000,
-      "change_pct": -5.93,
-      "close_price": 13330,
+      "trade_amount": 608776000000,
+      "change_pct": -8.12,
+      "close_price": 13020,
       "open_price": 15360,
       "high_price": 16240,
-      "low_price": 13060,
+      "low_price": 13000,
       "industry": "기타 전문 도매업",
       "sector": "정보통신 유통, 자동차 관리, 글로벌 트레이딩, 호텔&리조트",
       "themes": [
@@ -183,17 +183,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.69,
-      "index_multiple_current": -1.26,
+      "index_change_pct": 5.23,
+      "index_multiple_current": -1.55,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 16240,
         "high_date": "2026-06-09",
-        "high_pct": -17.92,
+        "high_pct": -19.83,
         "low": 4235,
         "low_date": "2025-06-18",
-        "low_pct": 214.76,
-        "current": 13330
+        "low_pct": 207.44,
+        "current": 13020
       },
       "daily_20": [
         {
@@ -333,8 +333,8 @@
           "date": "2026-06-09",
           "o": 15360,
           "h": 16240,
-          "l": 13060,
-          "c": 13330
+          "l": 13000,
+          "c": 13020
         }
       ],
       "intraday": {
@@ -384,7 +384,9 @@
           13240,
           13290,
           13340,
-          13330
+          13140,
+          13080,
+          13020
         ]
       },
       "credit_risk": true,
@@ -397,9 +399,9 @@
       "code": "089030",
       "name": "테크윙",
       "rank": 2,
-      "trade_amount": 416444000000,
-      "change_pct": 28.88,
-      "close_price": 63600,
+      "trade_amount": 460784000000,
+      "change_pct": 29.08,
+      "close_price": 63700,
       "open_price": 51500,
       "high_price": 64100,
       "low_price": 50700,
@@ -513,17 +515,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 4.56,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 4.49,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 74000,
         "high_date": "2026-03-10",
-        "high_pct": -14.05,
+        "high_pct": -13.92,
         "low": 26050,
         "low_date": "2025-08-04",
-        "low_pct": 144.15,
-        "current": 63600
+        "low_pct": 144.53,
+        "current": 63700
       },
       "daily_20": [
         {
@@ -664,7 +666,7 @@
           "o": 51500,
           "h": 64100,
           "l": 50700,
-          "c": 63600
+          "c": 63700
         }
       ],
       "intraday": {
@@ -714,7 +716,9 @@
           62400,
           62800,
           63600,
-          63600
+          63800,
+          63600,
+          63700
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -725,9 +729,9 @@
       "code": "085620",
       "name": "미래에셋생명",
       "rank": 3,
-      "trade_amount": 141380000000,
-      "change_pct": 14.52,
-      "close_price": 24050,
+      "trade_amount": 144051000000,
+      "change_pct": 15.24,
+      "close_price": 24200,
       "open_price": 20550,
       "high_price": 25500,
       "low_price": 20450,
@@ -856,17 +860,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.69,
-      "index_multiple_current": 3.1,
+      "index_change_pct": 5.23,
+      "index_multiple_current": 2.91,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 25500,
         "high_date": "2026-06-09",
-        "high_pct": -5.69,
+        "high_pct": -5.1,
         "low": 5630,
         "low_date": "2025-06-23",
-        "low_pct": 327.18,
-        "current": 24050
+        "low_pct": 329.84,
+        "current": 24200
       },
       "daily_20": [
         {
@@ -1007,7 +1011,34 @@
           "o": 20550,
           "h": 25500,
           "l": 20450,
-          "c": 24050
+          "c": 24200
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-06-01) 대비 +60%↑",
+              "base_price": 15050,
+              "threshold": 24080,
+              "current": 24200,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-10",
+          "period_end": "2026-06-11",
+          "start": "2026-06-10",
+          "end": "2026-06-11",
+          "view_date": "2026-06-09",
+          "next_trading_day": "2026-06-10",
+          "next_trading_day_for_predicted": "2026-06-10",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -1057,7 +1088,9 @@
           23600,
           24050,
           24000,
-          24000
+          24150,
+          24350,
+          24200
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1068,7 +1101,7 @@
       "code": "095610",
       "name": "테스",
       "rank": 4,
-      "trade_amount": 108798000000,
+      "trade_amount": 110452000000,
       "change_pct": 21.44,
       "close_price": 159700,
       "open_price": 143500,
@@ -1185,8 +1218,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 3.38,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 3.31,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 161600,
@@ -1386,6 +1419,8 @@
           159800,
           159700,
           159600,
+          159900,
+          159800,
           159800
         ]
       },
@@ -1397,9 +1432,9 @@
       "code": "319660",
       "name": "피에스케이",
       "rank": 5,
-      "trade_amount": 104567000000,
-      "change_pct": 22.48,
-      "close_price": 136200,
+      "trade_amount": 106182000000,
+      "change_pct": 23.38,
+      "close_price": 137200,
       "open_price": 128700,
       "high_price": 144300,
       "low_price": 126700,
@@ -1448,17 +1483,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 3.55,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 3.61,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 144300,
         "high_date": "2026-06-09",
-        "high_pct": -5.61,
+        "high_pct": -4.92,
         "low": 18100,
         "low_date": "2025-07-10",
-        "low_pct": 652.49,
-        "current": 136200
+        "low_pct": 658.01,
+        "current": 137200
       },
       "daily_20": [
         {
@@ -1599,7 +1634,7 @@
           "o": 128700,
           "h": 144300,
           "l": 126700,
-          "c": 136200
+          "c": 137200
         }
       ],
       "intraday": {
@@ -1649,7 +1684,9 @@
           136800,
           136400,
           136000,
-          136400
+          136600,
+          136900,
+          137100
         ]
       },
       "togusa_verdict": "neutral",
@@ -1660,11 +1697,11 @@
       "code": "089970",
       "name": "브이엠",
       "rank": 6,
-      "trade_amount": 53435000000,
-      "change_pct": 23.71,
-      "close_price": 74600,
+      "trade_amount": 54912000000,
+      "change_pct": 23.88,
+      "close_price": 74700,
       "open_price": 68500,
-      "high_price": 74800,
+      "high_price": 75000,
       "low_price": 66400,
       "industry": "특수 목적용 기계 제조업",
       "sector": "300mm Poly Etch System",
@@ -1693,17 +1730,17 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 3.74,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 3.69,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 74800,
+        "high": 75000,
         "high_date": "2026-06-09",
-        "high_pct": -0.27,
+        "high_pct": -0.4,
         "low": 10300,
         "low_date": "2025-07-23",
-        "low_pct": 624.27,
-        "current": 74600
+        "low_pct": 625.24,
+        "current": 74700
       },
       "daily_20": [
         {
@@ -1842,9 +1879,9 @@
         {
           "date": "2026-06-09",
           "o": 68500,
-          "h": 74800,
+          "h": 75000,
           "l": 66400,
-          "c": 74600
+          "c": 74700
         }
       ],
       "intraday": {
@@ -1894,7 +1931,9 @@
           74400,
           74400,
           74600,
-          74600
+          74600,
+          74700,
+          74800
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1907,9 +1946,9 @@
       "code": "388790",
       "name": "라이콤",
       "rank": 7,
-      "trade_amount": 51752000000,
-      "change_pct": 16.44,
-      "close_price": 7860,
+      "trade_amount": 52656000000,
+      "change_pct": 15.11,
+      "close_price": 7770,
       "open_price": 7000,
       "high_price": 8400,
       "low_price": 6850,
@@ -1977,17 +2016,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 2.59,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 2.33,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 9330,
         "high_date": "2026-04-14",
-        "high_pct": -15.76,
+        "high_pct": -16.72,
         "low": 2110,
         "low_date": "2025-10-13",
-        "low_pct": 272.51,
-        "current": 7860
+        "low_pct": 268.25,
+        "current": 7770
       },
       "daily_20": [
         {
@@ -2128,7 +2167,7 @@
           "o": 7000,
           "h": 8400,
           "l": 6850,
-          "c": 7860
+          "c": 7770
         }
       ],
       "status_badges": [
@@ -2141,7 +2180,7 @@
               "desc": "5일 전(2026-06-01) 대비 +60%↑",
               "base_price": 4065,
               "threshold": 6504,
-              "current": 7860,
+              "current": 7770,
               "triggered": true
             }
           ],
@@ -2205,7 +2244,9 @@
           8100,
           7970,
           7970,
-          7900
+          7860,
+          7770,
+          7770
         ]
       },
       "credit_risk": true,
@@ -2218,7 +2259,7 @@
       "code": "126640",
       "name": "화신정공",
       "rank": 8,
-      "trade_amount": 23196000000,
+      "trade_amount": 23198000000,
       "change_pct": 29.9,
       "close_price": 3410,
       "open_price": 3410,
@@ -2251,8 +2292,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 4.72,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 4.61,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 3410,
@@ -2439,8 +2480,8 @@
           "summary": "화신정공 상한가 (29.9%)",
           "cur_prc": 3410,
           "flu_rt": 29.9,
-          "trde_qty": 6811231,
-          "trde_prica_calc": 23196000000,
+          "trde_qty": 6811834,
+          "trde_prica_calc": 23198000000,
           "consecutive_count": 2,
           "estimated": false,
           "effect_badges": [
@@ -2503,6 +2544,8 @@
           3410,
           3410,
           3410,
+          3410,
+          3410,
           3410
         ]
       },
@@ -2518,12 +2561,12 @@
       "code": "219130",
       "name": "타이거일렉",
       "rank": 9,
-      "trade_amount": 18940000000,
+      "trade_amount": 18952000000,
       "change_pct": 29.92,
       "close_price": 63400,
-      "open_price": 63400,
+      "open_price": 51200,
       "high_price": 63400,
-      "low_price": 63400,
+      "low_price": 51200,
       "industry": "전자부품 제조업",
       "sector": "인쇄회로기판 제조업",
       "themes": [
@@ -2541,9 +2584,12 @@
       ],
       "pick_count": 1,
       "prev_pick": null,
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-05-04",
+        "2026-06-09"
+      ],
       "news": [
         {
           "title": "타이거일렉, 300억 규모 전환사채 발행 결정",
@@ -2563,9 +2609,9 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": -0.2,
-      "index_multiple_eligible": false,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 4.62,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 69900,
         "high_date": "2026-05-21",
@@ -2576,62 +2622,6 @@
         "current": 63400
       },
       "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 44800,
-          "h": 44850,
-          "l": 40350,
-          "c": 43600
-        },
-        {
-          "date": "2026-04-28",
-          "o": 43650,
-          "h": 45900,
-          "l": 42750,
-          "c": 45850
-        },
-        {
-          "date": "2026-04-29",
-          "o": 46500,
-          "h": 48850,
-          "l": 44400,
-          "c": 47900
-        },
-        {
-          "date": "2026-04-30",
-          "o": 47900,
-          "h": 47950,
-          "l": 45600,
-          "c": 45750
-        },
-        {
-          "date": "2026-05-04",
-          "o": 46300,
-          "h": 53700,
-          "l": 46200,
-          "c": 52600
-        },
-        {
-          "date": "2026-05-06",
-          "o": 53000,
-          "h": 54200,
-          "l": 51100,
-          "c": 52600
-        },
-        {
-          "date": "2026-05-07",
-          "o": 53900,
-          "h": 57400,
-          "l": 53500,
-          "c": 56700
-        },
-        {
-          "date": "2026-05-08",
-          "o": 56800,
-          "h": 61400,
-          "l": 55200,
-          "c": 60900
-        },
         {
           "date": "2026-05-11",
           "o": 61000,
@@ -2710,10 +2700,66 @@
           "c": 64200
         },
         {
-          "date": "2026-06-09",
+          "date": "2026-05-27",
           "o": 63400,
+          "h": 63900,
+          "l": 57700,
+          "c": 63000
+        },
+        {
+          "date": "2026-05-28",
+          "o": 62900,
+          "h": 63100,
+          "l": 54600,
+          "c": 60400
+        },
+        {
+          "date": "2026-05-29",
+          "o": 60400,
+          "h": 60500,
+          "l": 53100,
+          "c": 53200
+        },
+        {
+          "date": "2026-06-01",
+          "o": 55000,
+          "h": 55000,
+          "l": 49550,
+          "c": 51300
+        },
+        {
+          "date": "2026-06-02",
+          "o": 51400,
+          "h": 51400,
+          "l": 47700,
+          "c": 49800
+        },
+        {
+          "date": "2026-06-04",
+          "o": 49800,
+          "h": 54400,
+          "l": 49800,
+          "c": 52000
+        },
+        {
+          "date": "2026-06-05",
+          "o": 49900,
+          "h": 53200,
+          "l": 48300,
+          "c": 53200
+        },
+        {
+          "date": "2026-06-08",
+          "o": 49950,
+          "h": 50900,
+          "l": 46100,
+          "c": 48800
+        },
+        {
+          "date": "2026-06-09",
+          "o": 51200,
           "h": 63400,
-          "l": 63400,
+          "l": 51200,
           "c": 63400
         }
       ],
@@ -2726,8 +2772,8 @@
           "summary": "타이거일렉 상한가 (29.92%)",
           "cur_prc": 63400,
           "flu_rt": 29.92,
-          "trde_qty": 309287,
-          "trde_prica_calc": 18940000000,
+          "trde_qty": 309472,
+          "trde_prica_calc": 18952000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2743,8 +2789,59 @@
           "next_trading_day": "2026-06-10"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 51200,
+        "base": 48799,
+        "prices": [
+          51200,
+          60200,
+          58500,
+          60300,
+          62100,
+          62100,
+          62100,
+          62500,
+          62500,
+          63400,
+          62800,
+          62500,
+          62100,
+          62000,
+          62500,
+          62300,
+          62000,
+          61400,
+          62300,
+          62000,
+          62300,
+          62500,
+          62800,
+          62900,
+          62900,
+          62900,
+          63000,
+          62800,
+          63000,
+          62500,
+          61500,
+          61500,
+          62200,
+          62300,
+          62200,
+          62700,
+          62600,
+          62700,
+          62800,
+          62800,
+          63300,
+          63400,
+          63400,
+          63400
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
@@ -2753,7 +2850,7 @@
       "code": "002680",
       "name": "한탑",
       "rank": 10,
-      "trade_amount": 756000000,
+      "trade_amount": 768000000,
       "change_pct": 29.92,
       "close_price": 469,
       "open_price": 361,
@@ -2815,8 +2912,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 6.34,
-      "index_multiple_current": 4.72,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 4.62,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 1030,
@@ -2978,8 +3075,8 @@
           "summary": "한탑 상한가 (29.92%)",
           "cur_prc": 469,
           "flu_rt": 29.92,
-          "trde_qty": 1709120,
-          "trde_prica_calc": 756000000,
+          "trde_qty": 1734144,
+          "trde_prica_calc": 768000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3021,6 +3118,7 @@
           445,
           458,
           458,
+          469,
           469,
           469,
           469,
@@ -3110,8 +3208,8 @@
           "raw_title": "임원ㆍ주요주주특정증권등소유상황보고서"
         }
       ],
-      "index_change_pct": 6.34,
-      "index_multiple_current": 4.73,
+      "index_change_pct": 6.48,
+      "index_multiple_current": 4.63,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 7475,
