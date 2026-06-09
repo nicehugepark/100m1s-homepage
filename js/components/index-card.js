@@ -249,7 +249,17 @@
     var futAgeHtml = '';
     if (futVariant) {
       var so = opts.sessionOpen;
-      if (so === true) {
+      // Q-20260610 (대표 catch 6/10) — session_open 은 *수집 시점* 스냅샷 값. 데이터가 stale(>30분)이면
+      //   "지금 거래중"을 단정할 수 없다(us-intraday cron 은 KST 08:50~15:30 만 갱신 → 15:30 후 session_open=true
+      //   가 frozen 된 채 노출 → "🟢거래중 + 지연 440분 전" 모순, FLR-AGT-002 허위 실시간). fix: stale 일 때는
+      //   초록 라이브 도트("거래중")를 단정하지 않고 회색 "마지막 거래중"(스냅샷 시점 상태)으로 강등.
+      //   "지연 N분 전" 칩(futAgeHtml)이 신선도 진실을 별도로 명시. 신선(≤30분) 시에만 라이브 거래중/마감 단정.
+      if (opts.isStale) {
+        if (so === true) {
+          futStatusHtml = '<span class="idx-fut-status stale" title="수집 시점 기준 거래중 — 현재 상태는 갱신 지연으로 미확인"><span class="idx-fut-dot" aria-hidden="true"></span>마지막 거래중</span>';
+        }
+        // so===false stale 는 "마감" 단정도 보류(도트 미렌더) — 신선도 칩만 노출.
+      } else if (so === true) {
         futStatusHtml = '<span class="idx-fut-status open" title="거래중"><span class="idx-fut-dot" aria-hidden="true"></span>거래중</span>';
       } else if (so === false) {
         futStatusHtml = '<span class="idx-fut-status closed" title="거래 마감"><span class="idx-fut-dot" aria-hidden="true"></span>거래 마감</span>';
