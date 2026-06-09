@@ -3455,12 +3455,28 @@ async function initThemeTree(dateOverride) {
             });
             return codes;
           }
+          // 라이브 종목 코드 → 거래대금 맵 (막대용 unique_trade_amount 재산출 소스).
+          //   당일 stock JSON 의 종목별 trade_amount 를 코드 단위로 dedup. 같은 종목이
+          //   여러 테마에 속해도 한 번만 계산한다.
+          const _liveAmtByCode = {};
+          for (const s of (stockData.stocks || [])) {
+            _liveAmtByCode[s.code] = s.trade_amount || 0;
+          }
           data.nodes.forEach(n => {
             const descCodes = collectDescendantCodes(n.id);
             // descendant_stock_count: 자신 + 모든 자손의 고유 종목 수
             const ownCodes = new Set((n.stocks || []).map(s => s.code));
             const allCodes = new Set([...ownCodes, ...descCodes]);
             n.descendant_stock_count = allCodes.size;
+            // FLR(테마트리 막대 정합) — 라이브 enrich 시 unique_trade_amount 를 당일 데이터로
+            //   재산출. 종래에는 stocks/trade_amount 만 갱신하고 unique_trade_amount 는 정적
+            //   theme-tree.json 캐시값을 잔존시켜 막대(unique 우선, sumTradeAmount L3505)가
+            //   낡은 값, 종목행(live trade_amount)이 신선한 값으로 불일치했다. 막대 소스 =
+            //   서브트리(자신+모든 자손) 고유 종목 코드의 라이브 거래대금 합으로 재대입한다
+            //   (형제 테마 중복 제거 의도 보존). 형제 간 종목 중복은 코드 dedup 으로 자동 제거.
+            let _uniqueAmt = 0;
+            allCodes.forEach(c => { _uniqueAmt += (_liveAmtByCode[c] || 0); });
+            n.unique_trade_amount = _uniqueAmt;
             if (descCodes.size > 0 && n.stocks) {
               n.stocks = n.stocks.filter(s => !descCodes.has(s.code));
               n.stock_count = n.stocks.length;
