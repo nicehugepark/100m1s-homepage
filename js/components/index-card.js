@@ -110,7 +110,7 @@
   //   ageMin(신선도, renderer 게이트 통과분) → "N분 전 기준". sessionOpen = 거래중/마감 도트.
   //   displayName = 페어 식별 짧은 제목(예 'NASDAQ 선물'). sharedNews = 대응 정규장 지수 news(공유).
   //   isStale(Q-20260608-145) = 30분 초과 → "지연" 배지(카드 숨김 ❌, 정직 명시). renderer 게이트 폐기 후 상시 노출.
-  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName, sharedNews, isStale) {
+  function renderIndexFuturesCard(fut, ageMin, tradeDate, sessionOpen, displayName, sharedNews, isStale, isPastDate) {
     if (!fut || typeof fut !== 'object') return '';
     if (typeof fut.point !== 'number' || typeof fut.change_pct !== 'number') return '';
     // 선물 데이터를 정규장 idx schema 로 사용 — name 은 displayName(제목) override 로 처리.
@@ -132,6 +132,7 @@
       ageMin: ageMin,
       sessionOpen: sessionOpen,
       isStale: !!isStale,  // Q-20260608-145 — 30분 초과 지연 배지 분기
+      isPastDate: !!isPastDate,  // Q-20260610 (2회차) — 지난 날짜 카드 시 현재형 라벨·라이브 도트 강등
       displayName: (typeof displayName === 'string' && displayName) ? displayName : idxLike.name,
       // Q-20260608-143 — 선물 카드 뉴스는 *실시간* (한국 장중=미 야간 선물 거래시간대). 시제 라벨 분리.
       newsTense: 'realtime'
@@ -148,6 +149,12 @@
     if (typeof idx.name !== 'string' || !idx.name) return '';
     var futVariant = !!(opts && opts.futVariant);
     var displayName = (opts && typeof opts.displayName === 'string' && opts.displayName) ? opts.displayName : idx.name;
+    // Q-20260610 (대표 catch 6/10, 2회차) — session_open 은 *수집 시점* 스냅샷 값. 지난 날짜 카드(viewDate < 오늘)를
+    //   열람하면 그날 마감 시점의 session_open=true 가 frozen 된 채 노출 → "장중"(현재형) 라벨이 "지금 장중"으로
+    //   오독(6/9 카드인데 "장중", FLR-AGT-002 허위 실시간). isPastDate(호출측 renderer 가 viewDate vs KST 오늘 비교)
+    //   true 면 현재형 'live'/'realtime' 라벨·라이브 거래중 도트·range-dates 빈칸을 모두 마감(close) 시제로 강등.
+    //   오늘 날짜 카드(isPastDate=false)는 현행 유지(장중엔 "장중" 정당).
+    var isPastDate = !!(opts && opts.isPastDate);
 
     var pct = (typeof idx.change_pct === 'number' && isFinite(idx.change_pct)) ? idx.change_pct : null;
     var dir = pct == null ? 'flat' : (pct > 0 ? 'up' : (pct < 0 ? 'down' : 'flat'));
@@ -222,7 +229,7 @@
     // Q-20260608 정규장 장중 — 정규장(비선물) 카드가 개장 중(idx.session_open===true)이면
     //   범위바 range-dates 중앙 빈칸(마감 거래일 6/5 날짜 숨김, 시제 모순 차단). 선물은 futVariant
     //   분기로 이미 빈칸 — liveOpen 은 정규장 전용 한정(선물 Q-142 회귀 0).
-    var liveOpen = !futVariant && !!(idx && idx.session_open === true);
+    var liveOpen = !futVariant && !isPastDate && !!(idx && idx.session_open === true);
     var rangeHtml = buildRangeBar(r240in, tradeDate, futVariant, liveOpen);
     // Q-20260608-143 — 뉴스 시제 라벨. 선물 변종 = '실시간', 정규장 = '미장 마감'.
     // Q-20260608 정규장 장중 — 정규장 개장 중(idx.session_open === true)이면 'live'(장중)로 분기.
@@ -230,7 +237,10 @@
     //   개장 시 point/change_pct/candle/daily_expanded 가 당일 장중값으로 갱신됨 → 라벨도 정합.
     //   폐장/주말이면 session_open=false → 'close'(미장 마감) 복귀(회귀 0). 시제 혼동 차단.
     var newsTense;
-    if (opts && opts.newsTense === 'realtime') {
+    if (isPastDate) {
+      // 지난 날짜 카드 — 현재형 'realtime'/'live' 모두 'close'(미장 마감)로 강등. 그날의 마감 뉴스라는 시제가 정직.
+      newsTense = 'close';
+    } else if (opts && opts.newsTense === 'realtime') {
       newsTense = 'realtime';
     } else if (futVariant) {
       newsTense = 'realtime';
@@ -254,7 +264,9 @@
       //   가 frozen 된 채 노출 → "🟢거래중 + 지연 440분 전" 모순, FLR-AGT-002 허위 실시간). fix: stale 일 때는
       //   초록 라이브 도트("거래중")를 단정하지 않고 회색 "마지막 거래중"(스냅샷 시점 상태)으로 강등.
       //   "지연 N분 전" 칩(futAgeHtml)이 신선도 진실을 별도로 명시. 신선(≤30분) 시에만 라이브 거래중/마감 단정.
-      if (opts.isStale) {
+      // Q-20260610 (2회차) — 지난 날짜 카드(isPastDate)도 stale 동형: 그날 수집 시점의 session_open=true 는
+      //   현재 거래 상태가 아니므로 라이브 "거래중" 도트 단정 금지 → "마지막 거래중"(스냅샷 시점)으로 강등.
+      if (opts.isStale || isPastDate) {
         if (so === true) {
           futStatusHtml = '<span class="idx-fut-status stale" title="수집 시점 기준 거래중 — 현재 상태는 갱신 지연으로 미확인"><span class="idx-fut-dot" aria-hidden="true"></span>마지막 거래중</span>';
         }

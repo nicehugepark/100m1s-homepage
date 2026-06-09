@@ -228,10 +228,23 @@ function _resolveFutureFor(ix, matched) {
 //     삽입형(.idx-futures-row 카드 내 오버레이) 전면 폐기 (라이브 깨짐·NASDAQ/DOW 미노출 원인).
 //   토글 = data-fut-view attribute(regular|futures|both) + CSS 가시성 제어(JS는 attribute만 토글, 재렌더 0).
 //     기본 진입 = _futAutoDefault(시간대 자동). 사용자 클릭 시 localStorage('pm320-us-fut-view') override.
-function _buildNightlyUsHtml(us) {
+function _buildNightlyUsHtml(us, viewDate) {
   if (!us || typeof us !== 'object') return '';
   if (!Array.isArray(us.indices) || us.indices.length === 0) return '';
   if (typeof renderIndexCard !== 'function') return '';
+
+  // Q-20260610 (대표 catch 6/10, 2회차) — 지난 날짜 카드 판정. session_open 은 수집 시점 스냅샷이라
+  //   지난 날짜(viewDate < KST 오늘) 카드에서 frozen true 로 "장중"(현재형) 라벨이 오독된다(FLR-AGT-002).
+  //   여기서 viewDate vs KST 오늘을 비교해 isPastDate 를 산출, 카드 컴포넌트로 전달 → 현재형 라벨 강등.
+  //   viewDate 부재(구 호출) 시 false(현행 유지). KST=UTC+9 (브라우저 timezone 무관 산출, L23 동형).
+  var isPastDate = false;
+  if (typeof viewDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(viewDate)) {
+    var _kst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    var _todayKst = _kst.getUTCFullYear() + '-'
+      + String(_kst.getUTCMonth() + 1).padStart(2, '0') + '-'
+      + String(_kst.getUTCDate()).padStart(2, '0');
+    isPastDate = viewDate < _todayKst;
+  }
 
   // 선물 신선도 매칭 (≤30분). 부재/stale 시 null → 선물 카드·토글 미렌더 (정규장 카드만, 현행 동일).
   const _futMatched = _matchFuturesToIndices(us);
@@ -240,7 +253,7 @@ function _buildNightlyUsHtml(us) {
   // 지수별 페어 그룹 — 정규장 카드(renderIndexCard) + (가용 시)선물 카드(renderIndexFuturesCard) 묶음.
   //   futureInfo 인자 제거(삽입형 폐기) → renderIndexCard 2번째 인자 null.
   const groupsHtml = us.indices.map(ix => {
-    const regularCard = renderIndexCard(ix, null, us.trade_date_local);
+    const regularCard = renderIndexCard(ix, null, us.trade_date_local, { isPastDate });
     if (!regularCard) return '';
     let futCard = '';
     if (_hasFutures && typeof renderIndexFuturesCard === 'function') {
@@ -253,7 +266,8 @@ function _buildNightlyUsHtml(us) {
         const futNews = (resolved.fut && typeof resolved.fut.news === 'object') ? resolved.fut.news : undefined;
         futCard = renderIndexFuturesCard(
           resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, futNews,
-          resolved.isStale  // Q-145 — 30분 초과 시 "지연" 배지 (selectorless graceful, 카드 숨김 ❌)
+          resolved.isStale,  // Q-145 — 30분 초과 시 "지연" 배지 (selectorless graceful, 카드 숨김 ❌)
+          isPastDate  // Q-20260610 (2회차) — 지난 날짜 카드 시 라이브 "거래중" 도트·실시간 라벨 강등
         );
       }
     }
@@ -385,7 +399,7 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   //   → renderCalExpandContent L1833 미장 합류부 도달 못 함 → 미장 통째 누락(design DOM probe usSection:false).
   //   fix: _buildNightlyUsHtml(국내와 동일 SSOT 함수)을 빈상태 안내 아래 삽입. nightlyUs 부재/null
   //   시 빈 문자열 반환(graceful 생략 — 빈 카드 금지, FLR-AGT-002). 국내 빈상태 안내는 그대로 유지.
-  const _usHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(nightlyUs) : '';
+  const _usHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(nightlyUs, date) : '';
   inner.innerHTML = `
     <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
       <div class="cal-content-date">${formatKoDate(date)}</div>
@@ -676,7 +690,7 @@ function renderCalExpandContent(date, data) {
     //   fix: PRE_MARKET path(L388/L412)와 동형 — _buildNightlyUsHtml(국내와 동일 SSOT 함수) 삽입 +
     //   _wireUsFutToggle() 동반(어제 wiring 누락 회귀 교훈 FLR-20260609-TEC-001). nightlyUs 부재/null 시
     //   빈 문자열 graceful 생략(빈 카드 금지, FLR-AGT-002). 본 path 는 closed/past/today-empty 모두 커버.
-    const _emptyUsHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(data && data.nightlyUs) : '';
+    const _emptyUsHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(data && data.nightlyUs, date) : '';
     inner.innerHTML = `
       ${_emptyVerBanner}
       <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
@@ -1866,7 +1880,7 @@ function renderCalExpandContent(date, data) {
   // Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 (날짜 헤드 ↔ "오늘의 뉴스요약" 사이).
   //   DSN §3.6.9. data.nightlyUs 부재/null 시 빈 문자열 → 섹션 전체 미렌더 (FLR-AGT-002).
   //   single-card mode 에서도 미표시 (외부 임베딩 단독 카드 = 미국증시 무관).
-  const _nightlyUsHtml = (!_isSingleCardMode) ? _buildNightlyUsHtml(data && data.nightlyUs) : '';
+  const _nightlyUsHtml = (!_isSingleCardMode) ? _buildNightlyUsHtml(data && data.nightlyUs, date) : '';
 
   // Phase 2c-1 (2026-05-23) — single-card mode 본 본 section title / 뉴스요약 / macro / ranking 본 본 hide.
   // 단독 카드 본 본 본 본 본 본 sparkline + chart-tv + bullish lines + status_badges 전체 본 본 본 본 본 본.
