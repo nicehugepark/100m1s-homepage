@@ -1061,6 +1061,16 @@ function renderChartTV(container, dailyArr, options = {}) {
     textRow.style.cssText = 'flex: 1; min-width: 0;';
     hintEl.appendChild(textRow);
 
+    // PM320-D6 P1 — 점선 2세트 색상 범례 1줄 (주황=최근 저점 / 청록=장기 저점). 차트 가독 침해 0 (hint 내부).
+    const legendRow = document.createElement('div');
+    legendRow.style.cssText = 'display: flex; flex-direction: column; gap: 2px; font-size: 10px; font-weight: 500; line-height: 1.35; opacity: 0.95;';
+    const mkLegend = (color, label) =>
+      `<span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:14px;height:0;border-top:2px dashed ${color};flex-shrink:0;"></span>${label}</span>`;
+    legendRow.innerHTML =
+      mkLegend(FIB_LEGEND_AMBER, '주황 = 최근 저점 기준 되돌림(드래그 가능)')
+      + mkLegend(FIB_LEGEND_TEAL, '청록 = 장기 저점 기준(고정)');
+    hintEl.appendChild(legendRow);
+
     const buttonRow = document.createElement('div');
     buttonRow.style.cssText = 'display: flex; gap: 6px; margin-top: 2px;';
 

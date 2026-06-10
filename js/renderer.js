@@ -1109,10 +1109,17 @@ function renderCalExpandContent(date, data) {
     if (!pk) return '';
     const isPick = !!pk.is_pick;
     const variantClass = isPick ? '' : ' pm320-rec-row--virtual';
-    const labelText = '매매';
+    // PM320-D6 P0 (손님 판정 — 추천/가상 혼동) — 비-픽(가상) 행은 화면 텍스트로 추천 아님을 명시.
+    //   종전: 라벨 "매매" 픽과 동일 + "가상"은 aria-label에만 → 초보 손님이 6종목 전부 "추천"으로 오인.
+    //   fix = (a) 라벨 "가상매매"(픽=그냥 "매매") (b) 행 위 1줄 "※ 추천 아님 — 동일 규칙 적용 시 가상 계산".
+    const labelText = isPick ? '매매' : '가상매매';
     const labelAria = isPick
       ? 'PM320 추천 매매 상세'
-      : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 매매';
+      : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 가상 매매 (추천 아님)';
+    // 비-픽 행 상단 안내 (추천 아님 — 동일 규칙 가상 시뮬레이션). 픽은 빈 문자열(무회귀).
+    const virtualNoteHtml = isPick
+      ? ''
+      : `<div class="pm320-rec-virtual-note" role="note">※ 추천 아님 — 동일 규칙 적용 시 <b>가상 계산</b></div>`;
     const mark = _pm320ResultMark(pk);
     const markHtml = mark
       ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</span>`
@@ -1123,7 +1130,8 @@ function renderCalExpandContent(date, data) {
     // chevron 폐기 + 텍스트 토글 "매매" ↔ "접기" (cal-detail-toggle 완전 정합).
     // 22:11 정정 (대표 verbatim "매매 보기 대신 매매 라고 이름 바꿔") — " 보기" suffix 폐기.
     // mark inline 우측 (라벨 우측 gap 6px), justify-content center, font-weight 700 (위계 강조).
-    return `<div class="pm320-rec-row${variantClass}" data-rec-state="${escapeHtml(pk.current_state || 'running')}" data-d-offset="${pk.d_offset != null ? pk.d_offset : ''}">
+    return `<div class="pm320-rec-row${variantClass}" data-rec-state="${escapeHtml(pk.current_state || 'running')}" data-d-offset="${pk.d_offset != null ? pk.d_offset : ''}" data-collapse-label="${escapeHtml(labelText)}">
+      ${virtualNoteHtml}
       <button class="pm320-rec-toggle" type="button" aria-expanded="false" aria-controls="${detailId}" aria-label="${escapeHtml(labelAria)}">
         <span class="pm320-rec-toggle-label">
           <svg class="pm320-rec-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 16l4-4 4 4 5-5"/></svg>
@@ -2118,7 +2126,7 @@ function renderCalExpandContent(date, data) {
       ` : `
         ${_isSingleCardMode
           ? `<div class="cal-empty" style="padding:24px 0;">단독 카드 mode — 종목 코드 ${escapeHtml(_singleCardCode || '')} 본 본 데이터 없음</div>`
-          : (isMarketClosed(date) ? (() => { const nd = getNextTradingDate(date); const nl = nd ? formatKoDate(nd) : ''; return `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nl ? '다음 거래일 ' + escapeHtml(nl) : ''}</div></div>`; })() : '<div class="cal-empty" style="padding:24px 0;">조건검색 데이터 없음 — 장 마감 후 또는 파이프라인 실행 후 업데이트</div>')}
+          : (isMarketClosed(date) ? (() => { const nd = getNextTradingDate(date); const nl = nd ? formatKoDate(nd) : ''; return `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nl ? '다음 거래일 ' + escapeHtml(nl) : ''}</div></div>`; })() : '<div class="cal-empty" style="padding:24px 0;">데이터 준비 중입니다 — 장 마감 후 자동 업데이트됩니다</div>')}
       `)}
     </div>
   `;
@@ -2181,9 +2189,12 @@ function renderCalExpandContent(date, data) {
       toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
       // §3.1 정정 옵션 B (2026-06-03) — chevron 폐기 후 텍스트 토글 "매매" ↔ "접기".
       // 22:11 정정 (대표 verbatim "매매 보기 대신 매매 라고 이름 바꿔") — " 보기" suffix 폐기.
+      // PM320-D6 P0 — 접힘 라벨은 행 variant(픽="매매" / 가상="가상매매")를 data-collapse-label로 보존.
+      //   종전 하드코딩 '매매'는 가상 행 토글 시 라벨을 픽처럼 덮어써 구분 소실(half-applied 버그) → 회피.
       const toggleText = toggle.querySelector('.pm320-rec-toggle-text');
       if (toggleText) {
-        toggleText.textContent = isExpanded ? '접기' : '매매';
+        const collapseLabel = row.getAttribute('data-collapse-label') || '매매';
+        toggleText.textContent = isExpanded ? '접기' : collapseLabel;
       }
       if (detail) {
         if (isExpanded) {

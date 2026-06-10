@@ -2178,6 +2178,19 @@ body.single-card-mode { background: var(--bg) !important; }
   color: #0F172A;
   opacity: 1;
 }
+/* PM320-D6 P0 — 비-픽(가상) 행 상단 "추천 아님" 안내 1줄. 중립 슬레이트 톤(경보 아님).
+   색 토큰 = .cal-pm320-no-pick 정합(var --neu, amber 칩/gold 픽과 구분). */
+.pm320-rec-virtual-note {
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--neu, #6B7A99);
+}
+.pm320-rec-virtual-note b {
+  font-weight: 700;
+  color: #475569;
+}
 .pm320-rec-toggle {
   /* DSN-001 §3.1 정정 옵션 squircle (2026-06-03 21:31 KST design-lead 4차 권고, 대표 verbatim 21:28 "상세 버튼과 매매 버튼 높이를 두 버튼의 중간 크기로 맞추고 두 버튼 모두 라운드형 버튼에서 모서리만 라운드인 버튼으로 번경해줘. 애플의 스쿼클 같이.") —
      cal-detail-toggle 완전 정합 (background #F8FAFC + justify-content center + text-align center) +
