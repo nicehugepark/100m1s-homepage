@@ -145,6 +145,77 @@ function formatPriceLabel(price) {
   return Math.round(price).toLocaleString('ko-KR');
 }
 
+// ─── 2026-06-10 대표 직접 지시 + 토구사 실증 + 대표 캘리브레이션 — ZigZag 저점 앵커 상수 ───
+const ZIGZAG_THETA = 0.05;            // 반전율 5% (종가 기준, 대표 확정 verbatim)
+const ZIGZAG_MIN_DAYS = 20;           // 데이터 부족(상장 초기) 가드 — 최소 20 영업일
+const ZIGZAG_LOOKBACK_TROUGHS = 2;    // 대표 캘리브레이션 — 최근 2개 골 중 더 깊은 골 채택
+const LIMIT_MOVE_PCT = 0.29;          // 상한가·하한가 가드 (±29%+)
+
+/**
+ * 상한가·하한가(±29%+) 종가 변동 판정 가드.
+ * 점상한가·점하한가 날은 저점/고점 피벗 후보에서 제외 (꼬리 왜곡 회피).
+ * @param {number} prevClose
+ * @param {number} close
+ * @returns {boolean}
+ */
+function isLimitMove(prevClose, close) {
+  if (typeof prevClose !== 'number' || typeof close !== 'number') return false;
+  if (!(prevClose > 0)) return false;
+  return Math.abs(close - prevClose) / prevClose >= LIMIT_MOVE_PCT;
+}
+
+/**
+ * ZigZag 피벗 검출 — 종가(close) 기준, 반전율 θ.
+ *
+ * 🔴 고가·저가 기준 ZigZag 금지 (토구사 실증): 같은 날 H/L 동시 생성 버그 → 종가 단일 시계열만.
+ *
+ * 알고리즘: 현재 추세 방향의 극값(running extreme)을 추적하다가, 극값 대비 반대 방향으로
+ *   θ 이상 반전하면 직전 극값을 피벗으로 확정하고 추세를 뒤집는다. 마지막 미확정 극값은
+ *   provisional 피벗으로 append (최근 골 검출 보장).
+ *
+ * @param {Array} candles — normalized candles (time/open/high/low/close)
+ * @param {number} theta — 반전율 (0.05 = 5%)
+ * @returns {Array<{candleIdx: number, type: 'H'|'L', price: number}>}
+ */
+function computeZigZagPivots(candles, theta) {
+  if (!Array.isArray(candles) || candles.length < 2) return [];
+  const n = candles.length;
+  const pivots = [];
+  let trend = 0;            // +1 상승, -1 하락, 0 미정
+  let extIdx = 0;
+  let extPrice = candles[0].close;
+
+  for (let i = 1; i < n; i++) {
+    const c = candles[i];
+    if (!c || !(c.close > 0)) continue;
+    const p = c.close;
+
+    if (trend >= 0) {
+      // 상승 추세 또는 미정 — 신고가 추적
+      if (p > extPrice) { extPrice = p; extIdx = i; }
+      // 극값(고가) 대비 θ 이상 하락 → 고점 피벗 확정
+      if (extPrice > 0 && (extPrice - p) / extPrice >= theta) {
+        pivots.push({ candleIdx: extIdx, type: 'H', price: extPrice });
+        trend = -1;
+        extPrice = p; extIdx = i;
+      }
+    }
+    if (trend <= 0) {
+      // 하락 추세 또는 미정 — 신저가 추적
+      if (p < extPrice) { extPrice = p; extIdx = i; }
+      // 극값(저가) 대비 θ 이상 반등 → 골 피벗 확정
+      if (extPrice > 0 && (p - extPrice) / extPrice >= theta) {
+        pivots.push({ candleIdx: extIdx, type: 'L', price: extPrice });
+        trend = 1;
+        extPrice = p; extIdx = i;
+      }
+    }
+  }
+  // 마지막 미확정 극값 = provisional 피벗 (최근 골 검출 보장)
+  pivots.push({ candleIdx: extIdx, type: trend > 0 ? 'H' : 'L', price: extPrice });
+  return pivots;
+}
+
 /**
  * candles 배열 + 클릭한 시점(logical index) 기준 ±window 영업일 내 local peak/trough 자석 snap.
  * @param {Array} candles — normalized candles
@@ -303,7 +374,11 @@ class FibonacciDrawingController {
     //         → 차트 진입 즉시 7 fibonacci level 본문 visible (대표 verbatim "이어서 계속" 본질 정합)
     //         → 사용자 후속 drag 본문 정밀 조정 가능 (paradigm 보존)
     if (!this._state.anchorA || !this._state.anchorB) {
-      const auto = this._autoAnchorFromVisibleRange();
+      // 2026-06-10 대표 직접 지시 + 토구사 실증 + 대표 캘리브레이션:
+      //   저점 앵커 = ZigZag(종가, θ=5%) 골 검출 → 최근 2개 골 중 더 깊은 골(low 최저)의
+      //   "low(저가) 최저일". 기존 단순 visible-range min/max 폐기.
+      //   고점 앵커 = 그 골 직전의 종가 고점 피벗. 검증: 테크윙(089030) 2026-06-01 low 47,150.
+      const auto = this._autoAnchorZigZag() || this._autoAnchorFromVisibleRange();
       if (auto) {
         this._state.anchorA = auto.high;
         this._state.anchorB = auto.low;
@@ -341,6 +416,116 @@ class FibonacciDrawingController {
     return {
       high: { time: this._candles[hiIdx].time, price: hi, candleIdx: hiIdx },
       low: { time: this._candles[loIdx].time, price: lo, candleIdx: loIdx },
+    };
+  }
+
+  /**
+   * 2026-06-10 대표 직접 지시 + 토구사 실증 + 대표 캘리브레이션 — ZigZag 기반 저점 앵커 자동화.
+   *
+   * 확정 공식 (verbatim):
+   *   1. 골(저점 구간) 검출 = ZigZag 종가 기준, 반전율 θ=5% — 종가 시계열에서 직전 고점 대비
+   *      5%+ 하락 후 5%+ 반등한 골. (🔴 고가·저가 기준 ZigZag 금지 — 같은 날 H/L 동시 생성 버그)
+   *   2. 피보나치 저점 앵커 = 검출된 직전 골 구간 내 "low(저가) 최저일" (캔들 꼬리 포함).
+   *      대표 캘리브레이션: 최근 2개 골 중 더 깊은(low 최저) 골 채택 — 최근 골이 얕은
+   *      higher-low 인 경우 직전의 더 깊은 골이 본질 저점 (테크윙 6/8 얕은 골 vs 6/2 깊은 골 →
+   *      6/2 골 구간 low 최저일 = 2026-06-01 47,150 채택).
+   *   3. 고점 앵커 = 채택된 골 직전의 종가 고점 피벗 (down-leg 가 떨어진 swing high).
+   *   가드: 상한가·하한가(±29%+) 날은 저점 앵커일(low 최저일) 후보에서 제외 (점상한가 꼬리 왜곡 회피).
+   *         데이터 부족(< MIN_DAYS 영업일, 상장 초기) 시 null 반환 → 피보 미표시 (추정 금지).
+   *
+   * 검증 정답 (대표 확인):
+   *   - 테크윙(089030): 저점 앵커 = 2026-06-01 low 47,150
+   *   - 후성(093370): 저점 앵커 = 2026-06-04
+   *
+   * @returns {{high: {time, price, candleIdx}, low: {time, price, candleIdx}} | null}
+   */
+  _autoAnchorZigZag() {
+    const candles = this._candles;
+    if (!Array.isArray(candles) || candles.length < ZIGZAG_MIN_DAYS) return null;
+
+    const pivots = computeZigZagPivots(candles, ZIGZAG_THETA);
+    if (!pivots || pivots.length === 0) return null;
+
+    // 골(trough, type 'L') 피벗 위치만 추출
+    const troughPositions = [];
+    for (let i = 0; i < pivots.length; i++) {
+      if (pivots[i].type === 'L') troughPositions.push(i);
+    }
+    if (troughPositions.length === 0) return null;
+
+    // 대표 캘리브레이션: 최근 ZIGZAG_LOOKBACK_TROUGHS 개 골 중 골 구간 low 최저가 가장 깊은 골 채택.
+    const recent = troughPositions.slice(-ZIGZAG_LOOKBACK_TROUGHS);
+    let best = null;  // { lowAnchor, highAnchor }
+    for (const pos of recent) {
+      const region = this._troughRegionLowAnchor(pivots, pos);
+      if (!region) continue;
+      if (best === null || region.low.price < best.low.price) {
+        best = region;
+      }
+    }
+    return best;
+  }
+
+  /**
+   * 채택된 골 피벗(pivots[pos]) 구간 내 low(저가) 최저일 = 저점 앵커.
+   * 골 구간 = [직전 고점 피벗 idx, 직후 고점 피벗 idx] (없으면 배열 양 끝).
+   * 고점 앵커 = 직전 고점 피벗 (down-leg swing high). 없으면 직후 고점 피벗 fallback.
+   *
+   * @param {Array} pivots — computeZigZagPivots 결과
+   * @param {number} pos — pivots 내 골(L) 위치
+   * @returns {{high, low} | null}
+   */
+  _troughRegionLowAnchor(pivots, pos) {
+    const candles = this._candles;
+    const N = candles.length;
+    const left = pos > 0 ? pivots[pos - 1].candleIdx : 0;
+    const right = pos + 1 < pivots.length ? pivots[pos + 1].candleIdx : N - 1;
+
+    // 골 구간 내 low 최저일 (상한가·하한가 날 제외, 캔들 꼬리 포함)
+    let bestIdx = -1;
+    let bestLow = Infinity;
+    for (let k = left; k <= right; k++) {
+      const c = candles[k];
+      if (!c || !(c.low > 0)) continue;
+      // 가드: 상한가·하한가(±29%+) 날은 저점 앵커일 후보 제외
+      if (k > 0 && isLimitMove(candles[k - 1].close, c.close)) continue;
+      if (c.low < bestLow) { bestLow = c.low; bestIdx = k; }
+    }
+    // 전 구간이 상한가·하한가로 제외된 극단 케이스 → 가드 무시하고 재탐색
+    if (bestIdx < 0) {
+      for (let k = left; k <= right; k++) {
+        const c = candles[k];
+        if (!c || !(c.low > 0)) continue;
+        if (c.low < bestLow) { bestLow = c.low; bestIdx = k; }
+      }
+    }
+    if (bestIdx < 0) return null;
+
+    // 고점 앵커 = 직전 고점 피벗 (없으면 직후 고점 피벗 fallback — 기존 high/low 방향 정합)
+    let highPivotPos = -1;
+    for (let i = pos - 1; i >= 0; i--) {
+      if (pivots[i].type === 'H') { highPivotPos = i; break; }
+    }
+    if (highPivotPos < 0) {
+      for (let i = pos + 1; i < pivots.length; i++) {
+        if (pivots[i].type === 'H') { highPivotPos = i; break; }
+      }
+    }
+    let highIdx;
+    let highPrice;
+    if (highPivotPos >= 0) {
+      highIdx = pivots[highPivotPos].candleIdx;
+      // 고점 앵커도 캔들 꼬리(high) 기준 — swing high 종가 피벗 날의 고가
+      highPrice = candles[highIdx].high;
+    } else {
+      // 고점 피벗 부재 (극단) → 골 구간 좌측 경계 고가
+      highIdx = left;
+      highPrice = candles[left].high;
+    }
+
+    return {
+      high: { time: candles[highIdx].time, price: highPrice, candleIdx: highIdx },
+      low: { time: candles[bestIdx].time, price: bestLow, candleIdx: bestIdx },
     };
   }
 
