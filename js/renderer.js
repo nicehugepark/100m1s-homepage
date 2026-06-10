@@ -464,6 +464,8 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     const state = pk.current_state;
     const _signed = (p) => (p == null || !Number.isFinite(p)) ? '—' : `${p >= 0 ? '+' : ''}${p.toFixed(2)}%`;
     const _dd = (p) => (p == null || !Number.isFinite(p)) ? '' : `${p.toFixed(2)}%`;
+    // 자체 KRW 포매터(이 함수는 module-level — renderCalExpandContent 의 _fmtKRW closure 밖이라 재정의).
+    const _krw = (n) => (n == null || !Number.isFinite(n)) ? '—' : (n.toLocaleString('ko-KR') + '원');
     let markText, mod, finalPct;
     if (state === 'running') {
       const d = (pk.d_offset != null && pk.d_offset >= 0 && pk.d_offset <= 3) ? ` (D+${pk.d_offset}/+3)` : '';
@@ -481,11 +483,29 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     const mddV = (pk.result && pk.result.mdd_peak_pct);
     const mddChip = (state !== 'running' && mddV != null && Number.isFinite(mddV) && mddV < 0)
       ? `<span class="pm320-rec-mark-mdd">· 장중 ${_dd(mddV)}</span>` : '';
+
+    // PM320-D6 R22 (오전 동선, "추천 보러 왔는데 추천이 숨어 있다") — 종전 1줄 pill 은 결과만 노출(진입가·목표
+    //   부재 → "+0.00% 무신호" 평가). 진입가/익절목표/만기를 grid 로 병기해 "어제의 픽 결과 카드"로 승격
+    //   (per-card SSOT 동일 키: entry_price / take_profit_target_price / expiry_date). 데이터 부재 칸은 '—'
+    //   graceful(추정 0, FLR-AGT-002). 진입가 = pk.entry_price(매매 row 진입가와 동일 SoT, authClose 보정은
+    //   당일 종가 의존이라 장전 시점엔 entry_price 가 SSOT). 카드 직하에 "오늘의 픽 15:25 공개" 예고 라인.
+    const buyV = _krw(pk.entry_price);
+    const tpV = _krw(pk.take_profit_target_price);
+    const expiryV = pk.expiry_date || '—';
+    const gridHtml = `<div class="cal-pre-prev-pick-grid">`
+      + `<div class="cal-pre-prev-pick-cell"><span class="cal-pre-prev-pick-k">진입가</span><span class="cal-pre-prev-pick-v">${escapeHtml(buyV)}</span></div>`
+      + `<div class="cal-pre-prev-pick-cell"><span class="cal-pre-prev-pick-k">익절목표</span><span class="cal-pre-prev-pick-v cal-pre-prev-pick-v--up">${escapeHtml(tpV)}</span></div>`
+      + `<div class="cal-pre-prev-pick-cell"><span class="cal-pre-prev-pick-k">만기</span><span class="cal-pre-prev-pick-v">${escapeHtml(expiryV)}</span></div>`
+      + `</div>`;
     // data-prev-pick-code: R21 P1 — sticky 픽바 클릭 시 전일 패널 자동 펼침 후 이 종목 풀 카드로 이동.
-    return `<div class="cal-pre-prev-pick cal-pre-prev-pick--${mod}"${code ? ` data-prev-pick-code="${escapeHtml(code)}"` : ''} role="status" aria-label="어제의 추천 ${escapeHtml(name)} ${escapeHtml(markText)}">`
-      + `<span class="cal-pre-prev-pick-eyebrow">어제의 픽</span>`
-      + (name ? `<span class="cal-pre-prev-pick-name">${escapeHtml(name)}</span>` : '')
-      + `<span class="cal-pre-prev-pick-mark">${escapeHtml(markText)}${mddChip}</span>`
+    return `<div class="cal-pre-prev-pick cal-pre-prev-pick--${mod} cal-pre-prev-pick--card"${code ? ` data-prev-pick-code="${escapeHtml(code)}"` : ''} role="group" aria-label="어제의 픽 ${escapeHtml(name)} ${escapeHtml(markText)}, 진입가 ${escapeHtml(buyV)}, 익절목표 ${escapeHtml(tpV)}, 만기 ${escapeHtml(expiryV)}">`
+      + `<div class="cal-pre-prev-pick-head">`
+      +   `<span class="cal-pre-prev-pick-eyebrow">어제의 픽</span>`
+      +   (name ? `<span class="cal-pre-prev-pick-name">${escapeHtml(name)}</span>` : '')
+      +   `<span class="cal-pre-prev-pick-mark">${escapeHtml(markText)}${mddChip}</span>`
+      + `</div>`
+      + gridHtml
+      + `<div class="cal-pre-prev-pick-foretell">오늘의 픽은 <strong>15:25</strong>에 공개됩니다</div>`
       + `</div>`;
   } catch (_) { return ''; }
 }
@@ -576,11 +596,16 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   //   fix: _buildNightlyUsHtml(국내와 동일 SSOT 함수)을 빈상태 안내 아래 삽입. nightlyUs 부재/null
   //   시 빈 문자열 반환(graceful 생략 — 빈 카드 금지, FLR-AGT-002). 국내 빈상태 안내는 그대로 유지.
   const _usHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(nightlyUs, date) : '';
+  // PM320-D6 R22 (오전 동선, "추천 보러 왔는데 추천이 숨어 있다") — 종전 "어제의 픽" 슬롯은
+  //   .cal-pre-market-empty 안(미장 섹션 _usHtml 아래)이라 본문 한참 아래로 밀려(top≈1246) 첫 화면에서
+  //   안 보임. 슬롯을 cal-content-head 직하·미장 섹션 위로 끌어올려 "토글 없이 기본 상단 노출"(P0).
+  //   카드 자체는 async 주입(아래 prevPickSlot wiring)이라 여기선 빈 컨테이너만 선배치(레이아웃 점프 0).
   inner.innerHTML = `
     <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
       <div class="cal-content-date">${formatKoDate(date)}</div>
       <div class="cal-content-meta">${metaText}</div>
     </div>
+    ${prevDate ? `<div class="cal-pre-prev-pick-top" data-pre-prev-pick-top hidden><div class="cal-pre-prev-pick-slot" data-pre-prev-pick hidden></div></div>` : ''}
     ${_usHtml}
     <div class="cal-pre-market-empty" role="status" aria-live="polite">
       <svg class="cal-pre-market-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -590,7 +615,6 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
       <div class="cal-pre-market-title">${escapeHtml(titleText)}</div>
       <div class="cal-pre-market-sub">${escapeHtml(subText)}</div>
       <div class="cal-pre-market-countdown" data-cd="1">${escapeHtml(liveText)}</div>
-      ${prevDate ? `<div class="cal-pre-prev-pick-slot" data-pre-prev-pick hidden></div>` : ''}
       ${prevDate ? `<button type="button" class="cal-pre-market-toggle" data-pre-toggle="1" aria-expanded="false">전일(${prevLabel}) 데이터 보기 ▾</button>` : ''}
       <div class="cal-pre-market-prev" data-pre-prev hidden></div>
     </div>
@@ -709,6 +733,10 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
         if (chipHtml && document.body.contains(prevPickSlot)) {
           prevPickSlot.innerHTML = chipHtml;
           prevPickSlot.hidden = false;
+          // R22 — 슬롯을 cal-content-head 직하·미장 위로 끌어올린 top 래퍼(.cal-pre-prev-pick-top)도
+          //   함께 노출(픽 부재 시 빈 박스 잔존 방지 — 칩 주입 성공 시에만 unhide).
+          const topWrap = inner.querySelector('[data-pre-prev-pick-top]');
+          if (topWrap) topWrap.hidden = false;
           // PM320 여정 fix r2 (2026-06-11) — 칩은 async 주입이라 최초 _syncPickBar() 시점엔 부재였다.
           //   주입 직후 재동기화 → 장전 sticky 픽 바가 "어제의 픽" 칩을 mirror 노출 (FAIL #2).
           if (typeof window._syncPickBar === 'function') window._syncPickBar();
@@ -2271,7 +2299,13 @@ function renderCalExpandContent(date, data) {
       } else if (_isLU_full) {
         _ariaCombined_full = _luAria_full;
       }
+      // PM320-D6 R22 (오전 동선, "단 한 종목" 시각 격리) — PICK 풀카드 직상에 "오늘의 추천" 구분 헤더
+      //   prepend(카드 외부 sibling). 종목 카드 무리(거래대금 TOP)와 추천 1종을 경계로 분리.
+      const _pickDivider_full = _isPm320Pick_full
+        ? `<div class="cal-pm320-pick-divider" aria-hidden="true"><span class="cal-pm320-pick-divider-star"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>오늘의 추천</div>`
+        : '';
       return `
+        ${_pickDivider_full}
         <div class="cal-feature-card v2${_luClass_full}${_pm320PickClass_full}"${_idAttr_full}${_ariaCombined_full} data-stock-code="${escapeHtml(it.code || '')}" data-stock-name="${escapeHtml(it.name || '')}" data-card-date="${escapeHtml(date || '')}">
           ${renderShareButton(it)}
           <div class="cal-feature-head v2">
