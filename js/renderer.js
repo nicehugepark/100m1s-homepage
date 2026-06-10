@@ -109,8 +109,25 @@ function _wireTermTips() {
     pop.setAttribute('role', 'tooltip');
     pop.innerHTML = `<span class="cal-term-pop-title">${escapeHtml(g.t)}</span>${escapeHtml(g.d)}`;
     tip.setAttribute('aria-expanded', 'true');
-    tip.insertAdjacentElement('afterend', pop);
+    // position:fixed 오버레이 — body 직속으로 붙여 어떤 부모 레이아웃에도 0 영향(시프트 0).
+    //   버튼 rect 기준으로 좌표 계산, 뷰포트 경계(8px 여백) 넘으면 좌/우 자동 보정(클리핑 방지).
+    document.body.appendChild(pop);
+    const MARGIN = 8;
+    const btn = tip.getBoundingClientRect();
+    const pw = pop.offsetWidth;
+    const ph = pop.offsetHeight;
+    // 가로: 버튼 좌측 정렬 기본, 우측 클리핑 시 좌측으로 당김(최소 MARGIN 확보).
+    let left = btn.left;
+    if (left + pw > window.innerWidth - MARGIN) left = window.innerWidth - MARGIN - pw;
+    if (left < MARGIN) left = MARGIN;
+    // 세로: 버튼 아래 기본, 아래 공간 부족하면 버튼 위로 플립.
+    let top = btn.bottom + 6;
+    if (top + ph > window.innerHeight - MARGIN && btn.top - 6 - ph >= MARGIN) top = btn.top - 6 - ph;
+    pop.style.left = `${Math.round(left)}px`;
+    pop.style.top = `${Math.round(top)}px`;
   });
+  // 바깥 스크롤 시 닫힘 — fixed 팝오버가 앵커와 분리돼 떠다니는 잔상 방지.
+  window.addEventListener('scroll', _close, { passive: true });
 }
 
 function renderNewsCard(card) {

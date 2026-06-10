@@ -2103,7 +2103,8 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 
 /* PM320-D6 P1 — 용어 풀이 (?) 마커 + 탭 팝오버 (손님 용어 풀이 0건 해소).
-   라벨 우측 작은 원형 (?) — 모바일 터치 타겟 충분(18px+). 팝오버는 인접 형제로 삽입. */
+   라벨 우측 작은 원형 (?) — 모바일 터치 타겟 충분(18px+). 팝오버는 position:fixed 오버레이로
+   body 직속 삽입(_wireTermTips) — 어떤 부모 레이아웃에도 0 영향(레이아웃 시프트 0). */
 .cal-term-tip {
   display: inline-flex;
   align-items: center;
@@ -2125,9 +2126,15 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-term-tip:hover { color: var(--am); border-color: var(--am3); }
 .cal-term-tip[aria-expanded="true"] { color: #fff; background: var(--am); border-color: var(--am); }
+/* 팝오버 — position:fixed 오버레이(좌표는 JS가 버튼 rect 기준 계산·경계 보정).
+   문서 플로우 밖이라 열려도 주변 레이아웃 0 영향. max-width + min-width 로 한 글자 세로 기둥 방지. */
 .cal-term-pop {
-  display: block;
-  margin: 6px 0 2px;
+  position: fixed;
+  z-index: 50;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 180px;
+  max-width: 280px;
   padding: 9px 11px;
   border-radius: 8px;
   background: var(--tx);
@@ -2136,6 +2143,10 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 500;
   line-height: 1.55;
   letter-spacing: 0.01em;
+  text-align: left;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
   box-shadow: 0 6px 18px rgba(26, 29, 38, 0.22);
 }
 .cal-term-pop-title { display: block; font-weight: 800; font-size: 12px; margin-bottom: 2px; color: var(--am2); }
