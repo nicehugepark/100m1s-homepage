@@ -773,6 +773,93 @@ function _computeShareUrl(origin, code, dateStr, cacheToken, manifest, nowMs, ge
 }
 window._computeShareUrl = _computeShareUrl;
 
+// PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 첫 화면 가치) — sticky 미니 픽 바 동기화.
+//   현재 선택일 픽(.cal-pm320-today-rec)을 헤더 아래 1줄 바에 mirror. SSOT=DOM(추정 0).
+//   픽 카드가 뷰포트 상단 밖으로 나갈 때만 노출(IntersectionObserver). 탭 = data-rec-jump 재사용.
+let _pickBarObserver = null;
+function _syncPickBar() {
+  const bar = document.getElementById('pm320-pickbar');
+  if (!bar) return; // 과거 빌드(바 미존재) graceful no-op
+  // 현재 #cal-content 에 렌더된 오늘의 픽 요약 카드 (있을 때만). 단독카드/PRE_MARKET 빈상태/장휴장 시 부재.
+  const cc = document.getElementById('cal-content');
+  const rec = cc ? cc.querySelector('.cal-pm320-today-rec') : null;
+  const nameEl = rec ? rec.querySelector('.cal-pm320-today-rec-name') : null;
+  const jumpBtn = rec ? rec.querySelector('[data-rec-jump]') : null;
+  const code = jumpBtn ? jumpBtn.getAttribute('data-rec-jump') : null;
+
+  // 직전 observer 정리 (매 렌더 재바인딩 — 카드 노드 교체됨)
+  if (_pickBarObserver) { _pickBarObserver.disconnect(); _pickBarObserver = null; }
+
+  if (!rec || !nameEl || !code) {
+    // 표출할 픽 없음 → 바 숨김 (추정 0). 빈 페이지여도 가짜 픽 노출 금지(FLR-AGT-002).
+    bar.hidden = true;
+    bar.classList.remove('pm320-pickbar--visible');
+    return;
+  }
+
+  // eyebrow: 헤드라벨(예 "오늘의 픽"/"어제의 픽") 그대로 mirror, 없으면 기본값.
+  const headLabelEl = rec.querySelector('.cal-pm320-today-rec-headlabel');
+  const eyebrowEl = bar.querySelector('[data-pickbar-eyebrow]');
+  if (eyebrowEl) eyebrowEl.textContent = (headLabelEl && headLabelEl.textContent.trim()) || '오늘의 픽';
+  const nameOut = bar.querySelector('[data-pickbar-name]');
+  if (nameOut) nameOut.textContent = nameEl.textContent.trim();
+
+  // 상태 칩: 결과 mark(.cal-pm320-today-rec-result) 가 있으면 그 텍스트/색상 mod 를 mirror, 없으면 숨김.
+  const resultEl = rec.querySelector('.cal-pm320-today-rec-result');
+  const statusOut = bar.querySelector('[data-pickbar-status]');
+  if (statusOut) {
+    statusOut.classList.remove('pm320-pickbar-status--up', 'pm320-pickbar-status--dn');
+    if (resultEl) {
+      statusOut.textContent = resultEl.textContent.trim().replace(/\s+/g, ' ').slice(0, 24);
+      if (resultEl.classList.contains('cal-pm320-today-rec-result--up')) statusOut.classList.add('pm320-pickbar-status--up');
+      else if (resultEl.classList.contains('cal-pm320-today-rec-result--dn')) statusOut.classList.add('pm320-pickbar-status--dn');
+      statusOut.hidden = false;
+    } else {
+      statusOut.textContent = '';
+      statusOut.hidden = true;
+    }
+  }
+
+  bar.setAttribute('data-rec-jump', code); // 클릭 핸들러 재사용 (1회 등록, 아래)
+  bar.hidden = false;
+
+  // 가시성 토글 — 픽 카드가 화면에 보이면 바 숨김(중복 회피), 위로 사라지면 바 노출.
+  //   IntersectionObserver 미지원(구형) 시 항상 노출(graceful degrade).
+  if (typeof IntersectionObserver === 'function') {
+    _pickBarObserver = new IntersectionObserver((entries) => {
+      const e = entries[0];
+      if (!e) return;
+      // 카드가 뷰포트에 일부라도 보이면 바 숨김, 완전히 위로 나가면 노출.
+      if (e.isIntersecting) bar.classList.remove('pm320-pickbar--visible');
+      else bar.classList.add('pm320-pickbar--visible');
+    }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
+    _pickBarObserver.observe(rec);
+  } else {
+    bar.classList.add('pm320-pickbar--visible');
+  }
+
+  // 클릭 핸들러 — 1회만 등록. 바의 data-rec-jump 를 읽어 해당 풀 카드로 scroll (rec-jump 와 동일 로직).
+  if (!window._pm320PickBarClickInit) {
+    bar.addEventListener('click', () => {
+      const c = bar.getAttribute('data-rec-jump');
+      if (!c) return;
+      // 바가 mirror 하는 픽은 항상 #cal-content 안의 카드 → 그 안에서 우선 탐색(dup-id 시 타 섹션 회피),
+      //   부재 시 document fallback (graceful).
+      const cc2 = document.getElementById('cal-content');
+      const target = (cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c);
+      if (!target) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.innerWidth <= 880;
+      const navOffset = isMobile ? 76 : 84;
+      const rect = target.getBoundingClientRect();
+      const top = window.pageYOffset + rect.top - navOffset;
+      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+    });
+    window._pm320PickBarClickInit = true;
+  }
+}
+window._syncPickBar = _syncPickBar;
+
 function renderCalExpandContent(date, data) {
   // design-news-time-state-v1 (catch 1) — 시점 분기 PRE_MARKET 빈 상태.
   // 본 함수 진입점에서 getMarketState로 분기. 거래일 09:00 미만 시 카드 list 미렌더.
@@ -2482,13 +2569,19 @@ function renderCalExpandContent(date, data) {
 
   // PM320-D6 (2026-06-10) — "오늘의 추천" 요약 카드 "상세 보기 ↓" → 해당 풀 카드(#stock-{code}) scrollIntoView.
   //   기존 scrollToCal 패턴 재사용 (nav 보정 + reduced-motion). 대상 카드 부재 시 no-op (graceful).
+  // PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 동선 절단) — 동일 #stock-{code} 가 오늘 view 와
+  //   "전일 데이터 보기" 박스([data-pre-prev]) 양쪽에 동시 존재할 수 있다(POST_MARKET 에 전일 토글 시).
+  //   document.getElementById 는 DOM 선두(=오늘 카드)를 반환하므로, 전일 박스 안에서 "상세 보기 ↓"를
+  //   누르면 사용자가 보던 전일 카드 대신 위쪽 오늘 섹션으로 튀어 동선이 절단된다("위로 점프").
+  //   → 클릭이 전일 박스 안에서 발생했으면 그 박스 안의 카드를 우선 탐색(scope) 후 fallback 으로 document.
   if (!window._pm320RecJumpInit) {
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-rec-jump]');
       if (!btn) return;
       const code = btn.getAttribute('data-rec-jump');
       if (!code) return;
-      const target = document.getElementById('stock-' + code);
+      const scope = btn.closest('[data-pre-prev]');
+      const target = (scope && scope.querySelector('#stock-' + code)) || document.getElementById('stock-' + code);
       if (!target) return;
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
@@ -2499,6 +2592,13 @@ function renderCalExpandContent(date, data) {
     });
     window._pm320RecJumpInit = true;
   }
+
+  // PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 첫 화면 가치) — sticky 미니 픽 바 동기화.
+  //   첫 뷰포트가 비어 보이는 문제 해소: 현재 선택일의 픽(.cal-pm320-today-rec)을 헤더 아래 1줄로 mirror.
+  //   SSOT = DOM (실제 렌더된 픽). 별도 데이터 path 없음 → stale/타 종목 노출 불가(FLR-AGT-002 회피).
+  //   가시성: 픽 카드가 뷰포트 상단 밖으로 스크롤될 때만 노출(IntersectionObserver). 탭 = 픽 카드로 scroll.
+  //   매 렌더 재호출(_cal-content innerHTML 리셋 후) — pickbar 미존재(과거 빌드) 시 graceful no-op.
+  _syncPickBar();
 
   // REQ-homepage-news-polish #2 — 섹션 헤더 sticky + 클릭 → 자기 섹션 scrollIntoView.
   // design-lead-2 spec (2026-04-29 17:18 KST): scrollIntoView({behavior:'smooth', block:'start'}).

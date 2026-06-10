@@ -43,8 +43,8 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <link rel="icon" type="image/png" sizes="16x16" href="/pm320-assets/favicon/favicon-16.png">
 <link rel="shortcut icon" href="/pm320-assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/pm320-assets/favicon/apple-touch-icon-180.png">
-<link rel="preload" href="/news.css?v=20260610v008" as="style">
-<link rel="stylesheet" href="/news.css?v=20260610v008">
+<link rel="preload" href="/news.css?v=20260611v310" as="style">
+<link rel="stylesheet" href="/news.css?v=20260611v310">
 </head>
 <body>
 
@@ -84,6 +84,16 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
     </div>
   </div>
 </header>
+<!-- PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 첫 화면 가치) — sticky 미니 픽 바.
+     첫 뷰포트가 "접힌 바 + 달력"으로 비어 보이는 문제 해소: 오늘/어제의 픽(종목명 + 상태 칩)을
+     헤더 바로 아래 1줄 고정. 탭하면 픽 카드로 스크롤. additive only — 카운트다운/레이아웃 불변.
+     내용은 #cal-content 에 실제 렌더된 픽(.cal-pm320-today-rec)에서 JS가 mirror (SSOT=DOM, 추정 0). -->
+<button class="pm320-pickbar" id="pm320-pickbar" type="button" hidden aria-label="추천 종목 카드로 이동">
+  <span class="pm320-pickbar-eyebrow" data-pickbar-eyebrow>오늘의 픽</span>
+  <span class="pm320-pickbar-name" data-pickbar-name></span>
+  <span class="pm320-pickbar-status" data-pickbar-status></span>
+  <span class="pm320-pickbar-arrow" aria-hidden="true">↓</span>
+</button>
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="모바일 메뉴">
   <a href="/#about">About</a>
@@ -174,7 +184,7 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <script src="/js/utils.js?v=20260508v274" defer></script>
 <script src="/js/data-loader.js?v=20260610v001" defer></script>
 <script src="/js/calendar.js?v=20260608v404" defer></script>
-<script src="/js/renderer.js?v=20260610v009" defer></script>
+<script src="/js/renderer.js?v=20260611v310" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});

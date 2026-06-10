@@ -259,6 +259,51 @@ header {
 /* 헤더 우측 액션 그룹 (테마 토글 + 햄버거) — space-between 4-child 붕괴 방지 위해 묶음 */
 .header-actions { display: flex; align-items: center; gap: 4px; }
 
+/* PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 첫 화면 가치) — sticky 미니 픽 바.
+   헤더(sticky top:0, z:100) 바로 아래 1줄 고정. 픽 카드가 화면에서 사라질 때만 노출(.--visible).
+   additive — 레이아웃 점유 0 (max-height 0 → 노출 시 펼침), 카운트다운/달력 불변. 라이트/다크 토큰 정합. */
+.pm320-pickbar {
+  /* 헤더(sticky top:0, 높이 ~76px, z:100) 바로 아래에 겹치지 않게 sticky. top=헤더높이.
+     z:99 < 헤더 z:100 — 위로 스크롤 시 헤더가 바를 덮으며 자연 슬라이드. */
+  position: sticky; top: 76px; z-index: 99;
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  max-width: 1100px; margin: 0 auto; box-sizing: border-box;
+  padding: 0 24px; max-height: 0; overflow: hidden; opacity: 0;
+  border: none; border-bottom: 0 solid var(--bd); cursor: pointer; text-align: left;
+  background: var(--header-glass, rgba(250,251,254,0.92));
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  color: var(--tx); font: inherit;
+  transition: max-height var(--t-fast), opacity var(--t-fast), padding var(--t-fast);
+}
+.pm320-pickbar.pm320-pickbar--visible {
+  max-height: 52px; opacity: 1; padding: 11px 24px; border-bottom-width: 1px;
+}
+.pm320-pickbar:focus-visible { outline: 2px solid var(--am); outline-offset: -2px; }
+.pm320-pickbar-eyebrow {
+  font-size: 11px; font-weight: 700; color: var(--am); letter-spacing: -0.2px;
+  flex: 0 0 auto; white-space: nowrap;
+}
+.pm320-pickbar-name {
+  font-size: 14px; font-weight: 800; color: var(--tx); letter-spacing: -0.3px;
+  flex: 0 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pm320-pickbar-status {
+  font-size: 12px; font-weight: 700; color: var(--tx2);
+  flex: 0 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pm320-pickbar-status--up { color: var(--up); }
+.pm320-pickbar-status--dn { color: var(--down); }
+.pm320-pickbar-arrow { margin-left: auto; flex: 0 0 auto; font-size: 13px; color: var(--tx2); }
+@media (max-width: 880px) {
+  .pm320-pickbar { padding: 0 16px; }
+  .pm320-pickbar.pm320-pickbar--visible { padding: 10px 16px; }
+  .pm320-pickbar-name { font-size: 13px; }
+  .pm320-pickbar-status { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pm320-pickbar { transition: none; }
+}
+
 /* 다크모드 토글 (DOC-20260610-DSN-001 §3.2) — 44×44 터치 타겟, 아이콘 20px, 2종 순환 */
 .theme-toggle {
   width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
