@@ -6291,21 +6291,19 @@
       "url": "https://www.cnbc.com/2026/06/03/us-iran-war-escalates-peace-talks-stalemate-.html"
     }
   ],
-  "_article_sig": "da97a576e5a2761e364f60cad3e4985d876520514a4c1a735eeef6ac75f17372",
+  "_article_sig": "bcb985eb040dec3f9cb2d109be77f3714b27985580abed2959043a4f0403419c",
   "built_at_kst": "2026-06-11T07:00:51.595130+09:00",
   "futures": {
-    "as_of_kst": "2026-06-11T07:40:14.551857+09:00",
+    "as_of_kst": "2026-06-11T07:50:05.606437+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7259.75,
-        "change_pct": -0.26,
+        "point": 7265.0,
+        "change_pct": -0.19,
         "spark": [
           7259.25,
-          7319.75,
-          7316.0,
           7311.0,
           7306.0,
           7305.75,
@@ -6343,21 +6341,23 @@
           7254.75,
           7258.75,
           7259.25,
-          7259.75
+          7265.25,
+          7260.25,
+          7265.0
         ],
         "candle": {
           "o": 7259.25,
           "h": 7266.0,
           "l": 7247.0,
-          "c": 7259.75
+          "c": 7265.0
         },
         "range_240d": {
           "low": 6248.75,
           "high": 7623.75,
           "low_date": "2025-07-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 16.18,
-          "high_change_pct": -4.77
+          "low_change_pct": 16.26,
+          "high_change_pct": -4.71
         },
         "daily_expanded": [
           {
@@ -8381,21 +8381,36 @@
             "o": 7259.25,
             "h": 7266.0,
             "l": 7247.0,
-            "c": 7259.75,
-            "v": 11711
+            "c": 7265.0,
+            "v": 14155
           }
         ],
-        "rollover_gaps": []
+        "rollover_gaps": [],
+        "news": {
+          "summary": "5월 CPI 4.2% 상승(역사상 3년 최고) 발표 → 에너지 인플레 핵심 동인 부각. ECB 금리 인상 신호, 채권시장 경계 심화로 stagflation 우려 확산 중.",
+          "sources": [
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/06/10/cpi-inflation-report-may-2026.html"
+            },
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/06/10/ecb-rate-hike-energy-prices-inflation.html"
+            },
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/05/22/consumer-sentiment-hits-fresh-record-low-in-may-as-iran-war-fuels-inflation-worries.html"
+            }
+          ]
+        }
       },
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 28422.25,
-        "change_pct": -0.46,
+        "point": 28456.25,
+        "change_pct": -0.34,
         "spark": [
           28455.0,
-          28732.5,
-          28713.0,
           28687.0,
           28656.0,
           28661.25,
@@ -8433,21 +8448,23 @@
           28390.25,
           28412.0,
           28420.0,
-          28422.25
+          28460.5,
+          28431.75,
+          28456.25
         ],
         "candle": {
           "o": 28455.0,
           "h": 28470.0,
           "l": 28358.0,
-          "c": 28422.25
+          "c": 28456.25
         },
         "range_240d": {
           "low": 22692.75,
           "high": 30712.75,
           "low_date": "2025-07-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 25.25,
-          "high_change_pct": -7.46
+          "low_change_pct": 25.4,
+          "high_change_pct": -7.35
         },
         "daily_expanded": [
           {
@@ -10471,20 +10488,36 @@
             "o": 28455.0,
             "h": 28470.0,
             "l": 28358.0,
-            "c": 28422.25,
-            "v": 5495
+            "c": 28456.25,
+            "v": 7140
           }
         ],
-        "rollover_gaps": []
+        "rollover_gaps": [],
+        "news": {
+          "summary": "AI 채용 구조 전환(blue-collar 선호) 지속, anti-Nvidia 펀딩(TensorWave 15.5억 달러) 활발 → tech 이탈 신호 동반 중. 빅테크 마진 압박 가능성 점증.",
+          "sources": [
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/05/19/ai-hiring-slowdown-skilled-trade-workers.html"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/tech/ai/anti-nvidia-data-center-startup-is-valued-at-1-55-billion-in-new-funding-round-e58b2aec?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/stocks/inflation-is-picking-investors-pockets-fc54141c?mod=rss_markets_main"
+            }
+          ]
+        }
       },
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 49928.0,
-        "change_pct": -0.12,
+        "point": 49910.0,
+        "change_pct": -0.16,
         "spark": [
           49883.0,
-          50273.0,
           50244.0,
           50219.0,
           50195.0,
@@ -10523,13 +10556,14 @@
           49902.0,
           49922.0,
           49915.0,
-          49928.0
+          49932.0,
+          49910.0
         ],
         "candle": {
           "o": 49883.0,
-          "h": 49929.0,
+          "h": 49943.0,
           "l": 49833.0,
-          "c": 49928.0
+          "c": 49931.0
         },
         "range_240d": {
           "low": 43710.0,
@@ -12559,16 +12593,86 @@
           {
             "date": "2026-06-10",
             "o": 49883.0,
-            "h": 49929.0,
+            "h": 49943.0,
             "l": 49833.0,
-            "c": 49928.0,
-            "v": 941
+            "c": 49931.0,
+            "v": 1146
           }
         ],
-        "rollover_gaps": []
+        "rollover_gaps": [],
+        "news": {
+          "summary": "이란 전쟁 재격화 신호(Trump '추가 공격 예고') + CPI 쇼크 → 다우 최악의 날(-953p) 기록. 에너지 가격 상승, 장기실업률 증가세, 기업 이익 압박 심화 중. 유틸리티 대형 M&A(Southern+Dominion) 동향 주목.",
+          "sources": [
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/livecoverage/stock-market-cpi-inflation-06-10-2026?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/stocks/global-stocks-markets-dow-news-06-10-2026-c106c317?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/business/energy-oil/a-rush-to-stockpile-oil-will-keep-prices-higher-for-longer-a4d2dce9?mod=rss_markets_main"
+            }
+          ]
+        }
       }
     ]
   },
   "regular_open": false,
-  "intraday_refreshed_kst": "2026-06-11T07:40:17.638567+09:00"
+  "intraday_refreshed_kst": "2026-06-11T07:50:11.395595+09:00",
+  "_futures_news": {
+    "NASDAQ": {
+      "summary": "AI 채용 구조 전환(blue-collar 선호) 지속, anti-Nvidia 펀딩(TensorWave 15.5억 달러) 활발 → tech 이탈 신호 동반 중. 빅테크 마진 압박 가능성 점증.",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/05/19/ai-hiring-slowdown-skilled-trade-workers.html"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/tech/ai/anti-nvidia-data-center-startup-is-valued-at-1-55-billion-in-new-funding-round-e58b2aec?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/stocks/inflation-is-picking-investors-pockets-fc54141c?mod=rss_markets_main"
+        }
+      ]
+    },
+    "S&P500": {
+      "summary": "5월 CPI 4.2% 상승(역사상 3년 최고) 발표 → 에너지 인플레 핵심 동인 부각. ECB 금리 인상 신호, 채권시장 경계 심화로 stagflation 우려 확산 중.",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/10/cpi-inflation-report-may-2026.html"
+        },
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/10/ecb-rate-hike-energy-prices-inflation.html"
+        },
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/05/22/consumer-sentiment-hits-fresh-record-low-in-may-as-iran-war-fuels-inflation-worries.html"
+        }
+      ]
+    },
+    "DOW": {
+      "summary": "이란 전쟁 재격화 신호(Trump '추가 공격 예고') + CPI 쇼크 → 다우 최악의 날(-953p) 기록. 에너지 가격 상승, 장기실업률 증가세, 기업 이익 압박 심화 중. 유틸리티 대형 M&A(Southern+Dominion) 동향 주목.",
+      "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/livecoverage/stock-market-cpi-inflation-06-10-2026?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/stocks/global-stocks-markets-dow-news-06-10-2026-c106c317?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/business/energy-oil/a-rush-to-stockpile-oil-will-keep-prices-higher-for-longer-a4d2dce9?mod=rss_markets_main"
+        }
+      ]
+    }
+  }
 }
