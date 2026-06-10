@@ -2111,7 +2111,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-today-rec-code {
   font-size: 11px;
   font-weight: 600;
-  color: var(--dm);
+  /* R13 P1 WCAG: var(--dm) #8B95A8 on 카드 bg var(--am4) #FFF6E5 = 2.81 → #5C6270 (5.69:1) */
+  color: #5C6270;
   font-variant-numeric: tabular-nums;
 }
 .cal-pm320-today-rec-grid {
@@ -2410,7 +2411,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;
   font-weight: 500;
   line-height: 1.45;
-  color: var(--neu, #6B7A99);
+  /* R13 P1 WCAG: var(--neu) #6B7A99 = 3.92 → #52596A (6.5:1, 카드/페이지 양 배경 통과) */
+  color: #52596A;
 }
 .pm320-rec-virtual-note b {
   font-weight: 700;
@@ -2507,6 +2509,12 @@ body.single-card-mode { background: var(--bg) !important; }
 .pm320-rec-value--sub {
   color: var(--g60, #6B7280);
   font-size: 12px;          /* §8.5 모바일 12px 정합 (sub 11.5px → 12px 상향) */
+}
+/* R13 P1: "물타기 후 익절가" 의미 단서 — 평단 하락분 반영 1줄 cue (WCAG #5C6270 ≥5.69:1) */
+.pm320-rec-value--note {
+  font-size: 11px;
+  color: #5C6270;
+  font-weight: 500;
 }
 /* mdd_pct===0 안내문구 continuation — "└ " 들여쓰기 정합(괄호 제거 + 다음 줄). 대표 지시 2026-06-08 */
 .pm320-rec-value--sub-cont {
@@ -2673,7 +2681,8 @@ body.single-card-mode { background: var(--bg) !important; }
   letter-spacing: 0.01em;
   padding: 2px 8px;
   border-radius: 9999px;
-  background: var(--am3); color: var(--am); border: 1px solid var(--am2);
+  /* R13 P1 WCAG: var(--am) #C49930 on var(--am3) #FBE9B5 = 2.19 → 진한 골드 #7A5E12 (5.07:1) */
+  background: var(--am3); color: #7A5E12; border: 1px solid var(--am2);
   vertical-align: middle;
 }
 .cal-theme-row {
@@ -2888,7 +2897,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .stock-range.v2 .range-pcts .up { color: #C53939; }   /* 양수(상승) — 한국 증시 관습 빨강 */
 .stock-range.v2 .range-pcts .down { color: #1958C7; } /* 음수(하락) — 한국 증시 관습 파랑 */
 /* v2.2: 가운데 "현재가" 라벨 (값 X, 텍스트만) */
-.stock-range.v2 .range-pcts .r-now-label { color: #999; font-weight: 500; font-size: 11px; }
+/* R13 P1 WCAG: #999 on #F2F4F8 = 2.59 → #5A6070 (5.71:1) */
+.stock-range.v2 .range-pcts .r-now-label { color: #5A6070; font-weight: 500; font-size: 11px; }
 .stock-range.v2 .range-dates {
   font-size: 10px;
   color: #999;

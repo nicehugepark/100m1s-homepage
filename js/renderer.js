@@ -1125,7 +1125,7 @@ function renderCalExpandContent(date, data) {
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
         <span class="pm320-rec-label"></span>
-        <span class="pm320-rec-value pm320-rec-value--sub">└ 물타기 시: ${escapeHtml(tpAfterPrice)}</span>
+        <span class="pm320-rec-value pm320-rec-value--sub">└ 물타기 후 익절가: ${escapeHtml(tpAfterPrice)} <span class="pm320-rec-value--note">(체결 평단 하락분 반영)</span></span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-row--expiry">
         <span class="pm320-rec-label">⏰ 만기청산</span>
@@ -1221,7 +1221,7 @@ function renderCalExpandContent(date, data) {
       </div>
       <div class="cal-pm320-today-rec-grid">
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">매수</span><span class="cal-pm320-today-rec-v">${escapeHtml(buyV)}</span></div>
-        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절${tpAfterV ? '<span class="cal-pm320-today-rec-k-cond">(조건부)</span>' : ''}</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span>${tpAfterV ? `<span class="cal-pm320-today-rec-v-sub">물타기 시 ${escapeHtml(tpAfterV)}</span>` : ''}</div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절${tpAfterV ? '<span class="cal-pm320-today-rec-k-cond">(조건부)</span>' : ''}</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span>${tpAfterV ? `<span class="cal-pm320-today-rec-v-sub">물타기 후 익절가 ${escapeHtml(tpAfterV)}</span>` : ''}</div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">물타기</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--dn">${escapeHtml(waterV)}</span></div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">만기</span><span class="cal-pm320-today-rec-v">${escapeHtml(expiryV)}</span></div>
       </div>
