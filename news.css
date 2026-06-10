@@ -1060,19 +1060,26 @@ a.cal-credit-row:hover,
 .pm320-collapsible:not(.pm320-section-collapsed) .pm320-section-chevron { transform: rotate(180deg); }
 .pm320-collapsible:not(.pm320-section-collapsed) .pm320-section-summary { display: none; }
 /* R13 P1 접기/펼치기 트랜지션 (대표 R12 catch — 즉시 토글 → 240ms 슬라이드/페이드).
-   display:none 은 애니메이션 불가 → max-height + opacity. 펼침 기본값(아래) → 접힘(0)으로 전이. */
+   display:none 은 애니메이션 불가 → max-height + opacity. 펼침 기본값(아래) → 접힘(0)으로 전이.
+   ⚠️ R13-bis: JS 토글(_wireSectionCollapse renderer.js:2943)이 접힘 시 hidden 속성을 set →
+   UA 기본 [hidden]{display:none}이 max-height/opacity 트랜지션을 무력화(즉시 snap, 240ms 미동작).
+   본 요소 한정 [hidden] display 복원 후 .pm320-section-collapsed 클래스로 시각 은닉을 일원화.
+   a11y(스크린리더 트리 제외)는 접힘 완료 시 visibility:hidden로 보장(0.24s 지연). */
 .section-collapse-body {
   overflow: hidden;
-  max-height: 4000px; opacity: 1;
-  transition: max-height 0.24s ease, opacity 0.24s ease;
+  max-height: 4000px; opacity: 1; visibility: visible;
+  transition: max-height 0.24s ease, opacity 0.24s ease, visibility 0s linear 0s;
 }
+.section-collapse-body[hidden] { display: block; }
 .pm320-section-collapsed .section-collapse-body {
   max-height: 0; opacity: 0;
-  /* 접힘 완료 후 잔여 인터랙션 차단 (visibility 지연 — 페이드아웃 동안엔 보임). */
-  pointer-events: none;
+  /* 잔여 인터랙션 차단 + 접힘 완료(0.24s) 후 a11y 트리에서도 제거(페이드아웃 중엔 보임). */
+  pointer-events: none; visibility: hidden;
+  transition: max-height 0.24s ease, opacity 0.24s ease, visibility 0s linear 0.24s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .section-collapse-body { transition: none; }
+  .section-collapse-body,
+  .pm320-section-collapsed .section-collapse-body { transition: none; }
 }
 .pm320-section-header:focus-visible {
   outline: 2px solid var(--am); outline-offset: 2px; border-radius: 8px;
@@ -2279,14 +2286,15 @@ body.single-card-mode { background: var(--bg) !important; }
 /* R13 P0 위계: MDD(최대낙폭)가 부가정보처럼 묻히는 문제 → 승률 b(20px)에 준하는 위계로 상향.
    장중 최대낙폭 수치를 15px·800으로 키워 "승률만 보면 안전" 착시를 본문급으로 노출. */
 .cal-pm320-wr-mdd-worst { color: var(--neg); font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
-.cal-pm320-wr-mdd-avg { color: var(--neg); font-weight: 600; opacity: 0.85; font-size: 11px; }
+/* R13-bis: opacity 제거 — 0.85/0.82 적용 시 mdd 위 am4 배경에서 4.34/4.11:1로 AA 미달.
+   불투명 --neg(#B8302E)=5.59:1 유지(위계는 font-size·weight로만 분리). */
+.cal-pm320-wr-mdd-avg { color: var(--neg); font-weight: 600; font-size: 11px; }
 .cal-pm320-wr-mdd-note {
   margin-top: 4px;
   font-size: 10px;
   font-weight: 500;
   line-height: 1.5;
   color: var(--neg);
-  opacity: 0.82;
 }
 .cal-pm320-wr-basis {
   margin-top: 7px;
