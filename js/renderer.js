@@ -1177,6 +1177,52 @@ function renderCalExpandContent(date, data) {
     </div>`;
   };
 
+  // PM320-D6 (2026-06-10 대표 verbatim "추천 카드가 별도로 만들어지는 줄 알았는데 없네") —
+  //   카운트다운 배너(15:20 전) 가 사라진 자리(=픽 확정 시)에 들어가는 "오늘의 추천" 전용 요약 카드.
+  //   per-card PICK 배지/매매 row(DSN-001 §2·§3)와 별개로, 슬롯 상단에 한눈 요약을 띄운다.
+  //   - 데이터: 오늘(또는 보는 날짜) 픽 종목 1개의 pm320_pick 객체만 사용. 하드코딩 0 (FLR-AGT-002).
+  //   - 픽 부재(보류/미생성) 시 빈 문자열 → 미렌더 (기존 카운트다운/보류 분기 무회귀).
+  //   - 과거 날짜 시 헤더 "이날의 추천" + (청산 완료면) 결과 mark. 진행중이면 "잠정".
+  //   진입가 SSOT = 매매 row와 동일(authClose 우선, _buildPm320RecRow 와 같은 식, 추정 0).
+  const _buildPm320TodayRecCard = (pk, code, name, authClose, isPast) => {
+    if (!pk || !pk.is_pick) return '';
+    const WATERING_RATIO = 0.936, TAKE_PROFIT_RATIO = 1.032;
+    const _p0 = (typeof authClose === 'number' && authClose > 0) ? authClose : pk.entry_price;
+    const _recompute = (typeof authClose === 'number' && authClose > 0 && authClose !== pk.entry_price);
+    const _watering = _recompute ? Math.round(_p0 * WATERING_RATIO) : pk.watering_target_price;
+    const _tp = _recompute ? Math.round(_p0 * TAKE_PROFIT_RATIO) : pk.take_profit_target_price;
+    const buyV = _fmtKRW(_p0);
+    const tpV = _tp != null ? _fmtKRW(_tp) : '—';
+    const waterV = _watering != null ? _fmtKRW(_watering) : '—';
+    const expiryV = pk.expiry_date || '—';
+    const mark = _pm320ResultMark(pk);
+    // mark.html 은 픽 진행중이면 "⏳ 잠정 +0.00% (D+0/+3)", 청산 완료면 결과(익절/만기). 부재 시 생략.
+    const resultMod = mark ? mark.mod : 'running';
+    const resultHtml = mark
+      ? `<div class="cal-pm320-today-rec-result cal-pm320-today-rec-result--${resultMod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</div>`
+      : '';
+    const headLabel = isPast ? '이날의 추천' : '오늘 PM320 추천';
+    const nameV = name || '';
+    const codeV = code || '';
+    const titleAria = `${headLabel} ${nameV} ${codeV}`;
+    return `<div class="cal-pm320-today-rec" role="group" aria-label="${escapeHtml(titleAria)}">
+      <div class="cal-pm320-today-rec-head">
+        <span class="cal-pm320-today-rec-star" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+        <span class="cal-pm320-today-rec-headlabel">${escapeHtml(headLabel)}</span>
+        <span class="cal-pm320-today-rec-name">${escapeHtml(nameV)}</span>
+        ${codeV ? `<span class="cal-pm320-today-rec-code">${escapeHtml(codeV)}</span>` : ''}
+      </div>
+      <div class="cal-pm320-today-rec-grid">
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">매수</span><span class="cal-pm320-today-rec-v">${escapeHtml(buyV)}</span></div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span></div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">물타기</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--dn">${escapeHtml(waterV)}</span></div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">만기</span><span class="cal-pm320-today-rec-v">${escapeHtml(expiryV)}</span></div>
+      </div>
+      ${resultHtml}
+      ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <span aria-hidden="true">↓</span></button>` : ''}
+    </div>`;
+  };
+
   // 오늘의 종목: 거래대금 TOP을 base로, 카페·해석 정보 join
   let todayStocks;
   if (kiwoomStocks.length > 0) {
@@ -2130,6 +2176,29 @@ function renderCalExpandContent(date, data) {
         + `</div>`;
     }
   } catch (_) { /* getMarketState 미정의 시 graceful — 배너 생략 */ }
+  // PM320-D6 (2026-06-10) — 카운트다운 슬롯의 "오늘의 추천" 전용 요약 카드.
+  //   픽 확정(_pm320PendingHtml='' = 15:20 이후/픽 존재) 시 todayStocks 중 is_pick 종목 1개로 빌드.
+  //   진입가 SSOT = 매매 row와 동일 chain (daily_20[-1].c → close_price → range_240d.current).
+  //   픽 부재(보류/미생성/카운트다운 진행중) 시 빈 문자열 → 미렌더 (무회귀).
+  let _pm320TodayRecHtml = '';
+  if (!_isSingleCardMode && !_pm320PendingHtml) {
+    // pm320_pick 은 data-loader.js 합성으로 interp 에 패스스루 (renderTodayCard st=it.interp 정합).
+    const _pickIt = todayStocks.find((s) => s && s.interp && s.interp.pm320_pick && s.interp.pm320_pick.is_pick === true);
+    if (_pickIt) {
+      const _pk = _pickIt.interp.pm320_pick;
+      const _interp = _pickIt.interp || null;
+      const _d20 = (_interp && Array.isArray(_interp.daily_20) && _interp.daily_20.length > 0)
+        ? _interp.daily_20[_interp.daily_20.length - 1] : null;
+      const _authClose = (_d20 && typeof _d20.c === 'number') ? _d20.c
+        : (typeof _interp?.close_price === 'number' ? _interp.close_price
+          : (typeof _interp?.range_240d?.current === 'number' ? _interp.range_240d.current : null));
+      const _nowR = new Date();
+      const _todayR = `${_nowR.getFullYear()}-${String(_nowR.getMonth() + 1).padStart(2, '0')}-${String(_nowR.getDate()).padStart(2, '0')}`;
+      const _isPastR = !!(date && date < _todayR);
+      _pm320TodayRecHtml = _buildPm320TodayRecCard(
+        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR);
+    }
+  }
   // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
   //   suppress 플래그(calendar.js initCalendar 자동 폴백 시 set, 사용자 날짜 클릭 시 clear)가 true 면
   //   국내장 종목 카드 list 를 렌더하지 않고 graceful 안내 한 줄로 대체한다. 야간 미국증시 섹션
@@ -2148,6 +2217,7 @@ function renderCalExpandContent(date, data) {
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
       ${_pm320PendingHtml}
+      ${_pm320TodayRecHtml}
       ${_pm320WinRateHtml}
       ${_pm320NoPickHtml}
       ${_narrPillsHtmlOut}
@@ -2283,6 +2353,26 @@ function renderCalExpandContent(date, data) {
       scrollToCal();
     });
     window._calHeadScrollInit = true;
+  }
+
+  // PM320-D6 (2026-06-10) — "오늘의 추천" 요약 카드 "상세 보기 ↓" → 해당 풀 카드(#stock-{code}) scrollIntoView.
+  //   기존 scrollToCal 패턴 재사용 (nav 보정 + reduced-motion). 대상 카드 부재 시 no-op (graceful).
+  if (!window._pm320RecJumpInit) {
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-rec-jump]');
+      if (!btn) return;
+      const code = btn.getAttribute('data-rec-jump');
+      if (!code) return;
+      const target = document.getElementById('stock-' + code);
+      if (!target) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.innerWidth <= 880;
+      const navOffset = isMobile ? 76 : 84;
+      const rect = target.getBoundingClientRect();
+      const top = window.pageYOffset + rect.top - navOffset;
+      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+    });
+    window._pm320RecJumpInit = true;
   }
 
   // REQ-homepage-news-polish #2 — 섹션 헤더 sticky + 클릭 → 자기 섹션 scrollIntoView.
