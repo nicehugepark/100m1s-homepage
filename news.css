@@ -75,6 +75,14 @@
   --section-summary: #8A6810; /* 섹션 접힘 미니요약 — 라이트 WCAG 골드(다크 override) */
   --cal-sun: #DC2626;       /* 달력 일요일(적) */
   --cal-sat: #2563EB;       /* 달력 토요일(청) */
+
+  /* 판정단 v302 적발 — disclosure/credit/disc-period 뱃지 의미색 토큰 (라이트 baseline + 다크 override).
+     다크 값은 판정단 지정 rgba(반투명, 카드 위 합성). 라이트는 흰 카드 WCAG 통과 진한 색 유지. */
+  --badge-disc-bg: #E8F0FE; --badge-disc-tx: #1A5FB4; --badge-disc-bd: #B3D1F5;       /* disclosure = 파랑(info) */
+  --credit-caution-bg: #FEF3C7; --credit-caution-tx: #92400E; --credit-caution-bd: #FCD34D55; /* 신용주의 = 앰버 */
+  --credit-credit-bg: #FEE2E2; --credit-credit-tx: #991B1B; --credit-credit-bd: #FCA5A555;    /* 신용 = 적 */
+  --disc-period-bg: #EEF1F5; --disc-period-tx: #475569;                                 /* 공시기간 = 슬레이트 */
+  --range-marker-bg: #FFFFFF; /* 슬라이더 마커 — 라이트 흰, 다크 톤다운 */
 }
 
 /* ── 다크모드 (DOC-20260610-DSN-001) ──────────────────────────────────────
@@ -122,6 +130,12 @@
   --dk-chart-label-bg: rgba(26,24,19,0.85);
   --dk-cal-future: #7A7464; /* v2: 어둡고 쿨(#565B66)→웜·밝게, 3:1 사수(on sf 3.46:1, on bg 3.81:1) */
   --dk-cal-sun: #F87171; --dk-cal-sat: #60A5FA;
+  /* 판정단 v302 지정 다크 뱃지 값 (반투명 합성: disclosure 7.1:1 / caution 8.0:1 / credit 6.6:1) */
+  --dk-badge-disc-bg: rgba(96,165,250,0.14); --dk-badge-disc-tx: #93C5FD; --dk-badge-disc-bd: rgba(96,165,250,0.30);
+  --dk-credit-caution-bg: rgba(234,179,8,0.16); --dk-credit-caution-tx: #FCD34D; --dk-credit-caution-bd: rgba(234,179,8,0.35);
+  --dk-credit-credit-bg: rgba(248,113,113,0.16); --dk-credit-credit-tx: #FCA5A5; --dk-credit-credit-bd: rgba(248,113,113,0.35);
+  --dk-disc-period-bg: rgba(148,163,184,0.14); --dk-disc-period-tx: #CBD5E1;
+  --dk-range-marker-bg: #E8EEF3; /* P2: 순백 발광 완화 */
   /* 햇살 톤 그라데이션(toss-cal / rec-detail 펼침 본문) — 라이트 크림 → 다크 웜 함몰 2단 */
   --dk-warm-top: #232017; --dk-warm-bot: #1D1B14;
   --dk-streak-tx: #F4D27A; --dk-now-label-tx: #BBB3A2;
@@ -157,6 +171,11 @@
     --sf2: var(--dk-sf2); --bd2: var(--dk-bd2);
     --section-summary: var(--dk-section-summary);
     --cal-sun: var(--dk-cal-sun); --cal-sat: var(--dk-cal-sat);
+    --badge-disc-bg: var(--dk-badge-disc-bg); --badge-disc-tx: var(--dk-badge-disc-tx); --badge-disc-bd: var(--dk-badge-disc-bd);
+    --credit-caution-bg: var(--dk-credit-caution-bg); --credit-caution-tx: var(--dk-credit-caution-tx); --credit-caution-bd: var(--dk-credit-caution-bd);
+    --credit-credit-bg: var(--dk-credit-credit-bg); --credit-credit-tx: var(--dk-credit-credit-tx); --credit-credit-bd: var(--dk-credit-credit-bd);
+    --disc-period-bg: var(--dk-disc-period-bg); --disc-period-tx: var(--dk-disc-period-tx);
+    --range-marker-bg: var(--dk-range-marker-bg);
     --footer-bg: #141210; --footer-tx: #8E8676;
   }
 }
@@ -187,6 +206,11 @@
   --sf2: var(--dk-sf2); --bd2: var(--dk-bd2);
   --section-summary: var(--dk-section-summary);
   --cal-sun: var(--dk-cal-sun); --cal-sat: var(--dk-cal-sat);
+  --badge-disc-bg: var(--dk-badge-disc-bg); --badge-disc-tx: var(--dk-badge-disc-tx); --badge-disc-bd: var(--dk-badge-disc-bd);
+  --credit-caution-bg: var(--dk-credit-caution-bg); --credit-caution-tx: var(--dk-credit-caution-tx); --credit-caution-bd: var(--dk-credit-caution-bd);
+  --credit-credit-bg: var(--dk-credit-credit-bg); --credit-credit-tx: var(--dk-credit-credit-tx); --credit-credit-bd: var(--dk-credit-credit-bd);
+  --disc-period-bg: var(--dk-disc-period-bg); --disc-period-tx: var(--dk-disc-period-tx);
+  --range-marker-bg: var(--dk-range-marker-bg);
   --footer-bg: #141210; --footer-tx: #8E8676;
 }
 @media (max-width: 640px) {
@@ -577,10 +601,10 @@ a.cal-credit-row:hover,
   line-height: 1.4;
   white-space: nowrap;
 }
-.cal-credit-row__label.sev-caution { background: var(--am3); color: var(--am); }
+.cal-credit-row__label.sev-caution { background: var(--credit-caution-bg); color: var(--credit-caution-tx); border: 1px solid var(--credit-caution-bd); }
 .cal-credit-row__label.sev-warning { background: var(--am4); color: var(--am); }
 .cal-credit-row__label.sev-danger,
-.cal-credit-row__label.sev-credit  { background: var(--neg-bg); color: var(--neg); }
+.cal-credit-row__label.sev-credit  { background: var(--credit-credit-bg); color: var(--credit-credit-tx); border: 1px solid var(--credit-credit-bd); }
 .cal-credit-row__label.sev-hot     { background: var(--neg-bg); color: var(--ru); }
 
 /* 본문 요약 — 가변, 잘림 처리 (cal-disc-summary 정합) */
@@ -772,7 +796,7 @@ a.cal-credit-row:hover,
 .cal-disc-ext { flex-shrink:0; color:var(--dm); }
 .cal-disc-more { font-size:10.5px; color:var(--dm); padding:2px 0; font-style:italic; }
 .cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:var(--tx2); white-space:normal; word-break:keep-all; line-height:1.45; }
-.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:var(--bg2); color:var(--tx2); vertical-align:1px; }
+.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:var(--disc-period-bg); color:var(--disc-period-tx); vertical-align:1px; }
 /* v2.5: cal-disc-condition 스타일 보존 (다른 영역에서 쓰일 수 있음). disc 영역에서는 더 이상 노출 안 함 */
 .cal-disc-condition { display:block; font-size:10.5px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
 /* v2.5: 모바일 disc 영역 word-break 강화 */
@@ -2139,9 +2163,9 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;            /* REQ-045 §A — 헤더 배지 통일 */
   font-weight: 600;
   letter-spacing: 0.01em;     /* REQ-045 §A — letter-spacing 통일 */
-  color: var(--tx);
-  background: var(--bg2);
-  border: 1px solid var(--bd);
+  color: var(--badge-disc-tx);
+  background: var(--badge-disc-bg);
+  border: 1px solid var(--badge-disc-bd);
   padding: 2px 8px;
   border-radius: 9999px;  /* REQ-031 — pill 통일 */
   /* REQ-062 — margin-left 제거. 부모 flex gap 사용 (들여쓰기 결함 fix). */
@@ -2970,7 +2994,7 @@ body.single-card-mode { background: var(--bg) !important; }
   height: 10px;
   margin-left: -5px;
   margin-top: -5px;
-  background: #fff;
+  background: var(--range-marker-bg);
   border: 1.5px solid var(--tx);
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
