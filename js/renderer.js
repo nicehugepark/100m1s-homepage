@@ -375,12 +375,36 @@ function _buildNightlyUsHtml(us, viewDate) {
     }
   }
 
+  // PM320 정보 위계 개편 (대표 2026-06-10 A안 승인 "야간 미국증시는 권장대로 해") — 야간 미국증시도 기본 접힘.
+  //   #cal-content 내부에서 이 섹션(높이 ~1176px)이 오늘의 뉴스/픽 위에 렌더돼 픽을 4스크롤 아래로 밀어내던
+  //   문제(실측 픽 y=2134→접기 시 ~900) 해소. 동일 토글 패턴 + 미니요약 "▸ 나스닥 ±N%"(첫 지수 기준).
+  //   localStorage 'pm320SectionExpand' 공유(키 'nightly-us'). aria/Enter/Space 위임은 _wireSectionCollapse.
+  let _nuSummary = '▸ 야간 미국증시';
+  try {
+    const _lead = us.indices.find(ix => /nasdaq|나스닥/i.test(ix && ix.name || '')) || us.indices[0];
+    if (_lead && typeof _lead.change_pct === 'number') {
+      const _sign = _lead.change_pct > 0 ? '+' : (_lead.change_pct < 0 ? '−' : '');
+      const _nm = escapeHtml(_lead.name || '나스닥');
+      _nuSummary = '▸ ' + _nm + ' ' + _sign + Math.abs(_lead.change_pct).toFixed(2) + '%';
+    }
+  } catch (_) { /* graceful */ }
+  const _nuHeaderHtml =
+    '<div class="nightly-us-head pm320-section-header" role="button" tabindex="0"'
+    + ' data-collapse-section="nightly-us" aria-expanded="false" aria-controls="sec-body-nightly-us"'
+    + ' aria-label="야간 미국증시 요약 섹션 펼치기/접기">'
+    + '<div class="pm320-section-headline"><div class="nightly-us-title">야간 미국증시</div></div>'
+    + '<span class="pm320-section-summary" data-collapse-summary="1">' + _nuSummary + '</span>'
+    + '<span class="pm320-section-chevron" aria-hidden="true">▾</span>'
+    + '</div>';
   // data-fut-view = 초기 가시성(CSS). data-fut-auto = 자동 기본값(localStorage 없을 때 fallback, init script 사용).
-  return `<section class="nightly-us-summary" aria-label="야간 미국증시 요약" data-fut-view="${autoView}" data-fut-auto="${autoView}" data-has-fut="${_hasFutures ? '1' : '0'}">`
+  return `<section class="nightly-us-summary pm320-collapsible" id="nightly-us" aria-label="야간 미국증시 요약" data-fut-view="${autoView}" data-fut-auto="${autoView}" data-has-fut="${_hasFutures ? '1' : '0'}">`
+    + _nuHeaderHtml
+    + `<div class="section-collapse-body" id="sec-body-nightly-us">`
     + newsHtml
     + toggleHtml
     + `<div class="nightly-us-cards">${groupsHtml}</div>`
     + disclaimerHtml
+    + `</div>`
     + `</section>`;
 }
 
@@ -531,6 +555,11 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   //   → 선물 토글 이벤트 0 + data-fut-view=auto('regular') 고정 → CSS 가 선물 카드 숨김 → "선물 버튼
   //   사라짐"(대표 catch, Q-145 선물 상시 표시 위반). fix: 미장 HTML 주입 시 토글 wiring 동반 호출(멱등).
   if (_usHtml && typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
+  // PM320 (대표 2026-06-10 A안) — PRE_MARKET path 미장 섹션 접힘 상태 + localStorage 복원.
+  if (_usHtml && typeof _applySectionCollapse === 'function') {
+    const _nuRoot = document.getElementById('nightly-us');
+    if (_nuRoot) _applySectionCollapse(_nuRoot, 'nightly-us');
+  }
   // 카운트다운 1초 단위 + Page Visibility API
   {
     const cdEl = inner.querySelector('[data-cd]');
@@ -810,6 +839,11 @@ function renderCalExpandContent(date, data) {
     `;
     // 미장 섹션 주입 시 선물 토글 wiring 동반(멱등). 본 path 는 early-return 이라 L1926 말미 호출에 도달 못 함.
     if (_emptyUsHtml && typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
+    // PM320 (대표 2026-06-10 A안) — empty-state path 미장 섹션 접힘 상태 복원.
+    if (_emptyUsHtml && typeof _applySectionCollapse === 'function') {
+      const _nuRoot = document.getElementById('nightly-us');
+      if (_nuRoot) _applySectionCollapse(_nuRoot, 'nightly-us');
+    }
     return;
   }
 
@@ -2148,6 +2182,13 @@ function renderCalExpandContent(date, data) {
     `;
   }
 
+  // PM320 정보 위계 개편 (대표 2026-06-10 A안) — 야간 미국증시 섹션 접힘 상태 + localStorage 복원.
+  //   innerHTML 으로 새로 그려졌으므로 매 렌더 재적용(getElementById('nightly-us')). 부재 시 graceful no-op.
+  if (typeof _applySectionCollapse === 'function') {
+    const _nuRoot = document.getElementById('nightly-us');
+    if (_nuRoot) _applySectionCollapse(_nuRoot, 'nightly-us');
+  }
+
   // Q-20260608-140 (A안) — 미장 정규장/선물 토글 wiring. innerHTML 갱신 직후 매 렌더 호출.
   //   섹션 DOM 새로 그려지므로(data-fut-wired 가드 자동 리셋) 매 호출 안전. 선물 부재 시 no-op.
   if (typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
@@ -2729,6 +2770,86 @@ function renderPreMarketThemeSection(container, todayIso, prevIso, headerHtml, o
   }
 }
 
+// ───── PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 섹션 기본 접힘 + 미니요약 + localStorage 펼침 기억 ─────
+//   슬롯 이동·섹션 순서 변경 없음. theme-trend / limit-up-trend / theme-tree 3섹션을 기본 접힘으로 전환해
+//   장중 동선의 "오늘의 뉴스/픽" 슬롯을 1.3스크롤(390px y<1000) 내로 끌어올린다. 캘린더(toss-cal)는 제외.
+//   펼침 상태는 localStorage 'pm320SectionExpand'(JSON {sectionId:true}) 에 기억 → 재방문 복원(대표 동선 보호).
+const _PM320_EXPAND_KEY = 'pm320SectionExpand';
+function _pm320ExpandState() {
+  try { return JSON.parse(localStorage.getItem(_PM320_EXPAND_KEY) || '{}') || {}; }
+  catch (_) { return {}; }
+}
+function _pm320SetExpand(sectionId, expanded) {
+  try {
+    const st = _pm320ExpandState();
+    if (expanded) st[sectionId] = true; else delete st[sectionId];
+    localStorage.setItem(_PM320_EXPAND_KEY, JSON.stringify(st));
+  } catch (_) { /* private mode silent */ }
+}
+// 접힘 헤더 HTML — title/sub 기존 구조 보존 + 미니요약 span + chevron + a11y(role/aria-expanded/aria-controls).
+//   data-collapse-section 으로 토글 위임 식별. 기존 data-scroll-to-section 은 제거(스크롤→토글 전환).
+function _collapseHeaderHtml(sectionId, headerCls, title, sub, summary, titleCls, subCls) {
+  const bodyId = 'sec-body-' + sectionId;
+  return '<div class="' + headerCls + ' pm320-section-header" role="button" tabindex="0"'
+    + ' data-collapse-section="' + sectionId + '" aria-expanded="false" aria-controls="' + bodyId + '"'
+    + ' aria-label="' + escapeHtml(title) + ' 섹션 펼치기/접기">'
+    + '<div class="pm320-section-headline">'
+    + '<div class="' + titleCls + '">' + escapeHtml(title) + '</div>'
+    + '<div class="' + subCls + '">' + escapeHtml(sub) + '</div>'
+    + '</div>'
+    + '<span class="pm320-section-summary" data-collapse-summary="1">' + summary + '</span>'
+    + '<span class="pm320-section-chevron" aria-hidden="true">▾</span>'
+    + '</div>';
+}
+// 렌더 직후 호출 — section root 에 collapsed 클래스 + body id 부여 + localStorage 펼침 상태 복원.
+function _applySectionCollapse(root, sectionId) {
+  if (!root) return;
+  const body = root.querySelector('.section-collapse-body');
+  if (body) body.id = 'sec-body-' + sectionId;
+  const header = root.querySelector('[data-collapse-section="' + sectionId + '"]');
+  const expanded = _pm320ExpandState()[sectionId] === true;
+  root.classList.add('pm320-collapsible');
+  if (expanded) {
+    root.classList.remove('pm320-section-collapsed');
+    if (header) header.setAttribute('aria-expanded', 'true');
+    if (body) body.removeAttribute('hidden');
+  } else {
+    root.classList.add('pm320-section-collapsed');
+    if (header) header.setAttribute('aria-expanded', 'false');
+    if (body) body.setAttribute('hidden', '');
+  }
+}
+// 토글 위임 (1회 등록) — 헤더 click/Enter/Space → collapsed 토글 + aria + hidden + localStorage 기억.
+function _wireSectionCollapse() {
+  if (window._pm320SectionCollapseInit) return;
+  const toggle = (header) => {
+    const sectionId = header.getAttribute('data-collapse-section');
+    if (!sectionId) return;
+    const root = document.getElementById(sectionId);
+    if (!root) return;
+    const body = root.querySelector('.section-collapse-body');
+    const nowCollapsed = root.classList.toggle('pm320-section-collapsed');
+    const expanded = !nowCollapsed;
+    header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    if (body) { if (expanded) body.removeAttribute('hidden'); else body.setAttribute('hidden', ''); }
+    _pm320SetExpand(sectionId, expanded);
+  };
+  document.addEventListener('click', (e) => {
+    const header = e.target.closest('[data-collapse-section]');
+    if (!header) return;
+    if (e.target.closest('a, button, input')) return;
+    toggle(header);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const header = e.target.closest('[data-collapse-section]');
+    if (!header) return;
+    e.preventDefault();
+    toggle(header);
+  });
+  window._pm320SectionCollapseInit = true;
+}
+
 // ───── 테마 거래대금 트렌드 ─────
 async function initThemeTrend() {
   try {
@@ -2798,12 +2919,11 @@ async function initThemeTrend() {
       const emptyMsg = closedToday
         ? `<div style="text-align:center;padding:32px 0;"><div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">오늘은 장이 쉽니다</div><div style="font-size:12px;color:var(--dm);">${nextLabel ? '다음 거래일 ' + escapeHtml(nextLabel) : ''}</div></div>`
         : '<div class="cal-empty" style="padding:24px 0;">테마 트렌드 데이터가 없습니다</div>';
-      container.innerHTML = `
-        <div class="theme-trend-header" role="button" tabindex="0" aria-label="테마 트렌드 섹션으로 이동" data-scroll-to-section="theme-trend">
-          <div class="theme-trend-title">테마 트렌드</div>
-          <div class="theme-trend-sub">최근 거래대금 흐름</div>
-        </div>
-        ${emptyMsg}`;
+      container.innerHTML =
+        _collapseHeaderHtml('theme-trend', 'theme-trend-header', '테마별 거래대금 추이',
+          '최근 거래대금 흐름', '▸ 데이터 없음', 'theme-trend-title', 'theme-trend-sub')
+        + '<div class="section-collapse-body">' + emptyMsg + '</div>';
+      _applySectionCollapse(container, 'theme-trend');
       return;
     }
 
@@ -2916,22 +3036,54 @@ async function initThemeTrend() {
     // 레전드 — 대표 명세 (5/8 07:42 verbatim): 33 root 모두 표시. viewport 활성 = 정상, viewport 외 = dim.
     // legend ↔ polyline 1:1 (themes === legendThemes === unionRoots 전체).
     // viewport-inactive 정책: news.css에서 opacity 0.4 + pointer-events none (display:none X — 33개 가시성 유지).
-    let legend = '<div class="theme-trend-legend">';
+    // PM320 정보 위계 개편 (대표 2026-06-10) — 모바일 범례 40+개 clamp(접기안과 양립, 대표 18:09 유지 지시).
+    //   섹션 펼침 시에도 범례가 길면 모바일에서 상위 ~2행만 노출 + "범례 모두 보기/접기" 토글(≥12개일 때).
+    //   데스크탑은 clamp 미적용(전체 노출) + 토글 CSS 숨김. polyline↔legend 1:1 무손상.
+    const LEGEND_COLLAPSE_MIN = 12;
+    const _legendCollapsible = legendThemes.length >= LEGEND_COLLAPSE_MIN;
+    let legend = '<div class="theme-trend-legend' + (_legendCollapsible ? ' is-collapsible collapsed' : '') + '">';
     legendThemes.forEach((t, idx) => {
       legend += '<span class="theme-trend-legend-item" data-legend-idx="' + idx + '"><span class="swatch" style="background:' + COLORS[idx % COLORS.length] + '"></span>' + escapeHtml(t.name) + '</span>';
     });
     legend += '</div>';
+    if (_legendCollapsible) {
+      legend += '<button type="button" class="theme-trend-legend-toggle" data-legend-toggle="1" aria-expanded="false">'
+        + '범례 모두 보기 (' + legendThemes.length + ')</button>';
+    }
 
     const dateRange = fmtDate(dates[0]) + ' ~ ' + fmtDate(dates[dates.length - 1]);
+    // PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 섹션 기본 접힘. 헤더에 미니요약 1줄.
+    //   요약 = 1위 테마(거래대금 union 최상위) 강세. legendThemes[0] (= unionRoots[0]).
+    const _ttTop = (legendThemes && legendThemes[0] && legendThemes[0].name) ? legendThemes[0].name : '';
+    const _ttSummary = _ttTop ? '▸ ' + escapeHtml(_ttTop) + ' 강세' : '▸ 거래대금 흐름';
     container.innerHTML =
-      '<div class="theme-trend-header" role="button" tabindex="0" aria-label="테마별 거래대금 추이 섹션으로 이동" data-scroll-to-section="theme-trend"><div class="theme-trend-title">테마별 거래대금 추이</div><div class="theme-trend-sub">최근 ' + dates.length + '영업일 · ' + dateRange + '</div></div>' +
-      '<div class="theme-trend-wrap">' +
-        '<div class="trend-y-axis">' + yAxisSvg + '</div>' +
-        '<div class="trend-scroll-area">' + svg + '</div>' +
-        legend +
-        '<div id="trend-detail" class="trend-detail"></div>' +
-        '<div class="theme-trend-tooltip" id="tt-trend"></div>' +
+      _collapseHeaderHtml('theme-trend', 'theme-trend-header', '테마별 거래대금 추이',
+        '최근 ' + dates.length + '영업일 · ' + dateRange, _ttSummary, 'theme-trend-title', 'theme-trend-sub') +
+      '<div class="section-collapse-body">' +
+        '<div class="theme-trend-wrap">' +
+          '<div class="trend-y-axis">' + yAxisSvg + '</div>' +
+          '<div class="trend-scroll-area">' + svg + '</div>' +
+          legend +
+          '<div id="trend-detail" class="trend-detail"></div>' +
+          '<div class="theme-trend-tooltip" id="tt-trend"></div>' +
+        '</div>' +
       '</div>';
+    _applySectionCollapse(container, 'theme-trend');
+
+    // PM320 (대표 2026-06-10) — 모바일 범례 접기/펼치기 토글 wiring (모바일 전용 효과, 데스크탑 CSS 숨김).
+    const _legendToggleBtn = container.querySelector('[data-legend-toggle="1"]');
+    const _legendEl = container.querySelector('.theme-trend-legend');
+    if (_legendToggleBtn && _legendEl) {
+      _legendToggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const _collapsed = _legendEl.classList.toggle('collapsed');
+        _legendToggleBtn.setAttribute('aria-expanded', _collapsed ? 'false' : 'true');
+        _legendToggleBtn.textContent = _collapsed
+          ? '범례 모두 보기 (' + legendThemes.length + ')'
+          : '범례 접기';
+      });
+    }
 
     // -- 횡스크롤 초기화 (대표 catch 5/8: trend-fade-left 흰박스 제거, yaxis-col 자연 mask로 충분) --
     const scrollArea = container.querySelector('.trend-scroll-area');
@@ -3345,14 +3497,20 @@ async function initLimitUpTrend() {
     chartSvg += '</svg>';
 
     const dateRange = dates.length > 1 ? (fmtMD(dates[0]) + '~' + fmtMD(dates[dates.length - 1])) : fmtMD(dates[0]);
+    // PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 미니요약 = 최신일 상한가 N종목.
+    const _lutLatest = counts.length ? counts[counts.length - 1] : 0;
+    const _lutSummary = '▸ 오늘 ' + _lutLatest + '종목';
     container.innerHTML =
-      '<div class="lut-header" role="button" tabindex="0" aria-label="상한가 종목 추이 섹션으로 이동" data-scroll-to-section="limit-up-trend"><div class="lut-title">상한가 종목 추이</div>' +
-      '<div class="lut-sub">최근 ' + dates.length + '영업일 · ' + dateRange + ' · 총 ' + (data.total_count || 0) + '건</div></div>' +
-      '<div class="lut-wrap">' +
-        '<div class="lut-yaxis-col">' + yAxisSvg + '</div>' +
-        '<div class="lut-scroll">' + chartSvg + '</div>' +
-      '</div>' +
-      '<div class="lut-detail" id="lut-detail" hidden></div>';
+      _collapseHeaderHtml('limit-up-trend', 'lut-header', '상한가 종목 추이',
+        '최근 ' + dates.length + '영업일 · ' + dateRange + ' · 총 ' + (data.total_count || 0) + '건', _lutSummary, 'lut-title', 'lut-sub') +
+      '<div class="section-collapse-body">' +
+        '<div class="lut-wrap">' +
+          '<div class="lut-yaxis-col">' + yAxisSvg + '</div>' +
+          '<div class="lut-scroll">' + chartSvg + '</div>' +
+        '</div>' +
+        '<div class="lut-detail" id="lut-detail" hidden></div>' +
+      '</div>';
+    _applySectionCollapse(container, 'limit-up-trend');
 
     // 횡스크롤 초기화 — 최신일자가 우측 끝, 초기 진입 시 우측 정렬 (theme-trend SoT)
     const lutScroll = container.querySelector('.lut-scroll');
@@ -4025,11 +4183,24 @@ async function initThemeTree(dateOverride) {
     });
     container.appendChild(frag);
 
+    // PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 테마트리 미니요약 = N개 테마 (visRoots 렌더 수).
+    //   헤더는 pm320.html 정적 토글이라 렌더 후 summary 텍스트 + 펼침 상태(localStorage) 복원만 갱신.
+    try {
+      const _treeRoot = document.getElementById('theme-tree');
+      if (_treeRoot) {
+        const _sumEl = _treeRoot.querySelector('.pm320-section-summary[data-collapse-summary="1"]');
+        if (_sumEl) _sumEl.textContent = '▸ ' + visRoots.length + '개 테마';
+        if (typeof _applySectionCollapse === 'function') _applySectionCollapse(_treeRoot, 'theme-tree');
+      }
+    } catch (_) { /* graceful */ }
+
   } catch (e) { console.warn('theme-tree:', e); }
 }
 
 /* ───── 초기화 호출 ───── */
 // initThemeTrend/initThemeMap/initThemeTree는 _refreshDataAsync에서 비동기 호출
+// PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 섹션 접힘 토글 위임 1회 등록 (theme-trend/limit-up-trend/theme-tree).
+if (typeof _wireSectionCollapse === 'function') _wireSectionCollapse();
 initCalendar();
 
 /* Q-20260608-144 — 날짜 헤더(.cal-content-head) sticky top을 nav(header) 실제 height에 바인딩.

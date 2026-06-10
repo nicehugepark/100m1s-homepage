@@ -20,8 +20,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/pm320-assets/favicon/favicon-16.png">
 <link rel="shortcut icon" href="/pm320-assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/pm320-assets/favicon/apple-touch-icon-180.png">
-<link rel="preload" href="/news.css?v=20260610v002" as="style">
-<link rel="stylesheet" href="/news.css?v=20260610v002">
+<link rel="preload" href="/news.css?v=20260610v004" as="style">
+<link rel="stylesheet" href="/news.css?v=20260610v004">
 </head>
 <body>
 
@@ -88,12 +88,20 @@
         <div class="toss-cal-grid" id="toss-cal-grid"></div>
       </section>
     </aside>
-    <div class="theme-tree" id="theme-tree">
-      <div class="theme-tree-header" role="button" tabindex="0" aria-label="테마 트리 섹션으로 이동" data-scroll-to-section="theme-tree">
-        <div class="theme-tree-title">테마 트리</div>
-        <div class="theme-tree-sub">테마 간 인과 관계 · 바 길이 = 거래대금 · 클릭하여 펼치기</div>
+    <!-- PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 테마 트리 기본 접힘. 헤더 = 토글(data-collapse-section).
+         미니요약(테마 N개)은 initThemeTree 렌더 후 JS가 .pm320-section-summary 에 주입. 펼침 = localStorage 기억. -->
+    <div class="theme-tree pm320-collapsible pm320-section-collapsed" id="theme-tree">
+      <div class="theme-tree-header pm320-section-header" role="button" tabindex="0" data-collapse-section="theme-tree" aria-expanded="false" aria-controls="sec-body-theme-tree" aria-label="테마 트리 섹션 펼치기/접기">
+        <div class="pm320-section-headline">
+          <div class="theme-tree-title">테마 트리</div>
+          <div class="theme-tree-sub">테마 간 인과 관계 · 바 길이 = 거래대금 · 클릭하여 펼치기</div>
+        </div>
+        <span class="pm320-section-summary" data-collapse-summary="1">▸ 테마 트리</span>
+        <span class="pm320-section-chevron" aria-hidden="true">▾</span>
       </div>
-      <div class="theme-tree-container" id="theme-tree-container"></div>
+      <div class="section-collapse-body" id="sec-body-theme-tree" hidden>
+        <div class="theme-tree-container" id="theme-tree-container"></div>
+      </div>
     </div>
   </div>
 
@@ -137,7 +145,7 @@
 <script src="/js/utils.js?v=20260508v274" defer></script>
 <script src="/js/data-loader.js?v=20260610v001" defer></script>
 <script src="/js/calendar.js?v=20260608v404" defer></script>
-<script src="/js/renderer.js?v=20260610v003" defer></script>
+<script src="/js/renderer.js?v=20260610v005" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});

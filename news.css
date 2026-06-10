@@ -1035,9 +1035,45 @@ a.cal-credit-row:hover,
 .trend-scroll-area::-webkit-scrollbar-thumb { background: rgba(196,153,48,0.35); border-radius: 2px; }
 .trend-scroll-area::-webkit-scrollbar-thumb:hover { background: rgba(196,153,48,0.6); }
 /* 5/8 대표 catch: .trend-fade-left 룰 폐기 — 모바일 좌측 스크롤 시 흰박스 라인 가림. yaxis-col 자연 mask로 충분 */
+/* PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 섹션 기본 접힘 토글.
+   theme-trend / limit-up-trend / theme-tree 헤더를 토글로. 접힘 시 본문 hidden + 미니요약 노출.
+   슬롯 이동·순서 변경 없음 — 장중 동선의 뉴스/픽 슬롯을 위로 끌어올리는 게 목적. */
+.pm320-section-header {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  cursor: pointer; user-select: none;
+}
+.pm320-section-headline { flex: 1 1 auto; min-width: 0; }
+/* PM320 (대표 2026-06-10 A안) — 야간 미국증시 섹션 헤더 타이틀 (rev10에서 제거됐던 것을 접기 헤더로 복원). */
+.nightly-us-title { font-size: 14px; font-weight: 800; color: var(--tx); }
+.nightly-us-summary.pm320-collapsible { margin: 14px 0; }
+.nightly-us-summary .pm320-section-header { padding: 4px 0; }
+.pm320-section-summary {
+  font-size: 12px; font-weight: 700; color: var(--am);
+  white-space: nowrap; flex: 0 0 auto;
+}
+.pm320-section-chevron {
+  flex: 0 0 auto; font-size: 12px; color: var(--dm);
+  transition: transform 0.18s ease; margin-left: 2px;
+}
+/* 펼침(=collapsed 부재) 시 chevron 회전 + 미니요약 숨김(본문이 이미 정보 노출). */
+.pm320-collapsible:not(.pm320-section-collapsed) .pm320-section-chevron { transform: rotate(180deg); }
+.pm320-collapsible:not(.pm320-section-collapsed) .pm320-section-summary { display: none; }
+/* 접힘 시 본문 숨김 (hidden 속성 이중 가드). */
+.pm320-section-collapsed .section-collapse-body { display: none; }
+.pm320-section-header:focus-visible {
+  outline: 2px solid var(--am); outline-offset: 2px; border-radius: 8px;
+}
 .theme-trend-legend {
   display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
   position: relative; z-index: 4; max-width: 100%;
+}
+/* PM320 (대표 2026-06-10) — 범례 접기/펼치기 토글 버튼. 데스크탑 기본 숨김(전체 노출), 모바일에서만 노출. */
+.theme-trend-legend-toggle {
+  display: none;
+  margin-top: 8px; padding: 6px 12px;
+  font-size: 11px; font-weight: 700; color: var(--am);
+  background: transparent; border: 1px solid var(--bd);
+  border-radius: 9999px; cursor: pointer; min-height: 32px;
 }
 .theme-trend-legend-item {
   display: inline-flex; align-items: center; gap: 4px;
@@ -1057,6 +1093,13 @@ a.cal-credit-row:hover,
   }
   .theme-trend-legend-item { font-size: 10px; padding: 4px 6px; min-height: 28px; }
   .theme-trend-legend-item .swatch { width: 8px; height: 3px; }
+  /* PM320 (대표 2026-06-10) — 모바일 범례 기본 접기(상위 ~2행) + 토글 노출. 펼치면 전체(무손실). */
+  .theme-trend-legend.is-collapsible.collapsed {
+    max-height: 72px; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 56px, transparent);
+    mask-image: linear-gradient(to bottom, #000 56px, transparent);
+  }
+  .theme-trend-legend-toggle { display: inline-flex; align-items: center; }
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
   .theme-trend-wrap { padding: 12px; overflow: visible; }
   .trend-y-axis { top: 12px; left: 12px; width: 36px; height: calc(100% - 24px); }
