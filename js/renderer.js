@@ -69,6 +69,50 @@ function _dailybarsClose(interp) {
   return null;
 }
 
+// PM320-D6 P1 (손님 판정 — 용어 풀이 0) — 주식 초보(손님) 대상 용어 1줄 풀이.
+//   라벨 옆 (?) 버튼을 탭하면 팝오버로 풀이 표시 (모바일 터치 동작 = 전역 위임 핸들러 _wireTermTips).
+//   거짓 금지(FLR-AGT-002) — 사실 기반 간결 정의만. 추정·과장 0.
+const _PM320_GLOSSARY = {
+  'trade-amount': { t: '거래대금', d: '하루 동안 그 종목이 사고팔린 금액의 합계. 클수록 사람들의 관심·돈이 많이 몰렸다는 뜻입니다.' },
+  candle: { t: '양봉 / 음봉', d: '하루 캔들 색. 시작가보다 끝값이 오르면 빨강(양봉), 내리면 파랑(음봉)입니다.' },
+  watering: { t: '물타기', d: '산 종목이 떨어졌을 때 더 사서 평균 매입가를 낮추는 것. PM320은 진입가에서 약 -6.4%일 때를 기준점으로 봅니다.' },
+  'take-profit': { t: '익절', d: '이익을 본 상태에서 파는 것. PM320은 진입가에서 약 +3.2%를 목표로 잡습니다.' },
+  pending: { t: '보류', d: '그날의 조건을 만족하는 종목이 없어 추천을 내지 않는 것. 무리한 추천 대신 쉬어가는 날입니다.' },
+};
+// (?) 마커 — term 키에 해당하는 풀이가 있을 때만 생성. aria-label 로 스크린리더 정합.
+function _termTip(term) {
+  const g = _PM320_GLOSSARY[term];
+  if (!g) return '';
+  return `<button type="button" class="cal-term-tip" data-term="${escapeHtml(term)}" aria-label="${escapeHtml(g.t)} 용어 설명" aria-expanded="false">?</button>`;
+}
+// 전역 (?) 탭 팝오버 — 1회만 등록. 탭 시 해당 버튼 아래 풀이 팝오버 토글, 바깥 탭 시 닫힘.
+function _wireTermTips() {
+  if (window._termTipsInit) return;
+  window._termTipsInit = true;
+  const _close = () => {
+    const open = document.querySelector('.cal-term-pop');
+    if (open) open.remove();
+    document.querySelectorAll('.cal-term-tip[aria-expanded="true"]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+  };
+  document.addEventListener('click', (e) => {
+    const tip = e.target.closest('.cal-term-tip');
+    if (!tip) { _close(); return; }
+    e.preventDefault();
+    e.stopPropagation();
+    const wasOpen = tip.getAttribute('aria-expanded') === 'true';
+    _close();
+    if (wasOpen) return; // 토글: 열려 있던 것 탭 시 닫기만
+    const g = _PM320_GLOSSARY[tip.dataset.term];
+    if (!g) return;
+    const pop = document.createElement('div');
+    pop.className = 'cal-term-pop';
+    pop.setAttribute('role', 'tooltip');
+    pop.innerHTML = `<span class="cal-term-pop-title">${escapeHtml(g.t)}</span>${escapeHtml(g.d)}`;
+    tip.setAttribute('aria-expanded', 'true');
+    tip.insertAdjacentElement('afterend', pop);
+  });
+}
+
 function renderNewsCard(card) {
   const j = card.judgment || '중립';
   // 강도 — % 숫자 대신 카테고리. 구버전 호환: confidence가 있으면 임계값으로 변환
@@ -371,6 +415,20 @@ function _formatCountdownToOpen(now) {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
+// PM320-D6 P0 — 오늘의 추천 공개(15:20)까지 남은 시간. 손님 판정(시점 혼란) 기반.
+//   장중(09:00~15:20)에 오늘 view + 픽 미생성 시 "전일 종가 기준" 안내 배너에 표시.
+//   15:20 도달 시 "00:00:00" 반환 (호출부가 타이머 종료 + 안내 문구 전환).
+function _formatCountdownToPick(now) {
+  const _now = now || new Date();
+  const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 15, 20, 0, 0);
+  const diff = Math.max(0, target.getTime() - _now.getTime());
+  const totalSec = Math.floor(diff / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
 let _preMarketTimer = null;
 let _preMarketVisHandler = null;
 
@@ -380,6 +438,38 @@ function _stopPreMarketTimer() {
     document.removeEventListener('visibilitychange', _preMarketVisHandler);
     _preMarketVisHandler = null;
   }
+}
+
+// PM320-D6 P0 — 장중 "오늘 추천 15:20 공개" 배너의 카운트다운 타이머.
+//   renderCalExpandContent 가 매 렌더 시 _wirePickCountdown() 호출 → 배너 DOM 존재 시 1초 tick.
+//   배너 미존재(픽 생성됨 / 장 마감 후 / 과거 view) 시 자동 정리. 무한 setInterval 누수 방지.
+let _pickCountdownTimer = null;
+function _stopPickCountdown() {
+  if (_pickCountdownTimer) { clearInterval(_pickCountdownTimer); _pickCountdownTimer = null; }
+}
+function _wirePickCountdown() {
+  _stopPickCountdown();
+  const cdEl = document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"]');
+  if (!cdEl) return; // 배너 미존재 → 타이머 불요
+  const tick = () => {
+    const el = document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"]');
+    if (!el || !document.body.contains(el)) { _stopPickCountdown(); return; }
+    const now = new Date();
+    // 15:20 도달 → 카운트다운 문구를 "곧 갱신됩니다"로 전환 후 타이머 종료.
+    //   (15:20~15:30 사이 다음 자동 폴링/리렌더 전까지의 공백 안내. 픽 생성되면 리렌더로 배너 자연 소거.)
+    if (now.getHours() * 60 + now.getMinutes() >= 15 * 60 + 20) {
+      const banner = el.closest('.cal-pm320-pending');
+      if (banner) {
+        const cdWrap = banner.querySelector('.cal-pm320-pending-cd-wrap');
+        if (cdWrap) cdWrap.innerHTML = '<span class="cal-pm320-pending-soon">곧 갱신됩니다</span>';
+      }
+      _stopPickCountdown();
+      return;
+    }
+    el.textContent = _formatCountdownToPick(now);
+  };
+  tick();
+  _pickCountdownTimer = setInterval(tick, 1000);
 }
 
 // PRE_MARKET (장 시작 전, 09:00 이전 + 오늘 view) 빈 상태 — 당일 표출 데이터가 아직 없는 정상 상태.
@@ -971,7 +1061,7 @@ function renderCalExpandContent(date, data) {
         <span class="pm320-rec-value">${escapeHtml(buyDate)} 종가 ${escapeHtml(entryPrice)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-row--watering">
-        <span class="pm320-rec-label">📉 물타기</span>
+        <span class="pm320-rec-label">📉 물타기${_termTip('watering')}</span>
         <span class="pm320-rec-value">${escapeHtml(wateringPrice)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
@@ -979,7 +1069,7 @@ function renderCalExpandContent(date, data) {
         <span class="pm320-rec-value pm320-rec-value--sub">└ 비중: ${escapeHtml(wateringWeight)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-row--profit">
-        <span class="pm320-rec-label">📈 익절</span>
+        <span class="pm320-rec-label">📈 익절${_termTip('take-profit')}</span>
         <span class="pm320-rec-value">${escapeHtml(tpPrice)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
@@ -1760,10 +1850,12 @@ function renderCalExpandContent(date, data) {
         </div>`;
       }
       // 메타 줄 (등락률 | 거래대금) — 좌측 정렬·파이프 구분·거래대금 골드 (대표 정정 v2.2)
+      // PM320-D6 P1 — 용어 (?) 는 첫 카드(#1)에만 부착 (반복 (?) 노이즈 회피, "첫 등장" 원칙).
+      //   양봉/음봉(candle)·거래대금(trade-amount) 풀이를 메타 줄에 그룹화.
       const metaRow = `<div class="cal-feature-meta">
-        <span class="cal-feature-pct ${dir}">${pctText}</span>
+        <span class="cal-feature-pct ${dir}">${pctText}</span>${it.rank === 1 ? _termTip('candle') : ''}
         <span class="cal-meta-sep">|</span>
-        <span class="cal-trade-amount">${amountText}</span>
+        <span class="cal-trade-amount">${amountText}${it.rank === 1 ? _termTip('trade-amount') : ''}</span>
       </div>`;
       const _idAttr_full = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
       // Q-20260519-CYCLE19-009 + cycle20 P1 (2026-05-20) — LU(상한가) 좌측 accent bar 시각 구분.
@@ -1836,15 +1928,19 @@ function renderCalExpandContent(date, data) {
     const emptySparkHtml = '<div class="cal-feature-sparkline cal-spark-empty"></div>';
     // range bar: 데이터 부재 → 생략 (대표 지시: 빈 공간 두지 말 것)
     // 메타 줄 (등락률 | 거래대금)
+    // PM320-D6 P1 — 용어 (?) 는 첫 카드(#1)에만 (no-interp 분기 정합, full 카드와 동일).
     const metaRow = `<div class="cal-feature-meta">
-      <span class="cal-feature-pct ${dir}">${pctText}</span>
+      <span class="cal-feature-pct ${dir}">${pctText}</span>${it.rank === 1 ? _termTip('candle') : ''}
       <span class="cal-meta-sep">|</span>
-      <span class="cal-trade-amount">${amountText}</span>
+      <span class="cal-trade-amount">${amountText}${it.rank === 1 ? _termTip('trade-amount') : ''}</span>
     </div>`;
-    // 본문: "관련 뉴스 없음" placeholder — 기존 .cal-feature-news-empty 스타일 재사용
+    // 본문: 뉴스 부재 placeholder — 기존 .cal-feature-news-empty 스타일 재사용.
+    // PM320-D6 P1 (손님 판정 — "빈 깡통" 인상) — "관련 뉴스 없음"(9연속 동일) → 톤 개선.
+    //   뉴스가 없는 건 사실이므로 거짓 없이(FLR-AGT-002) 표현만 부드럽게: 수집 시 자동 표시됨을 안내.
+    const _newsEmptyHtml = `<div class="cal-feature-news-empty">이 종목 관련 속보는 아직 없습니다<span class="cal-feature-news-empty-sub">뉴스가 수집되면 자동으로 표시됩니다</span></div>`;
     const emptyBodyHtml = simpleThemesHtml
-      ? `${simpleThemesHtml}<div class="cal-feature-news-empty">관련 뉴스 없음</div>`
-      : `<div class="cal-feature-news-empty">관련 뉴스 없음</div>`;
+      ? `${simpleThemesHtml}${_newsEmptyHtml}`
+      : _newsEmptyHtml;
     const _idAttr_nointerp = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
     // Q-20260519-CYCLE19-009 + cycle20 P1 (2026-05-20) — LU(상한가) 좌측 accent bar (no-interp 분기 정합)
     // status_badges effect 우선 (it.interp 없어도 it.status_badges 패스스루 시 동작), _source_union 폴백.
@@ -1895,8 +1991,35 @@ function renderCalExpandContent(date, data) {
   //   중립 슬레이트(--neu/--neu-bg)로 표시. pm320NoPick===null(404·미신뢰)이면 미표시
   //   (FLR-AGT-002 거짓 충실성 차단 — 추정 고지 금지). 추천 있는 날(false)도 미표시(무회귀).
   const _pm320NoPickHtml = (!_isSingleCardMode && data && data.pm320NoPick === true && !isMarketClosed(date))
-    ? `<div class="cal-pm320-no-pick" role="status" aria-label="오늘은 추천 종목이 없습니다"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg><span>오늘은 추천 종목이 없습니다</span></div>`
+    ? `<div class="cal-pm320-no-pick" role="status" aria-label="오늘은 추천 종목이 없습니다"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg><span>오늘은 추천 종목이 없습니다 (보류)${_termTip('pending')}</span></div>`
     : '';
+  // PM320-D6 P0 (손님 판정 — 시점 혼란) — 장중 "오늘의 추천 15:20 공개" 안내 배너.
+  //   손님(주식 초보)이 아침 09시에 자정/장전 스냅샷 데이터를 "오늘의 추천"으로 오인하고
+  //   "고장났나?" 하고 이탈하는 문제. 조건: 오늘 view + 장중(OPEN, 09:00~15:20) + 픽 미생성.
+  //   - 픽 미생성 판정: data.pm320NoPick !== false (false=오늘 픽 확정 존재 → 배너 미표시, 무회귀).
+  //     true(보류 확정)·null(아직 미생성/404) 모두 "아직 안 나옴"이므로 배너 표시.
+  //   - 시각 표현: "00:14 KST 기준" 같은 raw 시각 대신 "지금은 장 시작 전 집계 데이터"로 의미 치환.
+  //     실제 추천 산출 시점(15:20)을 카운트다운으로 명시 → 손님 시점 혼란 해소.
+  //   _wirePickCountdown() 가 렌더 직후 1초 tick (15:20 도달 시 "곧 갱신됩니다" 전환).
+  let _pm320PendingHtml = '';
+  try {
+    const _stateForBanner = (typeof getMarketState === 'function') ? getMarketState(date) : null;
+    const _nowB = new Date();
+    const _todayB = `${_nowB.getFullYear()}-${String(_nowB.getMonth() + 1).padStart(2, '0')}-${String(_nowB.getDate()).padStart(2, '0')}`;
+    const _pickPending = !data || data.pm320NoPick !== false;
+    if (!_isSingleCardMode && _stateForBanner === 'OPEN' && date === _todayB && _pickPending) {
+      const _cd = _formatCountdownToPick(_nowB);
+      _pm320PendingHtml =
+        `<div class="cal-pm320-pending" role="status" aria-label="오늘의 추천은 오후 3시 20분에 공개됩니다">`
+        + `<svg class="cal-pm320-pending-icon" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`
+        + `<div class="cal-pm320-pending-body">`
+        + `<div class="cal-pm320-pending-title">오늘의 추천은 <b>오후 3시 20분</b>에 공개됩니다</div>`
+        + `<div class="cal-pm320-pending-sub">지금 보이는 종목은 장 시작 전 집계된 거래대금 상위 종목이며, 오늘의 최종 추천이 아닙니다.</div>`
+        + `<div class="cal-pm320-pending-cd-wrap"><span class="cal-pm320-pending-cd-label">공개까지</span> <span class="cal-pm320-pending-countdown" data-pick-cd="1">${_cd}</span></div>`
+        + `</div>`
+        + `</div>`;
+    }
+  } catch (_) { /* getMarketState 미정의 시 graceful — 배너 생략 */ }
   // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
   //   suppress 플래그(calendar.js initCalendar 자동 폴백 시 set, 사용자 날짜 클릭 시 clear)가 true 면
   //   국내장 종목 카드 list 를 렌더하지 않고 graceful 안내 한 줄로 대체한다. 야간 미국증시 섹션
@@ -1914,6 +2037,7 @@ function renderCalExpandContent(date, data) {
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
+      ${_pm320PendingHtml}
       ${_pm320NoPickHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
@@ -1950,6 +2074,11 @@ function renderCalExpandContent(date, data) {
   // Q-20260608-140 (A안) — 미장 정규장/선물 토글 wiring. innerHTML 갱신 직후 매 렌더 호출.
   //   섹션 DOM 새로 그려지므로(data-fut-wired 가드 자동 리셋) 매 호출 안전. 선물 부재 시 no-op.
   if (typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
+
+  // PM320-D6 P0 — 장중 "오늘 추천 15:20 공개" 배너 카운트다운 wiring. 배너 미존재 시 no-op(타이머 정리).
+  _wirePickCountdown();
+  // PM320-D6 P1 — 용어 (?) 팝오버 전역 위임 핸들러 (1회만 등록, 모바일 터치).
+  _wireTermTips();
 
   // 접기/펼치기 이벤트 위임 (1회만 등록)
   // REQ-046 — CSS font-size:0 + ::after content trick 폐기 → JS textContent 직접 변경.
