@@ -212,6 +212,15 @@ const MA_CONFIGS = [
   // cycle23 chart-tv-3changes Spot 3: MA 240 본질 제거 (대표 verbatim "현재 캔들 윈도우에서는 사실상 의미가 없네")
 ];
 
+// PM320-D6 P1 — Fib hint 범례 점선 색상 상수 (fibonacci.js 정합).
+//   AMBER = primary 세트(최근 저점 되돌림, 드래그) = fibonacci.js LEVELS color '#F5A623'.
+//   TEAL  = secondary 세트(장기 저점 base, 고정)   = fibonacci.js SECONDARY_COLOR '#38BDF8'.
+//   2026-06-10 토구사 union(secondary 세트 신축) 시 legend row 본문은 추가됐으나 본 두 상수 선언 누락
+//   → showFibHint() 내 mkLegend(FIB_LEGEND_AMBER, ...) 호출 시점 ReferenceError → hint 전체 abort
+//   (범례 + 사용법 안내 모두 미표시). 본 선언으로 복원. (fibonacci.js 색 변경 금지 — 토구사 확정 시각언어.)
+const FIB_LEGEND_AMBER = '#F5A623';
+const FIB_LEGEND_TEAL = '#38BDF8';
+
 // EMA helper
 function computeEMA(data, period) {
   if (!Array.isArray(data) || data.length < period) return [];
