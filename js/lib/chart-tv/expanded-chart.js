@@ -1045,9 +1045,9 @@ function renderChartTV(container, dailyArr, options = {}) {
       'position: absolute',
       'left: 8px',
       'top: 8px',
-      'background: rgba(233,30,99,0.95)',  // P0-24 Fix-82: 적색 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 본문 amber → pink
+      'background: rgba(26,29,38,0.95)',  // PM320-D6 P1-a — 머티리얼 핑크 → 햇살 다크 그레이(--tx 톤). 햇살 정체성 정합(골드+토스블루). 내부 색 칩(주황/청록)은 의미색 유지
       'color: #fff',
-      'font-size: 11px',
+      'font-size: 12px',
       'font-weight: 600',
       'padding: 6px 10px',
       'border-radius: 4px',

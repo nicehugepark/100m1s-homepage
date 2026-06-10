@@ -2106,10 +2106,11 @@ body.single-card-mode { background: var(--bg) !important; }
    라벨 우측 작은 원형 (?) — 모바일 터치 타겟 충분(18px+). 팝오버는 position:fixed 오버레이로
    body 직속 삽입(_wireTermTips) — 어떤 부모 레이아웃에도 0 영향(레이아웃 시프트 0). */
 .cal-term-tip {
+  position: relative;            /* PM320-D6 P1-b — ::before 투명 hit-area 기준점 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 15px;
+  width: 15px;                   /* 시각 원형 15px 유지 (레이아웃 시프트 0) */
   height: 15px;
   margin-left: 4px;
   padding: 0;
@@ -2117,12 +2118,23 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 1px solid var(--bd);
   border-radius: 50%;
   background: var(--bg2);
-  color: var(--dm);
-  font-size: 10px;
+  color: #5B6373;                /* PM320-D6 P1-b — 대비 2.6:1 → 4.5:1+ (--bg2 #F2F4F8 기준 약 4.6:1) */
+  font-size: 11px;               /* PM320-D6 P1-b — 10→11px 가독 */
   font-weight: 800;
   line-height: 1;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+/* PM320-D6 P1-b — 시각 원형(15px)은 그대로 두고 클릭/터치 영역만 24px 확장(투명 오버레이).
+   문서 플로우 밖(absolute)이라 주변 레이아웃 0 영향. */
+.cal-term-tip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
 }
 .cal-term-tip:hover { color: var(--am); border-color: var(--am3); }
 .cal-term-tip[aria-expanded="true"] { color: #fff; background: var(--am); border-color: var(--am); }
@@ -2630,7 +2642,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-feature-meta .cal-feature-pct.up { color: #C53939; }
 .cal-feature-meta .cal-feature-pct.down { color: #1958C7; }
 /* v2.2: 거래대금 골드 (브랜드 --am, 700) */
-.cal-feature-meta .cal-trade-amount { color: var(--am); font-weight: 700; font-size: 12px; }
+/* PM320-D6 P2 — 거래대금 텍스트 + (?) 칩 nowrap 묶음 (390px 단독 행 낙하 방지). 칩이 span 내부라 줄바꿈만 차단 */
+.cal-feature-meta .cal-trade-amount { color: var(--am); font-weight: 700; font-size: 12px; white-space: nowrap; }
 .cal-feature-meta .cal-meta-sep { color: #BBB; font-weight: 400; }
 
 /* 240일 레인지 v2 — 4행 (bar / 가격 / 등락률 / 날짜) */
