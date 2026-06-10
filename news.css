@@ -1162,11 +1162,57 @@ a.cal-credit-row:hover,
    를 노출. [hidden] 일 땐 display:none(빈 박스·레이아웃 점프 0). 카드 박스 자체는 .--card 스타일 상속. */
 .pm320-prepick-portal {
   display: flex;
+  flex-direction: column;        /* r5 — 어제픽 칩 + "외 N종 보유 중" 리스트 세로 스택 */
+  align-items: center;
   justify-content: center;
   margin: 4px 0 20px;
   scroll-margin-top: 84px;
 }
 .pm320-prepick-portal[hidden] { display: none; }
+/* r5 (2026-06-11, 대표 도메인 정정) — "외 N종 보유 중" 보유 픽 리스트(running 복수). */
+.cal-pre-prev-pick-holdings {
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+  margin-top: 8px;
+  padding: 8px 12px 9px;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  background: var(--sf);
+}
+.cal-pre-prev-pick-holdings-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tx2);
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+}
+.cal-pre-prev-pick-holdings--countonly { padding: 7px 12px; }
+.cal-pre-prev-pick-holdings--countonly .cal-pre-prev-pick-holdings-label { margin-bottom: 0; }
+.cal-pre-prev-pick-holding-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 0;
+}
+.cal-pre-prev-pick-holding-row + .cal-pre-prev-pick-holding-row {
+  border-top: 1px solid var(--bd);
+}
+.cal-pre-prev-pick-holding-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tx);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cal-pre-prev-pick-holding-meta {
+  font-size: 11px;
+  color: var(--dm);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
 /* PM320-D6 R22 (오전 동선) — "어제의 픽" pill → 결과 카드 승격(진입가·익절목표·만기 grid + 15:25 예고).
    --card 변종일 때 pill 레이아웃을 카드 박스로 전환(좌측 정렬·blockflow·진입가/목표 grid). 결과 톤별
    배경/테두리(.--profit/--loss/--running)는 그대로 상속. */

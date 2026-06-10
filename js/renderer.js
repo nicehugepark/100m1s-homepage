@@ -518,6 +518,82 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
   } catch (_) { return ''; }
 }
 
+// r5 (2026-06-11, 대표 도메인 정정 — "지난 추천으로 최대 보유 종목 개수가 늘어날 수 있다,
+//   하나만 존재하는 게 아니야") — 현재 *보유 중(running)* 픽을 복수로 도출.
+//   데이터 = history JSON 의 running 상태에서 도출(발명 0, FLR-AGT-002). 정직 조건:
+//     해당 일자 픽 스냅샷 current_state === 'running' AND expiry_date >= 오늘.
+//   (per-day 스냅샷은 그 날 기준 상태라, 이후 청산됐을 수 있음 → expiry_date 만료 전만 신뢰.
+//    summary.json 의 running 카운트와 교차검증해 불일치 시 호출부가 카운트만 노출.)
+//   bound = 최근 8영업일 fan-out (만기 D+3 모델상 보유 가능 구간 충분 커버). 병렬 로드(캐시 활용).
+//   반환: [{ code, name, date, pk }] newest-first (dedup by code). 데이터 부재/오류 시 [].
+async function _collectRunningPicks(fromDate, maxDays) {
+  try {
+    if (!fromDate || typeof loadCalDayData !== 'function') return [];
+    const _now = new Date();
+    const _todayKst = `${_now.getFullYear()}-${String(_now.getMonth() + 1).padStart(2, '0')}-${String(_now.getDate()).padStart(2, '0')}`;
+    // 최근 영업일 목록 — getPrevTradingDate 가용 시 사용, 아니면 달력 day−1 (휴장은 history 404 graceful).
+    const dates = [];
+    let cur = fromDate;
+    const cap = Math.max(1, maxDays || 8);
+    for (let i = 0; i < cap && cur; i++) {
+      dates.push(cur);
+      cur = (typeof getPrevTradingDate === 'function')
+        ? getPrevTradingDate(cur)
+        : (() => { const d = new Date(cur + 'T00:00:00'); d.setDate(d.getDate() - 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })();
+    }
+    const datas = await Promise.all(dates.map(d => loadCalDayData(d).then(x => ({ d, x })).catch(() => ({ d, x: null }))));
+    const out = [];
+    const seen = new Set();
+    for (const { d, x } of datas) {
+      const m = x && x.interpretedByName;
+      if (!m || typeof m.values !== 'function') continue;
+      for (const interp of m.values()) {
+        const pk = interp && interp.pm320_pick;
+        if (!pk || pk.is_pick !== true || pk.current_state !== 'running') continue;
+        if (!pk.expiry_date || pk.expiry_date < _todayKst) continue; // 만기 지난 픽 배제(정직)
+        const code = interp.code || interp.ticker || '';
+        if (code && seen.has(code)) continue;
+        if (code) seen.add(code);
+        out.push({ code, name: interp.name || interp.stock_name || '', date: d, pk });
+      }
+    }
+    out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)); // newest-first
+    return out;
+  } catch (_) { return []; }
+}
+
+// r5 (2026-06-11) — "외 N종 보유 중" 리스트 HTML. headlineCode = 이미 칩으로 노출된 최신 픽(중복 제외).
+//   running 픽이 headline 외 ≥1종이면 "외 N종 보유 중" + 각 종목 1줄(종목명 · 진입가 · 만기).
+//   running 이 headline 1종뿐이면 빈 문자열(미렌더). summary.running 교차검증으로 신뢰 판정.
+function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
+  try {
+    if (!Array.isArray(runningPicks) || runningPicks.length === 0) return '';
+    const _krw = (n) => (n == null || !Number.isFinite(n)) ? '—' : (n.toLocaleString('ko-KR') + '원');
+    // 교차검증(FLR-AGT-002): 각 픽은 자기 일자 스냅샷의 running + 만기 미경과로 개별 검증됨(정직).
+    //   summary.running 은 매일 1회 빌드 스냅샷이라 당일 신규 픽보다 뒤처질 수 있음(stale-newer).
+    //   → fan-out 카운트 ≥ summary 면 per-pick 신뢰(fan-out 이 더 최신·개별 검증). fan-out < summary
+    //     면 우리가 일부 보유 픽을 놓친 것(summary 가 더 많이 앎) → per-pick 리스트 대신 count 만 표시
+    //     (놓친 픽을 누락한 채 "전부"인 척 차단). summary 부재 시 = per-pick 신뢰(개별 검증으로 충분).
+    const trustList = (typeof summaryRunning !== 'number') || (runningPicks.length >= summaryRunning);
+    const others = runningPicks.filter(p => p.code !== headlineCode);
+    if (others.length === 0) return '';
+    if (!trustList) {
+      return `<div class="cal-pre-prev-pick-holdings cal-pre-prev-pick-holdings--countonly">`
+        + `<span class="cal-pre-prev-pick-holdings-label">외 ${others.length}종 보유 중</span>`
+        + `</div>`;
+    }
+    const rows = others.map(p =>
+      `<div class="cal-pre-prev-pick-holding-row"${p.code ? ` data-prev-pick-code="${escapeHtml(p.code)}"` : ''}>`
+      + `<span class="cal-pre-prev-pick-holding-name">${escapeHtml(p.name || '—')}</span>`
+      + `<span class="cal-pre-prev-pick-holding-meta">진입가 ${escapeHtml(_krw(p.pk.entry_price))} · 만기 ${escapeHtml(p.pk.expiry_date || '—')}</span>`
+      + `</div>`).join('');
+    return `<div class="cal-pre-prev-pick-holdings" role="group" aria-label="외 ${others.length}종 보유 중">`
+      + `<div class="cal-pre-prev-pick-holdings-label">외 ${others.length}종 보유 중</div>`
+      + rows
+      + `</div>`;
+  } catch (_) { return ''; }
+}
+
 function _formatCountdownToOpen(now) {
   const _now = now || new Date();
   const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 9, 0, 0, 0);
@@ -744,8 +820,23 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
       try {
         const pd = prevData || (typeof loadCalDayData === 'function' ? await loadCalDayData(prevDate) : null);
         if (!pd || !pd.interpretedByName) return;
-        const chipHtml = _buildPrevPickChipHtml(pd.interpretedByName, prevDate);
+        let chipHtml = _buildPrevPickChipHtml(pd.interpretedByName, prevDate);
         if (!chipHtml) return;
+        // r5 (2026-06-11, 대표 도메인 정정) — 현재 보유 중(running) 픽 복수 도출 → "외 N종 보유 중" 병기.
+        //   headline = prevDate 픽(이미 칩). 그 외 running 픽이 있으면 칩 하단에 보유 리스트 append.
+        //   데이터 부재/단일 보유 시 빈 문자열(무회귀). race 로 chip 이 비면 enrich 생략.
+        try {
+          let _headlineCode = '';
+          for (const itp of pd.interpretedByName.values()) {
+            const p = itp && itp.pm320_pick;
+            if (p && p.is_pick === true) { _headlineCode = itp.code || itp.ticker || ''; break; }
+          }
+          const _running = await _collectRunningPicks(prevDate, 8);
+          const _summaryRunning = (pd.pm320Summary && typeof pd.pm320Summary.running === 'number')
+            ? pd.pm320Summary.running : undefined;
+          const _holdingsHtml = _buildRunningHoldingsHtml(_running, _headlineCode, _summaryRunning);
+          if (_holdingsHtml) chipHtml = chipHtml + _holdingsHtml;
+        } catch (_) { /* graceful — 보유 리스트 생략 */ }
         // 렌더 도중 다른 시점으로 전환됐으면(여전히 PRE_MARKET inner 가 문서에 있나) 무시 (race graceful).
         if (!document.body.contains(inner)) return;
         if (portal && document.body.contains(portal)) {
@@ -921,6 +1012,14 @@ function _syncPickBar() {
     const eyebrowEl2 = prevChip.querySelector('.cal-pre-prev-pick-eyebrow');
     eyebrowText = (eyebrowEl2 && eyebrowEl2.textContent.trim()) || '어제의 픽';
     resultEl = markEl;          // 칩의 결과 텍스트 mirror
+    // r5 (2026-06-11, 대표 도메인 정정) — running 보유가 복수면 픽바 종목명에 "외 N종" 카운트 병기.
+    //   카운트 = 같은 portal 내 보유 리스트(.cal-pre-prev-pick-holdings-label) verbatim mirror(추정 0).
+    try {
+      const _portalEl = document.getElementById('pm320-prepick-portal');
+      const _holdLabel = _portalEl && _portalEl.querySelector('.cal-pre-prev-pick-holdings-label');
+      const _m = _holdLabel && _holdLabel.textContent.match(/외\s*(\d+)\s*종/);
+      if (_m) nameText = `${nameText} · 외 ${_m[1]}종`;
+    } catch (_) { /* graceful */ }
     jumpCode = null;            // 장전엔 풀 카드 미렌더 → 클릭 시 전일 패널 자동 펼침(아래 P1 참조)
     // R21 P1 (클릭 보상) — 장전 픽바 클릭이 같은 칩으로만 scroll 하면 정보 증분 0.
     //   칩이 종목 code 를 들고 있으면(data-prev-pick-code) 클릭 시 "전일 데이터 보기" 토글을
@@ -1499,9 +1598,12 @@ function renderCalExpandContent(date, data) {
       ${resultStrip}`;
   };
   // PICK 배지 (DSN-001 §2 — 헤더 .cal-feature-badges 좌측 첫 자리)
-  const _buildPm320PickBadge = (pk) => {
+  // r5 (2026-06-11, 대표 P1 시점 분기) — 과거 날짜 보기 시 "오늘" → "이날의" (divider·요약카드 headLabel 정합).
+  const _buildPm320PickBadge = (pk, isPast) => {
     if (!pk || !pk.is_pick) return '';
-    return `<span class="cal-pm320-pick-badge" aria-label="오늘 15:20에 PM320이 추천한 종목" title="오늘 15:20 카톡 6차 추천"><svg class="cal-pm320-pick-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="cal-pm320-pick-label">오늘 PM320 추천</span></span>`;
+    const _lbl = isPast ? '이날의 PM320 추천' : '오늘 PM320 추천';
+    const _aria = isPast ? '이 날 15:20에 PM320이 추천한 종목' : '오늘 15:20에 PM320이 추천한 종목';
+    return `<span class="cal-pm320-pick-badge" aria-label="${_aria}" title="15:20 카톡 6차 추천"><svg class="cal-pm320-pick-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="cal-pm320-pick-label">${_lbl}</span></span>`;
   };
   // 추천/결과 row (DSN-001 §3 — .cal-feature-summary 마지막 줄)
   const _buildPm320RecRow = (pk, code, authClose) => {
@@ -2147,7 +2249,11 @@ function renderCalExpandContent(date, data) {
       // v92TriggerPinHtml은 항상 ''이므로 조건/삽입 모두 무영향. 호출 보존(미래 부활 안전성).
       // DOC-20260603-DSN-001 §2 — PM320 PICK 배지 (좌측 첫 자리 prepend, 기존 배지 0건 수정).
       const pm320Pick = st.pm320_pick || null;
-      const pm320PickBadge = _buildPm320PickBadge(pm320Pick);
+      // r5 (2026-06-11) — 과거 날짜 보기 판정(배지 "오늘"→"이날의"). 아래 divider 의 시점 판정과 동일 식.
+      const _nowBadge = new Date();
+      const _todayBadge = `${_nowBadge.getFullYear()}-${String(_nowBadge.getMonth() + 1).padStart(2, '0')}-${String(_nowBadge.getDate()).padStart(2, '0')}`;
+      const _isPastBadge = !!(date && date < _todayBadge);
+      const pm320PickBadge = _buildPm320PickBadge(pm320Pick, _isPastBadge);
       const badgesRowHtml = (pm320PickBadge || pickBadge || bullishBadge || discBadgeHtml || creditBadgeHtml || statusBadges || v92TriggerPinHtml)
         ? `<div class="cal-feature-badges">${pm320PickBadge}${statusBadges}${pickBadge}${bullishBadge}${discBadgeHtml}${creditBadgeHtml}${v92TriggerPinHtml}</div>`
         : '';
