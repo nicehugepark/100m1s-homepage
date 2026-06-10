@@ -68,6 +68,13 @@
   /* footer = 항상 어두운 anchor. 라이트는 기존 var(--tx)=#1A1D26 동일, 다크는 페이지 bg보다 한 단계
      더 어둡게(밝은 판때기 회귀 봉쇄 — 다크에서 var(--tx)=#ECEEF3 near-white 반전 버그 fix). */
   --footer-bg: #1A1D26; --footer-tx: #8B95A8;
+
+  /* DSN-002 v2 신규 의미 토큰 — 라이트 기본값(다크는 --dk-* override). */
+  --sf2: #FFFFFF;            /* 카드 위 강조 표면(승률카드 top 등) — 라이트는 흰색 */
+  --bd2: #DDD6C4;            /* 인셋·강조 영역 보더 — 라이트는 연한 웜 그레이 */
+  --section-summary: #8A6810; /* 섹션 접힘 미니요약 — 라이트 WCAG 골드(다크 override) */
+  --cal-sun: #DC2626;       /* 달력 일요일(적) */
+  --cal-sat: #2563EB;       /* 달력 토요일(청) */
 }
 
 /* ── 다크모드 (DOC-20260610-DSN-001) ──────────────────────────────────────
@@ -76,37 +83,47 @@
    CSS는 @extend가 없으므로 변수 한 벌을 공통 그룹으로 빼서 두 셀렉터가 같은
    값을 가리키게 한다 (§1.5 한쪽만 갱신되는 거짓 충실성 회귀 방지). */
 :root {
-  /* 다크 값 한 벌 — light 모드에선 미참조(아래 셀렉터가 활성일 때만 적용) */
-  --dk-bg: #15161A; --dk-bg2: #1D1F24; --dk-sf: #22242B; --dk-bd: #33363F;
-  --dk-tx: #ECEEF3; --dk-tx2: #B4B9C4; --dk-dm: #7E8696;
-  --dk-am: #E8C063; --dk-am2: #F2D588; --dk-am3: #5A4A1E; --dk-am4: #2A2616;
-  --dk-ru: #D14258;
-  --dk-pos: #5FD88A; --dk-pos-bg: #16271C;
-  --dk-neg: #FF8A87; --dk-neg-bg: #2A1718;
-  --dk-neu: #8089A0; --dk-neu-bg: #1D1F24;
+  /* 다크 값 한 벌 — light 모드에선 미참조(아래 셀렉터가 활성일 때만 적용).
+     ── DOC-20260610-DSN-002 v2: 웜 차콜 전면 재설계 ────────────────────────
+     v1 쿨 차콜(#22242B 푸른끼)이 골드를 탁하게 한 주범 → 유일 합격 카드(#26241C 웜 차콜)
+     기조로 전 표면 통일. elevation = 명도 단조 증가(bg<bg2<sf<sf2<inset<pill-hover).
+     골드 정체성(햇살)과 웜 다크 = 같은 색온도 가족 → "한 시대의 색". */
+  /* 표면 명도 단계 (L0<L1<L2<L3<L3.5<L4) */
+  --dk-bg: #1A1813; --dk-bg2: #211E17; --dk-sf: #23211A; --dk-sf2: #2A2820;
+  /* 보더 2단 (기본 / 인셋·강조) */
+  --dk-bd: #3A352A; --dk-bd2: #48412F;
+  /* 텍스트 위계 3단 — 흐림(--dk-dm)도 3:1 하한 사수("안 보이는 글자" 봉쇄) */
+  --dk-tx: #F2EEE4; --dk-tx2: #BBB3A2; --dk-dm: #8E8676;
+  /* 골드 액센트 — 다크 전용 재조정, 웜 표면이라 비로소 안 탁함 */
+  --dk-am: #EBC25E; --dk-am2: #F4D27A; --dk-am3: #4A3E1C; --dk-am4: #2E2814;
+  --dk-section-summary: #D9B764; /* 섹션 접힘 미니요약 (#8A6810 하드코딩 흡수) */
+  --dk-ru: #D85568;
+  --dk-pos: #5FD88A; --dk-pos-bg: #19281C;
+  --dk-neg: #FF8A87; --dk-neg-bg: #2A1815;
+  --dk-neu: #8E96A8; --dk-neu-bg: #211E17;
   --dk-up: #FF6B6B; --dk-down: #5B9BFF;
   --dk-g04: rgba(255,255,255,0.05); --dk-g08: rgba(255,255,255,0.09);
   --dk-g40: rgba(255,255,255,0.42); --dk-g60: rgba(255,255,255,0.64);
   --dk-g80: rgba(255,255,255,0.85);
-  --dk-badge-disclosure: #5B9BFF; --dk-badge-predicted: #FF7A4D;
-  --dk-header-glass: rgba(21,22,26,0.85);
-  /* R15 다크 표면 일소 (DOC-20260610-DSN-001 §1.5) — 하드코드 순백 베일(rgba(255,255,255,X))을
-     토큰화. 라이트는 frosted white 유지, 다크는 함몰 표면(카드보다 한 단계 어둡게)으로 override.
-     --glass-sf: 프로스티드 표면(sticky 헤더/접힘 헤더/달력 헤드, 라이트 0.7 흰 베일)
-     --inset-sf: 픽카드 인셋(물타기/만기/잠정/상세보기 박스, 카드보다 함몰)
-     --inset-bd: 인셋 경계
-     --pill-sf: 흰 알약 버튼(상세/매매 토글) 표면 / --pill-sf-hover: hover */
-  --dk-glass-sf: rgba(34,36,43,0.82);
-  --dk-inset-sf: #202227; --dk-inset-bd: #33363F;
-  --dk-pill-sf: #22242B; --dk-pill-sf-hover: #2C2F37; --dk-pill-sf-active: #34373F;
-  --dk-pill-tx: #ECEEF3; --dk-pill-bd: #4A4E58;
-  --dk-chart-label-bg: rgba(21,22,26,0.85);
-  --dk-cal-future: #565B66;
-  /* 햇살 톤 그라데이션(toss-cal / rec-detail 펼침 본문) — 라이트 크림 → 다크 함몰 2단 */
-  --dk-warm-top: #1F2128; --dk-warm-bot: #191B20;
-  --dk-streak-tx: #F2D588; --dk-now-label-tx: #B4B9C4;
-  --dk-rec-code-tx: #C9B98A; --dk-note-tx: #B4B9C4;
-  --dk-wr-card-top: #26241C; --dk-wr-basis-tx: #9DA5B5;
+  --dk-badge-disclosure: #5B9BFF; --dk-badge-predicted: #FF8A55;
+  --dk-header-glass: rgba(26,24,19,0.85);
+  /* R15 다크 표면 일소 (DOC-20260610-DSN-001 §1.5) + v2 웜 재정의 (DSN-002 §3.1):
+     --glass-sf: 프로스티드 표면(sticky 헤더/접힘 헤더/달력 헤드) — 라이트 크림 그라데이션 폐기, 웜 반투명
+     --inset-sf: 픽카드 인셋(물타기/만기/잠정/상세보기) — v2: 카드보다 *밝게*(상승 elevation L3.5, 토스/Robinhood 관습)
+     --inset-bd: 인셋 경계 — 한 단 밝은 --dk-bd2(경계 실종 봉쇄, zoom-pickcard fix)
+     --pill-sf: 흰 알약 버튼 표면 / --pill-sf-hover: hover(한 단 더 밝게 L4) */
+  --dk-glass-sf: rgba(26,24,19,0.82);
+  --dk-inset-sf: #2E2A20; --dk-inset-bd: #48412F;
+  --dk-pill-sf: #2E2A20; --dk-pill-sf-hover: #383224; --dk-pill-sf-active: #423B2A;
+  --dk-pill-tx: #F2EEE4; --dk-pill-bd: #58503C;
+  --dk-chart-label-bg: rgba(26,24,19,0.85);
+  --dk-cal-future: #7A7464; /* v2: 어둡고 쿨(#565B66)→웜·밝게, 3:1 사수(on sf 3.46:1, on bg 3.81:1) */
+  --dk-cal-sun: #F87171; --dk-cal-sat: #60A5FA;
+  /* 햇살 톤 그라데이션(toss-cal / rec-detail 펼침 본문) — 라이트 크림 → 다크 웜 함몰 2단 */
+  --dk-warm-top: #232017; --dk-warm-bot: #1D1B14;
+  --dk-streak-tx: #F4D27A; --dk-now-label-tx: #BBB3A2;
+  --dk-rec-code-tx: #D4C290; --dk-note-tx: #A39B8A;
+  --dk-wr-card-top: #2A2820; --dk-wr-basis-tx: #A39B8A;
 }
 /* 다크 토큰 매핑 — @media 추종(미설정자) + 수동 토글 양쪽 공통 (한 벌 정의) */
 @media (prefers-color-scheme: dark) {
@@ -133,7 +150,11 @@
     --warm-top: var(--dk-warm-top); --warm-bot: var(--dk-warm-bot);
     --warm2-top: var(--dk-warm-top); --warm2-bot: var(--dk-warm-bot);
     --warm3-top: var(--dk-warm-top); --warm3-bot: var(--dk-warm-bot);
-    --footer-bg: #0F1013; --footer-tx: #7E8696;
+    /* DSN-002 v2 신규 토큰 */
+    --sf2: var(--dk-sf2); --bd2: var(--dk-bd2);
+    --section-summary: var(--dk-section-summary);
+    --cal-sun: var(--dk-cal-sun); --cal-sat: var(--dk-cal-sat);
+    --footer-bg: #141210; --footer-tx: #8E8676;
   }
 }
 :root[data-theme="dark"] {
@@ -159,7 +180,11 @@
   --warm-top: var(--dk-warm-top); --warm-bot: var(--dk-warm-bot);
   --warm2-top: var(--dk-warm-top); --warm2-bot: var(--dk-warm-bot);
   --warm3-top: var(--dk-warm-top); --warm3-bot: var(--dk-warm-bot);
-  --footer-bg: #0F1013; --footer-tx: #7E8696;
+  /* DSN-002 v2 신규 토큰 */
+  --sf2: var(--dk-sf2); --bd2: var(--dk-bd2);
+  --section-summary: var(--dk-section-summary);
+  --cal-sun: var(--dk-cal-sun); --cal-sat: var(--dk-cal-sat);
+  --footer-bg: #141210; --footer-tx: #8E8676;
 }
 @media (max-width: 640px) {
   :root {
@@ -294,8 +319,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   display: inline-block;
   padding: 4px 12px; border-radius: 6px;
 }
-.section-title.up { color: var(--up); background: #FFF0F0; }
-.section-title.down { color: var(--down); background: #EAF1FF; }
+.section-title.up { color: var(--up); background: var(--neg-bg); }
+.section-title.down { color: var(--down); background: var(--bg2); }
 
 /* ───── 종목 리스트 (1단계 계단식) ───── */
 .stocks-list {
@@ -379,24 +404,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .cal-candles20-empty { display: none; }
 }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
-.cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
+.cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--pos-bg); color:var(--pos); border:1px solid var(--pos); vertical-align:middle; }
 .cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 var(--card-indent-badges); align-items:center; }
-.cal-credit-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; background:#FDE8E8; color:var(--up); border:1px solid #F5C2C2; vertical-align:middle; }
+.cal-credit-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; background:var(--neg-bg); color:var(--up); border:1px solid var(--up); vertical-align:middle; }
 /* REQ-031 — pill 통일 (border-radius: 9999px). 시각 일관성 (SPEC-001 §III). */
 /* REQ-045 §A — 헤더 배지 폰트 통일 (11px / weight 600 / letter-spacing 0.01em). */
 /* REQ-062 — margin-right 제거. 부모 .cal-feature-badges flex gap:6px 으로 형제 간격 통제 (들여쓰기 결함 fix). */
 .cal-status-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; vertical-align:middle; }
-.cal-status-badge.caution { background:#fff3cd; color:#856404; }
-.cal-status-badge.warning { background:#ffe0b2; color:#e65100; }
-.cal-status-badge.danger { background:#ffcdd2; color:#c62828; }
-.cal-status-badge.hot { background:#fce4ec; color:#c2185b; }
+.cal-status-badge.caution { background:var(--am3); color:var(--am); }
+.cal-status-badge.warning { background:var(--am3); color:var(--am); }
+.cal-status-badge.danger { background:var(--neg-bg); color:var(--neg); }
+.cal-status-badge.hot { background:var(--neg-bg); color:var(--ru); }
 /* REQ-008: 단일가매매 병기 배지 — 차콜 톤 (경보 톤과 구분, 부가 조치성) */
 .cal-status-badge.sev-single { background:#1F2937; color:#fff; font-weight:700; letter-spacing:0.2px; }
-.cal-status-detail { padding:4px 8px; margin:4px 0; background:rgba(255,152,0,0.06); border-left:2px solid #ff9800; border-radius:0 4px 4px 0; font-size:11px; line-height:1.5; color:#555; }
-.cal-status-detail .cal-badge-period { display:inline-block; font-weight:600; color:#e65100; margin-right:6px; }
-.cal-status-detail .cal-badge-summary { display:block; margin-top:2px; color:#333; }
-.cal-status-detail .cal-badge-condition { display:block; margin-top:2px; color:#c62828; font-weight:500; }
-.cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:#1565c0; font-size:10px; }
+.cal-status-detail { padding:4px 8px; margin:4px 0; background:rgba(255,152,0,0.06); border-left:2px solid var(--am); border-radius:0 4px 4px 0; font-size:11px; line-height:1.5; color:var(--tx2); }
+.cal-status-detail .cal-badge-period { display:inline-block; font-weight:600; color:var(--am); margin-right:6px; }
+.cal-status-detail .cal-badge-summary { display:block; margin-top:2px; color:var(--tx2); }
+.cal-status-detail .cal-badge-condition { display:block; margin-top:2px; color:var(--neg); font-weight:500; }
+.cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:var(--down); font-size:10px; }
 
 /* v3 사유 영역 — 라벨+표+인사이트 통합 (대표 정정 18:52 KST) */
 /* REQ-029 §2 — 사유 박스 시각 통합 정합 (SPEC-001 §IV.1).
@@ -411,28 +436,28 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 /* REQ-029 §3 — 라벨 sev-* 색상 톤다운 (강조 → 진중한 모노톤). */
 .cal-status-detail.v3 .cal-status-label {
   display: inline-block; font-size: 12px; font-weight: 500; padding: 0; border-radius: 0;
-  background: none; color: #1F2937;
+  background: none; color: var(--tx);
 }
-.cal-status-detail.v3 .cal-status-label.sev-caution { background: none; color: #92400E; }
-.cal-status-detail.v3 .cal-status-label.sev-warning { background: none; color: #C2410C; }
-.cal-status-detail.v3 .cal-status-label.sev-danger  { background: none; color: #991B1B; }
-.cal-status-detail.v3 .cal-status-label.sev-hot     { background: none; color: #9D174D; }
-.cal-status-detail.v3 .cal-status-period { font-size: 11px; color: #555; font-weight: 500; }
+.cal-status-detail.v3 .cal-status-label.sev-caution { background: none; color: var(--am); }
+.cal-status-detail.v3 .cal-status-label.sev-warning { background: none; color: var(--am); }
+.cal-status-detail.v3 .cal-status-label.sev-danger  { background: none; color: var(--neg); }
+.cal-status-detail.v3 .cal-status-label.sev-hot     { background: none; color: var(--ru); }
+.cal-status-detail.v3 .cal-status-period { font-size: 11px; color: var(--tx2); font-weight: 500; }
 /* 2026-04-22: 상태 배지 기간의 날짜 범위 강조 — 주황 bold + 살짝 배경 */
 .cal-badge-date-range {
-  color: #C05621; font-weight: 700; background: #FFF3E0;
+  color: var(--am); font-weight: 700; background: var(--am4);
   padding: 1px 5px; border-radius: 3px; font-variant-numeric: tabular-nums;
 }
 /* FLR-011 v5: 효력 기간 상태 마커 (예정/진행중/종료) */
 .cal-period-mark { font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-left: 4px; font-weight: 600; }
-.cal-period-mark.upcoming { background: #E3F2FD; color: #1565C0; }
-.cal-period-mark.active   { background: #FFEBEE; color: #C62828; }
-.cal-period-mark.ended    { background: #ECEFF1; color: #607D8B; }
+.cal-period-mark.upcoming { background: var(--bg2); color: var(--down); }
+.cal-period-mark.active   { background: var(--neg-bg); color: var(--neg); }
+.cal-period-mark.ended    { background: var(--neu-bg); color: var(--neu); }
 /* v4: KRX 단계 진행 표시 — "현재 X → 익일 Y 진입" (대표 v4 지시) */
 .cal-status-detail.v3 .cal-status-progress {
   font-size: 11px; color: var(--up); font-weight: 600;
-  background: #FFF7F7; padding: 4px 8px; border-radius: 4px;
-  border-left: 2px solid #C53939; margin: 2px 0; line-height: 1.5;
+  background: var(--neg-bg); padding: 4px 8px; border-radius: 4px;
+  border-left: 2px solid var(--up); margin: 2px 0; line-height: 1.5;
 }
 @media (max-width: 640px) {
   .cal-status-detail.v3 .cal-status-progress { font-size: 10.5px; padding: 4px 6px; }
@@ -447,7 +472,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .cal-status-predicted-tag {
   display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.3px;
-  color: #555; background: #EEE; padding: 1px 6px; border-radius: 3px;
+  color: var(--tx2); background: var(--bg2); padding: 1px 6px; border-radius: 3px;
   margin-left: 4px; vertical-align: middle;
 }
 .cal-status-badge.predicted {
@@ -455,12 +480,12 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .cal-status-detail.v3 .cal-status-table-wrap { overflow-x: auto; }
 .cal-status-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
-.cal-status-table th, .cal-status-table td { padding: 4px 6px; text-align: right; border-bottom: 1px solid #F0E5D2; white-space: nowrap; }
-.cal-status-table th { font-weight: 600; color: #888; background: #FFF6E5; text-align: center; font-size: 10px; }
-.cal-status-table td.th-cond { text-align: left; color: #444; max-width: 180px; white-space: normal; word-break: break-all; }
-.cal-status-table td.th-base { color: #777; }
-.cal-status-table td.th-thresh { color: #333; font-weight: 600; }
-.cal-status-table td.th-cur { color: #111; font-weight: 600; }
+.cal-status-table th, .cal-status-table td { padding: 4px 6px; text-align: right; border-bottom: 1px solid var(--bd); white-space: nowrap; }
+.cal-status-table th { font-weight: 600; color: var(--dm); background: var(--am4); text-align: center; font-size: 10px; }
+.cal-status-table td.th-cond { text-align: left; color: var(--tx2); max-width: 180px; white-space: normal; word-break: break-all; }
+.cal-status-table td.th-base { color: var(--dm); }
+.cal-status-table td.th-thresh { color: var(--tx2); font-weight: 600; }
+.cal-status-table td.th-cur { color: var(--tx); font-weight: 600; }
 .cal-status-table td.th-diff.pos { color: var(--up); font-weight: 600; }
 .cal-status-table td.th-diff.neg { color: var(--down); font-weight: 600; }
 .cal-status-table td.th-trig { text-align: center; }
@@ -468,22 +493,22 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 /* v3.3: 차이 컬럼 색상·기호 강조 (대표 19:53 KST), 발동 컬럼 폐기 */
 .cal-status-table.v33 td.th-diff { font-weight: 700; font-variant-numeric: tabular-nums; }
 .cal-status-table.v33 td.th-diff.trig { color: var(--up); font-weight: 800; }
-.cal-status-table.v33 td.th-diff.near { color: #E65100; }
+.cal-status-table.v33 td.th-diff.near { color: var(--am); }
 .cal-status-table.v33 td.th-diff.safe { color: var(--down); }
 .cal-status-detail.v3 .cal-status-insight {
-  font-size: 11px; color: #444; background: #FFF6E5; padding: 6px 8px;
+  font-size: 11px; color: var(--tx2); background: var(--am4); padding: 6px 8px;
   border-radius: 4px; line-height: 1.5;
 }
-.cal-status-detail.v3 .cal-status-regulation { font-size: 11px; color: #1565c0; }
+.cal-status-detail.v3 .cal-status-regulation { font-size: 11px; color: var(--down); }
 /* REQ-008: 단기과열 지정 단일가매매 부기 라인 — 차콜 컬러 스트립 + 볼드 (Option A) */
 .cal-status-detail.v3 .cal-status-single-note {
-  font-size: 11.5px; color: #1F2937; font-weight: 600;
-  background: rgba(31,41,55,0.05); border-left: 3px solid #1F2937;
+  font-size: 11.5px; color: var(--tx); font-weight: 600;
+  background: rgba(31,41,55,0.05); border-left: 3px solid var(--tx);
   padding: 5px 8px 5px 10px; border-radius: 0 4px 4px 0; line-height: 1.5;
 }
-.cal-status-detail.v3 .cal-status-single-note strong { color: #1F2937; font-weight: 800; }
-.cal-status-detail.v3 .cal-status-single-note .cal-status-single-src { color: #6B7280; font-weight: 500; font-size: 10.5px; margin-left: 2px; }
-.cal-status-detail.v3 .cal-status-label.sev-credit { background: none; color: #991B1B; }
+.cal-status-detail.v3 .cal-status-single-note strong { color: var(--tx); font-weight: 800; }
+.cal-status-detail.v3 .cal-status-single-note .cal-status-single-src { color: var(--dm); font-weight: 500; font-size: 10.5px; margin-left: 2px; }
+.cal-status-detail.v3 .cal-status-label.sev-credit { background: none; color: var(--neg); }
 /* REQ-029 §2 — .credit / .krx 분기 rule 폐기 (base rule 통합).
    출처 구분은 라벨 텍스트(증권사 사유 단어 vs KRX 단계명)로만. */
 
@@ -497,20 +522,20 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   margin-top: 8px;
   font-size: 11.5px;
   line-height: 1.55;
-  color: #1F2937;
+  color: var(--tx);
 }
 .cal-credit-group + .cal-credit-group { margin-top: 8px; }
 .cal-credit-group__heading {
   font-size: 10.5px;
   font-weight: 600;
-  color: #475569;
+  color: var(--tx2);
   letter-spacing: 0.01em;
   margin-bottom: 3px;
 }
 .cal-credit-group__source {
   font-size: 10px;
   font-weight: 400;
-  color: #94A3B8;
+  color: var(--dm);
   margin-left: 4px;
 }
 
@@ -549,11 +574,11 @@ a.cal-credit-row:hover,
   line-height: 1.4;
   white-space: nowrap;
 }
-.cal-credit-row__label.sev-caution { background: #FEF3C7; color: #92400E; }
-.cal-credit-row__label.sev-warning { background: #FFEDD5; color: #C2410C; }
+.cal-credit-row__label.sev-caution { background: var(--am3); color: var(--am); }
+.cal-credit-row__label.sev-warning { background: var(--am4); color: var(--am); }
 .cal-credit-row__label.sev-danger,
-.cal-credit-row__label.sev-credit  { background: #FEE2E2; color: #991B1B; }
-.cal-credit-row__label.sev-hot     { background: #FCE7F3; color: #9D174D; }
+.cal-credit-row__label.sev-credit  { background: var(--neg-bg); color: var(--neg); }
+.cal-credit-row__label.sev-hot     { background: var(--neg-bg); color: var(--ru); }
 
 /* 본문 요약 — 가변, 잘림 처리 (cal-disc-summary 정합) */
 .cal-credit-row__summary {
@@ -572,7 +597,7 @@ a.cal-credit-row:hover,
 /* 시점 — · 구분자 회색. 본문 우측 또는 라벨 우측에 nowrap. */
 .cal-credit-row__period {
   font-size: 10.5px;
-  color: #64748B;
+  color: var(--dm);
   font-weight: 400;
   flex-shrink: 0;
   white-space: nowrap;
@@ -580,7 +605,7 @@ a.cal-credit-row:hover,
 .cal-credit-row__period::before {
   content: '·';
   margin-right: 6px;
-  color: #CBD5E1;
+  color: var(--dm);
 }
 
 /* 우측 외부 링크 아이콘 (cal-disc-ext 정합) */
@@ -597,11 +622,11 @@ a.cal-credit-row:hover,
 .cal-status-detail.v3 .cal-status-dart-link {
   display: inline-flex; align-items: center; gap: 4px;
   margin-top: 4px; padding: 3px 8px;
-  font-size: 11px; font-weight: 600; color: #1565c0;
-  background: #E3F2FD; border: 1px solid #90CAF9; border-radius: 4px;
+  font-size: 11px; font-weight: 600; color: var(--down);
+  background: var(--bg2); border: 1px solid var(--down); border-radius: 4px;
   text-decoration: none; line-height: 1.4;
 }
-.cal-status-detail.v3 .cal-status-dart-link:hover { background: #BBDEFB; color: #0D47A1; }
+.cal-status-detail.v3 .cal-status-dart-link:hover { background: var(--bg2); color: var(--down); }
 .cal-status-detail.v3 .cal-status-dart-link svg { opacity: 0.7; }
 
 @media (max-width: 640px) {
@@ -617,20 +642,20 @@ a.cal-credit-row:hover,
 .cal-status-section { margin-top: 10px; }
 .cal-status-section:first-of-type { margin-top: 6px; }
 .cal-status-section h3 {
-  font-size: 11px; font-weight: 600; color: #8a8a8a;
-  border-top: 1px dashed #e0e0e0; padding-top: 8px;
+  font-size: 11px; font-weight: 600; color: var(--dm);
+  border-top: 1px dashed var(--bd); padding-top: 8px;
   margin: 0 0 4px; letter-spacing: 0.5px;
 }
-.cal-status-section.current h3 { color: #1e6fb8; }
-.cal-status-section.next h3 { color: #c17000; }
-.cal-status-section.regulation h3 { color: #555; }
-.cal-status-current-item { font-size: 12px; margin: 2px 0; color: #333; line-height: 1.5; }
-.cal-status-current-item.ended { color: #607d8b; }
-.cal-status-next-header { font-size: 12px; color: #444; margin: 3px 0; line-height: 1.5; }
-.cal-status-next-note { font-size: 10.5px; color: #8a6d3b; font-style: italic; margin: 3px 0 0; }
+.cal-status-section.current h3 { color: var(--down); }
+.cal-status-section.next h3 { color: var(--am); }
+.cal-status-section.regulation h3 { color: var(--tx2); }
+.cal-status-current-item { font-size: 12px; margin: 2px 0; color: var(--tx2); line-height: 1.5; }
+.cal-status-current-item.ended { color: var(--neu); }
+.cal-status-next-header { font-size: 12px; color: var(--tx2); margin: 3px 0; line-height: 1.5; }
+.cal-status-next-note { font-size: 10.5px; color: var(--am); font-style: italic; margin: 3px 0 0; }
 .cal-status-table-title {
   font-size: 12px; font-weight: 600; margin: 6px 0 4px;
-  color: #c17000;
+  color: var(--am);
 }
 .cal-status-detail.v5 .cal-status-insight { margin: 0; }
 .cal-status-detail.v5 .cal-status-insight.predicted { opacity: 0.85; font-style: italic; }
@@ -648,7 +673,7 @@ a.cal-credit-row:hover,
 .cal-status-section.v6 { margin-top: 10px; }
 .cal-status-section.v6.intro {
   margin-top: 6px;
-  border-top: 1px dashed #e0e0e0;
+  border-top: 1px dashed var(--bd);
   padding-top: 6px;
 }
 .cal-status-section.v6.intro > summary {
@@ -658,34 +683,34 @@ a.cal-credit-row:hover,
 }
 .cal-status-section.v6.intro > summary::-webkit-details-marker { display: none; }
 .cal-status-section.v6.intro > summary::before {
-  content: '▸'; font-size: 10px; color: #8a8a8a; transition: transform 0.15s ease;
+  content: '▸'; font-size: 10px; color: var(--dm); transition: transform 0.15s ease;
 }
 .cal-status-section.v6.intro[open] > summary::before { transform: rotate(90deg); }
 .cal-status-section.v6.intro > summary > h3 {
   border-top: none; padding-top: 0; margin: 0;
-  font-size: 11px; font-weight: 600; color: #8a8a8a; letter-spacing: 0.5px;
+  font-size: 11px; font-weight: 600; color: var(--dm); letter-spacing: 0.5px;
 }
 .cal-status-intro-body {
   margin-top: 6px; padding: 6px 8px;
-  font-size: 11.5px; color: #555; line-height: 1.55;
-  background: #FAFAF5; border-left: 2px solid #d0d0d0; border-radius: 0 4px 4px 0;
+  font-size: 11.5px; color: var(--tx2); line-height: 1.55;
+  background: var(--bg2); border-left: 2px solid var(--bd); border-radius: 0 4px 4px 0;
 }
-.cal-status-section.v6.schedule h3 { color: #1e6fb8; }
-.cal-status-section.v6.rules h3 { color: #C05621; }
-.cal-v6-schedule-item { font-size: 12px; color: #333; line-height: 1.55; margin: 3px 0; }
+.cal-status-section.v6.schedule h3 { color: var(--down); }
+.cal-status-section.v6.rules h3 { color: var(--am); }
+.cal-v6-schedule-item { font-size: 12px; color: var(--tx2); line-height: 1.55; margin: 3px 0; }
 .cal-v6-schedule-date {
-  color: #C05621; font-weight: 700;
-  background: #FFF3E0; padding: 1px 5px; border-radius: 3px;
+  color: var(--am); font-weight: 700;
+  background: var(--am4); padding: 1px 5px; border-radius: 3px;
   font-variant-numeric: tabular-nums;
 }
-.cal-v6-schedule-hint { font-size: 10.5px; color: #888; margin-left: 2px; }
+.cal-v6-schedule-hint { font-size: 10.5px; color: var(--dm); margin-left: 2px; }
 .cal-v6-reason { margin-top: 4px; }
 .cal-v6-reason-body {
   margin-top: 3px; margin-left: 12px;
   padding: 5px 8px;
-  font-size: 11.5px; color: #444; line-height: 1.5;
-  background: #F7F7F3; border-radius: 4px;
-  border-left: 2px solid #bdbdbd;
+  font-size: 11.5px; color: var(--tx2); line-height: 1.5;
+  background: var(--bg2); border-radius: 4px;
+  border-left: 2px solid var(--bd);
 }
 .cal-v6-reason-line { margin: 1px 0; word-break: keep-all; overflow-wrap: anywhere; }
 .cal-v6-rule-list {
@@ -695,22 +720,22 @@ a.cal-credit-row:hover,
 .cal-v6-rule-item {
   position: relative;
   padding: 3px 6px 3px 18px;
-  font-size: 12px; color: #333; line-height: 1.5;
+  font-size: 12px; color: var(--tx2); line-height: 1.5;
   background: rgba(197, 86, 33, 0.05); border-radius: 4px;
 }
 .cal-v6-rule-item::before {
   content: '·'; position: absolute; left: 8px; top: 3px;
-  font-size: 16px; font-weight: 700; color: #C05621; line-height: 1;
+  font-size: 16px; font-weight: 700; color: var(--am); line-height: 1;
 }
 .cal-v6-rule-footnote {
   margin-top: 6px; padding: 4px 8px;
-  font-size: 11px; color: #555;
-  background: #FFF9F2; border-left: 2px solid #FFB74D; border-radius: 0 4px 4px 0;
+  font-size: 11px; color: var(--tx2);
+  background: var(--am4); border-left: 2px solid var(--am3); border-radius: 0 4px 4px 0;
 }
 .cal-v6-rule-dart { margin-top: 6px; }
 .cal-v6-rule-pending {
-  padding: 6px 8px; font-size: 11px; color: #888; font-style: italic;
-  background: #F5F5F0; border-radius: 4px;
+  padding: 6px 8px; font-size: 11px; color: var(--dm); font-style: italic;
+  background: var(--bg2); border-radius: 4px;
 }
 @media (max-width: 640px) {
   .cal-v6-schedule-item { font-size: 11px; }
@@ -720,16 +745,16 @@ a.cal-credit-row:hover,
   .cal-status-intro-body { font-size: 10.5px; padding: 5px 6px; }
 }
 
-.cal-threshold { font-size:11px; padding:1px 0; color:#555; }
-.cal-threshold.triggered { color:#c62828; font-weight:600; }
-.cal-threshold.safe { color:#2e7d32; }
+.cal-threshold { font-size:11px; padding:1px 0; color:var(--tx2); }
+.cal-threshold.triggered { color:var(--neg); font-weight:600; }
+.cal-threshold.safe { color:var(--pos); }
 .cal-spark-empty { width:80px; height:32px; background: var(--g04); border-radius:4px; flex-shrink:0; }
-.cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:#FFF3E0; color:#E65100; border:1px solid #FFCC80; vertical-align:middle; }
+.cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:var(--am4); color:var(--am); border:1px solid var(--am3); vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
 .cal-disc-cat { flex-shrink:0; min-width:42px; text-align:center; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
-.cal-disc-cat.cb { background:#FFF3E0; color:#E65100; }
-.cal-disc-cat.credit { background:#FDE8E8; color:var(--up); }
+.cal-disc-cat.cb { background:var(--am4); color:var(--am); }
+.cal-disc-cat.credit { background:var(--neg-bg); color:var(--up); }
 .cal-disc-summary {
   flex:1; min-width:0; line-height:1.4;
   /* v2.5: 1줄 클램프 + 모바일 잘림 방지 (대표 정정 16:57 KST) */
@@ -743,8 +768,8 @@ a.cal-credit-row:hover,
 }
 .cal-disc-ext { flex-shrink:0; color:var(--dm); }
 .cal-disc-more { font-size:10.5px; color:var(--dm); padding:2px 0; font-style:italic; }
-.cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:#444; white-space:normal; word-break:keep-all; line-height:1.45; }
-.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:#EEE; color:#555; vertical-align:1px; }
+.cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:var(--tx2); white-space:normal; word-break:keep-all; line-height:1.45; }
+.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:var(--bg2); color:var(--tx2); vertical-align:1px; }
 /* v2.5: cal-disc-condition 스타일 보존 (다른 영역에서 쓰일 수 있음). disc 영역에서는 더 이상 노출 안 함 */
 .cal-disc-condition { display:block; font-size:10.5px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
 /* v2.5: 모바일 disc 영역 word-break 강화 */
@@ -757,7 +782,7 @@ a.cal-credit-row:hover,
 }
 .cal-credit-reason { margin-top:6px; }
 .cal-credit-reason .cal-disc-item { color:var(--up); }
-.cal-credit-reason .cal-disc-item:hover { color:#A02828; }
+.cal-credit-reason .cal-disc-item:hover { color:var(--neg); }
 .judgment-strength {
   font-weight: 700;
   font-size: 9px;
@@ -937,7 +962,7 @@ a.cal-credit-row:hover,
 .lut-streak {
   font-size: 10px; font-weight: 700;
   padding: 1px 6px; border-radius: 999px;
-  background: #FFF4D1; color: #6B4A0A;
+  background: var(--am3); color: var(--am);
   flex-shrink: 0;
   white-space: nowrap;
 }
@@ -1108,7 +1133,7 @@ a.cal-credit-row:hover,
   flex-shrink: 0;
 }
 .theme-tree-uncollected { font-size: 10px; color: var(--dm); margin-left: 6px; }
-.theme-tree-stock-count { font-size: 10px; color: #8B95A8; margin-left: 6px; flex-shrink: 0; white-space: nowrap; }
+.theme-tree-stock-count { font-size: 10px; color: var(--dm); margin-left: 6px; flex-shrink: 0; white-space: nowrap; }
 .theme-tree-children {
   overflow: hidden; transition: max-height 0.2s ease;
 }
@@ -1200,7 +1225,7 @@ a.cal-credit-row:hover,
 .nightly-us-summary .pm320-section-header { padding: 4px 0; }
 .pm320-section-summary {
   /* R13 P0 대비: 접힘 미니요약 골드 #C49930(2.64:1) → #8A6810(4.99:1 on white, WCAG AA). */
-  font-size: 12px; font-weight: 700; color: #8A6810;
+  font-size: 12px; font-weight: 700; color: var(--section-summary);
   white-space: nowrap; flex: 0 0 auto;
 }
 .pm320-section-chevron {
@@ -1316,7 +1341,7 @@ a.cal-credit-row:hover,
 .theme-trend-legend-item .swatch { position: relative; }
 .theme-trend-legend-item.selected .swatch::after {
   content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-  height: 2px; background: #C49930; border-radius: 1px;
+  height: 2px; background: var(--am); border-radius: 1px;
 }
 /* 대표 catch (5/8 06:50): is-overflow dim 정책 폐기 — legend 상위 12개만 표시.
    단계 2 (차트 가로 스크롤 + viewport 동적 legend sync) 별도 사이클. */
@@ -1333,7 +1358,7 @@ a.cal-credit-row:hover,
 .trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; margin-bottom: 8px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
-.trend-detail-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
+.trend-detail-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--bd); }
 .td-candle { width: 20px; min-width: 16px; padding: 4px 2px; }
 .th-candle { width: 20px; min-width: 16px; }
 /* qa-2 #5 — 양 list 우측 정렬 통일 (LUT가 SoT 측 누락 발견). 종목명은 left default 유지. */
@@ -1512,17 +1537,17 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   transition: background 0.12s, color 0.12s;
 }
 .toss-cal-cell.empty { color: var(--tx2); }
-.toss-cal-cell.no-data.sunday { color: #E84142; }
-.toss-cal-cell.no-data.saturday { color: #2D6AE0; }
-.toss-cal-cell.no-data.holiday { color: #E84142; }
+.toss-cal-cell.no-data.sunday { color: var(--cal-sun); }
+.toss-cal-cell.no-data.saturday { color: var(--down); }
+.toss-cal-cell.no-data.holiday { color: var(--cal-sun); }
 .toss-cal-cell.future { color: var(--cal-future); cursor: not-allowed; pointer-events: none; } /* R15: 다크에서 --bd(#33363F)는 배경과 거의 동색 → 가독 회복(#565B66) */
 .toss-cal-cell.outside { visibility: hidden; }
 .toss-cal-cell.no-data { opacity: 0.35; pointer-events: none; }
 .toss-cal-cell.market-hours { opacity: 0.7; cursor: pointer; }
 .toss-cal-cell.weekend { opacity: 0.7; }
-.toss-cal-cell.sunday { color: #E84142; }
-.toss-cal-cell.saturday { color: #2D6AE0; }
-.toss-cal-cell.holiday { color: #E84142; }
+.toss-cal-cell.sunday { color: var(--cal-sun); }
+.toss-cal-cell.saturday { color: var(--cal-sat); }
+.toss-cal-cell.holiday { color: var(--cal-sun); }
 .toss-cal-cell.selected.sunday,
 .toss-cal-cell.selected.saturday,
 .toss-cal-cell.selected.holiday { color: #fff !important; }
@@ -1630,15 +1655,15 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 /* 2026-05-27 — "HH:MM 기준" freshness 라벨. stale(장중 30분+ 지연)일 때만 황금색 + 앞에 점(•). 차단 없음. */
 .cal-day-meta__updated {
   font-size: 11px;
-  color: #94A3B8;
+  color: var(--dm);
   font-weight: 400;
   letter-spacing: 0.01em;
 }
 .cal-day-meta__updated.is-stale {
-  color: #B8860B;
+  color: var(--am);
 }
 .cal-day-meta__dot {
-  color: #E8C063;
+  color: var(--am2);
   margin-right: 3px;
   font-size: 11px;
 }
@@ -1771,7 +1796,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 10.5px; font-weight: 700; vertical-align: middle;
 }
 .idx-fut-status .idx-fut-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.idx-fut-status.open { color: #1A7F4B; }
+.idx-fut-status.open { color: var(--pos); }
 .idx-fut-status.open .idx-fut-dot { background: #22C55E; }
 .idx-fut-status.closed { color: var(--dm); }
 .idx-fut-status.closed .idx-fut-dot { background: var(--dm); }
@@ -1784,9 +1809,9 @@ body.single-card-mode { background: var(--bg) !important; }
    앰버 톤(경고 위계, 추천 햇살색 아님). WCAG AA: #92560A on #FDF3DE ≈ 5.6:1. */
 .idx-fut-delay {
   flex-shrink: 0; font-size: 9.5px; font-weight: 700; line-height: 1;
-  padding: 2px 5px; border-radius: 999px; color: #92560A; background: #FDF3DE;
+  padding: 2px 5px; border-radius: 999px; color: var(--am); background: var(--am4);
 }
-.idx-fut-age--stale { color: #92560A; }
+.idx-fut-age--stale { color: var(--am); }
 /* 선물 카드 namecell — 배지·상태가 제목 줄에 함께 들어가되 줄바꿈 허용(390px ellipsis 금지). */
 .cal-feature-card--fut .cal-feature-namecell { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 0; }
 
@@ -1805,7 +1830,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .nightly-us-newschip { text-decoration: none; }
 .nightly-us-news-source {
   margin-left: 6px;
-  font-size: 9px; font-weight: 800; color: #8A6510;  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
+  font-size: 9px; font-weight: 800; color: var(--am);  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
   opacity: 0.85; white-space: nowrap;
 }
 
@@ -1878,7 +1903,7 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-ind-chip[data-tooltip]:active::after { opacity: 1; }
 }
 .cal-theme-sep {
-  color: #C8CDD6; font-size: 10px; font-weight: 300; margin: 0 5px; vertical-align: middle;
+  color: var(--dm); font-size: 10px; font-weight: 300; margin: 0 5px; vertical-align: middle;
 }
 
 /* 특징주 카드 — cal-trade-row와 동일 배경·색상 통일 */
@@ -1935,8 +1960,8 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 @keyframes cardHighlight {
   0%   { box-shadow: 0 0 0 0 rgba(197, 57, 57, 0.0); background: var(--bg2); }
-  15%  { box-shadow: 0 0 0 3px rgba(197, 57, 57, 0.45); background: #FFF4E8; }
-  60%  { box-shadow: 0 0 0 3px rgba(197, 57, 57, 0.25); background: #FFF9F0; }
+  15%  { box-shadow: 0 0 0 3px rgba(197, 57, 57, 0.45); background: var(--am4); }
+  60%  { box-shadow: 0 0 0 3px rgba(197, 57, 57, 0.25); background: var(--am4); }
   100% { box-shadow: 0 0 0 0 rgba(197, 57, 57, 0.0); background: var(--bg2); }
 }
 
@@ -2058,7 +2083,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-detail-toggle:hover {
   background: var(--pill-sf-hover);
-  border-color: #475569;          /* hover 진한 톤 보강 */
+  border-color: var(--tx2);          /* hover 진한 톤 보강 */
   color: var(--pill-tx);
 }
 .cal-detail-toggle:active { background: var(--pill-sf-active); }
@@ -2111,9 +2136,9 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;            /* REQ-045 §A — 헤더 배지 통일 */
   font-weight: 600;
   letter-spacing: 0.01em;     /* REQ-045 §A — letter-spacing 통일 */
-  color: #1E293B;
-  background: #E2E8F0;
-  border: 1px solid #CBD5E1;
+  color: var(--tx);
+  background: var(--bg2);
+  border: 1px solid var(--bd);
   padding: 2px 8px;
   border-radius: 9999px;  /* REQ-031 — pill 통일 */
   /* REQ-062 — margin-left 제거. 부모 flex gap 사용 (들여쓰기 결함 fix). */
@@ -2123,9 +2148,9 @@ body.single-card-mode { background: var(--bg) !important; }
 /* REQ-035 §B — content '📋' 제거. REQ-032 텍스트 링크형 정합 (SPEC-001 §IX#10).
    ::before 자체를 비워 마진/레이아웃 영향 없음. */
 .cal-disclosure-badge:hover {
-  background: #CBD5E1;
-  color: #0F172A;
-  border-color: #94A3B8;
+  background: var(--bd);
+  color: var(--tx);
+  border-color: var(--dm);
 }
 /* REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
    대표 발화 (2026-04-28 01:30 KST): 키움 강세 수식 + "강세" 배지 + 연속 카운트.
@@ -2137,9 +2162,9 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;            /* REQ-045 §A — 헤더 배지 통일 */
   font-weight: 600;
   letter-spacing: 0.01em;     /* REQ-045 §A — letter-spacing 통일 */
-  color: #92400E;
+  color: var(--am);
   background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
-  border: 1px solid #E8C063;
+  border: 1px solid var(--am3);
   padding: 2px 8px;
   border-radius: 9999px;
   /* REQ-062 — margin-left 제거. 부모 .cal-feature-badges flex gap 사용 (들여쓰기 결함 fix). */
@@ -2156,14 +2181,14 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: #92400E;
+  color: var(--am);
   background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
-  border: 1px solid #E8C063;
+  border: 1px solid var(--am3);
   padding: 2px 10px;
   border-radius: 9999px;
   vertical-align: middle;
 }
-.cal-pm320-pick-icon { color: #C49930; flex-shrink: 0; }
+.cal-pm320-pick-icon { color: var(--am); flex-shrink: 0; }
 .cal-pm320-pick-label { display: inline; }
 
 /* DSN-frontend §3.6.8 (2026-06-05) — PM320 추천 부재(보류일) 안내 라인.
@@ -2177,7 +2202,7 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 9px 14px;
   border-radius: 8px;
   background: var(--neu-bg);
-  border: 1px solid #D7DEEA;
+  border: 1px solid var(--bd);
   color: var(--neu);
   font-size: 12.5px;
   font-weight: 700;
@@ -2248,11 +2273,11 @@ body.single-card-mode { background: var(--bg) !important; }
   gap: 6px;
   margin-bottom: 11px;
 }
-.cal-pm320-today-rec-star { display: inline-flex; color: #C49930; flex-shrink: 0; }
+.cal-pm320-today-rec-star { display: inline-flex; color: var(--am); flex-shrink: 0; }
 .cal-pm320-today-rec-headlabel {
   font-size: 12px;
   font-weight: 800;
-  color: #92400E;
+  color: var(--am);
   letter-spacing: 0.01em;
 }
 .cal-pm320-today-rec-name {
@@ -2290,7 +2315,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 10.5px;
   font-weight: 700;
   /* R13 P0 대비: 라벨 --dm #8B95A8(2.78:1 on cell) → #5E6776(5.53:1, WCAG AA). */
-  color: #5E6776;
+  color: var(--tx2);
   letter-spacing: 0.01em;
 }
 /* R13 P1: 익절가가 물타기 체결 시 평단 하락으로 바뀌므로 단정 표기 회피 — "(조건부)" 명시.
@@ -2299,7 +2324,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-left: 3px;
   font-size: 9px;
   font-weight: 600;
-  color: #8A6810;
+  color: var(--section-summary);
 }
 .cal-pm320-today-rec-v {
   font-size: 13px;
@@ -2311,14 +2336,14 @@ body.single-card-mode { background: var(--bg) !important; }
   text-overflow: ellipsis;
 }
 /* 한국장 관습: 익절(가격 상승)=빨강, 물타기(가격 하락)=파랑 */
-.cal-pm320-today-rec-v--up { color: #D14343; }
-.cal-pm320-today-rec-v--dn { color: #2B6CB0; }
+.cal-pm320-today-rec-v--up { color: var(--up); }
+.cal-pm320-today-rec-v--dn { color: var(--down); }
 /* 익절 칸 보조 — 물타기 체결 시 평단 하락으로 바뀌는 익절가 병기 (풀 카드 SSOT 동일). */
 .cal-pm320-today-rec-v-sub {
   font-size: 10px;
   font-weight: 600;
   /* R13 P0 대비: --dm 2.78:1 → #5E6776 5.53:1 (WCAG AA). */
-  color: #5E6776;
+  color: var(--tx2);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   overflow: hidden;
@@ -2336,9 +2361,9 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--tx2);
   font-variant-numeric: tabular-nums;
 }
-.cal-pm320-today-rec-result--profit { color: #1A7F4B; background: rgba(26, 127, 75, 0.10); }
-.cal-pm320-today-rec-result--loss { color: #B8302E; background: rgba(192, 57, 43, 0.10); } /* R13 P1 대비: #C0392B(4.39:1) → #B8302E(4.84:1, WCAG AA). */
-.cal-pm320-today-rec-result--running { color: #92400E; }
+.cal-pm320-today-rec-result--profit { color: var(--pos); background: rgba(26, 127, 75, 0.10); }
+.cal-pm320-today-rec-result--loss { color: var(--neg); background: rgba(192, 57, 43, 0.10); } /* R13 P1 대비: #C0392B(4.39:1) → #B8302E(4.84:1, WCAG AA). */
+.cal-pm320-today-rec-result--running { color: var(--am); }
 .cal-pm320-today-rec-more {
   display: inline-flex;
   align-items: center;
@@ -2348,7 +2373,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 1px solid var(--inset-bd);
   border-radius: 8px;
   background: var(--inset-sf);   /* R15: 라이트 0.7 흰 / 다크 함몰 */
-  color: #92400E;
+  color: var(--am);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -2423,7 +2448,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 500;
   line-height: 1.45;
   /* R13 P0 대비: --dm 2.96:1 on amber → #5E6776 5.32:1 (WCAG AA). */
-  color: #5E6776;
+  color: var(--tx2);
 }
 /* 최대낙폭(MDD) 병기 — 빨강 톤(위험 정직). 승률 착시 차단. */
 .cal-pm320-wr-mdd {
@@ -2495,7 +2520,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 1px solid var(--bd);
   border-radius: 50%;
   background: var(--bg2);
-  color: #5B6373;                /* PM320-D6 P1-b — 대비 2.6:1 → 4.5:1+ (--bg2 #F2F4F8 기준 약 4.6:1) */
+  color: var(--tx2);                /* PM320-D6 P1-b — 대비 2.6:1 → 4.5:1+ (--bg2 #F2F4F8 기준 약 4.6:1) */
   font-size: 11px;               /* PM320-D6 P1-b — 10→11px 가독 */
   font-weight: 800;
   line-height: 1;
@@ -2543,7 +2568,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* DOC-20260603-DSN-001 §2.3 / §7.2 — PICK 좌측 액센트바 골드 강조 (이중 강조).
    --lu (상한가) 동시 존재 시 빨강 우선 (DSN-001 §2.3 / §7.2 정합). */
 .cal-feature-card.cal-feature-card--pm320-pick {
-  border-left: 4px solid #E8C063;
+  border-left: 4px solid var(--am3);
 }
 .cal-feature-card.cal-feature-card--lu.cal-feature-card--pm320-pick {
   border-left-color: var(--up);
@@ -2558,13 +2583,13 @@ body.single-card-mode { background: var(--bg) !important; }
    row wrapper 회색 박스 제거. 시각 차등은 아래 .pm320-rec-row--virtual .pm320-rec-toggle button 자체 layer 재배치.
    FLR-AGT-002 거짓 충실성 차단 3 layer 본질 유지: (a) button border + color + opacity 시각 (b) aria-label "가상" 명시 (c) detail 본문 4 row 라벨. */
 .pm320-rec-row--virtual .pm320-rec-toggle {
-  border-color: #94A3B8;                         /* PICK #64748B 대비 한 단계 연하게 */
-  color: #475569;                                /* PICK #0F172A 대비 한 단계 muted */
+  border-color: var(--dm);                         /* PICK #64748B 대비 한 단계 연하게 */
+  color: var(--tx2);                                /* PICK #0F172A 대비 한 단계 muted */
   opacity: 0.92;
 }
 .pm320-rec-row--virtual .pm320-rec-toggle:hover {
-  border-color: #64748B;
-  color: #0F172A;
+  border-color: var(--dm);
+  color: var(--tx);
   opacity: 1;
 }
 /* PM320-D6 P0 — 비-픽(가상) 행 상단 "추천 아님" 안내 1줄. 중립 슬레이트 톤(경보 아님).
@@ -2579,7 +2604,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .pm320-rec-virtual-note b {
   font-weight: 700;
-  color: #475569;
+  color: var(--tx2);
 }
 .pm320-rec-toggle {
   /* DSN-001 §3.1 정정 옵션 squircle (2026-06-03 21:31 KST design-lead 4차 권고, 대표 verbatim 21:28 "상세 버튼과 매매 버튼 높이를 두 버튼의 중간 크기로 맞추고 두 버튼 모두 라운드형 버튼에서 모서리만 라운드인 버튼으로 번경해줘. 애플의 스쿼클 같이.") —
@@ -2608,7 +2633,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .pm320-rec-toggle:hover {
   background: var(--pill-sf-hover);              /* cal-detail-toggle 정합 */
-  border-color: #475569;
+  border-color: var(--tx2);
   color: var(--pill-tx);
 }
 .pm320-rec-toggle:active { background: var(--pill-sf-active); }
@@ -2635,10 +2660,10 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12px;
   flex-shrink: 0;
 }
-.pm320-rec-result-mark--profit { color: #1A7F37; }
+.pm320-rec-result-mark--profit { color: var(--pos); }
 .pm320-rec-result-mark--loss { color: var(--up); }
 .pm320-rec-result-mark--running { color: var(--g60, #6B7280); }
-.pm320-rec-result-mark--imminent { color: #92400E; }
+.pm320-rec-result-mark--imminent { color: var(--am); }
 /* .pm320-rec-chevron 폐기 (2026-06-03 옵션 B) — 텍스트 토글 "매매 보기" ↔ "접기"로 대체. */
 
 /* §3.4 / §7.4 — 펼침 본문 (햇살 톤, 4 row 매수·물타기·익절·만기청산) */
@@ -2666,7 +2691,7 @@ body.single-card-mode { background: var(--bg) !important; }
   align-items: center;        /* 매수/익절과 동일한 베이스라인 정합 */
   white-space: nowrap;        /* 좁은 라벨 칼럼(모바일 72px)에서도 라벨·? 분리 금지 */
   font-weight: 700;
-  color: #6B4A0A;
+  color: var(--am);
 }
 .pm320-rec-value { font-weight: 500; }
 .pm320-rec-value--sub {
@@ -2685,7 +2710,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 /* 최대 낙폭(MDD) — 낙폭은 손실 방향, 파란/회색 톤 (익절 초록과 구분). 대표 지시 2026-06-08 */
 .pm320-rec-value--mdd {
-  color: #2563A8;
+  color: var(--down);
   font-weight: 700;
 }
 .pm320-rec-result-strip {
@@ -2696,15 +2721,15 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 700;
 }
 .pm320-rec-result-strip--profit {
-  background: #E8F5E9;
-  color: #1A7F37;
-  border: 1px solid #B8DDC2;
+  background: var(--pos-bg);
+  color: var(--pos);
+  border: 1px solid var(--pos);
 }
 .pm320-rec-result-strip--loss {
-  background: #FCE7E9;
+  background: var(--neg-bg);
   /* R13 P1 대비: 익절/만기손실 빨강 #C53939(4.42:1) → #B8302E(5.07:1, WCAG AA). */
-  color: #B8302E;
-  border: 1px solid #E5A4AB;
+  color: var(--neg);
+  border: 1px solid var(--ru);
 }
 
 /* §7.5 — 다크모드 폐기 (2026-06-03 22:50 KST 대표 verbatim "다크모드는 없다. 매매 버튼에 다크모드가 적용된 게 있다면 모두 제거"). 본 서비스 라이트 고정. */
@@ -2761,7 +2786,7 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 5px 10px; border-radius: 999px;
   /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. */
   background: linear-gradient(90deg, #FFF4D1, #FFE9A8);
-  border: 1px solid #E8C063; color: #6B4A0A;
+  border: 1px solid var(--am3); color: var(--am);
 }
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
@@ -2770,15 +2795,15 @@ body.single-card-mode { background: var(--bg) !important; }
   background: linear-gradient(90deg, var(--warm2-bot), var(--warm2-top));
   font-size: 12.5px; line-height: 1.5;
 }
-.cal-toppick b { color: #6B4A0A; }
+.cal-toppick b { color: var(--am); }
 .cal-grade-badge {
   font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
   padding: 3px 8px; border-radius: 999px;
   text-transform: uppercase;
 }
-.cal-grade-badge.grade-관심 { background: #FFF4D1; color: #6B4A0A; border: 1px solid #C49930; }
-.cal-grade-badge.grade-대기 { background: #F1F2F5; color: #6B7280; border: 1px solid #C9CCD2; }
-.cal-grade-badge.grade-회피 { background: #FCE7E9; color: #A01528; border: 1px solid #E5A4AB; }
+.cal-grade-badge.grade-관심 { background: var(--am3); color: var(--am); border: 1px solid var(--am); }
+.cal-grade-badge.grade-대기 { background: var(--neu-bg); color: var(--dm); border: 1px solid var(--bd); }
+.cal-grade-badge.grade-회피 { background: var(--neg-bg); color: var(--ru); border: 1px solid var(--ru); }
 .cal-ishikawa-line {
   font-size: 12.5px; line-height: 1.55; color: var(--tx);
   text-align: left;
@@ -2790,47 +2815,47 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12.5px; color: var(--dm); line-height: 1.6;
   text-align: left; white-space: normal; overflow: visible; text-overflow: unset;
 }
-.cal-causal .arrow { color: #C49930; margin: 0 4px; font-weight: 700; }
+.cal-causal .arrow { color: var(--am); margin: 0 4px; font-weight: 700; }
 /* Q-20260608-143 — 뉴스 시제 라벨(선물=실시간 / 정규장=미장 마감). 같은 영역 데이터 시제 분리 명시. */
 .cal-news-tense {
   display: inline-block; font-size: 10.5px; font-weight: 700; line-height: 1;
   padding: 2px 5px; margin-right: 6px; border-radius: 4px; vertical-align: 1px;
   letter-spacing: -0.2px; white-space: nowrap;
 }
-.cal-news-tense--realtime { color: #1f7a3d; background: rgba(31, 122, 61, 0.12); }
-.cal-news-tense--close { color: #6b6256; background: rgba(107, 98, 86, 0.12); }
+.cal-news-tense--realtime { color: var(--pos); background: rgba(31, 122, 61, 0.12); }
+.cal-news-tense--close { color: var(--dm); background: rgba(107, 98, 86, 0.12); }
 /* Q-20260608 정규장 장중 — 개장 중 "장중" 배지. P2(design): 가격 상승색(#C53939 빨강)·하락색
    (#1958C7 파랑) 어느 쪽과도 명확히 구분되는 앰버 계열(중립). 빨강(#c0392b)은 상승빨강과 인접해
    하락 카드에서 "상승?" 오인 → 앰버로 분리. 마감(--close, 회색)·realtime(녹)과도 대비. */
-.cal-news-tense--live { color: #B45309; background: rgba(180, 83, 9, 0.12); }
+.cal-news-tense--live { color: var(--am); background: rgba(180, 83, 9, 0.12); }
 .cal-factors {
   display: flex; flex-wrap: wrap; gap: 8px 16px;
   font-size: 12px; color: var(--tx2);
   margin-top: 6px;
 }
 .cal-factor { display: inline-flex; align-items: center; gap: 6px; }
-.cal-factor .label { font-weight: 700; color: #555; min-width: 28px; }
+.cal-factor .label { font-weight: 700; color: var(--tx2); min-width: 28px; }
 .cal-dots { display: inline-flex; gap: 3px; }
 .cal-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: #E5E7EB;
+  background: var(--bg2);
 }
-.cal-dot.on { background: #C49930; }
+.cal-dot.on { background: var(--am); }
 .cal-jooju {
   margin-top: 6px; padding: 8px 10px;
-  border-left: 3px solid #C49930;
+  border-left: 3px solid var(--am);
   background: rgba(232,192,99,0.08);
   font-size: 11.5px; line-height: 1.5;
   border-radius: 0 6px 6px 0;
 }
 .cal-jooju .one-line { color: var(--tx); font-weight: 600; }
-.cal-jooju .dissent { color: #A01528; font-size: 10.5px; margin-top: 4px; }
+.cal-jooju .dissent { color: var(--ru); font-size: 10.5px; margin-top: 4px; }
 .cal-risk-flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
 .cal-risk-chip {
   font-size: 9.5px; font-weight: 600;
   padding: 2px 6px; border-radius: 4px;
-  background: #FCE7E9; color: #A01528;
-  border: 1px solid #E5A4AB;
+  background: var(--neg-bg); color: var(--ru);
+  border: 1px solid var(--ru);
 }
 /* 해석 미완료 카드 — full 레이아웃 유지(대표 B안 2026-04-22). opacity만 약간 완화해 구분 */
 .cal-feature-card.no-interp { opacity: 0.78; }
@@ -2943,7 +2968,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-left: -5px;
   margin-top: -5px;
   background: #fff;
-  border: 1.5px solid #111;
+  border: 1.5px solid var(--tx);
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
@@ -2952,16 +2977,16 @@ body.single-card-mode { background: var(--bg) !important; }
   grid-template-columns: 1fr 1fr 1fr;
   gap: 4px;
   font-size: 11px;
-  color: #555;
+  color: var(--tx2);
   align-items: baseline;
 }
-.stock-range .range-meta strong { color: #111; font-weight: 600; }
+.stock-range .range-meta strong { color: var(--tx); font-weight: 600; }
 .stock-range .range-meta em { font-style: normal; margin-left: 2px; font-weight: 600; }
 .stock-range .range-meta em.up { color: var(--down); }
 .stock-range .range-meta em.down { color: var(--up); }
 .stock-range .r-now { text-align: center; }
 .stock-range .r-high { text-align: right; }
-.stock-range .r-date { display: block; color: #999; font-size: 10px; margin-top: 1px; }
+.stock-range .r-date { display: block; color: var(--dm); font-size: 10px; margin-top: 1px; }
 
 @media (max-width: 640px) {
   .stock-range { padding: 4px 6px 6px 26px; }
@@ -3002,7 +3027,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-feature-head.v2 .cal-feature-name {
   font-size: 15px;
   font-weight: 700;
-  color: #111;
+  color: var(--tx);
 }
 .cal-feature-meta {
   display: flex;
@@ -3010,7 +3035,7 @@ body.single-card-mode { background: var(--bg) !important; }
   justify-content: flex-start;
   gap: 6px;
   font-size: 12px;
-  color: #333;
+  color: var(--tx2);
 }
 /* v2.4: 메타 자식 모두 글로벌 셀렉터 무력화 + padding/margin 0 + 폰트 패밀리 통일 */
 .cal-feature-meta > span {
@@ -3030,7 +3055,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* v2.2: 거래대금 골드 (브랜드 --am, 700) */
 /* PM320-D6 P2 — 거래대금 텍스트 + (?) 칩 nowrap 묶음 (390px 단독 행 낙하 방지). 칩이 span 내부라 줄바꿈만 차단 */
 .cal-feature-meta .cal-trade-amount { color: var(--am); font-weight: 700; font-size: 12px; white-space: nowrap; }
-.cal-feature-meta .cal-meta-sep { color: #BBB; font-weight: 400; }
+.cal-feature-meta .cal-meta-sep { color: var(--dm); font-weight: 400; }
 
 /* 240일 레인지 v2 — 4행 (bar / 가격 / 등락률 / 날짜) */
 .stock-range.v2 {
@@ -3049,7 +3074,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .stock-range.v2 .range-row .r-high { text-align: right; }
 .stock-range.v2 .range-prices {
   font-size: 12px;
-  color: #111;
+  color: var(--tx);
   font-weight: 600;
   margin-top: 4px;
 }
@@ -3064,7 +3089,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .stock-range.v2 .range-pcts .r-now-label { color: var(--now-label-tx); font-weight: 500; font-size: 11px; }
 .stock-range.v2 .range-dates {
   font-size: 10px;
-  color: #999;
+  color: var(--dm);
 }
 
 @media (max-width: 640px) {
@@ -3086,27 +3111,27 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-rules-version-banner {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 12px; margin: 6px 0 10px;
-  background: #F4F6F8; border: 1px solid #D5DBE0; border-radius: 6px;
-  font-size: 12px; color: #555; line-height: 1.4;
+  background: var(--bg2); border: 1px solid var(--bd); border-radius: 6px;
+  font-size: 12px; color: var(--tx2); line-height: 1.4;
 }
 .cal-rules-version-icon { font-size: 13px; flex-shrink: 0; }
 .cal-rules-version-msg { flex: 1; }
 .cal-rules-version-close {
   background: transparent; border: 0; cursor: pointer;
-  color: #888; font-size: 16px; font-weight: 600;
+  color: var(--dm); font-size: 16px; font-weight: 600;
   padding: 0 4px; line-height: 1; flex-shrink: 0;
 }
-.cal-rules-version-close:hover { color: #333; }
+.cal-rules-version-close:hover { color: var(--tx2); }
 
 /* §16.1.1 기준 시각 라인 — §2 최상단, 회색 보조정보 */
 .cal-next-basis {
-  color: #6b7280 !important;
+  color: var(--dm) !important;
   font-weight: 500 !important;
 }
 .cal-next-basis-time {
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  color: #444;
+  color: var(--tx2);
 }
 
 /* §16.1.3 면책 서브텍스트 — "예상 진입" 직후, 들여쓰기 + 0.75rem 회색 */
@@ -3116,7 +3141,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-top: 2px;
   padding-left: 1em;
   font-size: 0.75rem;
-  color: #8a8a8a;
+  color: var(--dm);
   line-height: 1.4;
   font-weight: 400;
 }
@@ -3126,16 +3151,16 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-next-scenario-line {
   padding-left: 1em;
   font-size: 11.5px;
-  color: #444;
+  color: var(--tx2);
   font-variant-numeric: tabular-nums;
 }
 .cal-next-limit-up-warn {
   margin-top: 4px;
   padding: 3px 8px 3px 1em;
   font-size: 11px;
-  color: #c53939;
-  background: #FFF0F0;
-  border-left: 2px solid #c53939;
+  color: var(--up);
+  background: var(--neg-bg);
+  border-left: 2px solid var(--up);
   border-radius: 0 3px 3px 0;
 }
 
@@ -3152,17 +3177,17 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-reg-source-banner {
   margin: 4px 0 8px;
   padding: 6px 10px;
-  background: #FFF8E6;
-  border: 1px solid #FFD97A;
-  border-left: 3px solid #E6A23C;
+  background: var(--am4);
+  border: 1px solid var(--am3);
+  border-left: 3px solid var(--am);
   border-radius: 4px;
   font-size: 11.5px;
-  color: #7A5500;
+  color: var(--am);
   line-height: 1.45;
 }
 .cal-reg-source-banner.pending {
-  background: #F5F5F0; border-color: #D0D0C8; border-left-color: #999;
-  color: #777; font-size: 10.5px; padding: 4px 8px;
+  background: var(--bg2); border-color: var(--dm); border-left-color: var(--dm);
+  color: var(--dm); font-size: 10.5px; padding: 4px 8px;
 }
 .cal-reg-source-banner-title { font-weight: 700; margin-right: 4px; }
 
@@ -3170,52 +3195,52 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-path-overall {
   margin: 6px 0 4px;
   padding: 4px 8px;
-  background: #F7F9FC;
-  border-left: 2px solid #6A8BAA;
+  background: var(--bg2);
+  border-left: 2px solid var(--down);
   border-radius: 0 3px 3px 0;
-  font-size: 11.5px; color: #333; line-height: 1.5;
+  font-size: 11.5px; color: var(--tx2); line-height: 1.5;
 }
 .cal-path-overall.easiest {
-  background: #F0F8F0; border-left-color: #3C9A4A;
+  background: var(--pos-bg); border-left-color: var(--pos);
 }
-.cal-path-overall-label { font-weight: 700; color: #1e6fb8; margin-right: 4px; }
-.cal-path-overall.easiest .cal-path-overall-label { color: #2E7D32; }
+.cal-path-overall-label { font-weight: 700; color: var(--down); margin-right: 4px; }
+.cal-path-overall.easiest .cal-path-overall-label { color: var(--pos); }
 .cal-path-easiest-tag {
   display: inline-block; margin-left: 5px;
   padding: 1px 5px; font-size: 9.5px; font-weight: 600;
-  background: #E0F2E4; color: #2E7D32; border-radius: 3px;
+  background: var(--pos-bg); color: var(--pos); border-radius: 3px;
 }
 
 /* §13.4.3 이중 상태 (predicted_stage3_notice) */
 .cal-status-section.next.dual-next {
-  border-left: 3px solid #C17000;
+  border-left: 3px solid var(--am);
   padding-left: 8px;
   margin-left: -8px;
 }
 .cal-status-section.regulation.future-add h3,
 .cal-status-section.v6.rules.future-add h3 {
-  color: #C17000;
+  color: var(--am);
   font-style: italic;
 }
 .cal-status-section.v6.rules.future-add {
-  border-top: 1px dashed #FFB74D;
+  border-top: 1px dashed var(--am3);
   padding-top: 4px;
   margin-top: 6px;
 }
 .cal-v7-transition-note {
   margin: 4px 0;
   padding: 5px 8px;
-  background: #FFF7E8;
-  border-left: 2px solid #FFB74D;
+  background: var(--am4);
+  border-left: 2px solid var(--am3);
   border-radius: 0 3px 3px 0;
-  font-size: 11.5px; color: #5F4400; line-height: 1.5;
+  font-size: 11.5px; color: var(--am); line-height: 1.5;
 }
 .cal-v7-warn-after-attention {
   display: inline-block;
   margin-left: 4px;
   padding: 1px 5px;
   font-size: 9.5px; font-weight: 700;
-  background: #FFE4E1; color: var(--up);
+  background: var(--neg-bg); color: var(--up);
   border-radius: 3px; letter-spacing: 0.3px;
 }
 
@@ -3223,10 +3248,10 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-status-history-row {
   margin: 3px 0;
   padding: 3px 8px;
-  background: #F5F3EE;
-  border-left: 2px solid #B8A070;
+  background: var(--bg2);
+  border-left: 2px solid var(--am3);
   border-radius: 0 3px 3px 0;
-  font-size: 11px; color: #5F4F3A; line-height: 1.5;
+  font-size: 11px; color: var(--dm); line-height: 1.5;
 }
 .cal-status-history-label { font-weight: 700; margin-right: 4px; }
 .cal-status-history-chip {
@@ -3234,7 +3259,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin: 0 3px;
   padding: 0 5px;
   font-size: 10px; font-weight: 600;
-  background: #EDE5D0; color: #6A5530;
+  background: var(--am3); color: var(--am);
   border-radius: 3px;
 }
 
@@ -3246,7 +3271,7 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-status-detail.v3 .cal-status-table tr { display: block; }
   .cal-status-detail.v3 .cal-status-table tr {
     padding: 4px 0;
-    border-bottom: 1px dashed #e6e6e6;
+    border-bottom: 1px dashed var(--bd);
   }
   .cal-status-detail.v3 .cal-status-table td {
     display: inline-block;
@@ -3259,7 +3284,7 @@ body.single-card-mode { background: var(--bg) !important; }
     font-size: 11px;
     font-weight: 600;
     margin-bottom: 2px;
-    color: #333;
+    color: var(--tx2);
   }
 }
 
@@ -3281,7 +3306,7 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 1px 6px;
   font-size: 9.5px; font-weight: 500;
   background: rgba(107, 114, 128, 0.12);
-  color: #5a6070;
+  color: var(--tx2);
   border-radius: 3px;
   white-space: nowrap;
 }
@@ -3308,7 +3333,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* v9.8 DSN-010 §IV.1 — "지정 조건 상세" 라벨 폐기 (대표 본질 비판 #4 — 모호).
    16자 1줄 모바일 wrap 해소. cal-status-detail--reason modifier가 직접 사유 박스 구조 잔존. */
 .cal-feature-details .cal-status-head {
-  border-top: 1px dashed #e0e0e0;
+  border-top: 1px dashed var(--bd);
   padding-top: 6px;
   margin-top: 6px;
 }
@@ -3671,24 +3696,24 @@ body.single-card-mode { background: var(--bg) !important; }
 /* 효과별 색상 (severity SSOT) */
 .dsn-v95-effect-badge--trade-halt {     /* danger — 거래정지 */
   background: rgba(220, 38, 38, 0.10);
-  color: #DC2626;
+  color: var(--cal-sun);
   border: 1px solid rgba(220, 38, 38, 0.35);
 }
 /* REQ-082 Phase2 — 상한가 effect (햇살 정체성 그라데이션 + 진한 빨강 + 위계 +1단계) */
 .dsn-v95-effect-badge--limit-up {
   background: linear-gradient(135deg, #FFF4D1 0%, #FFE89A 100%);
-  color: #B91C1C;
-  border: 1px solid #E8C063;
+  color: var(--neg);
+  border: 1px solid var(--am3);
   font-weight: 700;
 }
 .dsn-v95-effect-badge--credit-block {   /* warning — 신용불가 */
   background: rgba(217, 119, 6, 0.10);
-  color: #D97706;
+  color: var(--am);
   border: 1px solid rgba(217, 119, 6, 0.35);
 }
 .dsn-v95-effect-badge--single-price {   /* info — 단일가 */
   background: rgba(29, 78, 216, 0.08);
-  color: #1D4ED8;
+  color: var(--down);
   border: 1px solid rgba(29, 78, 216, 0.30);
 }
 
@@ -3720,7 +3745,7 @@ body.single-card-mode { background: var(--bg) !important; }
   .dsn-v95-effect-badge--limit-up {
     border-width: 2px;
     background: transparent;
-    color: #B91C1C;
+    color: var(--neg);
   }
 }
 
@@ -3733,7 +3758,7 @@ body.single-card-mode { background: var(--bg) !important; }
    a11y: renderer.js에서 aria-label="상한가 종목" 부착.
 */
 .cal-feature-card--lu {
-  border-left: 3px solid #C53939;
+  border-left: 3px solid var(--up);
 }
 /* 다크모드 — 톤 보정 (effect-badge limit-up 다크모드 color #FCA5A5와 일관) */
 /* 고대비 모드 — border 강조 (a11y) */
@@ -3749,8 +3774,8 @@ body.single-card-mode { background: var(--bg) !important; }
 */
 .dsn-v9-tense-chip--imminent {
   background: rgba(229, 90, 43, 0.14);   /* base 0.10 → 0.14 (채도 +0.04) */
-  color: #E55A2B;
-  border: 1.5px dashed #E55A2B;          /* 점선 1.5px */
+  color: var(--am);
+  border: 1.5px dashed var(--am);          /* 점선 1.5px */
   font-weight: 700;                       /* base 600 → 700 (D+1 강조) */
 }
 .dsn-v9-tense-chip--imminent::before {
@@ -3940,7 +3965,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .dsn-v92-predicted-detail-only {
   margin: 12px 0;
   padding: 10px 12px;
-  border-left: 3px solid var(--badge-predicted, #E55A2B);
+  border-left: 3px solid var(--badge-predicted, var(--am));
   background: rgba(229, 90, 43, 0.04);
   border-radius: 4px;
 }
@@ -4264,9 +4289,9 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 10px;
   font-weight: 500;
   line-height: 1;
-  color: rgba(0,0,0,0.6);
-  background: rgba(0,0,0,0.04);
-  border: 1px solid rgba(0,0,0,0.08);
+  color: var(--g60);
+  background: var(--g04);
+  border: 1px solid var(--g08);
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
@@ -4274,29 +4299,29 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 
 .cal-chart-tv-chip:hover {
-  background: rgba(0,0,0,0.08);
-  color: rgba(0,0,0,0.85);
+  background: var(--g08);
+  color: var(--g80);
 }
 
 .cal-chart-tv-chip.is-on {
-  background: #C49930;
+  background: var(--am);
   color: #fff;
-  border-color: #A88639;
+  border-color: var(--am);
 }
 
 .cal-chart-tv-chip.is-on:hover {
-  background: #A88639;
+  background: var(--am);
 }
 
 .cal-chart-tv-chip:focus-visible {
-  outline: 2px solid #C49930;
+  outline: 2px solid var(--am);
   outline-offset: 2px;
 }
 
 /* category 별 hue 차별 (overlay = 햇살 톤 / sub-pane = blue / marker = pink / drawing = neutral) */
 .cal-chart-tv-chip[data-category="sub-pane"].is-on {
   background: #0064FF;
-  border-color: #0050CC;
+  border-color: var(--down);
 }
 .cal-chart-tv-chip[data-category="sub-pane"].is-on:hover {
   background: #0050CC;
@@ -4304,7 +4329,7 @@ body.single-card-mode { background: var(--bg) !important; }
 
 .cal-chart-tv-chip[data-category="marker"].is-on {
   background: #EC4899;
-  border-color: #C53980;
+  border-color: var(--ru);
 }
 .cal-chart-tv-chip[data-category="marker"].is-on:hover {
   background: #C53980;
@@ -4312,7 +4337,7 @@ body.single-card-mode { background: var(--bg) !important; }
 
 .cal-chart-tv-chip[data-category="drawing"].is-on {
   background: #6B7A99;
-  border-color: #4D5A78;
+  border-color: var(--down);
 }
 
 .cal-chart-tv-main {
