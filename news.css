@@ -58,7 +58,7 @@
   --pill-tx: #0F172A;                  /* 알약 텍스트 (라이트 near-black) */
   --pill-bd: #64748B;                  /* 알약 경계 */
   --chart-label-bg: rgba(255,255,255,0.85); /* 차트 가격라벨 칩 배경 */
-  --cal-future: var(--bd);             /* 달력 미래 날짜 (라이트 연회색) */
+  --cal-future: #C2C8D2;               /* 달력 미래 날짜 (라이트) — 밤사용자 P3: --bd(#E8ECF2) 거의 안 보임 → 한 톤 진하게 */
   --warm-top: #FFFCF3;                 /* 햇살 그라데이션 top (toss-cal) */
   --warm-bot: var(--sf);               /* 햇살 그라데이션 bottom (toss-cal) */
   --warm2-top: #FFFBEF;                /* 햇살 그라데이션 top (rec-detail 펼침 본문) */
@@ -1251,12 +1251,14 @@ a.cal-credit-row:hover,
 .nightly-us-summary.pm320-collapsible { margin: 14px 0; }
 .nightly-us-summary .pm320-section-header { padding: 4px 0; }
 .pm320-section-summary {
-  /* R13 P0 대비: 접힘 미니요약 골드 #C49930(2.64:1) → #8A6810(4.99:1 on white, WCAG AA). */
-  font-size: 12px; font-weight: 700; color: var(--section-summary);
+  /* R13 P0 대비: 접힘 미니요약 골드 #C49930(2.64:1) → #8A6810(4.99:1 on white, WCAG AA).
+     밤사용자 P2: 12→12.5px 소폭 상향 (밤 가독). */
+  font-size: 12.5px; font-weight: 700; color: var(--section-summary);
   white-space: nowrap; flex: 0 0 auto;
 }
 .pm320-section-chevron {
-  flex: 0 0 auto; font-size: 12px; color: var(--dm);
+  /* 밤사용자 P2: --dm(4.46:1)→--tx2(7.73:1) 명도 상향 (토글 라벨 밤 가독). */
+  flex: 0 0 auto; font-size: 12px; color: var(--tx2);
   transition: transform 0.24s ease; margin-left: 2px;
 }
 /* 펼침(=collapsed 부재) 시 chevron 회전 + 미니요약 숨김(본문이 이미 정보 노출). */
@@ -2815,6 +2817,16 @@ body.single-card-mode { background: var(--bg) !important; }
   background: linear-gradient(90deg, var(--am4), var(--am3));
   border: 1px solid var(--am3); color: var(--am);
 }
+/* 밤사용자 P2: 상단 뉴스요약 골드 pill 클러스터가 다크에서 화면 최고 밝기 덩어리 → 픽 카드 주인공 위계 회복.
+   다크에서만 채도/밝기 한 단계 다운(평탄 am4 배경 + 차분한 골드 텍스트 --section-summary). 라이트 무영향. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cal-macro-chip {
+    background: var(--am4); color: var(--section-summary); border-color: var(--am3);
+  }
+}
+:root[data-theme="dark"] .cal-macro-chip {
+  background: var(--am4); color: var(--section-summary); border-color: var(--am3);
+}
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
   /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. R15: 토큰화(다크 함몰). */
@@ -3785,7 +3797,8 @@ body.single-card-mode { background: var(--bg) !important; }
    a11y: renderer.js에서 aria-label="상한가 종목" 부착.
 */
 .cal-feature-card--lu {
-  border-left: 3px solid var(--up);
+  /* 밤사용자 P3: 좌측 경고바 3→4px (본문 대비 강화, 경고 강도 전달). */
+  border-left: 4px solid var(--up);
 }
 /* 다크모드 — 톤 보정 (effect-badge limit-up 다크모드 color #FCA5A5와 일관) */
 /* 고대비 모드 — border 강조 (a11y) */
