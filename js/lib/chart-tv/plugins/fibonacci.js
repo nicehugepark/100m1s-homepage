@@ -770,24 +770,32 @@ class FibonacciDrawingController {
     toast.className = 'cal-chart-tv-fib-snap-toast';
     toast.setAttribute('role', 'status');
     toast.setAttribute('aria-live', 'polite');
+    // PM320-D6 — 머티리얼 핑크 모달 → 햇살 다크 그레이 비차단 토스트 (v291 hint badge rgba(26,29,38,0.95) 톤 정합).
+    //   차트 하단(bottom)에 가는 1줄로 강등 — 데스크탑/모바일 모두 차트 본체 가림 회피.
+    //   max-width: min(차트폭-16px, 220px) — 좁은 폰(차트 ~271px)에서도 양옆 8px 여백 보존, 전체 덮음 0건.
     toast.style.cssText = [
       'position: absolute',
+      'left: 8px',
       'right: 8px',
-      'top: 8px',
-      'background: rgba(233,30,99,0.92)',
+      'bottom: 8px',
+      'margin: 0 auto',
+      'width: fit-content',
+      'max-width: calc(100% - 16px)',
+      'background: rgba(26,29,38,0.95)',
       'color: #fff',
       'font-size: 11px',
       'font-weight: 600',
-      'padding: 6px 10px',
+      'padding: 5px 9px',
       'border-radius: 4px',
       'box-shadow: 0 2px 8px rgba(0,0,0,0.30)',
       'z-index: 200',
       'pointer-events: none',
       'opacity: 0',
       'transition: opacity 0.25s ease',
-      'max-width: 240px',
-      'line-height: 1.35',
-      'white-space: normal',
+      'line-height: 1.3',
+      'white-space: nowrap',
+      'overflow: hidden',
+      'text-overflow: ellipsis',
     ].join(';');
     toast.textContent = text;
     try {
@@ -1070,26 +1078,24 @@ class FibonacciDrawingController {
         const label = document.createElement('div');
         label.className = 'cal-chart-tv-fib-price-label';
         label.dataset.fibIdx = String(i);
-        // P0-20 Fix-66 (2026-05-21 17:46 KST 대표 verbatim "피보나치 가격라벨도 훨씬 작게"):
-        //   font-size 10px → 8px 본문 축소 (영웅문 23a74560 본문 "727,000 (1.000)" 매우 작은 글씨 정합).
-        // P0-20 Fix-67 (2026-05-21 17:46 KST 대표 verbatim "가격라벨 바탕의 반투명한 흰색인데 완전 투명하게"):
-        //   background rgba(255,255,255,0.65) → transparent 본문 완전 투명.
-        //   가독성 본문 정합 의무 — text-shadow 본문 흰색 outline 본문 추가 (영웅문 정합 본문 흰색 outline + 검정 text 본질).
-        //   §16 self-catch: 영웅문 23a74560 reference 본문 배경 부재 + 흰색 outline + 검정 text 본문 visible 정합.
+        // P0-20 Fix-66 (2026-05-21 17:46 KST 대표 "피보나치 가격라벨도 훨씬 작게"): font 10px → 8px.
+        // PM320-D6 (task #32 ③): 가독성 위해 font 8px → 12px 상향. 배경은 Fix-67 완전 투명 유지(반투명 칩 추가는 #28 대표 보류).
+        // P0-20 Fix-67 (2026-05-21 17:46 KST 대표 "가격라벨 바탕 완전 투명하게"): 배경 제거.
+        //   가독성 보완 — text-shadow 흰색 outline 유지(영웅문 reference 배경 부재 + 흰색 outline + 검정 text 정합).
         label.style.cssText = [
           'position: absolute',
           'left: 8px',
           'top: 0',
-          'font-size: 8px',                                  // P0-20 Fix-66: 10 → 8
+          'font-size: 12px',                                 // PM320-D6 task #32 ③: 8 → 12 (가독성)
           'font-weight: 600',
-          'color: rgba(0,0,0,0.85)',                         // 가독성 본문 강화 (0.7 → 0.85)
+          'color: rgba(0,0,0,0.85)',
           'pointer-events: none',
           'z-index: 10',
           'display: none',
-          'background: transparent',                         // P0-20 Fix-67: 완전 투명
-          'padding: 0',                                      // P0-20 Fix-67: padding 본문 부재 (배경 부재 본문 정합)
-          'text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 2px #fff',  // P0-20 Fix-67: 흰색 outline 본문 가독성 본질
-          'transform: translateY(-50%)',  // y좌표 = 가로선 중앙 정합 본질 (top:y → label 본문 중앙)
+          'background: transparent',                         // P0-20 Fix-67: 완전 투명 유지
+          'padding: 0',
+          'text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 2px #fff',  // P0-20 Fix-67: 흰색 outline 가독성
+          'transform: translateY(-50%)',  // y좌표 = 가로선 중앙 정합
           'white-space: nowrap',
         ].join(';');
         this._container.appendChild(label);
@@ -1139,8 +1145,8 @@ class FibonacciDrawingController {
     const el = document.createElement('div');
     el.className = 'cal-chart-tv-fib-handle';
     el.dataset.anchor = label;
-    el.setAttribute('aria-label', `Fibonacci ${label} 끝점 — chart 본문 본문 끌어 이동`);
-    el.setAttribute('title', `${label} 끝점 — 차트 영역 본문 클릭/드래그 본문 이동`);
+    el.setAttribute('aria-label', `피보나치 ${label} 끝점 — 드래그해 이동`);
+    el.setAttribute('title', `${label} 끝점 — 드래그해 이동`);
     // P0-25 (2026-05-21 23:46 KST 대표 결정 영웅문 paradigm 채택):
     //   handle = 영웅문 inline ↓ marker 정합 (anchor 시각 cue만, drag trigger 본문 chart canvas 본문 본질).
     //   본문 visual 본문 본질 축소:

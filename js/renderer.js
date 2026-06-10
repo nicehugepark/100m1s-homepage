@@ -2342,6 +2342,13 @@ function renderCalExpandContent(date, data) {
     const _dailybarsCache = new Map();
     async function _fetchDailybars(code) {
       if (!code) return null;
+      // PM320-D6 (task #32 ⑤): 지수/선물 합성 코드(idx-*)는 per-stock dailybars 파일이 없음(index-card.js:196 idxCode).
+      //   fetch 시 항상 404 2건(dailybars-nxt/idx-*.json + dailybars/idx-*.json) 콘솔 노이즈 → 네트워크 호출 생략하고
+      //   곧장 data-daily20 prototype fallback(null 반환). 렌더 동작 무변(이미 의도된 graceful 경로, index-card.js:194 주석).
+      if (code.startsWith('idx-')) {
+        _dailybarsCache.set(code, null);
+        return null;
+      }
       if (_dailybarsCache.has(code)) return _dailybarsCache.get(code);
       try {
         // 2026-06-10 대표 GO — NXT(넥스트레이드) 장 포함 일봉 우선 (대표 차트 기준).
