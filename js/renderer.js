@@ -78,6 +78,7 @@ const _PM320_GLOSSARY = {
   watering: { t: '물타기', d: '산 종목이 떨어졌을 때 더 사서 평균 매입가를 낮추는 것. PM320은 진입가에서 약 -6.4%일 때를 기준점으로 봅니다.' },
   'take-profit': { t: '익절', d: '이익을 본 상태에서 파는 것. PM320은 진입가에서 약 +3.2%를 목표로 잡습니다.' },
   pending: { t: '보류', d: '그날의 조건을 만족하는 종목이 없어 추천을 내지 않는 것. 무리한 추천 대신 쉬어가는 날입니다.' },
+  'risk-reward': { t: '손익비', d: '목표로 한 이익 폭과 감수해야 하는 손실 폭의 비율. 익절 목표(+3.2%)가 작고 보유 중 장중 낙폭(최대 손실)이 크면 승률이 높아도 한 번의 손실이 여러 번의 이익을 지울 수 있습니다.' },
 };
 // (?) 마커 — term 키에 해당하는 풀이가 있을 때만 생성. aria-label 로 스크린리더 정합.
 function _termTip(term) {
@@ -445,6 +446,49 @@ function _wireUsFutToggle() {
 // 거래일 09:00 미만 시 카드 list 미렌더 + 시계 아이콘 + 카운트다운 + 보조 토글 (전일 데이터 보기).
 // stale 라벨 자연 봉쇄 (catch 2): PRE_MARKET 진입 시 데이터 자체가 안 보이므로 라벨 노출 0.
 // 사용자 명시 토글 시에만 카드 list 렌더 + data-stale="true" attribute 부착.
+// PM320-D6 R18 (비신자 평가자 P1) — 장전(PRE_MARKET) 랜딩에 "어제의 픽 결과" 칩(접지 않고 노출).
+//   종전: 장 시작 전엔 카운트다운만 → "빈 페이지" 인식 이탈. 전일 픽 결과를 한 줄 칩으로 즉시 노출해
+//   "이 서비스가 뭘 하는지"를 첫 화면에서 보여준다(전일 데이터 보기 토글은 그대로 — 칩은 핵심 1픽만).
+//   - 데이터: 전일(prevDate) loadCalDayData 결과의 interpretedByName 중 pm320_pick.is_pick===true 1건.
+//   - 청산 완료(taken_profit/expired_*) 시 결과 + 장중 MDD 병기. running(진행중)이면 "보유 중 D+n".
+//   - 픽 부재/미신뢰 시 빈 문자열(미렌더, 추정 0 — FLR-AGT-002). 하드코딩 0.
+function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
+  try {
+    if (!prevInterpByName || typeof prevInterpByName.values !== 'function') return '';
+    let pk = null, name = '';
+    for (const interp of prevInterpByName.values()) {
+      const p = interp && interp.pm320_pick;
+      if (p && p.is_pick === true) { pk = p; name = interp.name || interp.stock_name || ''; break; }
+    }
+    if (!pk || !pk.current_state) return '';
+    const state = pk.current_state;
+    const _signed = (p) => (p == null || !Number.isFinite(p)) ? '—' : `${p >= 0 ? '+' : ''}${p.toFixed(2)}%`;
+    const _dd = (p) => (p == null || !Number.isFinite(p)) ? '' : `${p.toFixed(2)}%`;
+    let markText, mod, finalPct;
+    if (state === 'running') {
+      const d = (pk.d_offset != null && pk.d_offset >= 0 && pk.d_offset <= 3) ? ` (D+${pk.d_offset}/+3)` : '';
+      markText = `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}`;
+      mod = 'running';
+    } else {
+      const r = pk.result || {};
+      finalPct = r.final_pnl_pct != null ? _signed(r.final_pnl_pct) : _signed(pk.current_pnl_pct);
+      if (state === 'taken_profit') { markText = `✅ 익절 ${finalPct}`; mod = 'profit'; }
+      else if (state === 'expired_gain') { markText = `✅ 만기청산 (이익) ${finalPct}`; mod = 'profit'; }
+      else if (state === 'expired_loss') { markText = `⚠️ 만기청산 (손실) ${finalPct}`; mod = 'loss'; }
+      else return '';
+    }
+    // 장중 MDD 칩 (청산 완료 + 음수일 때만, per-card 결과 mark 와 동일 SoT).
+    const mddV = (pk.result && pk.result.mdd_peak_pct);
+    const mddChip = (state !== 'running' && mddV != null && Number.isFinite(mddV) && mddV < 0)
+      ? `<span class="pm320-rec-mark-mdd">· 장중 ${_dd(mddV)}</span>` : '';
+    return `<div class="cal-pre-prev-pick cal-pre-prev-pick--${mod}" role="status" aria-label="어제의 추천 ${escapeHtml(name)} ${escapeHtml(markText)}">`
+      + `<span class="cal-pre-prev-pick-eyebrow">어제의 픽</span>`
+      + (name ? `<span class="cal-pre-prev-pick-name">${escapeHtml(name)}</span>` : '')
+      + `<span class="cal-pre-prev-pick-mark">${escapeHtml(markText)}${mddChip}</span>`
+      + `</div>`;
+  } catch (_) { return ''; }
+}
+
 function _formatCountdownToOpen(now) {
   const _now = now || new Date();
   const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 9, 0, 0, 0);
@@ -545,6 +589,7 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
       <div class="cal-pre-market-title">${escapeHtml(titleText)}</div>
       <div class="cal-pre-market-sub">${escapeHtml(subText)}</div>
       <div class="cal-pre-market-countdown" data-cd="1">${escapeHtml(liveText)}</div>
+      ${prevDate ? `<div class="cal-pre-prev-pick-slot" data-pre-prev-pick hidden></div>` : ''}
       ${prevDate ? `<button type="button" class="cal-pre-market-toggle" data-pre-toggle="1" aria-expanded="false">전일(${prevLabel}) 데이터 보기 ▾</button>` : ''}
       <div class="cal-pre-market-prev" data-pre-prev hidden></div>
     </div>
@@ -625,6 +670,25 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
         }
       }
     });
+  }
+
+  // R18 (비신자 평가자 P1) — 어제의 픽 결과 칩을 접지 않고 기본 노출(빈 페이지 이탈 차단).
+  //   전일 데이터를 비동기 1회 로드(초기 카운트다운 렌더 차단 X) → 픽 1건 칩 주입.
+  //   픽 부재/미신뢰 시 slot 은 hidden 유지(추정 0, FLR-AGT-002). 토글(전일 데이터 보기)은 별개 유지.
+  const prevPickSlot = inner.querySelector('[data-pre-prev-pick]');
+  if (prevPickSlot && prevDate) {
+    (async () => {
+      try {
+        const pd = prevData || (typeof loadCalDayData === 'function' ? await loadCalDayData(prevDate) : null);
+        if (!pd || !pd.interpretedByName) return;
+        const chipHtml = _buildPrevPickChipHtml(pd.interpretedByName, prevDate);
+        // 렌더 도중 다른 시점으로 전환됐으면(slot 이 DOM 에서 제거) 무시 (race graceful).
+        if (chipHtml && document.body.contains(prevPickSlot)) {
+          prevPickSlot.innerHTML = chipHtml;
+          prevPickSlot.hidden = false;
+        }
+      } catch (_) { /* graceful — 칩 생략 */ }
+    })();
   }
 }
 
@@ -953,6 +1017,18 @@ function renderCalExpandContent(date, data) {
     if (p == null || !Number.isFinite(p)) return '—';
     return `${p.toFixed(2)}%`;
   };
+  // PM320-D6 R18 (트레이더 평가자 P1) — 접힌(공유 URL 단일카드 포함) 결과 mark 에 장중 최대낙폭 병기.
+  //   종전: 결과 mark 는 "✅ 익절 +3.2%" 만 노출 → 펼쳐야 MDD 가 보여, 공유 링크로 단일 카드만 본
+  //   손님이 익절 결과만 보고 "보유 중 -21% 까지 빠졌던 현실"을 인지 못 함(승률 착시와 동형).
+  //   fix: 청산 mark 뒤에 " · 장중 -X.X%" 칩을 같은 줄에 병기(공유 링크·접힘 상태에서도 1초 catch).
+  //   기준 = result.mdd_peak_pct(보유 고점→저점, 표준 MDD). 음수일 때만 표시(0·부재·running 미표시,
+  //   거짓 충실성 차단 FLR-AGT-002). 펼침 본문 MDD row 와 동일 SoT(추가 추정 0).
+  //   plain text 반환(소비부가 escapeHtml 후 별 span 으로 색 분리). 음수일 때만 값, 그 외 ''.
+  const _mddPeakChipText = (pk) => {
+    const v = pk && pk.result && pk.result.mdd_peak_pct;
+    if (v == null || !Number.isFinite(v) || v >= 0) return '';
+    return `· 장중 ${_fmtDrawdown(v)}`;
+  };
   // 한국어 매핑 (DSN-001 §1 영어 enum → §3.5 한국어 label)
   // running = 잠정 / taken_profit = 익절 / expired_gain = 만기청산 (이익) / expired_loss = 만기청산 (손실)
   const _pm320StateLabel = (state) => {
@@ -994,6 +1070,7 @@ function renderCalExpandContent(date, data) {
       return {
         html: `✅ ${label} ${pnlText}${resultDate}`,
         mod: 'profit',
+        mddChip: _mddPeakChipText(pk),
         aria: `${label.replace(' (물타기)', '')} 도달${ariaSuffix}, 수익률 ${pnlText}${resultDate}`,
       };
     }
@@ -1006,6 +1083,7 @@ function renderCalExpandContent(date, data) {
       return {
         html: `✅ ${label} ${pnlText}`,
         mod: 'profit',
+        mddChip: _mddPeakChipText(pk),
         aria: `만기 도달, 평단 상회${ariaSuffix}, ${pnlText}`,
       };
     }
@@ -1018,6 +1096,7 @@ function renderCalExpandContent(date, data) {
       return {
         html: `⚠️ ${label} ${pnlText}`,
         mod: 'loss',
+        mddChip: _mddPeakChipText(pk),
         aria: `만기 도달${ariaSuffix}, 손실 ${pnlText}`,
       };
     }
@@ -1104,7 +1183,11 @@ function renderCalExpandContent(date, data) {
         mod = '';
       }
       const cls = mod ? `pm320-rec-result-strip pm320-rec-result-strip--${mod}` : 'pm320-rec-result-strip';
-      resultStrip = `<div class="${cls}" aria-label="${escapeHtml(`${_pm320StateLabel(state)}, 수익률 ${finalPct}${resDate ? ', ' + resDate : ''}`)}">${escapeHtml(mark)}${resDate ? ` · ${escapeHtml(resDate)} 종가 ${escapeHtml(finalPrice)}` : ''}</div>`;
+      // R18 (트레이더 평가자 P1) — 결과 strip 하단 체결현실 면책 1줄. 공유 URL 단일 카드로
+      //   "익절 +3.2%" 만 본 손님이 균일 청산을 사기성으로 오해/혹은 체결현실로 과신하는 것 차단.
+      //   승률 카드 .cal-pm320-wr-fill-note 와 동일 톤·문구(SoT 통일, 추가 추정 0).
+      const _fillNote = `<div class="pm320-rec-result-fill-note">장중 목표가 터치 기준 가상 산출 — 슬리피지·시가 갭·부분체결 미반영. 실제 체결가는 다를 수 있습니다.</div>`;
+      resultStrip = `<div class="${cls}" aria-label="${escapeHtml(`${_pm320StateLabel(state)}, 수익률 ${finalPct}${resDate ? ', ' + resDate : ''}`)}">${escapeHtml(mark)}${resDate ? ` · ${escapeHtml(resDate)} 종가 ${escapeHtml(finalPrice)}` : ''}</div>${_fillNote}`;
     }
     return `
       <div class="pm320-rec-detail-row pm320-rec-detail-row--buy">
@@ -1156,7 +1239,7 @@ function renderCalExpandContent(date, data) {
       : `<div class="pm320-rec-virtual-note" role="note">※ 추천 아님 — 동일 규칙 적용 시 <b>가상 계산</b></div>`;
     const mark = _pm320ResultMark(pk);
     const markHtml = mark
-      ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</span>`
+      ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</span>`
       : '<span class="pm320-rec-result-mark pm320-rec-result-mark--running"></span>';
     const detailId = `pm320-rec-detail-${escapeHtml(code || '')}`;
     const detailRows = _pm320DetailRows(pk, authClose);
@@ -1206,7 +1289,7 @@ function renderCalExpandContent(date, data) {
     // mark.html 은 픽 진행중이면 "⏳ 잠정 +0.00% (D+0/+3)", 청산 완료면 결과(익절/만기). 부재 시 생략.
     const resultMod = mark ? mark.mod : 'running';
     const resultHtml = mark
-      ? `<div class="cal-pm320-today-rec-result cal-pm320-today-rec-result--${resultMod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}</div>`
+      ? `<div class="cal-pm320-today-rec-result cal-pm320-today-rec-result--${resultMod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</div>`
       : '';
     const headLabel = isPast ? '이날의 추천' : '오늘 PM320 추천';
     const nameV = name || '';
@@ -2141,11 +2224,27 @@ function renderCalExpandContent(date, data) {
     const _asOfNoteHtml = _isPastW
       ? `<div class="cal-pm320-wr-asof">이 성적은 선택한 날짜 시점이 아니라 <b>오늘 기준 누적</b>입니다</div>`
       : '';
+    // R18 (트레이더 평가자 P1 — 승률 착시 선제방어) — 손익비를 승률과 동급 위계로 병기.
+    //   "승률 97%" 만 보면 안전해 보이지만, 익절폭(목표 +3.2%) 대비 최대 손실(장중 MDD -25%)이
+    //   비대칭이라는 핵심을 승률 옆에 못 박는다(경쟁사 '승률만 큰 글씨' 공격 차단).
+    //   손익비 = 목표 익절폭 / |최대 장중 낙폭| (둘 다 summary 실측). 두 값 모두 number 일 때만 표시
+    //   (부재·구버전 summary 시 줄 자체 생략 → 추정 0, FLR-AGT-002). 표본 N(총 픽) 동반.
+    const _rrHtml = (tgtPct !== null && typeof s.worst_mdd_pct === 'number' && s.worst_mdd_pct < 0)
+      ? (() => {
+          const ratio = (tgtPct / Math.abs(s.worst_mdd_pct)).toFixed(2);
+          return `<div class="cal-pm320-wr-rr" aria-label="손익비 1대 ${ratio}, 표본 ${s.total_picks}픽">`
+            + `<span class="cal-pm320-wr-rr-label">손익비${_termTip('risk-reward')}</span>`
+            + `<span class="cal-pm320-wr-rr-val">평균 익절 <b>+${escapeHtml(tgtPct.toFixed(1))}%</b> vs 최대 손실 <b>${escapeHtml(s.worst_mdd_pct.toFixed(1))}%</b></span>`
+            + `<span class="cal-pm320-wr-rr-ratio">(1 : ${escapeHtml(ratio)} · 표본 ${s.total_picks}픽)</span>`
+            + `</div>`;
+        })()
+      : '';
     return `<div class="cal-pm320-winrate" role="group" aria-label="4월 8일부터 오늘까지 누적 추천 승률">`
       + `<div class="cal-pm320-wr-head">`
       + `<span class="cal-pm320-wr-eyebrow">4월 8일 ~ 오늘 누적 성적</span>`
       + `<span class="cal-pm320-wr-rate">승률 <b>${escapeHtml(rate)}%</b></span>`
       + `</div>`
+      + _rrHtml
       + _asOfNoteHtml
       + `<div class="cal-pm320-wr-stats">`
       + `<span class="cal-pm320-wr-stat">총 ${s.total_picks}픽</span>`

@@ -1065,6 +1065,37 @@ a.cal-credit-row:hover,
   color: var(--am);
   font-variant-numeric: tabular-nums;
 }
+/* R18 (비신자 P1) — 장전 랜딩 "어제의 픽" 결과 칩(접지 않고 노출). 카운트다운 아래, 토글 위.
+   pill 형태 한 줄: eyebrow(어제의 픽) + 종목명 + 결과 mark(+장중 MDD). 결과 톤별 배경/테두리. */
+.cal-pre-prev-pick {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.cal-pre-prev-pick--profit { background: var(--pos-bg); border: 1px solid var(--pos); }
+.cal-pre-prev-pick--loss { background: var(--neg-bg); border: 1px solid var(--neg); }
+.cal-pre-prev-pick--running { background: var(--neu-bg); border: 1px solid var(--neu); }
+.cal-pre-prev-pick-eyebrow {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  /* WCAG: --dm(#8B95A8) on neu-bg = 2.74:1 미달 → --tx2 로 (light 9.0 / dark 6.75:1, AA). */
+  color: var(--tx2);
+  text-transform: none;
+}
+.cal-pre-prev-pick-name { color: var(--tx2); font-weight: 800; }
+.cal-pre-prev-pick--profit .cal-pre-prev-pick-mark { color: var(--pos); }
+.cal-pre-prev-pick--loss .cal-pre-prev-pick-mark { color: var(--neg); }
+/* running(보유중) = 중립 정보 → 녹/적 대신 슬레이트. --neu(light 3.92:1) 미달 → --tx2(9.0/6.75:1). */
+.cal-pre-prev-pick--running .cal-pre-prev-pick-mark { color: var(--tx2); }
 .cal-pre-market-toggle {
   margin-top: 16px;
   background: transparent;
@@ -2442,6 +2473,24 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-wr-rate { font-size: 14px; font-weight: 600; color: var(--tx2); }
 .cal-pm320-wr-rate b { font-size: 20px; font-weight: 800; color: var(--am); letter-spacing: -0.01em; }
+/* R18 (트레이더 P1 — 승률 착시 선제방어) — 손익비를 승률 바로 아래, 승률과 동급 위계로 병기.
+   "평균 익절 +3.2% vs 최대 손실 -25.2%" — 익절폭은 녹색, 손실폭은 빨강으로 비대칭을 즉시 대비. */
+.cal-pm320-wr-rr {
+  margin-top: 7px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 3px 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.cal-pm320-wr-rr-label { color: var(--tx2); display: inline-flex; align-items: center; gap: 2px; }
+.cal-pm320-wr-rr-val { color: var(--tx2); font-weight: 600; }
+.cal-pm320-wr-rr-val b { font-weight: 800; }
+/* 익절(+) 폭 = 녹색, 손실(-) 폭 = 빨강 — b 2개 중 첫째=익절, 둘째=손실. nth-of-type 으로 색 분리. */
+.cal-pm320-wr-rr-val b:first-of-type { color: var(--pos); }
+.cal-pm320-wr-rr-val b:last-of-type { color: var(--neg); }
+.cal-pm320-wr-rr-ratio { color: var(--wr-basis-tx, #5E6776); font-weight: 600; font-size: 11px; }
 /* 과거 날짜 선택 시 — '선택일 시점'이 아닌 '오늘 기준 누적'임을 명시(중립 슬레이트). */
 .cal-pm320-wr-asof {
   margin-top: 6px;
@@ -2693,6 +2742,14 @@ body.single-card-mode { background: var(--bg) !important; }
 .pm320-rec-result-mark--loss { color: var(--up); }
 .pm320-rec-result-mark--running { color: var(--g60, #6B7280); }
 .pm320-rec-result-mark--imminent { color: var(--am); }
+/* R18 (트레이더 P1) — 접힌 결과 mark 옆 장중 최대낙폭 칩. 위험 톤(--neg)으로 색 분리해
+   "익절"(녹색) 옆에서 손실 폭이 한눈에 대비되도록. 부모 색 상속 끊고 명시 지정. */
+.pm320-rec-mark-mdd {
+  margin-left: 4px;
+  color: var(--neg);
+  font-weight: 700;
+  white-space: nowrap;
+}
 /* .pm320-rec-chevron 폐기 (2026-06-03 옵션 B) — 텍스트 토글 "매매 보기" ↔ "접기"로 대체. */
 
 /* §3.4 / §7.4 — 펼침 본문 (햇살 톤, 4 row 매수·물타기·익절·만기청산) */
@@ -2759,6 +2816,15 @@ body.single-card-mode { background: var(--bg) !important; }
   /* R13 P1 대비: 익절/만기손실 빨강 #C53939(4.42:1) → #B8302E(5.07:1, WCAG AA). */
   color: var(--neg);
   border: 1px solid var(--ru);
+}
+/* R18 (트레이더 P1) — 결과 strip 하단 체결현실 면책 1줄. 승률카드 fill-note 와 동일 톤(건조·10px).
+   --wr-basis-tx: light 5.52:1 / dark override 로 WCAG AA 유지. */
+.pm320-rec-result-fill-note {
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--wr-basis-tx, #5E6776);
 }
 
 /* §7.5 — 다크모드 폐기 (2026-06-03 22:50 KST 대표 verbatim "다크모드는 없다. 매매 버튼에 다크모드가 적용된 게 있다면 모두 제거"). 본 서비스 라이트 고정. */
