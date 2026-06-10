@@ -74,6 +74,9 @@ const LEVELS = [
   { ratio: 1.0,   title: 'Fib 100%',  color: '#94A3B8' },
 ];
 
+// 2026-06-10 토구사 union: secondary 세트(BASE 구조 골) Fib 색상 — primary(amber #F5A623)와 구분되는 청록.
+const SECONDARY_COLOR = '#38BDF8';
+
 // P0-17 Fix-55 (2026-05-21 15:18 KST 대표 verbatim "피보나치 역시 라벨값이 너무 지저분하다 안보여줘도 돼.
 //   대신 가격 fib xx% 값을 제거해줘"):
 //   - axisLabelVisible: false → 우측 priceScale axis 본문 가격값 (22450/17619 등) 제거
@@ -145,15 +148,23 @@ function formatPriceLabel(price) {
   return Math.round(price).toLocaleString('ko-KR');
 }
 
-// ─── 2026-06-10 대표 직접 지시 + 토구사 실증 + 대표 캘리브레이션 — ZigZag 저점 앵커 상수 ───
-const ZIGZAG_THETA = 0.05;            // 반전율 5% (종가 기준, 대표 확정 verbatim)
-const ZIGZAG_MIN_DAYS = 20;           // 데이터 부족(상장 초기) 가드 — 최소 20 영업일
-const ZIGZAG_LOOKBACK_TROUGHS = 2;    // 대표 캘리브레이션 — 최근 2개 골 중 더 깊은 골 채택
+// ─── 2026-06-10 토구사 캘리브레이션 확정 — 두 스케일 union 저점 앵커 상수 (3종 6정답 3/3 PASS) ───
+// 데이터 = NXT 포함 일봉(renderer dailybars-nxt 우선 fetch, 라이브). 종가 ZigZag θ=0.15.
+// 윈도우 분리: 규칙 I(즉각 파동)=최근 120봉, 규칙 II(구조적 base)=240봉.
+// 골 refine = ZigZag 종가 골 ±3봉 내 저가(low-of-day) 최저일.
+// parent(골) = 골 직전 swing-high 피벗 중 high-of-day 최대 (해석 A). drop = (parent.high − low.low)/parent.high.
+// 카드 = BASE(구조 base 골) + RECENT(최근 골) 최대 2세트 (parent-group 규칙, 아래 _selectCardGoals).
+const ZIGZAG_THETA = 0.15;            // 반전율 15% (종가 기준, 토구사 확정)
+const ZIGZAG_WINDOW_RECENT = 120;     // 규칙 I (즉각 파동) 윈도우 — 최근 120 영업일
+const ZIGZAG_WINDOW_BASE = 240;       // 규칙 II (구조적 base) 윈도우 — 240 영업일
+const ZIGZAG_REFINE_BARS = 3;         // 골 refine = 종가 골 ±3봉 내 저가 최저일
+const ZIGZAG_RECENT_MIN_DROP = 0.20;  // RECENT 후보 = 낙폭 ≥ 20% (즉각 파동 유효성)
+const ZIGZAG_NEAR_TIE = 0.005;        // BASE 2c 근사동률 tie-break ±0.5%p
+const ZIGZAG_MIN_DAYS = 20;           // 데이터 부족(상장 초기) 가드 — 20 영업일 미만 시 피보 미표시(추정 금지)
 const LIMIT_MOVE_PCT = 0.29;          // 상한가·하한가 가드 (±29%+)
 
 /**
  * 상한가·하한가(±29%+) 종가 변동 판정 가드.
- * 점상한가·점하한가 날은 저점/고점 피벗 후보에서 제외 (꼬리 왜곡 회피).
  * @param {number} prevClose
  * @param {number} close
  * @returns {boolean}
@@ -165,55 +176,64 @@ function isLimitMove(prevClose, close) {
 }
 
 /**
- * ZigZag 피벗 검출 — 종가(close) 기준, 반전율 θ.
+ * ZigZag 피벗 검출 — 종가(close) 기준, 반전율 θ (토구사 verbatim 알고리즘, 2026-06-10).
  *
- * 🔴 고가·저가 기준 ZigZag 금지 (토구사 실증): 같은 날 H/L 동시 생성 버그 → 종가 단일 시계열만.
+ * 🔴 직전 버전(running-extreme)은 초기 방향 처리 버그로 장기 swing(후성 10/28 등)을 흡수 →
+ *    본 버전은 "마지막 확정 피벗(piv[-1]) 기준 + 같은 방향 진행 시 극값 갱신 / 반대 방향 θ 돌파 시 새 피벗 확정".
  *
- * 알고리즘: 현재 추세 방향의 극값(running extreme)을 추적하다가, 극값 대비 반대 방향으로
- *   θ 이상 반전하면 직전 극값을 피벗으로 확정하고 추세를 뒤집는다. 마지막 미확정 극값은
- *   provisional 피벗으로 append (최근 골 검출 보장).
+ * 알고리즘:
+ *   - d = 방향 (+1 상승, -1 하락, 0 미정). piv = 피벗 candleIdx 배열.
+ *   - 상승/미정(d>=0): 직전 피벗보다 신고가 → up-leg 갱신(d>0) 또는 상승 전환(d=0→1).
+ *                      직전 피벗 대비 θ 하락 → 하락 전환(피벗 append, d=-1).
+ *   - 하락/미정(d<=0): 대칭.
+ *   - H/L type = 직전 피벗과의 종가 비교로 분류 (상승 끝 = H, 하락 끝 = L).
  *
- * @param {Array} candles — normalized candles (time/open/high/low/close)
- * @param {number} theta — 반전율 (0.05 = 5%)
+ * @param {Array} candles — normalized candles (time/close/high/low)
+ * @param {number} theta — 반전율 (0.15)
  * @returns {Array<{candleIdx: number, type: 'H'|'L', price: number}>}
  */
 function computeZigZagPivots(candles, theta) {
   if (!Array.isArray(candles) || candles.length < 2) return [];
   const n = candles.length;
-  const pivots = [];
-  let trend = 0;            // +1 상승, -1 하락, 0 미정
-  let extIdx = 0;
-  let extPrice = candles[0].close;
-
+  const idxPivots = [0];
+  let d = 0;
   for (let i = 1; i < n; i++) {
-    const c = candles[i];
-    if (!c || !(c.close > 0)) continue;
-    const p = c.close;
-
-    if (trend >= 0) {
-      // 상승 추세 또는 미정 — 신고가 추적
-      if (p > extPrice) { extPrice = p; extIdx = i; }
-      // 극값(고가) 대비 θ 이상 하락 → 고점 피벗 확정
-      if (extPrice > 0 && (extPrice - p) / extPrice >= theta) {
-        pivots.push({ candleIdx: extIdx, type: 'H', price: extPrice });
-        trend = -1;
-        extPrice = p; extIdx = i;
+    const last = idxPivots[idxPivots.length - 1];
+    const vi = candles[i].close;
+    const vlast = candles[last].close;
+    if (!(vi > 0) || !(vlast > 0)) continue;
+    if (d >= 0) {
+      if (vi > vlast) {
+        if (d > 0) { idxPivots[idxPivots.length - 1] = i; }
+        else { idxPivots.push(i); d = 1; }
+      } else if (vi < vlast * (1 - theta)) {
+        idxPivots.push(i); d = -1;
       }
     }
-    if (trend <= 0) {
-      // 하락 추세 또는 미정 — 신저가 추적
-      if (p < extPrice) { extPrice = p; extIdx = i; }
-      // 극값(저가) 대비 θ 이상 반등 → 골 피벗 확정
-      if (extPrice > 0 && (p - extPrice) / extPrice >= theta) {
-        pivots.push({ candleIdx: extIdx, type: 'L', price: extPrice });
-        trend = 1;
-        extPrice = p; extIdx = i;
+    if (d <= 0) {
+      const last2 = idxPivots[idxPivots.length - 1];
+      const vlast2 = candles[last2].close;
+      if (vi < vlast2) {
+        if (d < 0) { idxPivots[idxPivots.length - 1] = i; }
+        else { idxPivots.push(i); d = -1; }
+      } else if (vi > vlast2 * (1 + theta)) {
+        idxPivots.push(i); d = 1;
       }
     }
   }
-  // 마지막 미확정 극값 = provisional 피벗 (최근 골 검출 보장)
-  pivots.push({ candleIdx: extIdx, type: trend > 0 ? 'H' : 'L', price: extPrice });
-  return pivots;
+  // candleIdx → typed pivots (직전 피벗 대비 종가 비교로 H/L)
+  const out = [];
+  for (let k = 0; k < idxPivots.length; k++) {
+    const idx = idxPivots[k];
+    let type;
+    if (k === 0) {
+      type = (idxPivots.length > 1 && candles[idxPivots[1]].close > candles[idx].close) ? 'L' : 'H';
+    } else {
+      type = candles[idx].close > candles[idxPivots[k - 1]].close ? 'H' : 'L';
+    }
+    out.push({ candleIdx: idx, type, price: candles[idx].close });
+  }
+  return out;
 }
 
 /**
@@ -285,8 +305,12 @@ class FibonacciDrawingController {
     // state: anchorA / anchorB ({time, price, candleIdx})
     this._state = this._loadState();
 
-    // priceLines (axis label visible 본질, createPriceLine return)
+    // priceLines (axis label visible 본질, createPriceLine return) — primary 세트(RECENT 골, drag 편집)
     this._priceLines = [];
+
+    // 2026-06-10 토구사 union: secondary 세트(BASE 구조 골) — 정적 price line (drag 비대상)
+    this._secondarySet = null;
+    this._secondaryPriceLines = [];
 
     // DOM handles (drag 본질)
     this._handleA = null;
@@ -373,24 +397,63 @@ class FibonacciDrawingController {
     //   fix = anchor A/B 미설정 시 candles 본문 최근 가시 영역 hi/lo 본문 auto-anchor 본질
     //         → 차트 진입 즉시 7 fibonacci level 본문 visible (대표 verbatim "이어서 계속" 본질 정합)
     //         → 사용자 후속 drag 본문 정밀 조정 가능 (paradigm 보존)
+    // 2026-06-10 토구사 union — 두 스케일 저점 앵커 세트 자동 산출.
+    //   primary(RECENT 골) = drag 편집 대상 (anchorA/anchorB), localStorage 미설정 시 auto.
+    //   secondary(BASE 구조 골) = 정적 표시 (매 진입 재산출, 영구화 안 함).
+    const autoSets = this._autoAnchorSets();
+    const primary = autoSets.find((s) => s.role === 'recent') || autoSets[autoSets.length - 1] || null;
+    const secondary = autoSets.find((s) => s.role === 'base') || null;
     if (!this._state.anchorA || !this._state.anchorB) {
-      // 2026-06-10 대표 직접 지시 + 토구사 실증 + 대표 캘리브레이션:
-      //   저점 앵커 = ZigZag(종가, θ=5%) 골 검출 → 최근 2개 골 중 더 깊은 골(low 최저)의
-      //   "low(저가) 최저일". 기존 단순 visible-range min/max 폐기.
-      //   고점 앵커 = 그 골 직전의 종가 고점 피벗. 검증: 테크윙(089030) 2026-06-01 low 47,150.
-      const auto = this._autoAnchorZigZag() || this._autoAnchorFromVisibleRange();
-      if (auto) {
-        this._state.anchorA = auto.high;
-        this._state.anchorB = auto.low;
+      const p = primary || this._autoAnchorFromVisibleRange();
+      if (p) {
+        this._state.anchorA = p.high;
+        this._state.anchorB = p.low;
         this._saveState();
       }
     }
+    if (secondary && (!primary || secondary.low.candleIdx !== primary.low.candleIdx)) {
+      this._secondarySet = secondary;
+    }
 
-    // 초기 render (localStorage 복원 또는 auto-anchor 본문)
+    // 초기 render (primary: localStorage 복원 또는 auto / secondary: BASE 구조 골)
     if (this._state.anchorA && this._state.anchorB) {
       this._renderLevels();
       this._renderHandles();
     }
+    this._renderSecondaryLevels();
+  }
+
+  /**
+   * secondary 세트(BASE 구조 골) 정적 Fibonacci level render — primary(amber)와 청록으로 구분.
+   * drag 비대상. 두 세트 레벨이 겹치는 가격대 = 다중 스케일 지지/저항 (대표 직관 "여러 스케일").
+   */
+  _renderSecondaryLevels() {
+    this._clearSecondaryPriceLines();
+    if (!this._secondarySet || !this._secondarySet.high || !this._secondarySet.low) return;
+    const a = this._secondarySet.high.price;
+    const b = this._secondarySet.low.price;
+    if (a == null || b == null) return;
+    LEVELS.forEach((lv) => {
+      const price = b + (a - b) * lv.ratio;
+      try {
+        const line = this._series.createPriceLine({
+          price,
+          color: SECONDARY_COLOR,
+          lineStyle: this._options.lineStyle,
+          lineWidth: this._options.lineWidth,
+          axisLabelVisible: this._options.axisLabelVisible,
+          title: '',
+        });
+        this._secondaryPriceLines.push(line);
+      } catch (e) { /* noop */ }
+    });
+  }
+
+  _clearSecondaryPriceLines() {
+    this._secondaryPriceLines.forEach((line) => {
+      try { this._series.removePriceLine(line); } catch (e) { /* noop */ }
+    });
+    this._secondaryPriceLines = [];
   }
 
   /**
@@ -420,113 +483,178 @@ class FibonacciDrawingController {
   }
 
   /**
-   * 2026-06-10 대표 직접 지시 + 토구사 실증 + 대표 캘리브레이션 — ZigZag 기반 저점 앵커 자동화.
+   * 2026-06-10 토구사 캘리브레이션 확정 — 두 스케일 union 저점 앵커 세트 자동 산출.
    *
-   * 확정 공식 (verbatim):
-   *   1. 골(저점 구간) 검출 = ZigZag 종가 기준, 반전율 θ=5% — 종가 시계열에서 직전 고점 대비
-   *      5%+ 하락 후 5%+ 반등한 골. (🔴 고가·저가 기준 ZigZag 금지 — 같은 날 H/L 동시 생성 버그)
-   *   2. 피보나치 저점 앵커 = 검출된 직전 골 구간 내 "low(저가) 최저일" (캔들 꼬리 포함).
-   *      대표 캘리브레이션: 최근 2개 골 중 더 깊은(low 최저) 골 채택 — 최근 골이 얕은
-   *      higher-low 인 경우 직전의 더 깊은 골이 본질 저점 (테크윙 6/8 얕은 골 vs 6/2 깊은 골 →
-   *      6/2 골 구간 low 최저일 = 2026-06-01 47,150 채택).
-   *   3. 고점 앵커 = 채택된 골 직전의 종가 고점 피벗 (down-leg 가 떨어진 swing high).
-   *   가드: 상한가·하한가(±29%+) 날은 저점 앵커일(low 최저일) 후보에서 제외 (점상한가 꼬리 왜곡 회피).
-   *         데이터 부족(< MIN_DAYS 영업일, 상장 초기) 시 null 반환 → 피보 미표시 (추정 금지).
+   * 파이프라인 (NXT 포함 candles 기준):
+   *   1. window 분리 ZigZag(θ=0.15, 토구사 알고리즘):
+   *      - 규칙 I(즉각 파동) = 최근 120봉 / 규칙 II(구조적 base) = 240봉.
+   *   2. 각 골(L 피벗) → ±3봉 저가(low-of-day) 최저일 refine + parent(직전 swing-high high 최대) drop% goal 산출.
+   *   3. 카드 = _selectCardGoals (BASE + RECENT, 최대 2세트, parent-group 규칙).
+   *      - 두 윈도우 goal 풀(규칙 I ∪ 규칙 II) 합집합에서 선택.
+   *   가드: swing-high 0개 → 빈 결과 (억지 fit 금지, FLR-AGT-002) / <20영업일 → 빈 결과.
    *
-   * 검증 정답 (대표 확인):
-   *   - 테크윙(089030): 저점 앵커 = 2026-06-01 low 47,150
-   *   - 후성(093370): 저점 앵커 = 2026-06-04
+   * 캘리브레이션 3/3 (NXT-spliced, harness 실측):
+   *   테크윙 089030 [3/31,5/19] · 후성 093370 [3/04,6/08] · 현대 307950 [3/31,5/19].
    *
-   * @returns {{high: {time, price, candleIdx}, low: {time, price, candleIdx}} | null}
+   * 반환: [{high, low, role}] — role 'recent'(primary, drag 편집) / 'base'(secondary, 정적). 최대 2.
+   *
+   * @returns {Array<{high, low, role}>}
    */
-  _autoAnchorZigZag() {
+  _autoAnchorSets() {
     const candles = this._candles;
-    if (!Array.isArray(candles) || candles.length < ZIGZAG_MIN_DAYS) return null;
+    if (!Array.isArray(candles) || candles.length < ZIGZAG_MIN_DAYS) return [];
 
-    const pivots = computeZigZagPivots(candles, ZIGZAG_THETA);
-    if (!pivots || pivots.length === 0) return null;
-
-    // 골(trough, type 'L') 피벗 위치만 추출
-    const troughPositions = [];
-    for (let i = 0; i < pivots.length; i++) {
-      if (pivots[i].type === 'L') troughPositions.push(i);
+    // 두 윈도우 goal 풀 (규칙 I = 120봉, 규칙 II = 240봉) 합집합
+    const goalsRecent = this._goalsForWindow(ZIGZAG_WINDOW_RECENT);
+    const goalsBase = this._goalsForWindow(ZIGZAG_WINDOW_BASE);
+    if (goalsRecent.length === 0 && goalsBase.length === 0) return [];
+    // lowIdx(=골 날짜) 키 dedupe — 두 윈도우가 같은 골 검출 시 더 깊은 drop(=장기 parent) 우선
+    const poolMap = new Map();
+    for (const g of [...goalsRecent, ...goalsBase]) {
+      const prev = poolMap.get(g.lowIdx);
+      if (!prev || g.drop > prev.drop) poolMap.set(g.lowIdx, g);
     }
-    if (troughPositions.length === 0) return null;
+    const pool = Array.from(poolMap.values());
+    if (pool.length === 0) return [];
 
-    // 대표 캘리브레이션: 최근 ZIGZAG_LOOKBACK_TROUGHS 개 골 중 골 구간 low 최저가 가장 깊은 골 채택.
-    const recent = troughPositions.slice(-ZIGZAG_LOOKBACK_TROUGHS);
-    let best = null;  // { lowAnchor, highAnchor }
-    for (const pos of recent) {
-      const region = this._troughRegionLowAnchor(pivots, pos);
-      if (!region) continue;
-      if (best === null || region.low.price < best.low.price) {
-        best = region;
-      }
-    }
-    return best;
+    const picked = this._selectCardGoals(pool);  // [base?, recent?] (low_date 오름차순, 최대 2)
+    return picked.map((g, i) => ({
+      high: { time: candles[g.highIdx].time, price: candles[g.highIdx].high, candleIdx: g.highIdx },
+      low: { time: candles[g.lowIdx].time, price: g.low, candleIdx: g.lowIdx },
+      role: g.role || (i === picked.length - 1 ? 'recent' : 'base'),
+    }));
   }
 
   /**
-   * 채택된 골 피벗(pivots[pos]) 구간 내 low(저가) 최저일 = 저점 앵커.
-   * 골 구간 = [직전 고점 피벗 idx, 직후 고점 피벗 idx] (없으면 배열 양 끝).
-   * 고점 앵커 = 직전 고점 피벗 (down-leg swing high). 없으면 직후 고점 피벗 fallback.
+   * 한 윈도우(최근 winN봉)에서 ZigZag → 각 골의 goal 산출.
+   *   goal = { lowDate, low, lowIdx, drop, parentDate, highIdx } (전부 full candles 좌표).
+   *   parent = 골 직전 swing-high 피벗 중 high-of-day 최대 (해석 A). drop=(parent.high − low)/parent.high.
    *
-   * @param {Array} pivots — computeZigZagPivots 결과
-   * @param {number} pos — pivots 내 골(L) 위치
-   * @returns {{high, low} | null}
+   * @param {number} winN
+   * @returns {Array<Object>}
    */
-  _troughRegionLowAnchor(pivots, pos) {
-    const candles = this._candles;
-    const N = candles.length;
-    const left = pos > 0 ? pivots[pos - 1].candleIdx : 0;
-    const right = pos + 1 < pivots.length ? pivots[pos + 1].candleIdx : N - 1;
+  _goalsForWindow(winN) {
+    const full = this._candles;
+    const N = full.length;
+    const offset = Math.max(0, N - winN);
+    const sub = full.slice(offset);
+    const pivots = computeZigZagPivots(sub, ZIGZAG_THETA);
+    if (!pivots.some((p) => p.type === 'H')) return [];  // 가드: swing-high 0개
 
-    // 골 구간 내 low 최저일 (상한가·하한가 날 제외, 캔들 꼬리 포함)
+    const goals = [];
+    for (let pos = 0; pos < pivots.length; pos++) {
+      if (pivots[pos].type !== 'L') continue;
+      const ref = this._refineTroughLow(sub, pivots[pos].candleIdx);
+      if (!ref) continue;
+      // parent = 직전 swing-high 피벗 중 high-of-day 최대
+      let parentHigh = 0;
+      let parentIdxSub = -1;
+      for (let j = pos - 1; j >= 0; j--) {
+        if (pivots[j].type !== 'H') continue;
+        const hd = sub[pivots[j].candleIdx].high;
+        if (hd > parentHigh) { parentHigh = hd; parentIdxSub = pivots[j].candleIdx; }
+      }
+      if (!(parentHigh > 0) || parentIdxSub < 0) continue;
+      goals.push({
+        lowIdx: offset + ref.idx,        // full candles 좌표 — 날짜 순서 비교 키 (단조 증가)
+        low: ref.low,
+        drop: (parentHigh - ref.low) / parentHigh,
+        parentIdx: offset + parentIdxSub,  // parent-group 키 (같은 parentIdx = 같은 부모 고점)
+        highIdx: offset + parentIdxSub,
+      });
+    }
+    return goals;
+  }
+
+  /**
+   * ZigZag 종가 골 idx(sub 좌표) → ±ZIGZAG_REFINE_BARS 봉 내 저가(low-of-day) 최저일.
+   * 상한가·하한가 날 제외 (점상한가 꼬리 왜곡 회피). 전부 제외 시 가드 무시 재탐색.
+   * @param {Array} sub
+   * @param {number} li — ZigZag 골 candleIdx (sub 좌표)
+   * @returns {{idx, low} | null}
+   */
+  _refineTroughLow(sub, li) {
+    const lo = Math.max(0, li - ZIGZAG_REFINE_BARS);
+    const hi = Math.min(sub.length - 1, li + ZIGZAG_REFINE_BARS);
     let bestIdx = -1;
     let bestLow = Infinity;
-    for (let k = left; k <= right; k++) {
-      const c = candles[k];
+    for (let k = lo; k <= hi; k++) {
+      const c = sub[k];
       if (!c || !(c.low > 0)) continue;
-      // 가드: 상한가·하한가(±29%+) 날은 저점 앵커일 후보 제외
-      if (k > 0 && isLimitMove(candles[k - 1].close, c.close)) continue;
+      if (k > 0 && sub[k - 1] && isLimitMove(sub[k - 1].close, c.close)) continue;
       if (c.low < bestLow) { bestLow = c.low; bestIdx = k; }
     }
-    // 전 구간이 상한가·하한가로 제외된 극단 케이스 → 가드 무시하고 재탐색
     if (bestIdx < 0) {
-      for (let k = left; k <= right; k++) {
-        const c = candles[k];
+      for (let k = lo; k <= hi; k++) {
+        const c = sub[k];
         if (!c || !(c.low > 0)) continue;
         if (c.low < bestLow) { bestLow = c.low; bestIdx = k; }
       }
     }
     if (bestIdx < 0) return null;
+    return { idx: bestIdx, low: bestLow };
+  }
 
-    // 고점 앵커 = 직전 고점 피벗 (없으면 직후 고점 피벗 fallback — 기존 high/low 방향 정합)
-    let highPivotPos = -1;
-    for (let i = pos - 1; i >= 0; i--) {
-      if (pivots[i].type === 'H') { highPivotPos = i; break; }
+  /**
+   * 카드 노출 골 선택 (토구사 parent-group 규칙, 최대 2세트).
+   *   RECENT = drop ≥ 20% goal 중 lowDate 가장 늦은 것.
+   *   BASE:
+   *     2a. recent 의 parent-group(같은 parentDate) 안에서 recent 보다 이른 goal 중 가장 깊은 = ingrpBest.
+   *     2b. ingrpBest 가 있고 ingrpBest.drop ≥ recent.drop → BASE = ingrpBest (같은 파동 더 깊은 base 우선).
+   *     2c. 아니면 recent 보다 이른 전체 goal 중 가장 깊은 것 (근사동률 ±0.5%p 면 lowDate 늦은 것).
+   *   카드 = {BASE, RECENT} lowDate 오름차순 (BASE==RECENT 면 1세트).
+   *
+   * @param {Array} pool — goal 합집합
+   * @returns {Array<Object>} 선택 goal (role 부여, 최대 2)
+   */
+  _selectCardGoals(pool) {
+    if (!pool || pool.length === 0) return [];
+    const cand = pool.filter((g) => g.drop >= ZIGZAG_RECENT_MIN_DROP);
+    if (cand.length === 0) return [];
+    let recent = cand[0];
+    for (const g of cand) {
+      if (g.lowIdx > recent.lowIdx) recent = g;  // lowIdx 큰 = 날짜 늦은
     }
-    if (highPivotPos < 0) {
-      for (let i = pos + 1; i < pivots.length; i++) {
-        if (pivots[i].type === 'H') { highPivotPos = i; break; }
+
+    let base = null;
+    const grp = pool.filter((g) => g.parentIdx === recent.parentIdx && g.lowIdx < recent.lowIdx);
+    if (grp.length > 0) {
+      let ingrpBest = grp[0];
+      for (const g of grp) { if (g.drop > ingrpBest.drop) ingrpBest = g; }
+      if (ingrpBest.drop >= recent.drop) base = ingrpBest;  // 2b
+    }
+    if (base === null) {
+      const earlier = pool.filter((g) => g.lowIdx < recent.lowIdx);
+      if (earlier.length > 0) {
+        let mx = earlier[0];
+        for (const g of earlier) { if (g.drop > mx.drop) mx = g; }
+        const near = earlier.filter((g) => Math.abs(g.drop - mx.drop) <= ZIGZAG_NEAR_TIE);
+        if (near.length > 1) {
+          base = near[0];
+          for (const g of near) { if (g.lowIdx > base.lowIdx) base = g; }  // later-date tie-break
+        } else {
+          base = mx;
+        }
       }
     }
-    let highIdx;
-    let highPrice;
-    if (highPivotPos >= 0) {
-      highIdx = pivots[highPivotPos].candleIdx;
-      // 고점 앵커도 캔들 꼬리(high) 기준 — swing high 종가 피벗 날의 고가
-      highPrice = candles[highIdx].high;
-    } else {
-      // 고점 피벗 부재 (극단) → 골 구간 좌측 경계 고가
-      highIdx = left;
-      highPrice = candles[left].high;
-    }
 
-    return {
-      high: { time: candles[highIdx].time, price: highPrice, candleIdx: highIdx },
-      low: { time: candles[bestIdx].time, price: bestLow, candleIdx: bestIdx },
-    };
+    const out = [];
+    if (base) { base.role = 'base'; out.push(base); }
+    if (base === null || base.lowIdx !== recent.lowIdx) { recent.role = 'recent'; out.push(recent); }
+    out.sort((a, b) => a.lowIdx - b.lowIdx);  // 날짜 오름차순
+    return out;
+  }
+
+  /**
+   * 하위 호환 — primary 세트(최근 골) {high, low} 반환 (drag 편집 대상).
+   * @returns {{high, low} | null}
+   */
+  _autoAnchorZigZag() {
+    const sets = this._autoAnchorSets();
+    if (sets.length === 0) return null;
+    // role 'recent' 가 primary (없으면 마지막)
+    const primary = sets.find((s) => s.role === 'recent') || sets[sets.length - 1];
+    return primary;
   }
 
   /**
@@ -1168,6 +1296,8 @@ class FibonacciDrawingController {
     try { document.removeEventListener('touchend', this._onDocTouchEnd); } catch (e) { /* noop */ }
     this._chartEl = null;
     this._clearPriceLines();
+    // 2026-06-10 토구사 union: secondary 세트 price line cleanup 의무
+    this._clearSecondaryPriceLines();
     // P0-19 Fix-63: overlay label DOM 본문 제거 의무
     this._clearOverlayLabels();
     // P0-24 Fix-83: snap toast cleanup 의무
