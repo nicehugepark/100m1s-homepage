@@ -127,6 +127,24 @@ async function loadPm320History(date) {
   } catch (e) { return null; }
 }
 
+// PM320-D6 (손님 판정 R1, 대표 결정 2026-06-10) — 4/8 이후 PICK 승률 summary.
+//   build_card_history.py build_summary() 산출 (서빙 history 전수 집계, 매일 15:25 자동 갱신).
+//   schema: { since, total_picks, settled, running, take_profit, expired_loss, expired_gain, win_rate, _basis }
+//   404/파싱 실패/필수 필드 부재 시 null → 승률 카드 미렌더 (FLR-AGT-002 거짓 충실성 차단 — 추정 표시 금지).
+async function loadPm320Summary() {
+  try {
+    const res = await fetch(`/data/pm320_history/summary.json?v=${Date.now()}`);
+    if (!res.ok) return null;
+    const d = await res.json();
+    // schema validation — 승률 산출 핵심 필드 존재 + 타입 확인 (캐시 오염·구버전 차단).
+    if (!d || typeof d.settled !== 'number' || typeof d.take_profit !== 'number'
+        || typeof d.win_rate !== 'number') {
+      return null;
+    }
+    return d;
+  } catch (e) { return null; }
+}
+
 // Q-20260605-103 Phase 3 — 야간 미국증시 요약 (us-indices/{kstDate}.json).
 //   DSN §3.6.9. 부재/파싱 실패/schema 불일치 시 null → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단).
 //   schema: { trade_date_local, indices:[{name, point, change_pct, spark[], candle:{o,h,l,c}}], news_chips:[{summary, source, url}] }
@@ -233,11 +251,12 @@ async function loadCalDayData(date) {
   // kiwoom + stock-daily + pm320_history 병렬 fetch
   // DOC-20260603-DSN-001 §1 — pm320_history는 별 path (메인 worktree → cron 미러), 404 graceful (PICK 부재 일자)
   const dateHash = date.replace(/-/g, '');
-  const [kiwoom, stockDailyDirect, pm320Data, nightlyUs] = await Promise.all([
+  const [kiwoom, stockDailyDirect, pm320Data, nightlyUs, pm320Summary] = await Promise.all([
     loadKiwoomDate(date),
     fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
     loadPm320History(date),
-    loadNightlyUsSummary(date)
+    loadNightlyUsSummary(date),
+    loadPm320Summary()
   ]);
   // pm320 stocks → code 기반 lookup map 신축 (interpretedByName 합성 시 사용)
   // schema: { code, name, pm320_pick: { is_pick, entry_price, watering_target_price, ... } }
@@ -460,7 +479,8 @@ async function loadCalDayData(date) {
     lastSnapshotAt,
     _fallbackDate: fallbackDate,
     pm320NoPick,
-    nightlyUs  // Q-20260605-103 Phase 3 — null이면 섹션 미렌더 (FLR-AGT-002)
+    nightlyUs,  // Q-20260605-103 Phase 3 — null이면 섹션 미렌더 (FLR-AGT-002)
+    pm320Summary  // PM320-D6 — 4/8 이후 승률 summary (null이면 승률 카드 미렌더, FLR-AGT-002)
   };
   // §3.6.2.3 — read 와 동일 세션 구간 키로 write (장경계 무효화 정합).
   calDayCache[_key] = result;

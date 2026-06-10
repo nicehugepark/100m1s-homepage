@@ -2014,6 +2014,53 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-pending-soon { font-weight: 700; color: var(--am); font-size: 12px; }
 
+/* PM320-D6 — 4/8 이후 트랙레코드 승률 카드 (대표 결정: 수익률 X, 승률만).
+   PICK 골드(--am) 강조 — "검증된 성적" 신뢰 신호. 손실 건수 병기 (정직성). */
+.cal-pm320-winrate {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #FFFDF6 0%, var(--am4) 100%);
+  border: 1px solid var(--am3);
+}
+.cal-pm320-wr-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cal-pm320-wr-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--am);
+}
+.cal-pm320-wr-rate { font-size: 14px; font-weight: 600; color: var(--tx2); }
+.cal-pm320-wr-rate b { font-size: 20px; font-weight: 800; color: var(--am); letter-spacing: -0.01em; }
+.cal-pm320-wr-stats {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.cal-pm320-wr-sep { color: var(--dm); opacity: 0.6; }
+.cal-pm320-wr-stat { color: var(--tx2); }
+.cal-pm320-wr-win { color: var(--pos); }
+.cal-pm320-wr-loss { color: var(--neg); }
+.cal-pm320-wr-running { color: var(--dm); }
+.cal-pm320-wr-basis {
+  margin-top: 7px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--dm);
+  opacity: 0.95;
+}
+
 /* PM320-D6 P1 — 뉴스 부재 placeholder 보조 문구 (블록 줄바꿈). */
 .cal-feature-news-empty-sub {
   display: block;

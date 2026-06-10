@@ -1984,6 +1984,34 @@ function renderCalExpandContent(date, data) {
   const _narrPillsHtmlOut = _isSingleCardMode ? '' : narrPillsHtml;
   const _macroHtmlOut = _isSingleCardMode ? '' : macroHtml;
   const _rankingBannerOut = _isSingleCardMode ? '' : rankingBanner;
+  // PM320-D6 (손님 판정 R1, 대표 결정 2026-06-10) — 4/8 이후 트랙레코드 승률 카드.
+  //   대표 결정: 수익률 X, "4/8 이후 승률"만 공개. data.pm320Summary (build_summary 산출) 에서 렌더.
+  //   🔴 수익률·손익% 0건 (승률·익절수·손실수만). 손실 건수 숨기지 않고 병기 (정직성, FLR-AGT-002).
+  //   summary null(404·schema 미달) 또는 settled=0 시 미렌더 (추정 표시 금지). 단독모드 hide.
+  const _pm320WinRateHtml = (() => {
+    if (_isSingleCardMode) return '';
+    const s = data && data.pm320Summary;
+    if (!s || typeof s.settled !== 'number' || s.settled <= 0 || typeof s.win_rate !== 'number') return '';
+    const rate = s.win_rate.toFixed(1);
+    const tp = s.take_profit, loss = s.expired_loss || 0, gain = s.expired_gain || 0;
+    const lossGainHtml = (loss > 0 || gain > 0)
+      ? `<span class="cal-pm320-wr-loss">손실 ${loss}건${gain > 0 ? ` · 만기이익 ${gain}건` : ''}</span>`
+      : '';
+    return `<div class="cal-pm320-winrate" role="group" aria-label="4월 8일 이후 추천 승률">`
+      + `<div class="cal-pm320-wr-head">`
+      + `<span class="cal-pm320-wr-eyebrow">4월 8일 이후 추천 성적</span>`
+      + `<span class="cal-pm320-wr-rate">승률 <b>${escapeHtml(rate)}%</b></span>`
+      + `</div>`
+      + `<div class="cal-pm320-wr-stats">`
+      + `<span class="cal-pm320-wr-stat">총 ${s.total_picks}픽</span>`
+      + `<span class="cal-pm320-wr-sep">·</span>`
+      + `<span class="cal-pm320-wr-win">익절 ${tp}건</span>`
+      + (lossGainHtml ? `<span class="cal-pm320-wr-sep">·</span>${lossGainHtml}` : '')
+      + (s.running > 0 ? `<span class="cal-pm320-wr-sep">·</span><span class="cal-pm320-wr-running">보유중 ${s.running}건</span>` : '')
+      + `</div>`
+      + `<div class="cal-pm320-wr-basis">청산 완료 픽 기준 (보유중 제외). 과거 성과가 미래 수익을 보장하지 않습니다.</div>`
+      + `</div>`;
+  })();
   // DSN-frontend §3.6.8 (2026-06-05) — PM320 추천 부재(보류일) 안내.
   //   통합 모델 보류일(선제거로 잔존<2 → PICK 0건, 예: 4/16)에는 추천 종목 카드가 없어
   //   화면이 빈 것처럼 보인다. data.pm320NoPick===true(보류 확정) + 거래일 + 비단독모드 시
@@ -2038,6 +2066,7 @@ function renderCalExpandContent(date, data) {
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
       ${_pm320PendingHtml}
+      ${_pm320WinRateHtml}
       ${_pm320NoPickHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
