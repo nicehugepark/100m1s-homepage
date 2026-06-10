@@ -1048,18 +1048,32 @@ a.cal-credit-row:hover,
 .nightly-us-summary.pm320-collapsible { margin: 14px 0; }
 .nightly-us-summary .pm320-section-header { padding: 4px 0; }
 .pm320-section-summary {
-  font-size: 12px; font-weight: 700; color: var(--am);
+  /* R13 P0 대비: 접힘 미니요약 골드 #C49930(2.64:1) → #8A6810(4.99:1 on white, WCAG AA). */
+  font-size: 12px; font-weight: 700; color: #8A6810;
   white-space: nowrap; flex: 0 0 auto;
 }
 .pm320-section-chevron {
   flex: 0 0 auto; font-size: 12px; color: var(--dm);
-  transition: transform 0.18s ease; margin-left: 2px;
+  transition: transform 0.24s ease; margin-left: 2px;
 }
 /* 펼침(=collapsed 부재) 시 chevron 회전 + 미니요약 숨김(본문이 이미 정보 노출). */
 .pm320-collapsible:not(.pm320-section-collapsed) .pm320-section-chevron { transform: rotate(180deg); }
 .pm320-collapsible:not(.pm320-section-collapsed) .pm320-section-summary { display: none; }
-/* 접힘 시 본문 숨김 (hidden 속성 이중 가드). */
-.pm320-section-collapsed .section-collapse-body { display: none; }
+/* R13 P1 접기/펼치기 트랜지션 (대표 R12 catch — 즉시 토글 → 240ms 슬라이드/페이드).
+   display:none 은 애니메이션 불가 → max-height + opacity. 펼침 기본값(아래) → 접힘(0)으로 전이. */
+.section-collapse-body {
+  overflow: hidden;
+  max-height: 4000px; opacity: 1;
+  transition: max-height 0.24s ease, opacity 0.24s ease;
+}
+.pm320-section-collapsed .section-collapse-body {
+  max-height: 0; opacity: 0;
+  /* 접힘 완료 후 잔여 인터랙션 차단 (visibility 지연 — 페이드아웃 동안엔 보임). */
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-collapse-body { transition: none; }
+}
 .pm320-section-header:focus-visible {
   outline: 2px solid var(--am); outline-offset: 2px; border-radius: 8px;
 }
@@ -2097,6 +2111,9 @@ body.single-card-mode { background: var(--bg) !important; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  /* R13 P1: 익절 칸(라벨+값+물타기 시·조건부 3줄)과 1줄 칸의 높이가 달라도 라벨이 같은
+     상단 baseline에 정렬되도록 start 정렬(stretch 시 짧은 칸 내용이 가운데로 떠 어긋나 보임). */
+  align-items: start;
 }
 .cal-pm320-today-rec-cell {
   display: flex;
@@ -2111,8 +2128,17 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-today-rec-k {
   font-size: 10.5px;
   font-weight: 700;
-  color: var(--dm);
+  /* R13 P0 대비: 라벨 --dm #8B95A8(2.78:1 on cell) → #5E6776(5.53:1, WCAG AA). */
+  color: #5E6776;
   letter-spacing: 0.01em;
+}
+/* R13 P1: 익절가가 물타기 체결 시 평단 하락으로 바뀌므로 단정 표기 회피 — "(조건부)" 명시.
+   tpAfter(물타기 시 익절가) 존재 시에만 노출(대표 20:51 catch). */
+.cal-pm320-today-rec-k-cond {
+  margin-left: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #8A6810;
 }
 .cal-pm320-today-rec-v {
   font-size: 13px;
@@ -2130,7 +2156,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-today-rec-v-sub {
   font-size: 10px;
   font-weight: 600;
-  color: var(--dm);
+  /* R13 P0 대비: --dm 2.78:1 → #5E6776 5.53:1 (WCAG AA). */
+  color: #5E6776;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   overflow: hidden;
@@ -2149,7 +2176,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-variant-numeric: tabular-nums;
 }
 .cal-pm320-today-rec-result--profit { color: #1A7F4B; background: rgba(26, 127, 75, 0.10); }
-.cal-pm320-today-rec-result--loss { color: #C0392B; background: rgba(192, 57, 43, 0.10); }
+.cal-pm320-today-rec-result--loss { color: #B8302E; background: rgba(192, 57, 43, 0.10); } /* R13 P1 대비: #C0392B(4.39:1) → #B8302E(4.84:1, WCAG AA). */
 .cal-pm320-today-rec-result--running { color: #92400E; }
 .cal-pm320-today-rec-more {
   display: inline-flex;
@@ -2217,8 +2244,10 @@ body.single-card-mode { background: var(--bg) !important; }
   align-items: center;
   flex-wrap: wrap;
   gap: 5px 6px;
-  font-size: 11.5px;
-  font-weight: 600;
+  /* R13 P0 위계: 표본수(총 N픽)·익절·손실 건수를 승률과 동등 위계로 상향(11.5→13px, 700).
+     승률 숫자만 도드라지고 표본·손실이 묻히던 문제(손익 근거가 작게 읽힘) 해소. */
+  font-size: 13px;
+  font-weight: 700;
 }
 .cal-pm320-wr-sep { color: var(--dm); opacity: 0.6; }
 .cal-pm320-wr-stat { color: var(--tx2); }
@@ -2231,7 +2260,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 10.5px;
   font-weight: 500;
   line-height: 1.45;
-  color: var(--dm);
+  /* R13 P0 대비: --dm 2.96:1 on amber → #5E6776 5.32:1 (WCAG AA). */
+  color: #5E6776;
 }
 /* 최대낙폭(MDD) 병기 — 빨강 톤(위험 정직). 승률 착시 차단. */
 .cal-pm320-wr-mdd {
@@ -2246,8 +2276,10 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 600;
 }
 .cal-pm320-wr-mdd-label { color: var(--tx2); }
-.cal-pm320-wr-mdd-worst { color: var(--neg); font-weight: 800; }
-.cal-pm320-wr-mdd-avg { color: var(--neg); font-weight: 600; opacity: 0.8; font-size: 10.5px; }
+/* R13 P0 위계: MDD(최대낙폭)가 부가정보처럼 묻히는 문제 → 승률 b(20px)에 준하는 위계로 상향.
+   장중 최대낙폭 수치를 15px·800으로 키워 "승률만 보면 안전" 착시를 본문급으로 노출. */
+.cal-pm320-wr-mdd-worst { color: var(--neg); font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
+.cal-pm320-wr-mdd-avg { color: var(--neg); font-weight: 600; opacity: 0.85; font-size: 11px; }
 .cal-pm320-wr-mdd-note {
   margin-top: 4px;
   font-size: 10px;
@@ -2261,8 +2293,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 10px;
   font-weight: 500;
   line-height: 1.5;
-  color: var(--dm);
-  opacity: 0.95;
+  /* R13 P0 대비: --dm 2.96:1 → #5E6776 5.32:1 (WCAG AA). opacity 제거(대비 보존). */
+  color: #5E6776;
 }
 
 /* PM320-D6 P1 — 뉴스 부재 placeholder 보조 문구 (블록 줄바꿈). */
@@ -2491,7 +2523,8 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .pm320-rec-result-strip--loss {
   background: #FCE7E9;
-  color: #C53939;
+  /* R13 P1 대비: 익절/만기손실 빨강 #C53939(4.42:1) → #B8302E(5.07:1, WCAG AA). */
+  color: #B8302E;
   border: 1px solid #E5A4AB;
 }
 
