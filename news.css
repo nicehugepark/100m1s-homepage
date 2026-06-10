@@ -2272,6 +2272,9 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-top: 4px;
 }
 .pm320-rec-label {
+  display: inline-flex;       /* 라벨 텍스트 + (?) 툴팁이 한 줄에 붙도록 — 물타기(3자)+? 줄바꿈 고아 방지 */
+  align-items: center;        /* 매수/익절과 동일한 베이스라인 정합 */
+  white-space: nowrap;        /* 좁은 라벨 칼럼(모바일 72px)에서도 라벨·? 분리 금지 */
   font-weight: 700;
   color: #6B4A0A;
 }
@@ -2326,7 +2329,7 @@ body.single-card-mode { background: var(--bg) !important; }
     font-size: 12px;          /* §8.5 12px 모바일 폰트 catch */
   }
   .pm320-rec-detail-row {
-    grid-template-columns: 64px 1fr;
+    grid-template-columns: 72px 1fr;   /* 64px→72px: 물타기(3자)+(?) 한 줄 수용(데스크톱 80px 대비 여전히 좁음) */
     font-size: 12px;          /* 12.5px → 12px (모바일 최소 12px 정합) */
   }
   .pm320-rec-result-strip {
