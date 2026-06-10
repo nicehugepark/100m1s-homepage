@@ -32,6 +32,77 @@
   /* REQ-035 §E — 트랜지션 표준화 (Linear-style cubic-bezier) */
   --t-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
   --t-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* 등락 색 토큰화 (DOC-20260610-DSN-001 §1.2) — 다크에서 대비 상향 위해 단일 출처화.
+     상승=적/하락=청은 한국 증시 관습 (light 값 변경 금지, 다크만 보정). */
+  --up: #C53939;
+  --down: #1958C7;
+
+  /* R13 WCAG 텍스트 토큰 — 라이트 값(5.07~6.77:1)이 다크에선 깨지므로 다크 override 의무.
+     (v299 Stage-1에서 하드코딩한 값을 토큰화하여 다크 정합 확보) */
+  --streak-tx: #7A5E12;     /* 연속선정 뱃지 글자 (배경 --am3) */
+  --now-label-tx: #5A6070;  /* 슬라이더 "현재" 라벨 (배경 --bg2) */
+  --rec-code-tx: #5C6270;   /* 추천 카드 티커 (배경 --am4) */
+  --note-tx: #52596A;       /* 면책/note 문구 */
+}
+
+/* ── 다크모드 (DOC-20260610-DSN-001) ──────────────────────────────────────
+   단일 출처: 다크 토큰 한 벌을 .pm320-dark-vars 로 정의 → @media(OS추종)와
+   [data-theme="dark"](수동 토글) 양쪽에서 @extend 대신 동일 선언 참조.
+   CSS는 @extend가 없으므로 변수 한 벌을 공통 그룹으로 빼서 두 셀렉터가 같은
+   값을 가리키게 한다 (§1.5 한쪽만 갱신되는 거짓 충실성 회귀 방지). */
+:root {
+  /* 다크 값 한 벌 — light 모드에선 미참조(아래 셀렉터가 활성일 때만 적용) */
+  --dk-bg: #15161A; --dk-bg2: #1D1F24; --dk-sf: #22242B; --dk-bd: #33363F;
+  --dk-tx: #ECEEF3; --dk-tx2: #B4B9C4; --dk-dm: #7E8696;
+  --dk-am: #E8C063; --dk-am2: #F2D588; --dk-am3: #5A4A1E; --dk-am4: #2A2616;
+  --dk-ru: #D14258;
+  --dk-pos: #5FD88A; --dk-pos-bg: #16271C;
+  --dk-neg: #FF8A87; --dk-neg-bg: #2A1718;
+  --dk-neu: #8089A0; --dk-neu-bg: #1D1F24;
+  --dk-up: #FF6B6B; --dk-down: #5B9BFF;
+  --dk-g04: rgba(255,255,255,0.05); --dk-g08: rgba(255,255,255,0.09);
+  --dk-g40: rgba(255,255,255,0.42); --dk-g60: rgba(255,255,255,0.64);
+  --dk-g80: rgba(255,255,255,0.85);
+  --dk-badge-disclosure: #5B9BFF; --dk-badge-predicted: #FF7A4D;
+  --dk-header-glass: rgba(21,22,26,0.85);
+  --dk-streak-tx: #F2D588; --dk-now-label-tx: #B4B9C4;
+  --dk-rec-code-tx: #C9B98A; --dk-note-tx: #B4B9C4;
+}
+/* 다크 토큰 매핑 — @media 추종(미설정자) + 수동 토글 양쪽 공통 (한 벌 정의) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--dk-bg); --bg2: var(--dk-bg2); --sf: var(--dk-sf); --bd: var(--dk-bd);
+    --tx: var(--dk-tx); --tx2: var(--dk-tx2); --dm: var(--dk-dm);
+    --am: var(--dk-am); --am2: var(--dk-am2); --am3: var(--dk-am3); --am4: var(--dk-am4);
+    --ru: var(--dk-ru);
+    --pos: var(--dk-pos); --pos-bg: var(--dk-pos-bg);
+    --neg: var(--dk-neg); --neg-bg: var(--dk-neg-bg);
+    --neu: var(--dk-neu); --neu-bg: var(--dk-neu-bg);
+    --up: var(--dk-up); --down: var(--dk-down);
+    --g04: var(--dk-g04); --g08: var(--dk-g08); --g40: var(--dk-g40);
+    --g60: var(--dk-g60); --g80: var(--dk-g80);
+    --badge-disclosure: var(--dk-badge-disclosure); --badge-predicted: var(--dk-badge-predicted);
+    --header-glass: var(--dk-header-glass);
+    --streak-tx: var(--dk-streak-tx); --now-label-tx: var(--dk-now-label-tx);
+    --rec-code-tx: var(--dk-rec-code-tx); --note-tx: var(--dk-note-tx);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: var(--dk-bg); --bg2: var(--dk-bg2); --sf: var(--dk-sf); --bd: var(--dk-bd);
+  --tx: var(--dk-tx); --tx2: var(--dk-tx2); --dm: var(--dk-dm);
+  --am: var(--dk-am); --am2: var(--dk-am2); --am3: var(--dk-am3); --am4: var(--dk-am4);
+  --ru: var(--dk-ru);
+  --pos: var(--dk-pos); --pos-bg: var(--dk-pos-bg);
+  --neg: var(--dk-neg); --neg-bg: var(--dk-neg-bg);
+  --neu: var(--dk-neu); --neu-bg: var(--dk-neu-bg);
+  --up: var(--dk-up); --down: var(--dk-down);
+  --g04: var(--dk-g04); --g08: var(--dk-g08); --g40: var(--dk-g40);
+  --g60: var(--dk-g60); --g80: var(--dk-g80);
+  --badge-disclosure: var(--dk-badge-disclosure); --badge-predicted: var(--dk-badge-predicted);
+  --header-glass: var(--dk-header-glass);
+  --streak-tx: var(--dk-streak-tx); --now-label-tx: var(--dk-now-label-tx);
+  --rec-code-tx: var(--dk-rec-code-tx); --note-tx: var(--dk-note-tx);
 }
 @media (max-width: 640px) {
   :root {
@@ -52,7 +123,8 @@ a { color: inherit; text-decoration: none; }
 
 header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(250,251,254,0.85);
+  /* 다크모드: 라이트 글래스 rgba(250,251,254,.85) → 토큰 기반 (--header-glass, 다크 override) */
+  background: var(--header-glass, rgba(250,251,254,0.85));
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--bd);
@@ -67,6 +139,28 @@ header {
 .brand-name { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
 .nav-links { display: flex; gap: 24px; font-size: 13px; font-weight: 600; color: var(--tx2); }
 .nav-links a:hover, .nav-links a.active { color: var(--am); }
+
+/* 헤더 우측 액션 그룹 (테마 토글 + 햄버거) — space-between 4-child 붕괴 방지 위해 묶음 */
+.header-actions { display: flex; align-items: center; gap: 4px; }
+
+/* 다크모드 토글 (DOC-20260610-DSN-001 §3.2) — 44×44 터치 타겟, 아이콘 20px, 2종 순환 */
+.theme-toggle {
+  width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer; padding: 0; border-radius: 8px;
+  color: var(--tx2); transition: background var(--t-fast), color var(--t-fast);
+}
+.theme-toggle:hover { background: var(--g04); color: var(--am); }
+.theme-toggle:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+.theme-toggle svg { width: 20px; height: 20px; display: block; }
+/* 라이트일 때 달(="누르면 다크"), 다크일 때 해 — JS가 .icon-* 토글 */
+.theme-toggle .ico-sun { display: none; }
+.theme-toggle .ico-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .ico-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .ico-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .ico-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .ico-moon { display: none; }
+}
 
 /* 모바일 햄버거 */
 .menu-toggle { display: none; width: 40px; height: 40px; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; }
@@ -143,8 +237,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   display: inline-block;
   padding: 4px 12px; border-radius: 6px;
 }
-.section-title.up { color: #C53939; background: #FFF0F0; }
-.section-title.down { color: #1958C7; background: #EAF1FF; }
+.section-title.up { color: var(--up); background: #FFF0F0; }
+.section-title.down { color: var(--down); background: #EAF1FF; }
 
 /* ───── 종목 리스트 (1단계 계단식) ───── */
 .stocks-list {
@@ -177,8 +271,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   font-family: 'SF Mono', monospace;
   min-width: 80px; text-align: right;
 }
-.stock-pct.up { color: #C53939; }
-.stock-pct.down { color: #1958C7; }
+.stock-pct.up { color: var(--up); }
+.stock-pct.down { color: var(--down); }
 .stock-theme {
   padding: 0 18px 12px;
   font-size: 13px; color: var(--tx2); line-height: 1.55;
@@ -230,7 +324,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
 .cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; vertical-align:middle; }
 .cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 var(--card-indent-badges); align-items:center; }
-.cal-credit-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; background:#FDE8E8; color:#C53939; border:1px solid #F5C2C2; vertical-align:middle; }
+.cal-credit-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:9999px; background:#FDE8E8; color:var(--up); border:1px solid #F5C2C2; vertical-align:middle; }
 /* REQ-031 — pill 통일 (border-radius: 9999px). 시각 일관성 (SPEC-001 §III). */
 /* REQ-045 §A — 헤더 배지 폰트 통일 (11px / weight 600 / letter-spacing 0.01em). */
 /* REQ-062 — margin-right 제거. 부모 .cal-feature-badges flex gap:6px 으로 형제 간격 통제 (들여쓰기 결함 fix). */
@@ -279,7 +373,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-period-mark.ended    { background: #ECEFF1; color: #607D8B; }
 /* v4: KRX 단계 진행 표시 — "현재 X → 익일 Y 진입" (대표 v4 지시) */
 .cal-status-detail.v3 .cal-status-progress {
-  font-size: 11px; color: #C53939; font-weight: 600;
+  font-size: 11px; color: var(--up); font-weight: 600;
   background: #FFF7F7; padding: 4px 8px; border-radius: 4px;
   border-left: 2px solid #C53939; margin: 2px 0; line-height: 1.5;
 }
@@ -310,15 +404,15 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-table td.th-base { color: #777; }
 .cal-status-table td.th-thresh { color: #333; font-weight: 600; }
 .cal-status-table td.th-cur { color: #111; font-weight: 600; }
-.cal-status-table td.th-diff.pos { color: #C53939; font-weight: 600; }
-.cal-status-table td.th-diff.neg { color: #1958C7; font-weight: 600; }
+.cal-status-table td.th-diff.pos { color: var(--up); font-weight: 600; }
+.cal-status-table td.th-diff.neg { color: var(--down); font-weight: 600; }
 .cal-status-table td.th-trig { text-align: center; }
 .cal-status-table tr.triggered { background: rgba(197, 57, 57, 0.04); }
 /* v3.3: 차이 컬럼 색상·기호 강조 (대표 19:53 KST), 발동 컬럼 폐기 */
 .cal-status-table.v33 td.th-diff { font-weight: 700; font-variant-numeric: tabular-nums; }
-.cal-status-table.v33 td.th-diff.trig { color: #C53939; font-weight: 800; }
+.cal-status-table.v33 td.th-diff.trig { color: var(--up); font-weight: 800; }
 .cal-status-table.v33 td.th-diff.near { color: #E65100; }
-.cal-status-table.v33 td.th-diff.safe { color: #1958C7; }
+.cal-status-table.v33 td.th-diff.safe { color: var(--down); }
 .cal-status-detail.v3 .cal-status-insight {
   font-size: 11px; color: #444; background: #FFF6E5; padding: 6px 8px;
   border-radius: 4px; line-height: 1.5;
@@ -578,7 +672,7 @@ a.cal-credit-row:hover,
 .cal-disc-item:hover { color:var(--tx); }
 .cal-disc-cat { flex-shrink:0; min-width:42px; text-align:center; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
 .cal-disc-cat.cb { background:#FFF3E0; color:#E65100; }
-.cal-disc-cat.credit { background:#FDE8E8; color:#C53939; }
+.cal-disc-cat.credit { background:#FDE8E8; color:var(--up); }
 .cal-disc-summary {
   flex:1; min-width:0; line-height:1.4;
   /* v2.5: 1줄 클램프 + 모바일 잘림 방지 (대표 정정 16:57 KST) */
@@ -605,7 +699,7 @@ a.cal-credit-row:hover,
   .cal-badge-condition, .cal-badge-regulation { word-break: break-all; overflow-wrap: anywhere; }
 }
 .cal-credit-reason { margin-top:6px; }
-.cal-credit-reason .cal-disc-item { color:#C53939; }
+.cal-credit-reason .cal-disc-item { color:var(--up); }
 .cal-credit-reason .cal-disc-item:hover { color:#A02828; }
 .judgment-strength {
   font-weight: 700;
@@ -1294,8 +1388,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-family: 'SF Mono', monospace;
   text-align: right; min-width: 56px;
 }
-.kiwoom-pct.up { color: #C53939; }
-.kiwoom-pct.down { color: #1958C7; }
+.kiwoom-pct.up { color: var(--up); }
+.kiwoom-pct.down { color: var(--down); }
 
 /* ───── 캘린더 + 콘텐츠 2컬럼 레이아웃 ───── */
 .cal-layout {
@@ -1347,8 +1441,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   font-size: 10px; font-weight: 700; color: var(--dm);
   text-align: center; width: 30px; height: 20px; line-height: 20px;
 }
-.toss-cal-dow.sun { color: #C53939; }
-.toss-cal-dow.sat { color: #1958C7; }
+.toss-cal-dow.sun { color: var(--up); }
+.toss-cal-dow.sat { color: var(--down); }
 .toss-cal-cell {
   width: 30px; height: 30px;
   box-sizing: border-box;
@@ -1690,12 +1784,12 @@ body.single-card-mode { background: var(--bg) !important; }
   font-family: 'SF Mono', monospace;
   text-align: right; min-width: 56px;
 }
-.cal-trade-pct.up { color: #C53939; }
-.cal-trade-pct.down { color: #1958C7; }
+.cal-trade-pct.up { color: var(--up); }
+.cal-trade-pct.down { color: var(--down); }
 .cal-ind-chip {
   display: inline-block; font-size: 9px; font-weight: 600;
   padding: 2px 7px; border-radius: 4px;
-  background: rgba(25,88,199,0.10); color: #1958C7;
+  background: rgba(25,88,199,0.10); color: var(--down);
   position: relative;
 }
 /* REQ-P1 #7 (2026-04-29): chip 툴팁 — leaf chip이 속한 path 전체 표시 */
@@ -1848,8 +1942,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-family: 'SF Mono', monospace;
   text-align: right; min-width: 56px;
 }
-.cal-feature-pct.up { color: #C53939; }
-.cal-feature-pct.down { color: #1958C7; }
+.cal-feature-pct.up { color: var(--up); }
+.cal-feature-pct.down { color: var(--down); }
 .cal-feature-body {
   padding: 0 12px 8px var(--card-indent-body);
   display: flex; flex-direction: column; gap: 3px;
@@ -2111,8 +2205,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-today-rec-code {
   font-size: 11px;
   font-weight: 600;
-  /* R13 P1 WCAG: var(--dm) #8B95A8 on 카드 bg var(--am4) #FFF6E5 = 2.81 → #5C6270 (5.69:1) */
-  color: #5C6270;
+  /* R13 P1 WCAG: var(--dm) #8B95A8 on 카드 bg var(--am4) = 2.81 → 토큰 (light 5.69 / dark 7.78:1) */
+  color: var(--rec-code-tx);
   font-variant-numeric: tabular-nums;
 }
 .cal-pm320-today-rec-grid {
@@ -2383,7 +2477,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border-left: 4px solid #E8C063;
 }
 .cal-feature-card.cal-feature-card--lu.cal-feature-card--pm320-pick {
-  border-left-color: #C53939;
+  border-left-color: var(--up);
 }
 
 /* DOC-20260603-DSN-001 §3 / §7.3 — PM320 추천/결과 row (default 접힘).
@@ -2411,8 +2505,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;
   font-weight: 500;
   line-height: 1.45;
-  /* R13 P1 WCAG: var(--neu) #6B7A99 = 3.92 → #52596A (6.5:1, 카드/페이지 양 배경 통과) */
-  color: #52596A;
+  /* R13 P1 WCAG: var(--neu) #6B7A99 = 3.92 → 토큰 (light 6.77 / dark 9.19:1) */
+  color: var(--note-tx);
 }
 .pm320-rec-virtual-note b {
   font-weight: 700;
@@ -2473,7 +2567,7 @@ body.single-card-mode { background: var(--bg) !important; }
   flex-shrink: 0;
 }
 .pm320-rec-result-mark--profit { color: #1A7F37; }
-.pm320-rec-result-mark--loss { color: #C53939; }
+.pm320-rec-result-mark--loss { color: var(--up); }
 .pm320-rec-result-mark--running { color: var(--g60, #6B7280); }
 .pm320-rec-result-mark--imminent { color: #92400E; }
 /* .pm320-rec-chevron 폐기 (2026-06-03 옵션 B) — 텍스트 토글 "매매 보기" ↔ "접기"로 대체. */
@@ -2510,10 +2604,10 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--g60, #6B7280);
   font-size: 12px;          /* §8.5 모바일 12px 정합 (sub 11.5px → 12px 상향) */
 }
-/* R13 P1: "물타기 후 익절가" 의미 단서 — 평단 하락분 반영 1줄 cue (WCAG #5C6270 ≥5.69:1) */
+/* R13 P1: "물타기 후 익절가" 의미 단서 — 평단 하락분 반영 1줄 cue (토큰, light 5.69 / dark 정합) */
 .pm320-rec-value--note {
   font-size: 11px;
-  color: #5C6270;
+  color: var(--rec-code-tx);
   font-weight: 500;
 }
 /* mdd_pct===0 안내문구 continuation — "└ " 들여쓰기 정합(괄호 제거 + 다음 줄). 대표 지시 2026-06-08 */
@@ -2682,7 +2776,7 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 2px 8px;
   border-radius: 9999px;
   /* R13 P1 WCAG: var(--am) #C49930 on var(--am3) #FBE9B5 = 2.19 → 진한 골드 #7A5E12 (5.07:1) */
-  background: var(--am3); color: #7A5E12; border: 1px solid var(--am2);
+  background: var(--am3); color: var(--streak-tx); border: 1px solid var(--am2);
   vertical-align: middle;
 }
 .cal-theme-row {
@@ -2794,8 +2888,8 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .stock-range .range-meta strong { color: #111; font-weight: 600; }
 .stock-range .range-meta em { font-style: normal; margin-left: 2px; font-weight: 600; }
-.stock-range .range-meta em.up { color: #1958C7; }
-.stock-range .range-meta em.down { color: #C53939; }
+.stock-range .range-meta em.up { color: var(--down); }
+.stock-range .range-meta em.down { color: var(--up); }
 .stock-range .r-now { text-align: center; }
 .stock-range .r-high { text-align: right; }
 .stock-range .r-date { display: block; color: #999; font-size: 10px; margin-top: 1px; }
@@ -2862,8 +2956,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12px;
   font-weight: 600;
 }
-.cal-feature-meta .cal-feature-pct.up { color: #C53939; }
-.cal-feature-meta .cal-feature-pct.down { color: #1958C7; }
+.cal-feature-meta .cal-feature-pct.up { color: var(--up); }
+.cal-feature-meta .cal-feature-pct.down { color: var(--down); }
 /* v2.2: 거래대금 골드 (브랜드 --am, 700) */
 /* PM320-D6 P2 — 거래대금 텍스트 + (?) 칩 nowrap 묶음 (390px 단독 행 낙하 방지). 칩이 span 내부라 줄바꿈만 차단 */
 .cal-feature-meta .cal-trade-amount { color: var(--am); font-weight: 700; font-size: 12px; white-space: nowrap; }
@@ -2894,11 +2988,11 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 11px;
   font-weight: 600;
 }
-.stock-range.v2 .range-pcts .up { color: #C53939; }   /* 양수(상승) — 한국 증시 관습 빨강 */
-.stock-range.v2 .range-pcts .down { color: #1958C7; } /* 음수(하락) — 한국 증시 관습 파랑 */
+.stock-range.v2 .range-pcts .up { color: var(--up); }   /* 양수(상승) — 한국 증시 관습 빨강 */
+.stock-range.v2 .range-pcts .down { color: var(--down); } /* 음수(하락) — 한국 증시 관습 파랑 */
 /* v2.2: 가운데 "현재가" 라벨 (값 X, 텍스트만) */
 /* R13 P1 WCAG: #999 on #F2F4F8 = 2.59 → #5A6070 (5.71:1) */
-.stock-range.v2 .range-pcts .r-now-label { color: #5A6070; font-weight: 500; font-size: 11px; }
+.stock-range.v2 .range-pcts .r-now-label { color: var(--now-label-tx); font-weight: 500; font-size: 11px; }
 .stock-range.v2 .range-dates {
   font-size: 10px;
   color: #999;
@@ -3052,7 +3146,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-left: 4px;
   padding: 1px 5px;
   font-size: 9.5px; font-weight: 700;
-  background: #FFE4E1; color: #C53939;
+  background: #FFE4E1; color: var(--up);
   border-radius: 3px; letter-spacing: 0.3px;
 }
 

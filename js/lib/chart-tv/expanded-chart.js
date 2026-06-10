@@ -412,6 +412,28 @@ function renderChartTV(container, dailyArr, options = {}) {
   const data = normalizeData(dailyArr);
   const { wrap, togglesHost, main, close } = buildContainer(container, ticker);
 
+  // 다크모드 (DOC-20260610-DSN-001 §2.3) — 차트 배경은 transparent라 페이지 추종하되
+  // 축/그리드/separator 텍스트는 JS 하드코딩이라 현재 테마를 읽어 분기 주입.
+  function isDarkTheme() {
+    try {
+      const attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'dark') return true;
+      if (attr === 'light') return false;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (e) { return false; }
+  }
+  function chartThemeColors() {
+    const dk = isDarkTheme();
+    return {
+      text: dk ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+      sep: dk ? 'rgba(255,255,255,0.14)' : 'rgba(0,0,0,0.12)',
+      sepHover: dk ? 'rgba(255,255,255,0.24)' : 'rgba(0,0,0,0.2)',
+      grid: dk ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+      tsBorder: dk ? 'rgba(255,255,255,0.14)' : 'rgba(0,0,0,0.12)',
+    };
+  }
+  const _tc = chartThemeColors();
+
   if (data.length < 1) {
     main.innerHTML = '<div class="cal-chart-empty" role="img" aria-label="차트 데이터 없음">데이터 누적 중</div>';
     return null;
@@ -442,17 +464,17 @@ function renderChartTV(container, dailyArr, options = {}) {
     height: totalHeight,
     layout: {
       background: { color: 'transparent' },
-      textColor: 'rgba(0,0,0,0.6)',
+      textColor: _tc.text,  // 다크 추종 (DSN-001 §2.3)
       fontSize: 9,  // P0-18 Fix-59: y축 + 하단 날짜 font 축소 (default 12 → 9)
       panes: {
-        separatorColor: 'rgba(0,0,0,0.12)',
-        separatorHoverColor: 'rgba(0,0,0,0.2)',
+        separatorColor: _tc.sep,
+        separatorHoverColor: _tc.sepHover,
         enableResize: true,
       },
     },
     grid: {
-      vertLines: { color: 'rgba(0,0,0,0.08)', style: LineStyle.Dotted },
-      horzLines: { color: 'rgba(0,0,0,0.08)', style: LineStyle.Dotted },
+      vertLines: { color: _tc.grid, style: LineStyle.Dotted },
+      horzLines: { color: _tc.grid, style: LineStyle.Dotted },
     },
     crosshair: { mode: CrosshairMode.Normal },
     // P0-23 Fix-80 (2026-05-21 19:38 KST 대표 verbatim
@@ -473,7 +495,7 @@ function renderChartTV(container, dailyArr, options = {}) {
       dateFormat: 'yyyy-MM-dd',
     },
     timeScale: {
-      borderColor: 'rgba(0,0,0,0.12)',
+      borderColor: _tc.tsBorder,  // 다크 추종 (DSN-001 §2.3)
       timeVisible: false,
       secondsVisible: false,
       // P0-22 Fix-75 (2026-05-21 18:12 KST 대표 verbatim
@@ -1406,6 +1428,25 @@ function renderChartTV(container, dailyArr, options = {}) {
     setTimeout(() => positionSubPaneLabels(), 0);
   }
 
+  // 다크모드 토글 (DOC-20260610-DSN-001 §2.3) — 열린 차트가 있을 때 테마 전환 시 축/그리드/separator 색 재적용.
+  const onThemeChange = () => {
+    const c = chartThemeColors();
+    try {
+      chart.applyOptions({
+        layout: {
+          textColor: c.text,
+          panes: { separatorColor: c.sep, separatorHoverColor: c.sepHover },
+        },
+        grid: {
+          vertLines: { color: c.grid },
+          horzLines: { color: c.grid },
+        },
+        timeScale: { borderColor: c.tsBorder },
+      });
+    } catch (e) { /* noop */ }
+  };
+  window.addEventListener('pm320:themechange', onThemeChange);
+
   close.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1416,6 +1457,7 @@ function renderChartTV(container, dailyArr, options = {}) {
       const trigger = card.querySelector('[data-expand-trigger="chart"]');
       if (trigger) trigger.setAttribute('aria-expanded', 'false');
     }
+    try { window.removeEventListener('pm320:themechange', onThemeChange); } catch (err) { /* noop */ }
     try { chart.remove(); } catch (err) { /* noop */ }
   });
 
@@ -1439,6 +1481,7 @@ function renderChartTV(container, dailyArr, options = {}) {
     applyState,
     destroy() {
       try { ro.disconnect(); } catch (e) { /* noop */ }
+      try { window.removeEventListener('pm320:themechange', onThemeChange); } catch (e) { /* noop */ }
       try { removeMarkers(); } catch (e) { /* noop */ }
       // Phase 7d-2 fibonacci 자석 drawing tool — subscribe handler unsubscribe + handle DOM 제거 의무
       try { removeFibonacci(); } catch (e) { /* noop */ }

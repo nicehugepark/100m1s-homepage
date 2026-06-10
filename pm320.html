@@ -3,6 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- 다크모드 FOUC 방지 (DOC-20260610-DSN-001 §4.1) — 외부 리소스 앞 동기 inline.
+     localStorage 'theme'(light/dark)만 data-theme 박음. 없으면 @media prefers-color-scheme 가 처리(auto). -->
+<meta name="color-scheme" content="light dark">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    } catch (e) {}
+  })();
+</script>
 <title>PM320 — 오후 3시 20분 | 100M1S</title>
 <meta name="description" content="PM320 — 오후 3시 20분. 장 마감 10분 전, 하루 단 한 종목을 데이터로 선별합니다.">
 <meta name="robots" content="noindex, nofollow">
@@ -20,8 +33,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/pm320-assets/favicon/favicon-16.png">
 <link rel="shortcut icon" href="/pm320-assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/pm320-assets/favicon/apple-touch-icon-180.png">
-<link rel="preload" href="/news.css?v=20260610v006" as="style">
-<link rel="stylesheet" href="/news.css?v=20260610v006">
+<link rel="preload" href="/news.css?v=20260610v007" as="style">
+<link rel="stylesheet" href="/news.css?v=20260610v007">
 </head>
 <body>
 
@@ -52,7 +65,13 @@
       <a href="/pm320.html" class="active">PM320</a>
       <a href="/#contact">Contact</a>
     </nav>
-    <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
+    </div>
   </div>
 </header>
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
@@ -141,11 +160,11 @@
      SRI 0건 채택 본질: jsdelivr 공식 권고 verbatim "Do NOT use SRI with dynamically generated files" (verify 2026-05-21 04:25 KST).
      crossorigin="anonymous" CORS 본질 (Access-Control-Allow-Origin: * 정합).
      plugins 4종 (Ichimoku/Volume Profile/Volume by Decile/Fibonacci) + markers (분홍 강세 #2 + 배당락 #6) = wrapper 내부 ESM import 통합 로드. -->
-<script src="/js/lib/chart-tv/expanded-chart.js?v=20260610v227" type="module" crossorigin="anonymous"></script>
+<script src="/js/lib/chart-tv/expanded-chart.js?v=20260610v228" type="module" crossorigin="anonymous"></script>
 <script src="/js/utils.js?v=20260508v274" defer></script>
 <script src="/js/data-loader.js?v=20260610v001" defer></script>
 <script src="/js/calendar.js?v=20260608v404" defer></script>
-<script src="/js/renderer.js?v=20260610v007" defer></script>
+<script src="/js/renderer.js?v=20260610v008" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
@@ -162,6 +181,46 @@ if ('serviceWorker' in navigator) {
     window.location.reload();
   });
 }
+</script>
+
+<script>
+// 다크모드 토글 (DOC-20260610-DSN-001 §3) — 2종 순환(현재 보이는 테마의 반대로 전환).
+// localStorage 'theme' = light/dark 명시값. auto(키 없음)는 OS 추종 — 토글 누르면 명시 선택으로 전환.
+(function () {
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function effectiveTheme() {
+    var attr = document.documentElement.getAttribute('data-theme');
+    if (attr === 'dark' || attr === 'light') return attr;
+    return (mq && mq.matches) ? 'dark' : 'light'; // auto → OS 추종
+  }
+  function syncAria() {
+    var dark = effectiveTheme() === 'dark';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    btn.setAttribute('aria-label', dark ? '라이트 모드 전환' : '다크 모드 전환');
+  }
+  syncAria();
+  btn.addEventListener('click', function () {
+    var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    syncAria();
+    // 열려 있는 확대 차트가 있으면 테마 재적용 (JS 하드코딩 축/그리드 색, §2.3).
+    window.dispatchEvent(new CustomEvent('pm320:themechange', { detail: { theme: next } }));
+  });
+  // auto 상태에서 OS 테마가 바뀌면 미설정자만 추종 + aria 갱신 + 차트 재테마.
+  if (mq) {
+    var onOS = function () {
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return; // 명시 토글한 사용자는 OS 변경 무시
+      syncAria();
+      window.dispatchEvent(new CustomEvent('pm320:themechange', { detail: { theme: effectiveTheme() } }));
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onOS);
+    else if (mq.addListener) mq.addListener(onOS);
+  }
+})();
 </script>
 
 
