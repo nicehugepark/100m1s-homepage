@@ -130,6 +130,8 @@ async function loadPm320History(date) {
 // PM320-D6 (손님 판정 R1, 대표 결정 2026-06-10) — 4/8 이후 PICK 승률 summary.
 //   build_card_history.py build_summary() 산출 (서빙 history 전수 집계, 매일 15:25 자동 갱신).
 //   schema: { since, total_picks, settled, running, take_profit, expired_loss, expired_gain, win_rate, _basis }
+//   MDD 병기(2026-06-10, 손님 정직성): { worst_mdd_pct, avg_mdd_pct, take_profit_target_pct } 선택 필드.
+//     이 셋은 history 전수 transversal 산출값(하드코딩 0) — 부재/비-number 시 MDD 줄만 생략(승률 카드는 렌더).
 //   404/파싱 실패/필수 필드 부재 시 null → 승률 카드 미렌더 (FLR-AGT-002 거짓 충실성 차단 — 추정 표시 금지).
 async function loadPm320Summary() {
   try {

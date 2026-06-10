@@ -2052,6 +2052,37 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-win { color: var(--pos); }
 .cal-pm320-wr-loss { color: var(--neg); }
 .cal-pm320-wr-running { color: var(--dm); }
+/* 승률 맥락 1줄 (왜 승률이 높은지 — 익절폭이 작아 쉽게 도달, 표본수 명시). */
+.cal-pm320-wr-context {
+  margin-top: 6px;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--dm);
+}
+/* 최대낙폭(MDD) 병기 — 빨강 톤(위험 정직). 승률 착시 차단. */
+.cal-pm320-wr-mdd {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--am3);
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.cal-pm320-wr-mdd-label { color: var(--tx2); }
+.cal-pm320-wr-mdd-worst { color: var(--neg); font-weight: 800; }
+.cal-pm320-wr-mdd-avg { color: var(--neg); font-weight: 600; opacity: 0.8; font-size: 10.5px; }
+.cal-pm320-wr-mdd-note {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--neg);
+  opacity: 0.82;
+}
 .cal-pm320-wr-basis {
   margin-top: 7px;
   font-size: 10px;

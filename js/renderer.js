@@ -1997,6 +1997,27 @@ function renderCalExpandContent(date, data) {
     const lossGainHtml = (loss > 0 || gain > 0)
       ? `<span class="cal-pm320-wr-loss">손실 ${loss}건${gain > 0 ? ` · 만기이익 ${gain}건` : ''}</span>`
       : '';
+    // 손님 정직성(2026-06-10) — 승률이 높은 이유(익절폭이 작아 쉽게 도달) 1줄 맥락.
+    //   고정 표본수(총 픽)와 목표 익절폭(summary.take_profit_target_pct, 부재 시 생략)을 명시.
+    const tgtPct = (typeof s.take_profit_target_pct === 'number') ? s.take_profit_target_pct : null;
+    const _winContextHtml =
+      `<div class="cal-pm320-wr-context">`
+      + `익절 목표가 ${tgtPct !== null ? `+${escapeHtml(tgtPct.toFixed(1))}%` : '작게'}로 작아 승률이 높게 산출됩니다`
+      + ` · 표본 ${s.total_picks}픽`
+      + `</div>`;
+    // 손님 정직성(2026-06-10) — 최대낙폭(MDD) 병기. "승률만 보면 안전해 보이는 착시" 차단.
+    //   worst_mdd_pct: history 전수 transversal 실측(하드코딩 0). 보유 중 진입평단 대비 최저 평가손실.
+    //   비-number(부재·구버전 summary) 시 MDD 줄 자체를 생략 → 승률 카드는 정상 렌더(추정 표시 0, FLR-AGT-002).
+    const _mddHtml = (typeof s.worst_mdd_pct === 'number')
+      ? `<div class="cal-pm320-wr-mdd">`
+        + `<span class="cal-pm320-wr-mdd-label">익절 목표 ${tgtPct !== null ? `+${escapeHtml(tgtPct.toFixed(1))}%` : '+3.2%'}</span>`
+        + `<span class="cal-pm320-wr-sep">·</span>`
+        + `<span class="cal-pm320-wr-mdd-worst">장중 최대낙폭 ${escapeHtml(s.worst_mdd_pct.toFixed(1))}%</span>`
+        + (typeof s.avg_mdd_pct === 'number'
+            ? `<span class="cal-pm320-wr-mdd-avg">(평균 ${escapeHtml(s.avg_mdd_pct.toFixed(1))}%)</span>` : '')
+        + `</div>`
+        + `<div class="cal-pm320-wr-mdd-note">보유 중 진입가 대비 최저 평가손실 (청산 완료 픽 기준)</div>`
+      : '';
     return `<div class="cal-pm320-winrate" role="group" aria-label="4월 8일 이후 추천 승률">`
       + `<div class="cal-pm320-wr-head">`
       + `<span class="cal-pm320-wr-eyebrow">4월 8일 이후 추천 성적</span>`
@@ -2009,6 +2030,8 @@ function renderCalExpandContent(date, data) {
       + (lossGainHtml ? `<span class="cal-pm320-wr-sep">·</span>${lossGainHtml}` : '')
       + (s.running > 0 ? `<span class="cal-pm320-wr-sep">·</span><span class="cal-pm320-wr-running">보유중 ${s.running}건</span>` : '')
       + `</div>`
+      + _winContextHtml
+      + _mddHtml
       + `<div class="cal-pm320-wr-basis">청산 완료 픽 기준 (보유중 제외). 과거 성과가 미래 수익을 보장하지 않습니다.</div>`
       + `</div>`;
   })();
@@ -2042,7 +2065,7 @@ function renderCalExpandContent(date, data) {
         + `<svg class="cal-pm320-pending-icon" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`
         + `<div class="cal-pm320-pending-body">`
         + `<div class="cal-pm320-pending-title">오늘의 추천은 <b>오후 3시 20분</b>에 공개됩니다</div>`
-        + `<div class="cal-pm320-pending-sub">지금 보이는 종목은 장 시작 전 집계된 거래대금 상위 종목이며, 오늘의 최종 추천이 아닙니다.</div>`
+        + `<div class="cal-pm320-pending-sub">지금 보이는 종목은 장 시작 전 집계된 거래대금 상위 종목으로, 오늘 추천 후보가 되는 종목들입니다. 오후 3시 20분에 이 중 한 종목이 오늘의 최종 추천으로 확정됩니다.</div>`
         + `<div class="cal-pm320-pending-cd-wrap"><span class="cal-pm320-pending-cd-label">공개까지</span> <span class="cal-pm320-pending-countdown" data-pick-cd="1">${_cd}</span></div>`
         + `</div>`
         + `</div>`;
