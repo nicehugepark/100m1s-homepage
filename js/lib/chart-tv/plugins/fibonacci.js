@@ -1103,7 +1103,12 @@ class FibonacciDrawingController {
       }
     }
 
-    // 각 LEVELS 본문 price 계산 + label 본문 position
+    // PM320 (대표 2026-06-10) — 좌측 가격 라벨 세로 겹침 디컨플릭트.
+    //   배경: 6개 라벨이 좁은 가격대(예 12,375/11,805)에 몰리면 서로 침범 → 가독 0.
+    //   원칙(대표 verbatim "구분선이 움직이는 게 아니라 숫자만 풀리는"): 피보 레벨 선(priceLine)은 절대 불변,
+    //   라벨 텍스트의 화면 y(top)만 최소 간격 확보. 자기 선 y에서 최소한만 어긋나도록 단일 패스 push-down.
+    // pass 1 — 각 라벨의 진짜 y(가로선 중앙) 산출. 가시 영역 밖(null)은 hide.
+    const _items = [];
     LEVELS.forEach((lv, i) => {
       const price = b + (a - b) * lv.ratio;
       const label = this._overlayLabels[i];
@@ -1115,9 +1120,22 @@ class FibonacciDrawingController {
         return;
       }
       label.style.display = 'block';
-      label.style.top = `${y}px`;
       label.textContent = formatPriceLabel(price);
+      _items.push({ label, y: Number(y) });
     });
+    // pass 2 — y 오름차순 정렬 후 최소 간격(MIN_GAP) 강제. 인접 라벨이 겹치면 아래쪽을 push-down.
+    //   translateY(-50%) 적용 상태이므로 top = 라벨 중앙. MIN_GAP = 라벨 높이(12px font + 여유) ≈ 14px.
+    const MIN_GAP = 14;
+    _items.sort((p, q) => p.y - q.y);
+    let _prevTop = -Infinity;
+    for (const it of _items) {
+      let top = it.y;                       // 기본 = 자기 선 y (어긋남 0)
+      if (top < _prevTop + MIN_GAP) {
+        top = _prevTop + MIN_GAP;           // 겹치면 최소한만 아래로 밀어내기 (선은 불변)
+      }
+      it.label.style.top = `${top}px`;
+      _prevTop = top;
+    }
   }
 
   _clearOverlayLabels() {

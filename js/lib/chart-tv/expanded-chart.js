@@ -1041,10 +1041,12 @@ function renderChartTV(container, dailyArr, options = {}) {
     hintEl.className = 'cal-chart-tv-fib-hint';
     hintEl.setAttribute('role', 'tooltip');
     hintEl.setAttribute('aria-live', 'polite');
+    // PM320 (대표 2026-06-10) — hint 박스가 확대차트 좌상단 ~40%를 가리던 문제 fix:
+    //   좌상단(top:8px) → 좌하단(bottom:8px)로 이동 + 자동 fade 8s→3s 단축. "다시 안 보기" dismiss 유지.
     hintEl.style.cssText = [
       'position: absolute',
       'left: 8px',
-      'top: 8px',
+      'bottom: 8px',
       'background: rgba(26,29,38,0.95)',  // PM320-D6 P1-a — 머티리얼 핑크 → 햇살 다크 그레이(--tx 톤). 햇살 정체성 정합(골드+토스블루). 내부 색 칩(주황/청록)은 의미색 유지
       'color: #fff',
       'font-size: 12px',
@@ -1145,8 +1147,8 @@ function renderChartTV(container, dailyArr, options = {}) {
     requestAnimationFrame(() => {
       if (hintEl) hintEl.style.opacity = '1';
     });
-    // P0-24 Fix-82: 자동 fade out 5초 → 8초 (사용자 본문 본문 본문 본문 본문 본문 본문 본문)
-    setTimeout(() => hideFibHint(), 8000);
+    // P0-24 Fix-82: 자동 fade out 5초 → 8초. PM320 (대표 2026-06-10): 8초 → 3초 (차트 가림 최소화, dismiss 유지).
+    setTimeout(() => hideFibHint(), 3000);
   }
   function hideFibHint() {
     if (!hintEl) return;
