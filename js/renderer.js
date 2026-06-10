@@ -2333,13 +2333,27 @@ function renderCalExpandContent(date, data) {
       if (!code) return null;
       if (_dailybarsCache.has(code)) return _dailybarsCache.get(code);
       try {
-        const url = `/data/dailybars/${code}.json`;
-        const resp = await fetch(url, { credentials: 'omit' });
-        if (!resp.ok) {
+        // 2026-06-10 대표 GO — NXT(넥스트레이드) 장 포함 일봉 우선 (대표 차트 기준).
+        //   1차 `/data/dailybars-nxt/{code}.json` (4/8~ NXT splice, gen_dailybars_nxt.py 산출)
+        //   2차 fallback `/data/dailybars/{code}.json` (KRX 정규장 only) — NXT 미산출 종목/구간 graceful.
+        //   NXT splice = OHLC 전체 교체이므로 캔들 꼬리·MA·피보 저점 앵커 전부 NXT 일관 (앵커-꼬리 정합).
+        //   ※ 한계: NXT 미커버 최근일(예 6/9~)은 KRX OHLC (splice 0일). 종가=정규장 종가 동일이라 양봉/음봉·MA 왜곡 0, 저가만 영향.
+        let payload = null;
+        for (const url of [`/data/dailybars-nxt/${code}.json`, `/data/dailybars/${code}.json`]) {
+          try {
+            const resp = await fetch(url, { credentials: 'omit' });
+            if (!resp.ok) continue;
+            const body = await resp.json();
+            if (body && Array.isArray(body.rows) && body.rows.length > 0) {
+              payload = body;
+              break;
+            }
+          } catch (e) { /* 다음 url 시도 */ }
+        }
+        if (!payload) {
           _dailybarsCache.set(code, null);
           return null;
         }
-        const payload = await resp.json();
         const rows = Array.isArray(payload && payload.rows) ? payload.rows : null;
         if (!rows || rows.length === 0) {
           _dailybarsCache.set(code, null);
