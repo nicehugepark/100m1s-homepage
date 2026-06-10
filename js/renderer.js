@@ -455,10 +455,10 @@ function _wireUsFutToggle() {
 function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
   try {
     if (!prevInterpByName || typeof prevInterpByName.values !== 'function') return '';
-    let pk = null, name = '';
+    let pk = null, name = '', code = '';
     for (const interp of prevInterpByName.values()) {
       const p = interp && interp.pm320_pick;
-      if (p && p.is_pick === true) { pk = p; name = interp.name || interp.stock_name || ''; break; }
+      if (p && p.is_pick === true) { pk = p; name = interp.name || interp.stock_name || ''; code = interp.code || interp.ticker || ''; break; }
     }
     if (!pk || !pk.current_state) return '';
     const state = pk.current_state;
@@ -481,7 +481,8 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     const mddV = (pk.result && pk.result.mdd_peak_pct);
     const mddChip = (state !== 'running' && mddV != null && Number.isFinite(mddV) && mddV < 0)
       ? `<span class="pm320-rec-mark-mdd">· 장중 ${_dd(mddV)}</span>` : '';
-    return `<div class="cal-pre-prev-pick cal-pre-prev-pick--${mod}" role="status" aria-label="어제의 추천 ${escapeHtml(name)} ${escapeHtml(markText)}">`
+    // data-prev-pick-code: R21 P1 — sticky 픽바 클릭 시 전일 패널 자동 펼침 후 이 종목 풀 카드로 이동.
+    return `<div class="cal-pre-prev-pick cal-pre-prev-pick--${mod}"${code ? ` data-prev-pick-code="${escapeHtml(code)}"` : ''} role="status" aria-label="어제의 추천 ${escapeHtml(name)} ${escapeHtml(markText)}">`
       + `<span class="cal-pre-prev-pick-eyebrow">어제의 픽</span>`
       + (name ? `<span class="cal-pre-prev-pick-name">${escapeHtml(name)}</span>` : '')
       + `<span class="cal-pre-prev-pick-mark">${escapeHtml(markText)}${mddChip}</span>`
@@ -657,6 +658,8 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
         prevBox.hidden = true;
         prevBox.innerHTML = '';
         _restoreToggleScroll();
+        // R21 P0 — 접힘 후 픽바 재동기(안전망). 펼침 중 prevBox 카드를 잘못 mirror 했더라도 1차 픽으로 복원.
+        if (typeof window._syncPickBar === 'function') window._syncPickBar();
       } else {
         toggleBtn.setAttribute('aria-expanded', 'true');
         toggleBtn.textContent = `전일(${prevLabel}) 데이터 접기 ▴`;
@@ -800,7 +803,24 @@ let _pickBarObserver = null;
 function _syncPickBar() {
   const bar = document.getElementById('pm320-pickbar');
   if (!bar) return; // 과거 빌드(바 미존재) graceful no-op
-  const cc = document.getElementById('cal-content');
+  // PM320 여정 fix r4 (2026-06-11, R21 P0 — "전일 데이터 보기" 토글 시 픽바 라벨 변조·고착).
+  //   원인: 토글 펼침이 prevBox([data-pre-prev]) 안에 전일 픽 요약 카드(.cal-pm320-today-rec,
+  //   라벨 "이날의 추천"/"잠정")를 주입한다. 또 토글은 펼침 도중 prevBox 를 임시로 id="cal-content"
+  //   로 rename 해 전일을 in-document 렌더한다(원본 #cal-content 는 #_cal-content-saved 로 임시 rename).
+  //   → 종전 코드는 getElementById('cal-content') 후 .cal-pm320-today-rec 를 "하위 전체"에서 찾아
+  //   (a) 펼침 도중엔 prevBox(=임시 cal-content)의 전일 카드를, (b) 펼침 후엔 #cal-content 하위
+  //   prevBox 안의 전일 카드를 mirror → 픽바가 "이날의 추천" 으로 변조 + 접어도 재동기 호출 없어 고착.
+  //   fix: mirror 소스를 "1차(오늘/보는 날짜) 콘텐츠"로만 한정 — (1) 원본 콘텐츠는 #cal-content 이되
+  //   토글 렌더 중이면 #_cal-content-saved 가 원본이다(우선). (2) 그 안에서도 [data-pre-prev] 토글
+  //   박스 하위 카드는 제외(전일 카드 배제). 픽바는 토글 펼침/접힘과 무관하게 1차 픽만 반영한다.
+  const primary = document.getElementById('_cal-content-saved') || document.getElementById('cal-content');
+  // [data-pre-prev] (전일 토글 박스) 하위에 들어간 카드는 제외하고 1차 콘텐츠의 카드만 선택.
+  const _pickPrimary = (sel) => {
+    if (!primary) return null;
+    const all = primary.querySelectorAll(sel);
+    for (const el of all) { if (!el.closest('[data-pre-prev]')) return el; }
+    return null;
+  };
 
   // 직전 observer 정리 (매 렌더 재바인딩 — 카드 노드 교체됨)
   if (_pickBarObserver) { _pickBarObserver.disconnect(); _pickBarObserver = null; }
@@ -811,10 +831,11 @@ function _syncPickBar() {
   //       장전(PRE_MARKET)엔 요약 카드/풀 카드 자체가 미렌더라 (1) 부재 → "어제의 픽" 결과 칩
   //       (.cal-pre-prev-pick, R18 신설)을 fallback mirror. 풀 카드가 없으므로 탭 = 칩 자체로 scroll.
   //   둘 다 부재(픽 없음/보류) → 바 숨김 (가짜 픽 노출 금지).
-  const rec = cc ? cc.querySelector('.cal-pm320-today-rec') : null;
-  const prevChip = (!rec && cc) ? cc.querySelector('.cal-pre-prev-pick') : null;
+  //   ※ 두 소스 모두 [data-pre-prev] 토글 박스 하위 카드는 배제(_pickPrimary) — R21 변조·고착 차단.
+  const rec = _pickPrimary('.cal-pm320-today-rec');
+  const prevChip = !rec ? _pickPrimary('.cal-pre-prev-pick') : null;
 
-  let src, nameText, eyebrowText, resultEl, jumpCode;
+  let src, nameText, eyebrowText, resultEl, jumpCode, prevPickCode = null;
   if (rec) {
     const nameEl = rec.querySelector('.cal-pm320-today-rec-name');
     const jumpBtn = rec.querySelector('[data-rec-jump]');
@@ -835,7 +856,11 @@ function _syncPickBar() {
     const eyebrowEl2 = prevChip.querySelector('.cal-pre-prev-pick-eyebrow');
     eyebrowText = (eyebrowEl2 && eyebrowEl2.textContent.trim()) || '어제의 픽';
     resultEl = markEl;          // 칩의 결과 텍스트 mirror
-    jumpCode = null;            // 장전엔 풀 카드 없음 → 칩 자체로 scroll (data-pickbar-scroll)
+    jumpCode = null;            // 장전엔 풀 카드 미렌더 → 클릭 시 전일 패널 자동 펼침(아래 P1 참조)
+    // R21 P1 (클릭 보상) — 장전 픽바 클릭이 같은 칩으로만 scroll 하면 정보 증분 0.
+    //   칩이 종목 code 를 들고 있으면(data-prev-pick-code) 클릭 시 "전일 데이터 보기" 토글을
+    //   자동 펼쳐 전일 풀 카드(#stock-{code})를 렌더·점프시킨다(증분 = 매매 row·차트·근거).
+    prevPickCode = prevChip.getAttribute('data-prev-pick-code') || null;
   } else {
     bar.hidden = true;
     bar.classList.remove('pm320-pickbar--visible');
@@ -865,9 +890,16 @@ function _syncPickBar() {
     }
   }
 
-  // 탭 동작 — 풀 카드 점프(jumpCode) 또는 장전 칩 scroll(jumpTarget). 둘 중 하나만 set.
-  if (jumpCode) { bar.setAttribute('data-rec-jump', jumpCode); bar.removeAttribute('data-pickbar-scroll'); }
-  else { bar.removeAttribute('data-rec-jump'); bar.setAttribute('data-pickbar-scroll', '1'); }
+  // 탭 동작 — 셋 중 하나만 set:
+  //   (a) data-rec-jump      = 오늘/보는 날짜 풀 카드(#stock-{code})로 scroll
+  //   (b) data-pickbar-prev-jump = 장전 + 전일 픽 code 있음 → 전일 토글 자동 펼침 + 전일 풀 카드 점프 (R21 P1)
+  //   (c) data-pickbar-scroll = 장전 + code 부재(폴백) → 어제의 픽 칩 자체로 scroll
+  bar.removeAttribute('data-rec-jump');
+  bar.removeAttribute('data-pickbar-prev-jump');
+  bar.removeAttribute('data-pickbar-scroll');
+  if (jumpCode) { bar.setAttribute('data-rec-jump', jumpCode); }
+  else if (prevPickCode) { bar.setAttribute('data-pickbar-prev-jump', prevPickCode); }
+  else { bar.setAttribute('data-pickbar-scroll', '1'); }
   bar.hidden = false;
 
   // 가시성 토글 — mirror 소스가 화면에 보이면 바 숨김(중복 회피), 위로 사라지면 바 노출.
@@ -884,27 +916,54 @@ function _syncPickBar() {
     bar.classList.add('pm320-pickbar--visible');
   }
 
-  // 클릭 핸들러 — 1회만 등록. 두 모드:
+  // 클릭 핸들러 — 1회만 등록. 세 모드:
   //   (1) data-rec-jump → 해당 풀 카드(#stock-{code})로 scroll (rec-jump 와 동일 로직, dup-id scope 회피).
-  //   (2) data-pickbar-scroll → 장전 "어제의 픽" 칩(.cal-pre-prev-pick)으로 scroll (풀 카드 부재 시).
+  //   (2) data-pickbar-prev-jump → R21 P1: 장전. "전일 데이터 보기" 토글 자동 펼침 후 전일 풀 카드로 점프.
+  //   (3) data-pickbar-scroll → 장전 "어제의 픽" 칩(.cal-pre-prev-pick)으로 scroll (code 부재 폴백).
   if (!window._pm320PickBarClickInit) {
     bar.addEventListener('click', () => {
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
       const navOffset = isMobile ? 76 : 84;
       const cc2 = document.getElementById('cal-content');
-      let target = null;
+
+      // 목적지로 부드럽게 이동 (v312 원칙 — 목적지 카드가 viewport 에 보이는 최소 이동).
+      const _scrollTo = (target) => {
+        if (!target) return;
+        const rect = target.getBoundingClientRect();
+        const top = window.pageYOffset + rect.top - navOffset;
+        window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+      };
+
       const c = bar.getAttribute('data-rec-jump');
+      const prevC = bar.getAttribute('data-pickbar-prev-jump');
       if (c) {
         // 바가 mirror 하는 픽은 항상 #cal-content 안의 카드 → 그 안에서 우선 탐색(dup-id 회피), 부재 시 document fallback.
-        target = (cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c);
+        _scrollTo((cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c));
+      } else if (prevC) {
+        // R21 P1 — 장전: "전일 데이터 보기" 토글을 자동 펼침 → 전일 풀 카드(#stock-{prevC})로 점프.
+        //   토글이 이미 펼쳐졌으면 그대로 카드만 점프. 토글 펼침은 async 렌더라 펼침 완료를 기다려
+        //   카드 등장 시 scroll (간단 폴링, 최대 ~1.2s). 카드 끝내 부재 시 칩으로 폴백 scroll.
+        const prevBox = cc2 ? cc2.querySelector('[data-pre-prev]') : null;
+        const toggleBtn = cc2 ? cc2.querySelector('[data-pre-toggle]') : null;
+        const _find = () => (prevBox && prevBox.querySelector('#stock-' + prevC)) || null;
+        const existing = _find();
+        if (existing) { _scrollTo(existing); return; }
+        if (toggleBtn && toggleBtn.getAttribute('aria-expanded') !== 'true') {
+          toggleBtn.click(); // 펼침 트리거 (handler 가 전일 데이터 렌더)
+        }
+        let tries = 0;
+        const poll = () => {
+          const t = _find();
+          if (t) { _scrollTo(t); return; }
+          if (++tries < 40) { setTimeout(poll, 30); return; }
+          // 폴백 — 끝내 카드 부재 시 어제의 픽 칩으로 scroll (최소 동선 보장).
+          _scrollTo(cc2 ? cc2.querySelector('.cal-pre-prev-pick') : null);
+        };
+        setTimeout(poll, 30);
       } else if (bar.getAttribute('data-pickbar-scroll')) {
-        target = cc2 ? cc2.querySelector('.cal-pre-prev-pick') : null;
+        _scrollTo(cc2 ? cc2.querySelector('.cal-pre-prev-pick') : null);
       }
-      if (!target) return;
-      const rect = target.getBoundingClientRect();
-      const top = window.pageYOffset + rect.top - navOffset;
-      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
     });
     window._pm320PickBarClickInit = true;
   }
