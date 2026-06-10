@@ -689,6 +689,9 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
         if (chipHtml && document.body.contains(prevPickSlot)) {
           prevPickSlot.innerHTML = chipHtml;
           prevPickSlot.hidden = false;
+          // PM320 여정 fix r2 (2026-06-11) — 칩은 async 주입이라 최초 _syncPickBar() 시점엔 부재였다.
+          //   주입 직후 재동기화 → 장전 sticky 픽 바가 "어제의 픽" 칩을 mirror 노출 (FAIL #2).
+          if (typeof window._syncPickBar === 'function') window._syncPickBar();
         }
       } catch (_) { /* graceful — 칩 생략 */ }
     })();
@@ -780,39 +783,64 @@ let _pickBarObserver = null;
 function _syncPickBar() {
   const bar = document.getElementById('pm320-pickbar');
   if (!bar) return; // 과거 빌드(바 미존재) graceful no-op
-  // 현재 #cal-content 에 렌더된 오늘의 픽 요약 카드 (있을 때만). 단독카드/PRE_MARKET 빈상태/장휴장 시 부재.
   const cc = document.getElementById('cal-content');
-  const rec = cc ? cc.querySelector('.cal-pm320-today-rec') : null;
-  const nameEl = rec ? rec.querySelector('.cal-pm320-today-rec-name') : null;
-  const jumpBtn = rec ? rec.querySelector('[data-rec-jump]') : null;
-  const code = jumpBtn ? jumpBtn.getAttribute('data-rec-jump') : null;
 
   // 직전 observer 정리 (매 렌더 재바인딩 — 카드 노드 교체됨)
   if (_pickBarObserver) { _pickBarObserver.disconnect(); _pickBarObserver = null; }
 
-  if (!rec || !nameEl || !code) {
-    // 표출할 픽 없음 → 바 숨김 (추정 0). 빈 페이지여도 가짜 픽 노출 금지(FLR-AGT-002).
+  // mirror 소스 우선순위 — SSOT=DOM (추정 0, FLR-AGT-002):
+  //   (1) 오늘/보는 날짜의 픽 요약 카드(.cal-pm320-today-rec). 탭 시 풀 카드(#stock-{code})로 점프.
+  //   (2) PM320 여정 fix r2 (2026-06-11, R19 비신자 평가자 P1 — "장전 첫 진입에 sticky 바 부재"):
+  //       장전(PRE_MARKET)엔 요약 카드/풀 카드 자체가 미렌더라 (1) 부재 → "어제의 픽" 결과 칩
+  //       (.cal-pre-prev-pick, R18 신설)을 fallback mirror. 풀 카드가 없으므로 탭 = 칩 자체로 scroll.
+  //   둘 다 부재(픽 없음/보류) → 바 숨김 (가짜 픽 노출 금지).
+  const rec = cc ? cc.querySelector('.cal-pm320-today-rec') : null;
+  const prevChip = (!rec && cc) ? cc.querySelector('.cal-pre-prev-pick') : null;
+
+  let src, nameText, eyebrowText, resultEl, jumpCode;
+  if (rec) {
+    const nameEl = rec.querySelector('.cal-pm320-today-rec-name');
+    const jumpBtn = rec.querySelector('[data-rec-jump]');
+    const code = jumpBtn ? jumpBtn.getAttribute('data-rec-jump') : null;
+    if (!nameEl || !code) { bar.hidden = true; bar.classList.remove('pm320-pickbar--visible'); return; }
+    src = rec;
+    nameText = nameEl.textContent.trim();
+    const headLabelEl = rec.querySelector('.cal-pm320-today-rec-headlabel');
+    eyebrowText = (headLabelEl && headLabelEl.textContent.trim()) || '오늘의 픽';
+    resultEl = rec.querySelector('.cal-pm320-today-rec-result'); // 진행중/청산 결과 mark
+    jumpCode = code;            // 풀 카드로 점프 (data-rec-jump)
+  } else if (prevChip) {
+    const nameEl = prevChip.querySelector('.cal-pre-prev-pick-name');
+    const markEl = prevChip.querySelector('.cal-pre-prev-pick-mark');
+    if (!nameEl) { bar.hidden = true; bar.classList.remove('pm320-pickbar--visible'); return; }
+    src = prevChip;
+    nameText = nameEl.textContent.trim();
+    const eyebrowEl2 = prevChip.querySelector('.cal-pre-prev-pick-eyebrow');
+    eyebrowText = (eyebrowEl2 && eyebrowEl2.textContent.trim()) || '어제의 픽';
+    resultEl = markEl;          // 칩의 결과 텍스트 mirror
+    jumpCode = null;            // 장전엔 풀 카드 없음 → 칩 자체로 scroll (data-pickbar-scroll)
+  } else {
     bar.hidden = true;
     bar.classList.remove('pm320-pickbar--visible');
     return;
   }
 
-  // eyebrow: 헤드라벨(예 "오늘의 픽"/"어제의 픽") 그대로 mirror, 없으면 기본값.
-  const headLabelEl = rec.querySelector('.cal-pm320-today-rec-headlabel');
   const eyebrowEl = bar.querySelector('[data-pickbar-eyebrow]');
-  if (eyebrowEl) eyebrowEl.textContent = (headLabelEl && headLabelEl.textContent.trim()) || '오늘의 픽';
+  if (eyebrowEl) eyebrowEl.textContent = eyebrowText;
   const nameOut = bar.querySelector('[data-pickbar-name]');
-  if (nameOut) nameOut.textContent = nameEl.textContent.trim();
+  if (nameOut) nameOut.textContent = nameText;
 
-  // 상태 칩: 결과 mark(.cal-pm320-today-rec-result) 가 있으면 그 텍스트/색상 mod 를 mirror, 없으면 숨김.
-  const resultEl = rec.querySelector('.cal-pm320-today-rec-result');
+  // 상태 칩: 결과 mark 텍스트/색상 mod mirror. (.cal-pm320-today-rec-result--up/dn 또는
+  //   장전 칩 .cal-pre-prev-pick--profit/--loss 양쪽 색상 신호를 동일 status mod 로 매핑.)
   const statusOut = bar.querySelector('[data-pickbar-status]');
   if (statusOut) {
     statusOut.classList.remove('pm320-pickbar-status--up', 'pm320-pickbar-status--dn');
     if (resultEl) {
       statusOut.textContent = resultEl.textContent.trim().replace(/\s+/g, ' ').slice(0, 24);
-      if (resultEl.classList.contains('cal-pm320-today-rec-result--up')) statusOut.classList.add('pm320-pickbar-status--up');
-      else if (resultEl.classList.contains('cal-pm320-today-rec-result--dn')) statusOut.classList.add('pm320-pickbar-status--dn');
+      const isUp = resultEl.classList.contains('cal-pm320-today-rec-result--up') || (src.classList && src.classList.contains('cal-pre-prev-pick--profit'));
+      const isDn = resultEl.classList.contains('cal-pm320-today-rec-result--dn') || (src.classList && src.classList.contains('cal-pre-prev-pick--loss'));
+      if (isUp) statusOut.classList.add('pm320-pickbar-status--up');
+      else if (isDn) statusOut.classList.add('pm320-pickbar-status--dn');
       statusOut.hidden = false;
     } else {
       statusOut.textContent = '';
@@ -820,37 +848,43 @@ function _syncPickBar() {
     }
   }
 
-  bar.setAttribute('data-rec-jump', code); // 클릭 핸들러 재사용 (1회 등록, 아래)
+  // 탭 동작 — 풀 카드 점프(jumpCode) 또는 장전 칩 scroll(jumpTarget). 둘 중 하나만 set.
+  if (jumpCode) { bar.setAttribute('data-rec-jump', jumpCode); bar.removeAttribute('data-pickbar-scroll'); }
+  else { bar.removeAttribute('data-rec-jump'); bar.setAttribute('data-pickbar-scroll', '1'); }
   bar.hidden = false;
 
-  // 가시성 토글 — 픽 카드가 화면에 보이면 바 숨김(중복 회피), 위로 사라지면 바 노출.
+  // 가시성 토글 — mirror 소스가 화면에 보이면 바 숨김(중복 회피), 위로 사라지면 바 노출.
   //   IntersectionObserver 미지원(구형) 시 항상 노출(graceful degrade).
   if (typeof IntersectionObserver === 'function') {
     _pickBarObserver = new IntersectionObserver((entries) => {
       const e = entries[0];
       if (!e) return;
-      // 카드가 뷰포트에 일부라도 보이면 바 숨김, 완전히 위로 나가면 노출.
       if (e.isIntersecting) bar.classList.remove('pm320-pickbar--visible');
       else bar.classList.add('pm320-pickbar--visible');
     }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
-    _pickBarObserver.observe(rec);
+    _pickBarObserver.observe(src);
   } else {
     bar.classList.add('pm320-pickbar--visible');
   }
 
-  // 클릭 핸들러 — 1회만 등록. 바의 data-rec-jump 를 읽어 해당 풀 카드로 scroll (rec-jump 와 동일 로직).
+  // 클릭 핸들러 — 1회만 등록. 두 모드:
+  //   (1) data-rec-jump → 해당 풀 카드(#stock-{code})로 scroll (rec-jump 와 동일 로직, dup-id scope 회피).
+  //   (2) data-pickbar-scroll → 장전 "어제의 픽" 칩(.cal-pre-prev-pick)으로 scroll (풀 카드 부재 시).
   if (!window._pm320PickBarClickInit) {
     bar.addEventListener('click', () => {
-      const c = bar.getAttribute('data-rec-jump');
-      if (!c) return;
-      // 바가 mirror 하는 픽은 항상 #cal-content 안의 카드 → 그 안에서 우선 탐색(dup-id 시 타 섹션 회피),
-      //   부재 시 document fallback (graceful).
-      const cc2 = document.getElementById('cal-content');
-      const target = (cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c);
-      if (!target) return;
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
       const navOffset = isMobile ? 76 : 84;
+      const cc2 = document.getElementById('cal-content');
+      let target = null;
+      const c = bar.getAttribute('data-rec-jump');
+      if (c) {
+        // 바가 mirror 하는 픽은 항상 #cal-content 안의 카드 → 그 안에서 우선 탐색(dup-id 회피), 부재 시 document fallback.
+        target = (cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c);
+      } else if (bar.getAttribute('data-pickbar-scroll')) {
+        target = cc2 ? cc2.querySelector('.cal-pre-prev-pick') : null;
+      }
+      if (!target) return;
       const rect = target.getBoundingClientRect();
       const top = window.pageYOffset + rect.top - navOffset;
       window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
@@ -1399,7 +1433,7 @@ function renderCalExpandContent(date, data) {
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">만기</span><span class="cal-pm320-today-rec-v">${escapeHtml(expiryV)}</span></div>
       </div>
       ${resultHtml}
-      ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <span aria-hidden="true">↓</span></button>` : ''}
+      ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-expanded="false" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <span aria-hidden="true">↓</span></button>` : ''}
     </div>`;
   };
 
@@ -2574,6 +2608,11 @@ function renderCalExpandContent(date, data) {
   //   document.getElementById 는 DOM 선두(=오늘 카드)를 반환하므로, 전일 박스 안에서 "상세 보기 ↓"를
   //   누르면 사용자가 보던 전일 카드 대신 위쪽 오늘 섹션으로 튀어 동선이 절단된다("위로 점프").
   //   → 클릭이 전일 박스 안에서 발생했으면 그 박스 안의 카드를 우선 탐색(scope) 후 fallback 으로 document.
+  // PM320 여정 fix r2 (2026-06-11, R19 비신자 평가자 P0 — "상세 보기 ↓" 클릭 시 풀 카드로 점프하나
+  //   목적지에서 카드가 접힌 채 화면 중간에 떨어져 "도착 인지" 부족 + 누른 버튼은 화면 밖으로 사라져
+  //   동선이 끊긴다("767px 점프, 버튼 화면 밖"). v310 의 dup-id 분기는 그대로 유지하되,
+  //   목적지 풀 카드를 (a) 헤더 아래 안정 anchor 위치로 정렬하고 (b) 상세를 자동 펼쳐 "여기 도착"을
+  //   명확히 보여준다. 누른 버튼의 aria-expanded 도 동기화(스크린리더 정합).
   if (!window._pm320RecJumpInit) {
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-rec-jump]');
@@ -2583,12 +2622,27 @@ function renderCalExpandContent(date, data) {
       const scope = btn.closest('[data-pre-prev]');
       const target = (scope && scope.querySelector('#stock-' + code)) || document.getElementById('stock-' + code);
       if (!target) return;
+      // 목적지 풀 카드 상세 자동 펼침 — 이미 펼쳐져 있으면 그대로. (접힌 채 도착해 "빈 카드" 인상 회피)
+      const detailToggle = target.querySelector('.cal-detail-toggle');
+      if (detailToggle && !target.classList.contains('expanded')) {
+        target.classList.add('expanded');
+        const _txt = detailToggle.querySelector('.cal-toggle-text');
+        if (_txt) _txt.textContent = '접기';
+        detailToggle.setAttribute('aria-label', '접기');
+      }
+      // 누른 요약 버튼 aria-expanded 동기화 (요약 → 풀 카드 펼침 관계 표현).
+      if (btn.hasAttribute('aria-expanded')) btn.setAttribute('aria-expanded', 'true');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
       const navOffset = isMobile ? 76 : 84;
-      const rect = target.getBoundingClientRect();
-      const top = window.pageYOffset + rect.top - navOffset;
-      window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+      // 펼침으로 카드 높이가 바뀌므로 rAF 1회 뒤 위치 재측정 → 카드 head 를 헤더 아래 안정 anchor 로 정렬.
+      const _scroll = () => {
+        const rect = target.getBoundingClientRect();
+        const top = window.pageYOffset + rect.top - navOffset;
+        window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+      };
+      if (typeof requestAnimationFrame === 'function') requestAnimationFrame(_scroll);
+      else _scroll();
     });
     window._pm320RecJumpInit = true;
   }
