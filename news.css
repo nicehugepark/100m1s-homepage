@@ -1816,7 +1816,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
      var 미로드(JS 차단) 시 fallback 68px. 모바일 override(@media 880px)도 동일 변수 사용. */
   top: var(--nav-h, 68px);
   z-index: 50;
-  /* REQ-070 — 반투명 + blur (상위 nav header와 동일 톤). var(--sf) 불투명 제거. */
+  /* R23 P0 (대표 catch) — sticky 픽바(top:76,z:99) 활성 시 날짜 헤더를 픽바 아래로 stack 해 겹침·절단
+     차단. body.pm320-pickbar-on 일 때만 적용(평상시 nav 바로 아래 원위치). --pickbar-h 는 renderer.js
+     가 실측 노출. 전환 부드럽게(top transition). */
+  transition: top var(--t-fast, 0.18s) ease;
   /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255. */
   /* REQ-075 — frosted glass 효과 복원. 0.92 (거의 솔리드) → 0.7 (뒤 콘텐츠 비침 + blur 가시성). */
   /* 대표 2026-06-08 — 완전불투명→프로스티드 복원(0.7+blur). 간격은 --nav-h 바인딩으로 별도 해결,
@@ -1829,6 +1832,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   margin-left: -26px; margin-right: -26px;
   padding-left: 26px; padding-right: 26px;
   padding-top: 8px;
+}
+/* R23 P0 (대표 catch, 과거 날짜 sticky 충돌) — 픽바 활성(.pm320-pickbar-on) 시 날짜 헤더 sticky top 을
+   nav + 픽바 높이만큼 내려 픽바 아래 stack(겹침·요약줄 절단 0). 픽바 visible 높이는 CSS max-height
+   52px 한도 내 결정적이라 그 값으로 고정(transition 중 JS 실측 race 회피). */
+body.pm320-pickbar-on .cal-content-head {
+  top: calc(var(--nav-h, 68px) + 52px);
 }
 /* REQ-pm320-ux-cycle #1 — cal-content-head 클릭 가능 (→ #toss-cal scrollIntoView).
    hover 햇살 톤(#C49930 6%) + focus outline + active pulse. */

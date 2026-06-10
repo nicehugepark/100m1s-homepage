@@ -858,6 +858,9 @@ let _pickBarObserver = null;
 function _syncPickBar() {
   const bar = document.getElementById('pm320-pickbar');
   if (!bar) return; // 과거 빌드(바 미존재) graceful no-op
+  // R23 P0 — 매 재동기 진입 시 픽바-on 상태 리셋(픽 부재 early-return·소스 교체 시 sticky 충돌
+  //   클래스 잔존 방지). 바가 다시 visible 되면 IntersectionObserver 토글이 재설정한다.
+  document.body.classList.remove('pm320-pickbar-on');
   // PM320 여정 fix r4 (2026-06-11, R21 P0 — "전일 데이터 보기" 토글 시 픽바 라벨 변조·고착).
   //   원인: 토글 펼침이 prevBox([data-pre-prev]) 안에 전일 픽 요약 카드(.cal-pm320-today-rec,
   //   라벨 "이날의 추천"/"잠정")를 주입한다. 또 토글은 펼침 도중 prevBox 를 임시로 id="cal-content"
@@ -966,16 +969,33 @@ function _syncPickBar() {
 
   // 가시성 토글 — mirror 소스가 화면에 보이면 바 숨김(중복 회피), 위로 사라지면 바 노출.
   //   IntersectionObserver 미지원(구형) 시 항상 노출(graceful degrade).
+  // R23 P0 (대표 catch, 과거 날짜 sticky 충돌) — sticky 픽바(top:76, z:99)와 sticky 날짜 헤더
+  //   (.cal-content-head, top:var(--nav-h)≈77, z:50)가 거의 같은 top 이라, 픽바가 보일 때 날짜
+  //   헤더 요약줄("오늘의 종목 N개·…·KST 기준")이 픽바 뒤로 겹쳐 절단됨(실측 overlap 40px).
+  //   fix: 픽바 visible 시 body 에 .pm320-pickbar-on 클래스 + --pickbar-h(실측 높이) 노출 → CSS 가
+  //   날짜 헤더 sticky top 을 calc(var(--nav-h)+var(--pickbar-h)) 로 내려 픽바 아래 stack(겹침 0).
+  //   픽바 숨김(소스 가시) 시 클래스 제거 → 날짜 헤더는 nav 바로 아래 원위치(무회귀).
+  // R23 P0 — body 클래스만 토글(높이는 CSS 고정값 사용). 픽바 visible 높이는 CSS max-height 52px 한도
+  //   내 결정적(패딩 10~11px*2 + 1줄 콘텐츠)이라, sticky offset 을 CSS 에서 픽바 max-height(52px)로 고정
+  //   하면 transition 중 실측 race 없이 항상 겹침 0(약간의 여유는 무해). JS 실측 의존 제거.
+  const _setPickBarOn = (on) => {
+    if (on) {
+      bar.classList.add('pm320-pickbar--visible');
+      document.body.classList.add('pm320-pickbar-on');
+    } else {
+      bar.classList.remove('pm320-pickbar--visible');
+      document.body.classList.remove('pm320-pickbar-on');
+    }
+  };
   if (typeof IntersectionObserver === 'function') {
     _pickBarObserver = new IntersectionObserver((entries) => {
       const e = entries[0];
       if (!e) return;
-      if (e.isIntersecting) bar.classList.remove('pm320-pickbar--visible');
-      else bar.classList.add('pm320-pickbar--visible');
+      _setPickBarOn(!e.isIntersecting);
     }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
     _pickBarObserver.observe(src);
   } else {
-    bar.classList.add('pm320-pickbar--visible');
+    _setPickBarOn(true);
   }
 
   // 클릭 핸들러 — 1회만 등록. 세 모드:
@@ -2335,8 +2355,15 @@ function renderCalExpandContent(date, data) {
       }
       // PM320-D6 R22 (오전 동선, "단 한 종목" 시각 격리) — PICK 풀카드 직상에 "오늘의 추천" 구분 헤더
       //   prepend(카드 외부 sibling). 종목 카드 무리(거래대금 TOP)와 추천 1종을 경계로 분리.
+      // R23 P1 (대표 catch, 과거 날짜 시점 오류) — 종전 divider 라벨이 "오늘의 추천" 하드코딩이라 과거
+      //   날짜(예: 6/1 LG씨엔에스) 보기에서도 "오늘의 추천"으로 표시(요약 카드 headLabel·sticky 칩은
+      //   이미 isPast 분기 있으나 본 divider 만 누락). date < KST 오늘이면 "이날의 추천"으로 강등
+      //   (요약 카드 L1556 / picked card aria 와 동일 시점 SoT). _todayDivIso 직접 산출(스코프 독립).
+      const _todayDivIso = (() => { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`; })();
+      const _isPastDiv = !!(date && date < _todayDivIso);
+      const _pickDividerLabel = _isPastDiv ? '이날의 추천' : '오늘의 추천';
       const _pickDivider_full = _isPm320Pick_full
-        ? `<div class="cal-pm320-pick-divider" aria-hidden="true"><span class="cal-pm320-pick-divider-star"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>오늘의 추천</div>`
+        ? `<div class="cal-pm320-pick-divider" aria-hidden="true"><span class="cal-pm320-pick-divider-star"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>${_pickDividerLabel}</div>`
         : '';
       return `
         ${_pickDivider_full}
