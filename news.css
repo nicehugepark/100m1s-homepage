@@ -46,6 +46,28 @@
   --note-tx: #52596A;       /* 면책/note 문구 */
   --wr-card-top: #FFFDF6;   /* 승률카드 그라데이션 top (다크 override) */
   --wr-basis-tx: #5E6776;   /* 승률카드 basis/체결현실성 단서 (light 5.52 / dark override) */
+
+  /* R15 다크 표면 일소 — 라이트 default(=기존 하드코드 순백 베일 유지). 다크에서만 위 --dk-* override.
+     light는 frosted white 그대로(회귀 0), dark는 함몰 표면 톤으로 치환. */
+  --glass-sf: rgba(255,255,255,0.7);   /* 프로스티드 헤더 표면 */
+  --inset-sf: rgba(255,255,255,0.55);  /* 픽카드 인셋 박스 */
+  --inset-bd: var(--am3);              /* 인셋 경계 (라이트 골드) */
+  --pill-sf: #F8FAFC;                  /* 흰 알약 버튼 표면 */
+  --pill-sf-hover: #E2E8F0;            /* 알약 hover */
+  --pill-sf-active: #CBD5E1;           /* 알약 active */
+  --pill-tx: #0F172A;                  /* 알약 텍스트 (라이트 near-black) */
+  --pill-bd: #64748B;                  /* 알약 경계 */
+  --chart-label-bg: rgba(255,255,255,0.85); /* 차트 가격라벨 칩 배경 */
+  --cal-future: var(--bd);             /* 달력 미래 날짜 (라이트 연회색) */
+  --warm-top: #FFFCF3;                 /* 햇살 그라데이션 top (toss-cal) */
+  --warm-bot: var(--sf);               /* 햇살 그라데이션 bottom (toss-cal) */
+  --warm2-top: #FFFBEF;                /* 햇살 그라데이션 top (rec-detail 펼침 본문) */
+  --warm2-bot: #FFF9E8;                /* 햇살 그라데이션 bottom (rec-detail) */
+  --warm3-top: #FFF9E8;                /* 햇살 그라데이션 top (kiwoom-block) */
+  --warm3-bot: #FFFFFF;                /* 햇살 그라데이션 bottom (kiwoom-block) */
+  /* footer = 항상 어두운 anchor. 라이트는 기존 var(--tx)=#1A1D26 동일, 다크는 페이지 bg보다 한 단계
+     더 어둡게(밝은 판때기 회귀 봉쇄 — 다크에서 var(--tx)=#ECEEF3 near-white 반전 버그 fix). */
+  --footer-bg: #1A1D26; --footer-tx: #8B95A8;
 }
 
 /* ── 다크모드 (DOC-20260610-DSN-001) ──────────────────────────────────────
@@ -68,6 +90,20 @@
   --dk-g80: rgba(255,255,255,0.85);
   --dk-badge-disclosure: #5B9BFF; --dk-badge-predicted: #FF7A4D;
   --dk-header-glass: rgba(21,22,26,0.85);
+  /* R15 다크 표면 일소 (DOC-20260610-DSN-001 §1.5) — 하드코드 순백 베일(rgba(255,255,255,X))을
+     토큰화. 라이트는 frosted white 유지, 다크는 함몰 표면(카드보다 한 단계 어둡게)으로 override.
+     --glass-sf: 프로스티드 표면(sticky 헤더/접힘 헤더/달력 헤드, 라이트 0.7 흰 베일)
+     --inset-sf: 픽카드 인셋(물타기/만기/잠정/상세보기 박스, 카드보다 함몰)
+     --inset-bd: 인셋 경계
+     --pill-sf: 흰 알약 버튼(상세/매매 토글) 표면 / --pill-sf-hover: hover */
+  --dk-glass-sf: rgba(34,36,43,0.82);
+  --dk-inset-sf: #202227; --dk-inset-bd: #33363F;
+  --dk-pill-sf: #22242B; --dk-pill-sf-hover: #2C2F37; --dk-pill-sf-active: #34373F;
+  --dk-pill-tx: #ECEEF3; --dk-pill-bd: #4A4E58;
+  --dk-chart-label-bg: rgba(21,22,26,0.85);
+  --dk-cal-future: #565B66;
+  /* 햇살 톤 그라데이션(toss-cal / rec-detail 펼침 본문) — 라이트 크림 → 다크 함몰 2단 */
+  --dk-warm-top: #1F2128; --dk-warm-bot: #191B20;
   --dk-streak-tx: #F2D588; --dk-now-label-tx: #B4B9C4;
   --dk-rec-code-tx: #C9B98A; --dk-note-tx: #B4B9C4;
   --dk-wr-card-top: #26241C; --dk-wr-basis-tx: #9DA5B5;
@@ -90,6 +126,14 @@
     --streak-tx: var(--dk-streak-tx); --now-label-tx: var(--dk-now-label-tx);
     --rec-code-tx: var(--dk-rec-code-tx); --note-tx: var(--dk-note-tx);
     --wr-card-top: var(--dk-wr-card-top); --wr-basis-tx: var(--dk-wr-basis-tx);
+    --glass-sf: var(--dk-glass-sf); --inset-sf: var(--dk-inset-sf); --inset-bd: var(--dk-inset-bd);
+    --pill-sf: var(--dk-pill-sf); --pill-sf-hover: var(--dk-pill-sf-hover);
+    --pill-sf-active: var(--dk-pill-sf-active); --pill-tx: var(--dk-pill-tx); --pill-bd: var(--dk-pill-bd);
+    --chart-label-bg: var(--dk-chart-label-bg); --cal-future: var(--dk-cal-future);
+    --warm-top: var(--dk-warm-top); --warm-bot: var(--dk-warm-bot);
+    --warm2-top: var(--dk-warm-top); --warm2-bot: var(--dk-warm-bot);
+    --warm3-top: var(--dk-warm-top); --warm3-bot: var(--dk-warm-bot);
+    --footer-bg: #0F1013; --footer-tx: #7E8696;
   }
 }
 :root[data-theme="dark"] {
@@ -108,6 +152,14 @@
   --streak-tx: var(--dk-streak-tx); --now-label-tx: var(--dk-now-label-tx);
   --rec-code-tx: var(--dk-rec-code-tx); --note-tx: var(--dk-note-tx);
   --wr-card-top: var(--dk-wr-card-top); --wr-basis-tx: var(--dk-wr-basis-tx);
+  --glass-sf: var(--dk-glass-sf); --inset-sf: var(--dk-inset-sf); --inset-bd: var(--dk-inset-bd);
+  --pill-sf: var(--dk-pill-sf); --pill-sf-hover: var(--dk-pill-sf-hover);
+  --pill-sf-active: var(--dk-pill-sf-active); --pill-tx: var(--dk-pill-tx); --pill-bd: var(--dk-pill-bd);
+  --chart-label-bg: var(--dk-chart-label-bg); --cal-future: var(--dk-cal-future);
+  --warm-top: var(--dk-warm-top); --warm-bot: var(--dk-warm-bot);
+  --warm2-top: var(--dk-warm-top); --warm2-bot: var(--dk-warm-bot);
+  --warm3-top: var(--dk-warm-top); --warm3-bot: var(--dk-warm-bot);
+  --footer-bg: #0F1013; --footer-tx: #7E8696;
 }
 @media (max-width: 640px) {
   :root {
@@ -352,7 +404,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
    .credit/.krx 분기 rule 폐기, base rule 단일 통합 (회색 톤). 출처 구분은 라벨 텍스트로만. */
 .cal-status-detail.v3 {
   padding: 6px 8px; margin: 4px 0;
-  background: #F8FAFC; border-left: 1px solid #E2E8F0; border-radius: 0 4px 4px 0;
+  background: var(--pill-sf); border-left: 1px solid var(--bd); border-radius: 0 4px 4px 0;  /* R15: 라이트 #F8FAFC 동일 / 다크 함몰 */
   display: flex; flex-direction: column; gap: 4px;
 }
 .cal-status-detail.v3 .cal-status-head { display: flex; align-items: center; gap: 8px; }
@@ -777,7 +829,7 @@ a.cal-credit-row:hover,
 .theme-trend-header,
 .lut-header,
 .theme-tree-header {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--glass-sf);  /* R15: 라이트 0.7 흰 베일 / 다크 함몰 표면 (골드 제목·악센트 유지) */
   margin-left: -16px; margin-right: -16px;
   padding: 8px 16px;
   margin-bottom: 10px;
@@ -1308,7 +1360,7 @@ a.cal-credit-row:hover,
 }
 
 footer {
-  background: var(--tx); color: var(--dm); text-align: center;
+  background: var(--footer-bg); color: var(--footer-tx); text-align: center;  /* R15: var(--tx) 반전 버그 fix — 항상 어두운 anchor */
   padding: 32px 24px; font-size: 11px;
   margin-top: 80px;
 }
@@ -1319,8 +1371,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 /* ───── 키움 거래대금 500억+ 블록 ───── */
 .kiwoom-block {
   margin-bottom: 24px;
-  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). am2 border 동시 복원. */
-  background: linear-gradient(135deg, #FFF9E8 0%, #FFFFFF 60%);
+  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). am2 border 동시 복원. R15: 토큰화(다크 함몰). */
+  background: linear-gradient(135deg, var(--warm3-top) 0%, var(--warm3-bot) 60%);
   border: 1px solid var(--am2);
   border-radius: 14px;
   padding: 18px 22px;
@@ -1350,10 +1402,10 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   align-items: center;
   padding: 8px 10px;
   border-radius: 6px;
-  background: rgba(255,255,255,0.7);
+  background: var(--glass-sf);  /* R15: 라이트 0.7 흰 / 다크 함몰 */
   font-size: 12px;
 }
-.kiwoom-row:hover { background: rgba(255,255,255,1); }
+.kiwoom-row:hover { background: var(--pill-sf-hover); }
 .kiwoom-row.matched-cafe { border-left: 2px solid var(--c3); padding-left: 8px; }
 .kiwoom-rank {
   font-size: 10px; color: var(--dm); font-weight: 700;
@@ -1408,7 +1460,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 
 .toss-cal {
   /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). 사이드 캘린더 강조. */
-  background: linear-gradient(180deg, #FFFCF3 0%, var(--sf) 70%);
+  background: linear-gradient(180deg, var(--warm-top) 0%, var(--warm-bot) 70%);  /* R15: 햇살 크림 / 다크 함몰 */
   border: 1px solid var(--bd);
   border-radius: 14px;
   padding: 14px 12px 12px;
@@ -1463,7 +1515,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-cell.no-data.sunday { color: #E84142; }
 .toss-cal-cell.no-data.saturday { color: #2D6AE0; }
 .toss-cal-cell.no-data.holiday { color: #E84142; }
-.toss-cal-cell.future { color: var(--bd); cursor: not-allowed; pointer-events: none; }
+.toss-cal-cell.future { color: var(--cal-future); cursor: not-allowed; pointer-events: none; } /* R15: 다크에서 --bd(#33363F)는 배경과 거의 동색 → 가독 회복(#565B66) */
 .toss-cal-cell.outside { visibility: hidden; }
 .toss-cal-cell.no-data { opacity: 0.35; pointer-events: none; }
 .toss-cal-cell.market-hours { opacity: 0.7; cursor: pointer; }
@@ -1534,8 +1586,9 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   /* REQ-073 — 카드 배경 #FFF 정합. 250,251,254 → 255,255,255. */
   /* REQ-075 — frosted glass 효과 복원. 0.92 (거의 솔리드) → 0.7 (뒤 콘텐츠 비침 + blur 가시성). */
   /* 대표 2026-06-08 — 완전불투명→프로스티드 복원(0.7+blur). 간격은 --nav-h 바인딩으로 별도 해결,
-     투명도는 시각 선호로 복원. (REQ-075 원본 프로스티드 값 rgba(255,255,255,0.7) + blur(16px)) */
-  background: rgba(255, 255, 255, 0.7);
+     투명도는 시각 선호로 복원. (REQ-075 원본 프로스티드 값 rgba(255,255,255,0.7) + blur(16px))
+     R15: 토큰화 (라이트 0.7 흰 베일 / 다크 함몰 표면). */
+  background: var(--glass-sf);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   /* cal-content padding(24px 26px) 보정: sticky 시 좌우 가장자리까지 배경 채움 */
@@ -1992,10 +2045,10 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 5px 12px;             /* REQ-061 — page-eyebrow 정합 (5/16 → 5/12, 대표 발화 11:43) */
   min-height: 36px;              /* DSN-001 §3.1 옵션 squircle (2026-06-03 21:31 KST design-lead 4차 권고, 대표 verbatim 21:28 "애플의 스쿼클 같이") — 28↔44 산술 중간 */
   border-radius: 12px;           /* DSN-001 §3.1 옵션 squircle — pill 9999px → 12px (Apple squircle CSS 근사, 36px 높이 기준 33%) */
-  background: #F8FAFC;
-  border: 1px solid #64748B;      /* REQ-045 §D — #94A3B8 → #64748B (데스크탑 가독성) */
+  background: var(--pill-sf);     /* R15: 라이트 #F8FAFC / 다크 함몰 표면 */
+  border: 1px solid var(--pill-bd); /* REQ-045 §D — #94A3B8 → #64748B (데스크탑 가독성) / R15 토큰화 */
   font-size: 12px;                /* 풀폭 버튼이라 가독성 우선 (eyebrow 10px와 차등) */
-  color: #0F172A;
+  color: var(--pill-tx);
   font-weight: 600;               /* REQ-045 §D — 500 → 600 (데스크탑 가독성) */
   letter-spacing: 0.01em;
   transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
@@ -2004,11 +2057,11 @@ body.single-card-mode { background: var(--bg) !important; }
   text-align: center;
 }
 .cal-detail-toggle:hover {
-  background: #E2E8F0;
+  background: var(--pill-sf-hover);
   border-color: #475569;          /* hover 진한 톤 보강 */
-  color: #0F172A;
+  color: var(--pill-tx);
 }
-.cal-detail-toggle:active { background: #CBD5E1; }
+.cal-detail-toggle:active { background: var(--pill-sf-active); }
 .cal-detail-toggle:focus-visible {
   outline: 2px solid #2563EB;
   outline-offset: 2px;
@@ -2044,7 +2097,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-feature-card.expanded .cal-chevron {
   display: none;
 }
-/* REQ-005 5/4 v188: 다크모드 .cal-detail-toggle 부분 적용 제거 — 본 페이지 라이트 고정인데 detail-toggle만 다크 적용 시 반투명 회귀 (대표 발화 15:25 KST). 라이트 default 유지. */
+/* REQ-005 5/4 v188: (당시 라이트 고정) → R15 다크모드 정식 도입 후 --pill-* 토큰으로 라이트/다크 양분기.
+   라이트 default(#F8FAFC) 유지 + 다크는 함몰 표면(--dk-pill-sf)으로 치환(순백 알약 일소). */
 
 /* REQ-030 §1 — 헤더 공시 배지 (SPEC-001 §III.4). 펼침 동기 제공.
    REQ-042 (대표 발화 2026-04-28 02:08 KST): 너무 밝은 회색 → 가독성 부족.
@@ -2227,8 +2281,8 @@ body.single-card-mode { background: var(--bg) !important; }
   flex-direction: column;
   gap: 2px;
   padding: 7px 8px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--am3);
+  background: var(--inset-sf);   /* R15: 라이트 0.55 흰 / 다크 함몰(#202227) */
+  border: 1px solid var(--inset-bd);
   border-radius: 8px;
   min-width: 0;
 }
@@ -2278,7 +2332,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12.5px;
   font-weight: 800;
   text-align: center;
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--inset-sf);   /* R15: 라이트 0.6 흰 / 다크 함몰 */
   color: var(--tx2);
   font-variant-numeric: tabular-nums;
 }
@@ -2291,16 +2345,16 @@ body.single-card-mode { background: var(--bg) !important; }
   gap: 4px;
   margin-top: 11px;
   padding: 6px 12px;
-  border: 1px solid var(--am3);
+  border: 1px solid var(--inset-bd);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--inset-sf);   /* R15: 라이트 0.7 흰 / 다크 함몰 */
   color: #92400E;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s ease;
 }
-.cal-pm320-today-rec-more:hover { background: #fff; }
+.cal-pm320-today-rec-more:hover { background: var(--pill-sf-hover); }
 .cal-pm320-today-rec-more:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
 @media (max-width: 480px) {
   /* 만기(날짜)·가격이 4열에서 잘리는 문제 → 2×2 그리드로 전환(값 전체 노출). */
@@ -2539,13 +2593,13 @@ body.single-card-mode { background: var(--bg) !important; }
   width: 100%;
   min-height: 36px;                              /* DSN-001 §3.1 옵션 squircle — 28↔44 산술 중간 (cal-detail-toggle 정합, 통일 높이) */
   padding: 5px 12px;                             /* cal-detail-toggle 정합 */
-  background: #F8FAFC;                           /* 옵션 B 정합 (transparent → #F8FAFC, cal-detail-toggle 정합) */
-  border: 1px solid #64748B;                     /* cal-detail-toggle 정합 (var --g08 → #64748B, WCAG AA) */
+  background: var(--pill-sf);                    /* 옵션 B 정합 (transparent → #F8FAFC) / R15 라이트·다크 토큰화 */
+  border: 1px solid var(--pill-bd);              /* cal-detail-toggle 정합 (var --g08 → #64748B, WCAG AA) / R15 토큰화 */
   border-radius: 12px;                           /* DSN-001 §3.1 옵션 squircle — pill 9999px → 12px (Apple squircle CSS 근사, font-weight 700 위계 보존) */
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;                              /* 옵션 B 위계 강조 (600 → 700, cal-detail-toggle 대비 한 단계 강) */
-  color: #0F172A;                                /* cal-detail-toggle 정합 (var --g80 → #0F172A) */
+  color: var(--pill-tx);                         /* cal-detail-toggle 정합 (var --g80 → #0F172A) / R15 토큰화 */
   transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
   text-align: center;                            /* 옵션 B 정합 (left → center, cal-detail-toggle 정합) */
   font-family: inherit;
@@ -2553,11 +2607,11 @@ body.single-card-mode { background: var(--bg) !important; }
   user-select: none;
 }
 .pm320-rec-toggle:hover {
-  background: #E2E8F0;                           /* cal-detail-toggle 정합 */
+  background: var(--pill-sf-hover);              /* cal-detail-toggle 정합 */
   border-color: #475569;
-  color: #0F172A;
+  color: var(--pill-tx);
 }
-.pm320-rec-toggle:active { background: #CBD5E1; }
+.pm320-rec-toggle:active { background: var(--pill-sf-active); }
 .pm320-rec-toggle:focus-visible {
   outline: 2px solid #2563EB;                    /* cal-detail-toggle 정합 (#0064FF → #2563EB) */
   outline-offset: 2px;
@@ -2591,8 +2645,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .pm320-rec-detail {
   margin-top: 8px;
   padding: 12px 14px;
-  background: linear-gradient(180deg, #FFFBEF, #FFF9E8);
-  border: 1px solid #E8C063;
+  background: linear-gradient(180deg, var(--warm2-top), var(--warm2-bot));  /* R15: 햇살 크림 / 다크 함몰 */
+  border: 1px solid var(--am2);  /* R15: #E8C063 → --am2 (다크 골드 악센트 유지) */
   border-radius: 10px;
 }
 .pm320-rec-detail[hidden] { display: none; }
@@ -2711,9 +2765,9 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
-  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. */
-  border: 1px solid #E8C063; border-radius: 10px;
-  background: linear-gradient(90deg, #FFF9E8, #FFFBEF);
+  /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. R15: 토큰화(다크 함몰). */
+  border: 1px solid var(--am2); border-radius: 10px;
+  background: linear-gradient(90deg, var(--warm2-bot), var(--warm2-top));
   font-size: 12.5px; line-height: 1.5;
 }
 .cal-toppick b { color: #6B4A0A; }
@@ -3942,7 +3996,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: none;
   margin: 8px 12px 4px;
   padding: 12px;
-  background: #FFFFFF;
+  background: var(--sf);  /* R15: #FFFFFF → --sf (라이트 흰 동일 / 다크 표면) */
   border: 1px solid var(--am4);
   border-radius: 8px;
   overflow: hidden;
@@ -4067,7 +4121,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 700;
   color: var(--dm);
   pointer-events: none;
-  background: rgba(255,255,255,0.85);
+  background: var(--chart-label-bg);  /* R15: 라이트 0.85 흰 / 다크 함몰 */
   padding: 1px 4px;
   border-radius: 3px;
 }
@@ -4123,7 +4177,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-chart-tooltip {
   position: absolute;
   z-index: 30;
-  background: rgba(255, 255, 255, 0.97);
+  background: var(--chart-label-bg);  /* R15: 라이트 흰 / 다크 함몰 (crosshair tooltip) */
   border: 1px solid rgba(196, 153, 48, 0.4);
   border-radius: 6px;
   padding: 8px 10px;
