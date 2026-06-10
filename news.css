@@ -44,6 +44,8 @@
   --now-label-tx: #5A6070;  /* 슬라이더 "현재" 라벨 (배경 --bg2) */
   --rec-code-tx: #5C6270;   /* 추천 카드 티커 (배경 --am4) */
   --note-tx: #52596A;       /* 면책/note 문구 */
+  --wr-card-top: #FFFDF6;   /* 승률카드 그라데이션 top (다크 override) */
+  --wr-basis-tx: #5E6776;   /* 승률카드 basis/체결현실성 단서 (light 5.52 / dark override) */
 }
 
 /* ── 다크모드 (DOC-20260610-DSN-001) ──────────────────────────────────────
@@ -68,6 +70,7 @@
   --dk-header-glass: rgba(21,22,26,0.85);
   --dk-streak-tx: #F2D588; --dk-now-label-tx: #B4B9C4;
   --dk-rec-code-tx: #C9B98A; --dk-note-tx: #B4B9C4;
+  --dk-wr-card-top: #26241C; --dk-wr-basis-tx: #9DA5B5;
 }
 /* 다크 토큰 매핑 — @media 추종(미설정자) + 수동 토글 양쪽 공통 (한 벌 정의) */
 @media (prefers-color-scheme: dark) {
@@ -86,6 +89,7 @@
     --header-glass: var(--dk-header-glass);
     --streak-tx: var(--dk-streak-tx); --now-label-tx: var(--dk-now-label-tx);
     --rec-code-tx: var(--dk-rec-code-tx); --note-tx: var(--dk-note-tx);
+    --wr-card-top: var(--dk-wr-card-top); --wr-basis-tx: var(--dk-wr-basis-tx);
   }
 }
 :root[data-theme="dark"] {
@@ -103,6 +107,7 @@
   --header-glass: var(--dk-header-glass);
   --streak-tx: var(--dk-streak-tx); --now-label-tx: var(--dk-now-label-tx);
   --rec-code-tx: var(--dk-rec-code-tx); --note-tx: var(--dk-note-tx);
+  --wr-card-top: var(--dk-wr-card-top); --wr-basis-tx: var(--dk-wr-basis-tx);
 }
 @media (max-width: 640px) {
   :root {
@@ -2310,7 +2315,8 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-bottom: 12px;
   padding: 12px 14px;
   border-radius: 10px;
-  background: linear-gradient(180deg, #FFFDF6 0%, var(--am4) 100%);
+  /* 그라데이션 top을 토큰화 — 다크에서 하드코딩 #FFFDF6(밝은 흰색)이 카드 상단을 밝게 깨뜨림 (DOC-20260610-DSN-001) */
+  background: linear-gradient(180deg, var(--wr-card-top, #FFFDF6) 0%, var(--am4) 100%);
   border: 1px solid var(--am3);
 }
 .cal-pm320-wr-head {
@@ -2391,13 +2397,22 @@ body.single-card-mode { background: var(--bg) !important; }
   line-height: 1.5;
   color: var(--neg);
 }
-.cal-pm320-wr-basis {
+/* R13 P0 (체결현실성 면책) — 청산 +목표% 균일이 체결현실 미반영의 자백으로 오해되는 것 차단.
+   basis와 동일 톤(건조·10px) + 토큰화로 다크 정합. */
+.cal-pm320-wr-fill-note {
   margin-top: 7px;
   font-size: 10px;
   font-weight: 500;
   line-height: 1.5;
-  /* R13 P0 대비: --dm 2.96:1 → #5E6776 5.32:1 (WCAG AA). opacity 제거(대비 보존). */
-  color: #5E6776;
+  color: var(--wr-basis-tx, #5E6776);
+}
+.cal-pm320-wr-basis {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  /* R13 P0 대비: --dm 2.96:1 → #5E6776 5.32:1 (WCAG AA). opacity 제거(대비 보존). 토큰화로 다크 정합. */
+  color: var(--wr-basis-tx, #5E6776);
 }
 
 /* PM320-D6 P1 — 뉴스 부재 placeholder 보조 문구 (블록 줄바꿈). */
