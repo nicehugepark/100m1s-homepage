@@ -65,9 +65,17 @@ async function loadKiwoomDate(date) {
     } catch (e) { /* fall through */ }
   }
   // 폴백 1: stock-*.json에서 종목 리스트 추출 (당일)
+  // R18 P0 (콘솔 404 0err화) — PRE_MARKET + 오늘 view 시 오늘 interpreted JSON 은 미생성(확정 404).
+  //   kiwoom 본파일도 없고 본 fallback 도 확정 404 → 둘 다 건너뛴다 (장전엔 본 데이터 미사용).
+  let _kiwoomPreMarketSkip = false;
   try {
-    const fb = await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
-    if (fb.ok) {
+    const _n = new Date();
+    const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
+    _kiwoomPreMarketSkip = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
+  } catch (_) { _kiwoomPreMarketSkip = false; }
+  try {
+    const fb = _kiwoomPreMarketSkip ? null : await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
+    if (fb && fb.ok) {
       const d = await fb.json();
       if (d.stocks && d.stocks.length > 0) {
         return { daily_top: d.stocks.map(s => ({
@@ -253,10 +261,22 @@ async function loadCalDayData(date) {
   // kiwoom + stock-daily + pm320_history 병렬 fetch
   // DOC-20260603-DSN-001 §1 — pm320_history는 별 path (메인 worktree → cron 미러), 404 graceful (PICK 부재 일자)
   const dateHash = date.replace(/-/g, '');
+  // R18 P0 (콘솔 404 0err화) — PRE_MARKET(장 시작 전) + 오늘 view 시 오늘 interpreted/pm320_history JSON
+  //   은 아직 생성 전(09:00 이후 빌드) → 확정 404. 장전엔 본 데이터를 쓰지도 않으므로(renderPreMarketEmpty
+  //   는 nightlyUs/전일 픽만 사용) fetch 자체를 건너뛰어 콘솔 빨간 에러를 없앤다. 09:00 전환 시
+  //   onCalCellClick 재호출 → 캐시 키(_cacheKey) 가 장경계로 무효화돼 fresh fetch (무회귀).
+  let _todayPreMarket = false;
+  try {
+    const _n = new Date();
+    const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
+    _todayPreMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
+  } catch (_) { _todayPreMarket = false; }
   const [kiwoom, stockDailyDirect, pm320Data, nightlyUs, pm320Summary] = await Promise.all([
     loadKiwoomDate(date),
-    fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
-    loadPm320History(date),
+    _todayPreMarket
+      ? Promise.resolve(null)
+      : fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
+    _todayPreMarket ? Promise.resolve(null) : loadPm320History(date),
     loadNightlyUsSummary(date),
     loadPm320Summary()
   ]);
@@ -309,6 +329,10 @@ async function loadCalDayData(date) {
       const prev = new Date(d);
       prev.setDate(prev.getDate() - i);
       const prevStr = _localYmd(prev);
+      // R18 P0 (콘솔 404 0err화) — 주말·휴장일은 interpreted JSON 이 애초에 생성 안 됨
+      //   → fetch 시 확정 404(콘솔 빨간 에러 박제). market-closed 일자는 fetch 자체를 건너뛴다
+      //   (탐색은 i 루프로 더 과거 거래일까지 계속 진행 → fallback 동작 무회귀).
+      if (typeof isMarketClosed === 'function' && isMarketClosed(prevStr)) continue;
       const prevHash = prevStr.replace(/-/g, '');
       fallbackFetches.push(
         fetch(`/data/interpreted/${calCategory}-${prevStr}.json?v=${prevHash}`)

@@ -649,22 +649,25 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
         prevBox.setAttribute('data-stale', 'true');
         const data = prevData || (typeof loadCalDayData === 'function' ? await loadCalDayData(prevDate) : null);
         if (data) {
-          // 임시 컨테이너에 prevDate로 렌더 후 prevBox로 이전 (재진입 방지)
-          const tmp = document.createElement('div');
-          tmp.id = 'cal-content-tmp-prev';
-          // renderCalExpandContent는 cal-content를 hardcoded read하므로 일시 swap
+          // 🔴 R18 P0 fix (FLR-20260605-TEC-001 동형 stale 변종) — 종전: 임시 div 에 렌더 후
+          //   prevBox.innerHTML = tmp.innerHTML 로 transplant 했으나, renderCalExpandContent 가
+          //   inner.innerHTML 동기 set 직후 async 섹션(theme-tree/stocks 등)을 비동기 채움 →
+          //   transplant 시점에 stocks/news 미반영 + 이벤트 핸들러·차트 canvas 소실 → 테마트리 조각만
+          //   남는 빈 패널(평가자 적발). fix: temp 폐기. prevBox 에 직접 cal-content id 를 부여해
+          //   renderCalExpandContent 가 in-document 인 prevBox 에 직접 그리고 wiring 하게 한다(transplant 0).
+          //   원본 #cal-content 는 렌더 중 임시 rename → 복원(hardcoded getElementById 충돌 회피).
           const origInner = document.getElementById('cal-content');
           const origId = origInner ? origInner.id : null;
-          if (origInner) origInner.id = '_cal-content-saved';
-          tmp.id = 'cal-content';
-          document.body.appendChild(tmp);
+          const prevBoxOrigId = prevBox.id || '';
+          if (origInner && origInner !== prevBox) origInner.id = '_cal-content-saved';
+          prevBox.id = 'cal-content';
           try {
             // PRE_MARKET 재진입 회피 — 전일은 항상 hasAny path 또는 closed/empty path
             renderCalExpandContent(prevDate, data);
-            prevBox.innerHTML = tmp.innerHTML;
           } catch (e) { prevBox.textContent = '전일 데이터 로드 실패'; }
-          tmp.remove();
-          if (origInner && origId) origInner.id = origId;
+          // id 원복 (prevBox 는 본래 id 없으면 제거, 있으면 복원).
+          if (prevBoxOrigId) prevBox.id = prevBoxOrigId; else prevBox.removeAttribute('id');
+          if (origInner && origId && origInner !== prevBox) origInner.id = origId;
         } else {
           prevBox.textContent = '전일 데이터 없음';
         }

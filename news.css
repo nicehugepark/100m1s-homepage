@@ -1,8 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 :root {
   --bg: #FAFBFE; --bg2: #F2F4F8; --sf: #FFFFFF; --bd: #E8ECF2;
-  --tx: #1A1D26; --tx2: #3D4351; --dm: #8B95A8;
-  --am: #C49930; --am2: #E8C063; --am3: #FBE9B5; --am4: #FFF6E5;
+  --tx: #1A1D26; --tx2: #3D4351;
+  /* R18 P1 (라이트 본문 대비) — 메타 그레이 #8B95A8(3.02:1 on white) → #646E80(5.14:1, WCAG AA).
+     본문 텍스트/아이콘 다수가 --dm 사용 → 1스텝 다크닝으로 AA 일괄 충족(다크는 --dk-dm 별도, 무회귀). */
+  --dm: #646E80;
+  /* R18 P1 (라이트 본문 대비) — 골드 본문 텍스트 #C49930(2.64:1 on white) → #7E5E0E
+     (6.01:1 white / 5.60:1 am4 / 4.99:1 am3, WCAG AA 전 배경). 칩·뱃지(am3 bg)·출처·
+     "이날의 추천"·상세보기 등 --am 텍스트 일괄 가독 충족. --am2/3/4(밝은 틴트 = 배경용)는
+     불변 → 틴트 스케일 유지. --am bg + #fff 텍스트(theme-map-chip 등)는 대비 개선. 다크는 --dk-am 별도(무회귀). */
+  --am: #7E5E0E; --am2: #E8C063; --am3: #FBE9B5; --am4: #FFF6E5;
   --ru: #A01528;
   --pos: #1A6B2D; --pos-bg: #E8F5EC;
   --neg: #B8302E; --neg-bg: #FFF0F0;
@@ -1411,6 +1418,20 @@ a.cal-credit-row:hover,
 }
 .theme-pre-market-prev {
   padding-top: 8px;
+}
+/* 🔴 R18 P0 fix — 장전 테마트리 "전일 보기" 패널이 빈/숨김으로 보이던 결함.
+   원인: 본 패널이 .theme-tree.pm320-section-collapsed > .section-collapse-body 안에 중첩 →
+   섹션 접힘(6/10 기본 접힘 기능) 시 자손 전체가 visibility:hidden + max-height:0 상속 →
+   토글로 펼친 전일 테마트리 row 들이 렌더는 되나(textContent 有) 화면엔 안 보임(innerText 0, 평가자 적발).
+   fix: 펼쳐진(=[hidden] 아님) 전일 패널과 그 자손은 접힘 섹션의 은닉을 무력화하고 항상 보이게 한다. */
+.theme-pre-market-prev:not([hidden]),
+.theme-pre-market-prev:not([hidden]) * {
+  visibility: visible;
+}
+.pm320-section-collapsed .section-collapse-body .theme-pre-market-prev:not([hidden]) {
+  max-height: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 /* 5/8 fix (대표 catch 19:15 P1): drill-down 종목 list 동적 size + 스크롤. 13~15종 표시 시 max-height: 400px 잘림 결함 → 70vh 확장 + overflow-y: auto. */
 .trend-detail { margin-top: 12px; overflow-x: hidden; overflow-y: hidden; transition: max-height 0.2s ease-out; max-height: 0; position: relative; z-index: 4; -webkit-overflow-scrolling: touch; }
