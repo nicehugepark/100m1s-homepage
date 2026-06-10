@@ -1157,6 +1157,16 @@ a.cal-credit-row:hover,
   margin: 14px 0 18px;
   scroll-margin-top: 84px; /* 픽바 클릭 착지 시 sticky(76) 가림 방지 — 카드 헤더 전체 가시 */
 }
+/* PM320-D6 R23 (오전 동선 P0) — 헤더 직하·모든 섹션 위 어제픽 카드 portal.
+   page-header 직후에 위치(pm320.html) → 모바일 fold 안에 어제픽 카드(진입가/익절목표/만기 + 15:25 예고)
+   를 노출. [hidden] 일 땐 display:none(빈 박스·레이아웃 점프 0). 카드 박스 자체는 .--card 스타일 상속. */
+.pm320-prepick-portal {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 20px;
+  scroll-margin-top: 84px;
+}
+.pm320-prepick-portal[hidden] { display: none; }
 /* PM320-D6 R22 (오전 동선) — "어제의 픽" pill → 결과 카드 승격(진입가·익절목표·만기 grid + 15:25 예고).
    --card 변종일 때 pill 레이아웃을 카드 박스로 전환(좌측 정렬·blockflow·진입가/목표 grid). 결과 톤별
    배경/테두리(.--profit/--loss/--running)는 그대로 상속. */

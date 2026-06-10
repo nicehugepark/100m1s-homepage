@@ -469,7 +469,15 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     let markText, mod, finalPct;
     if (state === 'running') {
       const d = (pk.d_offset != null && pk.d_offset >= 0 && pk.d_offset <= 3) ? ` (D+${pk.d_offset}/+3)` : '';
-      markText = `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}`;
+      // PM320-D6 R23 P0-2 (수익률 모순 정합) — 픽 손익(current_pnl_pct)은 *진입가 대비* 잠정치다.
+      //   D+0(진입 당일)엔 진입가≈당일 종가라 거의 +0.00% → 사용자에겐 같은 종목의 카드 헤더 "당일 등락
+      //   +N%"(전일 종가 대비)와 한 화면에서 모순으로 보인다(R23 적발: 후성 칩 +0.00% vs 카드 +20.12%).
+      //   데이터는 동일 SoT(진입가 대비 손익) 유지하고 표기만 분리: 진입 당일은 "진입 당일·성과 집계 전",
+      //   D+1~ 는 "보유 중"으로 의미를 명시(추정·발명 0, FLR-AGT-002). 카드의 진입가 grid 가 기준을 보강.
+      const isEntryDay = (pk.d_offset === 0);
+      markText = isEntryDay
+        ? `⏳ 진입 당일 · 성과 집계 전${d}`
+        : `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}`;
       mod = 'running';
     } else {
       const r = pk.result || {};
@@ -722,25 +730,44 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   // R18 (비신자 평가자 P1) — 어제의 픽 결과 칩을 접지 않고 기본 노출(빈 페이지 이탈 차단).
   //   전일 데이터를 비동기 1회 로드(초기 카운트다운 렌더 차단 X) → 픽 1건 칩 주입.
   //   픽 부재/미신뢰 시 slot 은 hidden 유지(추정 0, FLR-AGT-002). 토글(전일 데이터 보기)은 별개 유지.
+  // R23 (오전 동선 P0) — 어제픽 카드 주입 대상을 헤더 직하 portal(#pm320-prepick-portal)로 라우팅.
+  //   R22 의 cal-content 내부 top 슬롯([data-pre-prev-pick])은 cal-content 컨테이너가 본문 마지막이라
+  //   여전히 fold 밖(R23 적발). portal 은 page-header 직하·모든 섹션 위라 첫 화면(fold)에 카드가 보인다.
+  //   portal 이 있으면 거기 주입 + cal-content 내부 슬롯은 hidden 유지(중복 0). 과거 빌드(portal 부재)면
+  //   기존 cal-content 슬롯으로 graceful fallback(무회귀).
+  const portal = document.getElementById('pm320-prepick-portal');
   const prevPickSlot = inner.querySelector('[data-pre-prev-pick]');
-  if (prevPickSlot && prevDate) {
+  // portal 은 매 PRE_MARKET 렌더 시 초기화(다른 날짜/장중 전환 잔존 카드 제거 — 추정 노출 0).
+  if (portal) { portal.innerHTML = ''; portal.hidden = true; }
+  if ((portal || prevPickSlot) && prevDate) {
     (async () => {
       try {
         const pd = prevData || (typeof loadCalDayData === 'function' ? await loadCalDayData(prevDate) : null);
         if (!pd || !pd.interpretedByName) return;
         const chipHtml = _buildPrevPickChipHtml(pd.interpretedByName, prevDate);
-        // 렌더 도중 다른 시점으로 전환됐으면(slot 이 DOM 에서 제거) 무시 (race graceful).
-        if (chipHtml && document.body.contains(prevPickSlot)) {
+        if (!chipHtml) return;
+        // 렌더 도중 다른 시점으로 전환됐으면(여전히 PRE_MARKET inner 가 문서에 있나) 무시 (race graceful).
+        if (!document.body.contains(inner)) return;
+        if (portal && document.body.contains(portal)) {
+          // 주 경로 — 헤더 직하 portal 에 주입(fold 노출). cal-content 내부 슬롯은 비활성(중복 0).
+          portal.innerHTML = chipHtml;
+          portal.hidden = false;
+          if (prevPickSlot && document.body.contains(prevPickSlot)) {
+            prevPickSlot.innerHTML = '';
+            prevPickSlot.hidden = true;
+            const topWrap = inner.querySelector('[data-pre-prev-pick-top]');
+            if (topWrap) topWrap.hidden = true;
+          }
+        } else if (prevPickSlot && document.body.contains(prevPickSlot)) {
+          // 폴백 — portal 부재(과거 빌드)면 R22 의 cal-content 내부 top 슬롯에 주입(무회귀).
           prevPickSlot.innerHTML = chipHtml;
           prevPickSlot.hidden = false;
-          // R22 — 슬롯을 cal-content-head 직하·미장 위로 끌어올린 top 래퍼(.cal-pre-prev-pick-top)도
-          //   함께 노출(픽 부재 시 빈 박스 잔존 방지 — 칩 주입 성공 시에만 unhide).
           const topWrap = inner.querySelector('[data-pre-prev-pick-top]');
           if (topWrap) topWrap.hidden = false;
-          // PM320 여정 fix r2 (2026-06-11) — 칩은 async 주입이라 최초 _syncPickBar() 시점엔 부재였다.
-          //   주입 직후 재동기화 → 장전 sticky 픽 바가 "어제의 픽" 칩을 mirror 노출 (FAIL #2).
-          if (typeof window._syncPickBar === 'function') window._syncPickBar();
         }
+        // PM320 여정 fix r2 (2026-06-11) — 칩은 async 주입이라 최초 _syncPickBar() 시점엔 부재였다.
+        //   주입 직후 재동기화 → 장전 sticky 픽 바가 "어제의 픽" 칩을 mirror 노출 (FAIL #2).
+        if (typeof window._syncPickBar === 'function') window._syncPickBar();
       } catch (_) { /* graceful — 칩 생략 */ }
     })();
   }
@@ -861,7 +888,14 @@ function _syncPickBar() {
   //   둘 다 부재(픽 없음/보류) → 바 숨김 (가짜 픽 노출 금지).
   //   ※ 두 소스 모두 [data-pre-prev] 토글 박스 하위 카드는 배제(_pickPrimary) — R21 변조·고착 차단.
   const rec = _pickPrimary('.cal-pm320-today-rec');
-  const prevChip = !rec ? _pickPrimary('.cal-pre-prev-pick') : null;
+  // R23 — 어제픽 카드가 헤더 직하 portal(#pm320-prepick-portal)로 이동했으므로 거기 먼저 탐색.
+  //   portal 미존재/빈 경우 R22 의 cal-content 내부 슬롯으로 fallback(과거 빌드·폴백 경로 무회귀).
+  let prevChip = null;
+  if (!rec) {
+    const portalEl = document.getElementById('pm320-prepick-portal');
+    prevChip = (portalEl && !portalEl.hidden ? portalEl.querySelector('.cal-pre-prev-pick') : null)
+      || _pickPrimary('.cal-pre-prev-pick');
+  }
 
   let src, nameText, eyebrowText, resultEl, jumpCode, prevPickCode = null;
   if (rec) {
