@@ -1191,8 +1191,15 @@ function renderCalExpandContent(date, data) {
     const _recompute = (typeof authClose === 'number' && authClose > 0 && authClose !== pk.entry_price);
     const _watering = _recompute ? Math.round(_p0 * WATERING_RATIO) : pk.watering_target_price;
     const _tp = _recompute ? Math.round(_p0 * TAKE_PROFIT_RATIO) : pk.take_profit_target_price;
+    // 대표 20:51 지적 — 익절가는 물타기 체결 시 평단 하락으로 바뀌므로 단일 단정 금지.
+    //   풀 카드(_buildPm320CardHtml)의 "물타기 시: X원"과 동일 SSOT·동일 식으로 요약 카드 익절 칸에 병기.
+    //   recompute: round((P0 + 2·P0·0.936)/3 · 1.032) / 저장값: pk.take_profit_after_watering_price.
+    const _tpAfter = _recompute
+      ? Math.round(((_p0 + 2 * _p0 * WATERING_RATIO) / 3) * TAKE_PROFIT_RATIO)
+      : pk.take_profit_after_watering_price;
     const buyV = _fmtKRW(_p0);
     const tpV = _tp != null ? _fmtKRW(_tp) : '—';
+    const tpAfterV = _tpAfter != null ? _fmtKRW(_tpAfter) : null;
     const waterV = _watering != null ? _fmtKRW(_watering) : '—';
     const expiryV = pk.expiry_date || '—';
     const mark = _pm320ResultMark(pk);
@@ -1214,7 +1221,7 @@ function renderCalExpandContent(date, data) {
       </div>
       <div class="cal-pm320-today-rec-grid">
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">매수</span><span class="cal-pm320-today-rec-v">${escapeHtml(buyV)}</span></div>
-        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span></div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span>${tpAfterV ? `<span class="cal-pm320-today-rec-v-sub">물타기 시 ${escapeHtml(tpAfterV)}</span>` : ''}</div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">물타기</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--dn">${escapeHtml(waterV)}</span></div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">만기</span><span class="cal-pm320-today-rec-v">${escapeHtml(expiryV)}</span></div>
       </div>
@@ -2098,6 +2105,13 @@ function renderCalExpandContent(date, data) {
     const s = data && data.pm320Summary;
     if (!s || typeof s.settled !== 'number' || s.settled <= 0 || typeof s.win_rate !== 'number') return '';
     const rate = s.win_rate.toFixed(1);
+    // 시점 라벨 (대표 20:48 지적 — 과거 날짜 화면에서 승률을 '그 날짜까지의 성적'으로 오독).
+    //   summary.json 은 선택일과 무관한 단일 '오늘 기준 누적' 스냅샷(per-date 분해 없음, 매일 15:25 갱신).
+    //   과거 날짜를 보는 중에도 동일 누적치가 노출되므로, '오늘 기준 누적'임을 라벨·보조문구로 명시한다.
+    //   per-date 시점 재계산은 전수 history 를 클라이언트에 싣는 별 작업(task #26)으로 분리.
+    const _nowW = new Date();
+    const _todayW = `${_nowW.getFullYear()}-${String(_nowW.getMonth() + 1).padStart(2, '0')}-${String(_nowW.getDate()).padStart(2, '0')}`;
+    const _isPastW = !!(date && date < _todayW);
     const tp = s.take_profit, loss = s.expired_loss || 0, gain = s.expired_gain || 0;
     const lossGainHtml = (loss > 0 || gain > 0)
       ? `<span class="cal-pm320-wr-loss">손실 ${loss}건${gain > 0 ? ` · 만기이익 ${gain}건` : ''}</span>`
@@ -2123,11 +2137,16 @@ function renderCalExpandContent(date, data) {
         + `</div>`
         + `<div class="cal-pm320-wr-mdd-note">보유 중 진입가 대비 최저 평가손실 (청산 완료 픽 기준)</div>`
       : '';
-    return `<div class="cal-pm320-winrate" role="group" aria-label="4월 8일 이후 추천 승률">`
+    // 과거 날짜 선택 중에는 '선택일 시점 성적'이 아닌 '오늘 기준 누적'임을 1줄로 명시.
+    const _asOfNoteHtml = _isPastW
+      ? `<div class="cal-pm320-wr-asof">이 성적은 선택한 날짜 시점이 아니라 <b>오늘 기준 누적</b>입니다</div>`
+      : '';
+    return `<div class="cal-pm320-winrate" role="group" aria-label="4월 8일부터 오늘까지 누적 추천 승률">`
       + `<div class="cal-pm320-wr-head">`
-      + `<span class="cal-pm320-wr-eyebrow">4월 8일 이후 추천 성적</span>`
+      + `<span class="cal-pm320-wr-eyebrow">4월 8일 ~ 오늘 누적 성적</span>`
       + `<span class="cal-pm320-wr-rate">승률 <b>${escapeHtml(rate)}%</b></span>`
       + `</div>`
+      + _asOfNoteHtml
       + `<div class="cal-pm320-wr-stats">`
       + `<span class="cal-pm320-wr-stat">총 ${s.total_picks}픽</span>`
       + `<span class="cal-pm320-wr-sep">·</span>`

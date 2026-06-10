@@ -2126,6 +2126,17 @@ body.single-card-mode { background: var(--bg) !important; }
 /* 한국장 관습: 익절(가격 상승)=빨강, 물타기(가격 하락)=파랑 */
 .cal-pm320-today-rec-v--up { color: #D14343; }
 .cal-pm320-today-rec-v--dn { color: #2B6CB0; }
+/* 익절 칸 보조 — 물타기 체결 시 평단 하락으로 바뀌는 익절가 병기 (풀 카드 SSOT 동일). */
+.cal-pm320-today-rec-v-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
 .cal-pm320-today-rec-result {
   margin-top: 10px;
   padding: 7px 10px;
@@ -2188,6 +2199,18 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-wr-rate { font-size: 14px; font-weight: 600; color: var(--tx2); }
 .cal-pm320-wr-rate b { font-size: 20px; font-weight: 800; color: var(--am); letter-spacing: -0.01em; }
+/* 과거 날짜 선택 시 — '선택일 시점'이 아닌 '오늘 기준 누적'임을 명시(중립 슬레이트). */
+.cal-pm320-wr-asof {
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--neu-bg);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--neu);
+}
+.cal-pm320-wr-asof b { font-weight: 700; }
 .cal-pm320-wr-stats {
   margin-top: 7px;
   display: flex;
