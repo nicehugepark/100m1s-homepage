@@ -636,12 +636,27 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   const prevBox = inner.querySelector('[data-pre-prev]');
   if (toggleBtn && prevBox && prevDate) {
     toggleBtn.addEventListener('click', async () => {
+      // PM320 여정 fix r3 (2026-06-11, R20 P0 — "전일 보기" 토글 시 scrollY 0 점프 차단).
+      //   원인: 펼침 시 renderCalExpandContent 가 #cal-content innerHTML 을 동기 리셋 → 브라우저가
+      //   스크롤 위치를 잃고 top 으로 점프. 토글 직전 scrollY 를 저장해 리렌더 후 강제 복원(이동 0).
+      //   누른 토글 버튼이 화면에 남으면 사용자는 펼쳐진 섹션을 버튼 바로 아래에서 자연스럽게 이어 본다.
+      const savedY = window.pageYOffset;
+      const _restoreToggleScroll = () => {
+        if (typeof requestAnimationFrame === 'function') {
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            if (window.pageYOffset !== savedY) window.scrollTo({ top: savedY, behavior: 'auto' });
+          }));
+        } else if (window.pageYOffset !== savedY) {
+          window.scrollTo({ top: savedY, behavior: 'auto' });
+        }
+      };
       const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
       if (expanded) {
         toggleBtn.setAttribute('aria-expanded', 'false');
         toggleBtn.textContent = `전일(${prevLabel}) 데이터 보기 ▾`;
         prevBox.hidden = true;
         prevBox.innerHTML = '';
+        _restoreToggleScroll();
       } else {
         toggleBtn.setAttribute('aria-expanded', 'true');
         toggleBtn.textContent = `전일(${prevLabel}) 데이터 접기 ▴`;
@@ -671,6 +686,8 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
         } else {
           prevBox.textContent = '전일 데이터 없음';
         }
+        // 펼침 리렌더(prevBox 표시·async 섹션 채움)가 스크롤을 흔든 경우 토글 직전 위치로 복원.
+        _restoreToggleScroll();
       }
     });
   }
@@ -2608,11 +2625,13 @@ function renderCalExpandContent(date, data) {
   //   document.getElementById 는 DOM 선두(=오늘 카드)를 반환하므로, 전일 박스 안에서 "상세 보기 ↓"를
   //   누르면 사용자가 보던 전일 카드 대신 위쪽 오늘 섹션으로 튀어 동선이 절단된다("위로 점프").
   //   → 클릭이 전일 박스 안에서 발생했으면 그 박스 안의 카드를 우선 탐색(scope) 후 fallback 으로 document.
-  // PM320 여정 fix r2 (2026-06-11, R19 비신자 평가자 P0 — "상세 보기 ↓" 클릭 시 풀 카드로 점프하나
-  //   목적지에서 카드가 접힌 채 화면 중간에 떨어져 "도착 인지" 부족 + 누른 버튼은 화면 밖으로 사라져
-  //   동선이 끊긴다("767px 점프, 버튼 화면 밖"). v310 의 dup-id 분기는 그대로 유지하되,
-  //   목적지 풀 카드를 (a) 헤더 아래 안정 anchor 위치로 정렬하고 (b) 상세를 자동 펼쳐 "여기 도착"을
-  //   명확히 보여준다. 누른 버튼의 aria-expanded 도 동기화(스크린리더 정합).
+  // PM320 여정 fix r3 (2026-06-11, R20 P0 — anchor 정렬 접근 전면 폐기, "스크롤 보존(no-scroll)"으로 전환).
+  //   이력: v310 dup-id 분기 / v311 anchor 정렬(카드 head 를 헤더 아래로 강제 정렬) → R20 실측 +1080px
+  //   과조정으로 버튼·카드·패널 전부 viewport 밖(sy 2532→3612, bt 408→-631). anchor 스크롤 자체가 원인.
+  //   r3 = "상세 보기 ↓" 클릭이 곧 그 자리에서 인라인으로 펼치는 동작이므로 스크롤 이동을 일절 하지 않는다.
+  //   ① 클릭 직전 scrollY 저장 ② 자동 펼침 수행 ③ 리렌더가 스크롤을 흔들면 저장값으로 강제 복원(rAF 2회).
+  //   예외: 자동 펼침으로 누른 버튼 자신이 viewport 밖으로 밀리는 경우에만 버튼을 viewport 내로 최소 보정.
+  //   dup-id 분기(전일 박스 scope 우선) + aria-expanded 동기화는 그대로 유지.
   if (!window._pm320RecJumpInit) {
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-rec-jump]');
@@ -2622,7 +2641,9 @@ function renderCalExpandContent(date, data) {
       const scope = btn.closest('[data-pre-prev]');
       const target = (scope && scope.querySelector('#stock-' + code)) || document.getElementById('stock-' + code);
       if (!target) return;
-      // 목적지 풀 카드 상세 자동 펼침 — 이미 펼쳐져 있으면 그대로. (접힌 채 도착해 "빈 카드" 인상 회피)
+      // ① 클릭 직전 현재 스크롤 위치 저장 (펼침 리렌더가 흔들어도 이 값으로 복원).
+      const savedY = window.pageYOffset;
+      // ② 목적지 풀 카드 상세 자동 펼침 — 이미 펼쳐져 있으면 그대로. (접힌 채 도착해 "빈 카드" 인상 회피)
       const detailToggle = target.querySelector('.cal-detail-toggle');
       if (detailToggle && !target.classList.contains('expanded')) {
         target.classList.add('expanded');
@@ -2635,14 +2656,38 @@ function renderCalExpandContent(date, data) {
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
       const navOffset = isMobile ? 76 : 84;
-      // 펼침으로 카드 높이가 바뀌므로 rAF 1회 뒤 위치 재측정 → 카드 head 를 헤더 아래 안정 anchor 로 정렬.
-      const _scroll = () => {
-        const rect = target.getBoundingClientRect();
-        const top = window.pageYOffset + rect.top - navOffset;
-        window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+      // ③ 스크롤 보존: 저장한 scrollY 로 강제 복원해 펼침 리렌더로 인한 흔들림을 제거(이동 0 기준).
+      //   예외 보정(아래 둘 다 "버튼이 viewport 에 남는 범위"에서만, anchor 정렬식 절대 이동 금지):
+      //   (a) 버튼 자신이 viewport 밖으로 밀리면 버튼을 viewport 내로 최소 노출.
+      //   (b) 목적지 풀 카드가 viewport 아래로 완전히 벗어나 있으면, 버튼이 화면에 남는 한도 내에서만
+      //       풀 카드 상단이 viewport 에 걸치도록 최소 하향(scrollBy 최소량). 풀 카드를 헤더 아래로 강제
+      //       정렬(v311 anchor)하지 않는다 — 그게 R20 +1080px 과조정의 원인이었다.
+      const _restore = () => {
+        if (window.pageYOffset !== savedY) window.scrollTo({ top: savedY, behavior: 'auto' });
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const br = btn.getBoundingClientRect();
+        let delta = 0;
+        if (br.top < navOffset) {
+          delta = br.top - navOffset;                              // (a) 버튼이 nav 아래로 가려짐 → 내려서 노출
+        } else if (br.bottom > vh) {
+          delta = br.bottom - vh + 12;                             // (a) 버튼이 하단 밖 → 올려서 노출
+        } else {
+          // (b) 버튼은 보이는데 풀 카드가 화면 아래로 완전히 벗어난 경우만 풀 카드를 화면에 걸치게 함.
+          const tr = target.getBoundingClientRect();
+          if (tr.top >= vh) {
+            // 풀 카드 상단을 viewport 하단 근처(vh - 120)로 끌어오되, 그 이동으로 버튼이 nav 위로
+            // 밀려나지 않는 한도(버튼 top - navOffset)로 클램프 → 버튼 가시성 보존 + 과조정 차단.
+            const want = tr.top - (vh - 120);
+            const maxKeepBtn = Math.max(0, br.top - navOffset);
+            delta = Math.min(want, maxKeepBtn);
+          }
+        }
+        if (delta !== 0) window.scrollBy({ top: delta, behavior: reduce ? 'auto' : 'smooth' });
       };
-      if (typeof requestAnimationFrame === 'function') requestAnimationFrame(_scroll);
-      else _scroll();
+      // 펼침 DOM 반영을 기다려 rAF 2회 후 복원(리렌더 타이밍 흔들림 흡수).
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(() => requestAnimationFrame(_restore));
+      } else { _restore(); }
     });
     window._pm320RecJumpInit = true;
   }
