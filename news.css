@@ -289,7 +289,9 @@ header {
 }
 .pm320-pickbar-status {
   font-size: 12px; font-weight: 700; color: var(--tx2);
-  flex: 0 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  /* wave1 fix ① (2026-06-11, R24 P1) — 상태(결과·D-카운터)는 매매 판단 직결 정보라 절단 금지.
+     flex 0 1 → 0 0 (no-shrink): 폭 부족 시 종목명(.pm320-pickbar-name, ellipsis)이 먼저 줄어든다. */
+  flex: 0 0 auto; white-space: nowrap;
 }
 .pm320-pickbar-status--up { color: var(--up); }
 .pm320-pickbar-status--dn { color: var(--down); }
@@ -1189,6 +1191,17 @@ a.cal-credit-row:hover,
 }
 .cal-pre-prev-pick-holdings--countonly { padding: 7px 12px; }
 .cal-pre-prev-pick-holdings--countonly .cal-pre-prev-pick-holdings-label { margin-bottom: 0; }
+/* wave1 fix ③ (2026-06-11, R24 P2) — "하루 1픽 누적 보유" 취지 보조설명 1줄.
+   라벨(11px/700)보다 한 단계 약한 위계 — 정보성 각주 톤(경보 아님). */
+.cal-pre-prev-pick-holdings-note {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--dm);
+  letter-spacing: -0.2px;
+  line-height: 1.5;
+}
+.cal-pre-prev-pick-holdings--countonly .cal-pre-prev-pick-holdings-note { margin-top: 3px; }
 .cal-pre-prev-pick-holding-row {
   display: flex;
   align-items: baseline;
@@ -2989,6 +3002,12 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-left: 4px;
   color: var(--neg);
   font-weight: 700;
+  white-space: nowrap;
+}
+/* wave1 fix ② (2026-06-11, R24 P2) — 익절 청산일 "(YYYY-MM-DD)" 원자화 칩. pill 전체 wrap(v317/r6)은
+   유지하되 날짜 토큰만 nowrap — 하이픈 중간 줄쪼갬 0. 색·굵기는 mark 본문 상속(종전 동일 외관). */
+.pm320-rec-mark-date {
+  margin-left: 4px;
   white-space: nowrap;
 }
 /* .pm320-rec-chevron 폐기 (2026-06-03 옵션 B) — 텍스트 토글 "매매 보기" ↔ "접기"로 대체. */

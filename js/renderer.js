@@ -577,9 +577,14 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
     const trustList = (typeof summaryRunning !== 'number') || (runningPicks.length >= summaryRunning);
     const others = runningPicks.filter(p => p.code !== headlineCode);
     if (others.length === 0) return '';
+    // wave1 fix ③ (2026-06-11, R24 P2) — 히어로 "하루 단 한 종목" vs "외 N종 보유 중" 표면 충돌 해소.
+    //   취지 설명 1줄: 추천은 하루 1픽, 각 픽은 만기까지 보유 → 기간이 겹치면 보유가 누적된다.
+    //   만기 일수는 전략 파라미터(가변)라 숫자 미표기(D+N 하드코딩 금지, 과장 0).
+    const noteHtml = `<div class="cal-pre-prev-pick-holdings-note">추천은 하루 1종목 — 각 픽을 만기까지 보유해 기간이 겹치면 여러 종목을 함께 보유합니다</div>`;
     if (!trustList) {
       return `<div class="cal-pre-prev-pick-holdings cal-pre-prev-pick-holdings--countonly">`
         + `<span class="cal-pre-prev-pick-holdings-label">외 ${others.length}종 보유 중</span>`
+        + noteHtml
         + `</div>`;
     }
     const rows = others.map(p =>
@@ -590,6 +595,7 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
     return `<div class="cal-pre-prev-pick-holdings" role="group" aria-label="외 ${others.length}종 보유 중">`
       + `<div class="cal-pre-prev-pick-holdings-label">외 ${others.length}종 보유 중</div>`
       + rows
+      + noteHtml
       + `</div>`;
   } catch (_) { return ''; }
 }
@@ -1042,7 +1048,15 @@ function _syncPickBar() {
   if (statusOut) {
     statusOut.classList.remove('pm320-pickbar-status--up', 'pm320-pickbar-status--dn');
     if (resultEl) {
-      statusOut.textContent = resultEl.textContent.trim().replace(/\s+/g, ' ').slice(0, 24);
+      // wave1 fix ① (2026-06-11, R24 P1) — 종전 .slice(0, 24) 하드 절단이 최장 상태
+      //   ("⏳ 진입 당일 · 성과 집계 전 (D+0/+N)" = 26자)에서 "(D+0/+" 토큰 중간 클립 유발.
+      //   절단 폐기 — verbatim mirror(추정 0). 폭 방어는 CSS(.pm320-pickbar-status flex:0 0 auto
+      //   + name 측 ellipsis shrink)가 담당. D-카운터 숫자는 데이터 verbatim(하드코딩 0).
+      //   child 노드 단위 join(' ') — 칩 span(.pm320-rec-mark-date/.pm320-rec-mark-mdd)은 시각
+      //   간격이 margin이라 textContent 직결 시 공백 유실("+3.20%(2026-06-09)") 방지.
+      statusOut.textContent = Array.from(resultEl.childNodes)
+        .map((n) => (n.textContent || '').trim()).filter(Boolean)
+        .join(' ').replace(/\s+/g, ' ');
       const isUp = resultEl.classList.contains('cal-pm320-today-rec-result--up') || (src.classList && src.classList.contains('cal-pre-prev-pick--profit'));
       const isDn = resultEl.classList.contains('cal-pm320-today-rec-result--dn') || (src.classList && src.classList.contains('cal-pre-prev-pick--loss'));
       if (isUp) statusOut.classList.add('pm320-pickbar-status--up');
@@ -1448,9 +1462,13 @@ function renderCalExpandContent(date, data) {
       const resultDate = pk.result && pk.result.result_date ? ` (${pk.result.result_date})` : '';
       const label = watered ? '익절 (물타기)' : '익절';
       const ariaSuffix = watered ? ', 물타기 진입' : '';
+      // wave1 fix ② (2026-06-11, R24 P2) — 청산일 "(YYYY-MM-DD)"를 html 평문에서 분리해
+      //   dateChip 으로 반환 (mddChip 패턴 동형). pill wrap(v317/r6) 시 날짜가 하이픈에서
+      //   줄쪼개지지 않게 호출부가 nowrap span(.pm320-rec-mark-date)으로 감싼다. aria 는 종전 유지.
       return {
-        html: `✅ ${label} ${pnlText}${resultDate}`,
+        html: `✅ ${label} ${pnlText}`,
         mod: 'profit',
+        dateChip: pk.result && pk.result.result_date ? `(${pk.result.result_date})` : '',
         mddChip: _mddPeakChipText(pk),
         aria: `${label.replace(' (물타기)', '')} 도달${ariaSuffix}, 수익률 ${pnlText}${resultDate}`,
       };
@@ -1623,7 +1641,7 @@ function renderCalExpandContent(date, data) {
       : `<div class="pm320-rec-virtual-note" role="note">※ 추천 아님 — 동일 규칙 적용 시 <b>가상 계산</b></div>`;
     const mark = _pm320ResultMark(pk);
     const markHtml = mark
-      ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</span>`
+      ? `<span class="pm320-rec-result-mark pm320-rec-result-mark--${mark.mod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.dateChip ? `<span class="pm320-rec-mark-date">${escapeHtml(mark.dateChip)}</span>` : ''}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</span>`
       : '<span class="pm320-rec-result-mark pm320-rec-result-mark--running"></span>';
     const detailId = `pm320-rec-detail-${escapeHtml(code || '')}`;
     const detailRows = _pm320DetailRows(pk, authClose);
@@ -1673,7 +1691,7 @@ function renderCalExpandContent(date, data) {
     // mark.html 은 픽 진행중이면 "⏳ 잠정 +0.00% (D+0/+3)", 청산 완료면 결과(익절/만기). 부재 시 생략.
     const resultMod = mark ? mark.mod : 'running';
     const resultHtml = mark
-      ? `<div class="cal-pm320-today-rec-result cal-pm320-today-rec-result--${resultMod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</div>`
+      ? `<div class="cal-pm320-today-rec-result cal-pm320-today-rec-result--${resultMod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.dateChip ? `<span class="pm320-rec-mark-date">${escapeHtml(mark.dateChip)}</span>` : ''}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</div>`
       : '';
     const headLabel = isPast ? '이날의 추천' : '오늘 PM320 추천';
     const nameV = name || '';
