@@ -1,6 +1,6 @@
 {
   "date": "2026-06-11",
-  "generated_at": "2026-06-11T10:06:41.110004",
+  "generated_at": "2026-06-11T10:17:34.650066",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -52,9 +52,9 @@
       "code": "475150",
       "name": "SK이터닉스",
       "rank": 1,
-      "trade_amount": 193702000000,
-      "change_pct": -5.75,
-      "close_price": 41800,
+      "trade_amount": 200739000000,
+      "change_pct": -7.55,
+      "close_price": 41000,
       "open_price": 50400,
       "high_price": 54000,
       "low_price": 40900,
@@ -137,17 +137,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.15,
-      "index_multiple_current": 5.0,
+      "index_change_pct": 0.41,
+      "index_multiple_current": -18.41,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 69300,
         "high_date": "2026-04-03",
-        "high_pct": -39.68,
+        "high_pct": -40.84,
         "low": 17210,
         "low_date": "2025-11-19",
-        "low_pct": 142.88,
-        "current": 41800
+        "low_pct": 138.23,
+        "current": 41000
       },
       "daily_20": [
         {
@@ -288,7 +288,7 @@
           "o": 50400,
           "h": 54000,
           "l": 40900,
-          "c": 41800
+          "c": 41000
         }
       ],
       "intraday": {
@@ -308,7 +308,9 @@
           42850,
           41500,
           41650,
-          41800
+          41350,
+          40950,
+          41000
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -316,15 +318,290 @@
       "hugepark_grade": "관찰"
     },
     {
+      "code": "240810",
+      "name": "원익IPS",
+      "rank": 2,
+      "trade_amount": 152633000000,
+      "change_pct": null,
+      "close_price": null,
+      "open_price": null,
+      "high_price": null,
+      "low_price": null,
+      "industry": "특수 목적용 기계 제조업",
+      "sector": "반도체 제조용 기계",
+      "themes": [
+        "반도체",
+        "반도체 박막 장비",
+        "HBM",
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 박막 장비",
+          "path": [
+            "반도체",
+            "반도체 박막 장비"
+          ]
+        },
+        {
+          "name": "HBM",
+          "path": [
+            "반도체",
+            "HBM"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": {
+        "date": "2026-06-05",
+        "rank": 2,
+        "change_pct": 4.32,
+        "trade_amount": 406860000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [
+        {
+          "title": "08일 코스닥 시장 공매도 금액 상위 종목. 주성엔지니어링, 원익IPS 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/06/09/MU2DGOJYGAZDONZWMM4WMNRXGI/",
+          "source": "조선비즈",
+          "published_at": "2026-06-08T23:01:24",
+          "causal_chain": "제공된 유일 자료는 '08일 코스닥 공매도 금액 상위 종목'에 주성엔지니어링·원익IPS 등이 포함됐다는 시장 통계 기사로, 종목 고유의 펀더멘털 사건(수주·실적·정책 수혜 등)이 아니라 공매도 잔량·수급을 정형화한 후순위 시황 자료다. 당일 종가 119,100원(+13.54%)·거래대금 1,762억원의 강한 상승이 관측되나, 제공된 뉴스만으로는 이 등락의 인과(직접 매크로 사건)를 설명할 근거가 없어 본질 매크로 사슬을 식별할 수 없다.",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": "시세정형"
+        },
+        {
+          "title": "원익IPS, 1Q 연결 영업익 107억…전년비 흑자전환",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=07275046645446952",
+          "source": "이데일리",
+          "published_at": "2026-05-08T07:17:49",
+          "causal_chain": "반도체 장비 수요 회복 → 원익IPS 1Q 연결 영업이익 107억원 흑자전환(전년비) → 실적 모멘텀 확인",
+          "macro_event": "원익IPS 1Q 영업이익 107억 흑자전환",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "[오늘의 증시일정] 한국콜마·원익IPS·파마리서치 등",
+          "url": "https://www.etoday.co.kr/news/view/2582578",
+          "source": "이투데이",
+          "published_at": "2026-05-07T23:11:00",
+          "causal_chain": "반도체 장비 수요 회복 → 원익IPS 1Q 연결 영업이익 107억원 흑자전환(전년비) → 실적 모멘텀 확인",
+          "macro_event": "원익IPS 1Q 영업이익 107억 흑자전환",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "15일 코스닥 시장 공매도 금액 상위 종목. 리노공업, 원익IPS 등",
+          "url": "https://biz.chosun.com/stock/c-biz_bot/2026/04/16/GAYDSNRTHA2TQZRTG5RTOYTFGY/",
+          "source": "조선비즈",
+          "published_at": "2026-04-15T23:01:21",
+          "causal_chain": "1Q 영업익 107억 달성 및 전년 대비 흑자전환 → 반도체(특히 HBM) 박막 장비 수요 개선 신호 반영",
+          "macro_event": "Q1 영업익 107억 달성",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        }
+      ],
+      "fallback": true,
+      "index_change_pct": 1.96,
+      "range_240d": {
+        "high": 151500,
+        "high_date": "2026-05-11",
+        "high_pct": -21.39,
+        "low": 24400,
+        "low_date": "2025-06-16",
+        "low_pct": 388.11,
+        "current": 119100
+      },
+      "daily_20": [
+        {
+          "date": "2026-05-12",
+          "o": 143000,
+          "h": 148000,
+          "l": 123700,
+          "c": 125000
+        },
+        {
+          "date": "2026-05-13",
+          "o": 124500,
+          "h": 131200,
+          "l": 120600,
+          "c": 131200
+        },
+        {
+          "date": "2026-05-14",
+          "o": 129100,
+          "h": 129600,
+          "l": 121300,
+          "c": 127400
+        },
+        {
+          "date": "2026-05-15",
+          "o": 127800,
+          "h": 128300,
+          "l": 113000,
+          "c": 114700
+        },
+        {
+          "date": "2026-05-18",
+          "o": 113700,
+          "h": 118700,
+          "l": 108200,
+          "c": 116100
+        },
+        {
+          "date": "2026-05-19",
+          "o": 114900,
+          "h": 117800,
+          "l": 110800,
+          "c": 113000
+        },
+        {
+          "date": "2026-05-20",
+          "o": 113100,
+          "h": 116900,
+          "l": 107200,
+          "c": 111900
+        },
+        {
+          "date": "2026-05-21",
+          "o": 116500,
+          "h": 125300,
+          "l": 116400,
+          "c": 125300
+        },
+        {
+          "date": "2026-05-22",
+          "o": 126800,
+          "h": 127500,
+          "l": 121000,
+          "c": 121700
+        },
+        {
+          "date": "2026-05-26",
+          "o": 127300,
+          "h": 132500,
+          "l": 120400,
+          "c": 122000
+        },
+        {
+          "date": "2026-05-27",
+          "o": 123700,
+          "h": 127000,
+          "l": 110500,
+          "c": 112300
+        },
+        {
+          "date": "2026-05-28",
+          "o": 111200,
+          "h": 112300,
+          "l": 103600,
+          "c": 108300
+        },
+        {
+          "date": "2026-05-29",
+          "o": 108700,
+          "h": 110900,
+          "l": 102300,
+          "c": 106000
+        },
+        {
+          "date": "2026-06-01",
+          "o": 104300,
+          "h": 105900,
+          "l": 101000,
+          "c": 102700
+        },
+        {
+          "date": "2026-06-02",
+          "o": 100400,
+          "h": 100700,
+          "l": 96000,
+          "c": 97900
+        },
+        {
+          "date": "2026-06-04",
+          "o": 112500,
+          "h": 127200,
+          "l": 108700,
+          "c": 127200
+        },
+        {
+          "date": "2026-06-05",
+          "o": 115500,
+          "h": 138300,
+          "l": 113000,
+          "c": 132700
+        },
+        {
+          "date": "2026-06-08",
+          "o": 126000,
+          "h": 136000,
+          "l": 104600,
+          "c": 104900
+        },
+        {
+          "date": "2026-06-09",
+          "o": 112600,
+          "h": 122200,
+          "l": 109500,
+          "c": 119100
+        },
+        {
+          "date": "2026-06-11",
+          "o": 116700,
+          "h": 139000,
+          "l": 116100,
+          "c": 138800
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
+    },
+    {
       "code": "183300",
       "name": "코미코",
-      "rank": 2,
-      "trade_amount": 42679000000,
+      "rank": 3,
+      "trade_amount": 44076000000,
       "change_pct": 29.97,
       "close_price": 139200,
-      "open_price": 139200,
+      "open_price": 103900,
       "high_price": 139200,
-      "low_price": 139200,
+      "low_price": 103600,
       "industry": "특수 목적용 기계 제조업",
       "sector": "반도체 부품 세정 및 코팅",
       "themes": [
@@ -352,9 +629,12 @@
         "change_pct": 29.95,
         "trade_amount": 107378766000
       },
-      "bullish_today": false,
-      "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-05-13",
+        "2026-06-11"
+      ],
       "news": [
         {
           "title": "[오늘의 증시일정] 코미코‧케이티스카이라이프 등",
@@ -438,89 +718,19 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.62,
-      "index_multiple_current": 29.2,
+      "index_change_pct": 1.96,
+      "index_multiple_current": 15.29,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 139200,
         "high_date": "2026-06-11",
         "high_pct": 0.0,
-        "low": 28674,
-        "low_date": "2025-06-02",
-        "low_pct": 385.46,
+        "low": 30151,
+        "low_date": "2025-07-25",
+        "low_pct": 361.68,
         "current": 139200
       },
       "daily_20": [
-        {
-          "date": "2026-04-27",
-          "o": 77668,
-          "h": 78076,
-          "l": 74918,
-          "c": 75988
-        },
-        {
-          "date": "2026-04-28",
-          "o": 75376,
-          "h": 76955,
-          "l": 73288,
-          "c": 75478
-        },
-        {
-          "date": "2026-04-29",
-          "o": 74867,
-          "h": 75886,
-          "l": 71760,
-          "c": 72524
-        },
-        {
-          "date": "2026-04-30",
-          "o": 73390,
-          "h": 75071,
-          "l": 71811,
-          "c": 72117
-        },
-        {
-          "date": "2026-05-04",
-          "o": 74154,
-          "h": 75529,
-          "l": 71557,
-          "c": 73441
-        },
-        {
-          "date": "2026-05-06",
-          "o": 80928,
-          "h": 80979,
-          "l": 73288,
-          "c": 75071
-        },
-        {
-          "date": "2026-05-07",
-          "o": 76701,
-          "h": 76701,
-          "l": 72219,
-          "c": 74205
-        },
-        {
-          "date": "2026-05-08",
-          "o": 72372,
-          "h": 78381,
-          "l": 71760,
-          "c": 76140
-        },
-        {
-          "date": "2026-05-11",
-          "o": 77668,
-          "h": 78178,
-          "l": 74612,
-          "c": 75580
-        },
-        {
-          "date": "2026-05-12",
-          "o": 75631,
-          "h": 79247,
-          "l": 71302,
-          "c": 73288
-        },
         {
           "date": "2026-05-13",
           "o": 77923,
@@ -585,39 +795,84 @@
           "c": 94500
         },
         {
+          "date": "2026-05-27",
+          "o": 94200,
+          "h": 115700,
+          "l": 92400,
+          "c": 99800
+        },
+        {
+          "date": "2026-05-28",
+          "o": 98800,
+          "h": 100950,
+          "l": 89100,
+          "c": 93700
+        },
+        {
+          "date": "2026-05-29",
+          "o": 96700,
+          "h": 97500,
+          "l": 89000,
+          "c": 90000
+        },
+        {
+          "date": "2026-06-01",
+          "o": 87000,
+          "h": 97600,
+          "l": 84700,
+          "c": 95600
+        },
+        {
+          "date": "2026-06-02",
+          "o": 93000,
+          "h": 93100,
+          "l": 85000,
+          "c": 90900
+        },
+        {
+          "date": "2026-06-04",
+          "o": 91800,
+          "h": 105900,
+          "l": 88000,
+          "c": 98800
+        },
+        {
+          "date": "2026-06-05",
+          "o": 98000,
+          "h": 109800,
+          "l": 94000,
+          "c": 108600
+        },
+        {
+          "date": "2026-06-08",
+          "o": 99700,
+          "h": 105100,
+          "l": 91800,
+          "c": 95300
+        },
+        {
+          "date": "2026-06-09",
+          "o": 97800,
+          "h": 108700,
+          "l": 97800,
+          "c": 100200
+        },
+        {
+          "date": "2026-06-10",
+          "o": 98000,
+          "h": 112300,
+          "l": 97300,
+          "c": 107100
+        },
+        {
           "date": "2026-06-11",
-          "o": 139200,
+          "o": 103900,
           "h": 139200,
-          "l": 139200,
+          "l": 103600,
           "c": 139200
         }
       ],
       "status_badges": [
-        {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-05-19) 대비 +60%↑",
-              "base_price": 73849,
-              "threshold": 118158,
-              "current": 139200,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-06-12",
-          "period_end": "2026-06-15",
-          "start": "2026-06-12",
-          "end": "2026-06-15",
-          "view_date": "2026-06-11",
-          "next_trading_day": "2026-06-12",
-          "next_trading_day_for_predicted": "2026-06-12",
-          "next_trading_day_source": "verified",
-          "single_price": false,
-          "effect_badges": []
-        },
         {
           "label": "상한가",
           "severity": "hot",
@@ -626,8 +881,8 @@
           "summary": "코미코 상한가 (29.97%)",
           "cur_prc": 139200,
           "flu_rt": 29.97,
-          "trde_qty": 345207,
-          "trde_prica_calc": 42679000000,
+          "trde_qty": 355246,
+          "trde_prica_calc": 44076000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -643,17 +898,37 @@
           "next_trading_day": "2026-06-12"
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
-      "togusa_verdict": "weak_bull",
+      "intraday": {
+        "step_min": 5,
+        "open": 103900,
+        "base": 107102,
+        "prices": [
+          103900,
+          109900,
+          112800,
+          117400,
+          119900,
+          123500,
+          119600,
+          121300,
+          120700,
+          125900,
+          126500,
+          133300,
+          139200,
+          139200,
+          139200
+        ]
+      },
+      "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
     {
       "code": "406820",
       "name": "뷰티스킨",
-      "rank": 3,
-      "trade_amount": 2942000000,
+      "rank": 4,
+      "trade_amount": 2963000000,
       "change_pct": 29.94,
       "close_price": 2435,
       "open_price": 1874,
@@ -706,8 +981,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.62,
-      "index_multiple_current": 18.48,
+      "index_change_pct": 1.96,
+      "index_multiple_current": 15.28,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 8900,
@@ -869,8 +1144,8 @@
           "summary": "뷰티스킨 상한가 (29.94%)",
           "cur_prc": 2435,
           "flu_rt": 29.94,
-          "trde_qty": 1254630,
-          "trde_prica_calc": 2942000000,
+          "trde_qty": 1263755,
+          "trde_prica_calc": 2963000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -903,6 +1178,8 @@
           2435,
           2435,
           2435,
+          2435,
+          2435,
           2435
         ]
       },
@@ -915,8 +1192,8 @@
     {
       "code": "027740",
       "name": "마니커",
-      "rank": 4,
-      "trade_amount": 2030000000,
+      "rank": 5,
+      "trade_amount": 2046000000,
       "change_pct": 29.97,
       "close_price": 1340,
       "open_price": 1061,
@@ -944,9 +1221,9 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -1.15,
-      "index_multiple_current": -26.06,
-      "index_multiple_eligible": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 73.1,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 1976,
         "high_date": "2025-07-10",
@@ -1107,8 +1384,8 @@
           "summary": "마니커 상한가 (29.97%)",
           "cur_prc": 1340,
           "flu_rt": 29.97,
-          "trde_qty": 1545848,
-          "trde_prica_calc": 2030000000,
+          "trde_qty": 1557703,
+          "trde_prica_calc": 2046000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1141,6 +1418,8 @@
           1340,
           1340,
           1340,
+          1340,
+          1340,
           1340
         ]
       },
@@ -1155,8 +1434,8 @@
     {
       "code": "465770",
       "name": "STX그린로지스",
-      "rank": 5,
-      "trade_amount": 673000000,
+      "rank": 6,
+      "trade_amount": 1199000000,
       "change_pct": 30.0,
       "close_price": 3380,
       "open_price": 2670,
@@ -1201,9 +1480,9 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.15,
-      "index_multiple_current": -26.09,
-      "index_multiple_eligible": false,
+      "index_change_pct": 0.41,
+      "index_multiple_current": 73.17,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 12400,
         "high_date": "2025-06-23",
@@ -1364,8 +1643,8 @@
           "summary": "STX그린로지스 상한가 (30.0%)",
           "cur_prc": 3380,
           "flu_rt": 30.0,
-          "trde_qty": 204449,
-          "trde_prica_calc": 673000000,
+          "trde_qty": 360049,
+          "trde_prica_calc": 1199000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1398,6 +1677,7 @@
           3380,
           3380,
           3380,
+          3380,
           3380
         ]
       },
@@ -1410,7 +1690,7 @@
     {
       "code": "083660",
       "name": "CSA 코스믹",
-      "rank": 6,
+      "rank": 7,
       "trade_amount": 100000000,
       "change_pct": 29.91,
       "close_price": 304,
@@ -1459,8 +1739,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.62,
-      "index_multiple_current": 18.46,
+      "index_change_pct": 1.96,
+      "index_multiple_current": 15.26,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 2885,
@@ -1622,7 +1902,7 @@
           "summary": "CSA 코스믹 상한가 (29.91%)",
           "cur_prc": 304,
           "flu_rt": 29.91,
-          "trde_qty": 328680,
+          "trde_qty": 329896,
           "trde_prica_calc": 100000000,
           "consecutive_count": 2,
           "estimated": false,
@@ -1644,6 +1924,8 @@
         "open": 304,
         "base": 234,
         "prices": [
+          304,
+          304,
           304,
           304,
           304,
