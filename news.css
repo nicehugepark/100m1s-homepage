@@ -2838,8 +2838,7 @@ body.single-card-mode { background: var(--bg) !important; }
   letter-spacing: 0.02em;
   color: var(--am);
 }
-/* R26 P0-1 (조니 P0, 2026-06-11) — 승률 단독 대형 표기 폐기 → 승률·손익비·최대낙폭 동일 위계
-   3지표 grid. 세 값 모두 같은 크기(18px)·같은 굵기(800), 색만 의미 분리(골드/본문/빨강). */
+/* 승률 카드 3지표 grid. */
 .cal-pm320-wr-trio {
   margin-top: 9px;
   display: grid;
@@ -2898,7 +2897,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-win { color: var(--pos); }
 .cal-pm320-wr-loss { color: var(--neg); }
 .cal-pm320-wr-running { color: var(--dm-hi); } /* R28 P1② */
-/* 승률 맥락 1줄 (왜 승률이 높은지 — 익절폭이 작아 쉽게 도달). */
+/* 승률 카드 보조 맥락 1줄. */
 .cal-pm320-wr-context {
   margin-top: 6px;
   font-size: 12px; /* R26 P1① 10.5→12px */
@@ -3096,7 +3095,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-bt-table {
   width: 100%;
-  min-width: 620px;
+  min-width: 560px;
   border-collapse: collapse;
   font-size: 12px;
 }

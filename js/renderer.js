@@ -78,7 +78,6 @@ const _PM320_GLOSSARY = {
   watering: { t: '물타기', d: '산 종목이 떨어졌을 때 더 사서 평균 매입가를 낮추는 것. PM320은 진입가에서 약 -6.4%일 때를 기준점으로 봅니다.' },
   'take-profit': { t: '익절', d: '이익을 본 상태에서 파는 것. PM320은 진입가에서 약 +3.2%를 목표로 잡습니다.' },
   pending: { t: '보류', d: '그날의 조건을 만족하는 종목이 없어 추천을 내지 않는 것. 무리한 추천 대신 쉬어가는 날입니다.' },
-  'risk-reward': { t: '손익비', d: '목표로 한 이익 폭과 감수해야 하는 손실 폭의 비율. 익절 목표(+3.2%)가 작고 보유 중 장중 낙폭(최대 손실)이 크면 승률이 높아도 한 번의 손실이 여러 번의 이익을 지울 수 있습니다.' },
 };
 // (?) 마커 — term 키에 해당하는 풀이가 있을 때만 생성. aria-label 로 스크린리더 정합.
 function _termTip(term) {
@@ -2802,14 +2801,51 @@ function renderCalExpandContent(date, data) {
     const lossGainHtml = (loss > 0 || gain > 0)
       ? `<span class="cal-pm320-wr-loss">손실 ${loss}건${gain > 0 ? ` · 만기이익 ${gain}건` : ''}</span>`
       : '';
-    // 손님 정직성(2026-06-10) — 승률이 높은 이유(익절폭이 작아 쉽게 도달) 1줄 맥락.
-    //   고정 표본수(총 픽)와 목표 익절폭(summary.take_profit_target_pct, 부재 시 생략)을 명시.
-    const tgtPct = (typeof s.take_profit_target_pct === 'number') ? s.take_profit_target_pct : null;
-    const _winContextHtml =
-      `<div class="cal-pm320-wr-context">`
-      + `익절 목표가 ${tgtPct !== null ? `+${escapeHtml(tgtPct.toFixed(1))}%` : '작게'}로 작아 승률이 높게 산출됩니다`
-      // R25 P1④ (2026-06-11) — "표본 N픽" 동일 블록 2회 중복 제거: wr-stats "총 N픽" 1회만 유지.
-      + `</div>`;
+    const mddValue = (typeof s.account_mdd_pct === 'number')
+      ? s.account_mdd_pct
+      : (typeof s.worst_mdd_pct === 'number' ? s.worst_mdd_pct : null);
+    const mddLabel = (typeof s.account_mdd_pct === 'number') ? '계좌 MDD' : '장중 최대낙폭';
+    const detail = (s.backtest_detail && typeof s.backtest_detail === 'object') ? s.backtest_detail : null;
+    const rows = (detail && Array.isArray(detail.table)) ? detail.table : [];
+    const curve = (detail && Array.isArray(detail.equity_curve)) ? detail.equity_curve : [];
+    const fmtBtPct = (v) => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}%` : '-');
+    const fmtBtWon = (v) => (typeof v === 'number' ? Math.round(v).toLocaleString('ko-KR') : '-');
+    const equityHtml = (() => {
+      const pts = curve
+        .map((p) => ({ date: p.date, balance: (typeof p.balance === 'number') ? p.balance : null }))
+        .filter((p) => p.balance !== null);
+      if (pts.length < 2) return '';
+      const w = 360, h = 86, pad = 8;
+      const vals = pts.map((p) => p.balance);
+      const min = Math.min(...vals);
+      const max = Math.max(...vals);
+      const span = Math.max(1, max - min);
+      const points = pts.map((p, i) => {
+        const x = pad + (i * (w - pad * 2)) / Math.max(1, pts.length - 1);
+        const y = h - pad - ((p.balance - min) / span) * (h - pad * 2);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(' ');
+      const last = pts[pts.length - 1];
+      return `<div class="cal-pm320-bt-equity" aria-label="백테스트 잔고 흐름">`
+        + `<div class="cal-pm320-bt-equity-meta"><span>${escapeHtml(pts[0].date || '')}</span><b>${escapeHtml(fmtBtWon(last.balance))}원</b><span>${escapeHtml(last.date || '')}</span></div>`
+        + `<svg class="cal-pm320-bt-equity-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">`
+        + `<line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" />`
+        + `<polyline points="${points}" />`
+        + `</svg></div>`;
+    })();
+    const tableHtml = rows.length ? `<div class="cal-pm320-bt-table-wrap" aria-label="PM320 백테스트 전수표"><table class="cal-pm320-bt-table">`
+      + `<thead><tr><th>일자</th><th>종목</th><th>결과</th><th>손익률</th><th>잔고</th></tr></thead>`
+      + `<tbody>${rows.map((r) => {
+        const ret = (typeof r.ret_pct === 'number') ? r.ret_pct : null;
+        const retCls = ret === null ? '' : (ret >= 0 ? ' cal-pm320-bt-td--pos' : ' cal-pm320-bt-td--neg');
+        return `<tr><td>${escapeHtml(r.date || '')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(r.exit_class || '-')}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
+      }).join('')}</tbody></table></div>` : '';
+    const _historyHtml = (rows.length || equityHtml)
+      ? `<details class="cal-pm320-wr-fine cal-pm320-wr-history"><summary>전수표·잔고 흐름</summary>`
+        + `<div class="cal-pm320-wr-fine-body cal-pm320-wr-history-body">`
+        + equityHtml + tableHtml + `</div></details>`
+      : '';
+    const _winContextHtml = '';
     // R26 P0-2② (2026-06-11, stale 정직화) — '오늘'을 데이터 생성 시점(generated_at) 날짜로 치환.
     //   summary 는 매일 15:25 갱신 스냅샷이라 동결 시 "오늘"이 거짓이 된다. generated_at(ISO,
     //   build_card_history 산출) 에서 동적 추출(하드코딩 금지). 부재/형식 미달 시 '오늘' fallback
@@ -2830,19 +2866,6 @@ function renderCalExpandContent(date, data) {
     const _asOfNoteHtml = _isPastW
       ? `<div class="cal-pm320-wr-asof">이 성적은 선택한 날짜 시점이 아니라 <b>${escapeHtml(_asOfDateLabel)} 기준 누적</b>입니다</div>`
       : '';
-    // R26 P0-1 (조니 P0, 대표 결정 2026-06-11) — 승률 단독 대형 표기 폐기 → 승률·손익비·최대낙폭
-    //   "동일 위계 3지표" 재구성. 종전: 승률만 20px 골드(최대 잉크), 손익비(1:0.13)·MDD(-25.2%)는
-    //   본문 폰트 → "말은 정직한데 위계가 기만". 세 지표 모두 같은 크기·같은 굵기(색만 의미 분리).
-    //   -25.2% 는 MDD 지표 1곳에만 표기 (R26 P1② — 같은 박스 2회 중복 제거).
-    //   손익비 = 목표 익절폭 / |최대 장중 낙폭| (둘 다 summary 실측). 값 부재 셀은 렌더 생략
-    //   (추정 0, FLR-AGT-002).
-    const _ratio = (tgtPct !== null && typeof s.worst_mdd_pct === 'number' && s.worst_mdd_pct < 0)
-      ? (tgtPct / Math.abs(s.worst_mdd_pct)).toFixed(2)
-      : null;
-    // R27 P1②⑤ (조니 2심, 2026-06-11) — ② 손익비 방향 라벨("손실 1당 이익 N") 명시 + sub 에
-    //   평균(익절)/최대(낙폭) 정의 분리 표기 (종전 "평균 익절 +3.2% 기준"은 분모=최대낙폭 사실 누락).
-    //   ⑤ 3셀 sub 구조 통일 — 승률 셀에 모집단 sub(청산 N건), MDD 셀에 평균 부재 시 정의 sub fallback.
-    //   sub 바닥 정렬은 CSS(.cal-pm320-wr-cell-sub margin-top:auto) 담당.
     const _trioCells = [];
     _trioCells.push(
       `<div class="cal-pm320-wr-cell">`
@@ -2850,37 +2873,17 @@ function renderCalExpandContent(date, data) {
       + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--rate">${escapeHtml(rate)}%</span>`
       + `<span class="cal-pm320-wr-cell-sub">청산 ${escapeHtml(String(s.settled))}건 기준</span>`
       + `</div>`);
-    if (_ratio !== null) {
+    if (typeof mddValue === 'number') {
       _trioCells.push(
         `<div class="cal-pm320-wr-cell">`
-        + `<span class="cal-pm320-wr-cell-k">손익비${_termTip('risk-reward')}</span>`
-        + `<span class="cal-pm320-wr-cell-v">1 : ${escapeHtml(_ratio)}</span>`
-        + `<span class="cal-pm320-wr-cell-sub">손실 1당 이익 ${escapeHtml(_ratio)} · 평균 익절 +${escapeHtml(tgtPct.toFixed(1))}% ÷ 최대 낙폭</span>`
-        + `</div>`);
-    }
-    if (typeof s.worst_mdd_pct === 'number') {
-      _trioCells.push(
-        `<div class="cal-pm320-wr-cell">`
-        + `<span class="cal-pm320-wr-cell-k">장중 최대낙폭</span>`
-        + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--neg">${escapeHtml(s.worst_mdd_pct.toFixed(1))}%</span>`
-        + (typeof s.avg_mdd_pct === 'number'
-            ? `<span class="cal-pm320-wr-cell-sub">평균 ${escapeHtml(s.avg_mdd_pct.toFixed(1))}%</span>`
-            : `<span class="cal-pm320-wr-cell-sub">보유 중 최저 평가손실</span>`)
+        + `<span class="cal-pm320-wr-cell-k">${escapeHtml(mddLabel)}</span>`
+        + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--neg">${escapeHtml(mddValue.toFixed(1))}%</span>`
         + `</div>`);
     }
     const _trioHtml = `<div class="cal-pm320-wr-trio">${_trioCells.join('')}</div>`;
     const _ariaWr = `${_sinceLabel}부터 ${_asOfDateLabel}까지 누적 성적 — 승률 ${rate}%`
-      + (_ratio !== null ? `, 손익비 1대 ${_ratio}, 손실 1당 이익 ${_ratio}` : '')
-      + (typeof s.worst_mdd_pct === 'number' ? `, 장중 최대낙폭 ${s.worst_mdd_pct.toFixed(1)}%` : '');
-    // R26 P1④ — 디스클레이머 노출 1줄로 축약, 나머지(슬리피지·MDD 정의·모집단)는 접기(details)로 이동.
-    const _fineHtml =
-      `<div class="cal-pm320-wr-basis">장중 목표가 터치 기준 가상 산출 — 과거 성과가 미래 수익을 보장하지 않습니다</div>`
-      + `<details class="cal-pm320-wr-fine"><summary>산출 기준 자세히</summary>`
-      + `<div class="cal-pm320-wr-fine-body">`
-      + `<div>슬리피지·시가 갭·부분체결 미반영 — 실제 체결가는 다를 수 있습니다.</div>`
-      + `<div>장중 최대낙폭 = 보유 중 진입가 대비 최저 평가손실 (청산 완료 픽 기준).</div>`
-      + `<div>승률·손익비 = 청산 완료 픽 기준 (보유중 제외).</div>`
-      + `</div></details>`;
+      + (typeof mddValue === 'number' ? `, ${mddLabel} ${mddValue.toFixed(1)}%` : '');
+    const _fineHtml = _historyHtml;
     return `<div class="cal-pm320-winrate" role="group" aria-label="${escapeHtml(_ariaWr)}">`
       + `<div class="cal-pm320-wr-head">`
       + `<span class="cal-pm320-wr-eyebrow">${escapeHtml(_sinceLabel)} ~ ${escapeHtml(_asOfDateLabel)} 누적 성적</span>`
@@ -2897,81 +2900,6 @@ function renderCalExpandContent(date, data) {
       + _winContextHtml
       + _fineHtml
       + `</div>`;
-  })();
-  const _pm320BacktestHtml = (() => {
-    if (_isSingleCardMode) return '';
-    const s = data && data.pm320Summary;
-    if (!s || typeof s.settled !== 'number' || s.settled <= 0 || typeof s.win_rate !== 'number') return '';
-    const detail = (s.backtest_detail && typeof s.backtest_detail === 'object') ? s.backtest_detail : null;
-    const rows = (detail && Array.isArray(detail.table)) ? detail.table : [];
-    const curve = (detail && Array.isArray(detail.equity_curve)) ? detail.equity_curve : [];
-    const fmtPct = (v) => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}%` : '-');
-    const fmtWon = (v) => (typeof v === 'number' ? Math.round(v).toLocaleString('ko-KR') : '-');
-    const fmtDate = (v, fallback) => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v))
-      ? `${parseInt(v.slice(5, 7), 10)}월 ${parseInt(v.slice(8, 10), 10)}일`
-      : fallback;
-    const asOf = fmtDate(s.generated_at, '오늘');
-    const since = fmtDate(s.since, '4월 8일');
-    const mddValue = (typeof s.account_mdd_pct === 'number')
-      ? s.account_mdd_pct
-      : (typeof s.worst_mdd_pct === 'number' ? s.worst_mdd_pct : null);
-    const mddLabel = (typeof s.account_mdd_pct === 'number') ? '계좌 MDD' : '장중 최대낙폭';
-    const targetPct = (typeof s.take_profit_target_pct === 'number') ? s.take_profit_target_pct : null;
-    const totalReturn = (typeof s.total_return_pct === 'number') ? s.total_return_pct : null;
-    const equityHtml = (() => {
-      const pts = curve
-        .map((p) => ({ date: p.date, balance: (typeof p.balance === 'number') ? p.balance : null }))
-        .filter((p) => p.balance !== null);
-      if (pts.length < 2) return '';
-      const w = 360, h = 86, pad = 8;
-      const vals = pts.map((p) => p.balance);
-      const min = Math.min(...vals);
-      const max = Math.max(...vals);
-      const span = Math.max(1, max - min);
-      const points = pts.map((p, i) => {
-        const x = pad + (i * (w - pad * 2)) / Math.max(1, pts.length - 1);
-        const y = h - pad - ((p.balance - min) / span) * (h - pad * 2);
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      }).join(' ');
-      const last = pts[pts.length - 1];
-      return `<div class="cal-pm320-bt-equity" aria-label="백테스트 잔고 흐름">`
-        + `<div class="cal-pm320-bt-equity-meta"><span>${escapeHtml(pts[0].date || '')}</span><b>${escapeHtml(fmtWon(last.balance))}원</b><span>${escapeHtml(last.date || '')}</span></div>`
-        + `<svg class="cal-pm320-bt-equity-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">`
-        + `<line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" />`
-        + `<polyline points="${points}" />`
-        + `</svg></div>`;
-    })();
-    const tableHtml = rows.length ? `<div class="cal-pm320-bt-table-wrap" aria-label="PM320 백테스트 전수표"><table class="cal-pm320-bt-table">`
-      + `<thead><tr><th>일자</th><th>분기</th><th>종목</th><th>결과</th><th>손익률</th><th>잔고</th></tr></thead>`
-      + `<tbody>${rows.map((r) => {
-        const ret = (typeof r.ret_pct === 'number') ? r.ret_pct : null;
-        const retCls = ret === null ? '' : (ret >= 0 ? ' cal-pm320-bt-td--pos' : ' cal-pm320-bt-td--neg');
-        const result = r.exit_class || (r.same_day_afterhours ? 'D0 장외 목표 도달' : '');
-        return `<tr><td>${escapeHtml(r.date || '')}</td><td>${escapeHtml(r.branch || '')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(result || '-')}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtWon(r.balance_after))}</td></tr>`;
-      }).join('')}</tbody></table></div>` : '';
-    const detailHtml = (rows.length || equityHtml)
-      ? `<details class="cal-pm320-bt-detail"><summary>전수표 ${rows.length}건·잔고 흐름 보기</summary><div class="cal-pm320-bt-detail-body">`
-        + (s.condition ? `<div class="cal-pm320-bt-detail-meta">조건: ${escapeHtml(String(s.condition))}</div>` : '')
-        + (detail && detail.as_of ? `<div class="cal-pm320-bt-detail-meta">기준: ${escapeHtml(String(detail.as_of))}</div>` : '')
-        + `<div class="cal-pm320-bt-scroll-hint">표는 좌우로 밀어 전체 열을 볼 수 있습니다.</div>`
-        + equityHtml + tableHtml + `</div></details>`
-      : '';
-    const loss = s.expired_loss || 0;
-    const gain = s.expired_gain || 0;
-    const lossHtml = (loss > 0 || gain > 0)
-      ? `<span class="cal-pm320-bt-loss">만기손실 ${loss}건${gain > 0 ? ` · 만기이익 ${gain}건` : ''}</span>`
-      : '';
-    return `<section class="cal-pm320-backtest" aria-label="PM320 전체 백테스트">`
-      + `<div class="cal-pm320-bt-head"><div><div class="cal-pm320-bt-title">PM320 전체 백테스트</div><div class="cal-pm320-bt-sub">${escapeHtml(since)} ~ ${escapeHtml(asOf)} · 청산 ${escapeHtml(String(s.settled))}건</div></div></div>`
-      + `<div class="cal-pm320-bt-note">오늘 15:20 추천/추격매수 근거가 아니라, 과거 청산 픽의 가상 백테스트입니다. 실제 체결가·수수료·슬리피지는 달라질 수 있습니다.</div>`
-      + `<div class="cal-pm320-bt-grid">`
-      + `<div class="cal-pm320-bt-cell"><span class="cal-pm320-bt-k">청산 기준 적중률</span><span class="cal-pm320-bt-v">${escapeHtml(s.win_rate.toFixed(1))}%</span><span class="cal-pm320-bt-cell-sub">목표 도달 ${escapeHtml(String(s.take_profit || 0))}건</span></div>`
-      + (totalReturn !== null ? `<div class="cal-pm320-bt-cell"><span class="cal-pm320-bt-k">가상 누적 손익률</span><span class="cal-pm320-bt-v">${escapeHtml(fmtPct(totalReturn))}</span><span class="cal-pm320-bt-cell-sub">청산 후 잔고 기준</span></div>` : '')
-      + (typeof mddValue === 'number' ? `<div class="cal-pm320-bt-cell"><span class="cal-pm320-bt-k">${escapeHtml(mddLabel)}</span><span class="cal-pm320-bt-v">${escapeHtml(mddValue.toFixed(1))}%</span><span class="cal-pm320-bt-cell-sub">${targetPct !== null ? `목표폭 +${escapeHtml(targetPct.toFixed(1))}%` : '누적 잔고 기준 낙폭'}</span></div>` : '')
-      + `</div>`
-      + `<div class="cal-pm320-bt-stats"><span>총 ${escapeHtml(String(s.total_picks || rows.length))}픽</span><span>목표 도달 ${escapeHtml(String(s.take_profit || 0))}건</span>${lossHtml}</div>`
-      + detailHtml
-      + `</section>`;
   })();
   // DSN-frontend §3.6.8 (2026-06-05) — PM320 추천 부재(보류일) 안내.
   //   통합 모델 보류일(선제거로 잔존<2 → PICK 0건, 예: 4/16)에는 추천 종목 카드가 없어
@@ -3120,7 +3048,7 @@ function renderCalExpandContent(date, data) {
       ${_pm320TodayRecHtml}
       ${_pm320NoPickHtml}
       ${_pm320NoDataHtml}
-      ${_pm320BacktestHtml}
+      ${_pm320WinRateHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
       ${_rankingBannerOut}
