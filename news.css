@@ -307,22 +307,36 @@ header {
 }
 .pm320-pickbar-name {
   font-size: 14px; font-weight: 800; color: var(--tx); letter-spacing: -0.3px;
-  flex: 0 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pm320-pickbar-status {
   font-size: 12px; font-weight: 700; color: var(--tx2);
   /* wave1 fix ① (2026-06-11, R24 P1) — 상태(결과·D-카운터)는 매매 판단 직결 정보라 절단 금지.
      flex 0 1 → 0 0 (no-shrink): 폭 부족 시 종목명(.pm320-pickbar-name, ellipsis)이 먼저 줄어든다. */
-  flex: 0 0 auto; white-space: nowrap;
+  flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pm320-pickbar-status--up { color: var(--up); }
 .pm320-pickbar-status--dn { color: var(--down); }
 .pm320-pickbar-arrow { margin-left: auto; flex: 0 0 auto; font-size: 13px; color: var(--tx2); }
 @media (max-width: 880px) {
+  :root { --pickbar-h: 64px; }
   .pm320-pickbar { padding: 0 16px; }
-  .pm320-pickbar.pm320-pickbar--visible { padding: 10px 16px; }
+  .pm320-pickbar.pm320-pickbar--visible {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "eyebrow name arrow"
+      "status status arrow";
+    align-content: center;
+    gap: 2px 8px;
+    padding: 9px 16px;
+  }
+  .pm320-pickbar-eyebrow { grid-area: eyebrow; }
   .pm320-pickbar-name { font-size: 13px; }
+  .pm320-pickbar-name { grid-area: name; overflow: visible; text-overflow: clip; }
   .pm320-pickbar-status { font-size: 12px; }
+  .pm320-pickbar-status { grid-area: status; max-width: 100%; }
+  .pm320-pickbar-arrow { grid-area: arrow; align-self: center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pm320-pickbar { transition: none; }
@@ -3120,8 +3134,8 @@ body.single-card-mode { background: var(--bg) !important; }
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.cal-pm320-bt-td--pos { color: var(--pos); font-weight: 800; }
-.cal-pm320-bt-td--neg { color: var(--neg); font-weight: 800; }
+.cal-pm320-bt-td--pos { color: var(--up); font-weight: 800; }
+.cal-pm320-bt-td--neg { color: var(--down); font-weight: 800; }
 @media (max-width: 720px) {
   .cal-pm320-bt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

@@ -1197,8 +1197,9 @@ function _syncPickBar() {
   //   (1) data-rec-jump → 해당 풀 카드(#stock-{code})로 scroll (rec-jump 와 동일 로직, dup-id scope 회피).
   //   (2) data-pickbar-prev-jump → R21 P1: 장전. "전일 데이터 보기" 토글 자동 펼침 후 전일 풀 카드로 점프.
   //   (3) data-pickbar-scroll → 장전 "어제의 픽" 칩(.cal-pre-prev-pick)으로 scroll (code 부재 폴백).
-  if (!window._pm320PickBarClickInit) {
-    bar.addEventListener('click', () => {
+  bar.onclick = (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
       const navOffset = isMobile ? 76 : 84;
@@ -1211,12 +1212,23 @@ function _syncPickBar() {
         const top = window.pageYOffset + rect.top - navOffset;
         window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
       };
+      const _expandCard = (target) => {
+        if (!target || target.classList.contains('expanded')) return;
+        const detailToggle = target.querySelector('.cal-detail-toggle');
+        if (!detailToggle) return;
+        target.classList.add('expanded');
+        const txt = detailToggle.querySelector('.cal-toggle-text');
+        if (txt) txt.textContent = '접기';
+        detailToggle.setAttribute('aria-label', '접기');
+      };
 
       const c = bar.getAttribute('data-rec-jump');
       const prevC = bar.getAttribute('data-pickbar-prev-jump');
       if (c) {
         // 바가 mirror 하는 픽은 항상 #cal-content 안의 카드 → 그 안에서 우선 탐색(dup-id 회피), 부재 시 document fallback.
-        _scrollTo((cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c));
+        const target = (cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c);
+        _expandCard(target);
+        _scrollTo(target);
       } else if (prevC) {
         // R21 P1 — 장전: "전일 데이터 보기" 토글을 자동 펼침 → 전일 풀 카드(#stock-{prevC})로 점프.
         //   토글이 이미 펼쳐졌으면 그대로 카드만 점프. 토글 펼침은 async 렌더라 펼침 완료를 기다려
@@ -1243,9 +1255,7 @@ function _syncPickBar() {
         // R27 P0-3 — 결측 날짜는 no-data 라인으로 폴백 scroll (체인 말단).
         _scrollTo(cc2 ? (cc2.querySelector('.cal-pre-prev-pick') || cc2.querySelector('.cal-pm320-no-pick') || cc2.querySelector('.cal-pm320-no-data')) : null);
       }
-    });
-    window._pm320PickBarClickInit = true;
-  }
+  };
 }
 window._syncPickBar = _syncPickBar;
 
@@ -2837,7 +2847,11 @@ function renderCalExpandContent(date, data) {
       + `<tbody>${rows.map((r) => {
         const ret = (typeof r.ret_pct === 'number') ? r.ret_pct : null;
         const retCls = ret === null ? '' : (ret >= 0 ? ' cal-pm320-bt-td--pos' : ' cal-pm320-bt-td--neg');
-        return `<tr><td>${escapeHtml(r.date || '')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(r.exit_class || '-')}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
+        const exitClass = String(r.exit_class || '-');
+        const exitLabel = (r.watered === true && exitClass.includes('익절'))
+          ? exitClass.replace('익절', '물타기 익절')
+          : (r.watered === true ? `${exitClass} · 물타기` : exitClass);
+        return `<tr><td>${escapeHtml(r.date || '')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
       }).join('')}</tbody></table></div>` : '';
     const _historyHtml = (rows.length || equityHtml)
       ? `<details class="cal-pm320-wr-fine cal-pm320-wr-history"><summary>전수표·잔고 흐름</summary>`
