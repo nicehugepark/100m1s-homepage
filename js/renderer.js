@@ -1735,7 +1735,6 @@ function renderCalExpandContent(date, data) {
       const cls = mod ? `pm320-rec-result-strip pm320-rec-result-strip--${mod}` : 'pm320-rec-result-strip';
       // R18 (트레이더 평가자 P1) — 결과 strip 하단 체결현실 면책 1줄. 공유 URL 단일 카드로
       //   "익절 +3.2%" 만 본 손님이 균일 청산을 사기성으로 오해/혹은 체결현실로 과신하는 것 차단.
-      //   승률 카드 '산출 기준 자세히'(.cal-pm320-wr-fine) 와 동일 톤·문구(SoT 통일, 추가 추정 0).
       const _fillNote = `<div class="pm320-rec-result-fill-note">장중 목표가 터치 기준 가상 산출 — 슬리피지·시가 갭·부분체결 미반영. 실제 체결가는 다를 수 있습니다.</div>`;
       resultStrip = `<div class="${cls}" aria-label="${escapeHtml(`${_pm320StateLabel(state)}, 수익률 ${finalPct}${resDate ? ', ' + resDate : ''}`)}">${escapeHtml(mark)}${resDate ? ` · ${escapeHtml(resDate)} 종가 ${escapeHtml(finalPrice)}` : ''}</div>${_fillNote}`;
     }
