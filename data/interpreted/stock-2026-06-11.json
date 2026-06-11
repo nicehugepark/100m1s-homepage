@@ -1,6 +1,6 @@
 {
   "date": "2026-06-11",
-  "generated_at": "2026-06-11T11:46:08.870400",
+  "generated_at": "2026-06-11T11:56:18.189467",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -52,9 +52,9 @@
       "code": "240810",
       "name": "원익IPS",
       "rank": 1,
-      "trade_amount": 267161000000,
-      "change_pct": 13.88,
-      "close_price": 132900,
+      "trade_amount": 272722000000,
+      "change_pct": 13.2,
+      "close_price": 132100,
       "open_price": 116700,
       "high_price": 140800,
       "low_price": 116100,
@@ -168,17 +168,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 33.85,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 21.64,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 151500,
         "high_date": "2026-05-11",
-        "high_pct": -12.28,
+        "high_pct": -12.81,
         "low": 24850,
         "low_date": "2025-06-23",
-        "low_pct": 434.81,
-        "current": 132900
+        "low_pct": 431.59,
+        "current": 132100
       },
       "daily_20": [
         {
@@ -319,7 +319,7 @@
           "o": 116700,
           "h": 140800,
           "l": 116100,
-          "c": 132900
+          "c": 132100
         }
       ],
       "intraday": {
@@ -359,7 +359,9 @@
           133500,
           132000,
           132900,
-          132600
+          132000,
+          131500,
+          132300
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -370,9 +372,9 @@
       "code": "475150",
       "name": "SK이터닉스",
       "rank": 2,
-      "trade_amount": 243250000000,
-      "change_pct": -6.09,
-      "close_price": 41650,
+      "trade_amount": 245275000000,
+      "change_pct": -6.31,
+      "close_price": 41550,
       "open_price": 50400,
       "high_price": 54000,
       "low_price": 40050,
@@ -455,17 +457,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.59,
-      "index_multiple_current": 3.83,
+      "index_change_pct": -1.36,
+      "index_multiple_current": 4.64,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 69300,
         "high_date": "2026-04-03",
-        "high_pct": -39.9,
+        "high_pct": -40.04,
         "low": 17210,
         "low_date": "2025-11-19",
-        "low_pct": 142.01,
-        "current": 41650
+        "low_pct": 141.43,
+        "current": 41550
       },
       "daily_20": [
         {
@@ -606,7 +608,7 @@
           "o": 50400,
           "h": 54000,
           "l": 40050,
-          "c": 41650
+          "c": 41550
         }
       ],
       "intraday": {
@@ -646,7 +648,9 @@
           42300,
           42250,
           41550,
-          41650
+          41600,
+          41550,
+          41600
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -657,11 +661,11 @@
       "code": "085620",
       "name": "미래에셋생명",
       "rank": 3,
-      "trade_amount": 131488000000,
-      "change_pct": 18.36,
-      "close_price": 26750,
+      "trade_amount": 153897000000,
+      "change_pct": 29.87,
+      "close_price": 29350,
       "open_price": 22300,
-      "high_price": 28000,
+      "high_price": 29350,
       "low_price": 19500,
       "industry": "보험업",
       "sector": "생명보험상품",
@@ -789,17 +793,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.59,
-      "index_multiple_current": -11.55,
+      "index_change_pct": -1.36,
+      "index_multiple_current": -21.96,
       "index_multiple_eligible": false,
       "range_240d": {
-        "high": 28000,
+        "high": 29350,
         "high_date": "2026-06-11",
-        "high_pct": -4.46,
+        "high_pct": 0.0,
         "low": 5630,
         "low_date": "2025-06-23",
-        "low_pct": 375.13,
-        "current": 26750
+        "low_pct": 421.31,
+        "current": 29350
       },
       "daily_20": [
         {
@@ -938,9 +942,9 @@
         {
           "date": "2026-06-11",
           "o": 22300,
-          "h": 28000,
+          "h": 29350,
           "l": 19500,
-          "c": 26750
+          "c": 29350
         }
       ],
       "status_badges": [
@@ -974,6 +978,30 @@
               "source_kind": "disclosure"
             }
           ]
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-06-11",
+          "summary": "미래에셋생명 상한가 (29.87%)",
+          "cur_prc": 29350,
+          "flu_rt": 29.87,
+          "trde_qty": 6081522,
+          "trde_prica_calc": 153929000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-12"
         }
       ],
       "intraday": {
@@ -1013,7 +1041,9 @@
           26000,
           26450,
           26700,
-          26500
+          28100,
+          28400,
+          29350
         ]
       },
       "credit_risk": true,
@@ -1026,9 +1056,9 @@
       "code": "126640",
       "name": "화신정공",
       "rank": 4,
-      "trade_amount": 110541000000,
-      "change_pct": 23.7,
-      "close_price": 5480,
+      "trade_amount": 114609000000,
+      "change_pct": 21.22,
+      "close_price": 5370,
       "open_price": 5750,
       "high_price": 5750,
       "low_price": 4670,
@@ -1077,17 +1107,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 57.8,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 34.79,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 5750,
         "high_date": "2026-06-11",
-        "high_pct": -4.7,
+        "high_pct": -6.61,
         "low": 1230,
         "low_date": "2025-10-13",
-        "low_pct": 345.53,
-        "current": 5480
+        "low_pct": 336.59,
+        "current": 5370
       },
       "daily_20": [
         {
@@ -1228,7 +1258,7 @@
           "o": 5750,
           "h": 5750,
           "l": 4670,
-          "c": 5480
+          "c": 5370
         }
       ],
       "status_badges": [
@@ -1301,7 +1331,9 @@
           5380,
           5690,
           5530,
-          5520
+          5340,
+          5450,
+          5380
         ]
       },
       "credit_risk": true,
@@ -1314,9 +1346,9 @@
       "code": "004170",
       "name": "신세계",
       "rank": 5,
-      "trade_amount": 77373000000,
-      "change_pct": 2.04,
-      "close_price": 699000,
+      "trade_amount": 78894000000,
+      "change_pct": 0.15,
+      "close_price": 686000,
       "open_price": 713000,
       "high_price": 725000,
       "low_price": 642000,
@@ -1429,17 +1461,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.59,
-      "index_multiple_current": -1.28,
+      "index_change_pct": -1.36,
+      "index_multiple_current": -0.11,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 725000,
         "high_date": "2026-06-11",
-        "high_pct": -3.59,
+        "high_pct": -5.38,
         "low": 160800,
         "low_date": "2025-09-03",
-        "low_pct": 334.7,
-        "current": 699000
+        "low_pct": 326.62,
+        "current": 686000
       },
       "daily_20": [
         {
@@ -1580,7 +1612,7 @@
           "o": 713000,
           "h": 725000,
           "l": 642000,
-          "c": 699000
+          "c": 686000
         }
       ],
       "intraday": {
@@ -1620,7 +1652,9 @@
           690000,
           699000,
           702000,
-          702000
+          691500,
+          686000,
+          687000
         ]
       },
       "togusa_verdict": "neutral",
@@ -1633,9 +1667,9 @@
       "code": "007810",
       "name": "코리아써키트",
       "rank": 6,
-      "trade_amount": 66290000000,
-      "change_pct": 16.16,
-      "close_price": 134400,
+      "trade_amount": 67365000000,
+      "change_pct": 16.59,
+      "close_price": 134900,
       "open_price": 115500,
       "high_price": 143800,
       "low_price": 110500,
@@ -1717,17 +1751,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -1.59,
-      "index_multiple_current": -10.16,
+      "index_change_pct": -1.36,
+      "index_multiple_current": -12.2,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 143800,
         "high_date": "2026-06-11",
-        "high_pct": -6.54,
+        "high_pct": -6.19,
         "low": 10800,
         "low_date": "2025-06-23",
-        "low_pct": 1144.44,
-        "current": 134400
+        "low_pct": 1149.07,
+        "current": 134900
       },
       "daily_20": [
         {
@@ -1868,7 +1902,7 @@
           "o": 115500,
           "h": 143800,
           "l": 110500,
-          "c": 134400
+          "c": 134900
         }
       ],
       "intraday": {
@@ -1908,7 +1942,9 @@
           133700,
           133900,
           134800,
-          134800
+          134400,
+          134500,
+          135200
         ]
       },
       "credit_risk": true,
@@ -1921,9 +1957,9 @@
       "code": "084370",
       "name": "유진테크",
       "rank": 7,
-      "trade_amount": 64541000000,
-      "change_pct": 8.97,
-      "close_price": 168800,
+      "trade_amount": 66370000000,
+      "change_pct": 8.59,
+      "close_price": 168200,
       "open_price": 153100,
       "high_price": 182600,
       "low_price": 151700,
@@ -1973,17 +2009,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 21.88,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 14.08,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 182600,
         "high_date": "2026-06-11",
-        "high_pct": -7.56,
+        "high_pct": -7.89,
         "low": 36100,
         "low_date": "2025-06-18",
-        "low_pct": 367.59,
-        "current": 168800
+        "low_pct": 365.93,
+        "current": 168200
       },
       "daily_20": [
         {
@@ -2124,7 +2160,7 @@
           "o": 153100,
           "h": 182600,
           "l": 151700,
-          "c": 168800
+          "c": 168200
         }
       ],
       "intraday": {
@@ -2164,7 +2200,9 @@
           171300,
           169300,
           169800,
-          169400
+          168800,
+          166800,
+          168500
         ]
       },
       "credit_risk": true,
@@ -2177,7 +2215,7 @@
       "code": "183300",
       "name": "코미코",
       "rank": 8,
-      "trade_amount": 48301000000,
+      "trade_amount": 48571000000,
       "change_pct": 29.97,
       "close_price": 139200,
       "open_price": 103900,
@@ -2299,8 +2337,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 73.1,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 49.13,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 139200,
@@ -2462,8 +2500,8 @@
           "summary": "코미코 상한가 (29.97%)",
           "cur_prc": 139200,
           "flu_rt": 29.97,
-          "trde_qty": 385599,
-          "trde_prica_calc": 48301000000,
+          "trde_qty": 387539,
+          "trde_prica_calc": 48571000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2496,6 +2534,8 @@
           125900,
           126500,
           133300,
+          139200,
+          139200,
           139200,
           139200,
           139200,
@@ -2555,8 +2595,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 72.76,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 48.9,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 3325,
@@ -2718,7 +2758,7 @@
           "summary": "마니커에프앤지 상한가 (29.83%)",
           "cur_prc": 2320,
           "flu_rt": 29.83,
-          "trde_qty": 3157620,
+          "trde_qty": 3157831,
           "trde_prica_calc": 6987000000,
           "consecutive_count": 1,
           "estimated": false,
@@ -2772,6 +2812,8 @@
           2320,
           2320,
           2320,
+          2320,
+          2320,
           2320
         ]
       },
@@ -2787,7 +2829,7 @@
       "code": "406820",
       "name": "뷰티스킨",
       "rank": 10,
-      "trade_amount": 3018000000,
+      "trade_amount": 3021000000,
       "change_pct": 29.94,
       "close_price": 2435,
       "open_price": 1874,
@@ -2840,8 +2882,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 73.02,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 49.08,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 8900,
@@ -3003,8 +3045,8 @@
           "summary": "뷰티스킨 상한가 (29.94%)",
           "cur_prc": 2435,
           "flu_rt": 29.94,
-          "trde_qty": 1286234,
-          "trde_prica_calc": 3018000000,
+          "trde_qty": 1287611,
+          "trde_prica_calc": 3021000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3056,6 +3098,8 @@
           2435,
           2435,
           2435,
+          2435,
+          2435,
           2435
         ]
       },
@@ -3069,7 +3113,7 @@
       "code": "027740",
       "name": "마니커",
       "rank": 11,
-      "trade_amount": 2147000000,
+      "trade_amount": 2162000000,
       "change_pct": 29.97,
       "close_price": 1340,
       "open_price": 1061,
@@ -3114,8 +3158,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.59,
-      "index_multiple_current": -18.85,
+      "index_change_pct": -1.36,
+      "index_multiple_current": -22.04,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 1976,
@@ -3277,8 +3321,8 @@
           "summary": "마니커 상한가 (29.97%)",
           "cur_prc": 1340,
           "flu_rt": 29.97,
-          "trde_qty": 1633432,
-          "trde_prica_calc": 2147000000,
+          "trde_qty": 1644675,
+          "trde_prica_calc": 2162000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3330,6 +3374,8 @@
           1340,
           1340,
           1340,
+          1340,
+          1340,
           1340
         ]
       },
@@ -3343,7 +3389,7 @@
       "code": "465770",
       "name": "STX그린로지스",
       "rank": 12,
-      "trade_amount": 1234000000,
+      "trade_amount": 1235000000,
       "change_pct": 30.0,
       "close_price": 3380,
       "open_price": 2670,
@@ -3388,8 +3434,8 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": -1.59,
-      "index_multiple_current": -18.87,
+      "index_change_pct": -1.36,
+      "index_multiple_current": -22.06,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 12400,
@@ -3551,8 +3597,8 @@
           "summary": "STX그린로지스 상한가 (30.0%)",
           "cur_prc": 3380,
           "flu_rt": 30.0,
-          "trde_qty": 370473,
-          "trde_prica_calc": 1234000000,
+          "trde_qty": 370741,
+          "trde_prica_calc": 1235000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3604,6 +3650,9 @@
           3380,
           3380,
           3380,
+          3380,
+          3380,
+          3380,
           3380
         ]
       },
@@ -3617,7 +3666,7 @@
       "code": "083660",
       "name": "CSA 코스믹",
       "rank": 13,
-      "trade_amount": 101000000,
+      "trade_amount": 103000000,
       "change_pct": 29.91,
       "close_price": 304,
       "open_price": 304,
@@ -3665,8 +3714,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 0.41,
-      "index_multiple_current": 72.95,
+      "index_change_pct": 0.61,
+      "index_multiple_current": 49.03,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 2885,
@@ -3828,8 +3877,8 @@
           "summary": "CSA 코스믹 상한가 (29.91%)",
           "cur_prc": 304,
           "flu_rt": 29.91,
-          "trde_qty": 333106,
-          "trde_prica_calc": 101000000,
+          "trde_qty": 339255,
+          "trde_prica_calc": 103000000,
           "consecutive_count": 2,
           "estimated": false,
           "effect_badges": [
@@ -3850,6 +3899,9 @@
         "open": 304,
         "base": 234,
         "prices": [
+          304,
+          304,
+          304,
           304,
           304,
           304,
