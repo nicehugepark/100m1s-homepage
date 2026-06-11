@@ -361,17 +361,23 @@ function _buildNightlyUsHtml(us, viewDate) {
   //   국내 실제 칩 = .cal-macro-strip > .cal-macro-chip. 본 클래스 그대로 재사용(스타일 복제 금지). a 래핑 + 출처 약어.
   let newsHtml = '';
   if (Array.isArray(us.news_chips) && us.news_chips.length > 0) {
-    const chips = us.news_chips.map(c => {
+    const chipItems = us.news_chips.map(c => {
       const safeUrl = (typeof c.url === 'string' && /^https?:\/\//i.test(c.url)) ? c.url : '';
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
       const summary = escapeHtml(sanitize(c.summary || ''));
       const source = escapeHtml(sanitize(c.source || ''));
       return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
         + `${summary}<span class="nightly-us-news-source">${source}</span></a>`;
-    }).filter(Boolean).join('');
-    if (chips) {
+    }).filter(Boolean);
+    if (chipItems.length > 0) {
+      const visibleChips = chipItems.slice(0, 5).join('');
+      const extraChips = chipItems.slice(5).join('');
+      const moreHtml = extraChips
+        ? `<details class="cal-news-more"><summary>뉴스 더보기 ${chipItems.length - 5}개</summary><div class="cal-macro-strip cal-news-more-strip">${extraChips}</div></details>`
+        : '';
       newsHtml = `<div class="cal-section-title">미국발 뉴스 요약</div>`
-        + `<div class="cal-macro-strip">${chips}</div>`;
+        + `<div class="cal-macro-strip">${visibleChips}</div>`
+        + moreHtml;
     }
   }
 
@@ -1428,9 +1434,12 @@ function renderCalExpandContent(date, data) {
     }
     // 휴장일이라도 매크로 이벤트가 있으면 표시
     // R27 P1⑥ — 의미 동일 사실 중복 칩 표시단 dedup (본 렌더 path 양끝 동시, FLR-20260428-TEC-001 동형 예방).
-    const closedMacro = _dedupSimilarMacro((data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)).slice(0, 5);
-    const closedMacroHtml = closedMacro.length > 0
-      ? `<div class="cal-macro-strip">${closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
+    const closedMacro = _dedupSimilarMacro((data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)).slice(0, 10);
+    const closedMacroChips = closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`);
+    const closedMacroExtra = closedMacroChips.slice(5).join('');
+    const closedMacroHtml = closedMacroChips.length > 0
+      ? `<div class="cal-macro-strip">${closedMacroChips.slice(0, 5).join('')}</div>`
+        + (closedMacroExtra ? `<details class="cal-news-more"><summary>뉴스 더보기 ${closedMacroChips.length - 5}개</summary><div class="cal-macro-strip cal-news-more-strip">${closedMacroExtra}</div></details>` : '')
       : '';
     const _emptyVerBanner = _buildRulesVersionBanner(data && data.rules_version);
     // P0 (Q-20260609 2회차) — 국내 빈상태(휴장 / "데이터 없음" / "장 시작 직후 수집 중" / "수집 지연")
@@ -2055,9 +2064,12 @@ function renderCalExpandContent(date, data) {
   // R27 P1⑥ (조니 2심, 2026-06-11) — 의미 동일 사실 중복 칩 표시단 dedup (데이터 수정 0).
   const macroEvents = _dedupSimilarMacro(
     (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)
-  ).slice(0, 5);
-  const macroHtml = macroEvents.length > 0
-    ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
+  ).slice(0, 10);
+  const macroChips = macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`);
+  const macroExtra = macroChips.slice(5).join('');
+  const macroHtml = macroChips.length > 0
+    ? `<div class="cal-macro-strip">${macroChips.slice(0, 5).join('')}</div>`
+      + (macroExtra ? `<details class="cal-news-more"><summary>뉴스 더보기 ${macroChips.length - 5}개</summary><div class="cal-macro-strip cal-news-more-strip">${macroExtra}</div></details>` : '')
     : '';
 
   // 내러티브: 카페 제거로 빈 값 (하위 호환용 유지)

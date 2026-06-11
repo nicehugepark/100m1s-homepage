@@ -2185,6 +2185,16 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12px; font-weight: 800; color: var(--am);  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
   opacity: 0.85; white-space: nowrap;
 }
+.cal-news-more { margin: -4px 0 14px; }
+.cal-news-more > summary {
+  display: inline-flex; min-height: 32px; align-items: center;
+  cursor: pointer; color: var(--am); font-size: 12px; font-weight: 800;
+  list-style: none; -webkit-tap-highlight-color: transparent;
+}
+.cal-news-more > summary::-webkit-details-marker { display: none; }
+.cal-news-more > summary::after { content: '›'; margin-left: 4px; font-size: 13px; transform: rotate(90deg); }
+.cal-news-more[open] > summary::after { transform: rotate(-90deg); }
+.cal-news-more-strip { margin-top: 2px; }
 
 /* R25 P1⑧ — 히어로 "하루 단 한 종목" vs 후보 N장 첫 화면 충돌 해명 1줄 (카드 리스트 직상). */
 .cal-trade-list-note {
