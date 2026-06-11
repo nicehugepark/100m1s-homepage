@@ -5,6 +5,11 @@
   /* R18 P1 (라이트 본문 대비) — 메타 그레이 #8B95A8(3.02:1 on white) → #646E80(5.14:1, WCAG AA).
      본문 텍스트/아이콘 다수가 --dm 사용 → 1스텝 다크닝으로 AA 일괄 충족(다크는 --dk-dm 별도, 무회귀). */
   --dm: #646E80;
+  /* R28 P1② (조니 2심, 2026-06-11) — 다크 muted 단일 토큰(--dk-dm #8E8676)이 amber tint 배경
+     (pending-sub·cd-label 3.6:1)·웜 카드 배경(idx-fut-disclaimer·wr-running 4.46:1)에서 AA 미달.
+     해당 4 사용처 전용 상위 muted 토큰 분리 — 라이트는 --dm 동일값(무회귀), 다크만 #A9A18E
+     (5.06:1 on #3A3018 / 6.27:1 on 웜 카드 — 전 사용처 ≥4.5:1 실측). */
+  --dm-hi: #646E80;
   /* R18 P1 (라이트 본문 대비) — 골드 본문 텍스트 #C49930(2.64:1 on white) → #7E5E0E
      (6.01:1 white / 5.60:1 am4 / 4.99:1 am3, WCAG AA 전 배경). 칩·뱃지(am3 bg)·출처·
      "이날의 추천"·상세보기 등 --am 텍스트 일괄 가독 충족. --am2/3/4(밝은 틴트 = 배경용)는
@@ -115,6 +120,8 @@
   --dk-bd: #3A352A; --dk-bd2: #48412F;
   /* 텍스트 위계 3단 — 흐림(--dk-dm)도 3:1 하한 사수("안 보이는 글자" 봉쇄) */
   --dk-tx: #F2EEE4; --dk-tx2: #BBB3A2; --dk-dm: #8E8676;
+  /* R28 P1② — muted 상위 변주(다크 전용 분리). pending-sub·cd-label·idx-fut-disclaimer·wr-running 전용. */
+  --dk-dm-hi: #A9A18E;
   /* 골드 액센트 — 다크 전용 재조정, 웜 표면이라 비로소 안 탁함.
      am4(연 tint 배경)는 대표 "정보 손실 0" 원칙: 라이트 #FFF6E5(1.07:1)와 식별성 동급 위해 #3A3018(1.24:1)로 상향. */
   --dk-am: #EBC25E; --dk-am2: #F4D27A; --dk-am3: #4A3E1C; --dk-am4: #3A3018;
@@ -159,7 +166,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: var(--dk-bg); --bg2: var(--dk-bg2); --sf: var(--dk-sf); --bd: var(--dk-bd);
-    --tx: var(--dk-tx); --tx2: var(--dk-tx2); --dm: var(--dk-dm);
+    --tx: var(--dk-tx); --tx2: var(--dk-tx2); --dm: var(--dk-dm); --dm-hi: var(--dk-dm-hi);
     --am: var(--dk-am); --am2: var(--dk-am2); --am3: var(--dk-am3); --am4: var(--dk-am4);
     --ru: var(--dk-ru);
     --pos: var(--dk-pos); --pos-bg: var(--dk-pos-bg);
@@ -195,7 +202,7 @@
 }
 :root[data-theme="dark"] {
   --bg: var(--dk-bg); --bg2: var(--dk-bg2); --sf: var(--dk-sf); --bd: var(--dk-bd);
-  --tx: var(--dk-tx); --tx2: var(--dk-tx2); --dm: var(--dk-dm);
+  --tx: var(--dk-tx); --tx2: var(--dk-tx2); --dm: var(--dk-dm); --dm-hi: var(--dk-dm-hi);
   --am: var(--dk-am); --am2: var(--dk-am2); --am3: var(--dk-am3); --am4: var(--dk-am4);
   --ru: var(--dk-ru);
   --pos: var(--dk-pos); --pos-bg: var(--dk-pos-bg);
@@ -341,7 +348,14 @@ header {
 }
 
 /* 모바일 햄버거 */
-.menu-toggle { display: none; width: 40px; height: 40px; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; }
+.menu-toggle { display: none; width: 40px; height: 40px; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; position: relative; }
+/* R28 P1④ — 메뉴 토글 시각 40px 유지, 터치 영역 44×44 투명 오버레이. */
+.menu-toggle::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
+}
 .menu-toggle span { display: block; width: 22px; height: 2px; background: var(--tx); position: relative; }
 .menu-toggle span::before, .menu-toggle span::after { content: ''; position: absolute; left: 0; width: 22px; height: 2px; background: var(--tx); transition: transform .2s; }
 .menu-toggle span::before { top: -7px; }
@@ -1030,6 +1044,9 @@ a.cal-credit-row:hover,
 .lut-dot-zero { fill: #FFF; stroke: #CBD5E1; }
 .lut-dot-zero:hover { fill: #CBD5E1; }
 .lut-dot-hit { fill: transparent; cursor: pointer; }
+/* R28 P1④ — 상한가 dot 44px 투명 터치 오버레이 (시각 dot 7px 불변, role/tabindex 승계). */
+.lut-dot-touch { fill: transparent; cursor: pointer; outline: none; }
+.lut-dot-touch:focus-visible { stroke: var(--am); stroke-width: 1.5; }
 .lut-gold-ring { pointer-events: none; }
 /* theme-trend SoT 정합: padding/배경 제거 (.trend-detail와 동일 — 페이지 배경 직접 사용).
    타이틀은 .trend-detail-chip 재사용 (lut-detail-head/lut-detail-date deprecated). */
@@ -1565,11 +1582,14 @@ a.cal-credit-row:hover,
   }
   .theme-trend-legend-item { font-size: 12px; padding: 4px 6px; min-height: 28px; }
   .theme-trend-legend-item .swatch { width: 8px; height: 3px; }
-  /* PM320 (대표 2026-06-10) — 모바일 범례 기본 접기(상위 ~2행) + 토글 노출. 펼치면 전체(무손실). */
+  /* PM320 (대표 2026-06-10) — 모바일 범례 기본 접기(상위 2행) + 토글 노출. 펼치면 전체(무손실).
+     R28 제거② (조니 2심, 2026-06-11) — 페이드 마스크가 3행째를 반투명 "유령 텍스트"로 남기던 것
+     폐기: 2행 정확 클립(item 28 + gap 4 → 28+4+28 = 60px), 마스크 제거. 잘림 사실은 토글
+     "범례 모두 보기 (N)"가 명시 — 반투명 잔상 없이 정직한 경계. */
   .theme-trend-legend.is-collapsible.collapsed {
-    max-height: 72px; overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 56px, transparent);
-    mask-image: linear-gradient(to bottom, #000 56px, transparent);
+    max-height: 60px; overflow: hidden;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   .theme-trend-legend-toggle { display: inline-flex; align-items: center; }
   .theme-trend-tooltip { font-size: 13px; padding: 8px 14px; }
@@ -1793,6 +1813,14 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   width: 26px; height: 26px; border-radius: 8px;
   font-size: 13px; color: var(--tx2); font-weight: 800;
   display: inline-flex; align-items: center; justify-content: center;
+  position: relative; /* R28 P1④ — ::after 터치 오버레이 기준점 */
+}
+/* R28 P1④ — 월 이동 버튼 시각 26px 유지, 터치 영역 44×44 (disabled 는 pointer-events 자연 무효). */
+.toss-cal-nav::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
 }
 .toss-cal-nav:hover:not(:disabled) { background: var(--am3); color: var(--am); }
 .toss-cal-nav:disabled { color: var(--bd); cursor: not-allowed; background: transparent; }
@@ -1825,6 +1853,15 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border: 1px solid transparent;
   transition: background 0.12s, color 0.12s;
 }
+/* R28 P1④ — 날짜 셀 시각 30px 유지, 터치 영역 40×40 투명 오버레이 (조니 승인: cal-cell 은
+   44 대신 40 하한 예외 — 셀 피치 ~37px, 44 는 인접 셀 과잉 중첩). pointer-events 비활성 셀
+   (no-data/future)은 오버레이도 함께 무효(상속). */
+.toss-cal-cell::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 40px; height: 40px;
+  transform: translate(-50%, -50%);
+}
 .toss-cal-cell.empty { color: var(--tx2); }
 .toss-cal-cell.no-data.sunday { color: var(--cal-sun); }
 .toss-cal-cell.no-data.saturday { color: var(--down); }
@@ -1840,12 +1877,8 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-cell.selected.sunday,
 .toss-cal-cell.selected.saturday,
 .toss-cal-cell.selected.holiday { color: #fff !important; }
-.toss-cal-cell.holiday:not(.selected)::after {
-  content: '';
-  position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
-  width: 4px; height: 4px; border-radius: 50%;
-  background: #E84142;
-}
+/* R28 제거③ (조니 2심, 2026-06-11) — 휴장일 날짜 밑 적색 점(::after 4px) 제거.
+   날짜 숫자 색(--cal-sun)이 이미 휴장을 표시 — 점은 의미 불명 노이즈(조니 "캘린더 날짜 밑 점"). */
 .toss-cal-cell:hover:not(.future):not(.selected) {
   background: var(--am3);
   border-color: rgba(196,153,48,0.3);
@@ -2117,7 +2150,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* 선물 고지 각주(§4) — 섹션 1회 공통(카드마다 반복 ❌). */
 .idx-fut-disclaimer {
   margin-top: 8px; font-size: 12px; line-height: 1.4;
-  color: var(--dm); font-style: normal;
+  color: var(--dm-hi); font-style: normal; /* R28 P1② — 다크 4.46:1 → ≥4.5:1 */
 }
 
 /* 미국발 뉴스 요약 (대표 20:29) — 국내 "오늘의 뉴스요약" 템플릿 1:1: 타이틀 .cal-section-title(금색 바)
@@ -2259,6 +2292,13 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-share-btn:active { transform: scale(0.94); }
 .cal-share-btn svg { display: block; }
+/* R28 P1④ — 공유 버튼 시각 26~28px 유지, 터치 영역만 44×44 투명 오버레이 확장. */
+.cal-share-btn::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
+}
 @media (max-width: 640px) {
   .cal-share-btn { top: 4px; right: 4px; width: 28px; height: 28px; }
   .cal-share-btn svg { width: 15px; height: 15px; }
@@ -2526,6 +2566,25 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-no-pick-icon,
 .cal-pm320-no-data-icon { flex-shrink: 0; opacity: 0.85; }
 
+/* R28 P0-2 (조니 2심, 2026-06-11) — 휴장일 뷰 한 줄 안내. no-pick/no-data 와 동일 중립 톤
+   (정보성 상태, 경보 아님). 휴장일 뷰에서는 본 라인 외 종목 헤더·카드·"수집되지 않은 날짜" 미렌더. */
+.cal-pm320-holiday {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: var(--neu-bg);
+  border: 1px solid var(--bd);
+  color: var(--neu-tx-aa, #525F78);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+.cal-pm320-holiday-icon { flex-shrink: 0; opacity: 0.85; }
+
 /* PM320-D6 P0 — 장중 "오늘 추천 15:20 공개" 안내 배너 (손님 시점 혼란 해소).
    PM320 브랜드 골드(--am)톤 — "진짜 추천이 곧 온다"는 기대 신호. no-pick(중립 슬레이트)과 구분. */
 .cal-pm320-pending {
@@ -2548,7 +2607,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12px;
   font-weight: 500;
   line-height: 1.5;
-  color: var(--dm);
+  color: var(--dm-hi); /* R28 P1② — 다크 amber tint 3.6:1 → ≥4.5:1 (라이트 동일값 무회귀) */
 }
 .cal-pm320-pending-cd-wrap {
   margin-top: 7px;
@@ -2557,7 +2616,7 @@ body.single-card-mode { background: var(--bg) !important; }
   gap: 6px;
   font-size: 12px;
 }
-.cal-pm320-pending-cd-label { color: var(--dm); font-weight: 600; }
+.cal-pm320-pending-cd-label { color: var(--dm-hi); font-weight: 600; } /* R28 P1② */
 .cal-pm320-pending-countdown {
   font-variant-numeric: tabular-nums;
   font-weight: 800;
@@ -2580,6 +2639,48 @@ body.single-card-mode { background: var(--bg) !important; }
   background: var(--am4); color: var(--am2); border-color: var(--am3);
 }
 .cal-pm320-pending-soon { font-weight: 700; color: var(--am); font-size: 12px; }
+
+/* R28 P1⑤ (조니 2심, 2026-06-11) — INTRADAY 헤더 직하 portal 카운트다운 칩 (fold 심장).
+   pending 배너와 같은 골드 톤 가족 — 카운트다운 숫자 칩은 .cal-pm320-pending-countdown 상속
+   (라이트/다크 대비 기존 검증값 그대로, FLR-20260428-TEC-001 한쪽 코드 양끝 누락 예방). */
+.cal-pm320-portal-cd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--am4);
+  border: 1px solid var(--am3);
+  color: var(--am);
+}
+.cal-pm320-portal-cd-label { font-size: 13px; font-weight: 700; color: var(--tx2); }
+.cal-pm320-portal-cd-label b { color: var(--am); font-weight: 800; }
+
+/* R28 P2 (조니 2심) — D+0/D+N 기준 시점 1줄 정의 (진행중 추천 카드 한정). */
+.cal-pm320-today-rec-dnote {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--wr-basis-tx, #5E6776);
+  word-break: keep-all;
+}
+
+/* R28 제거① (조니 2심) — 테마트리 동일 종목 구성 병합 행의 형제 테마명 칩. */
+.theme-tree-merged-chips { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-left: 6px; min-width: 0; }
+.theme-tree-merged-chip {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--tx2);
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
 
 /* PM320-D6 (2026-06-10) — 카운트다운 슬롯의 "오늘의 추천" 전용 요약 카드.
    카운트다운 배너(.cal-pm320-pending)와 동일 골드(--am)톤·동일 슬롯. 픽 확정 시 노출. */
@@ -2749,6 +2850,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-cell-k {
   font-size: 12px; font-weight: 700; color: var(--tx2);
   display: inline-flex; align-items: center; gap: 2px;
+  white-space: nowrap; /* R28 P1③ — 라벨 1줄 고정 → 3셀 값(v)·sub 행 baseline 정렬 유지 */
 }
 .cal-pm320-wr-cell-v { font-size: 18px; font-weight: 800; color: var(--tx); letter-spacing: -0.01em; }
 /* R27 P1③ (조니 2심, 2026-06-11) — 선택적 색 위계 제거. 종전 승률만 골드(--am)·낙폭만 적색(--neg)
@@ -2757,7 +2859,12 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-cell-v--rate { color: var(--tx); }
 .cal-pm320-wr-cell-v--neg { color: var(--tx); }
 /* R27 P1⑤ — 3셀 sub 구조 통일 + margin-top:auto 로 sub 바닥 정렬(셀 높이 차이에도 바닥 리듬 일치). */
-.cal-pm320-wr-cell-sub { font-size: 12px; font-weight: 500; color: var(--wr-basis-tx, #5E6776); margin-top: auto; }
+/* R28 P1③ (조니 2심) — sub "낙/폭" 단어 중간 절단 봉쇄: keep-all(어절 단위 줄바꿈)
+   + overflow-wrap 안전망. margin-top:auto(셀 바닥 정렬)와 함께 3셀 baseline 리듬 유지. */
+.cal-pm320-wr-cell-sub {
+  font-size: 12px; font-weight: 500; color: var(--wr-basis-tx, #5E6776); margin-top: auto;
+  word-break: keep-all; overflow-wrap: break-word;
+}
 @media (max-width: 480px) {
   .cal-pm320-wr-trio { gap: 6px; }
   .cal-pm320-wr-cell-v { font-size: 16px; }
@@ -2790,7 +2897,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-stat { color: var(--tx2); }
 .cal-pm320-wr-win { color: var(--pos); }
 .cal-pm320-wr-loss { color: var(--neg); }
-.cal-pm320-wr-running { color: var(--dm); }
+.cal-pm320-wr-running { color: var(--dm-hi); } /* R28 P1② */
 /* 승률 맥락 1줄 (왜 승률이 높은지 — 익절폭이 작아 쉽게 도달). */
 .cal-pm320-wr-context {
   margin-top: 6px;
@@ -2860,15 +2967,16 @@ body.single-card-mode { background: var(--bg) !important; }
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-/* PM320-D6 P1-b — 시각 원형(15px)은 그대로 두고 클릭/터치 영역만 24px 확장(투명 오버레이).
-   문서 플로우 밖(absolute)이라 주변 레이아웃 0 영향. */
+/* PM320-D6 P1-b — 시각 원형(15px)은 그대로 두고 클릭/터치 영역만 확장(투명 오버레이).
+   문서 플로우 밖(absolute)이라 주변 레이아웃 0 영향.
+   R28 P1④ (조니 2심, 2026-06-11) — 24px → 44px (터치 타깃 일괄 44×44, 시각 크기 불변). */
 .cal-term-tip::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   transform: translate(-50%, -50%);
 }
 .cal-term-tip:hover { color: var(--am); border-color: var(--am3); }

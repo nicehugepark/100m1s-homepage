@@ -697,24 +697,32 @@ function _stopPickCountdown() {
 }
 function _wirePickCountdown() {
   _stopPickCountdown();
-  const cdEl = document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"]');
-  if (!cdEl) return; // 배너 미존재 → 타이머 불요
+  // R28 P1⑤ — 카운트다운 슬롯 2원화(본문 pending 배너 + 헤더 직하 portal 칩). 단일 querySelector
+  //   → querySelectorAll 전수 tick (한쪽 코드 양끝 누락 동형 예방, FLR-20260428-TEC-001).
+  if (!document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"]')) return; // 미존재 → 타이머 불요
   const tick = () => {
-    const el = document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"]');
-    if (!el || !document.body.contains(el)) { _stopPickCountdown(); return; }
+    const els = Array.from(document.querySelectorAll('.cal-pm320-pending-countdown[data-pick-cd="1"]'))
+      .filter(el => document.body.contains(el));
+    if (els.length === 0) { _stopPickCountdown(); return; }
     const now = new Date();
     // 15:20 도달 → 카운트다운 문구를 "곧 갱신됩니다"로 전환 후 타이머 종료.
     //   (15:20~15:30 사이 다음 자동 폴링/리렌더 전까지의 공백 안내. 픽 생성되면 리렌더로 배너 자연 소거.)
     if (now.getHours() * 60 + now.getMinutes() >= 15 * 60 + 20) {
-      const banner = el.closest('.cal-pm320-pending');
-      if (banner) {
-        const cdWrap = banner.querySelector('.cal-pm320-pending-cd-wrap');
-        if (cdWrap) cdWrap.innerHTML = '<span class="cal-pm320-pending-soon">곧 갱신됩니다</span>';
-      }
+      els.forEach(el => {
+        const banner = el.closest('.cal-pm320-pending');
+        if (banner) {
+          const cdWrap = banner.querySelector('.cal-pm320-pending-cd-wrap');
+          if (cdWrap) cdWrap.innerHTML = '<span class="cal-pm320-pending-soon">곧 갱신됩니다</span>';
+          return;
+        }
+        const chip = el.closest('.cal-pm320-portal-cd');
+        if (chip) chip.innerHTML = '<span class="cal-pm320-pending-soon">곧 갱신됩니다</span>';
+      });
       _stopPickCountdown();
       return;
     }
-    el.textContent = _formatCountdownToPick(now);
+    const _txt = _formatCountdownToPick(now);
+    els.forEach(el => { el.textContent = _txt; });
   };
   tick();
   _pickCountdownTimer = setInterval(tick, 1000);
@@ -1583,14 +1591,17 @@ function renderCalExpandContent(date, data) {
       const _snapDate = (pk && typeof pk.snapshot_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pk.snapshot_date))
         ? pk.snapshot_date : null;
       const _isPastView = (typeof date === 'string' && date < _pm320TodayKstISO());
-      const _staleChip = _isPastView
-        ? (_snapDate ? `(집계 기준 ${_snapDate.slice(5).replace('-', '/')})` : '(잠정 집계)')
+      // R28 P2 (조니 2심, 2026-06-11) — "잠정 +0.00% … (잠정 집계)" 동어 1회로. 라벨 "잠정"이
+      //   이미 잠정성을 명시하므로 무날짜 폴백 칩 "(잠정 집계)" 폐기 — snapshot_date 실재 시에만
+      //   "(집계 기준 M/D)" 출력 (모르는 날짜 미출력 원칙 R27 P0-2 유지, FLR-AGT-002).
+      const _staleChip = (_isPastView && _snapDate)
+        ? `(집계 기준 ${_snapDate.slice(5).replace('-', '/')})`
         : '';
       return {
         html: `⏳ 잠정 ${pnlText}${dText}`,
         mod: 'running',
         dateChip: _staleChip,
-        aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}${_isPastView ? (_snapDate ? `, 집계 기준 ${_snapDate}` : ', 잠정 집계') : ''}`,
+        aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}${_isPastView && _snapDate ? `, 집계 기준 ${_snapDate}` : ''}`,
       };
     }
     // 22:11 (대표 verbatim "물타기 된 종목은 이익이든 손실이든 물타기 정보도 추가") —
@@ -1835,6 +1846,11 @@ function renderCalExpandContent(date, data) {
       ? `<div class="cal-pm320-today-rec-result cal-pm320-today-rec-result--${resultMod}" aria-label="${escapeHtml(mark.aria)}">${escapeHtml(mark.html)}${mark.dateChip ? `<span class="pm320-rec-mark-date">${escapeHtml(mark.dateChip)}</span>` : ''}${mark.mddChip ? `<span class="pm320-rec-mark-mdd">${escapeHtml(mark.mddChip)}</span>` : ''}</div>`
       : '';
     const headLabel = isPast ? '이날의 추천' : '오늘 PM320 추천';
+    // R28 P2 (조니 2심, 2026-06-11) — D+0 기준 시점 1줄 정의. "(D+1/+3)" 토큰이 정의 없이 노출돼
+    //   손님이 기준일을 추측해야 했음. 진행중(running) mark 가 있는 카드에만 1줄 (청산 완료는 D 미노출).
+    const _dNoteHtml = (mark && mark.mod === 'running')
+      ? `<div class="cal-pm320-today-rec-dnote">D+0 = 추천일(진입 당일) · D+N = 진입 후 N번째 거래일</div>`
+      : '';
     const nameV = name || '';
     const codeV = code || '';
     const titleAria = `${headLabel} ${nameV} ${codeV}`;
@@ -1852,6 +1868,7 @@ function renderCalExpandContent(date, data) {
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">만기</span><span class="cal-pm320-today-rec-v">${escapeHtml(expiryV)}</span></div>
       </div>
       ${resultHtml}
+      ${_dNoteHtml}
       ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-expanded="false" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <span aria-hidden="true">↓</span></button>` : ''}
     </div>`;
   };
@@ -1992,11 +2009,22 @@ function renderCalExpandContent(date, data) {
   const _nowMeta = new Date();
   const _todayMeta = `${_nowMeta.getFullYear()}-${String(_nowMeta.getMonth() + 1).padStart(2, '0')}-${String(_nowMeta.getDate()).padStart(2, '0')}`;
   const _dayWordMeta = (date && date < _todayMeta) ? '이날의' : '오늘의';
-  const metaText = _metaSuppressDomestic
-    ? `주말·휴장${generatedSuffix}`
-    : (todayStocks.length > 0
-      ? `${_dayWordMeta} 종목: ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
-      : `—${generatedSuffix}`);
+  // R28 P0-2 (조니 2심 확정, 2026-06-11) — 휴장일 자기모순 봉쇄. 과거 휴장일(예 6/3 지방선거,
+  //   kiwoom 수집 데이터 실재) 뷰가 "이날의 종목: N개·시각 기준" 헤더 + 종목 카드 + "수집되지
+  //   않은 날짜" 문구를 동시 렌더 → 휴장·수집·발행이 한 화면에서 모순. 휴장일 뷰는
+  //   "M월 D일 (요일)은 휴장일입니다 — 픽이 발행되지 않는 날입니다." 한 줄만 (날짜·요일 동적).
+  //   "수집되지 않은 날짜"는 비휴장 미수집일 전용 유지. 오늘(주말·휴장) 자동 폴백 suppress 뷰는
+  //   기존 승인 동작(Q-20260606-113) 무회귀 — 과거 날짜(date < today)만 본 분기.
+  const _isHolidayView = !_isSingleCardMode
+    && typeof isMarketClosed === 'function'
+    && !!(date && date < _todayMeta && isMarketClosed(date));
+  const metaText = _isHolidayView
+    ? `휴장일${generatedSuffix}`
+    : (_metaSuppressDomestic
+      ? `주말·휴장${generatedSuffix}`
+      : (todayStocks.length > 0
+        ? `${_dayWordMeta} 종목: ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
+        : `—${generatedSuffix}`));
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
   // R27 P1⑥ (조니 2심, 2026-06-11) — 의미 동일 사실 중복 칩 표시단 dedup (데이터 수정 0).
@@ -2745,7 +2773,12 @@ function renderCalExpandContent(date, data) {
 
   // Phase 2c-1 (2026-05-23) — single-card mode 본 본 section title / 뉴스요약 / macro / ranking 본 본 hide.
   // 단독 카드 본 본 본 본 본 본 sparkline + chart-tv + bullish lines + status_badges 전체 본 본 본 본 본 본.
-  const _sectionTitleHtml = _isSingleCardMode ? '' : '<div class="cal-section-title">오늘의 뉴스요약</div>';
+  // R28 P1① (조니 2심, 2026-06-11) — 과거 뷰 "오늘의 뉴스요약" 시점 거짓 → "M월 D일 뉴스 요약"
+  //   (날짜 동적, _dayWordMeta 동형 패턴). 오늘 뷰는 종전 라벨 유지 (무회귀).
+  const _newsTitleLabel = (date && date < _todayMeta)
+    ? `${parseInt(date.slice(5, 7), 10)}월 ${parseInt(date.slice(8, 10), 10)}일 뉴스 요약`
+    : '오늘의 뉴스요약';
+  const _sectionTitleHtml = _isSingleCardMode ? '' : `<div class="cal-section-title">${escapeHtml(_newsTitleLabel)}</div>`;
   const _narrPillsHtmlOut = _isSingleCardMode ? '' : narrPillsHtml;
   const _macroHtmlOut = _isSingleCardMode ? '' : macroHtml;
   const _rankingBannerOut = _isSingleCardMode ? '' : rankingBanner;
@@ -2893,11 +2926,21 @@ function renderCalExpandContent(date, data) {
   //   결측일이 백필되면 pm320NoPick 이 true/false 로 바뀌어 본 상태는 자연 소멸 (코드는 영구 잔존).
   const _pm320NoDataHtml = (() => {
     if (_isSingleCardMode || !data || data.pm320NoPick != null) return '';
+    // R28 P0-2 — 휴장일 뷰에서 "수집되지 않은 날짜" 렌더 금지 (비휴장 미수집일 전용).
+    if (_isHolidayView) return '';
     if (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true) return '';
     const _nowNd = new Date();
     const _todayNd = `${_nowNd.getFullYear()}-${String(_nowNd.getMonth() + 1).padStart(2, '0')}-${String(_nowNd.getDate()).padStart(2, '0')}`;
     if (!(date && date < _todayNd)) return '';
     return `<div class="cal-pm320-no-data" role="status" aria-label="이 날짜의 데이터가 없습니다"><svg class="cal-pm320-no-data-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg><span><b>이 날짜의 데이터가 없습니다</b> — 픽 추적 데이터가 수집되지 않은 날짜입니다</span></div>`;
+  })();
+  // R28 P0-2 (조니 2심 확정) — 휴장일 뷰 한 줄. 날짜·요일은 formatKoDate(동적), 하드코딩 0.
+  //   종목 카드·"이날의 종목 N개" 헤더·"수집되지 않은 날짜"는 본 뷰에서 렌더 금지 (자기모순 봉쇄).
+  const _pm320HolidayHtml = (() => {
+    if (!_isHolidayView) return '';
+    const _dl = (typeof formatKoDate === 'function') ? formatKoDate(date) : date;
+    const _msg = `${_dl}은 휴장일입니다 — 픽이 발행되지 않는 날입니다.`;
+    return `<div class="cal-pm320-holiday" role="status" aria-label="${escapeHtml(_msg)}"><svg class="cal-pm320-holiday-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b>${escapeHtml(_dl)}은 휴장일입니다</b> — 픽이 발행되지 않는 날입니다.</span></div>`;
   })();
   // PM320-D6 P0 (손님 판정 — 시점 혼란) — 장중 "오늘의 추천 15:20 공개" 안내 배너.
   //   손님(주식 초보)이 아침 09시에 자정/장전 스냅샷 데이터를 "오늘의 추천"으로 오인하고
@@ -2926,6 +2969,31 @@ function renderCalExpandContent(date, data) {
         + `</div>`;
     }
   } catch (_) { /* getMarketState 미정의 시 graceful — 배너 생략 */ }
+  // R28 P1⑤ (조니 2심, 2026-06-11) — INTRADAY 첫 화면(fold 390×844) 심장 = "공개까지" 카운트다운.
+  //   장중 pending 배너는 야간 미국증시·뉴스요약 아래(y≈1141, fold 밖 1.4스크린 — 조니 측정)라
+  //   손님 첫 화면에 "오늘 뭐가 나오는지" 시점 단서 0. PRE_MARKET portal(R23, #pm320-prepick-portal
+  //   헤더 직하) 패턴 그대로 — 장중 픽 미확정 동안 컴팩트 카운트다운 칩을 portal 에 주입(additive,
+  //   섹션 순서 불변). 본문 pending 배너는 유지(맥락 설명 담당). 픽 확정/과거 view/장외 = portal
+  //   정리(hidden). PRE_MARKET 은 renderPreMarketEmpty 가 자체 주입 — 본 path 미진입(무회귀).
+  //   _wirePickCountdown 이 data-pick-cd 전수(querySelectorAll) tick — 본문·portal 동시 갱신.
+  try {
+    const _cdPortal = (typeof document !== 'undefined') ? document.getElementById('pm320-prepick-portal') : null;
+    if (_cdPortal && !_isSingleCardMode) {
+      if (_pm320PendingHtml) {
+        const _cdP = _formatCountdownToPick(new Date());
+        _cdPortal.innerHTML =
+          `<div class="cal-pm320-portal-cd" role="status" aria-label="오늘의 추천은 오후 3시 20분에 공개됩니다">`
+          + `<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`
+          + `<span class="cal-pm320-portal-cd-label">오늘의 추천 <b>공개까지</b></span>`
+          + `<span class="cal-pm320-pending-countdown" data-pick-cd="1">${_cdP}</span>`
+          + `</div>`;
+        _cdPortal.hidden = false;
+      } else {
+        _cdPortal.innerHTML = '';
+        _cdPortal.hidden = true;
+      }
+    }
+  } catch (_) { /* portal 부재(과거 빌드) graceful — 본문 배너만 */ }
   // PM320-D6 (2026-06-10) — 카운트다운 슬롯의 "오늘의 추천" 전용 요약 카드.
   //   픽 확정(_pm320PendingHtml='' = 15:20 이후/픽 존재) 시 todayStocks 중 is_pick 종목 1개로 빌드.
   //   진입가 SSOT = 매매 row와 동일 chain (daily_20[-1].c → close_price → range_240d.current).
@@ -2966,12 +3034,13 @@ function renderCalExpandContent(date, data) {
   // R25 P1⑧ (2026-06-11) — 히어로 "하루 단 한 종목" vs 첫 화면 후보 N장 충돌 해명 1줄 (카드 리스트 상단).
   //   장중 pending 배너(_pm320PendingHtml)가 이미 동일 해명을 포함 → 배너 부재 시(픽 확정 후·과거일)만
   //   노출(동일 해명 2회 중복 차단 — P1④ 동형 원칙). 종목 1장 이하 시 "후보 N장 충돌" 자체가 없어 생략.
-  const _candidateNoteHtml = (!_isSingleCardMode && !_pm320PendingHtml && !_suppressDomestic && todayStocks.length > 1)
+  const _candidateNoteHtml = (!_isSingleCardMode && !_isHolidayView && !_pm320PendingHtml && !_suppressDomestic && todayStocks.length > 1)
     ? `<div class="cal-trade-list-note">아래는 거래대금 상위 <b>추천 후보</b> 종목입니다 — 추천은 이 중 <b>하루 단 한 종목</b>입니다</div>`
     : '';
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
+      ${_pm320HolidayHtml}
       ${_pm320PendingHtml}
       ${_pm320TodayRecHtml}
       ${_pm320NoPickHtml}
@@ -2980,7 +3049,7 @@ function renderCalExpandContent(date, data) {
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
       ${_rankingBannerOut}
-      ${_suppressDomestic ? _suppressDomesticHtml : (todayStocks.length > 0 ? `
+      ${_isHolidayView ? '' : _suppressDomestic ? _suppressDomesticHtml : (todayStocks.length > 0 ? `
         ${_candidateNoteHtml}
         <div class="cal-trade-list" style="margin-top:10px;">
           ${todayStocks.map(renderTodayCard).join('')}
@@ -3760,6 +3829,36 @@ function _wireSectionCollapse() {
 }
 
 // ───── 테마 거래대금 트렌드 ─────
+// P0-1 (2026-06-11, 서빙 표류 diag 확정) — theme-trend window·정렬·trim 공통 SSOT 함수.
+//   종전: 본체 renderer = "20영업일 누적 trade_amount desc" 정렬 / lut fallback(L4280대) =
+//   "마지막날 trade_amount desc" 정렬 — 5/13·14 무데이터 테마가 fallback 1순위가 되어 trim 2일
+//   발생. 로드 race(window.__chartDates 승자)에 따라 "20영업일·5/13~" vs "18영업일·5/15~" 헤더가
+//   로드마다 교차하던 P0. 한쪽 fix 양끝 누락 동형(FLR-20260428-TEC-001) — 공통 함수 1개로 양 경로
+//   호출(구조 차단). 정렬 SSOT = 20영업일 누적 trade_amount desc (대표 5/8 07:42 박제).
+function _themeTrendWindow(themeData) {
+  let dates = ((themeData && themeData.dates) || []).slice(-20);
+  let dateSet = new Set(dates);
+  const cumAmtOf = (t) => (t.data || []).reduce((s, d) => s + ((d.stock_count || 0) > 0 ? (d.trade_amount || 0) : 0), 0);
+  let roots = ((themeData && themeData.themes) || [])
+    .map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }))
+    .filter(t => t.data.some(d => (d.stock_count || 0) > 0)) // 20영업일 동안 어느 일자라도 활성
+    .map(t => ({ ...t, _cumAmt: cumAmtOf(t) }))
+    .sort((a, b) => (b._cumAmt || 0) - (a._cumAmt || 0));
+  // roots[0](정렬 1순위, 가장 두드러진 polyline) 첫 활성일 기준 선두 trim (REQ-006 v196 — qa-lead 권고 A)
+  if (roots.length > 0 && dates.length > 0) {
+    const first = roots[0];
+    let firstDataIdx = 0;
+    for (let i = 0; i < dates.length; i++) {
+      if (first && first.data && first.data.some(d => d.date === dates[i] && d.stock_count > 0)) { firstDataIdx = i; break; }
+    }
+    if (firstDataIdx > 0) {
+      dates = dates.slice(firstDataIdx);
+      dateSet = new Set(dates);
+      roots = roots.map(t => ({ ...t, data: t.data.filter(d => dateSet.has(d.date)) }));
+    }
+  }
+  return { dates, roots };
+}
 async function initThemeTrend() {
   try {
     // 대표 catch (5/8 04:58): 거래대금 추이는 트렌드 차트 — 장 개시 여부/휴장 무관 항상 표시.
@@ -3779,41 +3878,16 @@ async function initThemeTrend() {
     const allDates = data.dates;
     if (allDates.length < 1) return;
     // 대표 catch (5/8 04:52): theme-trend window = 최근 20영업일 (limit-up-trend 정합).
-    // 종전 slice(-17) 결함 (REQ-006 5/4 v195) → slice(-20) 영구 정정.
-    let dates = allDates.slice(-20);
-    let dateSet = new Set(dates);
-
     // 대표 명세 (5/8 07:42 재정정 verbatim): "테마트리 최상위 노드가 다 나와서 윈도우에 보이는 애들만 활성화 나머진 비활성화"
     // = legend = 20일 union root 모두 (~33개) 표시 / polyline도 모두 그리기 / viewport 외 = dim (display:none X).
-    // 정렬 = 20영업일 누적 trade_amount desc.
-    // 종전 cap 12 폐기 (대표 catch — "레전드가 한참 모자라 보이는데"). polyline ↔ legend 1:1.
-    const allRoots = (data.themes || []).map(t => ({ ...t, data: (t.data || []).filter(d => dateSet.has(d.date)) }));
-    const cumAmtOf = (t) => (t.data || []).reduce((s, d) => s + ((d.stock_count || 0) > 0 ? (d.trade_amount || 0) : 0), 0);
-    const unionRoots = allRoots
-      .filter(t => t.data.some(d => (d.stock_count || 0) > 0)) // 20영업일 동안 어느 일자라도 활성
-      .map(t => ({ ...t, _cumAmt: cumAmtOf(t) }))
-      .sort((a, b) => (b._cumAmt || 0) - (a._cumAmt || 0));
+    // P0-1 (2026-06-11) — window·정렬(누적 trade_amount desc)·trim = _themeTrendWindow 공통 SSOT
+    //   (lut fallback 과 단일 출처 — 헤더 "20영업일 vs 18영업일" race 표류 구조 차단).
+    const _win = _themeTrendWindow(data);
+    let dates = _win.dates;
+    let dateSet = new Set(dates);
+    const unionRoots = _win.roots;
     let themes = unionRoots; // cap 폐기 — viewport 활성/비활성 dim 정책으로 가독성 확보
     const legendThemes = unionRoots; // 20영업일 union 전체 (themes와 동일, 1:1)
-
-    // REQ-006 5/4 v196 — themes[0] (trade_amount desc 1순위, 가장 두드러진 polyline) 기준으로
-    // firstDataIdx trim. v195의 themes.some() 조건은 너무 느슨해 ti=2/3가 4/9에 데이터 있으면
-    // trim 미발동 → polyline ti=0 첫 점 cx ≠ 32. qa-lead 권고 A 채택. (대표 발화 17:44 KST)
-    if (themes.length > 0 && dates.length > 0) {
-      const firstTheme = themes[0];
-      let firstDataIdx = 0;
-      for (let i = 0; i < dates.length; i++) {
-        if (firstTheme?.data?.some(d => d.date === dates[i] && d.stock_count > 0)) {
-          firstDataIdx = i;
-          break;
-        }
-      }
-      if (firstDataIdx > 0) {
-        dates = dates.slice(firstDataIdx);
-        dateSet = new Set(dates);
-        themes = themes.map(t => ({ ...t, data: t.data.filter(d => dateSet.has(d.date)) }));
-      }
-    }
     // lut renderer가 참조할 SSOT 저장 (race-free: theme이 먼저 fetch+render되면 lut가 사용,
     // 미존재 시 lut가 동일 로직으로 fallback 계산)
     window.__chartDates = dates;
@@ -3910,6 +3984,8 @@ async function initThemeTrend() {
     });
 
     // 각 테마 polyline + 투명 히트 서클
+    // R28 P1⑥ — y domain 동적 재산출용 시리즈 좌표 registry (x·amount 불변, y만 재계산 대상).
+    const _seriesPts = [];
     themes.forEach((theme, ti) => {
       const color = COLORS[ti % COLORS.length];
       const points = [];
@@ -3923,6 +3999,7 @@ async function initThemeTrend() {
       });
 
       if (points.length < 1) return;
+      _seriesPts.push({ ti, pts: points });
 
       if (points.length === 1) {
         svg += '<circle cx="' + points[0].x + '" cy="' + points[0].y + '" r="3" fill="#FFF" stroke="' + color + '" stroke-width="1.5" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + points[0].amount + '" data-date="' + points[0].date + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-hit tt-dot" style="cursor:pointer"/>';
@@ -3934,7 +4011,7 @@ async function initThemeTrend() {
         svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="' + strokeW + '" stroke-linecap="round" stroke-linejoin="round" opacity="0.8" data-theme-idx="' + ti + '"/>';
         points.forEach(p => {
           svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + hitR + '" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-hit" style="cursor:pointer"/>';
-          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + dotR + '" fill="#FFF" stroke="' + color + '" stroke-width="1.5" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-dot"/>';
+          svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + dotR + '" fill="#FFF" stroke="' + color + '" stroke-width="1.5" data-theme-idx="' + ti + '" data-color="' + color + '" data-amount="' + p.amount + '" class="tt-dot"/>';
         });
       }
     });
@@ -4074,6 +4151,43 @@ async function initThemeTrend() {
       return { firstIdx, lastIdx };
     }
     const legendContainer = container.querySelector('.theme-trend-legend');
+    // ─── R28 P1⑥ (조니 2심, 2026-06-11) — y축 domain 가시 윈도우 데이터 기반 동적 산출 ───
+    //   종전: yMax = 20영업일 전체 max(예 AI 6/1 8.2조 outlier) 단일 고정 → 축이 항상 "9.0조"로
+    //   읽히고(조니 "9조 고정"), 초기 우측 정렬 윈도우(최근 7일 max ~1조)의 전 라인이 바닥 ~11%
+    //   압착. 스크롤 시 가시 날짜 범위 max 로 domain 재산출(rAF) — polyline/dot y좌표 + y축 라벨
+    //   동시 갱신. x축 라벨은 기간 전체 유지(전 일자 라벨 존속 — 데이터·기간 손실 0).
+    let _curYMax = yMax;
+    const _yAxisSvgEl = container.querySelector('.trend-y-axis svg');
+    function _applyYDomain(newMax) {
+      if (!(newMax > 0) || !svgEl) return;
+      if (Math.abs(newMax - _curYMax) / _curYMax < 0.02) return; // 미세 변동 skip (tick 안정)
+      _curYMax = newMax;
+      const toY2 = v => PAD.top + plotH - (v / _curYMax) * plotH;
+      _seriesPts.forEach(s => {
+        const pl = svgEl.querySelector('polyline[data-theme-idx="' + s.ti + '"]');
+        if (pl) pl.setAttribute('points', s.pts.map(p => p.x + ',' + toY2(p.amount)).join(' '));
+      });
+      svgEl.querySelectorAll('circle[data-amount]').forEach(c => {
+        const amt = Number(c.getAttribute('data-amount'));
+        if (Number.isFinite(amt)) c.setAttribute('cy', String(toY2(amt)));
+      });
+      // 활성 골드 링은 구좌표 잔존 — 정리 (재클릭 시 신좌표로 재생성, detail 테이블은 유지)
+      svgEl.querySelectorAll('.tt-gold-ring').forEach(el => el.remove());
+      if (_yAxisSvgEl) {
+        _yAxisSvgEl.querySelectorAll('text').forEach((t, i) => {
+          t.textContent = fmtTril((_curYMax / 2) * i);
+        });
+      }
+    }
+    function _updateYDomain() {
+      const { firstIdx, lastIdx } = computeViewportRange();
+      let m = 0;
+      themes.forEach(t => (t.data || []).forEach(d => {
+        const di = dateIdx[d.date];
+        if (di != null && di >= firstIdx && di <= lastIdx && (d.trade_amount || 0) > m) m = d.trade_amount;
+      }));
+      _applyYDomain(m > 0 ? m * 1.1 : yMax); // 가시 데이터 0 → 전체 domain 폴백 (빈 축 방지)
+    }
     function updateViewportLegend() {
       // 수동 선택 시 viewport 필터 비활성 — applyLegendFilter가 단일 root만 표시 (수동 우선)
       if (selectedIdx !== -1) {
@@ -4116,11 +4230,11 @@ async function initThemeTrend() {
     }
     if (scrollArea && needsScroll) {
       scrollArea.addEventListener('scroll', () => {
-        requestAnimationFrame(updateViewportLegend);
+        requestAnimationFrame(() => { updateViewportLegend(); _updateYDomain(); });
       }, { passive: true });
     }
-    // 초기 진입 1회 (rAF) — 우측 정렬 후 viewport 평가
-    requestAnimationFrame(updateViewportLegend);
+    // 초기 진입 1회 (rAF) — 우측 정렬 후 viewport 평가 + y domain 가시 윈도우 산출 (R28 P1⑥)
+    requestAnimationFrame(() => { updateViewportLegend(); _updateYDomain(); });
 
     // -- 포인트 클릭 → 종목 테이블 --
     const detailDiv = document.getElementById('trend-detail');
@@ -4275,29 +4389,11 @@ async function initLimitUpTrend() {
         if (themeRes.ok) {
           const themeData = await themeRes.json();
           if (Array.isArray(themeData.dates) && themeData.dates.length > 0) {
-            // 대표 catch (5/8 04:58): theme-trend과 정합 — 20영업일 (종전 17은 잔존 결함)
-            let tDates = themeData.dates.slice(-20);
-            const tDateSet = new Set(tDates);
-            // theme renderer와 동일하게 trade_amount desc 정렬 후 [0] 기준으로 trim (v196)
-            const tThemes = (themeData.themes || [])
-              .map(t => ({ ...t, data: (t.data || []).filter(d => tDateSet.has(d.date)) }))
-              .filter(t => t.data.some(d => d.stock_count > 0))
-              .sort((a, b) => {
-                const aLast = a.data[a.data.length - 1]?.trade_amount || 0;
-                const bLast = b.data[b.data.length - 1]?.trade_amount || 0;
-                return bLast - aLast;
-              });
-            if (tThemes.length > 0) {
-              const tFirst = tThemes[0];
-              let firstIdx = 0;
-              for (let i = 0; i < tDates.length; i++) {
-                if (tFirst?.data?.some(d => d.date === tDates[i] && d.stock_count > 0)) {
-                  firstIdx = i; break;
-                }
-              }
-              if (firstIdx > 0) tDates = tDates.slice(firstIdx);
-            }
-            windowDates = tDates;
+            // P0-1 (2026-06-11, 서빙 표류 diag) — 종전 본 fallback 은 "마지막날 trade_amount desc"
+            //   자체 정렬(5/8 본체 누적 정렬 변경 미반영, 주석만 "동일하게")로 trim 기준 테마가 달라
+            //   18영업일 산출 → 본체(20영업일)와 로드 race 표류. _themeTrendWindow 공통 SSOT 호출로 통일.
+            windowDates = _themeTrendWindow(themeData).dates;
+            if (!windowDates || windowDates.length === 0) windowDates = null;
           }
         }
       } catch (_) { /* fallback below */ }
@@ -4397,7 +4493,11 @@ async function initLimitUpTrend() {
       const dotCls = isZero ? 'lut-dot lut-dot-zero' : 'lut-dot';
       const stroke = isZero ? '#CBD5E1' : 'var(--am, #C49930)';
       chartSvg += '<rect class="lut-dot-hit" data-date="' + it.date + '" x="' + Math.max(0, cx - lutSlot / 2).toFixed(1) + '" y="0" width="' + lutSlot.toFixed(1) + '" height="' + plotH + '" fill="transparent"/>';
-      chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + lutDotR + '" fill="#FFF" stroke="' + stroke + '" stroke-width="1.5" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
+      // R28 P1④ (조니 2심, 2026-06-11) — 상한가 dot 터치 타깃 7px → 44px 투명 오버레이.
+      //   시각 dot(r=' + lutDotR + ')은 비인터랙티브(aria-hidden, 포커스/탭 대상 제외)로 강등,
+      //   role/tabindex/aria/title 은 r=22(44px) 투명 오버레이(.lut-dot-touch)가 승계. 시각 크기 불변.
+      chartSvg += '<circle class="' + dotCls + '" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + lutDotR + '" fill="#FFF" stroke="' + stroke + '" stroke-width="1.5" aria-hidden="true" pointer-events="none"/>';
+      chartSvg += '<circle class="lut-dot-touch" data-date="' + it.date + '" cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="22" fill="transparent" stroke="none" role="button" tabindex="0" aria-label="' + it.date + ' 상한가 ' + it.count + '건"><title>' + it.date + '\n상한가 ' + it.count + '건</title></circle>';
       // X-axis label — REQ-007 v177: 첫/마지막 anchor 변경 (chart 가장자리 침범 회피)
       const lutAnchor = i === 0 ? 'start' : (i === items.length - 1 ? 'end' : 'middle');
       chartSvg += '<text x="' + cx.toFixed(1) + '" y="' + (baseline + 14) + '" font-size="' + (isMobile ? 9 : 10) + '" fill="#64748B" text-anchor="' + lutAnchor + '">' + fmtMD(it.date) + '</text>';
@@ -4409,9 +4509,12 @@ async function initLimitUpTrend() {
     // PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 미니요약 = 최신일 상한가 N종목.
     const _lutLatest = counts.length ? counts[counts.length - 1] : 0;
     const _lutSummary = '오늘 ' + _lutLatest + '종목';
+    // P0-1(b) (2026-06-11) — 헤더 총 건수 = 표시 윈도우(windowDates) 합산 재계산.
+    //   종전 data.total_count(전체 누적)는 윈도우 일수와 무관 → "18영업일·총 208건" 모순 가능.
+    const _lutWindowTotal = counts.reduce((s, c) => s + (c || 0), 0);
     container.innerHTML =
       _collapseHeaderHtml('limit-up-trend', 'lut-header', '상한가 종목 추이',
-        '최근 ' + dates.length + '영업일 · ' + dateRange + ' · 총 ' + (data.total_count || 0) + '건', _lutSummary, 'lut-title', 'lut-sub') +
+        '최근 ' + dates.length + '영업일 · ' + dateRange + ' · 총 ' + _lutWindowTotal + '건', _lutSummary, 'lut-title', 'lut-sub') +
       '<div class="section-collapse-body">' +
         '<div class="lut-wrap">' +
           '<div class="lut-yaxis-col">' + yAxisSvg + '</div>' +
@@ -4505,13 +4608,14 @@ async function initLimitUpTrend() {
       detail.innerHTML = html;
     };
     container.addEventListener('click', e => {
-      const target = e.target.closest('.lut-dot, .lut-dot-hit');
+      // R28 P1④ — 시각 dot 은 pointer-events:none 강등, 탭/클릭 대상 = .lut-dot-touch(44px) + 열 hit rect.
+      const target = e.target.closest('.lut-dot-touch, .lut-dot-hit');
       if (!target) return;
       openDetail(target.getAttribute('data-date'));
     });
     container.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
-      const dot = e.target.closest('.lut-dot');
+      const dot = e.target.closest('.lut-dot-touch');
       if (!dot) return;
       e.preventDefault();
       openDetail(dot.getAttribute('data-date'));
@@ -4858,7 +4962,27 @@ async function initThemeTree(dateOverride) {
     sortByAmt(roots);
 
     // _totalAmt > 0인 루트만 표시 (거래대금 0 자식만 있는 루트도 제외)
-    const visRoots = roots.filter(r => r._totalAmt > 0);
+    let visRoots = roots.filter(r => r._totalAmt > 0);
+
+    // R28 제거① (조니 2심, 2026-06-11) — 동일 종목 구성(코드셋 완전 일치) 루트 테마 N행 중복 제거.
+    //   예: 단일 종목 1개가 건설·태양광·에너지정책·풍력에너지 4테마 소속 → 같은 금액·같은 종목이
+    //   4행 반복(조니 "동일 종목 다중 테마 4행 중복"). 한 행으로 합치고 나머지 테마명은 칩으로 병기.
+    //   보수 범위: 자식 없는 leaf 루트 + 종목 보유 시에만 병합(서브트리 구조 보유 루트는 비병합).
+    //   정렬 1순위(거래대금 desc 선두) 루트가 대표 행 — 데이터 수정 0, 표시단 병합만.
+    const _mergedVisRoots = [];
+    const _rootByStockSig = new Map();
+    visRoots.forEach(r => {
+      const _isLeaf = (!r.children || r.children.length === 0) && Array.isArray(r.stocks) && r.stocks.length > 0;
+      const _sig = _isLeaf ? r.stocks.map(s => s.code || s.stock_code || s.name || '').sort().join('|') : null;
+      if (_sig && _rootByStockSig.has(_sig)) {
+        _rootByStockSig.get(_sig)._mergedNames.push(r.name);
+        return;
+      }
+      r._mergedNames = [];
+      if (_sig) _rootByStockSig.set(_sig, r);
+      _mergedVisRoots.push(r);
+    });
+    visRoots = _mergedVisRoots;
 
     // 글로벌 최대 거래대금
     const globalMax = Math.max(...visRoots.map(r => r._totalAmt), 1);
@@ -4942,6 +5066,20 @@ async function initThemeTree(dateOverride) {
       name.className = 'theme-tree-name' + (isZero ? ' zero' : '');
       name.textContent = node.name;
       row.appendChild(name);
+
+      // R28 제거① — 동일 종목 구성으로 병합된 형제 테마명 칩 병기 (한 행 + 테마 칩 합침).
+      if (Array.isArray(node._mergedNames) && node._mergedNames.length > 0) {
+        const chips = document.createElement('span');
+        chips.className = 'theme-tree-merged-chips';
+        chips.setAttribute('aria-label', '같은 종목 구성 테마: ' + node._mergedNames.join(', '));
+        node._mergedNames.forEach(nm => {
+          const chip = document.createElement('span');
+          chip.className = 'theme-tree-merged-chip';
+          chip.textContent = nm;
+          chips.appendChild(chip);
+        });
+        row.appendChild(chips);
+      }
 
       if (!isZero) {
         const amtEl = document.createElement('span');
