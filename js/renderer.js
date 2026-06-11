@@ -2858,7 +2858,7 @@ function renderCalExpandContent(date, data) {
         + `</svg></div>`;
     })();
     const tableHtml = rows.length ? `<div class="cal-pm320-bt-table-wrap" aria-label="PM320 백테스트 전수표"><table class="cal-pm320-bt-table">`
-      + `<thead><tr><th>일자</th><th>종목</th><th>결과</th><th>손익률</th><th>잔고</th></tr></thead>`
+      + `<thead><tr><th>일자</th><th>종목</th><th>결과</th><th>수익률</th><th>잔고</th></tr></thead>`
       + `<tbody>${rows.map((r) => {
         const ret = (typeof r.ret_pct === 'number') ? r.ret_pct : null;
         const retCls = ret === null ? '' : (ret >= 0 ? ' cal-pm320-bt-td--pos' : ' cal-pm320-bt-td--neg');
