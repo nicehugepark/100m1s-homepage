@@ -1011,6 +1011,22 @@ window._computeShareUrl = _computeShareUrl;
 //   현재 선택일 픽(.cal-pm320-today-rec)을 헤더 아래 1줄 바에 mirror. SSOT=DOM(추정 0).
 //   픽 카드가 뷰포트 상단 밖으로 나갈 때만 노출(IntersectionObserver). 탭 = data-rec-jump 재사용.
 let _pickBarObserver = null;
+function _pm320StickyJumpOffset() {
+  const isMobile = window.innerWidth <= 880;
+  const nav = document.querySelector('header');
+  let offset = nav ? nav.getBoundingClientRect().height : (isMobile ? 68 : 72);
+  const bar = document.getElementById('pm320-pickbar');
+  if (bar && !bar.hidden && (bar.classList.contains('pm320-pickbar--visible') || document.body.classList.contains('pm320-pickbar-on'))) {
+    offset += bar.getBoundingClientRect().height || (isMobile ? 64 : 52);
+  }
+  const head = document.querySelector('#cal-content .cal-content-head');
+  if (head) {
+    const pos = window.getComputedStyle(head).position;
+    if (pos === 'sticky' || pos === '-webkit-sticky') offset += head.getBoundingClientRect().height || 0;
+  }
+  return Math.ceil(offset + 12);
+}
+
 function _syncPickBar() {
   const bar = document.getElementById('pm320-pickbar');
   if (!bar) return; // 과거 빌드(바 미존재) graceful no-op
@@ -1201,8 +1217,7 @@ function _syncPickBar() {
       ev.preventDefault();
       ev.stopPropagation();
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const isMobile = window.innerWidth <= 880;
-      const navOffset = isMobile ? 76 : 84;
+      const navOffset = _pm320StickyJumpOffset();
       const cc2 = document.getElementById('cal-content');
 
       // 목적지로 부드럽게 이동 (v312 원칙 — 목적지 카드가 viewport 에 보이는 최소 이동).
@@ -2851,7 +2866,8 @@ function renderCalExpandContent(date, data) {
         const exitLabel = (r.watered === true && exitClass.includes('익절'))
           ? exitClass.replace('익절', '물타기 익절')
           : (r.watered === true ? `${exitClass} · 물타기` : exitClass);
-        return `<tr><td>${escapeHtml(r.date || '')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
+        const rowDate = r.exit_date || r.date || '';
+        return `<tr><td>${escapeHtml(rowDate)}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
       }).join('')}</tbody></table></div>` : '';
     const _historyHtml = (rows.length || equityHtml)
       ? `<details class="cal-pm320-wr-fine cal-pm320-wr-history"><summary>전수표·잔고 흐름</summary>`
@@ -3205,12 +3221,9 @@ function renderCalExpandContent(date, data) {
   //   document.getElementById 는 DOM 선두(=오늘 카드)를 반환하므로, 전일 박스 안에서 "상세 보기 ↓"를
   //   누르면 사용자가 보던 전일 카드 대신 위쪽 오늘 섹션으로 튀어 동선이 절단된다("위로 점프").
   //   → 클릭이 전일 박스 안에서 발생했으면 그 박스 안의 카드를 우선 탐색(scope) 후 fallback 으로 document.
-  // PM320 여정 fix r3 (2026-06-11, R20 P0 — anchor 정렬 접근 전면 폐기, "스크롤 보존(no-scroll)"으로 전환).
-  //   이력: v310 dup-id 분기 / v311 anchor 정렬(카드 head 를 헤더 아래로 강제 정렬) → R20 실측 +1080px
-  //   과조정으로 버튼·카드·패널 전부 viewport 밖(sy 2532→3612, bt 408→-631). anchor 스크롤 자체가 원인.
-  //   r3 = "상세 보기 ↓" 클릭이 곧 그 자리에서 인라인으로 펼치는 동작이므로 스크롤 이동을 일절 하지 않는다.
-  //   ① 클릭 직전 scrollY 저장 ② 자동 펼침 수행 ③ 리렌더가 스크롤을 흔들면 저장값으로 강제 복원(rAF 2회).
-  //   예외: 자동 펼침으로 누른 버튼 자신이 viewport 밖으로 밀리는 경우에만 버튼을 viewport 내로 최소 보정.
+  // PM320 여정 fix r4 (2026-06-11, 대표 catch) — 요약 카드 "상세 보기 ↓"는 인라인 보존이 아니라
+  //   풀 카드로 이동하는 버튼이다. r3의 scrollY 복원은 이동을 상쇄하므로 제거하고, 픽바와 같은
+  //   card jump 동작(목적지 자동 펼침 + sticky nav 보정)으로 통일한다.
   //   dup-id 분기(전일 박스 scope 우선) + aria-expanded 동기화는 그대로 유지.
   if (!window._pm320RecJumpInit) {
     document.addEventListener('click', e => {
@@ -3221,9 +3234,8 @@ function renderCalExpandContent(date, data) {
       const scope = btn.closest('[data-pre-prev]');
       const target = (scope && scope.querySelector('#stock-' + code)) || document.getElementById('stock-' + code);
       if (!target) return;
-      // ① 클릭 직전 현재 스크롤 위치 저장 (펼침 리렌더가 흔들어도 이 값으로 복원).
-      const savedY = window.pageYOffset;
-      // ② 목적지 풀 카드 상세 자동 펼침 — 이미 펼쳐져 있으면 그대로. (접힌 채 도착해 "빈 카드" 인상 회피)
+      e.preventDefault();
+      // 목적지 풀 카드 상세 자동 펼침 — 이미 펼쳐져 있으면 그대로. (접힌 채 도착해 "빈 카드" 인상 회피)
       const detailToggle = target.querySelector('.cal-detail-toggle');
       if (detailToggle && !target.classList.contains('expanded')) {
         target.classList.add('expanded');
@@ -3234,40 +3246,15 @@ function renderCalExpandContent(date, data) {
       // 누른 요약 버튼 aria-expanded 동기화 (요약 → 풀 카드 펼침 관계 표현).
       if (btn.hasAttribute('aria-expanded')) btn.setAttribute('aria-expanded', 'true');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const isMobile = window.innerWidth <= 880;
-      const navOffset = isMobile ? 76 : 84;
-      // ③ 스크롤 보존: 저장한 scrollY 로 강제 복원해 펼침 리렌더로 인한 흔들림을 제거(이동 0 기준).
-      //   예외 보정(아래 둘 다 "버튼이 viewport 에 남는 범위"에서만, anchor 정렬식 절대 이동 금지):
-      //   (a) 버튼 자신이 viewport 밖으로 밀리면 버튼을 viewport 내로 최소 노출.
-      //   (b) 목적지 풀 카드가 viewport 아래로 완전히 벗어나 있으면, 버튼이 화면에 남는 한도 내에서만
-      //       풀 카드 상단이 viewport 에 걸치도록 최소 하향(scrollBy 최소량). 풀 카드를 헤더 아래로 강제
-      //       정렬(v311 anchor)하지 않는다 — 그게 R20 +1080px 과조정의 원인이었다.
-      const _restore = () => {
-        if (window.pageYOffset !== savedY) window.scrollTo({ top: savedY, behavior: 'auto' });
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        const br = btn.getBoundingClientRect();
-        let delta = 0;
-        if (br.top < navOffset) {
-          delta = br.top - navOffset;                              // (a) 버튼이 nav 아래로 가려짐 → 내려서 노출
-        } else if (br.bottom > vh) {
-          delta = br.bottom - vh + 12;                             // (a) 버튼이 하단 밖 → 올려서 노출
-        } else {
-          // (b) 버튼은 보이는데 풀 카드가 화면 아래로 완전히 벗어난 경우만 풀 카드를 화면에 걸치게 함.
-          const tr = target.getBoundingClientRect();
-          if (tr.top >= vh) {
-            // 풀 카드 상단을 viewport 하단 근처(vh - 120)로 끌어오되, 그 이동으로 버튼이 nav 위로
-            // 밀려나지 않는 한도(버튼 top - navOffset)로 클램프 → 버튼 가시성 보존 + 과조정 차단.
-            const want = tr.top - (vh - 120);
-            const maxKeepBtn = Math.max(0, br.top - navOffset);
-            delta = Math.min(want, maxKeepBtn);
-          }
-        }
-        if (delta !== 0) window.scrollBy({ top: delta, behavior: reduce ? 'auto' : 'smooth' });
+      const _jump = () => {
+        const navOffset = _pm320StickyJumpOffset();
+        const rect = target.getBoundingClientRect();
+        const top = window.pageYOffset + rect.top - navOffset;
+        window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
       };
-      // 펼침 DOM 반영을 기다려 rAF 2회 후 복원(리렌더 타이밍 흔들림 흡수).
       if (typeof requestAnimationFrame === 'function') {
-        requestAnimationFrame(() => requestAnimationFrame(_restore));
-      } else { _restore(); }
+        requestAnimationFrame(() => requestAnimationFrame(_jump));
+      } else { _jump(); }
     });
     window._pm320RecJumpInit = true;
   }
