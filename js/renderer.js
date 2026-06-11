@@ -517,8 +517,16 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
       //   진입 당일은 "진입 당일·성과 집계 전", D+1~ 는 "보유 중"으로 의미 분리(R23). 판정 기준을
       //   스냅샷 d_offset → 라이브 dLive 로 교체(R25 P0-2: 어제 픽이 오늘도 "진입 당일"로 남는 거짓 차단).
       const isEntryDay = (dLive === 0);
+      // R27 P0-2 (조니 2심, 2026-06-11) — "집계 기준 {파일 날짜}" echo 폐기. per-day 파일은 후행
+      //   갱신되므로 파일 날짜 ≠ 실제 집계일일 수 있다. 스냅샷 날짜는 데이터 필드(pk.snapshot_date,
+      //   backend 별건 신설 예정)가 있을 때만 출력, 부재 시 무날짜 라벨 "잠정 집계" —
+      //   모르는 날짜를 출력하지 않는다 (FLR-AGT-002 거짓 충실성 / 본 mark 와 양끝 동시 fix,
+      //   FLR-20260428-TEC-001 한쪽 코드·양끝 누락 동형 예방).
+      const _chipSnapDate = (typeof pk.snapshot_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pk.snapshot_date))
+        ? pk.snapshot_date : null;
       const staleCaption = (!isEntryDay && typeof prevDate === 'string' && prevDate < todayKst)
-        ? ` · 집계 기준 ${prevDate.slice(5).replace('-', '/')}` : '';
+        ? (_chipSnapDate ? ` · 집계 기준 ${_chipSnapDate.slice(5).replace('-', '/')}` : ' · 잠정 집계')
+        : '';
       markText = isEntryDay
         ? `⏳ 진입 당일 · 성과 집계 전${d}`
         : `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}${staleCaption}`;
@@ -1044,6 +1052,9 @@ function _syncPickBar() {
   //   픽바를 숨기는 대신 "추천 없음 (기준 미달)"을 mirror (가짜 픽 0 — 무픽 사실 자체를 정직 노출).
   //   탭 시 본문 no-pick 라인으로 scroll. 픽/전일 칩 존재 시 종전 경로 그대로 (무회귀).
   const noPickEl = (!rec && !prevChip) ? _pickPrimary('.cal-pm320-no-pick') : null;
+  // R27 P0-3 (조니 2심) — (4) 결측 날짜(.cal-pm320-no-data 렌더됨)도 동일 mirror.
+  //   픽바까지 침묵하면 eyebrow 기본값("오늘의 픽") DOM 잔재만 남는 거짓 상태 (R26 no-pick 동형).
+  const noDataEl = (!rec && !prevChip && !noPickEl) ? _pickPrimary('.cal-pm320-no-data') : null;
 
   let src, nameText, eyebrowText, resultEl, jumpCode, prevPickCode = null;
   if (rec) {
@@ -1087,6 +1098,14 @@ function _syncPickBar() {
     eyebrowText = 'PM320';
     resultEl = null;
     jumpCode = null; // 풀 카드 없음 → 탭 시 no-pick 라인 자체로 scroll (data-pickbar-scroll 폴백)
+  } else if (noDataEl) {
+    // R27 P0-3 — 결측 날짜 mirror (b 태그 본문 verbatim — "이 날짜의 데이터가 없습니다").
+    src = noDataEl;
+    const _bNd = noDataEl.querySelector('b');
+    nameText = (_bNd && _bNd.textContent.trim()) || '이 날짜의 데이터가 없습니다';
+    eyebrowText = 'PM320';
+    resultEl = null;
+    jumpCode = null; // 풀 카드 없음 → 탭 시 no-data 라인 자체로 scroll (data-pickbar-scroll 폴백)
   } else {
     bar.hidden = true;
     bar.classList.remove('pm320-pickbar--visible');
@@ -1214,13 +1233,58 @@ function _syncPickBar() {
         setTimeout(poll, 30);
       } else if (bar.getAttribute('data-pickbar-scroll')) {
         // R26 P1 — 전일 칩 부재(무픽 보류일)면 no-pick 라인으로 폴백 scroll.
-        _scrollTo(cc2 ? (cc2.querySelector('.cal-pre-prev-pick') || cc2.querySelector('.cal-pm320-no-pick')) : null);
+        // R27 P0-3 — 결측 날짜는 no-data 라인으로 폴백 scroll (체인 말단).
+        _scrollTo(cc2 ? (cc2.querySelector('.cal-pre-prev-pick') || cc2.querySelector('.cal-pm320-no-pick') || cc2.querySelector('.cal-pm320-no-data')) : null);
       }
     });
     window._pm320PickBarClickInit = true;
   }
 }
 window._syncPickBar = _syncPickBar;
+
+// R27 P1⑥ (조니 2심, 2026-06-11) — 뉴스요약(매크로 칩) 의미 동일 사실 중복 표시단 dedup.
+//   예: "소비자물가 4.2% 상승" + "CPI 4.2% 기록" = 같은 사실 2회 노출 → 첫 칩만 유지.
+//   판정 보수적: 동의어 정규화(canonical topic) 후 (a) 같은 topic 이 1개 이상 겹치고
+//   (b) % 수치 집합이 동일할 때만 중복으로 간주(과잉 병합 차단). 데이터(원본 JSON) 수정 0.
+function _dedupSimilarMacro(events) {
+  if (!Array.isArray(events) || events.length < 2) return events || [];
+  const SYN = [
+    [/소비자\s*물가(?:\s*지수)?|\bCPI\b/gi, 'CPI'],
+    [/생산자\s*물가(?:\s*지수)?|\bPPI\b/gi, 'PPI'],
+    [/국내\s*총생산|\bGDP\b/gi, 'GDP'],
+    [/연방공개시장위원회|\bFOMC\b/gi, 'FOMC'],
+    [/기준\s*금리/g, '기준금리'],
+  ];
+  const keyOf = (t) => {
+    let s = String(t || '');
+    for (const [re, c] of SYN) s = s.replace(re, c);
+    const nums = [...new Set((s.match(/\d+(?:\.\d+)?\s*%/g) || []).map((x) => x.replace(/\s/g, '')))].sort();
+    const topics = [...new Set(SYN.map(([, c]) => c).filter((c) => s.includes(c)))].sort();
+    if (nums.length === 0 || topics.length === 0) return null; // 비교 축 부족 → dedup 비대상
+    return `${topics.join(',')}|${nums.join(',')}`;
+  };
+  const seen = new Set();
+  return events.filter((m) => {
+    const k = keyOf(m && m.summary);
+    if (k && seen.has(k)) return false;
+    if (k) seen.add(k);
+    return true;
+  });
+}
+
+// R27 P1⑦ (조니 2심, 2026-06-11) — 카드 본문 "분석가 화법" 표시단 sanitize.
+//   LLM 생성 본문에 섞이는 자료 메타 언급("제공된 유일 자료는…", "해당 기사는…홍보뿐이다" 등)은
+//   손님에게 무의미한 내부 화법 → 해당 문장만 표시단에서 제거 (원본 데이터 수정 0,
+//   생성 프롬프트 차단은 backend 별건 — 14:00 게이트 후). 패턴 보수적(자료 메타 언급만).
+function _sanitizeAnalystVoice(text) {
+  const s = String(text || '');
+  if (!s) return s;
+  const META = /(제공된\s*[^.!?]{0,12}(자료|정보|기사)|해당\s*기사|주어진\s*(자료|정보|뉴스)|입수된\s*자료|분석\s*대상\s*(자료|기사))/;
+  if (!META.test(s)) return s;
+  // 문장 단위 분리 (종결부호 뒤 경계 마커 삽입 — lookbehind 미사용, 구형 Safari 호환)
+  const kept = s.replace(/([.!?])\s+/g, '$1\n').split('\n').filter((p) => p.trim() && !META.test(p));
+  return kept.join(' ').trim();
+}
 
 function renderCalExpandContent(date, data) {
   // design-news-time-state-v1 (catch 1) — 시점 분기 PRE_MARKET 빈 상태.
@@ -1329,7 +1393,8 @@ function renderCalExpandContent(date, data) {
           </div>`;
     }
     // 휴장일이라도 매크로 이벤트가 있으면 표시
-    const closedMacro = (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10).slice(0, 5);
+    // R27 P1⑥ — 의미 동일 사실 중복 칩 표시단 dedup (본 렌더 path 양끝 동시, FLR-20260428-TEC-001 동형 예방).
+    const closedMacro = _dedupSimilarMacro((data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)).slice(0, 5);
     const closedMacroHtml = closedMacro.length > 0
       ? `<div class="cal-macro-strip">${closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
       : '';
@@ -1510,15 +1575,22 @@ function renderCalExpandContent(date, data) {
       const dText = (dOffset != null && dOffset >= 0 && dTotal != null && dOffset <= dTotal) ? ` (D+${dOffset}/+${dTotal})` : '';
       // R26 P0-2① (2026-06-11, stale 정직화 전수 — 한쪽 코드 양끝 누락 예방 FLR-20260428-TEC-001 동형) —
       //   과거 날짜 페이지의 running mark 는 그 날짜 스냅샷 값(잠정 pnl·D+N)이라 "현재 성적"이 아니다
-      //   (예: 6/4 페이지 주성 "D+3 · -20.86%" 가 오늘인 양 읽힘). 전일 칩(_buildPrevPickChipHtml)에만
-      //   넣었던 "집계 기준 MM/DD" caption 을 본 mark 에도 동일 적용. 보는 날짜(date) < 오늘(KST)일 때만.
-      const _staleChip = (typeof date === 'string' && date < _pm320TodayKstISO())
-        ? `(집계 기준 ${date.slice(5).replace('-', '/')})` : '';
+      //   (예: 6/4 페이지 주성 "D+3 · -20.86%" 가 오늘인 양 읽힘). 보는 날짜(date) < 오늘(KST)일 때만 caption.
+      // R27 P0-2 (조니 2심, 2026-06-11) — "집계 기준 {조회 날짜}" echo 폐기. per-day 파일은 후행
+      //   갱신되므로 조회 날짜 ≠ 실제 집계일 (6/4 파일에 D+3 스냅샷 = 내부 모순 재현). 스냅샷 날짜는
+      //   데이터 필드(pk.snapshot_date, backend 별건 신설 예정)가 있을 때만 출력, 부재 시 무날짜 라벨
+      //   "잠정 집계" — 모르는 날짜를 출력하지 않는다 (FLR-AGT-002 거짓 충실성).
+      const _snapDate = (pk && typeof pk.snapshot_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pk.snapshot_date))
+        ? pk.snapshot_date : null;
+      const _isPastView = (typeof date === 'string' && date < _pm320TodayKstISO());
+      const _staleChip = _isPastView
+        ? (_snapDate ? `(집계 기준 ${_snapDate.slice(5).replace('-', '/')})` : '(잠정 집계)')
+        : '';
       return {
         html: `⏳ 잠정 ${pnlText}${dText}`,
         mod: 'running',
         dateChip: _staleChip,
-        aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}${_staleChip ? `, 집계 기준 ${date}` : ''}`,
+        aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}${_isPastView ? (_snapDate ? `, 집계 기준 ${_snapDate}` : ', 잠정 집계') : ''}`,
       };
     }
     // 22:11 (대표 verbatim "물타기 된 종목은 이익이든 손실이든 물타기 정보도 추가") —
@@ -1915,16 +1987,22 @@ function renderCalExpandContent(date, data) {
   // Q-20260606-113 — 주말·휴장 suppress 상태에서는 국내장 종목 수("N개")를 헤더에 노출하지 않는다
   //   (카드가 숨겨졌는데 "오늘의 종목 N개"는 모순). suppress 시 "주말·휴장" 라벨 + 항상 기준 시각.
   const _metaSuppressDomestic = (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true);
+  // R27 P1④ (조니 2심, 2026-06-11) — 과거 날짜 페이지 day-meta "오늘의 종목"은 시점 거짓
+  //   (보는 날짜 ≠ 오늘). 과거 날짜는 "이날의 종목"으로 날짜 기준 라벨 (R26 _dayWord 동형 패턴).
+  const _nowMeta = new Date();
+  const _todayMeta = `${_nowMeta.getFullYear()}-${String(_nowMeta.getMonth() + 1).padStart(2, '0')}-${String(_nowMeta.getDate()).padStart(2, '0')}`;
+  const _dayWordMeta = (date && date < _todayMeta) ? '이날의' : '오늘의';
   const metaText = _metaSuppressDomestic
     ? `주말·휴장${generatedSuffix}`
     : (todayStocks.length > 0
-      ? `오늘의 종목: ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
+      ? `${_dayWordMeta} 종목: ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
       : `—${generatedSuffix}`);
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
-  const macroEvents = (data.macroEvents || [])
-    .filter(m => m.summary && m.summary.length >= 10)
-    .slice(0, 5);
+  // R27 P1⑥ (조니 2심, 2026-06-11) — 의미 동일 사실 중복 칩 표시단 dedup (데이터 수정 0).
+  const macroEvents = _dedupSimilarMacro(
+    (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)
+  ).slice(0, 5);
   const macroHtml = macroEvents.length > 0
     ? `<div class="cal-macro-strip">${macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`).join('')}</div>`
     : '';
@@ -2003,7 +2081,10 @@ function renderCalExpandContent(date, data) {
     // 대표 지시 2026-04-22: compact 한 줄 분기 제거 — 카드 간 레이아웃 일관성 유지
     if (it.interp) {
       const st = it.interp;
-      const causal = (st.causal_chain || []).slice(0, 3);
+      // R27 P1⑦ (조니 2심) — 분석가 화법(자료 메타 언급) 표시단 sanitize. 인과사슬 항목은
+      //   메타 문장 제거 후 빈 항목 drop (생성 프롬프트 차단은 backend 별건).
+      const causal = (st.causal_chain || []).slice(0, 3)
+        .map((c) => _sanitizeAnalystVoice(c)).filter((c) => c && c.trim());
       const styledArrow = '<span class="arrow">→</span>';
       const causalHtml = causal.length > 0
         ? `<div class="cal-causal">${causal.map((c, i) => `${escapeHtml(sanitize(c)).replace(/→/g, styledArrow)}${i < causal.length - 1 ? styledArrow : ''}`).join('')}</div>`
@@ -2012,7 +2093,8 @@ function renderCalExpandContent(date, data) {
       const headlineHtml = '';
       // differentiator가 causal_chain과 동일하면 중복 제거
       const causalText = (causal[0] || '').trim();
-      const diffRaw = (st.differentiator || st.outlook || '').trim();
+      // R27 P1⑦ — differentiator/outlook 도 동일 sanitize (양끝 동시, FLR-20260428-TEC-001 동형 예방).
+      const diffRaw = _sanitizeAnalystVoice((st.differentiator || st.outlook || '').trim());
       let ishikawaLine = (diffRaw && diffRaw !== causalText) ? diffRaw : '';
       // 뉴스 없는 종목: industry/sector로 fallback
       if (!ishikawaLine && !causalText) {
@@ -2724,18 +2806,23 @@ function renderCalExpandContent(date, data) {
     const _ratio = (tgtPct !== null && typeof s.worst_mdd_pct === 'number' && s.worst_mdd_pct < 0)
       ? (tgtPct / Math.abs(s.worst_mdd_pct)).toFixed(2)
       : null;
+    // R27 P1②⑤ (조니 2심, 2026-06-11) — ② 손익비 방향 라벨("손실 1당 이익 N") 명시 + sub 에
+    //   평균(익절)/최대(낙폭) 정의 분리 표기 (종전 "평균 익절 +3.2% 기준"은 분모=최대낙폭 사실 누락).
+    //   ⑤ 3셀 sub 구조 통일 — 승률 셀에 모집단 sub(청산 N건), MDD 셀에 평균 부재 시 정의 sub fallback.
+    //   sub 바닥 정렬은 CSS(.cal-pm320-wr-cell-sub margin-top:auto) 담당.
     const _trioCells = [];
     _trioCells.push(
       `<div class="cal-pm320-wr-cell">`
       + `<span class="cal-pm320-wr-cell-k">승률</span>`
       + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--rate">${escapeHtml(rate)}%</span>`
+      + `<span class="cal-pm320-wr-cell-sub">청산 ${escapeHtml(String(s.settled))}건 기준</span>`
       + `</div>`);
     if (_ratio !== null) {
       _trioCells.push(
         `<div class="cal-pm320-wr-cell">`
         + `<span class="cal-pm320-wr-cell-k">손익비${_termTip('risk-reward')}</span>`
         + `<span class="cal-pm320-wr-cell-v">1 : ${escapeHtml(_ratio)}</span>`
-        + `<span class="cal-pm320-wr-cell-sub">평균 익절 +${escapeHtml(tgtPct.toFixed(1))}% 기준</span>`
+        + `<span class="cal-pm320-wr-cell-sub">손실 1당 이익 ${escapeHtml(_ratio)} · 평균 익절 +${escapeHtml(tgtPct.toFixed(1))}% ÷ 최대 낙폭</span>`
         + `</div>`);
     }
     if (typeof s.worst_mdd_pct === 'number') {
@@ -2744,12 +2831,13 @@ function renderCalExpandContent(date, data) {
         + `<span class="cal-pm320-wr-cell-k">장중 최대낙폭</span>`
         + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--neg">${escapeHtml(s.worst_mdd_pct.toFixed(1))}%</span>`
         + (typeof s.avg_mdd_pct === 'number'
-            ? `<span class="cal-pm320-wr-cell-sub">평균 ${escapeHtml(s.avg_mdd_pct.toFixed(1))}%</span>` : '')
+            ? `<span class="cal-pm320-wr-cell-sub">평균 ${escapeHtml(s.avg_mdd_pct.toFixed(1))}%</span>`
+            : `<span class="cal-pm320-wr-cell-sub">보유 중 최저 평가손실</span>`)
         + `</div>`);
     }
     const _trioHtml = `<div class="cal-pm320-wr-trio">${_trioCells.join('')}</div>`;
     const _ariaWr = `${_sinceLabel}부터 ${_asOfDateLabel}까지 누적 성적 — 승률 ${rate}%`
-      + (_ratio !== null ? `, 손익비 1대 ${_ratio}` : '')
+      + (_ratio !== null ? `, 손익비 1대 ${_ratio}, 손실 1당 이익 ${_ratio}` : '')
       + (typeof s.worst_mdd_pct === 'number' ? `, 장중 최대낙폭 ${s.worst_mdd_pct.toFixed(1)}%` : '');
     // R26 P1④ — 디스클레이머 노출 1줄로 축약, 나머지(슬리피지·MDD 정의·모집단)는 접기(details)로 이동.
     const _fineHtml =
@@ -2792,6 +2880,24 @@ function renderCalExpandContent(date, data) {
     const _todayNp = `${_nowNp.getFullYear()}-${String(_nowNp.getMonth() + 1).padStart(2, '0')}-${String(_nowNp.getDate()).padStart(2, '0')}`;
     const _dayWord = (date && date < _todayNp) ? '이날은' : '오늘은';
     return `<div class="cal-pm320-no-pick" role="status" aria-label="${_dayWord} 추천 없음, 기준 미달로 픽을 내지 않은 날입니다"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg><span><b>${_dayWord} 추천 없음 (기준 미달)</b>${_termTip('pending')} — 데이터 누락이 아니라 기준을 만족하는 종목이 없어 픽을 내지 않은 날입니다</span></div>`;
+  })();
+  // R27 P0-3 (조니 2심, 2026-06-11) — 임의 결측 날짜 공통 "데이터 없음" 상태 (특정일 전용 패치 금지).
+  //   pm320NoPick == null = pm320_history 404/미생성 (보류 확정 true 와 구분, data-loader.js 3상태.
+  //   loose == 비교: 폴백 path 객체에 키 자체가 없는 undefined 도 동일 의미 — 미신뢰).
+  //   과거 거래일에서 픽 파일이 없으면 종전엔 픽 슬롯 완전 침묵 (6/3 재현 — 픽도 무픽 안내도 없음).
+  //   "이 날짜의 데이터가 없습니다" 1줄로 정직 고지. 무픽 보류일(기준 미달)과 의미 구분 명시.
+  //   isMarketClosed 가드는 두지 않는다 — 순수 휴장(데이터 0)은 !hasAny early-return 이 이미 처리,
+  //   본 path 도달 = 종목 데이터가 실재하는 날(예: 6/3 지방선거 휴장일 + kiwoom 수집 존재)이므로
+  //   픽 슬롯 침묵은 동일하게 결함. 주말 자동 폴백(suppress) 시에는 카드와 함께 비노출(모순 차단).
+  //   오늘 view 는 제외 — PRE_MARKET path·장중 pending 배너가 시점별 상태를 이미 담당 (무회귀).
+  //   결측일이 백필되면 pm320NoPick 이 true/false 로 바뀌어 본 상태는 자연 소멸 (코드는 영구 잔존).
+  const _pm320NoDataHtml = (() => {
+    if (_isSingleCardMode || !data || data.pm320NoPick != null) return '';
+    if (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true) return '';
+    const _nowNd = new Date();
+    const _todayNd = `${_nowNd.getFullYear()}-${String(_nowNd.getMonth() + 1).padStart(2, '0')}-${String(_nowNd.getDate()).padStart(2, '0')}`;
+    if (!(date && date < _todayNd)) return '';
+    return `<div class="cal-pm320-no-data" role="status" aria-label="이 날짜의 데이터가 없습니다"><svg class="cal-pm320-no-data-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg><span><b>이 날짜의 데이터가 없습니다</b> — 픽 추적 데이터가 수집되지 않은 날짜입니다</span></div>`;
   })();
   // PM320-D6 P0 (손님 판정 — 시점 혼란) — 장중 "오늘의 추천 15:20 공개" 안내 배너.
   //   손님(주식 초보)이 아침 09시에 자정/장전 스냅샷 데이터를 "오늘의 추천"으로 오인하고
@@ -2869,6 +2975,7 @@ function renderCalExpandContent(date, data) {
       ${_pm320PendingHtml}
       ${_pm320TodayRecHtml}
       ${_pm320NoPickHtml}
+      ${_pm320NoDataHtml}
       ${_pm320WinRateHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}

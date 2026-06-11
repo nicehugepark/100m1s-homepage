@@ -113,9 +113,11 @@ async function scenarioA(viewport, themeAttr, tag) {
   console.log(`  status="${r.statusText}" bbox=${JSON.stringify(r.statusBox)} bar=${JSON.stringify(r.barBox)}`);
   assert(r.visible, `픽바 visible (${tag})`);
   // R25 P0-1/P0-2 (2026-06-11) — D-카운터 분모 동적(fixture 만기 SSOT: 6/10→6/16 영업일 = +4)
-  //   + 분자 라이브 계산(스냅샷 동결 차단) + 스냅샷 손익 "집계 기준 MM/DD" caption.
+  //   + 분자 라이브 계산(스냅샷 동결 차단) + 스냅샷 손익 caption.
   //   고정 verbatim("/+3" 하드코딩 — fixture 만기와 자기모순이던 종전 기대값) 대신 형태 검증(실행일 비의존).
-  assert(/^⏳ (진입 당일 · 성과 집계 전|보유 중 ((\+|-)?[\d.,]+%|—)) \(D\+\d+\/\+4\)( · 집계 기준 \d{2}\/\d{2})?$/.test(r.statusText),
+  // R27 P0-2 (조니 2심, 2026-06-11) — caption "집계 기준 {파일 날짜}" echo 폐기: snapshot_date 필드
+  //   존재 시만 "집계 기준 MM/DD", 부재 시 무날짜 "잠정 집계" (fixture 는 필드 부재 → 잠정 집계).
+  assert(/^⏳ (진입 당일 · 성과 집계 전|보유 중 ((\+|-)?[\d.,]+%|—)) \(D\+\d+\/\+4\)( · (집계 기준 \d{2}\/\d{2}|잠정 집계))?$/.test(r.statusText),
     `① 상태 형태 정합 — 동적 분모 +4 + 절단 0 (실측 "${r.statusText}")`);
   assert(/\(D\+\d+\/\+4\)/.test(r.statusText), `① D-카운터 토큰 완전 "(D+n/+4)" (만기 SSOT 분모)`);
   assert(r.statusScrollW <= r.statusClientW + 1, `① 상태 내부 클립 0 (scrollW ${r.statusScrollW} ≤ clientW ${r.statusClientW})`);

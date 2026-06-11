@@ -14,6 +14,12 @@
   --pos: #1A6B2D; --pos-bg: #E8F5EC;
   --neg: #B8302E; --neg-bg: #FFF0F0;
   --neu: #6B7A99; --neu-bg: #F2F4F8;
+  /* R27 P1① (조니 2심, 2026-06-11) — neu-bg 위 본문 텍스트용 AA 슬레이트.
+     --neu #6B7A99 on #F2F4F8 = 3.92:1 (AA 미달) → #525F78 = 5.84:1. 다크는 var(--dk-neu) override. */
+  --neu-tx-aa: #525F78;
+  /* R27 P0-1 (조니 2심, 대표 직접 catch) — sticky 픽바 높이 단일 상수. 픽바 visible 높이와
+     날짜 헤더(.cal-content-head) stack top 이 같은 변수를 참조 → 한쪽 변동 시 자동 추종, 간격 0 보장. */
+  --pickbar-h: 52px;
 
   /* 카드 내부 좌측 인덴트 변수 (외형 불변 리팩토링, 2026-04-22)
      [레이아웃 가이드라인 — 배지 정렬 원칙]
@@ -159,6 +165,7 @@
     --pos: var(--dk-pos); --pos-bg: var(--dk-pos-bg);
     --neg: var(--dk-neg); --neg-bg: var(--dk-neg-bg);
     --neu: var(--dk-neu); --neu-bg: var(--dk-neu-bg);
+    --neu-tx-aa: var(--dk-neu); /* R27 P1① — 라이트만 대비 미달이었음, 다크는 종전 유지 */
     --up: var(--dk-up); --down: var(--dk-down);
     --g04: var(--dk-g04); --g08: var(--dk-g08); --g40: var(--dk-g40);
     --g60: var(--dk-g60); --g80: var(--dk-g80);
@@ -194,6 +201,7 @@
   --pos: var(--dk-pos); --pos-bg: var(--dk-pos-bg);
   --neg: var(--dk-neg); --neg-bg: var(--dk-neg-bg);
   --neu: var(--dk-neu); --neu-bg: var(--dk-neu-bg);
+  --neu-tx-aa: var(--dk-neu); /* R27 P1① — 라이트만 대비 미달이었음, 다크는 종전 유지 */
   --up: var(--dk-up); --down: var(--dk-down);
   --g04: var(--dk-g04); --g08: var(--dk-g08); --g40: var(--dk-g40);
   --g60: var(--dk-g60); --g80: var(--dk-g80);
@@ -263,11 +271,17 @@ header {
    헤더(sticky top:0, z:100) 바로 아래 1줄 고정. 픽 카드가 화면에서 사라질 때만 노출(.--visible).
    additive — 레이아웃 점유 0 (max-height 0 → 노출 시 펼침), 카운트다운/달력 불변. 라이트/다크 토큰 정합. */
 .pm320-pickbar {
-  /* 헤더(sticky top:0, 높이 ~76px, z:100) 바로 아래에 겹치지 않게 sticky. top=헤더높이.
-     z:99 < 헤더 z:100 — 위로 스크롤 시 헤더가 바를 덮으며 자연 슬라이드. */
-  position: sticky; top: 76px; z-index: 99;
+  /* 헤더(sticky top:0, z:100) 바로 아래에 겹치지 않게 sticky. z:99 < 헤더 z:100 — 위로 스크롤 시
+     헤더가 바를 덮으며 자연 슬라이드.
+     R27 P0-1 (조니 2심, 대표 직접 catch) — top:76px 하드코딩 폐기 → var(--nav-h) 바인딩.
+     실측 nav 높이(renderer.js _syncNavHeightVar, 68~73px 변동)와 불일치 시 nav 바닥↔픽바 사이
+     간격이 벌어져 뒤 콘텐츠가 틈으로 비침(6/1 모바일 재현). 날짜 헤더(.cal-content-head)와 동일
+     변수 연동 = 단일 상수 체계. height: var(--pickbar-h) 고정으로 visible 실높이도 결정적
+     (종전 max-height 한도만 있고 실높이는 콘텐츠 의존 → 픽바 바닥↔날짜 헤더 top 간격 발생). */
+  position: sticky; top: var(--nav-h, 68px); z-index: 99;
   display: flex; align-items: center; gap: 8px; width: 100%;
   max-width: 1100px; margin: 0 auto; box-sizing: border-box;
+  height: var(--pickbar-h, 52px);
   padding: 0 24px; max-height: 0; overflow: hidden; opacity: 0;
   border: none; border-bottom: 0 solid var(--bd); cursor: pointer; text-align: left;
   background: var(--header-glass, rgba(250,251,254,0.92));
@@ -276,7 +290,8 @@ header {
   transition: max-height var(--t-fast), opacity var(--t-fast), padding var(--t-fast);
 }
 .pm320-pickbar.pm320-pickbar--visible {
-  max-height: 52px; opacity: 1; padding: 11px 24px; border-bottom-width: 1px;
+  /* R27 P0-1 — max-height 도 단일 상수 참조 (height 와 동일 값 = 실높이 정확히 --pickbar-h). */
+  max-height: var(--pickbar-h, 52px); opacity: 1; padding: 11px 24px; border-bottom-width: 1px;
 }
 .pm320-pickbar:focus-visible { outline: 2px solid var(--am); outline-offset: -2px; }
 .pm320-pickbar-eyebrow {
@@ -1519,9 +1534,14 @@ a.cal-credit-row:hover,
   display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
   position: relative; z-index: 4; max-width: 100%;
 }
-/* PM320 (대표 2026-06-10) — 범례 접기/펼치기 토글 버튼. 데스크탑 기본 숨김(전체 노출), 모바일에서만 노출. */
+/* PM320 (대표 2026-06-10) — 범례 접기/펼치기 토글 버튼. 데스크탑 기본 숨김(전체 노출), 모바일에서만 노출.
+   R27 추가 catch (대표 직접, 2026-06-11) — z-index 4 신설: .trend-y-axis(absolute, bg sf, z:2,
+   height = wrap 전체)가 버튼 좌측 36px 스트립을 덮어 "범례 " 글자·좌측 라운드 테두리가 잘려 보임.
+   .theme-trend-legend / .trend-detail 은 이미 z:4 구제 — 토글(6/10 신설)만 누락된 동형
+   (FLR-20260428-TEC-001 한쪽 코드·양끝 누락). */
 .theme-trend-legend-toggle {
   display: none;
+  position: relative; z-index: 4;
   margin-top: 8px; padding: 6px 12px;
   font-size: 12px; font-weight: 700; color: var(--am);
   background: transparent; border: 1px solid var(--bd);
@@ -1894,10 +1914,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   padding-top: 8px;
 }
 /* R23 P0 (대표 catch, 과거 날짜 sticky 충돌) — 픽바 활성(.pm320-pickbar-on) 시 날짜 헤더 sticky top 을
-   nav + 픽바 높이만큼 내려 픽바 아래 stack(겹침·요약줄 절단 0). 픽바 visible 높이는 CSS max-height
-   52px 한도 내 결정적이라 그 값으로 고정(transition 중 JS 실측 race 회피). */
+   nav + 픽바 높이만큼 내려 픽바 아래 stack(겹침·요약줄 절단 0).
+   R27 P0-1 (조니 2심) — 52px 리터럴 폐기 → var(--pickbar-h) 단일 상수 연동. 픽바 top(var(--nav-h))
+   + 실높이(height: var(--pickbar-h) 고정)와 같은 변수 체계 → 한쪽 변동 시 자동 추종, 간격·겹침 0. */
 body.pm320-pickbar-on .cal-content-head {
-  top: calc(var(--nav-h, 68px) + 52px);
+  top: calc(var(--nav-h, 68px) + var(--pickbar-h, 52px));
 }
 /* REQ-pm320-ux-cycle #1 — cal-content-head 클릭 가능 (→ #toss-cal scrollIntoView).
    hover 햇살 톤(#C49930 6%) + focus outline + active pulse. */
@@ -2481,9 +2502,13 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-pick-label { display: inline; }
 
 /* DSN-frontend §3.6.8 (2026-06-05) — PM320 추천 부재(보류일) 안내 라인.
-   매크로/내러티브 칩(amber: --am4/--am2)과 색을 구분하는 중립 슬레이트(--neu/--neu-bg).
-   경보가 아닌 정보성 빈 상태 톤. WCAG: #6B7A99 on #F2F4F8 = 3.6:1 (large/icon 정합). */
-.cal-pm320-no-pick {
+   매크로/내러티브 칩(amber: --am4/--am2)과 색을 구분하는 중립 슬레이트(--neu-tx-aa/--neu-bg).
+   경보가 아닌 정보성 빈 상태 톤.
+   R27 P0-3 (조니 2심) — .cal-pm320-no-data (임의 결측 날짜 공통 "데이터 없음" 상태) 동일 톤 공유.
+   R27 P1① — 텍스트 --neu 3.92:1 (라이트 AA 미달) → --neu-tx-aa 5.84:1 (FLR-20260428-TEC-001
+   한쪽만 fix 동형 예방: wr-asof 와 같은 토큰·같은 배경 → 동시 교정). */
+.cal-pm320-no-pick,
+.cal-pm320-no-data {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -2492,13 +2517,14 @@ body.single-card-mode { background: var(--bg) !important; }
   border-radius: 8px;
   background: var(--neu-bg);
   border: 1px solid var(--bd);
-  color: var(--neu);
+  color: var(--neu-tx-aa, #525F78);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1.4;
 }
-.cal-pm320-no-pick-icon { flex-shrink: 0; opacity: 0.85; }
+.cal-pm320-no-pick-icon,
+.cal-pm320-no-data-icon { flex-shrink: 0; opacity: 0.85; }
 
 /* PM320-D6 P0 — 장중 "오늘 추천 15:20 공개" 안내 배너 (손님 시점 혼란 해소).
    PM320 브랜드 골드(--am)톤 — "진짜 추천이 곧 온다"는 기대 신호. no-pick(중립 슬레이트)과 구분. */
@@ -2725,9 +2751,13 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-flex; align-items: center; gap: 2px;
 }
 .cal-pm320-wr-cell-v { font-size: 18px; font-weight: 800; color: var(--tx); letter-spacing: -0.01em; }
-.cal-pm320-wr-cell-v--rate { color: var(--am); }
-.cal-pm320-wr-cell-v--neg { color: var(--neg); }
-.cal-pm320-wr-cell-sub { font-size: 12px; font-weight: 500; color: var(--wr-basis-tx, #5E6776); }
+/* R27 P1③ (조니 2심, 2026-06-11) — 선택적 색 위계 제거. 종전 승률만 골드(--am)·낙폭만 적색(--neg)
+   = 유리한 숫자(승률)에 최대 주목색을 주는 비대칭 강조. 세 지표 값 색 동등(var(--tx)) — 굵기·크기
+   동등(R26)에 색까지 통일. 클래스는 의미 마커로 잔존(JS 무변경, 무회귀). */
+.cal-pm320-wr-cell-v--rate { color: var(--tx); }
+.cal-pm320-wr-cell-v--neg { color: var(--tx); }
+/* R27 P1⑤ — 3셀 sub 구조 통일 + margin-top:auto 로 sub 바닥 정렬(셀 높이 차이에도 바닥 리듬 일치). */
+.cal-pm320-wr-cell-sub { font-size: 12px; font-weight: 500; color: var(--wr-basis-tx, #5E6776); margin-top: auto; }
 @media (max-width: 480px) {
   .cal-pm320-wr-trio { gap: 6px; }
   .cal-pm320-wr-cell-v { font-size: 16px; }
@@ -2741,7 +2771,8 @@ body.single-card-mode { background: var(--bg) !important; }
   font-size: 12px; /* R26 P1① 10.5→12px */
   font-weight: 500;
   line-height: 1.45;
-  color: var(--neu);
+  /* R27 P1① (조니 2심) — --neu 3.92:1 (라이트 AA 미달) → --neu-tx-aa #525F78 5.84:1. */
+  color: var(--neu-tx-aa, #525F78);
 }
 .cal-pm320-wr-asof b { font-weight: 700; }
 .cal-pm320-wr-stats {

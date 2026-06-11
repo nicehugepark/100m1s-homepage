@@ -107,7 +107,8 @@ assert(a.present && a.role === 'status', '(a) role=status (a11y)');
 const amberBg = 'rgb(255, 246, 229)'; // --am4
 assert(a.present && a.bg !== amberBg, `(a) 배경색이 amber 칩(${amberBg})과 구분 — 실제 ${a.bg}`);
 assert(a.present && a.bg === 'rgb(242, 244, 248)', `(a) 배경 = 중립 슬레이트 --neu-bg(rgb(242,244,248)) — 실제 ${a.bg}`);
-assert(a.present && a.color === 'rgb(107, 122, 153)', `(a) 글자색 = --neu(rgb(107,122,153)) — 실제 ${a.color}`);
+// R27 P1① (조니 2심, 2026-06-11) — --neu 3.92:1 (라이트 AA 미달) → --neu-tx-aa #525F78 (5.84:1).
+assert(a.present && a.color === 'rgb(82, 95, 120)', `(a) 글자색 = --neu-tx-aa(rgb(82,95,120), AA 5.84:1) — 실제 ${a.color}`);
 
 // (b) 정상 추천일(false) → 미표시(무회귀)
 const b = await renderAndQuery(false);
