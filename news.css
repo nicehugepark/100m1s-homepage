@@ -2851,7 +2851,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-today-rec-more:hover { background: var(--pill-sf-hover); }
 .cal-pm320-today-rec-more:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   .pm320-prepick-portal {
     align-items: stretch;
     padding: 0 24px;
@@ -2870,7 +2870,7 @@ body.single-card-mode { background: var(--bg) !important; }
     overflow-wrap: anywhere;
     line-height: 1.25;
   }
-  /* 만기(날짜)·가격이 4열에서 잘리는 문제 → 2×2 그리드로 전환(값 전체 노출). */
+  /* 만기(날짜)·가격이 좁은 뷰포트에서 잘리는 문제 → 2×2 그리드로 전환(값 전체 노출). */
   .cal-pm320-today-rec { padding-left: 12px; padding-right: 12px; }
   .cal-pm320-today-rec-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
   .cal-pm320-today-rec-cell { padding: 7px 9px; }
