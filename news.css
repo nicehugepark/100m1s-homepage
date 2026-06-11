@@ -1953,7 +1953,553 @@ body.single-card-mode { background: var(--bg) !important; }
   letter-spacing: 0.01em;
   line-height: 1.4;
 }
-.cal-pm320-no-pick-icon { flex-shrink: 0; opacity: 0.85; }
+.cal-pm320-no-pick-icon,
+.cal-pm320-no-data-icon { flex-shrink: 0; opacity: 0.85; }
+
+/* R28 P0-2 (조니 2심, 2026-06-11) — 휴장일 뷰 한 줄 안내. no-pick/no-data 와 동일 중립 톤
+   (정보성 상태, 경보 아님). 휴장일 뷰에서는 본 라인 외 종목 헤더·카드·"수집되지 않은 날짜" 미렌더. */
+.cal-pm320-holiday {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: var(--neu-bg);
+  border: 1px solid var(--bd);
+  color: var(--neu-tx-aa, #525F78);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+.cal-pm320-holiday-icon { flex-shrink: 0; opacity: 0.85; }
+
+/* PM320-D6 P0 — 장중 "오늘 추천 15:20 공개" 안내 배너 (손님 시점 혼란 해소).
+   PM320 브랜드 골드(--am)톤 — "진짜 추천이 곧 온다"는 기대 신호. no-pick(중립 슬레이트)과 구분. */
+.cal-pm320-pending {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--am4);
+  border: 1px solid var(--am3);
+  color: var(--tx2);
+}
+.cal-pm320-pending-icon { flex-shrink: 0; margin-top: 1px; color: var(--am); opacity: 0.9; }
+.cal-pm320-pending-body { min-width: 0; }
+.cal-pm320-pending-title { font-size: 13px; font-weight: 700; line-height: 1.45; color: var(--tx); }
+.cal-pm320-pending-title b { color: var(--am); font-weight: 800; }
+.cal-pm320-pending-sub {
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--dm-hi); /* R28 P1② — 다크 amber tint 3.6:1 → ≥4.5:1 (라이트 동일값 무회귀) */
+}
+.cal-pm320-pending-cd-wrap {
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.cal-pm320-pending-cd-label { color: var(--dm-hi); font-weight: 600; } /* R28 P1② */
+.cal-pm320-pending-countdown {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--am);
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--am3);
+}
+/* R25 P0-3 (조니) — 다크 카운트다운 칩 대비 1.69:1 (#EBC25E on #fff 하드코딩) → 8.88:1
+   (--am2 #F4D27A on --am4 #3A3018, WCAG AA 4.5:1 통과). 라이트 무영향(#7E5E0E on #fff 유지). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cal-pm320-pending-countdown {
+    background: var(--am4); color: var(--am2); border-color: var(--am3);
+  }
+}
+:root[data-theme="dark"] .cal-pm320-pending-countdown {
+  background: var(--am4); color: var(--am2); border-color: var(--am3);
+}
+.cal-pm320-pending-soon { font-weight: 700; color: var(--am); font-size: 12px; }
+
+/* R28 P1⑤ (조니 2심, 2026-06-11) — INTRADAY 헤더 직하 portal 카운트다운 칩 (fold 심장).
+   pending 배너와 같은 골드 톤 가족 — 카운트다운 숫자 칩은 .cal-pm320-pending-countdown 상속
+   (라이트/다크 대비 기존 검증값 그대로, FLR-20260428-TEC-001 한쪽 코드 양끝 누락 예방). */
+.cal-pm320-portal-cd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--am4);
+  border: 1px solid var(--am3);
+  color: var(--am);
+}
+.cal-pm320-portal-cd-label { font-size: 13px; font-weight: 700; color: var(--tx2); }
+.cal-pm320-portal-cd-label b { color: var(--am); font-weight: 800; }
+
+/* R28 P2 (조니 2심) — D+0/D+N 기준 시점 1줄 정의 (진행중 추천 카드 한정). */
+.cal-pm320-today-rec-dnote {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--wr-basis-tx, #5E6776);
+  word-break: keep-all;
+}
+
+/* R28 제거① (조니 2심) — 테마트리 동일 종목 구성 병합 행의 형제 테마명 칩. */
+.theme-tree-merged-chips { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-left: 6px; min-width: 0; }
+.theme-tree-merged-chip {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--tx2);
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
+/* PM320-D6 (2026-06-10) — 카운트다운 슬롯의 "오늘의 추천" 전용 요약 카드.
+   카운트다운 배너(.cal-pm320-pending)와 동일 골드(--am)톤·동일 슬롯. 픽 확정 시 노출. */
+.cal-pm320-today-rec {
+  margin-bottom: 12px;
+  padding: 13px 15px 14px;
+  border-radius: 12px;
+  background: var(--am4);
+  border: 1px solid var(--am3);
+  box-shadow: 0 1px 2px rgba(180, 130, 20, 0.08);
+}
+.cal-pm320-today-rec-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 11px;
+}
+.cal-pm320-today-rec-star { display: inline-flex; color: var(--am); flex-shrink: 0; }
+.cal-pm320-today-rec-headlabel {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--am);
+  letter-spacing: 0.01em;
+}
+.cal-pm320-today-rec-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--tx);
+  margin-left: 2px;
+}
+.cal-pm320-today-rec-code {
+  font-size: 12px;
+  font-weight: 600;
+  /* R13 P1 WCAG: var(--dm) #8B95A8 on 카드 bg var(--am4) = 2.81 → 토큰 (light 5.69 / dark 7.78:1) */
+  color: var(--rec-code-tx);
+  font-variant-numeric: tabular-nums;
+}
+.cal-pm320-today-rec-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  /* R13 P1: 익절 칸(라벨+값+물타기 시·조건부 3줄)과 1줄 칸의 높이가 달라도 라벨이 같은
+     상단 baseline에 정렬되도록 start 정렬(stretch 시 짧은 칸 내용이 가운데로 떠 어긋나 보임). */
+  align-items: start;
+}
+.cal-pm320-today-rec-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 8px;
+  background: var(--inset-sf);   /* R15: 라이트 0.55 흰 / 다크 함몰(#202227) */
+  border: 1px solid var(--inset-bd);
+  border-radius: 8px;
+  min-width: 0;
+}
+.cal-pm320-today-rec-k {
+  font-size: 12px;
+  font-weight: 700;
+  /* R13 P0 대비: 라벨 --dm #8B95A8(2.78:1 on cell) → #5E6776(5.53:1, WCAG AA). */
+  color: var(--tx2);
+  letter-spacing: 0.01em;
+}
+/* R13 P1: 익절가가 물타기 체결 시 평단 하락으로 바뀌므로 단정 표기 회피 — "(조건부)" 명시.
+   tpAfter(물타기 시 익절가) 존재 시에만 노출(대표 20:51 catch). */
+.cal-pm320-today-rec-k-cond {
+  margin-left: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--section-summary);
+}
+.cal-pm320-today-rec-v {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--tx);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* 한국장 관습: 익절(가격 상승)=빨강, 물타기(가격 하락)=파랑 */
+.cal-pm320-today-rec-v--up { color: var(--up); }
+.cal-pm320-today-rec-v--dn { color: var(--down); }
+/* 익절 칸 보조 — 물타기 체결 시 평단 하락으로 바뀌는 익절가 병기 (풀 카드 SSOT 동일). */
+.cal-pm320-today-rec-v-sub {
+  font-size: 12px;
+  font-weight: 600;
+  /* R13 P0 대비: --dm 2.78:1 → #5E6776 5.53:1 (WCAG AA). */
+  color: var(--tx2);
+  font-variant-numeric: tabular-nums;
+  /* R25 P1② — nowrap+ellipsis 가 좁은 셀에서 "물타기 후 익절가 250,2…" 가격 절단 유발
+     → 줄바꿈 허용으로 가격 전체 노출(정보 손실 0). */
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.3;
+}
+.cal-pm320-today-rec-result {
+  margin-top: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-align: center;
+  background: var(--inset-sf);   /* R15: 라이트 0.6 흰 / 다크 함몰 */
+  color: var(--tx2);
+  font-variant-numeric: tabular-nums;
+}
+.cal-pm320-today-rec-result--profit { color: var(--pos); background: rgba(26, 127, 75, 0.10); }
+.cal-pm320-today-rec-result--loss { color: var(--neg); background: rgba(192, 57, 43, 0.10); } /* R13 P1 대비: #C0392B(4.39:1) → #B8302E(4.84:1, WCAG AA). */
+.cal-pm320-today-rec-result--running { color: var(--am); }
+.cal-pm320-today-rec-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 11px;
+  padding: 6px 12px;
+  border: 1px solid var(--inset-bd);
+  border-radius: 8px;
+  background: var(--inset-sf);   /* R15: 라이트 0.7 흰 / 다크 함몰 */
+  color: var(--am);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.cal-pm320-today-rec-more:hover { background: var(--pill-sf-hover); }
+.cal-pm320-today-rec-more:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+@media (max-width: 480px) {
+  /* 만기(날짜)·가격이 4열에서 잘리는 문제 → 2×2 그리드로 전환(값 전체 노출). */
+  .cal-pm320-today-rec-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+  .cal-pm320-today-rec-cell { padding: 7px 9px; }
+  .cal-pm320-today-rec-v { font-size: 13px; }
+}
+
+/* PM320-D6 — 4/8 이후 트랙레코드 승률 카드 (대표 결정: 수익률 X, 승률만).
+   PICK 골드(--am) 강조 — "검증된 성적" 신뢰 신호. 손실 건수 병기 (정직성). */
+.cal-pm320-winrate {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  /* 그라데이션 top을 토큰화 — 다크에서 하드코딩 #FFFDF6(밝은 흰색)이 카드 상단을 밝게 깨뜨림 (DOC-20260610-DSN-001) */
+  background: linear-gradient(180deg, var(--wr-card-top, #FFFDF6) 0%, var(--am4) 100%);
+  border: 1px solid var(--am3);
+}
+.cal-pm320-wr-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cal-pm320-wr-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--am);
+}
+/* R26 P0-1 (조니 P0, 2026-06-11) — 승률 단독 대형 표기 폐기 → 승률·손익비·최대낙폭 동일 위계
+   3지표 grid. 세 값 모두 같은 크기(18px)·같은 굵기(800), 색만 의미 분리(골드/본문/빨강). */
+.cal-pm320-wr-trio {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.cal-pm320-wr-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cal-pm320-wr-cell-k {
+  font-size: 12px; font-weight: 700; color: var(--tx2);
+  display: inline-flex; align-items: center; gap: 2px;
+  white-space: nowrap; /* R28 P1③ — 라벨 1줄 고정 → 3셀 값(v)·sub 행 baseline 정렬 유지 */
+}
+.cal-pm320-wr-cell-v { font-size: 18px; font-weight: 800; color: var(--tx); letter-spacing: -0.01em; }
+/* R27 P1③ (조니 2심, 2026-06-11) — 선택적 색 위계 제거. 종전 승률만 골드(--am)·낙폭만 적색(--neg)
+   = 유리한 숫자(승률)에 최대 주목색을 주는 비대칭 강조. 세 지표 값 색 동등(var(--tx)) — 굵기·크기
+   동등(R26)에 색까지 통일. 클래스는 의미 마커로 잔존(JS 무변경, 무회귀). */
+.cal-pm320-wr-cell-v--rate { color: var(--tx); }
+.cal-pm320-wr-cell-v--neg { color: var(--tx); }
+/* R27 P1⑤ — 3셀 sub 구조 통일 + margin-top:auto 로 sub 바닥 정렬(셀 높이 차이에도 바닥 리듬 일치). */
+/* R28 P1③ (조니 2심) — sub "낙/폭" 단어 중간 절단 봉쇄: keep-all(어절 단위 줄바꿈)
+   + overflow-wrap 안전망. margin-top:auto(셀 바닥 정렬)와 함께 3셀 baseline 리듬 유지. */
+.cal-pm320-wr-cell-sub {
+  font-size: 12px; font-weight: 500; color: var(--wr-basis-tx, #5E6776); margin-top: auto;
+  word-break: keep-all; overflow-wrap: break-word;
+}
+@media (max-width: 480px) {
+  .cal-pm320-wr-trio { gap: 6px; }
+  .cal-pm320-wr-cell-v { font-size: 16px; }
+}
+/* 과거 날짜 선택 시 — '선택일 시점'이 아닌 'generated_at 기준 누적'임을 명시(중립 슬레이트). */
+.cal-pm320-wr-asof {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--neu-bg);
+  font-size: 12px; /* R26 P1① 10.5→12px */
+  font-weight: 500;
+  line-height: 1.45;
+  /* R27 P1① (조니 2심) — --neu 3.92:1 (라이트 AA 미달) → --neu-tx-aa #525F78 5.84:1. */
+  color: var(--neu-tx-aa, #525F78);
+}
+.cal-pm320-wr-asof b { font-weight: 700; }
+.cal-pm320-wr-stats {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 6px;
+  /* R13 P0 위계: 표본수(총 N픽)·익절·손실 건수를 승률과 동등 위계로 상향(11.5→13px, 700).
+     승률 숫자만 도드라지고 표본·손실이 묻히던 문제(손익 근거가 작게 읽힘) 해소. */
+  font-size: 13px;
+  font-weight: 700;
+}
+.cal-pm320-wr-sep { color: var(--dm); opacity: 0.6; }
+.cal-pm320-wr-stat { color: var(--tx2); }
+.cal-pm320-wr-win { color: var(--pos); }
+.cal-pm320-wr-loss { color: var(--neg); }
+.cal-pm320-wr-running { color: var(--dm-hi); } /* R28 P1② */
+/* 승률 맥락 1줄 (왜 승률이 높은지 — 익절폭이 작아 쉽게 도달). */
+.cal-pm320-wr-context {
+  margin-top: 6px;
+  font-size: 12px; /* R26 P1① 10.5→12px */
+  font-weight: 500;
+  line-height: 1.45;
+  /* R13 P0 대비: --dm 2.96:1 on amber → #5E6776 5.32:1 (WCAG AA). */
+  color: var(--tx2);
+}
+.cal-pm320-wr-detail { margin-top: 8px; }
+.cal-pm320-wr-detail > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tx);
+}
+.cal-pm320-wr-detail > summary::-webkit-details-marker { display: none; }
+.cal-pm320-wr-detail > summary::after {
+  content: '▸';
+  font-size: 12px;
+  transition: transform 0.15s ease;
+}
+.cal-pm320-wr-detail[open] > summary::after { transform: rotate(90deg); }
+.cal-pm320-wr-detail-body {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.cal-pm320-wr-detail-meta {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--wr-basis-tx, #5E6776);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.cal-pm320-wr-equity {
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg2) 72%, transparent);
+  padding: 8px;
+}
+.cal-pm320-wr-equity-meta {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--tx2);
+}
+.cal-pm320-wr-equity-meta b {
+  color: var(--tx);
+  font-size: 13px;
+}
+.cal-pm320-wr-equity-meta span:last-child { text-align: right; }
+.cal-pm320-wr-equity-svg {
+  display: block;
+  width: 100%;
+  height: 86px;
+  margin-top: 4px;
+}
+.cal-pm320-wr-equity-svg line {
+  stroke: var(--bd);
+  stroke-width: 1;
+}
+.cal-pm320-wr-equity-svg polyline {
+  fill: none;
+  stroke: var(--am);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cal-pm320-wr-table-wrap {
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--bg2);
+}
+.cal-pm320-wr-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.cal-pm320-wr-table th,
+.cal-pm320-wr-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--bd);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.cal-pm320-wr-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg2);
+  color: var(--tx2);
+  font-weight: 800;
+}
+.cal-pm320-wr-table tbody tr:last-child td { border-bottom: 0; }
+.cal-pm320-wr-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cal-pm320-wr-td--pos { color: var(--pos); font-weight: 800; }
+.cal-pm320-wr-td--neg { color: var(--neg); font-weight: 800; }
+/* R26 P1④ — 디스클레이머 노출 1줄(basis) + 나머지는 접기(details.cal-pm320-wr-fine). */
+.cal-pm320-wr-basis {
+  margin-top: 7px;
+  font-size: 12px; /* R26 P1① 10→12px */
+  font-weight: 500;
+  line-height: 1.5;
+  /* R13 P0 대비: --dm 2.96:1 → #5E6776 5.32:1 (WCAG AA). opacity 제거(대비 보존). 토큰화로 다크 정합. */
+  color: var(--wr-basis-tx, #5E6776);
+}
+.cal-pm320-wr-fine { margin-top: 3px; }
+.cal-pm320-wr-fine > summary {
+  display: inline-flex; align-items: center; gap: 4px;
+  cursor: pointer; list-style: none; user-select: none;
+  font-size: 12px; font-weight: 600; color: var(--wr-basis-tx, #5E6776);
+}
+.cal-pm320-wr-fine > summary::-webkit-details-marker { display: none; }
+.cal-pm320-wr-fine > summary::after {
+  content: '▸'; font-size: 12px; transition: transform 0.15s ease;
+}
+.cal-pm320-wr-fine[open] > summary::after { transform: rotate(90deg); }
+.cal-pm320-wr-fine-body {
+  margin-top: 4px;
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 12px; font-weight: 500; line-height: 1.5;
+  color: var(--wr-basis-tx, #5E6776);
+}
+
+/* PM320-D6 P1 — 뉴스 부재 placeholder 보조 문구 (블록 줄바꿈). */
+.cal-feature-news-empty-sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dm);
+  opacity: 0.9;
+}
+
+/* PM320-D6 P1 — 용어 풀이 (?) 마커 + 탭 팝오버 (손님 용어 풀이 0건 해소).
+   라벨 우측 작은 원형 (?) — 모바일 터치 타겟 충분(18px+). 팝오버는 position:fixed 오버레이로
+   body 직속 삽입(_wireTermTips) — 어떤 부모 레이아웃에도 0 영향(레이아웃 시프트 0). */
+.cal-term-tip {
+  position: relative;            /* PM320-D6 P1-b — ::before 투명 hit-area 기준점 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;                   /* 시각 원형 15px 유지 (레이아웃 시프트 0) */
+  height: 15px;
+  margin-left: 4px;
+  padding: 0;
+  vertical-align: middle;
+  border: 1px solid var(--bd);
+  border-radius: 50%;
+  background: var(--bg2);
+  color: var(--tx2);                /* PM320-D6 P1-b — 대비 2.6:1 → 4.5:1+ (--bg2 #F2F4F8 기준 약 4.6:1) */
+  font-size: 12px;               /* PM320-D6 P1-b — 10→11px 가독 */
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* PM320-D6 P1-b — 시각 원형(15px)은 그대로 두고 클릭/터치 영역만 확장(투명 오버레이).
+   문서 플로우 밖(absolute)이라 주변 레이아웃 0 영향.
+   R28 P1④ (조니 2심, 2026-06-11) — 24px → 44px (터치 타깃 일괄 44×44, 시각 크기 불변). */
+.cal-term-tip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+.cal-term-tip:hover { color: var(--am); border-color: var(--am3); }
+.cal-term-tip[aria-expanded="true"] { color: #fff; background: var(--am); border-color: var(--am); }
+/* 팝오버 — position:fixed 오버레이(좌표는 JS가 버튼 rect 기준 계산·경계 보정).
+   문서 플로우 밖이라 열려도 주변 레이아웃 0 영향. max-width + min-width 로 한 글자 세로 기둥 방지. */
+.cal-term-pop {
+  position: fixed;
+  z-index: 50;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 180px;
+  max-width: 280px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: var(--tx);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  text-align: left;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  box-shadow: 0 6px 18px rgba(26, 29, 38, 0.22);
+}
+.cal-term-pop-title { display: block; font-weight: 800; font-size: 12px; margin-bottom: 2px; color: var(--am2); }
 
 /* DOC-20260603-DSN-001 §2.3 / §7.2 — PICK 좌측 액센트바 골드 강조 (이중 강조).
    --lu (상한가) 동시 존재 시 빨강 우선 (DSN-001 §2.3 / §7.2 정합). */
@@ -3745,4 +4291,3 @@ body.single-card-mode { background: var(--bg) !important; }
     transition: none !important;
   }
 }
-
