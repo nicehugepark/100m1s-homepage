@@ -452,6 +452,39 @@ function _wireUsFutToggle() {
 //   - 데이터: 전일(prevDate) loadCalDayData 결과의 interpretedByName 중 pm320_pick.is_pick===true 1건.
 //   - 청산 완료(taken_profit/expired_*) 시 결과 + 장중 MDD 병기. running(진행중)이면 "보유 중 D+n".
 //   - 픽 부재/미신뢰 시 빈 문자열(미렌더, 추정 0 — FLR-AGT-002). 하드코딩 0.
+
+// R25 P0-1 (2026-06-11) — D-카운터 분모 동적화 helpers. 종전 "/+3" 하드코딩 + dOffset<=3 조건은
+//   물타기 픽(만기 연장, 예: 6/4 픽 expiry 6/12 = D+6)과 같은 카드의 만기 필드와 자기모순 +
+//   D+4~ 진입 시 카운터 소실. 분모 = pick_date→expiry_date 영업일 차(데이터 SSOT, "D+6" 등
+//   전략 파라미터 하드코딩 0). 주중(월~금) 카운트 — pick/expiry 자체가 영업일이라 안전, 중간
+//   평일 공휴일 구간은 ±1 보수 오차 가능(분모/분자 동일 산식이라 상호 정합). 무효 입력 시 null
+//   → 호출부가 카운터 자체를 생략(거짓 표시 차단, FLR-AGT-002).
+function _pm320BizDayDiff(fromISO, toISO) {
+  if (typeof fromISO !== 'string' || typeof toISO !== 'string') return null;
+  const f = fromISO.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const t = toISO.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!f || !t) return null;
+  const from = Date.UTC(+f[1], +f[2] - 1, +f[3]);
+  const to = Date.UTC(+t[1], +t[2] - 1, +t[3]);
+  if (to < from) return null;
+  let count = 0;
+  for (let ms = from + 86400000; ms <= to; ms += 86400000) {
+    const dow = new Date(ms).getUTCDay();
+    if (dow !== 0 && dow !== 6) count++;
+    if (count > 60) return null; // 비정상 구간(데이터 오염) 방어 — 카운터 생략
+  }
+  return count;
+}
+function _pm320DTotal(pk) {
+  if (!pk) return null;
+  return _pm320BizDayDiff(pk.pick_date, pk.expiry_date);
+}
+// KST 오늘 (YYYY-MM-DD) — 브라우저 timezone 무관 (_computeFreshnessLabel 동일 기법, UTC+9 가산)
+function _pm320TodayKstISO() {
+  const kst = new Date(Date.now() + 9 * 3600 * 1000);
+  return `${kst.getUTCFullYear()}-${String(kst.getUTCMonth() + 1).padStart(2, '0')}-${String(kst.getUTCDate()).padStart(2, '0')}`;
+}
+
 function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
   try {
     if (!prevInterpByName || typeof prevInterpByName.values !== 'function') return '';
@@ -468,16 +501,27 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     const _krw = (n) => (n == null || !Number.isFinite(n)) ? '—' : (n.toLocaleString('ko-KR') + '원');
     let markText, mod, finalPct;
     if (state === 'running') {
-      const d = (pk.d_offset != null && pk.d_offset >= 0 && pk.d_offset <= 3) ? ` (D+${pk.d_offset}/+3)` : '';
+      // R25 P0-1/P0-2 (2026-06-11) — (1) 분모 동적: 만기 필드 기반(_pm320DTotal), "/+3" 하드코딩 폐기.
+      //   (2) D+N 동결 차단: 스냅샷 d_offset 대신 pick_date→오늘(KST) 실제 영업일 차로 라이브 계산
+      //   (만기 상한 클램프). 트래커 데이터 갱신이 정지돼도 "진입 당일 (D+0)" 거짓 라벨이 안 나온다.
+      //   잠정 손익(current_pnl_pct)은 스냅샷(prevDate) 기준 값 그대로 → "집계 기준 MM/DD" caption 으로
+      //   정직 명시(데이터 파이프라인 touch 0, 표기 정직성만 회복 — FLR-AGT-002).
+      const dTotal = _pm320DTotal(pk);
+      const todayKst = _pm320TodayKstISO();
+      const dLiveRaw = _pm320BizDayDiff(pk.pick_date, todayKst);
+      const dLive = (dLiveRaw != null)
+        ? (dTotal != null ? Math.min(dLiveRaw, dTotal) : dLiveRaw)
+        : pk.d_offset;
+      const d = (dLive != null && dLive >= 0 && dTotal != null) ? ` (D+${dLive}/+${dTotal})` : '';
       // PM320-D6 R23 P0-2 (수익률 모순 정합) — 픽 손익(current_pnl_pct)은 *진입가 대비* 잠정치다.
-      //   D+0(진입 당일)엔 진입가≈당일 종가라 거의 +0.00% → 사용자에겐 같은 종목의 카드 헤더 "당일 등락
-      //   +N%"(전일 종가 대비)와 한 화면에서 모순으로 보인다(R23 적발: 후성 칩 +0.00% vs 카드 +20.12%).
-      //   데이터는 동일 SoT(진입가 대비 손익) 유지하고 표기만 분리: 진입 당일은 "진입 당일·성과 집계 전",
-      //   D+1~ 는 "보유 중"으로 의미를 명시(추정·발명 0, FLR-AGT-002). 카드의 진입가 grid 가 기준을 보강.
-      const isEntryDay = (pk.d_offset === 0);
+      //   진입 당일은 "진입 당일·성과 집계 전", D+1~ 는 "보유 중"으로 의미 분리(R23). 판정 기준을
+      //   스냅샷 d_offset → 라이브 dLive 로 교체(R25 P0-2: 어제 픽이 오늘도 "진입 당일"로 남는 거짓 차단).
+      const isEntryDay = (dLive === 0);
+      const staleCaption = (!isEntryDay && typeof prevDate === 'string' && prevDate < todayKst)
+        ? ` · 집계 기준 ${prevDate.slice(5).replace('-', '/')}` : '';
       markText = isEntryDay
         ? `⏳ 진입 당일 · 성과 집계 전${d}`
-        : `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}`;
+        : `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}${staleCaption}`;
       mod = 'running';
     } else {
       const r = pk.result || {};
@@ -1442,10 +1486,15 @@ function renderCalExpandContent(date, data) {
     const pnl = pk.current_pnl_pct;
     const dOffset = pk.d_offset;
     if (state === 'running') {
-      // D+0~D+3 진행 중 통합 — 전부 "⏳ 잠정 {pnl} (D+offset/+3)" 단일 형태 (FLR-AGT-002 §4.4)
+      // 진행 중 통합 — 전부 "⏳ 잠정 {pnl} (D+offset/+N)" 단일 형태 (FLR-AGT-002 §4.4)
       // 대표 지시 2026-06-05: D+0(당일 진입)도 "🕐 진입 D+0" 별도 문구 폐지, 잠정 형태로 통일
+      // R25 P0-1 (2026-06-11) — 분모 "/+3" 하드코딩 + dOffset<=3 조건 폐기 → 만기 SSOT 동적
+      //   (_pm320DTotal = pick_date→expiry_date 영업일 차). 물타기 픽 만기 연장(D+6 등) 시
+      //   같은 카드 만기 필드와 자기모순 + D+4~ 카운터 소실 버그 봉쇄. per-day 스냅샷 카드라
+      //   분자(d_offset)는 그 날 기준 스냅샷 값 유지(역사 카드 의미 정합).
       const pnlText = _fmtPctSigned(pnl);
-      const dText = (dOffset != null && dOffset >= 0 && dOffset <= 3) ? ` (D+${dOffset}/+3)` : '';
+      const dTotal = _pm320DTotal(pk);
+      const dText = (dOffset != null && dOffset >= 0 && dTotal != null && dOffset <= dTotal) ? ` (D+${dOffset}/+${dTotal})` : '';
       return {
         html: `⏳ 잠정 ${pnlText}${dText}`,
         mod: 'running',
@@ -1849,7 +1898,7 @@ function renderCalExpandContent(date, data) {
   const metaText = _metaSuppressDomestic
     ? `주말·휴장${generatedSuffix}`
     : (todayStocks.length > 0
-      ? `오늘의 종목 : ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
+      ? `오늘의 종목: ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
       : `—${generatedSuffix}`);
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
@@ -2624,7 +2673,8 @@ function renderCalExpandContent(date, data) {
     const _winContextHtml =
       `<div class="cal-pm320-wr-context">`
       + `익절 목표가 ${tgtPct !== null ? `+${escapeHtml(tgtPct.toFixed(1))}%` : '작게'}로 작아 승률이 높게 산출됩니다`
-      + ` · 표본 ${s.total_picks}픽`
+      // R25 P1④ (2026-06-11) — "표본 N픽" 동일 블록 2회 중복 제거: 손익비 줄(_rrHtml)에 1회만 유지.
+      //   (위 wr-stats "총 N픽"과도 중복 — 본 맥락 줄에서는 표본 재표기 생략)
       + `</div>`;
     // 손님 정직성(2026-06-10) — 최대낙폭(MDD) 병기. "승률만 보면 안전해 보이는 착시" 차단.
     //   worst_mdd_pct: history 전수 transversal 실측(하드코딩 0). 보유 중 진입평단 대비 최저 평가손실.
@@ -2754,6 +2804,12 @@ function renderCalExpandContent(date, data) {
       + `<div style="font-size:12px;color:var(--dm);line-height:1.6;">직전 거래일${dl ? ' (' + escapeHtml(dl) + ')' : ''} 데이터는 위 야간 미국증시 아래에서 확인하거나, 왼쪽 달력에서 날짜를 선택하세요</div>`
       + `</div>`;
   })();
+  // R25 P1⑧ (2026-06-11) — 히어로 "하루 단 한 종목" vs 첫 화면 후보 N장 충돌 해명 1줄 (카드 리스트 상단).
+  //   장중 pending 배너(_pm320PendingHtml)가 이미 동일 해명을 포함 → 배너 부재 시(픽 확정 후·과거일)만
+  //   노출(동일 해명 2회 중복 차단 — P1④ 동형 원칙). 종목 1장 이하 시 "후보 N장 충돌" 자체가 없어 생략.
+  const _candidateNoteHtml = (!_isSingleCardMode && !_pm320PendingHtml && !_suppressDomestic && todayStocks.length > 1)
+    ? `<div class="cal-trade-list-note">아래는 거래대금 상위 <b>추천 후보</b> 종목입니다 — 추천은 이 중 <b>하루 단 한 종목</b>입니다</div>`
+    : '';
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
@@ -2765,6 +2821,7 @@ function renderCalExpandContent(date, data) {
       ${_macroHtmlOut}
       ${_rankingBannerOut}
       ${_suppressDomestic ? _suppressDomesticHtml : (todayStocks.length > 0 ? `
+        ${_candidateNoteHtml}
         <div class="cal-trade-list" style="margin-top:10px;">
           ${todayStocks.map(renderTodayCard).join('')}
         </div>

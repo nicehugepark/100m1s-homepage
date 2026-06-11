@@ -112,8 +112,12 @@ async function scenarioA(viewport, themeAttr, tag) {
   console.log(`\n[시나리오 A · ${tag}] viewport=${viewport.width}x${viewport.height}`);
   console.log(`  status="${r.statusText}" bbox=${JSON.stringify(r.statusBox)} bar=${JSON.stringify(r.barBox)}`);
   assert(r.visible, `픽바 visible (${tag})`);
-  assert(r.statusText === '⏳ 진입 당일 · 성과 집계 전 (D+0/+3)', `① 상태 verbatim 전체 — 절단 0 (실측 "${r.statusText}")`);
-  assert(/\(D\+0\/\+3\)$/.test(r.statusText), `① D-카운터 토큰 완전 종결 ")"`);
+  // R25 P0-1/P0-2 (2026-06-11) — D-카운터 분모 동적(fixture 만기 SSOT: 6/10→6/16 영업일 = +4)
+  //   + 분자 라이브 계산(스냅샷 동결 차단) + 스냅샷 손익 "집계 기준 MM/DD" caption.
+  //   고정 verbatim("/+3" 하드코딩 — fixture 만기와 자기모순이던 종전 기대값) 대신 형태 검증(실행일 비의존).
+  assert(/^⏳ (진입 당일 · 성과 집계 전|보유 중 ((\+|-)?[\d.,]+%|—)) \(D\+\d+\/\+4\)( · 집계 기준 \d{2}\/\d{2})?$/.test(r.statusText),
+    `① 상태 형태 정합 — 동적 분모 +4 + 절단 0 (실측 "${r.statusText}")`);
+  assert(/\(D\+\d+\/\+4\)/.test(r.statusText), `① D-카운터 토큰 완전 "(D+n/+4)" (만기 SSOT 분모)`);
   assert(r.statusScrollW <= r.statusClientW + 1, `① 상태 내부 클립 0 (scrollW ${r.statusScrollW} ≤ clientW ${r.statusClientW})`);
   assert(r.statusBox.right <= r.barBox.right + 0.5, `① 상태 bbox 바 내부 (status.right ${r.statusBox.right.toFixed(1)} ≤ bar.right ${r.barBox.right.toFixed(1)})`);
   assert(r.statusRects === 1, `① 상태 단일 라인 (rects=${r.statusRects})`);
