@@ -1214,6 +1214,9 @@ a.cal-credit-row:hover,
   flex-direction: column;        /* r5 — 어제픽 칩 + "외 N종 보유 중" 리스트 세로 스택 */
   align-items: center;
   justify-content: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   margin: 4px 0 20px;
   scroll-margin-top: 84px;
 }
@@ -1222,6 +1225,7 @@ a.cal-credit-row:hover,
 .cal-pre-prev-pick-holdings {
   width: 100%;
   max-width: 360px;
+  min-width: 0;
   box-sizing: border-box;
   margin-top: 8px;
   padding: 8px 12px 9px;
@@ -1284,6 +1288,7 @@ a.cal-credit-row:hover,
   text-align: left;
   width: 100%;
   max-width: 360px;
+  min-width: 0;
   box-sizing: border-box;
   scroll-margin-top: 84px; /* 픽바 data-pickbar-scroll 착지 시 sticky 가림 방지(카드 직접 scroll 대상) */
 }
@@ -1296,7 +1301,7 @@ a.cal-credit-row:hover,
 }
 .cal-pre-prev-pick-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
 }
 .cal-pre-prev-pick-cell {
@@ -2722,6 +2727,9 @@ body.single-card-mode { background: var(--bg) !important; }
   background: var(--am4);
   border: 1px solid var(--am3);
   box-shadow: 0 1px 2px rgba(180, 130, 20, 0.08);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .cal-pm320-today-rec-head {
   display: flex;
@@ -2729,6 +2737,7 @@ body.single-card-mode { background: var(--bg) !important; }
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 11px;
+  min-width: 0;
 }
 .cal-pm320-today-rec-star { display: inline-flex; color: var(--am); flex-shrink: 0; }
 .cal-pm320-today-rec-headlabel {
@@ -2742,6 +2751,9 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 800;
   color: var(--tx);
   margin-left: 2px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .cal-pm320-today-rec-code {
   font-size: 12px;
@@ -2752,7 +2764,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-today-rec-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   /* R13 P1: 익절 칸(라벨+값+물타기 시·조건부 3줄)과 1줄 칸의 높이가 달라도 라벨이 같은
      상단 baseline에 정렬되도록 start 정렬(stretch 시 짧은 칸 내용이 가운데로 떠 어긋나 보임). */
@@ -2841,7 +2853,8 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-today-rec-more:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
 @media (max-width: 480px) {
   /* 만기(날짜)·가격이 4열에서 잘리는 문제 → 2×2 그리드로 전환(값 전체 노출). */
-  .cal-pm320-today-rec-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+  .cal-pm320-today-rec { padding-left: 12px; padding-right: 12px; }
+  .cal-pm320-today-rec-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
   .cal-pm320-today-rec-cell { padding: 7px 9px; }
   .cal-pm320-today-rec-v { font-size: 13px; }
 }
