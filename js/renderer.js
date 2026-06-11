@@ -1011,13 +1011,15 @@ window._computeShareUrl = _computeShareUrl;
 //   현재 선택일 픽(.cal-pm320-today-rec)을 헤더 아래 1줄 바에 mirror. SSOT=DOM(추정 0).
 //   픽 카드가 뷰포트 상단 밖으로 나갈 때만 노출(IntersectionObserver). 탭 = data-rec-jump 재사용.
 let _pickBarObserver = null;
-function _pm320StickyJumpOffset() {
+function _pm320StickyJumpOffset(opts) {
+  const forcePickbar = !!(opts && opts.forcePickbar);
   const isMobile = window.innerWidth <= 880;
   const nav = document.querySelector('header');
   let offset = nav ? nav.getBoundingClientRect().height : (isMobile ? 68 : 72);
   const bar = document.getElementById('pm320-pickbar');
-  if (bar && !bar.hidden && (bar.classList.contains('pm320-pickbar--visible') || document.body.classList.contains('pm320-pickbar-on'))) {
-    offset += bar.getBoundingClientRect().height || (isMobile ? 64 : 52);
+  if (bar && (forcePickbar || (!bar.hidden && (bar.classList.contains('pm320-pickbar--visible') || document.body.classList.contains('pm320-pickbar-on'))))) {
+    const cssPickbarH = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('--pickbar-h'));
+    offset += bar.getBoundingClientRect().height || cssPickbarH || (isMobile ? 64 : 52);
   }
   const head = document.querySelector('#cal-content .cal-content-head');
   if (head) {
@@ -3247,7 +3249,7 @@ function renderCalExpandContent(date, data) {
       if (btn.hasAttribute('aria-expanded')) btn.setAttribute('aria-expanded', 'true');
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const _jump = () => {
-        const navOffset = _pm320StickyJumpOffset();
+        const navOffset = _pm320StickyJumpOffset({ forcePickbar: true });
         const rect = target.getBoundingClientRect();
         const top = window.pageYOffset + rect.top - navOffset;
         window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });

@@ -236,6 +236,7 @@
   --footer-bg: #141210; --footer-tx: #8E8676;
 }
 @media (max-width: 640px) {
+  main { padding-left: 16px; padding-right: 16px; }
   :root {
     --card-indent-header: 6px;
     --card-indent-nums: 26px;
@@ -333,7 +334,7 @@ header {
   }
   .pm320-pickbar-eyebrow { grid-area: eyebrow; }
   .pm320-pickbar-name { font-size: 13px; }
-  .pm320-pickbar-name { grid-area: name; overflow: visible; text-overflow: clip; }
+  .pm320-pickbar-name { grid-area: name; min-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .pm320-pickbar-status { font-size: 12px; }
   .pm320-pickbar-status { grid-area: status; max-width: 100%; }
   .pm320-pickbar-arrow { grid-area: arrow; align-self: center; }
@@ -362,8 +363,8 @@ header {
 }
 
 /* 모바일 햄버거 */
-.menu-toggle { display: none; width: 40px; height: 40px; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; position: relative; }
-/* R28 P1④ — 메뉴 토글 시각 40px 유지, 터치 영역 44×44 투명 오버레이. */
+.menu-toggle { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; padding: 0; position: relative; }
+/* WAVE6 — 실제 bbox 기준 44×44. 오버레이만 키우면 DQA 측정에서 40px로 남는다. */
 .menu-toggle::after {
   content: '';
   position: absolute; top: 50%; left: 50%;
@@ -1883,6 +1884,12 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-cell.future { color: var(--cal-future); cursor: not-allowed; pointer-events: none; } /* R15: 다크에서 --bd(#33363F)는 배경과 거의 동색 → 가독 회복(#565B66) */
 .toss-cal-cell.outside { visibility: hidden; }
 .toss-cal-cell.no-data { opacity: 0.35; pointer-events: none; }
+.toss-cal-cell.no-data.weekend,
+.toss-cal-cell.no-data.holiday {
+  opacity: 0.7;
+  cursor: pointer;
+  pointer-events: auto;
+}
 .toss-cal-cell.market-hours { opacity: 0.7; cursor: pointer; }
 .toss-cal-cell.weekend { opacity: 0.7; }
 .toss-cal-cell.sunday { color: var(--cal-sun); }
@@ -3626,7 +3633,18 @@ body.single-card-mode { background: var(--bg) !important; }
     gap: 18px;
   }
   .cal-layout > .cal-side { position: static; }
-  .toss-cal { max-width: 280px; margin: 0 auto; }
+  .toss-cal { width: 100%; max-width: 326px; margin: 0 auto; padding: 14px 8px 12px; }
+  .toss-cal-nav { width: 44px; height: 44px; border-radius: 12px; font-size: 14px; }
+  .toss-cal-nav::after { display: none; }
+  .toss-cal-grid {
+    grid-template-columns: repeat(7, 44px);
+    grid-auto-rows: 44px;
+    gap: 0;
+    justify-content: center;
+  }
+  .toss-cal-dow { width: 44px; height: 24px; line-height: 24px; }
+  .toss-cal-cell { width: 44px; height: 44px; border-radius: 12px; font-size: 13px; }
+  .toss-cal-cell::before { display: none; }
   .cal-content { padding: 20px 18px; }
   /* REQ-074 — 모바일 폰트 위계 축소. 20px → 13px (데스크탑 15px 대비 모바일 -2px). */
   .cal-content-date { font-size: 13px; }

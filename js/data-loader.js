@@ -271,12 +271,15 @@ async function loadCalDayData(date) {
     const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
     _todayPreMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
   } catch (_) { _todayPreMarket = false; }
+  const _closedMarket = (typeof isMarketClosed === 'function') ? isMarketClosed(date) : false;
+  // WAVE6-R29 — 휴장일 클릭은 국내장/PM320 산출물이 원칙적으로 없다.
+  // 화면은 kiwoom snapshot + renderer 휴장 안내로 충분하므로 확정 404가 되는 interpreted/pm320_history 요청은 건너뛴다.
   const [kiwoom, stockDailyDirect, pm320Data, nightlyUs, pm320Summary] = await Promise.all([
     loadKiwoomDate(date),
-    _todayPreMarket
+    (_todayPreMarket || _closedMarket)
       ? Promise.resolve(null)
       : fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
-    _todayPreMarket ? Promise.resolve(null) : loadPm320History(date),
+    (_todayPreMarket || _closedMarket) ? Promise.resolve(null) : loadPm320History(date),
     loadNightlyUsSummary(date),
     loadPm320Summary()
   ]);

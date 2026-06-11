@@ -179,7 +179,8 @@ function renderCalendar() {
     const isToday = (date === todayStr);
     const isHol = isHoliday(date);
     const classes = ['toss-cal-cell'];
-    const isTodayMarketHours = isToday && !isMarketClosed(date) && (new Date().getHours() < 16);
+    const isClosed = isMarketClosed(date);
+    const isTodayMarketHours = isToday && !isClosed && (new Date().getHours() < 16);
     if (isFuture) classes.push('future');
     else if (!hasData && !isToday && !isTodayMarketHours) classes.push('no-data');
     else if (!hasData && isTodayMarketHours) classes.push('market-hours');
@@ -191,7 +192,7 @@ function renderCalendar() {
     if (date === calSelectedDate) classes.push('selected');
     const holName = getHolidayName(date);
     const aria = `${date}${isToday ? ' (오늘)' : ''}${isTodayMarketHours ? ' (장중)' : ''}${holName ? ' ' + holName : ''}`;
-    const isClickable = !isFuture && (hasData || isToday);
+    const isClickable = !isFuture && (hasData || isToday || isClosed);
     html += `<div class="${classes.join(' ')}" data-date="${date}" role="button" tabindex="${isClickable ? 0 : -1}" aria-label="${aria}">${d}</div>`;
   }
   grid.innerHTML = html;
