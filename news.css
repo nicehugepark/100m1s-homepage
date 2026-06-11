@@ -280,7 +280,7 @@ header {
 }
 .pm320-pickbar:focus-visible { outline: 2px solid var(--am); outline-offset: -2px; }
 .pm320-pickbar-eyebrow {
-  font-size: 11px; font-weight: 700; color: var(--am); letter-spacing: -0.2px;
+  font-size: 12px; font-weight: 700; color: var(--am); letter-spacing: -0.2px; /* R26 P1① 11→12px */
   flex: 0 0 auto; white-space: nowrap;
 }
 .pm320-pickbar-name {
@@ -300,7 +300,7 @@ header {
   .pm320-pickbar { padding: 0 16px; }
   .pm320-pickbar.pm320-pickbar--visible { padding: 10px 16px; }
   .pm320-pickbar-name { font-size: 13px; }
-  .pm320-pickbar-status { font-size: 11px; }
+  .pm320-pickbar-status { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pm320-pickbar { transition: none; }
@@ -353,7 +353,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 12px; background: var(--am3);
   border: 1px solid rgba(196,153,48,0.25); border-radius: 999px;
-  font-size: 10px; font-weight: 800; color: var(--am);
+  font-size: 12px; font-weight: 800; color: var(--am); /* R26 P1① 10→12px */
   letter-spacing: 1px; text-transform: uppercase;
   margin-bottom: 16px;
 }
@@ -364,7 +364,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .page-title .accent { color: var(--am); }
 .page-desc { font-size: 14px; color: var(--tx2); max-width: 640px; line-height: 1.7; }
 .page-meta {
-  margin-top: 16px; font-size: 11px; color: var(--dm);
+  margin-top: 16px; font-size: 12px; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
 
@@ -388,7 +388,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   letter-spacing: -0.6px;
 }
 .date-stats {
-  font-size: 11px; color: var(--dm);
+  font-size: 12px; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
 
@@ -419,7 +419,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   align-items: baseline;
 }
 .stock-rank {
-  font-size: 11px; font-weight: 800; color: var(--dm);
+  font-size: 12px; font-weight: 800; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
 .stock-name {
@@ -456,7 +456,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 }
 .news-judgment {
   flex-shrink: 0;
-  font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
   letter-spacing: 0.3px;
   white-space: nowrap;
   display: inline-flex; align-items: center; gap: 4px;
@@ -485,24 +485,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   .cal-candles20-empty { display: none; }
 }
 .cal-disc-section { display:flex; flex-direction:column; gap:3px; margin-top:8px; padding-top:6px; border-top:1px dashed var(--am4); }
-.cal-disc-badge { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--pos-bg); color:var(--pos); border:1px solid var(--pos); vertical-align:middle; }
+.cal-disc-badge { display:inline-block; font-size:12px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--pos-bg); color:var(--pos); border:1px solid var(--pos); vertical-align:middle; }
 .cal-feature-badges { display:flex; flex-wrap:wrap; gap:6px; padding:4px 12px 0 var(--card-indent-badges); align-items:center; }
-.cal-credit-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:999px; background:var(--neg-bg); color:var(--up); border:1px solid var(--up); vertical-align:middle; }
+.cal-credit-badge { display:inline-block; font-size:12px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:999px; background:var(--neg-bg); color:var(--up); border:1px solid var(--up); vertical-align:middle; }
 /* REQ-031 — pill 통일 (border-radius: 999px). 시각 일관성 (SPEC-001 §III). */
 /* REQ-045 §A — 헤더 배지 폰트 통일 (11px / weight 600 / letter-spacing 0.01em). */
 /* REQ-062 — margin-right 제거. 부모 .cal-feature-badges flex gap:6px 으로 형제 간격 통제 (들여쓰기 결함 fix). */
-.cal-status-badge { display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:999px; vertical-align:middle; }
+.cal-status-badge { display:inline-block; font-size:12px; font-weight:600; letter-spacing:0.01em; padding:2px 8px; border-radius:999px; vertical-align:middle; }
 .cal-status-badge.caution { background:var(--am3); color:var(--am); }
 .cal-status-badge.warning { background:var(--am3); color:var(--am); }
 .cal-status-badge.danger { background:var(--neg-bg); color:var(--neg); }
 .cal-status-badge.hot { background:var(--neg-bg); color:var(--ru); }
 /* REQ-008: 단일가매매 병기 배지 — 차콜 톤 (경보 톤과 구분, 부가 조치성) */
 .cal-status-badge.sev-single { background:#1F2937; color:#fff; font-weight:700; letter-spacing:0.2px; }
-.cal-status-detail { padding:4px 8px; margin:4px 0; background:rgba(255,152,0,0.06); border-left:2px solid var(--am); border-radius:0 4px 4px 0; font-size:11px; line-height:1.5; color:var(--tx2); }
+.cal-status-detail { padding:4px 8px; margin:4px 0; background:rgba(255,152,0,0.06); border-left:2px solid var(--am); border-radius:0 4px 4px 0; font-size:12px; line-height:1.5; color:var(--tx2); }
 .cal-status-detail .cal-badge-period { display:inline-block; font-weight:600; color:var(--am); margin-right:6px; }
 .cal-status-detail .cal-badge-summary { display:block; margin-top:2px; color:var(--tx2); }
 .cal-status-detail .cal-badge-condition { display:block; margin-top:2px; color:var(--neg); font-weight:500; }
-.cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:var(--down); font-size:10px; }
+.cal-status-detail .cal-badge-regulation { display:block; margin-top:2px; color:var(--down); font-size:12px; }
 
 /* v3 사유 영역 — 라벨+표+인사이트 통합 (대표 정정 18:52 KST) */
 /* REQ-029 §2 — 사유 박스 시각 통합 정합 (SPEC-001 §IV.1).
@@ -523,25 +523,25 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-detail.v3 .cal-status-label.sev-warning { background: none; color: var(--am); }
 .cal-status-detail.v3 .cal-status-label.sev-danger  { background: none; color: var(--neg); }
 .cal-status-detail.v3 .cal-status-label.sev-hot     { background: none; color: var(--ru); }
-.cal-status-detail.v3 .cal-status-period { font-size: 11px; color: var(--tx2); font-weight: 500; }
+.cal-status-detail.v3 .cal-status-period { font-size: 12px; color: var(--tx2); font-weight: 500; }
 /* 2026-04-22: 상태 배지 기간의 날짜 범위 강조 — 주황 bold + 살짝 배경 */
 .cal-badge-date-range {
   color: var(--am); font-weight: 700; background: var(--am4);
   padding: 1px 5px; border-radius: 3px; font-variant-numeric: tabular-nums;
 }
 /* FLR-011 v5: 효력 기간 상태 마커 (예정/진행중/종료) */
-.cal-period-mark { font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-left: 4px; font-weight: 600; }
+.cal-period-mark { font-size: 12px; padding: 1px 5px; border-radius: 3px; margin-left: 4px; font-weight: 600; }
 .cal-period-mark.upcoming { background: var(--bg2); color: var(--down); }
 .cal-period-mark.active   { background: var(--neg-bg); color: var(--neg); }
 .cal-period-mark.ended    { background: var(--neu-bg); color: var(--neu); }
 /* v4: KRX 단계 진행 표시 — "현재 X → 익일 Y 진입" (대표 v4 지시) */
 .cal-status-detail.v3 .cal-status-progress {
-  font-size: 11px; color: var(--up); font-weight: 600;
+  font-size: 12px; color: var(--up); font-weight: 600;
   background: var(--neg-bg); padding: 4px 8px; border-radius: 4px;
   border-left: 2px solid var(--up); margin: 2px 0; line-height: 1.5;
 }
 @media (max-width: 640px) {
-  .cal-status-detail.v3 .cal-status-progress { font-size: 10.5px; padding: 4px 6px; }
+  .cal-status-detail.v3 .cal-status-progress { font-size: 12px; padding: 4px 6px; }
 }
 /* v4: predicted (자체 추정) 라벨 시각 구분 — dashed border + 톤 다운 */
 .cal-status-detail.v3.predicted {
@@ -552,7 +552,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   border: 1px dashed currentColor; background: transparent !important;
 }
 .cal-status-predicted-tag {
-  display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.3px;
+  display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
   color: var(--tx2); background: var(--bg2); padding: 1px 6px; border-radius: 3px;
   margin-left: 4px; vertical-align: middle;
 }
@@ -560,9 +560,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   border: 1px dashed currentColor; opacity: 0.85;
 }
 .cal-status-detail.v3 .cal-status-table-wrap { overflow-x: auto; }
-.cal-status-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+.cal-status-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .cal-status-table th, .cal-status-table td { padding: 4px 6px; text-align: right; border-bottom: 1px solid var(--bd); white-space: nowrap; }
-.cal-status-table th { font-weight: 600; color: var(--dm); background: var(--am4); text-align: center; font-size: 10px; }
+.cal-status-table th { font-weight: 600; color: var(--dm); background: var(--am4); text-align: center; font-size: 12px; }
 .cal-status-table td.th-cond { text-align: left; color: var(--tx2); max-width: 180px; white-space: normal; word-break: break-all; }
 .cal-status-table td.th-base { color: var(--dm); }
 .cal-status-table td.th-thresh { color: var(--tx2); font-weight: 600; }
@@ -577,18 +577,18 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 .cal-status-table.v33 td.th-diff.near { color: var(--am); }
 .cal-status-table.v33 td.th-diff.safe { color: var(--down); }
 .cal-status-detail.v3 .cal-status-insight {
-  font-size: 11px; color: var(--tx2); background: var(--am4); padding: 6px 8px;
+  font-size: 12px; color: var(--tx2); background: var(--am4); padding: 6px 8px;
   border-radius: 4px; line-height: 1.5;
 }
-.cal-status-detail.v3 .cal-status-regulation { font-size: 11px; color: var(--down); }
+.cal-status-detail.v3 .cal-status-regulation { font-size: 12px; color: var(--down); }
 /* REQ-008: 단기과열 지정 단일가매매 부기 라인 — 차콜 컬러 스트립 + 볼드 (Option A) */
 .cal-status-detail.v3 .cal-status-single-note {
-  font-size: 11.5px; color: var(--tx); font-weight: 600;
+  font-size: 12px; color: var(--tx); font-weight: 600;
   background: rgba(31,41,55,0.05); border-left: 3px solid var(--tx);
   padding: 5px 8px 5px 10px; border-radius: 0 4px 4px 0; line-height: 1.5;
 }
 .cal-status-detail.v3 .cal-status-single-note strong { color: var(--tx); font-weight: 800; }
-.cal-status-detail.v3 .cal-status-single-note .cal-status-single-src { color: var(--dm); font-weight: 500; font-size: 10.5px; margin-left: 2px; }
+.cal-status-detail.v3 .cal-status-single-note .cal-status-single-src { color: var(--dm); font-weight: 500; font-size: 12px; margin-left: 2px; }
 .cal-status-detail.v3 .cal-status-label.sev-credit { background: none; color: var(--neg); }
 /* REQ-029 §2 — .credit / .krx 분기 rule 폐기 (base rule 통합).
    출처 구분은 라벨 텍스트(증권사 사유 단어 vs KRX 단계명)로만. */
@@ -601,20 +601,20 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 /* 그룹 (REQ-032 신설 + REQ-034 typography 정합 갱신) */
 .cal-credit-group {
   margin-top: 8px;
-  font-size: 11.5px;
+  font-size: 12px;
   line-height: 1.55;
   color: var(--tx);
 }
 .cal-credit-group + .cal-credit-group { margin-top: 8px; }
 .cal-credit-group__heading {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--tx2);
   letter-spacing: 0.01em;
   margin-bottom: 3px;
 }
 .cal-credit-group__source {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--dm);
   margin-left: 4px;
@@ -626,7 +626,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   align-items: center;
   gap: 6px;
   padding: 3px 0;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--tx2);
   text-decoration: none;
   font-variant-numeric: tabular-nums;
@@ -648,7 +648,7 @@ a.cal-credit-row:hover,
   text-align: center;
   padding: 1px 5px;
   border-radius: 3px;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 600;
   background: var(--am4);
   color: var(--tx2);
@@ -677,7 +677,7 @@ a.cal-credit-row:hover,
 
 /* 시점 — · 구분자 회색. 본문 우측 또는 라벨 우측에 nowrap. */
 .cal-credit-row__period {
-  font-size: 10.5px;
+  font-size: 12px;
   color: var(--dm);
   font-weight: 400;
   flex-shrink: 0;
@@ -703,7 +703,7 @@ a.cal-credit-row:hover,
 .cal-status-detail.v3 .cal-status-dart-link {
   display: inline-flex; align-items: center; gap: 4px;
   margin-top: 4px; padding: 3px 8px;
-  font-size: 11px; font-weight: 600; color: var(--down);
+  font-size: 12px; font-weight: 600; color: var(--down);
   background: var(--bg2); border: 1px solid var(--down); border-radius: 4px;
   text-decoration: none; line-height: 1.4;
 }
@@ -712,10 +712,10 @@ a.cal-credit-row:hover,
 
 @media (max-width: 640px) {
   .cal-status-detail.v3 { padding: 6px 6px; }
-  .cal-status-table { font-size: 9.5px; }
+  .cal-status-table { font-size: 12px; }
   .cal-status-table th, .cal-status-table td { padding: 3px 4px; }
-  .cal-status-table td.th-cond { max-width: 120px; font-size: 9.5px; }
-  .cal-status-detail.v3 .cal-status-insight { font-size: 10px; padding: 5px 6px; }
+  .cal-status-table td.th-cond { max-width: 120px; font-size: 12px; }
+  .cal-status-detail.v3 .cal-status-insight { font-size: 12px; padding: 5px 6px; }
 }
 
 /* v5 (DOC-20260422-DSN-001): 배지 상세 3섹션 구조 — 현재/다음/규정 분리 */
@@ -723,7 +723,7 @@ a.cal-credit-row:hover,
 .cal-status-section { margin-top: 10px; }
 .cal-status-section:first-of-type { margin-top: 6px; }
 .cal-status-section h3 {
-  font-size: 11px; font-weight: 600; color: var(--dm);
+  font-size: 12px; font-weight: 600; color: var(--dm);
   border-top: 1px dashed var(--bd); padding-top: 8px;
   margin: 0 0 4px; letter-spacing: 0.5px;
 }
@@ -733,7 +733,7 @@ a.cal-credit-row:hover,
 .cal-status-current-item { font-size: 12px; margin: 2px 0; color: var(--tx2); line-height: 1.5; }
 .cal-status-current-item.ended { color: var(--neu); }
 .cal-status-next-header { font-size: 12px; color: var(--tx2); margin: 3px 0; line-height: 1.5; }
-.cal-status-next-note { font-size: 10.5px; color: var(--am); font-style: italic; margin: 3px 0 0; }
+.cal-status-next-note { font-size: 12px; color: var(--am); font-style: italic; margin: 3px 0 0; }
 .cal-status-table-title {
   font-size: 12px; font-weight: 600; margin: 6px 0 4px;
   color: var(--am);
@@ -741,11 +741,11 @@ a.cal-credit-row:hover,
 .cal-status-detail.v5 .cal-status-insight { margin: 0; }
 .cal-status-detail.v5 .cal-status-insight.predicted { opacity: 0.85; font-style: italic; }
 @media (max-width: 640px) {
-  .cal-status-section h3 { font-size: 10px; padding-top: 6px; }
+  .cal-status-section h3 { font-size: 12px; padding-top: 6px; }
   .cal-status-section { margin-top: 8px; }
   .cal-status-current-item,
-  .cal-status-next-header { font-size: 11px; }
-  .cal-status-table-title { font-size: 11px; }
+  .cal-status-next-header { font-size: 12px; }
+  .cal-status-table-title { font-size: 12px; }
 }
 
 /* v6 (DOC-20260422-DSN-001 v6, FLR-20260423-001): 배지 상세박스 재설계
@@ -764,16 +764,16 @@ a.cal-credit-row:hover,
 }
 .cal-status-section.v6.intro > summary::-webkit-details-marker { display: none; }
 .cal-status-section.v6.intro > summary::before {
-  content: '▸'; font-size: 10px; color: var(--dm); transition: transform 0.15s ease;
+  content: '▸'; font-size: 12px; color: var(--dm); transition: transform 0.15s ease; /* R26 P1① 10→12px */
 }
 .cal-status-section.v6.intro[open] > summary::before { transform: rotate(90deg); }
 .cal-status-section.v6.intro > summary > h3 {
   border-top: none; padding-top: 0; margin: 0;
-  font-size: 11px; font-weight: 600; color: var(--dm); letter-spacing: 0.5px;
+  font-size: 12px; font-weight: 600; color: var(--dm); letter-spacing: 0.5px;
 }
 .cal-status-intro-body {
   margin-top: 6px; padding: 6px 8px;
-  font-size: 11.5px; color: var(--tx2); line-height: 1.55;
+  font-size: 12px; color: var(--tx2); line-height: 1.55;
   background: var(--bg2); border-left: 2px solid var(--bd); border-radius: 0 4px 4px 0;
 }
 .cal-status-section.v6.schedule h3 { color: var(--down); }
@@ -784,12 +784,12 @@ a.cal-credit-row:hover,
   background: var(--am4); padding: 1px 5px; border-radius: 3px;
   font-variant-numeric: tabular-nums;
 }
-.cal-v6-schedule-hint { font-size: 10.5px; color: var(--dm); margin-left: 2px; }
+.cal-v6-schedule-hint { font-size: 12px; color: var(--dm); margin-left: 2px; }
 .cal-v6-reason { margin-top: 4px; }
 .cal-v6-reason-body {
   margin-top: 3px; margin-left: 12px;
   padding: 5px 8px;
-  font-size: 11.5px; color: var(--tx2); line-height: 1.5;
+  font-size: 12px; color: var(--tx2); line-height: 1.5;
   background: var(--bg2); border-radius: 4px;
   border-left: 2px solid var(--bd);
 }
@@ -810,30 +810,30 @@ a.cal-credit-row:hover,
 }
 .cal-v6-rule-footnote {
   margin-top: 6px; padding: 4px 8px;
-  font-size: 11px; color: var(--tx2);
+  font-size: 12px; color: var(--tx2);
   background: var(--am4); border-left: 2px solid var(--am3); border-radius: 0 4px 4px 0;
 }
 .cal-v6-rule-dart { margin-top: 6px; }
 .cal-v6-rule-pending {
-  padding: 6px 8px; font-size: 11px; color: var(--dm); font-style: italic;
+  padding: 6px 8px; font-size: 12px; color: var(--dm); font-style: italic;
   background: var(--bg2); border-radius: 4px;
 }
 @media (max-width: 640px) {
-  .cal-v6-schedule-item { font-size: 11px; }
-  .cal-v6-rule-item { font-size: 11px; padding-left: 16px; }
+  .cal-v6-schedule-item { font-size: 12px; }
+  .cal-v6-rule-item { font-size: 12px; padding-left: 16px; }
   .cal-v6-rule-item::before { left: 6px; }
-  .cal-v6-reason-body { font-size: 10.5px; padding: 4px 6px; }
-  .cal-status-intro-body { font-size: 10.5px; padding: 5px 6px; }
+  .cal-v6-reason-body { font-size: 12px; padding: 4px 6px; }
+  .cal-status-intro-body { font-size: 12px; padding: 5px 6px; }
 }
 
-.cal-threshold { font-size:11px; padding:1px 0; color:var(--tx2); }
+.cal-threshold { font-size:12px; padding:1px 0; color:var(--tx2); }
 .cal-threshold.triggered { color:var(--neg); font-weight:600; }
 .cal-threshold.safe { color:var(--pos); }
 .cal-spark-empty { width:80px; height:32px; background: var(--g04); border-radius:4px; flex-shrink:0; }
-.cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:0.3px; background:var(--am4); color:var(--am); border:1px solid var(--am3); vertical-align:middle; }
-.cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:11px; color:var(--tx2); text-decoration:none; cursor:pointer; }
+.cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:12px; font-weight:700; letter-spacing:0.3px; background:var(--am4); color:var(--am); border:1px solid var(--am3); vertical-align:middle; }
+.cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:12px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
-.cal-disc-cat { flex-shrink:0; min-width:42px; text-align:center; padding:1px 5px; border-radius:3px; font-size:9.5px; font-weight:600; background:var(--am4); color:var(--tx2); }
+.cal-disc-cat { flex-shrink:0; min-width:42px; text-align:center; padding:1px 5px; border-radius:3px; font-size:12px; font-weight:600; background:var(--am4); color:var(--tx2); }
 .cal-disc-cat.cb { background:var(--am4); color:var(--am); }
 .cal-disc-cat.credit { background:var(--neg-bg); color:var(--up); }
 .cal-disc-summary {
@@ -848,11 +848,11 @@ a.cal-credit-row:hover,
   overflow-wrap: anywhere;
 }
 .cal-disc-ext { flex-shrink:0; color:var(--dm); }
-.cal-disc-more { font-size:10.5px; color:var(--dm); padding:2px 0; font-style:italic; }
-.cal-disc-period { display:block; margin-top:2px; font-size:10.5px; font-weight:600; color:var(--tx2); white-space:normal; word-break:keep-all; line-height:1.45; }
-.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:9.5px; font-weight:700; background:var(--disc-period-bg); color:var(--disc-period-tx); vertical-align:1px; }
+.cal-disc-more { font-size:12px; color:var(--dm); padding:2px 0; font-style:italic; }
+.cal-disc-period { display:block; margin-top:2px; font-size:12px; font-weight:600; color:var(--tx2); white-space:normal; word-break:keep-all; line-height:1.45; }
+.cal-disc-period-label { display:inline-block; margin-right:4px; padding:1px 6px; border-radius:3px; font-size:12px; font-weight:700; background:var(--disc-period-bg); color:var(--disc-period-tx); vertical-align:1px; }
 /* v2.5: cal-disc-condition 스타일 보존 (다른 영역에서 쓰일 수 있음). disc 영역에서는 더 이상 노출 안 함 */
-.cal-disc-condition { display:block; font-size:10.5px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
+.cal-disc-condition { display:block; font-size:12px; color:var(--dm); margin-top:2px; font-style:italic; line-height:1.45; }
 /* v2.5: 모바일 disc 영역 word-break 강화 */
 @media (max-width: 640px) {
   .cal-disc-item { padding:4px 0; }
@@ -866,13 +866,13 @@ a.cal-credit-row:hover,
 .cal-credit-reason .cal-disc-item:hover { color:var(--neg); }
 .judgment-strength {
   font-weight: 700;
-  font-size: 9px;
+  font-size: 12px;
   opacity: 0.75;
 }
 .news-content { flex: 1; min-width: 0; }
 .news-summary { font-size: 12.5px; line-height: 1.6; color: var(--tx); margin-bottom: 4px; }
 .news-reasoning {
-  font-size: 11px; color: var(--tx2); font-style: italic;
+  font-size: 12px; color: var(--tx2); font-style: italic;
   margin-top: 4px; line-height: 1.5;
 }
 
@@ -904,7 +904,7 @@ a.cal-credit-row:hover,
 .theme-map-chip:hover { background: var(--am2); }
 .theme-map-chip.active { background: var(--am); color: #fff; border-color: var(--am); }
 .theme-map-chip .chip-count {
-  font-size: 10px; font-weight: 800; color: var(--dm);
+  font-size: 12px; font-weight: 800; color: var(--dm);
   background: var(--bd); border-radius: 999px; padding: 1px 5px;
 }
 .theme-map-chip.active .chip-count { background: rgba(255,255,255,0.3); color: #fff; }
@@ -924,7 +924,7 @@ a.cal-credit-row:hover,
 }
 .theme-map-stock:last-child { border-bottom: none; }
 .theme-map-stock-name { font-weight: 700; min-width: 80px; }
-.theme-map-stock-industry { color: var(--dm); font-size: 11px; }
+.theme-map-stock-industry { color: var(--dm); font-size: 12px; }
 
 /* ───── Below-Fold 2-Column Grid ───── */
 .theme-trend { margin-bottom: 48px; }
@@ -989,7 +989,7 @@ a.cal-credit-row:hover,
 .limit-up-trend { margin-bottom: 48px; }
 .lut-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
 .lut-title { font-size: 14px; font-weight: 800; color: var(--am); }
-.lut-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
+.lut-sub { font-size: 12px; color: var(--dm); margin-top: 2px; } /* R26 P1① 11→12px */
 /* REQ-005-2026-05-04 v183: lut-wrap을 theme-trend-wrap 패턴으로 통일 (yaxis absolute z-index 2 자연 mask) */
 .lut-wrap {
   position: relative;
@@ -1041,7 +1041,7 @@ a.cal-credit-row:hover,
   min-width: 0;
 }
 .lut-streak {
-  font-size: 10px; font-weight: 700;
+  font-size: 12px; font-weight: 700;
   padding: 1px 6px; border-radius: 999px;
   background: var(--am3); color: var(--am);
   flex-shrink: 0;
@@ -1055,9 +1055,9 @@ a.cal-credit-row:hover,
   .lut-wrap { padding: 12px; }
   .lut-yaxis-col { top: 12px; left: 12px; width: 36px; height: calc(100% - 24px); }
   .lut-scroll { margin-left: 36px; }
-  .lut-streak { font-size: 9px; padding: 1px 5px; }
+  .lut-streak { font-size: 12px; padding: 1px 5px; }
   /* lut-detail-table 5컬럼 너비 (trend-detail-table mobile 정합) — 클래스 기반으로 컬럼 순서 변경에 robust */
-  .lut-detail-table { font-size: 10px; table-layout: fixed; width: 100%; }
+  .lut-detail-table { font-size: 12px; table-layout: fixed; width: 100%; }
   .lut-detail-table th { padding: 4px 3px; }
   .lut-detail-table td { padding: 4px 3px; }
   /* width는 .trend-detail-table .th-name/.td-name 등 SoT (1010~1019 라인)에서 클래스 매칭으로 자동 적용. 컬럼 순서 재배치 시 nth-child 수정 불필요. */
@@ -1074,7 +1074,7 @@ a.cal-credit-row:hover,
 .cal-feature-stale-note {
   display: block;
   margin-top: 2px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.3;
   color: var(--dm);
   font-family: 'SF Mono', 'Menlo', monospace;
@@ -1083,7 +1083,7 @@ a.cal-credit-row:hover,
 }
 .cal-feature-stale-note::before { content: '\203B  '; opacity: 0.7; }
 @media (max-width: 880px) {
-  .cal-feature-stale-note { font-size: 10px; }
+  .cal-feature-stale-note { font-size: 12px; }
 }
 
 /* design-news-time-state-v1 (catch 1) — PRE_MARKET 빈 상태 (Option A).
@@ -1138,7 +1138,7 @@ a.cal-credit-row:hover,
 .cal-pre-prev-pick--loss { background: var(--neg-bg); border: 1px solid var(--neg); }
 .cal-pre-prev-pick--running { background: var(--neu-bg); border: 1px solid var(--neu); }
 .cal-pre-prev-pick-eyebrow {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.02em;
   /* WCAG: --dm(#8B95A8) on neu-bg = 2.74:1 미달 → --tx2 로 (light 9.0 / dark 6.75:1, AA). */
@@ -1222,7 +1222,7 @@ a.cal-credit-row:hover,
   text-overflow: ellipsis;
 }
 .cal-pre-prev-pick-holding-meta {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--dm);
   white-space: nowrap;
   flex: 0 0 auto;
@@ -1263,7 +1263,7 @@ a.cal-credit-row:hover,
   min-width: 0;
 }
 .cal-pre-prev-pick-k {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--tx2);
   letter-spacing: 0.01em;
@@ -1281,7 +1281,7 @@ a.cal-credit-row:hover,
 .cal-pre-prev-pick-v--up { color: var(--up); }
 .cal-pre-prev-pick-foretell {
   margin-top: 10px;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--tx2);
   text-align: center;
@@ -1317,7 +1317,7 @@ a.cal-credit-row:hover,
 .cal-pre-market-prev[data-stale="true"]::before {
   content: '\203B  전일 데이터 (참고)';
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--dm);
   margin-bottom: 8px;
   letter-spacing: 0.02em;
@@ -1328,7 +1328,7 @@ a.cal-credit-row:hover,
   .cal-pre-market-title { font-size: 14px; }
   .cal-pre-market-sub { font-size: 12px; }
   .cal-pre-market-countdown { font-size: 18px; }
-  .cal-pre-market-toggle { font-size: 11px; padding: 7px 14px; }
+  .cal-pre-market-toggle { font-size: 12px; padding: 7px 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .cal-pre-market-toggle { transition: none; }
@@ -1338,10 +1338,10 @@ a.cal-credit-row:hover,
 .theme-tree { margin-top: 0; }
 .theme-tree-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
 .theme-tree-title { font-size: 14px; font-weight: 800; color: var(--am); }
-.theme-tree-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
+.theme-tree-sub { font-size: 12px; color: var(--dm); margin-top: 2px; }
 /* Q-20260609 — 테마트리 데이터 시점 정직 캡션 (전일 종가 기준 노출 시). 미장 빈상태 fix 동형. */
 .theme-tree-source-caption {
-  font-size: 11px; font-weight: 700; color: var(--dm);
+  font-size: 12px; font-weight: 700; color: var(--dm);
   background: var(--bg2, rgba(0,0,0,0.03)); border: 1px solid var(--bd);
   border-radius: 8px; padding: 6px 10px; margin-bottom: 10px;
   display: flex; align-items: center; gap: 6px;
@@ -1363,7 +1363,7 @@ a.cal-credit-row:hover,
 }
 .theme-tree-row:hover { background: rgba(255,255,255,0.04); }
 .theme-tree-arrow {
-  width: 16px; font-size: 9px; color: var(--dm); transition: transform 0.2s;
+  width: 16px; font-size: 12px; color: var(--dm); transition: transform 0.2s;
   flex-shrink: 0; text-align: center;
 }
 .theme-tree-arrow.expanded { transform: rotate(90deg); }
@@ -1378,15 +1378,15 @@ a.cal-credit-row:hover,
 }
 .theme-tree-name.zero { color: var(--dm); font-weight: 500; }
 .theme-tree-amt {
-  font-size: 11px; color: var(--dm); margin-left: 8px; white-space: nowrap;
+  font-size: 12px; color: var(--dm); margin-left: 8px; white-space: nowrap;
   flex-shrink: 0;
 }
 .theme-tree-pct {
-  font-size: 11px; font-weight: 700; margin-left: 8px; white-space: nowrap;
+  font-size: 12px; font-weight: 700; margin-left: 8px; white-space: nowrap;
   flex-shrink: 0;
 }
-.theme-tree-uncollected { font-size: 10px; color: var(--dm); margin-left: 6px; }
-.theme-tree-stock-count { font-size: 10px; color: var(--dm); margin-left: 6px; flex-shrink: 0; white-space: nowrap; }
+.theme-tree-uncollected { font-size: 12px; color: var(--dm); margin-left: 6px; }
+.theme-tree-stock-count { font-size: 12px; color: var(--dm); margin-left: 6px; flex-shrink: 0; white-space: nowrap; }
 .theme-tree-children {
   overflow: hidden; transition: max-height 0.2s ease;
 }
@@ -1398,37 +1398,37 @@ a.cal-credit-row:hover,
 }
 .theme-tree-stock-row:hover { background: rgba(255,255,255,0.03); }
 .theme-tree-stock-name {
-  font-size: 11px; font-weight: 600; color: var(--tx2); white-space: nowrap;
+  font-size: 12px; font-weight: 600; color: var(--tx2); white-space: nowrap;
   flex-shrink: 0;
 }
 .theme-tree-stock-pct {
-  font-size: 11px; font-weight: 700; margin-left: 8px; white-space: nowrap;
+  font-size: 12px; font-weight: 700; margin-left: 8px; white-space: nowrap;
   flex-shrink: 0;
 }
 .theme-tree-stock-amt {
-  font-size: 10px; color: var(--dm); margin-left: 8px; white-space: nowrap;
+  font-size: 12px; color: var(--dm); margin-left: 8px; white-space: nowrap;
   flex-shrink: 0;
 }
 .theme-tree-stock-more {
-  font-size: 10px; color: var(--dm); cursor: pointer; padding: 2px 0;
+  font-size: 12px; color: var(--dm); cursor: pointer; padding: 2px 0;
   user-select: none;
 }
 .theme-tree-stock-more:hover { color: var(--am); text-decoration: underline; }
 @media (max-width: 720px) {
   .theme-tree-bar { max-width: 120px !important; }
   .theme-tree-name { font-size: 12px; }
-  .theme-tree-amt { font-size: 10px; }
-  .theme-tree-pct { font-size: 10px; }
-  .theme-tree-stock-name { font-size: 10px; }
-  .theme-tree-stock-pct { font-size: 10px; }
-  .theme-tree-stock-amt { font-size: 9px; }
-  .theme-tree-stock-count { font-size: 9px; }
+  .theme-tree-amt { font-size: 12px; }
+  .theme-tree-pct { font-size: 12px; }
+  .theme-tree-stock-name { font-size: 12px; }
+  .theme-tree-stock-pct { font-size: 12px; }
+  .theme-tree-stock-amt { font-size: 12px; }
+  .theme-tree-stock-count { font-size: 12px; }
 }
 
 /* ───── 테마 거래대금 트렌드 ───── */
 .theme-trend-header { margin-bottom: 10px; padding-left: 8px; border-left: 3px solid var(--am); }
 .theme-trend-title { font-size: 14px; font-weight: 800; color: var(--am); }
-.theme-trend-sub { font-size: 11px; color: var(--dm); margin-top: 2px; }
+.theme-trend-sub { font-size: 12px; color: var(--dm); margin-top: 2px; } /* R26 P1① 11→12px */
 .theme-trend-wrap {
   position: relative;
   background: var(--sf); border: 1px solid var(--bd); border-radius: 12px;
@@ -1523,13 +1523,13 @@ a.cal-credit-row:hover,
 .theme-trend-legend-toggle {
   display: none;
   margin-top: 8px; padding: 6px 12px;
-  font-size: 11px; font-weight: 700; color: var(--am);
+  font-size: 12px; font-weight: 700; color: var(--am);
   background: transparent; border: 1px solid var(--bd);
   border-radius: 999px; cursor: pointer; min-height: 32px;
 }
 .theme-trend-legend-item {
   display: inline-flex; align-items: center; gap: 4px;
-  font-size: 10px; font-weight: 600; color: var(--tx); cursor: pointer;
+  font-size: 12px; font-weight: 600; color: var(--tx); cursor: pointer;
   white-space: nowrap;
 }
 .theme-trend-legend-item .swatch {
@@ -1543,7 +1543,7 @@ a.cal-credit-row:hover,
     flex-wrap: wrap;
     overflow-x: visible;
   }
-  .theme-trend-legend-item { font-size: 10px; padding: 4px 6px; min-height: 28px; }
+  .theme-trend-legend-item { font-size: 12px; padding: 4px 6px; min-height: 28px; }
   .theme-trend-legend-item .swatch { width: 8px; height: 3px; }
   /* PM320 (대표 2026-06-10) — 모바일 범례 기본 접기(상위 ~2행) + 토글 노출. 펼치면 전체(무손실). */
   .theme-trend-legend.is-collapsible.collapsed {
@@ -1587,11 +1587,11 @@ a.cal-credit-row:hover,
 }
 .theme-trend-legend-empty-hint {
   display: inline-flex; align-items: center; min-height: 36px; padding: 6px 10px;
-  font-size: 11px; font-weight: 500; color: var(--dm);
+  font-size: 12px; font-weight: 500; color: var(--dm);
   background: transparent; border-radius: 999px;
 }
 @media (max-width: 880px) {
-  .theme-trend-legend-empty-hint { font-size: 11px; padding: 4px 6px; }
+  .theme-trend-legend-empty-hint { font-size: 12px; padding: 4px 6px; }
 }
 .theme-trend-legend-item .swatch { position: relative; }
 .theme-trend-legend-item.selected .swatch::after {
@@ -1624,7 +1624,7 @@ a.cal-credit-row:hover,
 /* 5/8 fix (대표 catch 19:15 P1): drill-down 종목 list 동적 size + 스크롤. 13~15종 표시 시 max-height: 400px 잘림 결함 → 70vh 확장 + overflow-y: auto. */
 .trend-detail { margin-top: 12px; overflow-x: hidden; overflow-y: hidden; transition: max-height 0.2s ease-out; max-height: 0; position: relative; z-index: 4; -webkit-overflow-scrolling: touch; }
 .trend-detail.open { max-height: 70vh; overflow-y: auto; }
-.trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
+.trend-detail-chip { display: inline-block; background: var(--am4); color: var(--am); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
 .trend-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .trend-detail-table th { text-align: left; font-weight: 600; color: var(--dm); padding: 6px 8px; border-bottom: 1px solid var(--bd); }
 .trend-detail-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--bd); }
@@ -1638,7 +1638,7 @@ a.cal-credit-row:hover,
 .trend-detail-table .td-amount { text-align: right; font-family: 'SF Mono', monospace; }
 .trend-detail-table .td-pct { text-align: right; }
 @media (max-width: 640px) {
-  .trend-detail-table { font-size: 10px; table-layout: fixed; width: 100%; }
+  .trend-detail-table { font-size: 12px; table-layout: fixed; width: 100%; }
   .trend-detail-table th { padding: 4px 3px; }
   .trend-detail-table td { padding: 4px 3px; }
   .trend-detail-table .th-name,
@@ -1655,7 +1655,7 @@ a.cal-credit-row:hover,
 
 footer {
   background: var(--footer-bg); color: var(--footer-tx); text-align: center;  /* R15: var(--tx) 반전 버그 fix — 항상 어두운 anchor */
-  padding: 32px 24px; font-size: 11px;
+  padding: 32px 24px; font-size: 12px;
   margin-top: 80px;
 }
 footer .links { display: flex; gap: 20px; justify-content: center; margin-bottom: 16px; font-weight: 600; }
@@ -1682,7 +1682,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   text-transform: uppercase; letter-spacing: 1px;
 }
 .kiwoom-meta {
-  font-size: 10px; color: var(--dm);
+  font-size: 12px; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
 .kiwoom-list {
@@ -1702,7 +1702,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .kiwoom-row:hover { background: var(--pill-sf-hover); }
 .kiwoom-row.matched-cafe { border-left: 2px solid var(--c3); padding-left: 8px; }
 .kiwoom-rank {
-  font-size: 10px; color: var(--dm); font-weight: 700;
+  font-size: 12px; color: var(--dm); font-weight: 700;
   font-family: 'SF Mono', monospace;
 }
 .kiwoom-name-cell {
@@ -1718,7 +1718,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 }
 .kiwoom-theme-chip {
   display: inline-block;
-  font-size: 9px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   padding: 2px 8px;
   border-radius: 999px;  /* REQ-031 — pill 통일 */
   background: rgba(196,153,48,0.12);
@@ -1731,11 +1731,11 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .kiwoom-theme-chip.src-owner { background: rgba(196,153,48,0.3); border-color: var(--am); }
 .kiwoom-theme-chip.src-llm { border-style: dashed; opacity: 0.85; }
 .kiwoom-amount {
-  font-size: 11px; color: var(--am); font-weight: 700;
+  font-size: 12px; color: var(--am); font-weight: 700;
   font-family: 'SF Mono', monospace;
 }
 .kiwoom-pct {
-  font-size: 11px; font-weight: 800;
+  font-size: 12px; font-weight: 800;
   font-family: 'SF Mono', monospace;
   text-align: right; min-width: 56px;
 }
@@ -1756,7 +1756,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). 사이드 캘린더 강조. */
   background: linear-gradient(180deg, var(--warm-top) 0%, var(--warm-bot) 70%);  /* R15: 햇살 크림 / 다크 함몰 */
   border: 1px solid var(--bd);
-  border-radius: 14px;
+  border-radius: 16px; /* R26 P1⑤ — 인접 .cal-content(16px)와 radius 통일 (14→16) */
   padding: 14px 12px 12px;
   box-shadow: 0 2px 12px rgba(26,29,38,0.04);
 }
@@ -1777,7 +1777,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
 .toss-cal-nav:hover:not(:disabled) { background: var(--am3); color: var(--am); }
 .toss-cal-nav:disabled { color: var(--bd); cursor: not-allowed; background: transparent; }
 .toss-cal-sub {
-  font-size: 10px; color: var(--dm); font-family: 'SF Mono', monospace;
+  font-size: 12px; color: var(--dm); font-family: 'SF Mono', monospace;
   padding: 0 4px 8px; text-align: right;
 }
 .toss-cal-grid {
@@ -1789,7 +1789,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   align-items: center;
 }
 .toss-cal-dow {
-  font-size: 10px; font-weight: 700; color: var(--dm);
+  font-size: 12px; font-weight: 700; color: var(--dm); /* R26 P1① 10→12px */
   text-align: center; width: 30px; height: 20px; line-height: 20px;
 }
 .toss-cal-dow.sun { color: var(--up); }
@@ -1800,7 +1800,7 @@ footer .copyright { color: var(--dm); opacity: 0.6; }
   border-radius: 8px;
   position: relative; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: var(--tx);
+  font-size: 12px; font-weight: 700; color: var(--tx); /* R26 P1① 11→12px */
   background: transparent;
   border: 1px solid transparent;
   transition: background 0.12s, color 0.12s;
@@ -1924,7 +1924,7 @@ body.pm320-pickbar-on .cal-content-head {
   color: var(--tx);
 }
 .cal-content-meta {
-  font-size: 11px; color: var(--dm);
+  font-size: 12px; color: var(--dm);
   font-family: 'SF Mono', monospace;
 }
 /* Q-20260608-134 (대표 "마지막 갱신 라인은 필요가 없다") — Q-113 별도 마지막 갱신 라인(.cal-content-updated) 폐기.
@@ -1932,7 +1932,7 @@ body.pm320-pickbar-on .cal-content-head {
 /* REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). 보조 정보 회색 톤. */
 /* 2026-05-27 — "HH:MM 기준" freshness 라벨. stale(장중 30분+ 지연)일 때만 황금색 + 앞에 점(•). 차단 없음. */
 .cal-day-meta__updated {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--dm);
   font-weight: 400;
   letter-spacing: 0.01em;
@@ -1943,7 +1943,7 @@ body.pm320-pickbar-on .cal-content-head {
 .cal-day-meta__dot {
   color: var(--am2);
   margin-right: 3px;
-  font-size: 11px;
+  font-size: 12px;
 }
 /* Q-CYCLE23 (2026-05-22) — `.cal-day-meta__snapshot*` 폴링 chip CSS 본문 제거.
    본 chip render 본문 (renderer.js) + `_computeSnapshotFreshness` 함수 동시 제거.
@@ -1980,7 +1980,7 @@ body.single-card-mode .cal-section { margin: 0 !important; padding: 0 !important
 body.single-card-mode .cal-section--single-card .cal-trade-list { margin: 0 !important; padding: 0 !important; }
 body.single-card-mode { background: var(--bg) !important; }
 .cal-section-title {
-  font-size: 11px; font-weight: 800; color: var(--am);
+  font-size: 12px; font-weight: 800; color: var(--am);
   text-transform: uppercase; letter-spacing: 1.1px;
   margin-bottom: 12px;
   display: flex; align-items: center; gap: 8px;
@@ -2071,7 +2071,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* 거래상태 도트(§4) — 거래중(초록)/마감(회색). 제목 줄 내. */
 .idx-fut-status {
   display: inline-flex; align-items: center; gap: 3px; margin-left: 6px;
-  font-size: 10.5px; font-weight: 700; vertical-align: middle;
+  font-size: 12px; font-weight: 700; vertical-align: middle;
 }
 .idx-fut-status .idx-fut-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .idx-fut-status.open { color: var(--pos); }
@@ -2082,11 +2082,11 @@ body.single-card-mode { background: var(--bg) !important; }
 .idx-fut-status.stale { color: var(--dm); }
 .idx-fut-status.stale .idx-fut-dot { background: var(--dm); }
 /* 갱신시각(§4) — namecell 아래 메타. "N분 전 기준" (stale 위장 금지). */
-.idx-fut-age { font-size: 10px; color: var(--dm); font-weight: 600; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+.idx-fut-age { font-size: 12px; color: var(--dm); font-weight: 600; margin-top: 2px; display: flex; align-items: center; gap: 4px; }
 /* Q-20260608-145 — 선물 갱신 지연(30분 초과) 명시 칩. stale 를 숨기지 않고 정직 표시(FLR-AGT-002).
    앰버 톤(경고 위계, 추천 햇살색 아님). WCAG AA: #92560A on #FDF3DE ≈ 5.6:1. */
 .idx-fut-delay {
-  flex-shrink: 0; font-size: 9.5px; font-weight: 700; line-height: 1;
+  flex-shrink: 0; font-size: 12px; font-weight: 700; line-height: 1;
   padding: 2px 5px; border-radius: 999px; color: var(--am); background: var(--am4);
 }
 .idx-fut-age--stale { color: var(--am); }
@@ -2095,7 +2095,7 @@ body.single-card-mode { background: var(--bg) !important; }
 
 /* 선물 고지 각주(§4) — 섹션 1회 공통(카드마다 반복 ❌). */
 .idx-fut-disclaimer {
-  margin-top: 8px; font-size: 11px; line-height: 1.4;
+  margin-top: 8px; font-size: 12px; line-height: 1.4;
   color: var(--dm); font-style: normal;
 }
 
@@ -2107,7 +2107,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .nightly-us-newschip { text-decoration: none; }
 .nightly-us-news-source {
   margin-left: 6px;
-  font-size: 9px; font-weight: 800; color: var(--am);  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
+  font-size: 12px; font-weight: 800; color: var(--am);  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
   opacity: 0.85; white-space: nowrap;
 }
 
@@ -2133,17 +2133,17 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-trade-candle { display: flex; align-items: center; justify-content: center; }
 .cal-trade-row:hover { background: var(--am4); }
 .cal-trade-rank {
-  font-size: 10px; color: var(--dm); font-weight: 800;
+  font-size: 12px; color: var(--dm); font-weight: 800;
   font-family: 'SF Mono', monospace;
 }
 .cal-trade-name-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
 .cal-trade-name { font-weight: 800; color: var(--tx); letter-spacing: -0.2px; }
 .cal-trade-amount {
-  font-size: 11px; color: var(--am); font-weight: 800;
+  font-size: 12px; color: var(--am); font-weight: 800;
   font-family: 'SF Mono', monospace;
 }
 .cal-close-price {
-  font-size: 11px; color: var(--tx); font-weight: 700;
+  font-size: 12px; color: var(--tx); font-weight: 700;
   font-family: 'SF Mono', monospace; text-align: right; min-width: 60px;
 }
 .cal-trade-pct {
@@ -2171,7 +2171,7 @@ body.single-card-mode { background: var(--bg) !important; }
   transform: translateX(-50%);
   background: rgba(33,37,42,0.95);
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 4px;
@@ -2189,13 +2189,16 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-ind-chip[data-tooltip]:active::after { opacity: 1; }
 }
 .cal-theme-sep {
-  color: var(--dm); font-size: 10px; font-weight: 300; margin: 0 5px; vertical-align: middle;
+  color: var(--dm); font-size: 12px; font-weight: 300; margin: 0 5px; vertical-align: middle; /* R26 P1① 10→12px */
 }
 
 /* 특징주 카드 — cal-trade-row와 동일 배경·색상 통일 */
 .cal-feature-list { display: flex; flex-direction: column; gap: 4px; }
 .cal-feature-card {
   border-radius: 10px;
+  /* R26 P1⑥ — --lu/--pm320-pick 변종의 4px 좌측 액센트 보더로 카드 간 내부 콘텐츠
+     (rec-mark 등) x좌표가 ±4px 흔들림 → 기본 카드에 동일 폭 투명 보더로 x 통일. */
+  border-left: 4px solid transparent;
   overflow: hidden;
   background: var(--bg2);
   transition: background 0.12s, box-shadow 0.3s;
@@ -2394,7 +2397,7 @@ body.single-card-mode { background: var(--bg) !important; }
    해결: JS textContent 직접 변경 (renderer.js 토글 핸들러). aria-label 동시 갱신.
    대표 발화 02:34 KST: "여전히 데스크탑 희미함" — 본질 정정. */
 .cal-toggle-summary {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--dm);
   line-height: 1.5;
   white-space: normal;
@@ -2419,7 +2422,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  font-size: 11px;            /* REQ-045 §A — 헤더 배지 통일 */
+  font-size: 12px;            /* REQ-045 §A — 헤더 배지 통일 */
   font-weight: 600;
   letter-spacing: 0.01em;     /* REQ-045 §A — letter-spacing 통일 */
   color: var(--badge-disc-tx);
@@ -2445,7 +2448,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-bullish-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 11px;            /* REQ-045 §A — 헤더 배지 통일 */
+  font-size: 12px;            /* REQ-045 §A — 헤더 배지 통일 */
   font-weight: 600;
   letter-spacing: 0.01em;     /* REQ-045 §A — letter-spacing 통일 */
   color: var(--am);
@@ -2464,7 +2467,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.01em;
   color: var(--am);
@@ -2516,7 +2519,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-pending-title b { color: var(--am); font-weight: 800; }
 .cal-pm320-pending-sub {
   margin-top: 3px;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.5;
   color: var(--dm);
@@ -2526,7 +2529,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11.5px;
+  font-size: 12px;
 }
 .cal-pm320-pending-cd-label { color: var(--dm); font-weight: 600; }
 .cal-pm320-pending-countdown {
@@ -2583,7 +2586,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-left: 2px;
 }
 .cal-pm320-today-rec-code {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   /* R13 P1 WCAG: var(--dm) #8B95A8 on 카드 bg var(--am4) = 2.81 → 토큰 (light 5.69 / dark 7.78:1) */
   color: var(--rec-code-tx);
@@ -2608,7 +2611,7 @@ body.single-card-mode { background: var(--bg) !important; }
   min-width: 0;
 }
 .cal-pm320-today-rec-k {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
   /* R13 P0 대비: 라벨 --dm #8B95A8(2.78:1 on cell) → #5E6776(5.53:1, WCAG AA). */
   color: var(--tx2);
@@ -2618,7 +2621,7 @@ body.single-card-mode { background: var(--bg) !important; }
    tpAfter(물타기 시 익절가) 존재 시에만 노출(대표 20:51 catch). */
 .cal-pm320-today-rec-k-cond {
   margin-left: 3px;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--section-summary);
 }
@@ -2636,7 +2639,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-today-rec-v--dn { color: var(--down); }
 /* 익절 칸 보조 — 물타기 체결 시 평단 하락으로 바뀌는 익절가 병기 (풀 카드 SSOT 동일). */
 .cal-pm320-today-rec-v-sub {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   /* R13 P0 대비: --dm 2.78:1 → #5E6776 5.53:1 (WCAG AA). */
   color: var(--tx2);
@@ -2703,38 +2706,39 @@ body.single-card-mode { background: var(--bg) !important; }
   flex-wrap: wrap;
 }
 .cal-pm320-wr-eyebrow {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--am);
 }
-.cal-pm320-wr-rate { font-size: 14px; font-weight: 600; color: var(--tx2); }
-.cal-pm320-wr-rate b { font-size: 20px; font-weight: 800; color: var(--am); letter-spacing: -0.01em; }
-/* R18 (트레이더 P1 — 승률 착시 선제방어) — 손익비를 승률 바로 아래, 승률과 동급 위계로 병기.
-   "평균 익절 +3.2% vs 최대 손실 -25.2%" — 익절폭은 녹색, 손실폭은 빨강으로 비대칭을 즉시 대비. */
-.cal-pm320-wr-rr {
-  margin-top: 7px;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 3px 6px;
-  font-size: 13px;
-  font-weight: 700;
+/* R26 P0-1 (조니 P0, 2026-06-11) — 승률 단독 대형 표기 폐기 → 승률·손익비·최대낙폭 동일 위계
+   3지표 grid. 세 값 모두 같은 크기(18px)·같은 굵기(800), 색만 의미 분리(골드/본문/빨강). */
+.cal-pm320-wr-trio {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
-.cal-pm320-wr-rr-label { color: var(--tx2); display: inline-flex; align-items: center; gap: 2px; }
-.cal-pm320-wr-rr-val { color: var(--tx2); font-weight: 600; }
-.cal-pm320-wr-rr-val b { font-weight: 800; }
-/* 익절(+) 폭 = 녹색, 손실(-) 폭 = 빨강 — b 2개 중 첫째=익절, 둘째=손실. nth-of-type 으로 색 분리. */
-.cal-pm320-wr-rr-val b:first-of-type { color: var(--pos); }
-.cal-pm320-wr-rr-val b:last-of-type { color: var(--neg); }
-.cal-pm320-wr-rr-ratio { color: var(--wr-basis-tx, #5E6776); font-weight: 600; font-size: 11px; }
-/* 과거 날짜 선택 시 — '선택일 시점'이 아닌 '오늘 기준 누적'임을 명시(중립 슬레이트). */
+.cal-pm320-wr-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cal-pm320-wr-cell-k {
+  font-size: 12px; font-weight: 700; color: var(--tx2);
+  display: inline-flex; align-items: center; gap: 2px;
+}
+.cal-pm320-wr-cell-v { font-size: 18px; font-weight: 800; color: var(--tx); letter-spacing: -0.01em; }
+.cal-pm320-wr-cell-v--rate { color: var(--am); }
+.cal-pm320-wr-cell-v--neg { color: var(--neg); }
+.cal-pm320-wr-cell-sub { font-size: 12px; font-weight: 500; color: var(--wr-basis-tx, #5E6776); }
+@media (max-width: 480px) {
+  .cal-pm320-wr-trio { gap: 6px; }
+  .cal-pm320-wr-cell-v { font-size: 16px; }
+}
+/* 과거 날짜 선택 시 — '선택일 시점'이 아닌 'generated_at 기준 누적'임을 명시(중립 슬레이트). */
 .cal-pm320-wr-asof {
-  margin-top: 6px;
+  margin-top: 8px;
   padding: 4px 8px;
   border-radius: 6px;
   background: var(--neu-bg);
-  font-size: 10.5px;
+  font-size: 12px; /* R26 P1① 10.5→12px */
   font-weight: 500;
   line-height: 1.45;
   color: var(--neu);
@@ -2756,56 +2760,39 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-win { color: var(--pos); }
 .cal-pm320-wr-loss { color: var(--neg); }
 .cal-pm320-wr-running { color: var(--dm); }
-/* 승률 맥락 1줄 (왜 승률이 높은지 — 익절폭이 작아 쉽게 도달, 표본수 명시). */
+/* 승률 맥락 1줄 (왜 승률이 높은지 — 익절폭이 작아 쉽게 도달). */
 .cal-pm320-wr-context {
   margin-top: 6px;
-  font-size: 10.5px;
+  font-size: 12px; /* R26 P1① 10.5→12px */
   font-weight: 500;
   line-height: 1.45;
   /* R13 P0 대비: --dm 2.96:1 on amber → #5E6776 5.32:1 (WCAG AA). */
   color: var(--tx2);
 }
-/* 최대낙폭(MDD) 병기 — 빨강 톤(위험 정직). 승률 착시 차단. */
-.cal-pm320-wr-mdd {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--am3);
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-}
-.cal-pm320-wr-mdd-label { color: var(--tx2); }
-/* R13 P0 위계: MDD(최대낙폭)가 부가정보처럼 묻히는 문제 → 승률 b(20px)에 준하는 위계로 상향.
-   장중 최대낙폭 수치를 15px·800으로 키워 "승률만 보면 안전" 착시를 본문급으로 노출. */
-.cal-pm320-wr-mdd-worst { color: var(--neg); font-weight: 800; font-size: 15px; letter-spacing: -0.01em; }
-/* R13-bis: opacity 제거 — 0.85/0.82 적용 시 mdd 위 am4 배경에서 4.34/4.11:1로 AA 미달.
-   불투명 --neg(#B8302E)=5.59:1 유지(위계는 font-size·weight로만 분리). */
-.cal-pm320-wr-mdd-avg { color: var(--neg); font-weight: 600; font-size: 11px; }
-.cal-pm320-wr-mdd-note {
-  margin-top: 4px;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--neg);
-}
-/* R13 P0 (체결현실성 면책) — 청산 +목표% 균일이 체결현실 미반영의 자백으로 오해되는 것 차단.
-   basis와 동일 톤(건조·10px) + 토큰화로 다크 정합. */
-.cal-pm320-wr-fill-note {
-  margin-top: 7px;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--wr-basis-tx, #5E6776);
-}
+/* R26 P1④ — 디스클레이머 노출 1줄(basis) + 나머지는 접기(details.cal-pm320-wr-fine). */
 .cal-pm320-wr-basis {
-  margin-top: 4px;
-  font-size: 10px;
+  margin-top: 7px;
+  font-size: 12px; /* R26 P1① 10→12px */
   font-weight: 500;
   line-height: 1.5;
   /* R13 P0 대비: --dm 2.96:1 → #5E6776 5.32:1 (WCAG AA). opacity 제거(대비 보존). 토큰화로 다크 정합. */
+  color: var(--wr-basis-tx, #5E6776);
+}
+.cal-pm320-wr-fine { margin-top: 3px; }
+.cal-pm320-wr-fine > summary {
+  display: inline-flex; align-items: center; gap: 4px;
+  cursor: pointer; list-style: none; user-select: none;
+  font-size: 12px; font-weight: 600; color: var(--wr-basis-tx, #5E6776);
+}
+.cal-pm320-wr-fine > summary::-webkit-details-marker { display: none; }
+.cal-pm320-wr-fine > summary::after {
+  content: '▸'; font-size: 12px; transition: transform 0.15s ease;
+}
+.cal-pm320-wr-fine[open] > summary::after { transform: rotate(90deg); }
+.cal-pm320-wr-fine-body {
+  margin-top: 4px;
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 12px; font-weight: 500; line-height: 1.5;
   color: var(--wr-basis-tx, #5E6776);
 }
 
@@ -2813,7 +2800,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-feature-news-empty-sub {
   display: block;
   margin-top: 3px;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--dm);
   opacity: 0.9;
@@ -2836,7 +2823,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border-radius: 50%;
   background: var(--bg2);
   color: var(--tx2);                /* PM320-D6 P1-b — 대비 2.6:1 → 4.5:1+ (--bg2 #F2F4F8 기준 약 4.6:1) */
-  font-size: 11px;               /* PM320-D6 P1-b — 10→11px 가독 */
+  font-size: 12px;               /* PM320-D6 P1-b — 10→11px 가독 */
   font-weight: 800;
   line-height: 1;
   cursor: pointer;
@@ -2868,7 +2855,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border-radius: 8px;
   background: var(--tx);
   color: #fff;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.55;
   letter-spacing: 0.01em;
@@ -2936,7 +2923,7 @@ body.single-card-mode { background: var(--bg) !important; }
    색 토큰 = .cal-pm320-no-pick 정합(var --neu, amber 칩/gold 픽과 구분). */
 .pm320-rec-virtual-note {
   margin-bottom: 5px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.45;
   /* R13 P1 WCAG: var(--neu) #6B7A99 = 3.92 → 토큰 (light 6.77 / dark 9.19:1) */
@@ -2953,7 +2940,9 @@ body.single-card-mode { background: var(--bg) !important; }
      min-height 36px (28↔44 산술 중간, 두 button 동일 높이 통일). */
   display: flex;
   align-items: center;
-  justify-content: center;                       /* 옵션 B 정합 (space-between → center, cal-detail-toggle 정합) */
+  /* R26 P1⑥ (2026-06-11) — center 정렬은 라벨("매매"/"가상매매")·mark 길이 차로 카드 간 mark
+     x좌표가 ±9px 흔들림. 라벨 고정폭(아래 -label flex-basis) + flex-start 로 mark 시작 x 통일. */
+  justify-content: flex-start;
   /* r6 (2026-06-11, 대표 P0 — 매매 pill "· 장중 -X%" 박스 밖 오버플로). 결과 mark + MDD 칩 조합이
      좁은 폭(모바일 ~266px)에서 박스 width:100% 를 넘어 우측 라운드 테두리 밖으로 밀림(flex-shrink:0
      자식 + nowrap). fix: 내용이 박스를 넘으면 다음 줄로 wrap(박스가 높이로 감쌈) + row-gap 으로
@@ -2991,7 +2980,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  flex-shrink: 0;
+  flex: 0 0 78px; /* R26 P1⑥ — 최장 라벨("가상매매") 기준 고정폭 → mark 시작 x 카드 간 통일 */
 }
 .pm320-rec-toggle-text {
   /* 옵션 B 신축 (2026-06-03) — chevron 폐기 후 텍스트 토글 "매매 보기" ↔ "접기" (click handler에서 textContent 토글). */
@@ -3009,7 +2998,7 @@ body.single-card-mode { background: var(--bg) !important; }
      flex-shrink:0 제거(부모 flex-wrap 참여) + 내부 텍스트 normal wrap 허용(MDD 칩만 nowrap). */
   min-width: 0;
   white-space: normal;
-  text-align: center;
+  text-align: left; /* R26 P1⑥ — flex-start 정렬 정합 (center → left) */
   line-height: 1.4;
 }
 .pm320-rec-result-mark--profit { color: var(--pos); }
@@ -3066,7 +3055,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 /* R13 P1: "물타기 후 익절가" 의미 단서 — 평단 하락분 반영 1줄 cue (토큰, light 5.69 / dark 정합) */
 .pm320-rec-value--note {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--rec-code-tx);
   font-weight: 500;
 }
@@ -3101,7 +3090,7 @@ body.single-card-mode { background: var(--bg) !important; }
    --wr-basis-tx: light 5.52:1 / dark override 로 WCAG AA 유지. */
 .pm320-rec-result-fill-note {
   margin-top: 5px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.5;
   color: var(--wr-basis-tx, #5E6776);
@@ -3112,7 +3101,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* §7.6 / §8.5 — 모바일 ≤640px (12px 폰트 catch 정합) */
 @media (max-width: 640px) {
   .cal-pm320-pick-badge {
-    font-size: 10.5px;
+    font-size: 12px;
     padding: 2px 8px;
   }
   /* 모바일 라벨 단축 — §5.4 ASCII 모형 "PM320 추천" */
@@ -3142,13 +3131,13 @@ body.single-card-mode { background: var(--bg) !important; }
   padding-top: 2px;
 }
 .cal-feature-link {
-  font-size: 11px; color: var(--c3); text-decoration: none;
+  font-size: 12px; color: var(--c3); text-decoration: none;
   padding: 3px 8px; border: 1px solid var(--bd); border-radius: 999px;
   background: var(--sf);
 }
 .cal-feature-link:hover { background: var(--pos-bg); }
 .cal-feature-news-empty {
-  font-size: 11px; color: var(--dm); padding: 4px 0;
+  font-size: 12px; color: var(--dm); padding: 4px 0;
 }
 
 /* 해석 (이시카와 + 토구사) */
@@ -3184,7 +3173,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-toppick b { color: var(--am); }
 .cal-grade-badge {
-  font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.4px;
   padding: 3px 8px; border-radius: 999px;
   text-transform: uppercase;
 }
@@ -3205,7 +3194,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-causal .arrow { color: var(--am); margin: 0 4px; font-weight: 700; }
 /* Q-20260608-143 — 뉴스 시제 라벨(선물=실시간 / 정규장=미장 마감). 같은 영역 데이터 시제 분리 명시. */
 .cal-news-tense {
-  display: inline-block; font-size: 10.5px; font-weight: 700; line-height: 1;
+  display: inline-block; font-size: 12px; font-weight: 700; line-height: 1;
   padding: 2px 5px; margin-right: 6px; border-radius: 4px; vertical-align: 1px;
   letter-spacing: -0.2px; white-space: nowrap;
 }
@@ -3232,14 +3221,14 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-top: 6px; padding: 8px 10px;
   border-left: 3px solid var(--am);
   background: rgba(232,192,99,0.08);
-  font-size: 11.5px; line-height: 1.5;
+  font-size: 12px; line-height: 1.5;
   border-radius: 0 6px 6px 0;
 }
 .cal-jooju .one-line { color: var(--tx); font-weight: 600; }
-.cal-jooju .dissent { color: var(--ru); font-size: 10.5px; margin-top: 4px; }
+.cal-jooju .dissent { color: var(--ru); font-size: 12px; margin-top: 4px; }
 .cal-risk-flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
 .cal-risk-chip {
-  font-size: 9.5px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   padding: 2px 6px; border-radius: 4px;
   background: var(--neg-bg); color: var(--ru);
   border: 1px solid var(--ru);
@@ -3251,7 +3240,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* REQ-045 §A — 헤더 배지 폰트 통일 (11px / weight 600 / letter-spacing 0.01em). */
 .cal-streak-badge {
   display: inline-block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.01em;
   padding: 2px 8px;
@@ -3277,7 +3266,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* DSN-frontend §3.6.2.2 (2026-05-28) — 시간대별 sub-message. 메인 텍스트(13px) 대비 11px 보조. */
 .cal-empty-sub {
   margin-top: 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--dm);
   opacity: 0.75;
 }
@@ -3313,11 +3302,11 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-feature-badges { padding: 4px 6px 0 var(--card-indent-badges); }
   .cal-feature-body { padding: 0 6px 4px var(--card-indent-body); }
   .kiwoom-row { grid-template-columns: 18px 1fr auto auto; gap: 6px; }
-  .kiwoom-amount { font-size: 10px; }
-  .kiwoom-pct { font-size: 10px; min-width: 48px; }
+  .kiwoom-amount { font-size: 12px; }
+  .kiwoom-pct { font-size: 12px; min-width: 48px; }
   .cal-trade-row { grid-template-columns: 18px 1fr auto auto auto 14px; gap: 6px; padding: 8px 6px; }
-  .cal-trade-amount { font-size: 10px; }
-  .cal-trade-pct { font-size: 11px; min-width: 48px; }
+  .cal-trade-amount { font-size: 12px; }
+  .cal-trade-pct { font-size: 12px; min-width: 48px; }
   .cal-feature-news { padding-left: 10px; }
 }
 
@@ -3363,7 +3352,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 4px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--tx2);
   align-items: baseline;
 }
@@ -3373,12 +3362,12 @@ body.single-card-mode { background: var(--bg) !important; }
 .stock-range .range-meta em.down { color: var(--up); }
 .stock-range .r-now { text-align: center; }
 .stock-range .r-high { text-align: right; }
-.stock-range .r-date { display: block; color: var(--dm); font-size: 10px; margin-top: 1px; }
+.stock-range .r-date { display: block; color: var(--dm); font-size: 12px; margin-top: 1px; }
 
 @media (max-width: 640px) {
   .stock-range { padding: 4px 6px 6px 26px; }
-  .stock-range .range-meta { font-size: 10px; }
-  .stock-range .range-meta .r-date { font-size: 9px; }
+  .stock-range .range-meta { font-size: 12px; }
+  .stock-range .range-meta .r-date { font-size: 12px; }
 }
 
 /* === 레이아웃 v2 (REQ-001 Phase 2 — 4행 분해 + 좌우 head) === */
@@ -3466,30 +3455,30 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-top: 4px;
 }
 .stock-range.v2 .range-pcts {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .stock-range.v2 .range-pcts .up { color: var(--up); }   /* 양수(상승) — 한국 증시 관습 빨강 */
 .stock-range.v2 .range-pcts .down { color: var(--down); } /* 음수(하락) — 한국 증시 관습 파랑 */
 /* v2.2: 가운데 "현재가" 라벨 (값 X, 텍스트만) */
 /* R13 P1 WCAG: #999 on #F2F4F8 = 2.59 → #5A6070 (5.71:1) */
-.stock-range.v2 .range-pcts .r-now-label { color: var(--now-label-tx); font-weight: 500; font-size: 11px; }
+.stock-range.v2 .range-pcts .r-now-label { color: var(--now-label-tx); font-weight: 500; font-size: 12px; }
 .stock-range.v2 .range-dates {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--dm);
 }
 
 @media (max-width: 640px) {
   .cal-feature-head.v2 { padding: 8px 36px 4px 6px; gap: 6px; } /* 모바일 우측 36px 공유 버튼 공간 */
   .cal-feature-head.v2 .cal-feature-name { font-size: 14px; }
-  .cal-feature-meta { font-size: 11px; gap: 5px; }
+  .cal-feature-meta { font-size: 12px; gap: 5px; }
   .cal-feature-meta .cal-feature-pct,
   .cal-feature-meta .cal-close-price,
-  .cal-feature-meta .cal-trade-amount { font-size: 11px; }
+  .cal-feature-meta .cal-trade-amount { font-size: 12px; }
   .stock-range.v2 { padding: 4px 6px 8px 26px; }
-  .stock-range.v2 .range-prices { font-size: 11px; }
-  .stock-range.v2 .range-pcts { font-size: 10px; }
-  .stock-range.v2 .range-dates { font-size: 9px; }
+  .stock-range.v2 .range-prices { font-size: 12px; }
+  .stock-range.v2 .range-pcts { font-size: 12px; }
+  .stock-range.v2 .range-dates { font-size: 12px; }
 }
 
 /* ───── DSN-001 v7.2/v7.3.1 — P1 신규 스타일 ───── */
@@ -3537,14 +3526,14 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-next-scenario > div:first-child { font-weight: 500; }
 .cal-next-scenario-line {
   padding-left: 1em;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--tx2);
   font-variant-numeric: tabular-nums;
 }
 .cal-next-limit-up-warn {
   margin-top: 4px;
   padding: 3px 8px 3px 1em;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--up);
   background: var(--neg-bg);
   border-left: 2px solid var(--up);
@@ -3552,10 +3541,10 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 
 @media (max-width: 640px) {
-  .cal-rules-version-banner { font-size: 11px; padding: 6px 10px; }
-  .cal-next-basis { font-size: 11px; }
-  .cal-predicted-disclaimer { font-size: 0.7rem; }
-  .cal-next-scenario-line { font-size: 10.5px; }
+  .cal-rules-version-banner { font-size: 12px; padding: 6px 10px; }
+  .cal-next-basis { font-size: 12px; }
+  .cal-predicted-disclaimer { font-size: 0.75rem; }
+  .cal-next-scenario-line { font-size: 12px; }
 }
 
 /* ───── DSN-001 v7.4 (P2~P5) — 2026-04-24 ───── */
@@ -3568,13 +3557,13 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 1px solid var(--am3);
   border-left: 3px solid var(--am);
   border-radius: 4px;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--am);
   line-height: 1.45;
 }
 .cal-reg-source-banner.pending {
   background: var(--bg2); border-color: var(--dm); border-left-color: var(--dm);
-  color: var(--dm); font-size: 10.5px; padding: 4px 8px;
+  color: var(--dm); font-size: 12px; padding: 4px 8px;
 }
 .cal-reg-source-banner-title { font-weight: 700; margin-right: 4px; }
 
@@ -3585,7 +3574,7 @@ body.single-card-mode { background: var(--bg) !important; }
   background: var(--bg2);
   border-left: 2px solid var(--down);
   border-radius: 0 3px 3px 0;
-  font-size: 11.5px; color: var(--tx2); line-height: 1.5;
+  font-size: 12px; color: var(--tx2); line-height: 1.5;
 }
 .cal-path-overall.easiest {
   background: var(--pos-bg); border-left-color: var(--pos);
@@ -3594,7 +3583,7 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-path-overall.easiest .cal-path-overall-label { color: var(--pos); }
 .cal-path-easiest-tag {
   display: inline-block; margin-left: 5px;
-  padding: 1px 5px; font-size: 9.5px; font-weight: 600;
+  padding: 1px 5px; font-size: 12px; font-weight: 600;
   background: var(--pos-bg); color: var(--pos); border-radius: 3px;
 }
 
@@ -3620,13 +3609,13 @@ body.single-card-mode { background: var(--bg) !important; }
   background: var(--am4);
   border-left: 2px solid var(--am3);
   border-radius: 0 3px 3px 0;
-  font-size: 11.5px; color: var(--am); line-height: 1.5;
+  font-size: 12px; color: var(--am); line-height: 1.5;
 }
 .cal-v7-warn-after-attention {
   display: inline-block;
   margin-left: 4px;
   padding: 1px 5px;
-  font-size: 9.5px; font-weight: 700;
+  font-size: 12px; font-weight: 700;
   background: var(--neg-bg); color: var(--up);
   border-radius: 3px; letter-spacing: 0.3px;
 }
@@ -3638,14 +3627,14 @@ body.single-card-mode { background: var(--bg) !important; }
   background: var(--bg2);
   border-left: 2px solid var(--am3);
   border-radius: 0 3px 3px 0;
-  font-size: 11px; color: var(--dm); line-height: 1.5;
+  font-size: 12px; color: var(--dm); line-height: 1.5;
 }
 .cal-status-history-label { font-weight: 700; margin-right: 4px; }
 .cal-status-history-chip {
   display: inline-block;
   margin: 0 3px;
   padding: 0 5px;
-  font-size: 10px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   background: var(--am3); color: var(--am);
   border-radius: 3px;
 }
@@ -3663,12 +3652,12 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-status-detail.v3 .cal-status-table td {
     display: inline-block;
     padding: 1px 4px 1px 0;
-    font-size: 10.5px;
+    font-size: 12px;
   }
   .cal-status-detail.v3 .cal-status-table td.th-cond {
     display: block;
     max-width: 100%;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     margin-bottom: 2px;
     color: var(--tx2);
@@ -3691,7 +3680,7 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-block;
   margin-top: 6px;
   padding: 1px 6px;
-  font-size: 9.5px; font-weight: 500;
+  font-size: 12px; font-weight: 500;
   background: rgba(107, 114, 128, 0.12);
   color: var(--tx2);
   border-radius: 3px;
@@ -4063,7 +4052,7 @@ body.single-card-mode { background: var(--bg) !important; }
   gap: 2px;
   padding: 2px 8px;
   border-radius: 999px;  /* REQ-031 — pill 통일 (헤더 효과 배지도 일관 정합) */
-  font-size: 11px;        /* REQ-045 §A — 헤더 배지 통일 (0.72rem → 11px) */
+  font-size: 12px;        /* REQ-045 §A — 헤더 배지 통일 (0.72rem → 11px) */
   font-weight: 600;
   letter-spacing: 0.01em; /* REQ-045 §A — letter-spacing 통일 */
   line-height: 1.4;
@@ -4117,7 +4106,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* 모바일 ≤380px — 폰트/패딩 축소 (FLR feedback_mobile_equal_desktop) */
 @media (max-width: 380px) {
   .dsn-v95-effect-badge {
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     padding: 2px 6px;
   }
 }
@@ -4212,7 +4201,7 @@ body.single-card-mode { background: var(--bg) !important; }
   margin-top: 12px;
   padding-top: 8px;
   border-top: 1px dashed var(--border-subtle, rgba(0,0,0,0.08));
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.4;
   color: var(--text-secondary, #6B7280);
@@ -4251,7 +4240,7 @@ body.single-card-mode { background: var(--bg) !important; }
   padding-top: 4px;
   border-top: 1px solid var(--v8-border-subtle, rgba(0,0,0,0.08));
   /* v9.3.2 §II (REQ-017 사이클 2 휴지 B=a): font 0.7→0.65rem, max-width 160→130px */
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   line-height: 1.4;
   color: var(--v8-text-secondary, #6B7280);
   font-weight: 400;
@@ -4277,7 +4266,7 @@ body.single-card-mode { background: var(--bg) !important; }
 /* 모바일 ≤380px — 박스 가로폭 좁아짐. ellipsis 폴백 + 박스 효과 영역 폰트 살짝 축소 */
 @media (max-width: 380px) {
   .dsn-v92-stage-flow__node-effect {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     max-width: 100%;
     margin-top: 3px;
     padding-top: 3px;
@@ -4295,7 +4284,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border-top: 1px dashed var(--badge-disclosure, #1F6FEB);
   background: rgba(31, 111, 235, 0.04);
   border-radius: 0 0 4px 4px;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   line-height: 1.45;
   color: var(--v8-text-secondary, #6B7280);
   font-weight: 400;
@@ -4323,7 +4312,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .dsn-v94-stage-flow__entry-window-line--assumption {
   margin-top: 3px;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-style: italic;
   color: var(--v8-text-tertiary, #9CA3AF);
 }
@@ -4332,11 +4321,11 @@ body.single-card-mode { background: var(--bg) !important; }
 @media (max-width: 380px) {
   .dsn-v94-stage-flow__entry-window {
     max-width: 100%;
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     padding: 5px 6px 4px;
   }
   .dsn-v94-stage-flow__entry-window-line--assumption {
-    font-size: 0.58rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -4465,7 +4454,7 @@ body.single-card-mode { background: var(--bg) !important; }
   min-width: 44px;
   min-height: 28px; /* mobile touch 44pt는 padding+font로 보강 */
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   border: 1px solid var(--am4);
   border-radius: 999px;
@@ -4492,7 +4481,7 @@ body.single-card-mode { background: var(--bg) !important; }
 @media (max-width: 768px) {
   .cal-chart-toggle {
     min-height: 32px; /* 모바일 44pt 영역 보강 */
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 
@@ -4530,7 +4519,7 @@ body.single-card-mode { background: var(--bg) !important; }
   position: absolute;
   top: 2px;
   left: 4px;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--dm);
   pointer-events: none;
@@ -4594,7 +4583,7 @@ body.single-card-mode { background: var(--bg) !important; }
   border: 1px solid rgba(196, 153, 48, 0.4);
   border-radius: 6px;
   padding: 8px 10px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.45;
   color: var(--g80);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -4605,7 +4594,7 @@ body.single-card-mode { background: var(--bg) !important; }
   font-weight: 700;
   color: var(--am);
   margin-bottom: 4px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .cal-chart-tooltip-row {
   display: flex;
@@ -4674,7 +4663,7 @@ body.single-card-mode { background: var(--bg) !important; }
   min-width: 36px;
   height: 20px;
   padding: 0 6px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1;
   color: var(--g60);
@@ -4746,7 +4735,7 @@ body.single-card-mode { background: var(--bg) !important; }
   .cal-chart-tv-chip {
     min-width: 32px;
     height: 18px;
-    font-size: 9px;
+    font-size: 12px;
     padding: 0 5px;
   }
 }

@@ -56,8 +56,9 @@ async function run() {
       const s = sec[id];
       if (!s.exists) { console.log(`  SKIP: ${id} 미렌더`); continue; }
       assert(s.collapsed && s.bodyHidden, `${id} 기본 접힘 (본문 hidden, aria-expanded=${s.ariaExpanded})`);
-      assert(!!s.summaryText && s.summaryText.startsWith('▸') && s.summaryVisible,
-        `${id} 미니요약 노출 ("${s.summaryText}")`);
+      // R26 P1③ (2026-06-11) — 미니요약 '▸ ' prefix 폐기 (chevron ▾ 와 이중 화살표 → 1개).
+      assert(!!s.summaryText && !s.summaryText.startsWith('▸') && s.summaryVisible,
+        `${id} 미니요약 노출 + ▸ prefix 없음 ("${s.summaryText}")`);
     }
 
     // (d) 토글 펼침 + localStorage 기억 (theme-trend 으로 검증, 데스크탑만)

@@ -97,7 +97,10 @@ async function renderAndQuery(noPickVal) {
 // (a) 보류일(true) → 문구 표시 + 색 구분
 const a = await renderAndQuery(true);
 assert(a.present, '(a) 보류일(pm320NoPick=true): 안내 라인 표시');
-assert(a.present && a.text.includes('오늘은 추천 종목이 없습니다'), '(a) 문구 = "오늘은 추천 종목이 없습니다"');
+// R26 P1 (2026-06-11) — 문구 정직화: "추천 없음 (기준 미달)" + 데이터 누락과 구분 보조문.
+// 시점 분기: 보는 날짜(TODAY 고정 '2026-06-05')가 실행 시점 기준 과거면 "이날은", 당일이면 "오늘은".
+assert(a.present && /(오늘은|이날은) 추천 없음 \(기준 미달\)/.test(a.text), '(a) 문구 = "{오늘은|이날은} 추천 없음 (기준 미달)"');
+assert(a.present && a.text.includes('데이터 누락이 아니라'), '(a) 데이터 누락 구분 보조문 포함');
 assert(a.present && a.role === 'status', '(a) role=status (a11y)');
 
 // 색 구분: 매크로/내러티브 칩 amber(--am4 #FFF6E5) 와 다른 슬레이트(--neu-bg #F2F4F8) 인지
