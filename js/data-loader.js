@@ -190,7 +190,13 @@ async function loadNightlyUsSummary(date) {
 }
 
 // us-indices/{date}.json fetch — 404/네트워크 오류 시 null (호출부에서 fallback 판정).
+// R44 #10 (조니 2심, 2026-06-12) — 과거 뷰 연쇄 404 가드: us-indices 데이터 시작일(2026-06-05,
+//   us-digest 운영 개시) 이전 날짜는 파일이 영구 부재 → 직접 조회 + 7일 역탐색 fallback 까지
+//   최대 8연쇄 확정 404 가 콘솔을 채움. epoch 미만은 fetch 자체 생략 (확정 404 0건 — R18 P0 동형).
+//   ISO 문자열 비교 = 날짜 비교 (zero-pad 고정 포맷).
+const _US_INDICES_EPOCH = '2026-06-05';
 async function _fetchUsIndices(date) {
+  if (!date || date < _US_INDICES_EPOCH) return null;
   const dateHash = date.replace(/-/g, '');
   try {
     const res = await fetch(`/data/us-indices/${date}.json?v=${dateHash}`);
@@ -266,11 +272,18 @@ async function loadCalDayData(date) {
   //   는 nightlyUs/전일 픽만 사용) fetch 자체를 건너뛰어 콘솔 빨간 에러를 없앤다. 09:00 전환 시
   //   onCalCellClick 재호출 → 캐시 키(_cacheKey) 가 장경계로 무효화돼 fresh fetch (무회귀).
   let _todayPreMarket = false;
+  let _todayBeforePick = false;
   try {
     const _n = new Date();
     const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
     _todayPreMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
-  } catch (_) { _todayPreMarket = false; }
+    // R44 #10 (조니 2심, 2026-06-12) — 당일 pm320_history/{date}.json 은 15:20 픽 발행 후 생성.
+    //   09:00~15:20 오늘 view 의 history fetch 는 확정 404 (콘솔 빨간 에러) → 시간 가드로 생략.
+    //   15:20 경계 후 첫 로드는 정상 fetch (파일 배포 지연 시 404 graceful null 기존 동작 유지).
+    //   interpreted JSON 은 장중에도 갱신되므로 본 가드 미적용 (PRE_MARKET/휴장 가드만).
+    const _hm = _n.getHours() * 60 + _n.getMinutes();
+    _todayBeforePick = (date === _t) && _hm < (15 * 60 + 20);
+  } catch (_) { _todayPreMarket = false; _todayBeforePick = false; }
   const _closedMarket = (typeof isMarketClosed === 'function') ? isMarketClosed(date) : false;
   // WAVE6-R29 — 휴장일 클릭은 국내장/PM320 산출물이 원칙적으로 없다.
   // 화면은 kiwoom snapshot + renderer 휴장 안내로 충분하므로 확정 404가 되는 interpreted/pm320_history 요청은 건너뛴다.
@@ -279,7 +292,7 @@ async function loadCalDayData(date) {
     (_todayPreMarket || _closedMarket)
       ? Promise.resolve(null)
       : fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
-    (_todayPreMarket || _closedMarket) ? Promise.resolve(null) : loadPm320History(date),
+    (_todayPreMarket || _closedMarket || _todayBeforePick) ? Promise.resolve(null) : loadPm320History(date),
     loadNightlyUsSummary(date),
     loadPm320Summary()
   ]);

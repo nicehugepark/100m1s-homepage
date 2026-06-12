@@ -297,6 +297,10 @@ header {
   color: var(--tx); font: inherit;
   transition: max-height var(--t-fast), opacity var(--t-fast), padding var(--t-fast);
 }
+/* R44 #10 — 오늘 모드(소스 카드 가시) 접힘 시 h=0 잔존 DOM 제거. 종전 author display:flex 가
+   UA [hidden]{display:none} 을 cascade 에서 이겨 hidden 속성이 무력화돼 있었음 (probe: h=0
+   + 텍스트 잔존 + click timeout). 본 규칙으로 hidden=true 인 모든 경로가 실제 display:none. */
+.pm320-pickbar[hidden] { display: none; }
 .pm320-pickbar.pm320-pickbar--visible {
   /* R27 P0-1 — max-height 도 단일 상수 참조 (height 와 동일 값 = 실높이 정확히 --pickbar-h). */
   max-height: var(--pickbar-h, 52px); opacity: 1; padding: 11px 24px; border-bottom-width: 1px;
@@ -2200,34 +2204,22 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-news-more > summary::after { content: '›'; margin-left: 4px; font-size: 13px; transform: rotate(90deg); }
 .cal-news-more[open] > summary::after { transform: rotate(-90deg); }
 .cal-news-more-strip { margin-top: 2px; }
-/* R43 — 뉴스 확대 공통 컴포넌트 (변형 A: 더보기 버튼 / 변형 B: 슬라이드 nav).
-   색·위계 = 종전 .cal-news-more summary 와 동일 토큰 (다크모드 변수 상속, 대조 0건). */
+/* R43 — 뉴스 확대 공통 컴포넌트 (더보기 버튼). R44 #1 — 슬라이드 변형 CSS 제거 (A 확정).
+   색·위계 = 종전 .cal-news-more summary 와 동일 토큰 (다크모드 변수 상속, 대조 0건).
+   R44 #4 — 터치 타깃 ≥44: min-height 32→44 (투명 상하 padding 6px) + margin 보정(-4→-10 / 14→8)
+   = 텍스트 시각 위치·후속 흐름 픽셀 동일, hit bbox만 32→44. 배경·보더 없음이라 시각 크기 불변.
+   위쪽 칩(strip 하단 margin 14px)과 잔여 간격 4px > 0 — 인접 링크 hit 충돌 0 (1심 상하 14px
+   전면 확장안의 충돌 회피, 상하 6px 확장만). */
 .cal-news-expand .cal-news-expand-step { margin-top: 6px; }
 .cal-news-more-btn {
-  display: inline-flex; min-height: 32px; align-items: center;
-  margin: -4px 0 14px; padding: 0 4px;
+  display: inline-flex; min-height: 44px; align-items: center;
+  margin: -10px 0 8px; padding: 6px 4px;
   border: 0; background: none; cursor: pointer;
   color: var(--am); font-size: 12px; font-weight: 800;
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
 }
 .cal-news-more-btn::after { content: '›'; margin-left: 4px; font-size: 13px; transform: rotate(90deg); }
-.cal-news-slide-nav {
-  display: flex; align-items: center; gap: 10px;
-  margin: -4px 0 14px;
-}
-.cal-news-slide-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 44px; min-height: 44px; /* 터치 타겟 ≥44px */
-  border: 1px solid var(--bd); border-radius: 8px;
-  background: var(--bg2); color: var(--am);
-  font-size: 17px; font-weight: 800; line-height: 1;
-  cursor: pointer; -webkit-tap-highlight-color: transparent;
-}
-.cal-news-slide-btn:disabled { opacity: 0.35; cursor: default; }
-.cal-news-slide-ind {
-  font-size: 12px; font-weight: 800; color: var(--tx2);
-  font-variant-numeric: tabular-nums;
-}
 
 /* R25 P1⑧ — 히어로 "하루 단 한 종목" vs 후보 N장 첫 화면 충돌 해명 1줄 (카드 리스트 직상). */
 .cal-trade-list-note {
@@ -2356,12 +2348,16 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-share-btn:active { transform: scale(0.94); }
 .cal-share-btn svg { display: block; }
-/* R28 P1④ — 공유 버튼 시각 26~28px 유지, 터치 영역만 44×44 투명 오버레이 확장. */
+/* R28 P1④ — 공유 버튼 시각 26~28px 유지, 터치 영역만 44×44 투명 오버레이 확장.
+   R44 #4 — 중심 정렬 오버레이가 카드(overflow:hidden) 상/우 경계 밖으로 나가 클립
+   → 실효 hit ≈ 28×36. 카드 코너(-4px ≈ 버튼 inset)에 anchor 해 존을 카드 내부로 (시각 불변 — 투명).
+   높이 44→32 cap: 바로 아래 0px 인접한 거래대금 용어 tip(인터랙티브)을 share(z-index 2)가
+   잠식하던 충돌 차단 — 존 하한 = 아이콘 하단(= tip 상단). 실효 44×32 (인접 인터랙티브 물리 상한,
+   1심 "상하 확장 충돌" 실측 정합 — 충돌 0 이 44 풀존보다 우선). */
 .cal-share-btn::after {
   content: '';
-  position: absolute; top: 50%; left: 50%;
-  width: 44px; height: 44px;
-  transform: translate(-50%, -50%);
+  position: absolute; top: -4px; right: -4px;
+  width: 44px; height: 32px;
 }
 @media (max-width: 640px) {
   .cal-share-btn { top: 4px; right: 4px; width: 28px; height: 28px; }
@@ -3019,6 +3015,10 @@ body.single-card-mode { background: var(--bg) !important; }
   display: inline-flex; align-items: center; gap: 4px;
   cursor: pointer; list-style: none; user-select: none;
   font-size: 12px; font-weight: 600; color: var(--wr-basis-tx, #5E6776);
+  /* R44 #4 — 터치 타깃 ≥44 (실측 90×19): min-height 44 + 상하 음수 margin 보정(-12/-13)으로
+     주변 흐름·텍스트 시각 위치 픽셀 동일(투명 영역만 확장). 위(wr-basis 텍스트)·아래(접힘 본문
+     텍스트)는 비인터랙티브라 hit 충돌 0. */
+  min-height: 44px; margin: -12px 0 -13px;
 }
 .cal-pm320-wr-fine > summary::-webkit-details-marker { display: none; }
 .cal-pm320-wr-fine > summary::after {
@@ -3321,6 +3321,10 @@ body.single-card-mode { background: var(--bg) !important; }
   width: 44px;
   height: 44px;
   transform: translate(-50%, -50%);
+  /* R44 #4 — DOM 후순위 positioned 형제(z-auto, 예 .range-fill 게이지)가 오버레이를 가려
+     하단 hit 가 죽던 것 복구. z-index 1 = 같은 컨텍스트 z-auto 박스 전부 위 (비인터랙티브
+     장식 요소에서만 hit 회수 — 인접 인터랙티브와의 중첩 우선순위는 종전 DOM 순서 유지). */
+  z-index: 1;
 }
 .cal-term-tip:hover { color: var(--am); border-color: var(--am3); }
 .cal-term-tip[aria-expanded="true"] { color: #fff; background: var(--am); border-color: var(--am); }
@@ -3541,10 +3545,7 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--rec-code-tx);
   font-weight: 500;
 }
-/* mdd_pct===0 안내문구 continuation — "└ " 들여쓰기 정합(괄호 제거 + 다음 줄). 대표 지시 2026-06-08 */
-.pm320-rec-value--sub-cont {
-  padding-left: 1.1em;
-}
+/* R44 #5 — sub-cont(0% 안내 별도 행) 폐기: 중복 사실 1건화로 행 자체 제거 (renderer 동기). */
 /* 최대 낙폭(MDD) — 낙폭은 손실 방향, 파란/회색 톤 (익절 초록과 구분). 대표 지시 2026-06-08 */
 .pm320-rec-value--mdd {
   color: var(--down);
@@ -3622,11 +3623,17 @@ body.single-card-mode { background: var(--bg) !important; }
   padding-top: 2px;
 }
 .cal-feature-link {
-  font-size: 12px; color: var(--c3); text-decoration: none;
-  padding: 3px 8px; border: 1px solid var(--bd); border-radius: 999px;
+  /* R44 #14 (조니 2심, 대표 catch 칩 위계) — 출처 칩 강등: 12→11px(출처명 2~4자 고유명사 인지용
+     11px floor 예외 정당 — 조니 명시) + padding 3px 8px→2px 7px + 본문색 --c3→--dm(차분).
+     테마 칩(.cal-ind-chip) 무수정 — 테마 > 출처 위계 확보. */
+  font-size: 11px; color: var(--dm); text-decoration: none;
+  padding: 2px 7px; border: 1px solid var(--bd); border-radius: 999px;
   background: var(--sf);
+  /* 상속 line-height(≈1.55)로는 border 포함 23px > 테마 칩 22.6px — 강등 위계가 bbox 에서 역전.
+     1.4 로 21.4px < 22.6px (verify 게이트: 테마 칩 높이 > 출처 칩 높이). */
+  line-height: 1.4;
 }
-.cal-feature-link:hover { background: var(--pos-bg); }
+.cal-feature-link:hover { background: var(--pos-bg); color: var(--c3); }
 .cal-feature-news-empty {
   font-size: 12px; color: var(--dm); padding: 4px 0;
 }
