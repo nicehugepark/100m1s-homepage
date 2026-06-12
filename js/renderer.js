@@ -271,6 +271,16 @@ function _splitWireNews(wire) {
       //   verbatim(사실 축). LLM 종합 요약 칩(해석 축)과 시각 구분 태그의 데이터 근거 (창작 0).
       wire: true,
     };
+    // Q-20260612-154 ④ (대표 2026-06-12 23:14 직접 지시) — 미장 wire 한국어 인과 해석 필드 carry.
+    //   scripts/wire_collector/interpret_wire.py KO_FIELDS 병합분 (US 3기관만, schema validation
+    //   PASS만 데이터에 실림). 필드별 타입 가드 — 미달 필드는 carry 0 → 해당 요소 무렌더 (graceful,
+    //   FLR-AGT-002 빈 칸·"—" 색칠 금지). body_fetched 는 false 명시분만 carry (보수 표기 트리거).
+    if (typeof it.ko_title === 'string' && it.ko_title.trim()) chip.ko_title = it.ko_title.trim();
+    if (typeof it.causal_summary === 'string' && it.causal_summary.trim()) chip.causal_summary = it.causal_summary.trim();
+    if (typeof it.causal_chain === 'string' && it.causal_chain.indexOf('→') >= 0) chip.causal_chain = it.causal_chain.trim();
+    if (Array.isArray(it.impact_tags)) chip.impact_tags = it.impact_tags.filter((t) => typeof t === 'string' && t.trim());
+    if (typeof it.direction === 'string' && it.direction.trim()) chip.direction = it.direction.trim();
+    if (it.body_fetched === false) chip.body_fetched = false;
     (_WIRE_US_SOURCE_RE.test(it.source || '') ? out.us : out.kr).push(chip);
   }
   return out;
@@ -564,11 +574,13 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
     const chipItems = _dedupedUsChips.map(c => {
       const safeUrl = (typeof c.url === 'string' && /^https?:\/\//i.test(c.url)) ? c.url : '';
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
-      const summary = escapeHtml(sanitize(c.summary || ''));
+      // Q-20260612-154 ④ — 칩 본문 = ko_title 우선 (한국어 인과 해석 보유 시), 부재 시 기존 title.
+      //   EN 원문·해석 블록은 _wireKoBlockHtml (KR 빌더와 양 끝 공용, FLR-20260428-TEC-001).
+      const summary = escapeHtml(sanitize((c.ko_title || c.summary) || ''));
       const source = escapeHtml(sanitize(c.source || ''));
       // R48 W2-3 — 사실(wire verbatim)/해석(LLM 요약) 태그. KR 빌더와 동일 _chipKindTag (양 끝 적용).
       return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
-        + `${_chipKindTag(c)}${summary}<span class="nightly-us-news-source">${source}</span></a>`;
+        + `${_chipKindTag(c)}${summary}<span class="nightly-us-news-source">${source}</span>${_wireKoBlockHtml(c)}</a>`;
     }).filter(Boolean);
     if (chipItems.length > 0) {
       // R43/R44 #1 — 뉴스 확대 공통 컴포넌트 (5건+더보기 확정, 슬라이드 변형 제거).
@@ -1737,7 +1749,10 @@ function _wireNewsExpand() {
 //   시점부터 자동 활성 (frontend 는 가용 필드만 소비, scripts 측 변경 0).
 //   국내 장중(L2148)+폐장(L1518) 양 path 공용 — FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방.
 function _buildKrMacroChip(m) {
-  const summary = escapeHtml(sanitize(m.summary));
+  // Q-20260612-154 ④ — 칩 본문 = ko_title 우선 (wire 한국어 인과 해석 보유 시), 부재 시 기존 summary.
+  //   현행 KO 대상은 US 3기관뿐이라 KR path 실변화 0이나, US 인라인 빌더와 양 끝 동형 유지
+  //   (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 예방).
+  const summary = escapeHtml(sanitize((m.ko_title || m.summary) || ''));
   const titleAttr = escapeHtml(sanitize(m.title || ''));
   const source = m.source ? escapeHtml(sanitize(m.source)) : '';
   const srcHtml = source ? `<span class="nightly-us-news-source">${source}</span>` : '';
@@ -1746,11 +1761,12 @@ function _buildKrMacroChip(m) {
   //   (무태그 상태가 제3의 모호 상태가 되지 않게). _chipKindTag 단일 헬퍼 — KR·US 양 빌더 공용
   //   (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
   const kindHtml = _chipKindTag(m);
+  const koHtml = _wireKoBlockHtml(m);
   const safeUrl = (typeof m.url === 'string' && /^https?:\/\//i.test(m.url)) ? m.url : '';
   if (safeUrl) {
-    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</a>`;
+    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${kindHtml}${summary}${srcHtml}${koHtml}</a>`;
   }
-  return `<span class="cal-macro-chip" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</span>`;
+  return `<span class="cal-macro-chip" title="${titleAttr}">${kindHtml}${summary}${srcHtml}${koHtml}</span>`;
 }
 
 // R48 W2-3 — 칩 종류 태그 단일 소스. wire=true(1차 보도 verbatim) → "사실", 그 외(LLM 종합 요약) → "해석".
@@ -1759,6 +1775,43 @@ function _chipKindTag(c) {
   return c && c.wire
     ? '<span class="cal-chip-kind cal-chip-kind--fact">사실</span>'
     : '<span class="cal-chip-kind">해석</span>';
+}
+
+// Q-20260612-154 ④ — 미장 wire 한국어 인과 해석 칩 확장 (대표 2026-06-12 23:14 직접 지시:
+//   "단순히 헤드라인을 번역만 하지말고 … 국내장 뉴스처럼 인과의 흐름을 설명해줘").
+//   칩 = 기존 .cal-macro-chip 그대로 (별도 칩 체계 신설 0) — 내부에 해석 블록만 추가.
+//   사실/해석 분리 (조니 R46 2심 W2 기단정) 칩 내부 2존 구조로 보존:
+//     · 칩 머리 [사실] + ko_title — 1차 보도 제목의 한국어 표현 (interpret_wire schema PASS 분만).
+//       EN 원문 verbatim 은 하위 1줄 부 표기(.wire-ko-en)로 화면 보존 — 사실 축 검증 가능성 유지.
+//     · [해석] causal_summary + 인과 체인(A → B → C, 국내 해석 칩 summary 동형) + direction·
+//       impact_tags 토큰(.cal-chip-kind 재사용 — 해석 계열 muted, R48 태그 체계 합류).
+//   body_fetched=false = 본문 미수집 보수 표기 1줄 (사실/추정 분리 정합).
+//   ko 필드 전무(해석 실패분) = '' 반환 → 기존 영문 칩 그대로 (graceful — 빈 칸·"—" 색칠 금지).
+//   US 인라인 빌더 + _buildKrMacroChip 양 끝 공용 (FLR-20260428-TEC-001 한쪽 수정·양 끝 누락 예방).
+function _wireKoBlockHtml(c) {
+  if (!c || !c.wire) return '';
+  const sm = (typeof c.causal_summary === 'string' && c.causal_summary) ? c.causal_summary : '';
+  const ch = (typeof c.causal_chain === 'string' && c.causal_chain.indexOf('→') >= 0) ? c.causal_chain : '';
+  if (!sm && !ch) return '';
+  let h = '';
+  // EN 원문 부 표기 — ko_title 로 본문이 교체된 경우만 (verbatim 사실 축 화면 보존)
+  if (c.ko_title && typeof c.title === 'string' && c.title && c.title !== c.ko_title) {
+    h += `<span class="wire-ko-en">${escapeHtml(sanitize(c.title))}</span>`;
+  }
+  if (sm) h += `<span class="wire-ko-summary"><span class="cal-chip-kind">해석</span>${escapeHtml(sanitize(sm))}</span>`;
+  if (ch) h += `<span class="wire-ko-chain">${escapeHtml(sanitize(ch))}</span>`;
+  const tags = [];
+  if (typeof c.direction === 'string' && c.direction) tags.push(c.direction);
+  if (Array.isArray(c.impact_tags)) {
+    for (const t of c.impact_tags) { if (typeof t === 'string' && t) tags.push(t); }
+  }
+  if (tags.length > 0) {
+    h += `<span class="wire-ko-tags">${tags.map((t) => `<span class="cal-chip-kind">${escapeHtml(sanitize(t))}</span>`).join('')}</span>`;
+  }
+  if (c.body_fetched === false) {
+    h += `<span class="wire-ko-basis">본문 미수집 — 제목 기준 보수 해석</span>`;
+  }
+  return h;
 }
 
 // R27 P1⑦ (조니 2심, 2026-06-11) — 카드 본문 "분석가 화법" 표시단 sanitize.

@@ -3770,6 +3770,31 @@ body.single-card-mode { background: var(--bg) !important; }
   letter-spacing: 0; white-space: nowrap;
 }
 .cal-chip-kind--fact { color: var(--am); border-color: var(--am2); }
+/* Q-20260612-154 ④ (대표 23:14 직접 지시) — 미장 wire 한국어 인과 해석 노출. 칩 = 기존
+   .cal-macro-chip 좌측 골드 바 리스트 그대로 (별도 칩 체계 신설 0 — 내부 확장만).
+   시각 위계: ko_title(칩 본문 토큰 그대로) > 해석 요약(--tx 본문) > 인과 체인(칩 골드 상속 —
+   국내 해석 칩 summary 동형) > EN 원문·보수 표기(--wr-basis-tx muted 부 표기, 다크 override AA).
+   태그 토큰 = R48 .cal-chip-kind 재사용 (direction 호재/악재/중립/불확실 = 해석 계열 muted). */
+.wire-ko-en {
+  display: block; margin-top: 2px;
+  font-size: 11px; font-weight: 400; letter-spacing: 0; line-height: 1.4;
+  color: var(--wr-basis-tx, #5E6776);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.wire-ko-summary {
+  display: block; margin-top: 4px;
+  font-size: 12px; font-weight: 400; line-height: 1.55; letter-spacing: -0.1px;
+  color: var(--tx);
+}
+.wire-ko-summary .cal-chip-kind { margin-right: 5px; }
+.wire-ko-chain { display: block; margin-top: 3px; }
+.wire-ko-tags { display: block; margin-top: 5px; line-height: 1.4; }
+.wire-ko-tags .cal-chip-kind { margin-right: 4px; vertical-align: 0; }
+.wire-ko-basis {
+  display: block; margin-top: 3px;
+  font-size: 11px; font-weight: 400; line-height: 1.4;
+  color: var(--wr-basis-tx, #5E6776);
+}
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
   /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. R15: 토큰화(다크 함몰). */
