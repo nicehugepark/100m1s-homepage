@@ -1,19 +1,23 @@
 {
   "date": "2026-06-12",
-  "generated_at": "2026-06-12T11:06:57.035501",
+  "generated_at": "2026-06-12T11:16:03.517954",
   "data_source": "kiwoom",
   "macro_events": [
     {
+      "title": "SpaceX",
+      "summary": "SpaceX IPO 추진 (750억 달러 규모) → 우주산업 성장성 인정 → 우주 부품·장비 공급사 수혜"
+    },
+    {
       "title": "이란휴전",
-      "summary": "미-이란 휴전 협상 재개 기대→중동 재건 수주→한국 건설·로봇 섹터 이틀째 강세"
+      "summary": "미-이란 휴전 협상 임박 → 중동 재건 기대 → 건설·인프라·항공 섹터 강세"
     },
     {
       "title": "반도체",
       "summary": "지정학적 리스크 완화→반도체 투자심리 회복→삼성전자·SK하이닉스 9%대 랠리"
     },
     {
-      "title": "SpaceX",
-      "summary": "SpaceX IPO 추진 (750억 달러 규모) → 우주산업 성장성 인정 → 우주 부품·장비 공급사 수혜"
+      "title": "환율하락",
+      "summary": "종전 기대감 → 원화 강세(원달러 1518원) → 수출기업 수익성 개선"
     },
     {
       "title": "K바이오M&A",
@@ -26,6 +30,14 @@
     {
       "title": "우주IPO",
       "summary": "SpaceX 750억달러 IPO상장→우주산업 성장→한국 반도체·부품 공급망 수혜 가시화"
+    },
+    {
+      "title": "메모리칩",
+      "summary": "AI 메모리칩 수혜 vs PC약세 → 삼성전자·SK하이닉스 9%↑, 저가반도체 약세"
+    },
+    {
+      "title": "AI데센터",
+      "summary": "AI 데이터센터 전력 수요 급증 → 반도체·광통신 부품 수혜 → 고대역폭 인프라 확장"
     }
   ],
   "narratives": [],
@@ -36,11 +48,11 @@
       "code": "403870",
       "name": "HPSP",
       "rank": 1,
-      "trade_amount": 819288000000,
-      "change_pct": 28.55,
-      "close_price": 70700,
+      "trade_amount": 898825000000,
+      "change_pct": 30.0,
+      "close_price": 71500,
       "open_price": 57300,
-      "high_price": 71400,
+      "high_price": 71500,
       "low_price": 56600,
       "industry": "특수 목적용 기계 제조업",
       "sector": "고압 수소 어닐링 장비",
@@ -168,17 +180,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 6.85,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 6.69,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 71400,
+        "high": 71500,
         "high_date": "2026-06-12",
-        "high_pct": -0.98,
+        "high_pct": 0.0,
         "low": 24300,
         "low_date": "2025-07-23",
-        "low_pct": 190.95,
-        "current": 70700
+        "low_pct": 194.24,
+        "current": 71500
       },
       "daily_20": [
         {
@@ -319,7 +331,33 @@
           "o": 57300,
           "h": 71400,
           "l": 56600,
-          "c": 70700
+          "c": 71200
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "kiwoom_ka10017",
+          "view_date": "2026-06-12",
+          "summary": "HPSP 상한가 (30.0%)",
+          "cur_prc": 71500,
+          "flu_rt": 30.0,
+          "trde_qty": 13632599,
+          "trde_prica_calc": 899119000000,
+          "consecutive_count": 1,
+          "estimated": false,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-15"
         }
       ],
       "intraday": {
@@ -351,7 +389,9 @@
           70100,
           70900,
           70800,
-          70800
+          71100,
+          71300,
+          71300
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -362,12 +402,12 @@
       "code": "036930",
       "name": "주성엔지니어링",
       "rank": 2,
-      "trade_amount": 720943000000,
-      "change_pct": -3.67,
-      "close_price": 236500,
+      "trade_amount": 757703000000,
+      "change_pct": -4.68,
+      "close_price": 234000,
       "open_price": 267500,
       "high_price": 283000,
-      "low_price": 234000,
+      "low_price": 232000,
       "industry": "특수 목적용 기계 제조업",
       "sector": "LP CVD",
       "themes": [
@@ -496,17 +536,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": -0.88,
+      "index_change_pct": 4.4,
+      "index_multiple_current": -1.06,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 283000,
         "high_date": "2026-06-12",
-        "high_pct": -16.43,
+        "high_pct": -17.31,
         "low": 26050,
         "low_date": "2025-08-04",
-        "low_pct": 807.87,
-        "current": 236500
+        "low_pct": 798.27,
+        "current": 234000
       },
       "daily_20": [
         {
@@ -646,8 +686,8 @@
           "date": "2026-06-12",
           "o": 267500,
           "h": 283000,
-          "l": 234000,
-          "c": 236500
+          "l": 232000,
+          "c": 234000
         }
       ],
       "intraday": {
@@ -679,7 +719,9 @@
           238000,
           237000,
           237500,
-          237500
+          236000,
+          234000,
+          233500
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -690,11 +732,11 @@
       "code": "240810",
       "name": "원익IPS",
       "rank": 3,
-      "trade_amount": 354482000000,
-      "change_pct": 23.97,
-      "close_price": 174800,
+      "trade_amount": 375100000000,
+      "change_pct": 24.75,
+      "close_price": 175900,
       "open_price": 163100,
-      "high_price": 176000,
+      "high_price": 176700,
       "low_price": 150100,
       "industry": "특수 목적용 기계 제조업",
       "sector": "반도체 제조용 기계",
@@ -815,17 +857,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 5.75,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 5.62,
       "index_multiple_eligible": true,
       "range_240d": {
-        "high": 176000,
+        "high": 176700,
         "high_date": "2026-06-12",
-        "high_pct": -0.68,
+        "high_pct": -0.45,
         "low": 24850,
         "low_date": "2025-06-23",
-        "low_pct": 603.42,
-        "current": 174800
+        "low_pct": 607.85,
+        "current": 175900
       },
       "daily_20": [
         {
@@ -964,9 +1006,9 @@
         {
           "date": "2026-06-12",
           "o": 163100,
-          "h": 176000,
+          "h": 176700,
           "l": 150100,
-          "c": 174800
+          "c": 175900
         }
       ],
       "intraday": {
@@ -998,7 +1040,9 @@
           171400,
           174300,
           175100,
-          174800
+          176000,
+          175500,
+          175800
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1009,9 +1053,9 @@
       "code": "089030",
       "name": "테크윙",
       "rank": 4,
-      "trade_amount": 317441000000,
-      "change_pct": 10.31,
-      "close_price": 67400,
+      "trade_amount": 321256000000,
+      "change_pct": 9.49,
+      "close_price": 66900,
       "open_price": 64800,
       "high_price": 70500,
       "low_price": 62800,
@@ -1125,17 +1169,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 2.47,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 2.16,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 74000,
         "high_date": "2026-03-10",
-        "high_pct": -8.92,
+        "high_pct": -9.59,
         "low": 26050,
         "low_date": "2025-08-04",
-        "low_pct": 158.73,
-        "current": 67400
+        "low_pct": 156.81,
+        "current": 66900
       },
       "daily_20": [
         {
@@ -1276,7 +1320,7 @@
           "o": 64800,
           "h": 70500,
           "l": 62800,
-          "c": 67400
+          "c": 66900
         }
       ],
       "intraday": {
@@ -1308,7 +1352,9 @@
           67200,
           67600,
           67500,
-          67400
+          66500,
+          66800,
+          66900
         ]
       },
       "togusa_verdict": "neutral",
@@ -1319,7 +1365,7 @@
       "code": "093370",
       "name": "후성",
       "rank": 5,
-      "trade_amount": 238887000000,
+      "trade_amount": 242936000000,
       "change_pct": 22.76,
       "close_price": 19360,
       "open_price": 16610,
@@ -1362,8 +1408,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 7.82,
-      "index_multiple_current": 2.91,
+      "index_change_pct": 7.59,
+      "index_multiple_current": 3.0,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 20050,
@@ -1572,7 +1618,9 @@
           19220,
           19240,
           19340,
-          19350
+          19350,
+          19400,
+          19420
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1583,9 +1631,9 @@
       "code": "222800",
       "name": "심텍",
       "rank": 6,
-      "trade_amount": 101133000000,
-      "change_pct": -1.95,
-      "close_price": 130700,
+      "trade_amount": 104491000000,
+      "change_pct": -1.35,
+      "close_price": 131500,
       "open_price": 142900,
       "high_price": 143300,
       "low_price": 127400,
@@ -1709,17 +1757,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": -0.47,
+      "index_change_pct": 4.4,
+      "index_multiple_current": -0.31,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 143300,
         "high_date": "2026-06-12",
-        "high_pct": -8.79,
+        "high_pct": -8.23,
         "low": 21400,
         "low_date": "2025-08-04",
-        "low_pct": 510.75,
-        "current": 130700
+        "low_pct": 514.49,
+        "current": 131500
       },
       "daily_20": [
         {
@@ -1860,7 +1908,7 @@
           "o": 142900,
           "h": 143300,
           "l": 127400,
-          "c": 130700
+          "c": 131500
         }
       ],
       "intraday": {
@@ -1892,7 +1940,9 @@
           130200,
           130400,
           130700,
-          130800
+          131300,
+          131000,
+          131300
         ]
       },
       "credit_risk": true,
@@ -1905,9 +1955,9 @@
       "code": "319660",
       "name": "피에스케이",
       "rank": 7,
-      "trade_amount": 74221000000,
-      "change_pct": 7.08,
-      "close_price": 160400,
+      "trade_amount": 79394000000,
+      "change_pct": 8.48,
+      "close_price": 162500,
       "open_price": 171700,
       "high_price": 171800,
       "low_price": 151000,
@@ -1956,17 +2006,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 1.7,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 1.93,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 171800,
         "high_date": "2026-06-12",
-        "high_pct": -6.64,
+        "high_pct": -5.41,
         "low": 18100,
         "low_date": "2025-07-10",
-        "low_pct": 786.19,
-        "current": 160400
+        "low_pct": 797.79,
+        "current": 162500
       },
       "daily_20": [
         {
@@ -2107,7 +2157,7 @@
           "o": 171700,
           "h": 171800,
           "l": 151000,
-          "c": 160400
+          "c": 162500
         }
       ],
       "status_badges": [
@@ -2172,7 +2222,9 @@
           161300,
           160600,
           160300,
-          161100
+          162500,
+          162400,
+          162900
         ]
       },
       "credit_risk": true,
@@ -2185,7 +2237,7 @@
       "code": "204320",
       "name": "HL만도",
       "rank": 8,
-      "trade_amount": 66286000000,
+      "trade_amount": 66357000000,
       "change_pct": 30.0,
       "close_price": 65000,
       "open_price": 53600,
@@ -2313,8 +2365,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 7.82,
-      "index_multiple_current": 3.84,
+      "index_change_pct": 7.59,
+      "index_multiple_current": 3.95,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 75800,
@@ -2476,8 +2528,8 @@
           "summary": "HL만도 상한가 (30.0%)",
           "cur_prc": 65000,
           "flu_rt": 30.0,
-          "trde_qty": 1069013,
-          "trde_prica_calc": 66286000000,
+          "trde_qty": 1070113,
+          "trde_prica_calc": 66357000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2522,6 +2574,8 @@
           65000,
           65000,
           65000,
+          65000,
+          65000,
           65000
         ]
       },
@@ -2533,9 +2587,9 @@
       "code": "004170",
       "name": "신세계",
       "rank": 8,
-      "trade_amount": 60356000000,
-      "change_pct": 4.06,
-      "close_price": 743000,
+      "trade_amount": 62404000000,
+      "change_pct": 3.08,
+      "close_price": 736000,
       "open_price": 725000,
       "high_price": 758000,
       "low_price": 681000,
@@ -2648,17 +2702,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 7.82,
-      "index_multiple_current": 0.52,
+      "index_change_pct": 7.59,
+      "index_multiple_current": 0.41,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 758000,
         "high_date": "2026-06-12",
-        "high_pct": -1.98,
+        "high_pct": -2.9,
         "low": 160800,
         "low_date": "2025-09-03",
-        "low_pct": 362.06,
-        "current": 743000
+        "low_pct": 357.71,
+        "current": 736000
       },
       "daily_20": [
         {
@@ -2799,7 +2853,7 @@
           "o": 725000,
           "h": 758000,
           "l": 681000,
-          "c": 743000
+          "c": 736000
         }
       ],
       "intraday": {
@@ -2831,7 +2885,9 @@
           749000,
           745000,
           742000,
-          743000
+          739000,
+          737000,
+          735000
         ]
       },
       "togusa_verdict": "neutral",
@@ -2842,9 +2898,9 @@
       "code": "089970",
       "name": "브이엠",
       "rank": 9,
-      "trade_amount": 54404000000,
-      "change_pct": 11.87,
-      "close_price": 95200,
+      "trade_amount": 58426000000,
+      "change_pct": 13.4,
+      "close_price": 96500,
       "open_price": 99100,
       "high_price": 99400,
       "low_price": 85900,
@@ -2893,17 +2949,17 @@
         }
       ],
       "fallback": false,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 2.85,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 3.05,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 99400,
         "high_date": "2026-06-12",
-        "high_pct": -4.23,
+        "high_pct": -2.92,
         "low": 10300,
         "low_date": "2025-07-23",
-        "low_pct": 824.27,
-        "current": 95200
+        "low_pct": 836.89,
+        "current": 96500
       },
       "daily_20": [
         {
@@ -3044,7 +3100,7 @@
           "o": 99100,
           "h": 99400,
           "l": 85900,
-          "c": 95200
+          "c": 96500
         }
       ],
       "intraday": {
@@ -3076,7 +3132,9 @@
           93100,
           94400,
           95200,
-          95500
+          95100,
+          96400,
+          96400
         ]
       },
       "credit_risk": true,
@@ -3089,7 +3147,7 @@
       "code": "464080",
       "name": "에스오에스랩",
       "rank": 11,
-      "trade_amount": 8927000000,
+      "trade_amount": 8990000000,
       "change_pct": 29.96,
       "close_price": 13360,
       "open_price": 10600,
@@ -3224,8 +3282,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 7.18,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 6.81,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 28700,
@@ -3387,8 +3445,8 @@
           "summary": "에스오에스랩 상한가 (29.96%)",
           "cur_prc": 13360,
           "flu_rt": 29.96,
-          "trde_qty": 703770,
-          "trde_prica_calc": 8927000000,
+          "trde_qty": 708857,
+          "trde_prica_calc": 8990000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3433,6 +3491,8 @@
           13360,
           13360,
           13360,
+          13360,
+          13360,
           13360
         ]
       },
@@ -3446,7 +3506,7 @@
       "code": "192650",
       "name": "드림텍",
       "rank": 12,
-      "trade_amount": 8123000000,
+      "trade_amount": 8129000000,
       "change_pct": 29.79,
       "close_price": 5860,
       "open_price": 4600,
@@ -3508,8 +3568,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 7.82,
-      "index_multiple_current": 3.81,
+      "index_change_pct": 7.59,
+      "index_multiple_current": 3.92,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 9120,
@@ -3671,8 +3731,8 @@
           "summary": "드림텍 상한가 (29.79%)",
           "cur_prc": 5860,
           "flu_rt": 29.79,
-          "trde_qty": 1444243,
-          "trde_prica_calc": 8123000000,
+          "trde_qty": 1445329,
+          "trde_prica_calc": 8129000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3717,6 +3777,8 @@
           5860,
           5860,
           5860,
+          5860,
+          5860,
           5860
         ]
       },
@@ -3728,7 +3790,7 @@
       "code": "270660",
       "name": "에브리봇",
       "rank": 13,
-      "trade_amount": 2943000000,
+      "trade_amount": 2944000000,
       "change_pct": 29.97,
       "close_price": 16090,
       "open_price": 12550,
@@ -3844,8 +3906,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 7.19,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 6.81,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 31900,
@@ -4007,8 +4069,8 @@
           "summary": "에브리봇 상한가 (29.97%)",
           "cur_prc": 16090,
           "flu_rt": 29.97,
-          "trde_qty": 193515,
-          "trde_prica_calc": 2943000000,
+          "trde_qty": 193537,
+          "trde_prica_calc": 2944000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -4052,6 +4114,8 @@
           16090,
           16090,
           16090,
+          16090,
+          16090,
           16090
         ]
       },
@@ -4063,7 +4127,7 @@
       "code": "083660",
       "name": "CSA 코스믹",
       "rank": 14,
-      "trade_amount": 1980000000,
+      "trade_amount": 1981000000,
       "change_pct": 29.93,
       "close_price": 395,
       "open_price": 395,
@@ -4111,8 +4175,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 7.18,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 6.8,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 2885,
@@ -4299,8 +4363,8 @@
           "summary": "CSA 코스믹 상한가 (29.93%)",
           "cur_prc": 395,
           "flu_rt": 29.93,
-          "trde_qty": 5013876,
-          "trde_prica_calc": 1980000000,
+          "trde_qty": 5015431,
+          "trde_prica_calc": 1981000000,
           "consecutive_count": 3,
           "estimated": false,
           "effect_badges": [
@@ -4321,6 +4385,8 @@
         "open": 395,
         "base": 304,
         "prices": [
+          395,
+          395,
           395,
           395,
           395,
@@ -4426,8 +4492,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 4.17,
-      "index_multiple_current": 7.19,
+      "index_change_pct": 4.4,
+      "index_multiple_current": 6.82,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 4200,
