@@ -5,6 +5,14 @@
 //   검증 = bbox 수치 (눈대중 금지). 4모드(라이트/다크 × 장전 portal/과거 rec) + 최장 텍스트 조합.
 //   real render path: 정적 서버 + 실 renderer.js + 실 builder(_buildPrevPickChipHtml/_buildRunningHoldingsHtml).
 //
+//   R48 잔존 fix (2026-06-13, Q-20260613-155) — 실 픽 존재일 비결정성 제거 2축:
+//   ① serviceWorkers:'block' — sw.js(skipWaiting+clients.claim+network-first)가 page.route('**/data/**')
+//     를 우회해 실 /data/** 를 로드시키던 누출 봉쇄 (Playwright page.route 는 SW 발 요청을 못 가로챔).
+//     존재일(예: 6/12 고영)엔 실 today-rec 카드가 #cal-content 에 렌더 → mirror 1순위가 fixture 를
+//     이겨 시나리오 A 단언 3건×3실행 = 9 FAIL (부재일·주말만 PASS 되던 요일 의존성).
+//   ② 시나리오 A decoy 가드 — 실 카드 동형 decoy 를 #cal-content 에 심은 뒤 portal 밖 today-rec
+//     전부 제거 (DOM 소유) → 어느 요일에 실행해도 "실 카드 존재 → 제거 → fixture 승리" 상시 검증.
+//
 // 실행: PW_PKG=<playwright 절대경로> node scripts/tests/test_wave1_pm320_fixes.mjs  (repo 루트)
 const _pwSpec = process.env.PW_PKG || 'playwright';
 const _pw = await import(_pwSpec);
@@ -49,7 +57,9 @@ const browser = await chromium.launch();
 //             + "외 2종 보유 중"(최장 name 조합) + 보조설명 노출.
 // ─────────────────────────────────────────────────────────────────────────────
 async function scenarioA(viewport, themeAttr, tag) {
-  const page = await browser.newPage({ viewport });
+  // SW 차단 — 헤더 주석 ① (R48 9 FAIL 누출원). route 차단이 실제로 작동하게 만든다.
+  const context = await browser.newContext({ viewport, serviceWorkers: 'block' });
+  const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', (e) => pageErrors.push(String(e)));
   await page.route('**/data/**', (route) => route.fulfill({ status: 404, body: '' }));
@@ -59,6 +69,18 @@ async function scenarioA(viewport, themeAttr, tag) {
   if (themeAttr) await page.evaluate((t) => document.documentElement.setAttribute('data-theme', t), themeAttr);
 
   await page.evaluate(() => {
+    // 존재일 decoy 영구 회귀 가드 — 실 렌더 카드 동형을 #cal-content 에 먼저 심는다.
+    //   어느 요일에 실행해도 "실 카드 존재 → 제거 → fixture 승리" 경로를 상시 검증 (실행일 비의존).
+    let cc = document.getElementById('cal-content');
+    if (!cc) { cc = document.createElement('div'); cc.id = 'cal-content'; document.body.appendChild(cc); }
+    const decoy = document.createElement('div');
+    decoy.className = 'cal-pm320-today-rec';
+    decoy.innerHTML = '<div class="cal-pm320-today-rec-head">'
+      + '<span class="cal-pm320-today-rec-headlabel">이날의 추천</span>'
+      + '<span class="cal-pm320-today-rec-name">실데이터디코이</span></div>'
+      + '<div class="cal-pm320-today-rec-result">잠정 +0.00% (D+0/+3)</div>'
+      + '<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="999999">상세 보기</button>';
+    cc.appendChild(decoy);
     // 실 builder 호출 — 최장 조합: running d_offset=0 (진입 당일 · 성과 집계 전 (D+0/+3)) + 보유 3종.
     const mkInterp = (code, name, dOffset) => ({
       code, name,
@@ -79,6 +101,13 @@ async function scenarioA(viewport, themeAttr, tag) {
     const portal = document.getElementById('pm320-prepick-portal');
     portal.innerHTML = chipHtml + holdingsHtml;
     portal.hidden = false;
+    // portal 밖 실/decoy .cal-pm320-today-rec 전부 제거 — 시나리오 A 는 portal fixture 가 DOM 소유.
+    //   mirror 1순위 = #cal-content 하위 .cal-pm320-today-rec (renderer.js _pickPrimary) 라서 실 카드
+    //   잔존 시 fixture 패배. portal 내부 prev 칩([data-pre-prev] 토글 박스) 안의 .cal-pm320-today-rec
+    //   는 fixture 자신이므로 보존 (r21 "변조 유발원" 주석 참조).
+    for (const el of document.querySelectorAll('.cal-pm320-today-rec')) {
+      if (!el.closest('#pm320-prepick-portal')) el.remove();
+    }
     // 스크롤 가능하게 필러 (IntersectionObserver 가 칩 이탈 시 픽바 노출).
     const filler = document.createElement('div');
     filler.style.height = '3000px';
@@ -100,6 +129,8 @@ async function scenarioA(viewport, themeAttr, tag) {
       visible: bar.classList.contains('pm320-pickbar--visible'),
       statusText: status.textContent,
       nameText: name.textContent,
+      recOutsidePortal: [...document.querySelectorAll('.cal-pm320-today-rec')]
+        .filter((el) => !el.closest('#pm320-prepick-portal')).length,
       barBox: bb(bar), statusBox: bb(status), arrowBox: bb(arrow),
       statusScrollW: status.scrollWidth, statusClientW: status.clientWidth,
       statusRects: status.getClientRects().length,
@@ -112,6 +143,7 @@ async function scenarioA(viewport, themeAttr, tag) {
   console.log(`\n[시나리오 A · ${tag}] viewport=${viewport.width}x${viewport.height}`);
   console.log(`  status="${r.statusText}" bbox=${JSON.stringify(r.statusBox)} bar=${JSON.stringify(r.barBox)}`);
   assert(r.visible, `픽바 visible (${tag})`);
+  assert(r.recOutsidePortal === 0, `decoy 가드 — portal 밖 today-rec 잔존 0 (실측 ${r.recOutsidePortal}, 존재일 동치 상태에서 fixture 가 DOM 소유)`);
   // R25 P0-1/P0-2 (2026-06-11) — D-카운터 분모 동적(fixture 만기 SSOT: 6/10→6/16 영업일 = +4)
   //   + 분자 라이브 계산(스냅샷 동결 차단) + 스냅샷 손익 caption.
   //   고정 verbatim("/+3" 하드코딩 — fixture 만기와 자기모순이던 종전 기대값) 대신 형태 검증(실행일 비의존).
@@ -134,7 +166,7 @@ async function scenarioA(viewport, themeAttr, tag) {
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(300);
   await page.screenshot({ path: `${SHOTS}/A-portal-${tag}-${viewport.width}.png` });
-  await page.close();
+  await context.close();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -144,7 +176,10 @@ async function scenarioA(viewport, themeAttr, tag) {
 //   주입 markup = renderer.js _buildPm320RecRow/_buildPm320TodayRecCard 신규 출력 형식 verbatim.
 // ─────────────────────────────────────────────────────────────────────────────
 async function scenarioB(viewport, themeAttr, tag) {
-  const page = await browser.newPage({ viewport });
+  // SW 차단 — 시나리오 A 와 동일 누출 봉쇄 (B 는 cc.innerHTML 교체로 DOM 소유라 면역이었으나,
+  //   주입 이후 늦은 실 데이터 재렌더 race 잔존 가능성까지 일괄 제거 — 결정성 대칭).
+  const context = await browser.newContext({ viewport, serviceWorkers: 'block' });
+  const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', (e) => pageErrors.push(String(e)));
   await page.route('**/data/**', (route) => route.fulfill({ status: 404, body: '' }));
@@ -220,7 +255,7 @@ async function scenarioB(viewport, themeAttr, tag) {
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(300);
   await page.screenshot({ path: `${SHOTS}/B-pill-${tag}-${viewport.width}.png` });
-  await page.close();
+  await context.close();
 }
 
 // 4모드 (라이트/다크 × 장전 portal/과거 rec) × 모바일(390, R23 기준) + 데스크탑(1280) bbox 재측정.
