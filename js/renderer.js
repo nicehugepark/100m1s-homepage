@@ -711,8 +711,12 @@ function _wirePickCountdown() {
       .filter(el => document.body.contains(el));
     if (els.length === 0) { _stopPickCountdown(); return; }
     const now = new Date();
+    // fix/pick-reveal — 공개 윈도우(15:19:30~) 진입 시 픽 자동 폴링 가동 (멱등, 아래 정의).
+    if (now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() >= 15 * 3600 + 19 * 60 + 30) {
+      _startPickRevealPoll();
+    }
     // 15:20 도달 → 카운트다운 문구를 "곧 갱신됩니다"로 전환 후 타이머 종료.
-    //   (15:20~15:30 사이 다음 자동 폴링/리렌더 전까지의 공백 안내. 픽 생성되면 리렌더로 배너 자연 소거.)
+    //   (15:20~15:30 사이 픽 자동 폴링(_startPickRevealPoll)이 도착 감지 → 리렌더로 배너 자연 소거.)
     if (now.getHours() * 60 + now.getMinutes() >= 15 * 60 + 20) {
       els.forEach(el => {
         const banner = el.closest('.cal-pm320-pending');
@@ -732,6 +736,89 @@ function _wirePickCountdown() {
   };
   tick();
   _pickCountdownTimer = setInterval(tick, 1000);
+}
+
+// ── fix/pick-reveal (2026-06-12) — 픽 공개 윈도우 자동 폴링 ──
+//   15:19:30~15:30:00 KST + 오늘 view + 픽 미확정(pending 카운트다운 DOM 존재) 시에만 가동.
+//   17초 간격으로 당일 pm320_history JSON(픽/보류 확정의 단일 출처 — data-loader pm320NoPick SoT)을
+//   고유 cache-bust URL(?v=r{ts})로 probe → 도착 시:
+//     ① window._pm320PickRevealBust 설정 — 이후 오늘 데이터 fetch 전체가 신규 URL = Pages CDN
+//        (max-age 600)·브라우저 HTTP 캐시 우회 (고정 ?v=날짜해시 재요청·location.reload 는 픽 이전
+//        stale JSON 을 최대 10분 재서빙 — URL 변경만이 유일한 우회).
+//     ② calDayCache 세션 키 폐기 — §3.6.2.3 강제 재로드 패턴 (calendar.js 동형). 키(@OPEN)는
+//        15:30 까지 불변이라 폐기 없이는 인메모리·localStorage 캐시가 재렌더를 무력화.
+//     ③ onCalCellClick(today, false) 재렌더 — 09:00 PRE_MARKET→OPEN 전환과 동일한 검증된 경로.
+//        픽 카드/배너 소거가 기존 렌더 로직으로 자연 전환 (전체 reload 불요).
+//   - 윈도우 밖 폴링 0: 시작 트리거가 _wirePickCountdown tick 내부(15:19:30+)·15:30 초과 시 probe
+//     자기 중단. 장외/과거 view/single-card 는 pending 배너 자체가 없어 tick 미가동 → 폴링 0.
+//   - 15:20 이전 조기 도착 시 재렌더를 15:20 까지 지연 — loadCalDayData 의 _todayBeforePick 가드
+//     (15:20 전 pm320_history fetch 생략)와 충돌하면 null 이 calDayCache 에 박제되는 부분상태
+//     함정 회피 (FLR-20260605-TEC-001 동형).
+//   - 15:30 초과 픽 미도착: 폴링 중단 + 기존 화면 유지 (추정 표시 금지, FLR-AGT-002).
+const _PICK_REVEAL_POLL_MS = 17000;
+let _pickRevealPollTimer = null;
+let _pickRevealDone = false;
+function _stopPickRevealPoll() {
+  if (_pickRevealPollTimer) { clearTimeout(_pickRevealPollTimer); _pickRevealPollTimer = null; }
+}
+function _pickRevealWindowState(now) {
+  const _n = now || new Date();
+  const sec = _n.getHours() * 3600 + _n.getMinutes() * 60 + _n.getSeconds();
+  if (sec < 15 * 3600 + 19 * 60 + 30) return 'BEFORE';
+  if (sec > 15 * 3600 + 30 * 60) return 'AFTER';
+  return 'IN';
+}
+function _startPickRevealPoll() {
+  if (_pickRevealPollTimer || _pickRevealDone) return; // 멱등 — 1초 tick 의 반복 호출 안전
+  const probe = async () => {
+    _pickRevealPollTimer = null;
+    const now = new Date();
+    const st = _pickRevealWindowState(now);
+    if (st === 'AFTER') { _stopPickRevealPoll(); return; }   // 15:30 초과 — 중단 + 기존 화면 유지
+    if (st === 'BEFORE') { _pickRevealPollTimer = setTimeout(probe, _PICK_REVEAL_POLL_MS); return; }
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    let arrived = false;
+    try {
+      // 1차 zero-noise probe — summary.json 은 항상 존재(200)라 콘솔 404 라인 0 (R18/R44 0err 원칙).
+      //   15:20 빌드(build_card_history.py)가 summary(backtest_detail.as_of=오늘)와 일자 파일을
+      //   같은 push 로 원자 배포 → as_of=오늘이면 일자 파일도 존재 확정.
+      const sRes = await fetch(`/data/pm320_history/summary.json?v=r${Date.now()}`, { cache: 'no-store', credentials: 'omit' });
+      let markerToday = false;
+      if (sRes.ok) {
+        const s = await sRes.json();
+        markerToday = !!(s && s.backtest_detail && s.backtest_detail.as_of === today);
+      }
+      // 2차 — 마커 확인 후(200 확정) 일자 파일 fetch. 15:22+ 는 마커 무관 직접 probe 폴백
+      //   (보류일 as_of 미갱신·summary 스키마 변동 대비 — 이 구간만 404 콘솔 라인 허용, degraded).
+      const _directFallback = now.getHours() * 60 + now.getMinutes() >= 15 * 60 + 22;
+      if (markerToday || _directFallback) {
+        const res = await fetch(`/data/pm320_history/${today}.json?v=r${Date.now()}`, { cache: 'no-store', credentials: 'omit' });
+        if (res.ok) {
+          const d = await res.json();
+          // 픽 확정·보류 확정 모두 "데이터 도착" — 보류일도 재렌더로 정직 고지 (곧 갱신됩니다 방치 금지).
+          arrived = !!(d && Array.isArray(d.stocks) && d.stocks.length > 0);
+        }
+      }
+    } catch (_) { /* 일시 네트워크 오류 — 다음 주기 재시도 */ }
+    if (!arrived) { _pickRevealPollTimer = setTimeout(probe, _PICK_REVEAL_POLL_MS); return; }
+    // 15:20 이전 조기 도착 — 렌더 가드(_todayBeforePick)와 정합하도록 15:20:00.5 까지 재probe 지연.
+    if (now.getHours() * 60 + now.getMinutes() < 15 * 60 + 20) {
+      const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 20, 0, 500);
+      _pickRevealPollTimer = setTimeout(probe, Math.max(500, target.getTime() - now.getTime()));
+      return;
+    }
+    _pickRevealDone = true;
+    _stopPickRevealPoll();
+    try { window._pm320PickRevealBust = Date.now().toString(36); } catch (_) { /* no-op */ }
+    // 사용자가 과거 날짜 열람 중이면 화면을 빼앗지 않는다 — bust+캐시 폐기만으로
+    //   다음 오늘 클릭이 신선 fetch (수동 전환 무손실).
+    const onToday = !!document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"], .cal-pm320-pending-soon');
+    try {
+      if (typeof _cacheKey === 'function' && typeof calDayCache !== 'undefined') delete calDayCache[_cacheKey(today)];
+    } catch (_) { /* no-op */ }
+    if (onToday) { try { onCalCellClick(today, false); } catch (_) { /* 재렌더 실패 — 화면 유지 */ } }
+  };
+  _pickRevealPollTimer = setTimeout(probe, 0); // 즉시 1회 probe 후 17초 간격
 }
 
 // PRE_MARKET (장 시작 전, 09:00 이전 + 오늘 view) 빈 상태 — 당일 표출 데이터가 아직 없는 정상 상태.

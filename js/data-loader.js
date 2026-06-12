@@ -52,8 +52,20 @@ function _isTodayPastOpen(date) {
   return now.getHours() >= 9; // KST 장 시작 시각
 }
 
+// fix/pick-reveal (2026-06-12) — 일자 데이터 fetch cache-bust 토큰.
+//   평시: 날짜 고정 해시(YYYYMMDD) → 같은 URL 재사용으로 CDN 캐시 활용 (기존 동작 동일).
+//   픽 공개 감지(renderer.js _startPickRevealPoll) 후: window._pm320PickRevealBust 부착 → 신규 URL 로
+//   Pages CDN(max-age 600)·브라우저 HTTP 캐시 동시 우회. 같은 URL 재요청은 픽 이전 stale JSON 을
+//   최대 10분 서빙하므로(location.reload 도 동일) URL 자체를 바꿔야 한다 (FLR-20260605-TEC-001 동형).
+//   sw.js 데이터 fetch 는 network-first 라 본 토큰과 독립 (이중 안전).
+function _dataBust(date) {
+  const base = date.replace(/-/g, '');
+  const b = (typeof window !== 'undefined' && window._pm320PickRevealBust) ? window._pm320PickRevealBust : null;
+  return b ? `${base}-${b}` : base;
+}
+
 async function loadKiwoomDate(date) {
-  const dateHash = date.replace(/-/g, '');
+  const dateHash = _dataBust(date);
   // v6: index 선행 조회하여 존재하지 않는 날짜는 fetch 자체를 건너뛴다 (404 소음 제거).
   const idx = await loadKiwoomIndex();
   const idxDates = idx && Array.isArray(idx.dates) ? idx.dates : null;
@@ -127,7 +139,7 @@ async function loadHolidayData() {
 //       → cron worktree 미러 /data/pm320_history/{date}.json 사이트 도메인 serve.
 // 404 graceful (PICK 부재 일자) → null. Phase 1 dev 위임 본문 (2026-06-03 dev-pm320-frontend-implementation).
 async function loadPm320History(date) {
-  const dateHash = date.replace(/-/g, '');
+  const dateHash = _dataBust(date);  // fix/pick-reveal — 픽 공개 후 신선 fetch (평시 날짜 해시 동일)
   try {
     const res = await fetch(`/data/pm320_history/${date}.json?v=${dateHash}`);
     if (!res.ok) return null;
@@ -197,7 +209,7 @@ async function loadNightlyUsSummary(date) {
 const _US_INDICES_EPOCH = '2026-06-05';
 async function _fetchUsIndices(date) {
   if (!date || date < _US_INDICES_EPOCH) return null;
-  const dateHash = date.replace(/-/g, '');
+  const dateHash = _dataBust(date);  // fix/pick-reveal — 픽 공개 후 신선 fetch (평시 날짜 해시 동일)
   try {
     const res = await fetch(`/data/us-indices/${date}.json?v=${dateHash}`);
     if (!res.ok) return null;
@@ -266,7 +278,7 @@ async function loadCalDayData(date) {
   if (calDayCache[_key]) return calDayCache[_key];
   // kiwoom + stock-daily + pm320_history 병렬 fetch
   // DOC-20260603-DSN-001 §1 — pm320_history는 별 path (메인 worktree → cron 미러), 404 graceful (PICK 부재 일자)
-  const dateHash = date.replace(/-/g, '');
+  const dateHash = _dataBust(date);  // fix/pick-reveal — 픽 공개 후 신선 fetch (평시 날짜 해시 동일)
   // R18 P0 (콘솔 404 0err화) — PRE_MARKET(장 시작 전) + 오늘 view 시 오늘 interpreted/pm320_history JSON
   //   은 아직 생성 전(09:00 이후 빌드) → 확정 404. 장전엔 본 데이터를 쓰지도 않으므로(renderPreMarketEmpty
   //   는 nightlyUs/전일 픽만 사용) fetch 자체를 건너뛰어 콘솔 빨간 에러를 없앤다. 09:00 전환 시
