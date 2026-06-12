@@ -703,6 +703,15 @@ function _stopPickCountdown() {
 }
 function _wirePickCountdown() {
   _stopPickCountdown();
+  // feat/pick-preview (2026-06-12) — 15:30 이후(POST_MARKET) 신규 로드는 pending 배너가 없어
+  //   기존 트리거(아래 countdown tick)로는 폴링이 영영 시작되지 않음 → preview/대기 상태 DOM
+  //   렌더 시에도 윈도우(IN) 안이면 승격 폴링 가동 (멱등 — _startPickRevealPoll 자체 가드).
+  try {
+    if (document.querySelector('.cal-pm320-awaiting[data-pick-await="1"], .cal-pm320-preview-rec')
+        && _pickRevealWindowState(new Date()) === 'IN') {
+      _startPickRevealPoll();
+    }
+  } catch (_) { /* no-op */ }
   // R28 P1⑤ — 카운트다운 슬롯 2원화(본문 pending 배너 + 헤더 직하 portal 칩). 단일 querySelector
   //   → querySelectorAll 전수 tick (한쪽 코드 양끝 누락 동형 예방, FLR-20260428-TEC-001).
   if (!document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"]')) return; // 미존재 → 타이머 불요
@@ -765,7 +774,11 @@ function _pickRevealWindowState(now) {
   const _n = now || new Date();
   const sec = _n.getHours() * 3600 + _n.getMinutes() * 60 + _n.getSeconds();
   if (sec < 15 * 3600 + 19 * 60 + 30) return 'BEFORE';
-  if (sec > 15 * 3600 + 30 * 60) return 'AFTER';
+  // feat/pick-preview (2026-06-12) — 윈도우 종단 15:30 → 15:50 연장.
+  //   15:20 경량 선공개(preview) 도입 + 본 데이터(카드) 실제 착지 15:35~40 (실측 6/12 15:35:28)
+  //   → preview→본 카드 자동 승격을 위해 본 JSON 폴링이 착지 시점을 덮어야 한다.
+  //   15:50 초과 미착 = 폴링 중단 + 화면 유지 (추정 표시 금지, FLR-AGT-002).
+  if (sec > 15 * 3600 + 50 * 60) return 'AFTER';
   return 'IN';
 }
 function _startPickRevealPoll() {
@@ -800,6 +813,29 @@ function _startPickRevealPoll() {
         }
       }
     } catch (_) { /* 일시 네트워크 오류 — 다음 주기 재시도 */ }
+    // feat/pick-preview (2026-06-12, 대표 결정 "3시 20분에 딱 추천") — 본 JSON 미착 시 경량
+    //   선공개 JSON probe. 15:20:50 launchd(push_pick_preview.py)가 picks 산출 직후 push →
+    //   Pages 배포 지연(~1분) 포함 15:21~22 도착. 도착 시 window._pm320PreviewData 적재 후
+    //   재렌더(경량 픽 카드) — 폴링은 계속 돌아 본 JSON 착지 시 자동 승격(아래 arrived path).
+    //   gate 15:20:45+: 그 전엔 preview 파일 자체가 없어 404 콘솔 노이즈만 생긴다.
+    if (!arrived && !window._pm320PreviewData
+        && now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() >= 15 * 3600 + 20 * 60 + 45) {
+      try {
+        const pRes = await fetch(`/data/pm320_history/preview/${today}.json?v=r${Date.now()}`, { cache: 'no-store', credentials: 'omit' });
+        if (pRes.ok) {
+          const p = await pRes.json();
+          // schema 검증 — date 오늘 일치 + code/entry_price 실재 시에만 채택 (부분상태 차단).
+          if (p && p.preview === true && p.date === today && p.code && typeof p.entry_price === 'number' && p.entry_price > 0) {
+            window._pm320PreviewData = p;
+            const _onTodayPv = !!document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"], .cal-pm320-pending-soon, .cal-pm320-awaiting[data-pick-await="1"]');
+            try {
+              if (typeof _cacheKey === 'function' && typeof calDayCache !== 'undefined') delete calDayCache[_cacheKey(today)];
+            } catch (_) { /* no-op */ }
+            if (_onTodayPv) { try { onCalCellClick(today, false); } catch (_) { /* 재렌더 실패 — 화면 유지 */ } }
+          }
+        }
+      } catch (_) { /* preview probe 실패 — 다음 주기 재시도 */ }
+    }
     if (!arrived) { _pickRevealPollTimer = setTimeout(probe, _PICK_REVEAL_POLL_MS); return; }
     // 15:20 이전 조기 도착 — 렌더 가드(_todayBeforePick)와 정합하도록 15:20:00.5 까지 재probe 지연.
     if (now.getHours() * 60 + now.getMinutes() < 15 * 60 + 20) {
@@ -809,10 +845,13 @@ function _startPickRevealPoll() {
     }
     _pickRevealDone = true;
     _stopPickRevealPoll();
+    // feat/pick-preview — 본 JSON 착지 = 선공개 자동 승격. preview 상태 즉시 폐기 (stale 차단).
+    try { window._pm320PreviewData = null; } catch (_) { /* no-op */ }
     try { window._pm320PickRevealBust = Date.now().toString(36); } catch (_) { /* no-op */ }
     // 사용자가 과거 날짜 열람 중이면 화면을 빼앗지 않는다 — bust+캐시 폐기만으로
     //   다음 오늘 클릭이 신선 fetch (수동 전환 무손실).
-    const onToday = !!document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"], .cal-pm320-pending-soon');
+    //   feat/pick-preview — preview 카드/대기 상태 DOM 도 "오늘 열람 중" 신호에 포함 (승격 누락 차단).
+    const onToday = !!document.querySelector('.cal-pm320-pending-countdown[data-pick-cd="1"], .cal-pm320-pending-soon, .cal-pm320-preview-rec, .cal-pm320-awaiting[data-pick-await="1"]');
     try {
       if (typeof _cacheKey === 'function' && typeof calDayCache !== 'undefined') delete calDayCache[_cacheKey(today)];
     } catch (_) { /* no-op */ }
@@ -3166,6 +3205,70 @@ function renderCalExpandContent(date, data) {
     const _msg = `${_dl}은 휴장일입니다 — 픽이 발행되지 않는 날입니다.`;
     return `<div class="cal-pm320-holiday" role="status" aria-label="${escapeHtml(_msg)}"><svg class="cal-pm320-holiday-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b>${escapeHtml(_dl)}은 휴장일입니다</b> — 픽이 발행되지 않는 날입니다.</span></div>`;
   })();
+  // feat/pick-preview (2026-06-12, 대표 결정 verbatim "나는 3시 20분에 딱 추천을 하고 싶은거야")
+  //   — 15:20 경량 선공개 상태. _startPickRevealPoll 의 preview probe 가 적재한
+  //   window._pm320PreviewData (push_pick_preview.py 산출, schema pm320-pick-preview/v1)를
+  //   오늘 view + 본 데이터 미착(pm320NoPick==null)일 때만 채택. 본 데이터 도착(false=픽
+  //   확정/true=보류 확정) 시 본 카드·보류 안내가 우선 = preview 자연 비활성 (자동 승격).
+  const _pm320Preview = (() => {
+    try {
+      const pv = (typeof window !== 'undefined') ? window._pm320PreviewData : null;
+      if (!pv || _isSingleCardMode) return null;
+      if (pv.date !== date || !pv.code || typeof pv.entry_price !== 'number' || pv.entry_price <= 0) return null;
+      if (data && data.pm320NoPick != null) return null; // 본 데이터 확정 — preview 종료
+      const _nowPv = new Date();
+      const _todayPv = `${_nowPv.getFullYear()}-${String(_nowPv.getMonth() + 1).padStart(2, '0')}-${String(_nowPv.getDate()).padStart(2, '0')}`;
+      if (date !== _todayPv) return null; // 오늘 view 전용
+      return pv;
+    } catch (_) { return null; }
+  })();
+  //   경량 픽 카드 — 본 카드(_buildPm320TodayRecCard)와 동일 CSS 클래스 재사용(신규 CSS 0)
+  //   + --preview 식별 클래스. 만기 칸은 preview 미산출 필드라 미표기 (fabrication 금지,
+  //   FLR-AGT-002). 정직 고지 1줄: 상세 분석은 15:35경 본 데이터로 자동 갱신.
+  const _pm320PreviewHtml = (() => {
+    if (!_pm320Preview) return '';
+    const _pvName = _pm320Preview.name || '';
+    const _pvCode = String(_pm320Preview.code);
+    const _pvBuy = _fmtKRW(_pm320Preview.entry_price);
+    const _pvTp = (typeof _pm320Preview.take_profit_target_price === 'number') ? _fmtKRW(_pm320Preview.take_profit_target_price) : '—';
+    const _pvWater = (typeof _pm320Preview.watering_target_price === 'number') ? _fmtKRW(_pm320Preview.watering_target_price) : '—';
+    return `<div class="cal-pm320-today-rec cal-pm320-preview-rec" role="group" aria-label="오늘 PM320 추천 ${escapeHtml(_pvName)} ${escapeHtml(_pvCode)} 선공개">
+      <div class="cal-pm320-today-rec-head">
+        <span class="cal-pm320-today-rec-star" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+        <span class="cal-pm320-today-rec-headlabel">오늘 PM320 추천</span>
+        <span class="cal-pm320-today-rec-name">${escapeHtml(_pvName)}</span>
+        <span class="cal-pm320-today-rec-code">${escapeHtml(_pvCode)}</span>
+      </div>
+      <div class="cal-pm320-today-rec-grid">
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">매수</span><span class="cal-pm320-today-rec-v">${escapeHtml(_pvBuy)}</span></div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(_pvTp)}</span></div>
+        <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">물타기</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--dn">${escapeHtml(_pvWater)}</span></div>
+      </div>
+      <div class="cal-pm320-today-rec-dnote">15:20 기준가 선공개 — 상세 분석은 15:35경 자동 갱신됩니다</div>
+    </div>`;
+  })();
+  // feat/pick-preview P0 fix (lead 15:34 캡처 실측) — 15:30 이후 본 데이터 미착 시 픽 영역 소멸 결함.
+  //   ROOT: 15:30+ getMarketState=POST_MARKET → pending 배너 조건(OPEN) 탈락 + pm320NoPick==null(404)
+  //   → no-pick(true 전용)·no-data(과거일 전용)·rec 카드(픽 데이터 필요) 전원 공백 = 영역 자체 소멸.
+  //   fix: 오늘 view + 거래일 + 15:30~ 본 데이터 미착 구간에 영역 유지 + 정직 상태 문구.
+  //   16:30 초과 지속 미착 = "갱신 지연" 문구로 전환 ("잠시 후" 거짓 약속 금지, FLR-AGT-002).
+  const _pm320AwaitingHtml = (() => {
+    if (_isSingleCardMode || _isHolidayView || !date) return '';
+    if (_pm320Preview) return ''; // preview 카드가 영역 점유 — 대기 문구 불요
+    if (data && data.pm320NoPick != null) return ''; // 본 데이터 확정 — 기존 path 담당
+    if (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true) return '';
+    if (isMarketClosed(date)) return '';
+    const _nowAw = new Date();
+    const _todayAw = `${_nowAw.getFullYear()}-${String(_nowAw.getMonth() + 1).padStart(2, '0')}-${String(_nowAw.getDate()).padStart(2, '0')}`;
+    if (date !== _todayAw) return ''; // 과거 결측일은 _pm320NoDataHtml 담당
+    const _secAw = _nowAw.getHours() * 3600 + _nowAw.getMinutes() * 60 + _nowAw.getSeconds();
+    if (_secAw < 15 * 3600 + 30 * 60) return ''; // 15:30 전 = pending 배너(OPEN) 담당
+    const _late = _secAw >= 16 * 3600 + 30 * 60;
+    const _msgAw = _late
+      ? '오늘 픽 데이터가 아직 도착하지 않았습니다 — 갱신이 지연되고 있습니다'
+      : '오늘 픽은 잠시 후 갱신됩니다';
+    return `<div class="cal-pm320-no-pick cal-pm320-awaiting" data-pick-await="1" role="status" aria-label="${escapeHtml(_msgAw)}"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b>${escapeHtml(_msgAw)}</b>${_late ? '' : ' — 오늘의 추천이 곧 표시됩니다'}</span></div>`;
+  })();
   // PM320-D6 P0 (손님 판정 — 시점 혼란) — 장중 "오늘의 추천 15:20 공개" 안내 배너.
   //   손님(주식 초보)이 아침 09시에 자정/장전 스냅샷 데이터를 "오늘의 추천"으로 오인하고
   //   "고장났나?" 하고 이탈하는 문제. 조건: 오늘 view + 장중(OPEN, 09:00~15:20) + 픽 미생성.
@@ -3180,7 +3283,8 @@ function renderCalExpandContent(date, data) {
     const _nowB = new Date();
     const _todayB = `${_nowB.getFullYear()}-${String(_nowB.getMonth() + 1).padStart(2, '0')}-${String(_nowB.getDate()).padStart(2, '0')}`;
     const _pickPending = !data || data.pm320NoPick !== false;
-    if (!_isSingleCardMode && _stateForBanner === 'OPEN' && date === _todayB && _pickPending) {
+    // feat/pick-preview — 선공개 카드 활성 시 카운트다운 배너 억제 (공개 완료 = 카운트다운 종료).
+    if (!_isSingleCardMode && _stateForBanner === 'OPEN' && date === _todayB && _pickPending && !_pm320Preview) {
       const _cd = _formatCountdownToPick(_nowB);
       _pm320PendingHtml =
         `<div class="cal-pm320-pending" role="status" aria-label="오늘의 추천은 오후 3시 20분에 공개됩니다">`
@@ -3266,9 +3370,11 @@ function renderCalExpandContent(date, data) {
       ${_sectionTitleHtml}
       ${_pm320HolidayHtml}
       ${_pm320PendingHtml}
+      ${_pm320PreviewHtml}
       ${_pm320TodayRecHtml}
       ${_pm320NoPickHtml}
       ${_pm320NoDataHtml}
+      ${_pm320AwaitingHtml}
       ${_pm320WinRateHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
