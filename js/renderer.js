@@ -86,48 +86,97 @@ function _termTip(term) {
   return `<button type="button" class="cal-term-tip" data-term="${escapeHtml(term)}" aria-label="${escapeHtml(g.t)} 용어 설명" aria-expanded="false">?</button>`;
 }
 // 전역 (?) 탭 팝오버 — 1회만 등록. 탭 시 해당 버튼 아래 풀이 팝오버 토글, 바깥 탭 시 닫힘.
+// R45 #1·#2 (조니 2심, 2026-06-12) — 동일 팝오버 엔진을 테마 칩(data-tooltip)·효과 배지(title)에 확장.
+//   세 트리거 공통: 탭=열기, 재탭/바깥 탭/스크롤=닫기, 전역 동시 1개만(_close 공유), 뷰포트 경계 보정.
 function _wireTermTips() {
   if (window._termTipsInit) return;
   window._termTipsInit = true;
   const _close = () => {
     const open = document.querySelector('.cal-term-pop');
     if (open) open.remove();
-    document.querySelectorAll('.cal-term-tip[aria-expanded="true"]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    document.querySelectorAll('.cal-term-tip[aria-expanded="true"], .dsn-v95-effect-badge[aria-expanded="true"]')
+      .forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    // R45 #1 — 활성 칩 시각 마커 해제 (팝오버 닫힘과 동기).
+    document.querySelectorAll('.cal-ind-chip.chip-tip-active').forEach((c) => c.classList.remove('chip-tip-active'));
   };
-  document.addEventListener('click', (e) => {
-    const tip = e.target.closest('.cal-term-tip');
-    if (!tip) { _close(); return; }
-    e.preventDefault();
-    e.stopPropagation();
-    const wasOpen = tip.getAttribute('aria-expanded') === 'true';
-    _close();
-    if (wasOpen) return; // 토글: 열려 있던 것 탭 시 닫기만
-    const g = _PM320_GLOSSARY[tip.dataset.term];
-    if (!g) return;
+  // position:fixed 오버레이 — body 직속으로 붙여 어떤 부모 레이아웃에도 0 영향(시프트 0).
+  //   앵커 rect 기준으로 좌표 계산, 뷰포트 경계(8px 여백) 넘으면 좌/우 자동 보정(클리핑 방지).
+  const _openPop = (anchor, titleText, bodyText) => {
     const pop = document.createElement('div');
     pop.className = 'cal-term-pop';
     pop.setAttribute('role', 'tooltip');
-    pop.innerHTML = `<span class="cal-term-pop-title">${escapeHtml(g.t)}</span>${escapeHtml(g.d)}`;
-    tip.setAttribute('aria-expanded', 'true');
-    // position:fixed 오버레이 — body 직속으로 붙여 어떤 부모 레이아웃에도 0 영향(시프트 0).
-    //   버튼 rect 기준으로 좌표 계산, 뷰포트 경계(8px 여백) 넘으면 좌/우 자동 보정(클리핑 방지).
+    pop.innerHTML = (titleText ? `<span class="cal-term-pop-title">${escapeHtml(titleText)}</span>` : '') + escapeHtml(bodyText);
     document.body.appendChild(pop);
     const MARGIN = 8;
-    const btn = tip.getBoundingClientRect();
+    const btn = anchor.getBoundingClientRect();
     const pw = pop.offsetWidth;
     const ph = pop.offsetHeight;
-    // 가로: 버튼 좌측 정렬 기본, 우측 클리핑 시 좌측으로 당김(최소 MARGIN 확보).
+    // 가로: 앵커 좌측 정렬 기본, 우측 클리핑 시 좌측으로 당김(최소 MARGIN 확보).
     let left = btn.left;
     if (left + pw > window.innerWidth - MARGIN) left = window.innerWidth - MARGIN - pw;
     if (left < MARGIN) left = MARGIN;
-    // 세로: 버튼 아래 기본, 아래 공간 부족하면 버튼 위로 플립.
+    // 세로: 앵커 아래 기본, 아래 공간 부족하면 앵커 위로 플립.
     let top = btn.bottom + 6;
     if (top + ph > window.innerHeight - MARGIN && btn.top - 6 - ph >= MARGIN) top = btn.top - 6 - ph;
     pop.style.left = `${Math.round(left)}px`;
     pop.style.top = `${Math.round(top)}px`;
+  };
+  document.addEventListener('click', (e) => {
+    const tip = e.target.closest('.cal-term-tip');
+    if (tip) {
+      e.preventDefault();
+      e.stopPropagation();
+      const wasOpen = tip.getAttribute('aria-expanded') === 'true';
+      _close();
+      if (wasOpen) return; // 토글: 열려 있던 것 탭 시 닫기만
+      const g = _PM320_GLOSSARY[tip.dataset.term];
+      if (!g) return;
+      tip.setAttribute('aria-expanded', 'true');
+      _openPop(tip, g.t, g.d);
+      return;
+    }
+    // R45 #2 — 효과 배지(신용불가·상한가 등): role=button인데 title 전용이라 탭 무반응이던 것.
+    //   탭 시 title(=dsnV95EffectBadgeTitle: 원 단계 → 효과 + 시점)을 팝오버로 — 폰 1탭 의미 도달.
+    //   "+N" 가림 배지도 동일 경로(가려진 라벨 join title) — 잘린 정보의 모바일 도달 복구.
+    const badge = e.target.closest('.dsn-v95-effect-badge');
+    if (badge) {
+      e.preventDefault();
+      e.stopPropagation();
+      const wasOpen = badge.getAttribute('aria-expanded') === 'true';
+      _close();
+      if (wasOpen) return;
+      const body = badge.getAttribute('title') || badge.getAttribute('aria-label') || '';
+      if (!body) return;
+      badge.setAttribute('aria-expanded', 'true');
+      _openPop(badge, (badge.textContent || '').trim(), body);
+      return;
+    }
+    // R45 #1 — 테마 칩 경로 툴팁: chip-tip-active 토글 JS 부재로 모바일 탭 무반응이던 것(dead CSS).
+    //   hover 가능 기기는 기존 :hover::after 유지, hover:none(폰)에서만 탭 토글 팝오버
+    //   (::after 는 hover:none에서 display:none — 이중 표시·뷰포트 클리핑 봉쇄, news.css 동기 수정).
+    const chip = e.target.closest('.cal-ind-chip[data-tooltip]');
+    if (chip && window.matchMedia && window.matchMedia('(hover: none)').matches) {
+      e.preventDefault();
+      e.stopPropagation();
+      const wasOpen = chip.classList.contains('chip-tip-active');
+      _close();
+      if (wasOpen) return;
+      chip.classList.add('chip-tip-active');
+      _openPop(chip, '', chip.getAttribute('data-tooltip') || '');
+      return;
+    }
+    _close();
   });
   // 바깥 스크롤 시 닫힘 — fixed 팝오버가 앵커와 분리돼 떠다니는 잔상 방지.
   window.addEventListener('scroll', _close, { passive: true });
+  // R45 #2 — role=button 키보드 정합: span은 Enter/Space 기본 활성화가 없어 click 합성으로 약속 이행.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const badge = e.target && e.target.closest ? e.target.closest('.dsn-v95-effect-badge') : null;
+    if (!badge) return;
+    e.preventDefault();
+    badge.click();
+  });
 }
 
 function renderNewsCard(card) {
@@ -2481,7 +2530,8 @@ function renderCalExpandContent(date, data) {
         const title = (typeof dsnV95EffectBadgeTitle === 'function') ? dsnV95EffectBadgeTitle(eb) : label;
         const cls = `dsn-v95-effect-badge dsn-v95-effect-badge--${eb.effect} dsn-v95-effect-badge--when-${eb.when}`;
         const krxStage = eb.source_label || '';
-        return `<span class="${cls}" data-krx-stage="${escapeHtml(krxStage)}" data-effect="${escapeHtml(eb.effect)}" data-when="${escapeHtml(eb.when)}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}" role="button" tabindex="0">${escapeHtml(label)}</span>`;
+        // R45 #2 (조니 2심) — aria-expanded 초기값: 탭 시 설명 팝오버 토글(_wireTermTips 위임)과 정합.
+        return `<span class="${cls}" data-krx-stage="${escapeHtml(krxStage)}" data-effect="${escapeHtml(eb.effect)}" data-when="${escapeHtml(eb.when)}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}" role="button" tabindex="0" aria-expanded="false">${escapeHtml(label)}</span>`;
       }).join('');
       // P2 함정 #4 — 가려진 효과 라벨 hover 텍스트 join (cropping bias 보강).
       const _v95MoreTitle = _v95Overflow > 0

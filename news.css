@@ -2291,12 +2291,16 @@ body.single-card-mode { background: var(--bg) !important; }
   transition: opacity 0.15s;
   z-index: 100;
 }
-.cal-ind-chip[data-tooltip]:hover::after,
-.cal-ind-chip[data-tooltip].chip-tip-active::after {
+.cal-ind-chip[data-tooltip]:hover::after {
   opacity: 1;
 }
+/* R45 #1 (조니 2심, 2026-06-12) — 모바일(hover:none) 탭 토글. 종전 :active 순간표시 + chip-tip-active
+   ::after(토글 JS 전무 — dead CSS)는 폐기: ::after 는 칩 중앙 고정이라 뷰포트 경계 보정 불가(클리핑).
+   탭 툴팁은 JS 팝오버(_wireTermTips 확장: 경계 보정·동시 1개·재탭/바깥 탭/스크롤 닫힘)가 전담,
+   chip-tip-active 는 "지금 열린 칩" 시각 마커로 재정의(틴트 1단 상향). hover 기기 :hover::after 불변. */
 @media (hover: none) {
-  .cal-ind-chip[data-tooltip]:active::after { opacity: 1; }
+  .cal-ind-chip[data-tooltip]::after { display: none; }
+  .cal-ind-chip[data-tooltip].chip-tip-active { background: rgba(25,88,199,0.18); }
 }
 .cal-theme-sep {
   color: var(--dm); font-size: 12px; font-weight: 300; margin: 0 5px; vertical-align: middle; /* R26 P1① 10→12px */
@@ -3340,7 +3344,10 @@ body.single-card-mode { background: var(--bg) !important; }
   padding: 9px 11px;
   border-radius: 8px;
   background: var(--tx);
-  color: #fff;
+  /* R45 #1·#2 파생 catch (2026-06-12) — 반전 패널 본문색: bg=var(--tx)가 다크에선 크림(#F2EEE4)인데
+     본문 #fff 고정 → 다크 1.1:1 비가독 (기존 (?) 잠복 결함, 칩·배지 팝오버 확장으로 표면화).
+     var(--bg) = 양 모드 자동 반전 (라이트 #FAFBFE 16.3:1 — 종전 #fff와 시각 동일 / 다크 #1A1813 15.3:1). */
+  color: var(--bg);
   font-size: 12px;
   font-weight: 500;
   line-height: 1.55;
@@ -3352,6 +3359,12 @@ body.single-card-mode { background: var(--bg) !important; }
   box-shadow: 0 6px 18px rgba(26, 29, 38, 0.22);
 }
 .cal-term-pop-title { display: block; font-weight: 800; font-size: 12px; margin-bottom: 2px; color: var(--am2); }
+/* R45 파생 — 다크 반전 패널(크림 bg) 타이틀: --am2(다크 #F4D27A 밝은 골드)는 크림 위 비가독 →
+   라이트 --am과 동일한 진한 골드 #7E5E0E (on #F2EEE4 = 5.19:1 AA). 라이트는 종전 --am2 유지. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cal-term-pop-title { color: #7E5E0E; }
+}
+:root[data-theme="dark"] .cal-term-pop-title { color: #7E5E0E; }
 
 /* DOC-20260603-DSN-001 §2.3 / §7.2 — PICK 좌측 액센트바 골드 강조 (이중 강조).
    --lu (상한가) 동시 존재 시 빨강 우선 (DSN-001 §2.3 / §7.2 정합). */
@@ -3626,7 +3639,10 @@ body.single-card-mode { background: var(--bg) !important; }
   /* R44 #14 (조니 2심, 대표 catch 칩 위계) — 출처 칩 강등: 12→11px(출처명 2~4자 고유명사 인지용
      11px floor 예외 정당 — 조니 명시) + padding 3px 8px→2px 7px + 본문색 --c3→--dm(차분).
      테마 칩(.cal-ind-chip) 무수정 — 테마 > 출처 위계 확보. */
-  font-size: 11px; color: var(--dm); text-decoration: none;
+  /* R45 #3 (조니 2심, 2026-06-12) — 다크 대비: --dm(다크 #8E8676 on --dk-sf #23211A = 4.46:1 AA 미달)
+     → --dm-hi(라이트 #646E80 동일값 5.14:1 유지 / 다크 #A9A18E 6.27:1). R28 P1② 상위 muted 토큰 재사용.
+     위계(테마 칩 > 출처 칩)는 크기 11px·muted 그레이 유지로 불변 — 밝기만 AA 보정. */
+  font-size: 11px; color: var(--dm-hi); text-decoration: none;
   padding: 2px 7px; border: 1px solid var(--bd); border-radius: 999px;
   background: var(--sf);
   /* 상속 line-height(≈1.55)로는 border 포함 23px > 테마 칩 22.6px — 강등 위계가 bbox 에서 역전.
