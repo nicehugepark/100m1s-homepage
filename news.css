@@ -297,6 +297,12 @@ header {
   color: var(--tx); font: inherit;
   transition: max-height var(--t-fast), opacity var(--t-fast), padding var(--t-fast);
 }
+/* R48 라이더-2 (R47 sticky 비침 보험 — 보류 본건과 별개 선적용) — backdrop-filter 미지원 환경에서
+   반투명 글래스(0.7~0.92 알파)가 blur 없이 뒤 콘텐츠를 그대로 비추는 것 차단: 솔리드 폴백.
+   지원 환경(현대 브라우저 전부) 시각 변화 0 — @supports not 분기만. 월 15:20 실기기 실측 1장이 확증 절차. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  header, .pm320-pickbar, .cal-content-head { background: var(--bg); }
+}
 /* R44 #10 — 오늘 모드(소스 카드 가시) 접힘 시 h=0 잔존 DOM 제거. 종전 author display:flex 가
    UA [hidden]{display:none} 을 cascade 에서 이겨 hidden 속성이 무력화돼 있었음 (probe: h=0
    + 텍스트 잔존 + click timeout). 본 규칙으로 hidden=true 인 모든 경로가 실제 display:none. */
@@ -1530,6 +1536,9 @@ a.cal-credit-row:hover,
 .pm320-section-header {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   cursor: pointer; user-select: none;
+  /* R48 W2-1 (조니 R46 2심 W2 — 지수 헤더 29.7px < 44 터치) — 접기 헤더(role=button) 터치존 ≥44px.
+     시장 지수뿐 아니라 동일 접힘 문법의 전 섹션 헤더 일괄 (한쪽 수정·다른 쪽 누락 FLR-20260428-TEC-001 동형 예방). */
+  min-height: 44px;
 }
 .pm320-section-headline { flex: 1 1 auto; min-width: 0; }
 /* PM320 (대표 2026-06-10 A안) — 야간 미국증시 섹션 헤더 타이틀 (rev10에서 제거됐던 것을 접기 헤더로 복원). */
@@ -1589,15 +1598,21 @@ a.cal-credit-row:hover,
 /* R46 P1-1 (조니 단정 — 범례 1곳) — 용어 풀이 범례. 카드 리스트 하단, 기본 접힘 details.
    인라인 (?) 팁은 첫 등장 1회로 감축 — 전체 용어 일람은 본 범례가 단일 장소. */
 .pm320-term-legend {
-  margin: 18px 0 6px; padding: 10px 14px;
+  /* R48 P1-4 — summary 자체가 상하 12px 패딩(44px 터치존)을 가지므로 컨테이너 상하 패딩 축소
+     (종전 10px → 4px, 접힘 박스 비대 방지: 40→52px). */
+  margin: 18px 0 6px; padding: 4px 14px;
   border: 1px solid var(--bd); border-radius: 12px; background: var(--bg2);
 }
 .pm320-term-legend summary {
   cursor: pointer; font-size: 13px; font-weight: 700; color: var(--tx2);
   -webkit-tap-highlight-color: transparent;
+  /* R48 P1-4 (조니 R47 1심 ④ — 범례 토글 32px < 44 터치) — summary 터치존 ≥44px.
+     display:flex 전환은 ::marker(디스클로저 삼각형) 소실 위험 → list-item 유지 + 상하 패딩 확보:
+     13px*1.55(≈20.2) + 12*2 ≈ 44.2px. */
+  padding: 12px 0; min-height: 44px; box-sizing: border-box;
 }
 .pm320-term-legend summary::marker { color: var(--dm); }
-.pm320-term-legend dl { margin: 10px 0 2px; }
+.pm320-term-legend dl { margin: 2px 0 8px; }
 .pm320-term-legend dt { font-size: 12px; font-weight: 700; color: var(--tx); margin-top: 8px; }
 .pm320-term-legend dd { font-size: 12px; color: var(--tx2); margin: 2px 0 0; line-height: 1.5; }
 .theme-trend-legend {
@@ -2258,6 +2273,20 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-trade-list-note b { color: var(--am); font-weight: 800; }
 .cal-trade-list { display: flex; flex-direction: column; gap: 6px; }
+/* R48 W2-5 (조니 R46 2심 W2 — 데스크탑 2열) — ≥1024px 종목 카드 리스트 2열 grid.
+   998px 단열(카드 풀폭)의 공간 낭비 해소. align-items:start — 카드 펼침(expanded)이 행 형제를
+   세로로 늘리지 않게. 추천 디바이더(.cal-pm320-pick-divider)는 풀폭 span. 단독 카드 모드 제외.
+   미장/KR 지수 카드(.nightly-us-cards)도 동일 2열 (6카드 998px 스택 해소). */
+@media (min-width: 1024px) {
+  .cal-section:not(.cal-section--single-card) .cal-trade-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; align-items: start;
+  }
+  .cal-section:not(.cal-section--single-card) .cal-trade-list > .cal-pm320-pick-divider { grid-column: 1 / -1; }
+  .cal-section:not(.cal-section--single-card) .cal-trade-list > * { min-width: 0; }
+  .nightly-us-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; align-items: start;
+  }
+}
 .cal-trade-row {
   display: grid;
   grid-template-columns: 28px 1fr auto auto auto 16px;
@@ -2751,7 +2780,9 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-portal-cd-label { font-size: 13px; font-weight: 700; color: var(--tx2); }
 .cal-pm320-portal-cd-label b { color: var(--am); font-weight: 800; }
 
-/* R28 P2 (조니 2심) — D+0/D+N 기준 시점 1줄 정의 (진행중 추천 카드 한정). */
+/* R28 P2 (조니 2심) — D+0/D+N 기준 시점 1줄 정의 (진행중 추천 카드 한정).
+   R48 라이더-1 — D+0 NXT 캡션(.cal-pm320-today-rec-nxtnote 별도 클래스 없이 본 클래스 재사용:
+   "잠정 = KRX 정규장 종가 기준 · NXT 애프터 미반영" 1줄도 동일 위계·토큰). */
 .cal-pm320-today-rec-dnote {
   margin-top: 6px;
   font-size: 12px;
@@ -2759,6 +2790,23 @@ body.single-card-mode { background: var(--bg) !important; }
   line-height: 1.45;
   color: var(--wr-basis-tx, #5E6776);
   word-break: keep-all;
+}
+/* R48 W2-4 (조니 R46 2심 W2 — 픽 박스 면책 1줄 + 공유 워터마크 단일 fix) — 추천 카드 푸터.
+   면책(좌)·브랜드 워터마크(우) 한 줄: 픽 박스 스크린샷 공유 시 면책·출처가 함께 동반되는 구조.
+   토큰 전부 다크 override 보유 (정보 손실 0). */
+.cal-pm320-today-rec-foot {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px; padding-top: 8px;
+  border-top: 1px solid var(--bd);
+}
+.cal-pm320-today-rec-disclaimer {
+  font-size: 11px; font-weight: 500; line-height: 1.45;
+  color: var(--wr-basis-tx, #5E6776); word-break: keep-all;
+}
+.cal-pm320-today-rec-brand {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1px;
+  color: var(--am); white-space: nowrap; flex-shrink: 0;
 }
 
 /* R28 제거① (조니 2심) — 테마트리 동일 종목 구성 병합 행의 형제 테마명 칩. */
@@ -3711,6 +3759,17 @@ body.single-card-mode { background: var(--bg) !important; }
 :root[data-theme="dark"] .cal-macro-chip {
   color: var(--section-summary); border-left-color: var(--am3);
 }
+/* R48 W2-3 (조니 R46 2심 W2 — wire 사실/추정 시각 분리, "사실/추정 분리는 리딩방 차별화의 본질") —
+   칩 종류 태그. "사실" = wire 기관·통신 1차 보도 제목 verbatim(골드 outline, 칩 액센트 정합) /
+   "해석" = LLM 종합 요약(muted). 양 토큰 모두 다크 override 보유 (--am 5.x / --wr-basis-tx 5.84 AA). */
+.cal-chip-kind {
+  display: inline-block; font-size: 10px; font-weight: 700; line-height: 1.4;
+  padding: 0 5px; margin-right: 6px; vertical-align: 1px;
+  border: 1px solid var(--bd); border-radius: 999px;
+  color: var(--wr-basis-tx, #5E6776); background: transparent;
+  letter-spacing: 0; white-space: nowrap;
+}
+.cal-chip-kind--fact { color: var(--am); border-color: var(--am2); }
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;
   /* REQ-035-rev: 정체성 그라데이션 복원 (햇살 톤). E8C063 border 동시 복원. R15: 토큰화(다크 함몰). */
@@ -5347,6 +5406,14 @@ body.single-card-mode { background: var(--bg) !important; }
   background: transparent;
   flex-shrink: 0;
   letter-spacing: 0;
+}
+/* R48 P1-3 (조니 R47 1심 ③ — NXT 마커 다크 3.45:1 AA 미달, "격하는 위계의 격하지 가독의 격하가
+   아니다") — 다크 전용 글자색 상향. 라이트 muted rgb(100,110,128)는 다크 표면(#23211A)에서 3.15:1.
+   #989080(웜 팔레트 정합) = 5.10:1 on --dk-sf / 5.62:1 on --dk-bg (AA 4.5 충족, --dk-tx2 7.7:1 미만
+   유지 — 11px/400/투명 bg ghost 형태 불변 = 위계 최하위 기단정(테마>출처>NXT) 보존, 색만 가독선 위로). */
+:root[data-theme="dark"] .cal-nxt-marker { color: #989080; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cal-nxt-marker { color: #989080; }
 }
 
 /* ④ 시총 메타 span — var(--tx2)/500/nowrap (거래대금 골드와 위계 분리, 절단 금지·2행 낙하 허용) */

@@ -246,94 +246,9 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
     .finally(() => { window.__koreaHolidaysLoading = false; });
 }
 
-// Q-20260605-103 Phase 4 → Q-20260608-140 (A안 페어 카드) → Q-20260608-145 (선물 상시 표시) — 미 선물 게이트. DSN-001 §2/§4.
-//   변경 이력: (1) 하드 시간대 게이트(09:00~15:30 한국장중) 폐기 → 신선도(as_of_kst ≤30분)만 판정.
-//     (2) Q-145: 30분 신선도 게이트 폐기 → 선물 데이터 있고 *유효 거래일 범위*면 항상 표시(토글·카드 상시 노출).
-//   사유(Q-145): us-intraday cron 이 국내장(08:50~15:30 KST) 에만 갱신 → 15:30 후 30분이면 선물 토글이 사라져
-//     "선물 장 끝났냐"(대표) 오해. 그러나 CME 선물은 ~23h 거래(거의 항상 open) → 데이터 stale ≠ 시장 마감.
-//     stale 는 숨기지 않고 "N분 전 기준" + (30분↑) "지연" 배지로 *정직하게 명시*(FLR-AGT-002 거짓 충실성: 숨김도
-//     허위실시간도 금지). 거래중/마감 위계는 데이터 session_open 도트로 별도 노출(신선도와 직교).
-//   가드(유지): (a) ageMin < 0(미래시각=데이터 오류) → 미표시. (b) ageMin > STALE_MAX_MIN(주말 휴장 ~49h 초과 =
-//     "수일 전 좀비 데이터") → 미표시. 정당한 거래일 간극(평일 마감~다음 갱신, 주말)은 모두 graceful 표시.
-//   반환에 isStale(30분 초과) 추가 → index-card 가 "지연" 배지 분기.
-//   as_of_kst 형식: ISO(tz offset 有, 라이브 "...+09:00") 또는 "YYYY-MM-DD HH:MM:SS"(tz 無, KST 로컬) graceful.
-function _matchFuturesToIndices(us) {
-  const fu = us && us.futures;
-  if (!fu || !Array.isArray(fu.futures) || fu.futures.length === 0) return null;
-  // as_of_kst 신선도 — tz offset 有(라이브) 시 Date 가 절대시각으로 정확 파싱 → Date.now() 와 직접 비교.
-  //   tz 無("YYYY-MM-DD HH:MM:SS") 시 KST 로컬 벽시계로 해석되므로 kstNow 벽시계와 비교(환경 무관).
-  const s = String(fu.as_of_kst).trim();
-  const hasTz = /[zZ]$|[+\-]\d{2}:?\d{2}$/.test(s);
-  let ageMin;
-  if (hasTz) {
-    const parsed = new Date(s);
-    if (isNaN(parsed.getTime())) return null;  // 파싱 실패 → 미표시 (stale 가장 금지)
-    ageMin = Math.round((Date.now() - parsed.getTime()) / 60000);
-  } else {
-    const isoish = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/.test(s) ? s.replace(' ', 'T') : s;
-    const parsed = new Date(isoish);
-    if (isNaN(parsed.getTime())) return null;
-    const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-    ageMin = Math.round((kstNow.getTime() - parsed.getTime()) / 60000);
-  }
-  // Q-20260608-145 — 30분 게이트 폐기. 미래시각(오류) + "수일 전 좀비" 만 차단, 거래일 간극은 graceful 표시.
-  //   STALE_MAX_MIN: CME 선물 최장 정당 휴장 = 주말(토 06:00 KST ~ 월 08:00 KST 경) ~49h. 여유 포함 49h=2940분.
-  //   초과 = 데이터 파이프라인 수일 정지(좀비) → 허위 노출 방지 위해 미표시.
-  const STALE_MAX_MIN = 49 * 60;
-  if (ageMin < 0 || ageMin > STALE_MAX_MIN) return null;
-  const isStale = ageMin > 30;  // 30분 초과 → index-card "지연" 배지 (cron 갱신 주기 ~10분 기준 비정상)
-  const byName = new Map();
-  fu.futures.forEach(f => { if (f && f.name) byName.set(String(f.name).toLowerCase(), f); });
-  // session_open — 섹션 단위 거래중/마감 (data-loader 통과). boolean 아니면 undefined(도트 미렌더).
-  const sessionOpen = (typeof fu.session_open === 'boolean') ? fu.session_open : undefined;
-  return { byName, list: fu.futures, ageMin, sessionOpen, isStale };
-}
-
-// 클라이언트 ET 벽시계 미 정규장 개장 판정 (평일 09:30~16:00 ET). 서버 regular_open 부재 시 fallback.
-//   ZoneInfo 대신 toLocaleString('en-US',{timeZone:'America/New_York'}) → EDT/EST 자동(DST 분기 불요,
-//   collect_us_indices.is_us_regular_open 백엔드 판정 동형). 주말 휴장. best-effort(공휴일 미반영 —
-//   휴장일 true 여도 그 외 시간 선물 기본이라 영향 경미).
-function _isUsRegularOpenClient() {
-  const etNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
-  const dow = etNow.getDay();  // 0=일 6=토
-  if (dow === 0 || dow === 6) return false;
-  const mins = etNow.getHours() * 60 + etNow.getMinutes();
-  return mins >= 9 * 60 + 30 && mins < 16 * 60;  // [09:30, 16:00)
-}
-
-// Q-20260609 (대표 verbatim 2026-06-09 05:48) — 토글 자동 기본값 단순화. 시계 시간표(23:30~08:00 등) 폐기.
-//   "미 정규장 시간대만 정규장 토글, 그 외 시간엔 선물 토글을 기본." regular_open 단일 기준.
-//   반환 'regular'(정규장) | 'futures'(선물). "둘 다" 자동 기본 ❌(사용자 능동 선택만).
-//   규칙: (1) 선물 데이터(matched) 부재 → 'regular'(빈 화면 방지 graceful, 기존 L183 유지) /
-//     (2) 미 정규장 개장 중(regularOpen) → 'regular' / (3) 그 외 모든 시간 → 'futures'.
-//   regularOpen 판정 = 서버 us.regular_open(P0 부착, boolean) 우선 → 미부착 시 클라이언트 ET fallback.
-function _futAutoDefault(matched, regularOpen) {
-  if (!matched) return 'regular';  // 선물 데이터 없으면 정규장만 (graceful, 빈 화면 방지)
-  const isRegularOpen = (typeof regularOpen === 'boolean') ? regularOpen : _isUsRegularOpenClient();
-  return isRegularOpen ? 'regular' : 'futures';  // 정규장 개장 중=정규장, 그 외=선물 기본
-}
-
-// Q-20260608-140 (A안, DSN-001 §1 #4 + §7 비판 4) — 지수↔선물 명시 매핑 테이블 (부분일치 폐기).
-//   부분일치(`NASDAQ` lower vs `나스닥100 선물`)는 라이브에서 NASDAQ·DOW 미매칭 사고 원인 → 결정적 매핑.
-//   key = 지수 카드 제목(us-indices indices[].name), value = { futName: 선물 데이터 name, display: 페어 카드 제목 }.
-//   futName 은 us-indices futures[].name 과 정확 일치(소문자 비교). display 는 짧은 식별명(label_note 풀 고지문 ❌).
-const _IDX_FUT_MAP = {
-  'nasdaq': { futName: '나스닥100 선물', display: 'NASDAQ 선물' },
-  's&p500': { futName: 'S&P500 선물', display: 'S&P500 선물' },
-  'dow': { futName: '다우 선물', display: 'DOW 선물' }
-};
-
-// 지수(ix) → 대응 선물 entry. 명시 매핑 테이블 기준 정확 해소. 미매칭 시 null (허위 매핑 금지).
-//   반환 { fut, ageMin, display, isStale } — display = 페어 카드 제목, isStale = 30분 초과(Q-145 지연 배지).
-function _resolveFutureFor(ix, matched) {
-  if (!matched || !ix) return null;
-  const nm = String(ix.name || '').trim().toLowerCase();
-  const m = _IDX_FUT_MAP[nm];
-  if (!m) return null;  // 매핑 테이블에 없는 지수 → 선물 카드 미생성
-  const fut = matched.byName.get(String(m.futName).toLowerCase());
-  if (!fut) return null;  // 선물 데이터에 해당 name 부재 → 미렌더
-  return { fut, ageMin: matched.ageMin, display: m.display, isStale: matched.isStale };
-}
+// R48 P1-2 (2026-06-12) — 미 선물 게이트·페어 매핑 헬퍼 5종(_matchFuturesToIndices /
+//   _isUsRegularOpenClient / _futAutoDefault / _IDX_FUT_MAP / _resolveFutureFor) 제거.
+//   선물 페어 카드·토글 폐기로 소비자 0 — 나스닥 선물 운반체는 glb-stat(_freshNasdaqFuture) 단일.
 
 // ───── feat/market-context (조니 확정 spec 5건, 2026-06-12) — 시장 컨텍스트 헬퍼 ─────
 
@@ -352,6 +267,9 @@ function _splitWireNews(wire) {
       title: it.title,
       source: _WIRE_SOURCE_ABBR[it.source] || it.source,
       url: it.url,
+      // R48 W2-3 (조니 R46 2심 W2 — wire 사실/추정 시각 분리) — wire 칩 = 기관·통신 1차 보도 제목
+      //   verbatim(사실 축). LLM 종합 요약 칩(해석 축)과 시각 구분 태그의 데이터 근거 (창작 0).
+      wire: true,
     };
     (_WIRE_US_SOURCE_RE.test(it.source || '') ? out.us : out.kr).push(chip);
   }
@@ -601,54 +519,25 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
   const krCardsHtml = _buildKrIndexCardsHtml(ctx && ctx.krIndices, viewDate, isPastDate);
   const statsHtml = isPastDate ? '' : _buildGlobalStatsHtml(usValid ? us : null, ctx && ctx.macroIndicators);
 
-  // 선물 신선도 매칭 (≤30분). 부재/stale 시 null → 선물 카드·토글 미렌더 (정규장 카드만, 현행 동일).
-  const _futMatched = usValid ? _matchFuturesToIndices(us) : null;
-  const _hasFutures = !!_futMatched;
-
-  // 지수별 페어 그룹 — 정규장 카드(renderIndexCard) + (가용 시)선물 카드(renderIndexFuturesCard) 묶음.
-  //   futureInfo 인자 제거(삽입형 폐기) → renderIndexCard 2번째 인자 null.
+  // R48 P1-2 (조니 R47 1심 ② — 나스닥 선물 2운반체 해소, 2026-06-12) — 선물 페어 카드·[정규장|선물]
+  //   토글 전면 제거. 종전: glb-stat "나스닥 선물"(장중 글로벌 지표)과 선물 페어 카드(cal-feature 골격
+  //   "NASDAQ 선물" 행)가 동시 노출 — 같은 자산을 다른 as_of 로 운반 (20:56 실측 +0.46% vs +0.55%).
+  //   확정 처방: 선물 운반체 = ② 장중 글로벌 지표(glb-stat) 1곳 단일. 본문 지수 카드 = 정규장 마감만.
+  //   renderIndexFuturesCard(components/index-card.js)·.idx-fut-* CSS 는 소비자 0 상태로 보존
+  //   (재도입·롤백 경로 — DSN §3.6.9 기록). _matchFuturesToIndices 등 renderer 측 헬퍼는 제거.
   const groupsHtml = !usValid ? '' : us.indices.map(ix => {
     const regularCard = renderIndexCard(ix, null, us.trade_date_local, { isPastDate });
     if (!regularCard) return '';
-    let futCard = '';
-    if (_hasFutures && typeof renderIndexFuturesCard === 'function') {
-      const resolved = _resolveFutureFor(ix, _futMatched);  // { fut, ageMin, display } | null
-      if (resolved) {
-        // Q-20260608-143 — 선물 카드 = 선물 전용 *실시간* 뉴스(resolved.fut.news, us-intraday 가 한국
-        //   장중=미 야간 선물 거래시간대 RSS 로 생성). 정규장 지수(ix.news, 전일 미장 마감)와 시제 분리.
-        //   선물 실시간 뉴스 부재 시 undefined → 선물 카드 뉴스 블록 미렌더(정규장 마감 뉴스 fallback 금지,
-        //   시제 혼동 재발 차단, FLR-AGT-002). Q-141 의 ix.news 공유는 폐기.
-        const futNews = (resolved.fut && typeof resolved.fut.news === 'object') ? resolved.fut.news : undefined;
-        futCard = renderIndexFuturesCard(
-          resolved.fut, resolved.ageMin, us.trade_date_local, _futMatched.sessionOpen, resolved.display, futNews,
-          resolved.isStale,  // Q-145 — 30분 초과 시 "지연" 배지 (selectorless graceful, 카드 숨김 ❌)
-          isPastDate  // Q-20260610 (2회차) — 지난 날짜 카드 시 라이브 "거래중" 도트·실시간 라벨 강등
-        );
-      }
-    }
-    // .idx-pair-group — 정규장(.idx-card-regular) + 선물(.idx-card-futures) 래핑. 토글 CSS가 가시성 제어.
     return `<div class="idx-pair-group">`
       + `<div class="idx-card-regular">${regularCard}</div>`
-      + (futCard ? `<div class="idx-card-futures">${futCard}</div>` : '')
       + `</div>`;
   }).filter(Boolean).join('');
   // feat/market-context ① — KR 카드·US 카드 둘 다 0건일 때만 섹션 무렌더 (한쪽 가용 시 섹션 유지).
   if (!groupsHtml && !krCardsHtml) return '';
 
-  // 토글 세그먼트(§2) → Q-20260608-141 (§2) — "둘 다" 제거. 2-state [정규장|선물]만. 터치 ≥44px(CSS).
-  //   초기 active = 자동 기본값(_futAutoDefault). data-fut-view 동기화는 inline init script(_wireUsFutToggle).
-  // Q-20260609 — 서버 regular_open(P0 부착) 전달. 미부착(구 데이터) 시 _futAutoDefault 가 클라 ET fallback.
-  const autoView = _hasFutures ? _futAutoDefault(_futMatched, us && us.regular_open) : 'regular';
-  let toggleHtml = '';
-  if (_hasFutures) {
-    toggleHtml = `<div class="idx-fut-toggle" role="tablist" aria-label="미장 표시 전환">`
-      + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="regular" role="tab">정규장</button>`
-      + `<button type="button" class="idx-fut-toggle-btn" data-fut-set="futures" role="tab">선물</button>`
-      + `</div>`;
-  }
-
-  // 선물 고지(§4) — 섹션 1회 공통 각주 (카드마다 반복 ❌, 깨짐 원인 제거). 선물 가용 시에만.
-  const disclaimerHtml = _hasFutures
+  // 선물 고지(§4) — glb-stat 에 신선 나스닥 선물 항목이 실릴 때만 1회 각주 (운반체와 동일 조건 —
+  //   R48 P1-2: 페어 카드 제거 후 고지의 대상 = glb-stat 선물 항목 단일).
+  const disclaimerHtml = (!isPastDate && _freshNasdaqFuture(usValid ? us : null))
     ? `<div class="idx-fut-disclaimer">선물은 현물 지수와 별개 기초자산입니다. 갱신 주기 약 10분.</div>`
     : '';
 
@@ -677,8 +566,9 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
       const summary = escapeHtml(sanitize(c.summary || ''));
       const source = escapeHtml(sanitize(c.source || ''));
+      // R48 W2-3 — 사실(wire verbatim)/해석(LLM 요약) 태그. KR 빌더와 동일 _chipKindTag (양 끝 적용).
       return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
-        + `${summary}<span class="nightly-us-news-source">${source}</span></a>`;
+        + `${_chipKindTag(c)}${summary}<span class="nightly-us-news-source">${source}</span></a>`;
     }).filter(Boolean);
     if (chipItems.length > 0) {
       // R43/R44 #1 — 뉴스 확대 공통 컴포넌트 (5건+더보기 확정, 슬라이드 변형 제거).
@@ -735,54 +625,25 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
     + '<span class="pm320-section-summary" data-collapse-summary="1">' + _nuSummary + '</span>'
     + '<span class="pm320-section-chevron" aria-hidden="true">▾</span>'
     + '</div>';
-  // data-fut-view = 초기 가시성(CSS). data-fut-auto = 자동 기본값(localStorage 없을 때 fallback, init script 사용).
-  // 펼침 본문 순서 (조니 확정 spec ①·②): KR 2카드 → 장중 글로벌 지표 → 기존 US 블록(뉴스·토글·카드·고지).
+  // data-fut-view="regular" 고정 (R48 P1-2 — 선물 페어 카드 제거. 기존 CSS 가시성 룰이 정규장 카드를
+  //   그대로 노출, 토글·자동 기본값·localStorage 경로 소멸). data-has-fut="0" — _wireUsFutToggle 류 잔존
+  //   소비자 자연 no-op.
+  // 펼침 본문 순서 (조니 확정 spec ①·②): KR 2카드 → 장중 글로벌 지표 → 기존 US 블록(뉴스·카드·고지).
   //   섹션 id/접힘 키 'nightly-us' 보존 (localStorage 펼침 기억·기존 테스트·_wireSectionCollapse 무회귀).
-  return `<section class="nightly-us-summary pm320-collapsible" id="nightly-us" aria-label="시장 지수" data-fut-view="${autoView}" data-fut-auto="${autoView}" data-has-fut="${_hasFutures ? '1' : '0'}">`
+  return `<section class="nightly-us-summary pm320-collapsible" id="nightly-us" aria-label="시장 지수" data-fut-view="regular" data-has-fut="0">`
     + _nuHeaderHtml
     + `<div class="section-collapse-body" id="sec-body-nightly-us">`
     + krCardsHtml
     + statsHtml
     + newsHtml
-    + toggleHtml
     + (groupsHtml ? `<div class="nightly-us-cards">${groupsHtml}</div>` : '')
     + disclaimerHtml
     + `</div>`
     + `</section>`;
 }
 
-// Q-20260608-140 (A안, DSN-001 §2) — 미장 토글 wiring. 섹션 렌더 후 1회 호출(_renderCalendar 말미).
-//   localStorage('pm320-us-fut-view') 우선 → 없으면 data-fut-auto(시간대 자동). 클릭 시 attribute + localStorage 갱신.
-//   재렌더 0 (data-fut-view attribute만 변경, CSS 가 가시성 제어). 멱등(중복 호출 안전 — dataset flag 가드).
-function _wireUsFutToggle() {
-  const sec = document.querySelector('.nightly-us-summary[data-has-fut="1"]');
-  if (!sec || sec.dataset.futWired === '1') return;
-  sec.dataset.futWired = '1';
-  let view = sec.getAttribute('data-fut-auto') || 'regular';
-  try {
-    const saved = localStorage.getItem('pm320-us-fut-view');
-    // Q-20260608-141 (§2) — "both" 폐기. 과거 'both' override 저장분은 무시(자동 기본값으로 fallback) + 정리.
-    if (saved === 'regular' || saved === 'futures') view = saved;
-    else if (saved === 'both') { try { localStorage.removeItem('pm320-us-fut-view'); } catch (e2) { /* 무시 */ } }
-  } catch (e) { /* localStorage 차단 환경 → 자동값 유지 */ }
-  const apply = (v) => {
-    sec.setAttribute('data-fut-view', v);
-    sec.querySelectorAll('.idx-fut-toggle-btn').forEach(b => {
-      const on = b.getAttribute('data-fut-set') === v;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-  };
-  apply(view);
-  sec.querySelectorAll('.idx-fut-toggle-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const v = btn.getAttribute('data-fut-set');
-      if (v !== 'regular' && v !== 'futures') return;  // Q-20260608-141 (§2) — "both" 제거
-      apply(v);
-      try { localStorage.setItem('pm320-us-fut-view', v); } catch (e) { /* 무시 */ }
-    });
-  });
-}
+// R48 P1-2 — _wireUsFutToggle(미장 정규장/선물 토글 wiring) 제거. 선물 페어 카드·토글 폐기로
+//   토글 DOM 자체가 더는 렌더되지 않음 (data-fut-view="regular" 고정·data-has-fut="0").
 
 // design-news-time-state-v1 — PRE_MARKET 빈 상태 (Option A).
 // 거래일 09:00 미만 시 카드 list 미렌더 + 시계 아이콘 + 카운트다운 + 보조 토글 (전일 데이터 보기).
@@ -1249,7 +1110,7 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs, ma
   //   early-return 으로 그곳에 도달 못 함 → 어제 P0(15dc4b465)가 미장 HTML 은 주입했지만 토글 바인딩 누락
   //   → 선물 토글 이벤트 0 + data-fut-view=auto('regular') 고정 → CSS 가 선물 카드 숨김 → "선물 버튼
   //   사라짐"(대표 catch, Q-145 선물 상시 표시 위반). fix: 미장 HTML 주입 시 토글 wiring 동반 호출(멱등).
-  if (_usHtml && typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
+  // R48 P1-2 — 선물 토글 wiring 호출 제거 (토글 DOM 소멸).
   // PM320 (대표 2026-06-10 A안) — PRE_MARKET path 미장 섹션 접힘 상태 + localStorage 복원.
   if (_usHtml && typeof _applySectionCollapse === 'function') {
     const _nuRoot = document.getElementById('nightly-us');
@@ -1485,7 +1346,8 @@ window._computeShareUrl = _computeShareUrl;
 
 // PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 첫 화면 가치) — sticky 미니 픽 바 동기화.
 //   현재 선택일 픽(.cal-pm320-today-rec)을 헤더 아래 1줄 바에 mirror. SSOT=DOM(추정 0).
-//   픽 카드가 뷰포트 상단 밖으로 나갈 때만 노출(IntersectionObserver). 탭 = data-rec-jump 재사용.
+//   픽 카드가 뷰포트 상단 가드(80px) 위로 이탈할 때만 노출 — R48 P1-1: rAF 스로틀 scroll/resize
+//   평가의 순수 함수 (IntersectionObserver 전이 의존 폐기). 탭 = data-rec-jump 재사용.
 let _pickBarObserver = null;
 function _pm320StickyJumpOffset(opts) {
   const forcePickbar = !!(opts && opts.forcePickbar);
@@ -1509,7 +1371,7 @@ function _syncPickBar() {
   const bar = document.getElementById('pm320-pickbar');
   if (!bar) return; // 과거 빌드(바 미존재) graceful no-op
   // R23 P0 — 매 재동기 진입 시 픽바-on 상태 리셋(픽 부재 early-return·소스 교체 시 sticky 충돌
-  //   클래스 잔존 방지). 바가 다시 visible 되면 IntersectionObserver 토글이 재설정한다.
+  //   클래스 잔존 방지). 바가 다시 visible 되면 가시성 평가(_evalPickBar)가 재설정한다.
   document.body.classList.remove('pm320-pickbar-on');
   // PM320 여정 fix r4 (2026-06-11, R21 P0 — "전일 데이터 보기" 토글 시 픽바 라벨 변조·고착).
   //   원인: 토글 펼침이 prevBox([data-pre-prev]) 안에 전일 픽 요약 카드(.cal-pm320-today-rec,
@@ -1658,7 +1520,6 @@ function _syncPickBar() {
   //   오늘 모드(소스 카드 첫 화면 가시)에서 h=0 잔존 DOM(텍스트 a11y 누출 + click timeout) 제거.
 
   // 가시성 토글 — mirror 소스가 화면에 보이면 바 숨김(중복 회피), 위로 사라지면 바 노출.
-  //   IntersectionObserver 미지원(구형) 시 항상 노출(graceful degrade).
   // R23 P0 (대표 catch, 과거 날짜 sticky 충돌) — sticky 픽바(top:76, z:99)와 sticky 날짜 헤더
   //   (.cal-content-head, top:var(--nav-h)≈77, z:50)가 거의 같은 top 이라, 픽바가 보일 때 날짜
   //   헤더 요약줄("오늘의 종목 N개·…·KST 기준")이 픽바 뒤로 겹쳐 절단됨(실측 overlap 40px).
@@ -1686,16 +1547,37 @@ function _syncPickBar() {
       }, 260);
     }
   };
-  if (typeof IntersectionObserver === 'function') {
-    _pickBarObserver = new IntersectionObserver((entries) => {
-      const e = entries[0];
-      if (!e) return;
-      _setPickBarOn(!e.isIntersecting);
-    }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
-    _pickBarObserver.observe(src);
-  } else {
-    _setPickBarOn(true);
-  }
+  // R48 P1-1 (조니 R47 1심 ① — scroll 0 초기 노출 비결정 제거, 2심 메커니즘 확정 "버그 아닌 시점 차").
+  //   종전 IntersectionObserver !isIntersecting 단독 판정의 결함 2종:
+  //   (a) 소스가 "위로 사라짐"(스크롤 통과)과 "아래에 아직 안 옴"(첫 화면 미도달)을 구분 못 함 →
+  //       fresh 로드 픽 y 834.8(부분 가시→OFF) vs 비동기 적재 후 898.8(fold 밖→ON) 쌍안정 race.
+  //   (b) 즉시 점프(scrollTo·앵커·픽바 점프)로 소스가 뷰포트를 프레임 사이에 통과하면 교차 전이 자체가
+  //       없어 콜백 미발화 → 상태 고착 (상단 복귀 후 바 잔존 등).
+  //   threshold 단일화 = 가시성을 이벤트 전이 기억이 아닌 **소스 위치의 순수 함수**로: 매 평가
+  //   src.bottom ≤ PICKBAR_TOP_GUARD(nav 영역 ~76px + 여유) 단일 술어. scroll 0 에서는 bottom > guard
+  //   라 항상 OFF — 적재 시점·y 변동 무관 결정적. rAF 스로틀 scroll/resize 평가 (rect 1회 read, 경량).
+  const PICKBAR_TOP_GUARD = 80;
+  const _evalPickBar = () => {
+    const r = src.getBoundingClientRect();
+    // zero-rect(display:none 등 비가시 소스)는 "위로 이탈"로 오판하지 않음 (OFF 유지).
+    _setPickBarOn((r.width > 0 || r.height > 0) && r.bottom <= PICKBAR_TOP_GUARD);
+  };
+  let _pbTick = false;
+  const _onPickBarScroll = () => {
+    if (_pbTick) return;
+    _pbTick = true;
+    requestAnimationFrame(() => { _pbTick = false; _evalPickBar(); });
+  };
+  window.addEventListener('scroll', _onPickBarScroll, { passive: true });
+  window.addEventListener('resize', _onPickBarScroll, { passive: true });
+  _evalPickBar();
+  // 직전 watcher 정리 인터페이스 보존 (기존 disconnect 호출부 무수정 — 매 렌더 재바인딩).
+  _pickBarObserver = {
+    disconnect() {
+      window.removeEventListener('scroll', _onPickBarScroll);
+      window.removeEventListener('resize', _onPickBarScroll);
+    }
+  };
 
   // 클릭 핸들러 — 1회만 등록. 세 모드:
   //   (1) data-rec-jump → 해당 풀 카드(#stock-{code})로 scroll (rec-jump 와 동일 로직, dup-id scope 회피).
@@ -1859,11 +1741,24 @@ function _buildKrMacroChip(m) {
   const titleAttr = escapeHtml(sanitize(m.title || ''));
   const source = m.source ? escapeHtml(sanitize(m.source)) : '';
   const srcHtml = source ? `<span class="nightly-us-news-source">${source}</span>` : '';
+  // R48 W2-3 (조니 R46 2심 W2 — "사실/추정 분리는 리딩방 차별화의 본질") — 칩 종류 태그.
+  //   wire 칩(기관·통신 1차 보도 제목 verbatim) = "사실" / LLM 종합 요약 칩 = "해석". 전 칩 태그
+  //   (무태그 상태가 제3의 모호 상태가 되지 않게). _chipKindTag 단일 헬퍼 — KR·US 양 빌더 공용
+  //   (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
+  const kindHtml = _chipKindTag(m);
   const safeUrl = (typeof m.url === 'string' && /^https?:\/\//i.test(m.url)) ? m.url : '';
   if (safeUrl) {
-    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${summary}${srcHtml}</a>`;
+    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</a>`;
   }
-  return `<span class="cal-macro-chip" title="${titleAttr}">${summary}${srcHtml}</span>`;
+  return `<span class="cal-macro-chip" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</span>`;
+}
+
+// R48 W2-3 — 칩 종류 태그 단일 소스. wire=true(1차 보도 verbatim) → "사실", 그 외(LLM 종합 요약) → "해석".
+//   추정 표기 0: 태그는 데이터 유래(wire 필드)만 따른다 (FLR-AGT-002).
+function _chipKindTag(c) {
+  return c && c.wire
+    ? '<span class="cal-chip-kind cal-chip-kind--fact">사실</span>'
+    : '<span class="cal-chip-kind">해석</span>';
 }
 
 // R27 P1⑦ (조니 2심, 2026-06-11) — 카드 본문 "분석가 화법" 표시단 sanitize.
@@ -2015,7 +1910,7 @@ function renderCalExpandContent(date, data) {
       ${emptyMsg}
     `;
     // 미장 섹션 주입 시 선물 토글 wiring 동반(멱등). 본 path 는 early-return 이라 L1926 말미 호출에 도달 못 함.
-    if (_emptyUsHtml && typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
+    // R48 P1-2 — 선물 토글 wiring 호출 제거 (토글 DOM 소멸).
     // PM320 (대표 2026-06-10 A안) — empty-state path 미장 섹션 접힘 상태 복원.
     if (_emptyUsHtml && typeof _applySectionCollapse === 'function') {
       const _nuRoot = document.getElementById('nightly-us');
@@ -2414,7 +2309,7 @@ function renderCalExpandContent(date, data) {
   //   - 픽 부재(보류/미생성) 시 빈 문자열 → 미렌더 (기존 카운트다운/보류 분기 무회귀).
   //   - 과거 날짜 시 헤더 "이날의 추천" + (청산 완료면) 결과 mark. 진행중이면 "잠정".
   //   진입가 SSOT = 매매 row와 동일(authClose 우선, _buildPm320RecRow 와 같은 식, 추정 0).
-  const _buildPm320TodayRecCard = (pk, code, name, authClose, isPast) => {
+  const _buildPm320TodayRecCard = (pk, code, name, authClose, isPast, nxtSnap) => {
     if (!pk || !pk.is_pick) return '';
     // 대표 20:51 지적 — 익절가는 물타기 체결 시 평단 하락으로 바뀌므로 단일 단정 금지.
     //   풀 카드의 "물타기 시: X원"과 동일 SSOT — R44 #2: lib/pm320-recompute.js 단일 함수
@@ -2438,6 +2333,17 @@ function renderCalExpandContent(date, data) {
     const _dNoteHtml = (mark && mark.mod === 'running')
       ? `<div class="cal-pm320-today-rec-dnote">D+0 = 추천일(진입 당일) · D+N = 진입 후 N번째 거래일</div>`
       : '';
+    // R48 라이더-1 (조니 R47 1심 풀패널 검산 verbatim "잠정 비영 16건 = 전원 NXT 종목 — NXT 애프터
+    //   시세 반영 패턴 정합") — D+0 NXT 캡션 1줄. 진입가 = KRX 정규장 종가(15:30) 동결이지만, 잠정
+    //   평가에는 NXT 동시거래 종목의 애프터마켓(15:40~20:00) 시세가 반영됨 — D+0 잠정이 0이 아닌 이유
+    //   해명 (KRX 단독 종목은 D+0 잠정 = 0.00% 자명이라 캡션 불요). 주의: "NXT 미반영" 기단정(R46
+    //   P1-5)은 만기청산 '기준가' 축 — 본 캡션의 '잠정 평가' 축과 별개 (방향 혼동 금지).
+    //   조건 3중: running + d_offset===0(데이터 verbatim) + 표시 날짜 NXT roster 포함
+    //   (비NXT 종목·roster 부재 시 미출력 — 추정 0, FLR-AGT-002).
+    const _nxtNoteHtml = (mark && mark.mod === 'running' && pk.d_offset === 0
+      && nxtSnap && nxtSnap.codes && code && nxtSnap.codes.has(code))
+      ? `<div class="cal-pm320-today-rec-dnote">진입가 = KRX 정규장 종가(15:30) · 잠정에는 NXT 애프터마켓(15:40~20:00) 시세가 반영됩니다</div>`
+      : '';
     const nameV = name || '';
     const codeV = code || '';
     const titleAria = `${headLabel} ${nameV} ${codeV}`;
@@ -2456,7 +2362,12 @@ function renderCalExpandContent(date, data) {
       </div>
       ${resultHtml}
       ${_dNoteHtml}
+      ${_nxtNoteHtml}
       ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-expanded="false" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-1px"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></button>` : ''}
+      <div class="cal-pm320-today-rec-foot" role="note">
+        <span class="cal-pm320-today-rec-disclaimer">투자 권유가 아닌 정보 제공입니다 — 투자 판단과 책임은 본인에게 있습니다</span>
+        <span class="cal-pm320-today-rec-brand" aria-hidden="true">PM320 · 100m1s.com</span>
+      </div>
     </div>`;
   };
 
@@ -3734,8 +3645,9 @@ function renderCalExpandContent(date, data) {
       const _nowR = new Date();
       const _todayR = `${_nowR.getFullYear()}-${String(_nowR.getMonth() + 1).padStart(2, '0')}-${String(_nowR.getDate()).padStart(2, '0')}`;
       const _isPastR = !!(date && date < _todayR);
+      // R48 라이더-1 — _nxtSnap(표시 날짜 NXT roster 스냅샷, _resolveNxtSnapshot 산출) 전달: D+0 NXT 캡션 게이트.
       _pm320TodayRecHtml = _buildPm320TodayRecCard(
-        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR);
+        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR, _nxtSnap);
     }
   }
   // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
@@ -3762,9 +3674,12 @@ function renderCalExpandContent(date, data) {
   //   카드 리스트 하단 본 범례에서 일괄 열람. _PM320_GLOSSARY 단일 SoT 파생(정의 중복 0). 기본 접힘
   //   details — 픽 위계·레이아웃 영향 0. 단독 카드 모드 제외(공유 랜딩 최소 화면 유지).
   const _glossaryLegendHtml = _isSingleCardMode ? '' : `<details class="pm320-term-legend"><summary>용어 풀이</summary><dl>${Object.values(_PM320_GLOSSARY).map(g => `<dt>${escapeHtml(g.t)}</dt><dd>${escapeHtml(g.d)}</dd>`).join('')}</dl></details>`;
+  // R48 W2-2 (조니 R46 2심 W2 — 추천 블록·뉴스요약 단절 해소, 2026-06-12) — 종전 순서는
+  //   "오늘의 뉴스요약" 라벨 직후에 추천 블록(323px)+승률(197px)이 끼어 라벨↔칩 본문이 ~556px 단절
+  //   (+ 추천이 뉴스요약 라벨 하위로 읽히는 위계 침범, R46 1심 P1). fix = 추천·승률 그룹을 라벨 위로
+  //   승격 — 섹션 진입 첫 콘텐츠 = 추천(주인공), 뉴스요약 라벨은 자기 칩 본문에 직결.
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
-      ${_sectionTitleHtml}
       ${_pm320HolidayHtml}
       ${_pm320PendingHtml}
       ${_pm320PreviewHtml}
@@ -3773,6 +3688,7 @@ function renderCalExpandContent(date, data) {
       ${_pm320NoDataHtml}
       ${_pm320AwaitingHtml}
       ${_pm320WinRateHtml}
+      ${_sectionTitleHtml}
       ${_narrPillsHtmlOut}
       ${_macroHtmlOut}
       ${_rankingBannerOut}
@@ -3821,7 +3737,7 @@ function renderCalExpandContent(date, data) {
 
   // Q-20260608-140 (A안) — 미장 정규장/선물 토글 wiring. innerHTML 갱신 직후 매 렌더 호출.
   //   섹션 DOM 새로 그려지므로(data-fut-wired 가드 자동 리셋) 매 호출 안전. 선물 부재 시 no-op.
-  if (typeof _wireUsFutToggle === 'function') _wireUsFutToggle();
+  // R48 P1-2 — 선물 토글 wiring 호출 제거 (토글 DOM 소멸).
 
   // PM320-D6 P0 — 장중 "오늘 추천 15:20 공개" 배너 카운트다운 wiring. 배너 미존재 시 no-op(타이머 정리).
   _wirePickCountdown();
@@ -3969,7 +3885,7 @@ function renderCalExpandContent(date, data) {
   // PM320 여정 fix (2026-06-11, FLR-20260605-AGT-002 첫 화면 가치) — sticky 미니 픽 바 동기화.
   //   첫 뷰포트가 비어 보이는 문제 해소: 현재 선택일의 픽(.cal-pm320-today-rec)을 헤더 아래 1줄로 mirror.
   //   SSOT = DOM (실제 렌더된 픽). 별도 데이터 path 없음 → stale/타 종목 노출 불가(FLR-AGT-002 회피).
-  //   가시성: 픽 카드가 뷰포트 상단 밖으로 스크롤될 때만 노출(IntersectionObserver). 탭 = 픽 카드로 scroll.
+  //   가시성: 픽 카드가 뷰포트 상단 가드 위로 스크롤 이탈할 때만 노출(R48 P1-1 순수 함수 평가). 탭 = 픽 카드로 scroll.
   //   매 렌더 재호출(_cal-content innerHTML 리셋 후) — pickbar 미존재(과거 빌드) 시 graceful no-op.
   _syncPickBar();
 

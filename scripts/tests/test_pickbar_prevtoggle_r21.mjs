@@ -69,11 +69,29 @@ await page.evaluate(() => {
 });
 
 // (1) 토글 접힘 상태 — 픽바가 "어제의 픽" 칩 mirror.
+// R48 P1-1 (조니 R47 1심 ① 단정 — scroll 0 비결정 제거) — 픽바 노출 조건이 "소스 비가시"에서
+//   "소스가 위로 이탈(bottom ≤ 80px 가드)"로 단일화됨. 종전 본 테스트는 소스가 fold 아래(미도달)
+//   상태에서 노출을 기대 — 제거된 쌍안정 분기라 기대값 갱신: 칩을 위로 스크롤 이탈시킨 뒤 노출 단언.
 await page.evaluate(() => window._syncPickBar());
 let eyebrow = await page.evaluate(() => document.querySelector('[data-pickbar-eyebrow]')?.textContent.trim());
 let prevJump = await page.evaluate(() => document.getElementById('pm320-pickbar')?.getAttribute('data-pickbar-prev-jump'));
+// (1a) 소스 미도달(스크롤 0) = 픽바 비노출 (결정적 OFF — R47 ① 쌍안정 race 제거 검증).
 let hidden = await page.evaluate(() => document.getElementById('pm320-pickbar')?.hidden);
-assert(hidden === false, '토글 접힘: 픽바 노출');
+assert(hidden === true, '스크롤 0(소스 미도달): 픽바 비노출 (R48 P1-1 결정적 OFF)');
+// (1b) 칩을 뷰포트 상단 가드(80px) 위로 이탈시키면 픽바 노출.
+await page.evaluate(() => {
+  const spacer = document.createElement('div');
+  spacer.id = '_test-scroll-spacer'; spacer.style.height = '3000px';
+  document.body.appendChild(spacer);
+  const chip = document.querySelector('.cal-pre-prev-pick');
+  const r = chip.getBoundingClientRect();
+  window.scrollTo(0, window.pageYOffset + r.bottom + 50);  // chip bottom → viewport 위 (-50 < 80 가드)
+});
+await page.waitForTimeout(400);  // IntersectionObserver 콜백 + hidden 해제 대기
+hidden = await page.evaluate(() => document.getElementById('pm320-pickbar')?.hidden);
+assert(hidden === false, '칩 위로 이탈: 픽바 노출 (R48 P1-1 단일 threshold)');
+await page.evaluate(() => { window.scrollTo(0, 0); document.getElementById('_test-scroll-spacer')?.remove(); });
+await page.waitForTimeout(400);
 assert(eyebrow === '어제의 픽', `토글 접힘: eyebrow="어제의 픽" (실제 "${eyebrow}")`);
 assert(prevJump === '123456', `토글 접힘: data-pickbar-prev-jump=전일 code (P1 wiring, 실제 "${prevJump}")`);
 
