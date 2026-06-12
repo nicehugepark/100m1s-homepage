@@ -3625,7 +3625,7 @@ function renderCalExpandContent(date, data) {
         + `<svg class="cal-pm320-pending-icon" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`
         + `<div class="cal-pm320-pending-body">`
         + `<div class="cal-pm320-pending-title">오늘의 추천은 <b>오후 3시 20분</b>에 공개됩니다</div>`
-        + `<div class="cal-pm320-pending-sub">지금 보이는 종목은 장 시작 전 집계된 거래대금 상위 종목으로, 오늘 추천 후보가 되는 종목들입니다. 오후 3시 20분에 이 중 한 종목이 오늘의 최종 추천으로 확정됩니다.</div>`
+        + `<div class="cal-pm320-pending-sub">지금 보이는 종목은 장 시작 전 집계된 오늘의 추천 후보 종목들입니다. 오후 3시 20분에 이 중 한 종목이 오늘의 최종 추천으로 확정됩니다.</div>`
         + `<div class="cal-pm320-pending-cd-wrap"><span class="cal-pm320-pending-cd-label">공개까지</span> <span class="cal-pm320-pending-countdown" data-pick-cd="1">${_cd}</span></div>`
         + `</div>`
         + `</div>`;
@@ -3697,7 +3697,7 @@ function renderCalExpandContent(date, data) {
   //   장중 pending 배너(_pm320PendingHtml)가 이미 동일 해명을 포함 → 배너 부재 시(픽 확정 후·과거일)만
   //   노출(동일 해명 2회 중복 차단 — P1④ 동형 원칙). 종목 1장 이하 시 "후보 N장 충돌" 자체가 없어 생략.
   const _candidateNoteHtml = (!_isSingleCardMode && !_isHolidayView && !_pm320PendingHtml && !_suppressDomestic && todayStocks.length > 1)
-    ? `<div class="cal-trade-list-note">아래는 거래대금 상위 <b>추천 후보</b> 종목입니다 — 추천은 이 중 <b>하루 단 한 종목</b>입니다</div>`
+    ? `<div class="cal-trade-list-note">아래는 <b>추천 후보</b> 종목입니다 — 추천은 이 중 <b>하루 단 한 종목</b>입니다</div>`
     : '';
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
