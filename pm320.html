@@ -43,8 +43,8 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <link rel="icon" type="image/png" sizes="16x16" href="/pm320-assets/favicon/favicon-16.png">
 <link rel="shortcut icon" href="/pm320-assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/pm320-assets/favicon/apple-touch-icon-180.png">
-<link rel="preload" href="/news.css?v=20260612v331" as="style">
-<link rel="stylesheet" href="/news.css?v=20260612v331">
+<link rel="preload" href="/news.css?v=20260612v332" as="style">
+<link rel="stylesheet" href="/news.css?v=20260612v332">
 </head>
 <body>
 
@@ -114,7 +114,7 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
        R22 가 어제픽 카드를 #cal-content *내부* 최상단으로 끌어올렸으나, #cal-content 컨테이너 자체가
        theme-trend/limit-up/cal-layout 전부 아래(본문 마지막)라 모바일 fold(390×844) 밖에 남았다(R23 적발).
        fix: 헤더 직하·모든 섹션 위에 전용 portal 을 두고, 장전(PRE_MARKET)일 때만 renderPreMarketEmpty 가
-       어제픽 카드(진입가/익절목표/만기 + "15:25 공개" 예고)를 여기에 주입한다. 섹션 순서(대표 레이아웃)는
+       어제픽 카드(진입가/익절목표/만기 + "15:20 공개" 예고)를 여기에 주입한다. 섹션 순서(대표 레이아웃)는
        불변 — portal 은 additive. 픽 부재/장중/장후엔 hidden 유지(추정 0, FLR-AGT-002). cal-content 내부
        슬롯은 portal 활성 시 비활성화(중복 노출 0). -->
   <div class="pm320-prepick-portal" id="pm320-prepick-portal" hidden></div>
@@ -191,9 +191,9 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
      plugins 4종 (Ichimoku/Volume Profile/Volume by Decile/Fibonacci) + markers (분홍 강세 #2 + 배당락 #6) = wrapper 내부 ESM import 통합 로드. -->
 <script src="/js/lib/chart-tv/expanded-chart.js?v=20260610v228" type="module" crossorigin="anonymous"></script>
 <script src="/js/utils.js?v=20260508v274" defer></script>
-<script src="/js/data-loader.js?v=20260611v002" defer></script>
+<script src="/js/data-loader.js?v=20260612v003" defer></script>
 <script src="/js/calendar.js?v=20260611v405" defer></script>
-<script src="/js/renderer.js?v=20260611v328" defer></script>
+<script src="/js/renderer.js?v=20260612v329" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});

@@ -553,7 +553,7 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     //   부재 → "+0.00% 무신호" 평가). 진입가/익절목표/만기를 grid 로 병기해 "어제의 픽 결과 카드"로 승격
     //   (per-card SSOT 동일 키: entry_price / take_profit_target_price / expiry_date). 데이터 부재 칸은 '—'
     //   graceful(추정 0, FLR-AGT-002). 진입가 = pk.entry_price(매매 row 진입가와 동일 SoT, authClose 보정은
-    //   당일 종가 의존이라 장전 시점엔 entry_price 가 SSOT). 카드 직하에 "오늘의 픽 15:25 공개" 예고 라인.
+    //   당일 종가 의존이라 장전 시점엔 entry_price 가 SSOT). 카드 직하에 "오늘의 픽 15:20 공개" 예고 라인.
     const buyV = _krw(pk.entry_price);
     const tpV = _krw(pk.take_profit_target_price);
     const expiryV = pk.expiry_date || '—';
@@ -570,7 +570,7 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
       +   `<span class="cal-pre-prev-pick-mark">${escapeHtml(markText)}${mddChip}</span>`
       + `</div>`
       + gridHtml
-      + `<div class="cal-pre-prev-pick-foretell">오늘의 픽은 <strong>15:25</strong>에 공개됩니다</div>`
+      + `<div class="cal-pre-prev-pick-foretell">오늘의 픽은 <strong>15:20</strong>에 공개됩니다</div>`
       + `</div>`;
   } catch (_) { return ''; }
 }
@@ -2829,7 +2829,7 @@ function renderCalExpandContent(date, data) {
     if (!s || typeof s.settled !== 'number' || s.settled <= 0 || typeof s.win_rate !== 'number') return '';
     const rate = s.win_rate.toFixed(1);
     // 시점 라벨 (대표 20:48 지적 — 과거 날짜 화면에서 승률을 '그 날짜까지의 성적'으로 오독).
-    //   summary.json 은 선택일과 무관한 단일 '오늘 기준 누적' 스냅샷(per-date 분해 없음, 매일 15:25 갱신).
+    //   summary.json 은 선택일과 무관한 단일 '오늘 기준 누적' 스냅샷(per-date 분해 없음, 매일 15:20 갱신).
     //   과거 날짜를 보는 중에도 동일 누적치가 노출되므로, '오늘 기준 누적'임을 라벨·보조문구로 명시한다.
     //   per-date 시점 재계산은 전수 history 를 클라이언트에 싣는 별 작업(task #26)으로 분리.
     const _nowW = new Date();
@@ -2890,7 +2890,7 @@ function renderCalExpandContent(date, data) {
       : '';
     const _winContextHtml = '';
     // R26 P0-2② (2026-06-11, stale 정직화) — '오늘'을 데이터 생성 시점(generated_at) 날짜로 치환.
-    //   summary 는 매일 15:25 갱신 스냅샷이라 동결 시 "오늘"이 거짓이 된다. generated_at(ISO,
+    //   summary 는 매일 15:20 갱신 스냅샷이라 동결 시 "오늘"이 거짓이 된다. generated_at(ISO,
     //   build_card_history 산출) 에서 동적 추출(하드코딩 금지). 부재/형식 미달 시 '오늘' fallback
     //   (구버전 summary graceful — 추정 표시 0, FLR-AGT-002).
     const _asOfDateLabel = (() => {
