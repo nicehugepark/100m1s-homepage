@@ -494,6 +494,25 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate) {
 //   futures 수집 데이터) / 원/달러 / WTI 선물 (macro_indicators.json). 미 10년물 제외 확정 — 렌더 0줄.
 //   라벨 정직 3칙(조니 단정): 즉시성·예측성 단어 2종 미사용 / "지수" 단어 미사용(코스피·코스닥 전용)
 //   / 항목별 60분 stale 가드(마지막 수집 60분+ 시 해당 항목 무렌더). 가용 항목만 렌더(자연 축소) — 0개면 구획 무렌더.
+// R46 P0-1 (조니 2026-06-12 19:37 단정 — 요약↔본문 모순) — 미장 항목 단일 소스 헬퍼.
+//   접힘 미니요약 "나스닥 +2.5%"(마감 지수)가 본문 글로벌 지표 "나스닥 선물 +0.51%"(선물)와 다른
+//   자산을 운반하던 모순 봉쇄: 요약·본문이 같은 데이터·같은 신선도 가드(60분 stale·미래 skew)에서
+//   파생되도록 추출. 반환 { point, change_pct, ts } | null. null = 본문에도 선물 미렌더 상태.
+function _freshNasdaqFuture(us) {
+  if (!us || !us.futures || !Array.isArray(us.futures.futures)) return null;
+  const nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number')
+    ? window._freshnessNow : Date.now();
+  const t = (typeof us.futures.as_of_kst === 'string' && us.futures.as_of_kst)
+    ? Date.parse(us.futures.as_of_kst) : NaN;
+  if (!isFinite(t)) return null;
+  const age = nowMs - t;
+  if (age < -5 * 60 * 1000 || age > 60 * 60 * 1000) return null;
+  const nq = us.futures.futures.find(f => f && /나스닥|nasdaq/i.test(f.name || ''));
+  if (!nq || typeof nq.point !== 'number' || !isFinite(nq.point)
+    || typeof nq.change_pct !== 'number' || !isFinite(nq.change_pct)) return null;
+  return { point: nq.point, change_pct: nq.change_pct, ts: t };
+}
+
 function _buildGlobalStatsHtml(us, macro) {
   const nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number')
     ? window._freshnessNow : Date.now();
@@ -512,17 +531,10 @@ function _buildGlobalStatsHtml(us, macro) {
     items.push({ label, value, pct });
     if (newestTs == null || ts > newestTs) newestTs = ts;
   };
-  // 나스닥 선물 — 기존 us-indices futures (data/us-indices/{date}.json futures.as_of_kst 신선도 축)
-  if (us && us.futures && Array.isArray(us.futures.futures)) {
-    const ts = _freshTs(us.futures.as_of_kst);
-    if (ts != null) {
-      const nq = us.futures.futures.find(f => f && /나스닥|nasdaq/i.test(f.name || ''));
-      if (nq && typeof nq.point === 'number' && isFinite(nq.point)
-        && typeof nq.change_pct === 'number' && isFinite(nq.change_pct)) {
-        _push('나스닥 선물', _fmt2(nq.point), nq.change_pct, ts);
-      }
-    }
-  }
+  // 나스닥 선물 — _freshNasdaqFuture 단일 소스 (R46 P0-1 — 접힘 미니요약과 같은 헬퍼에서 파생.
+  //   신선도 가드 동일: 60분 stale + 미래 5분 skew. 한쪽 수정·양끝 누락 FLR-20260428-TEC-001 동형 차단).
+  const _nqFut = _freshNasdaqFuture(us);
+  if (_nqFut) _push('나스닥 선물', _fmt2(_nqFut.point), _nqFut.change_pct, _nqFut.ts);
   // 원/달러 · WTI 선물 — macro_indicators.json (항목별 bar_asof 신선도 축, 부분 산출 가용 항목만)
   if (macro && macro.indicators) {
     for (const key of ['usdkrw', 'wti']) {
@@ -679,13 +691,15 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
   //   문제(실측 픽 y=2134→접기 시 ~900) 해소. 동일 토글 패턴 + 미니요약 "▸ 나스닥 ±N%"(첫 지수 기준).
   //   localStorage 'pm320SectionExpand' 공유(키 'nightly-us'). aria/Enter/Space 위임은 _wireSectionCollapse.
   // feat/market-context ① — 접힘 헤더 미니요약: "코스피 +0.4% · 코스닥 −1.2% · 나스닥 +0.8%" 3개 상한.
-  //   글로벌 지표(나스닥 선물·원/달러·WTI) 진입 금지 — 코스피·코스닥 + 미장 대표지수 1종만.
+  //   원/달러·WTI 진입 금지 — 코스피·코스닥 + 미장 항목 1종만 (3개 상한 기단정 유지).
+  //   R46 P0-1 정정 — 미장 항목은 본문과 운반체 통일: 신선 선물 가용 시 "나스닥 선물", 그 외 마감 지수.
   let _nuSummary = '시장 지수';
   try {
     const _parts = [];
     const _fmtSum = (nm, pct) => {
       const _sign = pct > 0 ? '+' : (pct < 0 ? '−' : '');
-      return escapeHtml(nm) + ' ' + _sign + Math.abs(pct).toFixed(1) + '%';
+      // R46 P0-1 픽셀 fit — 이름↔값 간격 thin space(U+2009): 콘텐츠 동일, 390px 1줄 완전 노출용.
+      return escapeHtml(nm) + '\u2009' + _sign + Math.abs(pct).toFixed(1) + '%';
     };
     if (ctx && ctx.krIndices && Array.isArray(ctx.krIndices.list)) {
       for (const e of ctx.krIndices.list) {
@@ -695,12 +709,23 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
       }
     }
     if (usValid) {
-      const _lead = us.indices.find(ix => /nasdaq|나스닥/i.test(ix && ix.name || '')) || us.indices[0];
-      // 미니요약은 한국어 표기 통일 (조니 spec verbatim "나스닥 +0.8%") — NASDAQ 데이터명만 표준 한역.
-      const _leadNm = (_lead && /nasdaq/i.test(_lead.name || '')) ? '나스닥' : ((_lead && _lead.name) || '나스닥');
-      if (_lead && typeof _lead.change_pct === 'number') _parts.push(_fmtSum(_leadNm, _lead.change_pct));
+      // R46 P0-1 (조니 단정 — 요약 운반체 통일) — 요약 미장 항목 = 본문이 지금 보여주는 자산과 동일.
+      //   장중 신선 선물 가용(본문 글로벌 지표에 "나스닥 선물" 노출 상태) → 요약도 "나스닥 선물 ±N%".
+      //   부재·stale·과거 날짜(본문 글로벌 지표 무렌더) → 정규장 마감 지수 "나스닥 ±N%"
+      //   (그때 본문 첫 미장 노출 = 정규장 카드라 자산 일치). 코스피·코스닥은 현행 유지(이미 일치).
+      const _nqFutSum = isPastDate ? null : _freshNasdaqFuture(us);
+      if (_nqFutSum) {
+        _parts.push(_fmtSum('나스닥선물', _nqFutSum.change_pct));
+      } else {
+        const _lead = us.indices.find(ix => /nasdaq|나스닥/i.test(ix && ix.name || '')) || us.indices[0];
+        // 미니요약은 한국어 표기 통일 (조니 spec verbatim "나스닥 +0.8%") — NASDAQ 데이터명만 표준 한역.
+        const _leadNm = (_lead && /nasdaq/i.test(_lead.name || '')) ? '나스닥' : ((_lead && _lead.name) || '나스닥');
+        if (_lead && typeof _lead.change_pct === 'number') _parts.push(_fmtSum(_leadNm, _lead.change_pct));
+      }
     }
-    if (_parts.length > 0) _nuSummary = _parts.slice(0, 3).join(' · ');
+    // R46 P0-1 픽셀 fit — separator thin space(U+2009): "나스닥 선물" 라벨 확장 후 390px 1줄
+    //   완전 노출 확보 (콘텐츠 동일 — 구분자 공백 제거, % 글리프가 자연 경계. 3개 상한·1줄 기판정 불변).
+    if (_parts.length > 0) _nuSummary = _parts.slice(0, 3).join('·');
   } catch (_) { /* graceful */ }
   const _nuHeaderHtml =
     '<div class="nightly-us-head pm320-section-header" role="button" tabindex="0"'
@@ -844,16 +869,18 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
       const staleCaption = (!isEntryDay && typeof prevDate === 'string' && prevDate < todayKst)
         ? (_chipSnapDate ? ` · 집계 기준 ${_chipSnapDate.slice(5).replace('-', '/')}` : ' · 잠정 집계')
         : '';
+      // R46 P1-4 (조니 단정) — ⏳ 등 이모지 DOM 제거. 상태 의미는 텍스트("보유 중"/"잠정")와
+      //   mod 클래스(--running/--profit/--loss) 색이 운반 — 글리프 의존 0.
       markText = isEntryDay
-        ? `⏳ 진입 당일 · 성과 집계 전${d}`
-        : `⏳ 보유 중 ${_signed(pk.current_pnl_pct)}${d}${staleCaption}`;
+        ? `진입 당일 · 성과 집계 전${d}`
+        : `보유 중 ${_signed(pk.current_pnl_pct)}${d}${staleCaption}`;
       mod = 'running';
     } else {
       const r = pk.result || {};
       finalPct = r.final_pnl_pct != null ? _signed(r.final_pnl_pct) : _signed(pk.current_pnl_pct);
-      if (state === 'taken_profit') { markText = `✅ 익절 ${finalPct}`; mod = 'profit'; }
-      else if (state === 'expired_gain') { markText = `✅ 만기청산 (이익) ${finalPct}`; mod = 'profit'; }
-      else if (state === 'expired_loss') { markText = `⚠️ 만기청산 (손실) ${finalPct}`; mod = 'loss'; }
+      if (state === 'taken_profit') { markText = `익절 ${finalPct}`; mod = 'profit'; }
+      else if (state === 'expired_gain') { markText = `만기청산 (이익) ${finalPct}`; mod = 'profit'; }
+      else if (state === 'expired_loss') { markText = `만기청산 (손실) ${finalPct}`; mod = 'loss'; }
       else return '';
     }
     // 장중 MDD 칩 (청산 완료 + 음수일 때만, per-card 결과 mark 와 동일 SoT).
@@ -1704,7 +1731,21 @@ function _syncPickBar() {
         // 바가 mirror 하는 픽은 항상 #cal-content 안의 카드 → 그 안에서 우선 탐색(dup-id 회피), 부재 시 document fallback.
         const target = (cc2 && cc2.querySelector('#stock-' + c)) || document.getElementById('stock-' + c);
         _expandCard(target);
-        _scrollTo(target);
+        // R46 P0-2② (조니 2026-06-12 단정) — 착지 화면에 결단 가격(매수·익절·물타기) 인라인.
+        //   카드 상단 착지 시 매매 row 가 fold 밖 + 접힘이라 가격이 0개 보이던 문제: 매매 detail 을
+        //   자동 펼침(기존 토글 경로 재사용 — aria/라벨 동기)하고 착지점을 매매 row 로 변경.
+        //   픽바(sticky)가 종목명·상태를 계속 표시하므로 카드 머리 생략에도 맥락 유지.
+        //   매매 row 부재(레거시/무픽 카드) 시 종전 카드 상단 착지 (graceful 무회귀).
+        let landing = target;
+        if (target) {
+          const recRow = target.querySelector('.pm320-rec-row');
+          if (recRow) {
+            const recToggle = recRow.querySelector('.pm320-rec-toggle');
+            if (recToggle && recToggle.getAttribute('aria-expanded') !== 'true') recToggle.click();
+            landing = recRow;
+          }
+        }
+        _scrollTo(landing);
       } else if (prevC) {
         // R21 P1 — 장전: "전일 데이터 보기" 토글을 자동 펼침 → 전일 풀 카드(#stock-{prevC})로 점프.
         //   토글이 이미 펼쳐졌으면 그대로 카드만 점프. 토글 펼침은 async 렌더라 펼침 완료를 기다려
@@ -2144,8 +2185,9 @@ function renderCalExpandContent(date, data) {
       const _staleChip = (_isPastView && _snapDate)
         ? `(집계 기준 ${_snapDate.slice(5).replace('-', '/')})`
         : '';
+      // R46 P1-4 — ⏳ 이모지 제거 ("잠정" 텍스트 + --running 클래스가 의미 운반).
       return {
-        html: `⏳ 잠정 ${pnlText}${dText}`,
+        html: `잠정 ${pnlText}${dText}`,
         mod: 'running',
         dateChip: _staleChip,
         aria: `진행 ${dOffset}일차, 잠정 수익률 ${pnlText}${_isPastView && _snapDate ? `, 집계 기준 ${_snapDate}` : ''}`,
@@ -2165,7 +2207,7 @@ function renderCalExpandContent(date, data) {
       //   dateChip 으로 반환 (mddChip 패턴 동형). pill wrap(v317/r6) 시 날짜가 하이픈에서
       //   줄쪼개지지 않게 호출부가 nowrap span(.pm320-rec-mark-date)으로 감싼다. aria 는 종전 유지.
       return {
-        html: `✅ ${label} ${pnlText}`,
+        html: `${label} ${pnlText}`,
         mod: 'profit',
         dateChip: pk.result && pk.result.result_date ? `(${pk.result.result_date})` : '',
         mddChip: _mddPeakChipText(pk),
@@ -2179,7 +2221,7 @@ function renderCalExpandContent(date, data) {
       const label = watered ? '만기청산 (이익+물타기)' : '만기청산 (이익)';
       const ariaSuffix = watered ? ', 물타기 진입' : '';
       return {
-        html: `✅ ${label} ${pnlText}`,
+        html: `${label} ${pnlText}`,
         mod: 'profit',
         mddChip: _mddPeakChipText(pk),
         aria: `만기 도달, 평단 상회${ariaSuffix}, ${pnlText}`,
@@ -2192,7 +2234,7 @@ function renderCalExpandContent(date, data) {
       const label = watered ? '만기청산 (손실+물타기)' : '만기청산 (손실)';
       const ariaSuffix = watered ? ', 물타기 진입' : '';
       return {
-        html: `⚠️ ${label} ${pnlText}`,
+        html: `${label} ${pnlText}`,
         mod: 'loss',
         mddChip: _mddPeakChipText(pk),
         aria: `만기 도달${ariaSuffix}, 손실 ${pnlText}`,
@@ -2247,7 +2289,7 @@ function renderCalExpandContent(date, data) {
         : '';
       mddRow = `
       <div class="pm320-rec-detail-row pm320-rec-detail-row--mdd">
-        <span class="pm320-rec-label">📉 최대 낙폭</span>
+        <span class="pm320-rec-label">최대 낙폭</span>
         <span class="pm320-rec-value pm320-rec-value--mdd">${escapeHtml(peakText)}</span>
       </div>${hasEntry ? `
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
@@ -2264,13 +2306,13 @@ function renderCalExpandContent(date, data) {
       const watered = !!pk.result.watered;
       let mark, mod;
       if (state === 'taken_profit') {
-        mark = watered ? `✅ 익절 (물타기) ${finalPct}` : `✅ 익절 ${finalPct}`;
+        mark = watered ? `익절 (물타기) ${finalPct}` : `익절 ${finalPct}`;
         mod = 'profit';
       } else if (state === 'expired_gain') {
-        mark = watered ? `✅ 만기청산 (이익+물타기) ${finalPct}` : `✅ 만기청산 (이익) ${finalPct}`;
+        mark = watered ? `만기청산 (이익+물타기) ${finalPct}` : `만기청산 (이익) ${finalPct}`;
         mod = 'profit';
       } else if (state === 'expired_loss') {
-        mark = watered ? `⚠️ 만기청산 (손실+물타기) ${finalPct}` : `⚠️ 만기청산 (손실) ${finalPct}`;
+        mark = watered ? `만기청산 (손실+물타기) ${finalPct}` : `만기청산 (손실) ${finalPct}`;
         mod = 'loss';
       } else {
         mark = `${_pm320StateLabel(state)} ${finalPct}`;
@@ -2282,13 +2324,21 @@ function renderCalExpandContent(date, data) {
       const _fillNote = `<div class="pm320-rec-result-fill-note">장중 목표가 터치 기준 가상 산출 — 슬리피지·시가 갭·부분체결 미반영. 실제 체결가는 다를 수 있습니다.</div>`;
       resultStrip = `<div class="${cls}" aria-label="${escapeHtml(`${_pm320StateLabel(state)}, 수익률 ${finalPct}${resDate ? ', ' + resDate : ''}`)}">${escapeHtml(mark)}${resDate ? ` · ${escapeHtml(resDate)} 종가 ${escapeHtml(finalPrice)}` : ''}</div>${_fillNote}`;
     }
+    // R46 P1-1 (조니 단정 — (?) 64개 반복 노이즈) — watering/take-profit 팁도 "첫 등장 1회" 원칙
+    //   (NXT/시총 _nxtTipPlaced 동형 패턴). 전체 풀이는 카드 리스트 하단 용어 범례 1곳.
+    const _waterTip = _wateringTipPlaced ? '' : _termTip('watering');
+    if (_waterTip) _wateringTipPlaced = true;
+    const _tpTip = _tpTipPlaced ? '' : _termTip('take-profit');
+    if (_tpTip) _tpTipPlaced = true;
+    // R46 P1-4 — 📉/📈 이모지 라벨 제거 (텍스트만). P1-5 — 만기 청산 기준가 "KRX 정규장 종가" 1줄
+    //   명시 (NXT 애프터마켓 15:40~20:00 거래분 미반영인 동결 기준 정직화, 조니 단정).
     return `
       <div class="pm320-rec-detail-row pm320-rec-detail-row--buy">
-        <span class="pm320-rec-label">💰 매수</span>
+        <span class="pm320-rec-label">매수</span>
         <span class="pm320-rec-value">${escapeHtml(buyDate)} 종가 ${escapeHtml(entryPrice)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-row--watering">
-        <span class="pm320-rec-label">📉 물타기${_termTip('watering')}</span>
+        <span class="pm320-rec-label">물타기${_waterTip}</span>
         <span class="pm320-rec-value">${escapeHtml(wateringPrice)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
@@ -2296,7 +2346,7 @@ function renderCalExpandContent(date, data) {
         <span class="pm320-rec-value pm320-rec-value--sub">└ 비중: ${escapeHtml(wateringWeight)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-row--profit">
-        <span class="pm320-rec-label">📈 익절${_termTip('take-profit')}</span>
+        <span class="pm320-rec-label">익절${_tpTip}</span>
         <span class="pm320-rec-value">${escapeHtml(tpPrice)}</span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-sub">
@@ -2304,8 +2354,8 @@ function renderCalExpandContent(date, data) {
         <span class="pm320-rec-value pm320-rec-value--sub">└ 물타기 후 익절가: ${escapeHtml(tpAfterPrice)} <span class="pm320-rec-value--note">(체결 평단 하락분 반영)</span></span>
       </div>
       <div class="pm320-rec-detail-row pm320-rec-detail-row--expiry">
-        <span class="pm320-rec-label">⏰ 만기청산</span>
-        <span class="pm320-rec-value">${escapeHtml(expiryDate)} 종가</span>
+        <span class="pm320-rec-label">만기청산</span>
+        <span class="pm320-rec-value">${escapeHtml(expiryDate)} KRX 정규장 종가</span>
       </div>
       <div class="pm320-rec-strategy-note" role="note">기준가 산출 비율은 전략 보호를 위해 비공개</div>${mddRow}
       ${resultStrip}`;
@@ -2406,7 +2456,7 @@ function renderCalExpandContent(date, data) {
       </div>
       ${resultHtml}
       ${_dNoteHtml}
-      ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-expanded="false" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <span aria-hidden="true">↓</span></button>` : ''}
+      ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-expanded="false" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-1px"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></button>` : ''}
     </div>`;
   };
 
@@ -2541,11 +2591,11 @@ function renderCalExpandContent(date, data) {
   // Q-20260606-113 — 주말·휴장 suppress 상태에서는 국내장 종목 수("N개")를 헤더에 노출하지 않는다
   //   (카드가 숨겨졌는데 "오늘의 종목 N개"는 모순). suppress 시 "주말·휴장" 라벨 + 항상 기준 시각.
   const _metaSuppressDomestic = (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true);
-  // R27 P1④ (조니 2심, 2026-06-11) — 과거 날짜 페이지 day-meta "오늘의 종목"은 시점 거짓
-  //   (보는 날짜 ≠ 오늘). 과거 날짜는 "이날의 종목"으로 날짜 기준 라벨 (R26 _dayWord 동형 패턴).
+  // R46 P1-3 (조니 단정) — "오늘의 종목: 30개" 카피 폐기. H1 "하루 단 한 종목"과 정면 충돌
+  //   (종목이 30개라는 헤더가 단일픽 약속을 부정하는 인상). "분석 대상 N종목"으로 역할 정직화
+  //   (후보 풀 표기). 시점 무관 라벨이라 R27 P1④ 오늘의/이날의 분기도 자연 소멸.
   const _nowMeta = new Date();
   const _todayMeta = `${_nowMeta.getFullYear()}-${String(_nowMeta.getMonth() + 1).padStart(2, '0')}-${String(_nowMeta.getDate()).padStart(2, '0')}`;
-  const _dayWordMeta = (date && date < _todayMeta) ? '이날의' : '오늘의';
   // R28 P0-2 (조니 2심 확정, 2026-06-11) — 휴장일 자기모순 봉쇄. 과거 휴장일(예 6/3 지방선거,
   //   kiwoom 수집 데이터 실재) 뷰가 "이날의 종목: N개·시각 기준" 헤더 + 종목 카드 + "수집되지
   //   않은 날짜" 문구를 동시 렌더 → 휴장·수집·발행이 한 화면에서 모순. 휴장일 뷰는
@@ -2560,7 +2610,7 @@ function renderCalExpandContent(date, data) {
     : (_metaSuppressDomestic
       ? `주말·휴장${generatedSuffix}`
       : (todayStocks.length > 0
-        ? `${_dayWordMeta} 종목: ${todayStocks.length}개${streakSuffix}${sourceSuffix}${generatedSuffix}`
+        ? `분석 대상 ${todayStocks.length}종목${streakSuffix}${sourceSuffix}${generatedSuffix}`
         : `—${generatedSuffix}`));
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
@@ -2597,6 +2647,15 @@ function renderCalExpandContent(date, data) {
   const _nxtSnap = _resolveNxtSnapshot(data && data.nxtRoster, date);
   let _nxtTipPlaced = false;
   let _mcapTipPlaced = false;
+  // R46 P1-1 — watering/take-profit (?) 팁 "첫 등장 1회" 플래그 (_pm320DetailRows 소비, NXT/시총 동형).
+  let _wateringTipPlaced = false;
+  let _tpTipPlaced = false;
+  // R46 P1-5 (조니 단정) — 레인지 바 가운데 "현재" 라벨 정직화. 카드 가격은 그 날짜 데이터 기준
+  //   시각(국내장 build generated_at / kiwoom last_snapshot_at)의 동결값 — NXT 애프터마켓
+  //   (15:40~20:00) 거래 중에도 "현재"로 읽히는 거짓 차단 → "HH:MM 기준". 시각 부재 시 라벨
+  //   생략 (추정 표기 금지, FLR-AGT-002 — kr-indices asof 생략 패턴 동형).
+  const _rangeBasisM = String(_freshSrc || '').match(/^\d{4}-\d{2}-\d{2}T(\d{2}:\d{2})/);
+  const _rangeNowLabel = _rangeBasisM ? `${_rangeBasisM[1]} 기준` : '';
   const renderTodayCard = (it) => {
     const pct = it.pct;
     const dir = (pct ?? 0) >= 0 ? 'up' : 'down';           // 등락률 텍스트 색상용 (전일 대비)
@@ -3164,7 +3223,7 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="range-row range-pcts">
             <span class="r-low ${lowCls}">${lowText}</span>
-            <span class="r-now r-now-label">현재</span>
+            <span class="r-now r-now-label">${escapeHtml(_rangeNowLabel)}</span>
             <span class="r-high ${highCls}">${highText}</span>
           </div>
           <div class="range-row range-dates">
@@ -3699,6 +3758,10 @@ function renderCalExpandContent(date, data) {
   const _candidateNoteHtml = (!_isSingleCardMode && !_isHolidayView && !_pm320PendingHtml && !_suppressDomestic && todayStocks.length > 1)
     ? `<div class="cal-trade-list-note">아래는 <b>추천 후보</b> 종목입니다 — 추천은 이 중 <b>하루 단 한 종목</b>입니다</div>`
     : '';
+  // R46 P1-1 (조니 단정) — 용어 풀이 범례 1곳. 인라인 (?) 팁은 첫 등장 1회로 감축되고, 전체 용어는
+  //   카드 리스트 하단 본 범례에서 일괄 열람. _PM320_GLOSSARY 단일 SoT 파생(정의 중복 0). 기본 접힘
+  //   details — 픽 위계·레이아웃 영향 0. 단독 카드 모드 제외(공유 랜딩 최소 화면 유지).
+  const _glossaryLegendHtml = _isSingleCardMode ? '' : `<details class="pm320-term-legend"><summary>용어 풀이</summary><dl>${Object.values(_PM320_GLOSSARY).map(g => `<dt>${escapeHtml(g.t)}</dt><dd>${escapeHtml(g.d)}</dd>`).join('')}</dl></details>`;
   const todayHtml = `
     <div class="cal-section${_isSingleCardMode ? ' cal-section--single-card' : ''}">
       ${_sectionTitleHtml}
@@ -3718,6 +3781,7 @@ function renderCalExpandContent(date, data) {
         <div class="cal-trade-list" style="margin-top:10px;">
           ${todayStocks.map(renderTodayCard).join('')}
         </div>
+        ${_glossaryLegendHtml}
       ` : `
         ${_isSingleCardMode
           ? `<div class="cal-empty" style="padding:24px 0;">단독 카드 mode — 종목 코드 ${escapeHtml(_singleCardCode || '')} 본 본 데이터 없음</div>`
@@ -3749,6 +3813,11 @@ function renderCalExpandContent(date, data) {
     const _nuRoot = document.getElementById('nightly-us');
     if (_nuRoot) _applySectionCollapse(_nuRoot, 'nightly-us');
   }
+
+  // R46 P0-2① — 캘린더 접힘 미니요약 소스 캐시 + 갱신. summary.json(승률 카드와 동일 fetch) 실데이터를
+  //   calendar.js _updateTossCalSummary 가 소비("6월 9/12일 익절"). 부재 시 기존 캐시 유지(추정 0).
+  try { if (data && data.pm320Summary) window._pm320SummaryCache = data.pm320Summary; } catch (_) { /* private mode */ }
+  if (typeof _updateTossCalSummary === 'function') _updateTossCalSummary();
 
   // Q-20260608-140 (A안) — 미장 정규장/선물 토글 wiring. innerHTML 갱신 직후 매 렌더 호출.
   //   섹션 DOM 새로 그려지므로(data-fut-wired 가드 자동 리셋) 매 호출 안전. 선물 부재 시 no-op.
@@ -3818,6 +3887,10 @@ function renderCalExpandContent(date, data) {
     const scrollToCal = () => {
       const target = document.getElementById('toss-cal');
       if (!target) return;
+      // R46 P0-2① — 캘린더 기본 접힘 후에도 "달력으로 이동" 동선 보존: 접혀 있으면 자동 펼침
+      //   (기존 토글 경로 click() 재사용 — aria/localStorage 동기). 펼침 방향만(접기 없음).
+      const calHdr = target.querySelector('[data-collapse-section="toss-cal"]');
+      if (calHdr && calHdr.getAttribute('aria-expanded') !== 'true') calHdr.click();
       const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = window.innerWidth <= 880;
       // sticky nav header 68px(데스크탑) / 76px(모바일 nav 추정) 보정.
@@ -4387,7 +4460,9 @@ function renderPreMarketThemeSection(container, todayIso, prevIso, headerHtml, o
 
 // ───── PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 섹션 기본 접힘 + 미니요약 + localStorage 펼침 기억 ─────
 //   슬롯 이동·섹션 순서 변경 없음. theme-trend / limit-up-trend / theme-tree 3섹션을 기본 접힘으로 전환해
-//   장중 동선의 "오늘의 뉴스/픽" 슬롯을 1.3스크롤(390px y<1000) 내로 끌어올린다. 캘린더(toss-cal)는 제외.
+//   장중 동선의 "오늘의 뉴스/픽" 슬롯을 1.3스크롤(390px y<1000) 내로 끌어올린다.
+//   R46 P0-2① (조니 2026-06-12 단정) — 캘린더(toss-cal)도 기본 접힘 합류 (종전 "제외" 폐기).
+//   354px 캘린더가 픽 위계를 침범 → 동일 문법(헤더+미니요약 1줄) 접힘 격하, 하단 이동은 기각.
 //   펼침 상태는 localStorage 'pm320SectionExpand'(JSON {sectionId:true}) 에 기억 → 재방문 복원(대표 동선 보호).
 const _PM320_EXPAND_KEY = 'pm320SectionExpand';
 function _pm320ExpandState() {

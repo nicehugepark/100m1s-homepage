@@ -43,8 +43,8 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <link rel="icon" type="image/png" sizes="16x16" href="/pm320-assets/favicon/favicon-16.png">
 <link rel="shortcut icon" href="/pm320-assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/pm320-assets/favicon/apple-touch-icon-180.png">
-<link rel="preload" href="/news.css?v=20260612v340" as="style">
-<link rel="stylesheet" href="/news.css?v=20260612v340">
+<link rel="preload" href="/news.css?v=20260612v341" as="style">
+<link rel="stylesheet" href="/news.css?v=20260612v341">
 </head>
 <body>
 
@@ -92,7 +92,8 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
   <span class="pm320-pickbar-eyebrow" data-pickbar-eyebrow>오늘의 픽</span>
   <span class="pm320-pickbar-name" data-pickbar-name></span>
   <span class="pm320-pickbar-status" data-pickbar-status></span>
-  <span class="pm320-pickbar-arrow" aria-hidden="true">↓</span>
+  <!-- R46 P1-4 — ↓ 글리프 → SVG (이모지/글리프 DOM 제거, 조니 단정) -->
+  <span class="pm320-pickbar-arrow" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></span>
 </button>
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="모바일 메뉴">
@@ -124,16 +125,30 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 
   <div class="cal-layout">
     <aside class="cal-side">
-      <section class="toss-cal" id="toss-cal" aria-label="수집 캘린더">
-        <div class="toss-cal-header">
-          <div class="toss-cal-title" id="toss-cal-ym">—</div>
-          <div>
-            <button class="toss-cal-nav" id="toss-cal-prev" aria-label="이전 달">&lt;</button>
-            <button class="toss-cal-nav" id="toss-cal-next" aria-label="다음 달">&gt;</button>
+      <!-- R46 P0-2① (조니 2026-06-12 19:37 단정) — 캘린더 기본 접힘 격하. 354px 캘린더(y≈542)가
+           픽을 fold 밖으로 밀어내던 위계 침범 해소 — 하단 이동 기각·접힘만(다른 접힘 섹션과 동일 문법).
+           미니요약(이달 익절일)은 calendar.js _updateTossCalSummary 가 summary.json 실데이터에서 주입
+           (부재 시 빈 값 — 추정 0, FLR-AGT-002). 펼침 = localStorage 기억(_applySectionCollapse). -->
+      <section class="toss-cal pm320-collapsible pm320-section-collapsed" id="toss-cal" aria-label="수집 캘린더">
+        <div class="toss-cal-collapse-head pm320-section-header" role="button" tabindex="0" data-collapse-section="toss-cal" aria-expanded="false" aria-controls="sec-body-toss-cal" aria-label="캘린더 섹션 펼치기/접기">
+          <div class="pm320-section-headline">
+            <div class="toss-cal-head-title">캘린더</div>
+            <div class="toss-cal-head-sub">날짜 선택</div>
           </div>
+          <span class="pm320-section-summary" data-collapse-summary="1"></span>
+          <span class="pm320-section-chevron" aria-hidden="true">▾</span>
         </div>
-        <div class="toss-cal-sub" id="toss-cal-sub">수집 0일 · 종목 0</div>
-        <div class="toss-cal-grid" id="toss-cal-grid"></div>
+        <div class="section-collapse-body" id="sec-body-toss-cal" hidden>
+          <div class="toss-cal-header">
+            <div class="toss-cal-title" id="toss-cal-ym">—</div>
+            <div>
+              <button class="toss-cal-nav" id="toss-cal-prev" aria-label="이전 달">&lt;</button>
+              <button class="toss-cal-nav" id="toss-cal-next" aria-label="다음 달">&gt;</button>
+            </div>
+          </div>
+          <div class="toss-cal-sub" id="toss-cal-sub">수집 0일 · 종목 0</div>
+          <div class="toss-cal-grid" id="toss-cal-grid"></div>
+        </div>
       </section>
     </aside>
     <!-- PM320 정보 위계 개편 (대표 2026-06-10 결합안) — 테마 트리 기본 접힘. 헤더 = 토글(data-collapse-section).
@@ -194,8 +209,8 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <script src="/js/lib/chart-tv/expanded-chart.js?v=20260610v228" type="module" crossorigin="anonymous"></script>
 <script src="/js/utils.js?v=20260508v274" defer></script>
 <script src="/js/data-loader.js?v=20260612v340" defer></script>
-<script src="/js/calendar.js?v=20260611v405" defer></script>
-<script src="/js/renderer.js?v=20260612v340" defer></script>
+<script src="/js/calendar.js?v=20260612v341" defer></script>
+<script src="/js/renderer.js?v=20260612v341" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});

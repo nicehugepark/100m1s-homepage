@@ -135,6 +135,34 @@ function toggleThemeSections(iso) {
   if (trend) trend.style.display = closed ? 'none' : '';
 }
 
+// R46 P0-2① (조니 2026-06-12 단정 — 캘린더 기본 접힘 격하) — 접힘 헤더 미니요약 1줄.
+//   소스 = summary.json backtest_detail.table (renderer 가 window._pm320SummaryCache 로 적재,
+//   승률 카드와 동일 fetch — 추가 요청 0). 보는 달의 익절 청산일을 "6월 9/12일 익절"로 요약.
+//   데이터 부재·해당 월 익절 0건 시 빈 문자열 유지 (조작·추정 0, FLR-AGT-002).
+function _updateTossCalSummary() {
+  const el = document.querySelector('#toss-cal .pm320-section-summary');
+  if (!el) return;
+  const s = (typeof window !== 'undefined') ? window._pm320SummaryCache : null;
+  const table = (s && s.backtest_detail && Array.isArray(s.backtest_detail.table)) ? s.backtest_detail.table : null;
+  let txt = '';
+  if (table) {
+    const pfx = `${calViewYear}-${String(calViewMonth).padStart(2, '0')}-`;
+    const days = [...new Set(
+      table
+        .filter(r => r && typeof r.exit_date === 'string' && r.exit_date.indexOf(pfx) === 0 && /익절/.test(r.exit_class || ''))
+        .map(r => parseInt(r.exit_date.slice(8, 10), 10))
+        .filter(d => Number.isFinite(d))
+    )].sort((a, b) => a - b);
+    if (days.length > 0) {
+      // 미니요약 1줄 폭 보호 — 최근 2일 표기(조니 예시 "6월 9/12일 익절" 형식), 초과분 "외 N일"
+      //   (사실 그대로, 축약만 — 390px/데스크탑 사이드바 헤더 1줄 고정).
+      const shown = days.slice(-2);
+      txt = `${calViewMonth}월 ${shown.join('/')}일 익절${days.length > shown.length ? ` 외 ${days.length - shown.length}일` : ''}`;
+    }
+  }
+  el.textContent = txt;
+}
+
 function renderCalendar() {
   const grid = document.getElementById('toss-cal-grid');
   const ymEl = document.getElementById('toss-cal-ym');
@@ -201,6 +229,9 @@ function renderCalendar() {
     if (el.classList.contains('future')) return;
     el.addEventListener('click', () => onCalCellClick(el.dataset.date));
   });
+
+  // R46 P0-2① — 보는 달 기준 접힘 미니요약 동기 (월 이동 prev/next 마다 재산출).
+  _updateTossCalSummary();
 }
 
 // Q-20260606-118 결함(B) / Q-20260608-404fix — 해당 날짜의 정적 OG 랜딩 페이지(`/pm320/{date}.html`)가
@@ -306,6 +337,12 @@ async function initCalendar() {
 
   // 2단계: 달력 UI 즉시 렌더 (캐시 기반, fetch 안 기다림)
   renderCalendar();
+
+  // R46 P0-2① — 캘린더 접힘 상태 복원 (localStorage 'pm320SectionExpand' 키 'toss-cal').
+  //   기본 = 접힘(정적 markup), 사용자가 펼쳐둔 적 있으면 복원 — 다른 접힘 섹션과 동일 문법.
+  if (typeof _applySectionCollapse === 'function') {
+    _applySectionCollapse(document.getElementById('toss-cal'), 'toss-cal');
+  }
 
   // 3단계: 캐시된 당일 데이터로 즉시 카드 렌더 (있으면)
   // DSN-frontend §3.6.2.2 (2026-06-05 P0 라이브 재발) — OPEN 시점 stale fallback 캐시 차단.

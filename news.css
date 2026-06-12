@@ -301,6 +301,10 @@ header {
    UA [hidden]{display:none} 을 cascade 에서 이겨 hidden 속성이 무력화돼 있었음 (probe: h=0
    + 텍스트 잔존 + click timeout). 본 규칙으로 hidden=true 인 모든 경로가 실제 display:none. */
 .pm320-pickbar[hidden] { display: none; }
+/* R46 P1-1 (조니 단정 — 픽바 pointer 가로채기 해소) — 비가시 상태(접힘·260ms 페이드아웃 잔존 포함)
+   에서 포인터 완전 통과. visible 일 때만 터치 대상. */
+.pm320-pickbar:not(.pm320-pickbar--visible) { pointer-events: none; }
+.pm320-pickbar-arrow svg { display: block; }
 .pm320-pickbar.pm320-pickbar--visible {
   /* R27 P0-1 — max-height 도 단일 상수 참조 (height 와 동일 값 = 실높이 정확히 --pickbar-h). */
   max-height: var(--pickbar-h, 52px); opacity: 1; padding: 11px 24px; border-bottom-width: 1px;
@@ -1571,6 +1575,31 @@ a.cal-credit-row:hover,
 .pm320-section-header:focus-visible {
   outline: 2px solid var(--am); outline-offset: 2px; border-radius: 8px;
 }
+/* R46 P0-2① (조니 2026-06-12 단정) — 캘린더(toss-cal) 기본 접힘 합류. 접기 헤더 타이틀/서브는
+   theme-tree 헤더와 동일 토큰 값 (섹션 간 접힘 문법 통일). */
+.toss-cal-collapse-head { padding: 2px 0; flex-wrap: nowrap; }
+/* 헤더 1줄 고정 — chevron 고아 줄낙하 차단. 초과분 ellipsis 정직 절단 (#nightly-us 합격 패턴 동형). */
+.toss-cal-collapse-head .pm320-section-summary {
+  flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
+.toss-cal-head-title { font-size: 14px; font-weight: 800; color: var(--am); }
+.toss-cal-head-sub { font-size: 12px; color: var(--dm); margin-top: 2px; }
+.toss-cal .section-collapse-body { margin-top: 10px; }
+.toss-cal.pm320-section-collapsed .section-collapse-body { margin-top: 0; }
+/* R46 P1-1 (조니 단정 — 범례 1곳) — 용어 풀이 범례. 카드 리스트 하단, 기본 접힘 details.
+   인라인 (?) 팁은 첫 등장 1회로 감축 — 전체 용어 일람은 본 범례가 단일 장소. */
+.pm320-term-legend {
+  margin: 18px 0 6px; padding: 10px 14px;
+  border: 1px solid var(--bd); border-radius: 12px; background: var(--bg2);
+}
+.pm320-term-legend summary {
+  cursor: pointer; font-size: 13px; font-weight: 700; color: var(--tx2);
+  -webkit-tap-highlight-color: transparent;
+}
+.pm320-term-legend summary::marker { color: var(--dm); }
+.pm320-term-legend dl { margin: 10px 0 2px; }
+.pm320-term-legend dt { font-size: 12px; font-weight: 700; color: var(--tx); margin-top: 8px; }
+.pm320-term-legend dd { font-size: 12px; color: var(--tx2); margin: 2px 0 0; line-height: 1.5; }
 .theme-trend-legend {
   display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
   position: relative; z-index: 4; max-width: 100%;
@@ -2355,13 +2384,13 @@ body.single-card-mode { background: var(--bg) !important; }
 /* R28 P1④ — 공유 버튼 시각 26~28px 유지, 터치 영역만 44×44 투명 오버레이 확장.
    R44 #4 — 중심 정렬 오버레이가 카드(overflow:hidden) 상/우 경계 밖으로 나가 클립
    → 실효 hit ≈ 28×36. 카드 코너(-4px ≈ 버튼 inset)에 anchor 해 존을 카드 내부로 (시각 불변 — 투명).
-   높이 44→32 cap: 바로 아래 0px 인접한 거래대금 용어 tip(인터랙티브)을 share(z-index 2)가
-   잠식하던 충돌 차단 — 존 하한 = 아이콘 하단(= tip 상단). 실효 44×32 (인접 인터랙티브 물리 상한,
-   1심 "상하 확장 충돌" 실측 정합 — 충돌 0 이 44 풀존보다 우선). */
+   R46 P1-1 (조니 단정 "share 28×28 동시 44px") — 32 cap 해제, 실효 44×44 복원.
+   하단 (?) 팁과의 중첩 띠는 stacking 으로 해소: share(z-index 2) > tip ::before(z-index 1)
+   — 중첩 영역만 share 우선, 팁의 중심·하부 존은 보존 (1심 '충돌 0 우선'을 z-order 로 대체). */
 .cal-share-btn::after {
   content: '';
   position: absolute; top: -4px; right: -4px;
-  width: 44px; height: 32px;
+  width: 44px; height: 44px;
 }
 @media (max-width: 640px) {
   .cal-share-btn { top: 4px; right: 4px; width: 28px; height: 28px; }
@@ -3336,7 +3365,9 @@ body.single-card-mode { background: var(--bg) !important; }
    문서 플로우 밖이라 열려도 주변 레이아웃 0 영향. max-width + min-width 로 한 글자 세로 기둥 방지. */
 .cal-term-pop {
   position: fixed;
-  z-index: 50;
+  /* R46 P1-1 — z 50→120: 뷰포트 상단 보정 위치의 팝오버가 sticky 픽바(z:99)/헤더(z:100) 아래 깔려
+     팝오버 탭이 픽바 점프로 가로채이던 것 차단. 스크롤 시 자동 닫힘이라 상시 가림 0. */
+  z-index: 120;
   box-sizing: border-box;
   width: max-content;
   min-width: 180px;
@@ -5301,16 +5332,18 @@ body.single-card-mode { background: var(--bg) !important; }
 /* ───── feat/market-context (조니 확정 spec 5건, 2026-06-12) ───── */
 
 /* ③ NXT ghost 마커 — 위계 최하위 (테마>출처>NXT). 솔리드 칩 금지: 투명 배경 + 가는 보더 + muted 글자.
-   12px/600 (서브-12px 금지), radius = cal-ind-chip 토큰(999px), flex-shrink:0 (namecell flex 자식). */
+   R46 P1-2 (조니 원 단정 복원, 2026-06-12 19:37) — 출처 칩 미만 ghost 1단계 추가 격하:
+   11px/400/rgb(100,110,128). 12px sweep(R26) 본문 가독 원칙의 예외 — 본문이 아닌 위계 최하위
+   보조 마커(의미는 aria-label 보존). radius = cal-ind-chip 토큰(999px), flex-shrink:0. */
 .cal-nxt-marker {
   display: inline-block;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 400;
   line-height: 1.2;
   padding: 1px 5px;
   border: 1px solid var(--dm);
   border-radius: 999px;
-  color: var(--tx2);
+  color: rgb(100, 110, 128);
   background: transparent;
   flex-shrink: 0;
   letter-spacing: 0;
@@ -5376,7 +5409,11 @@ body.single-card-mode { background: var(--bg) !important; }
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* R46 P0-1 — "나스닥선물" 라벨 확장 후 390px 1줄 완전 노출: 자간 미세 압축 (12px 플로어 준수). */
+  letter-spacing: -0.45px;
 }
+#nightly-us .pm320-section-header { gap: 3px; }
+#nightly-us .pm320-section-chevron { margin-left: 0; }
 /* spec ① verbatim "접힘 헤더 미니요약 1줄" — 본 섹션 헤더 1줄 강제 (390px 3종 요약 가용폭 확보:
    nowrap + gap 10→6 + 요약 12px[플로어 준수]). 초과분(320px 등)은 ellipsis 정직 절단. */
 #nightly-us .pm320-section-header { flex-wrap: nowrap; gap: 6px; }

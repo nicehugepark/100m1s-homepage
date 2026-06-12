@@ -45,7 +45,7 @@ const assert = (cond, msg) => {
 const browser = await chromium.launch();
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 시나리오 A — 장전(portal) 픽바: 최장 상태("⏳ 진입 당일 · 성과 집계 전 (D+0/+3)")
+// 시나리오 A — 장전(portal) 픽바: 최장 상태("진입 당일 · 성과 집계 전 (D+0/+3)" — R46 P1-4 이모지 제거)
 //             + "외 2종 보유 중"(최장 name 조합) + 보조설명 노출.
 // ─────────────────────────────────────────────────────────────────────────────
 async function scenarioA(viewport, themeAttr, tag) {
@@ -117,7 +117,8 @@ async function scenarioA(viewport, themeAttr, tag) {
   //   고정 verbatim("/+3" 하드코딩 — fixture 만기와 자기모순이던 종전 기대값) 대신 형태 검증(실행일 비의존).
   // R27 P0-2 (조니 2심, 2026-06-11) — caption "집계 기준 {파일 날짜}" echo 폐기: snapshot_date 필드
   //   존재 시만 "집계 기준 MM/DD", 부재 시 무날짜 "잠정 집계" (fixture 는 필드 부재 → 잠정 집계).
-  assert(/^⏳ (진입 당일 · 성과 집계 전|보유 중 ((\+|-)?[\d.,]+%|—)) \(D\+\d+\/\+4\)( · (집계 기준 \d{2}\/\d{2}|잠정 집계))?$/.test(r.statusText),
+  // R46 P1-4 (조니 단정) — ⏳ 이모지 DOM 제거 정합 (텍스트+클래스가 상태 운반).
+  assert(/^(진입 당일 · 성과 집계 전|보유 중 ((\+|-)?[\d.,]+%|—)) \(D\+\d+\/\+4\)( · (집계 기준 \d{2}\/\d{2}|잠정 집계))?$/.test(r.statusText),
     `① 상태 형태 정합 — 동적 분모 +4 + 절단 0 (실측 "${r.statusText}")`);
   assert(/\(D\+\d+\/\+4\)/.test(r.statusText), `① D-카운터 토큰 완전 "(D+n/+4)" (만기 SSOT 분모)`);
   assert(r.statusScrollW <= r.statusClientW + 1, `① 상태 내부 클립 0 (scrollW ${r.statusScrollW} ≤ clientW ${r.statusClientW})`);
@@ -155,7 +156,7 @@ async function scenarioB(viewport, themeAttr, tag) {
   await page.evaluate(() => {
     let cc = document.getElementById('cal-content');
     if (!cc) { cc = document.createElement('div'); cc.id = 'cal-content'; document.body.appendChild(cc); }
-    const markInner = '✅ 익절 (물타기) +3.20%'
+    const markInner = '익절 (물타기) +3.20%'  // R46 P1-4 — renderer 신규 출력 형식 verbatim (이모지 제거)
       + '<span class="pm320-rec-mark-date">(2026-06-09)</span>'
       + '<span class="pm320-rec-mark-mdd">· 장중 -5.10%</span>';
     cc.innerHTML = `
@@ -210,7 +211,7 @@ async function scenarioB(viewport, themeAttr, tag) {
   assert(r.recDateRects === 1, `② 요약카드 결과 청산일 토큰 단일 rect (rects=${r.recDateRects})`);
   assert(r.pillMddRects === 1, `② MDD 칩 단일 rect 무회귀 (rects=${r.pillMddRects})`);
   assert(r.visible, `픽바 visible (rec mirror, ${tag})`);
-  assert(r.statusText === '✅ 익절 (물타기) +3.20% (2026-06-09) · 장중 -5.10%', `① mirror 공백 정합 (실측 "${r.statusText}")`);
+  assert(r.statusText === '익절 (물타기) +3.20% (2026-06-09) · 장중 -5.10%', `① mirror 공백 정합 (실측 "${r.statusText}")`);
   assert(r.statusScrollW <= r.statusClientW + 1, `① rec-모드 상태 내부 클립 0 (scrollW ${r.statusScrollW} ≤ clientW ${r.statusClientW})`);
   assert(r.statusRight <= r.barRight + 0.5, `① rec-모드 상태 bbox 바 내부 (${r.statusRight.toFixed(1)} ≤ ${r.barRight.toFixed(1)})`);
   assert(pageErrors.length === 0, `pageerror 0건 (${pageErrors.length})`);
