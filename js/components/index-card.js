@@ -284,7 +284,14 @@
         futAgeHtml = '<div class="idx-fut-age' + (opts.isStale ? ' idx-fut-age--stale' : '') + '">' + staleChip + esc(ageText) + '</div>';
       }
     }
-    var cardCls = 'cal-feature-card v2 cal-feature-card--idx' + (futVariant ? ' cal-feature-card--fut' : '');
+    // feat/market-context ① (2026-06-12) — 국내(코스피·코스닥) 변종 modifier. 추가 클래스만 부여
+    //   (빈 미니일봉 셀 숨김 등 CSS 스코프) — 기존 미장 카드 출력 0 변경 (additive).
+    var krVariant = !!(opts && opts.krVariant);
+    var cardCls = 'cal-feature-card v2 cal-feature-card--idx' + (futVariant ? ' cal-feature-card--fut' : '')
+      + (krVariant ? ' cal-feature-card--idx-kr' : '');
+    // feat/market-context ① — range_240d 실가용 일수 정직 표기 ("61일 레인지", 240 미만 시 의무).
+    //   opts.rangeDaysNote(string) 존재 + 레인지 바 렌더 시에만 바 직하 1줄. 미전달(기존 호출) 출력 0.
+    var rangeDaysNote = (opts && typeof opts.rangeDaysNote === 'string' && opts.rangeDaysNote) ? opts.rangeDaysNote : '';
 
     // 대표 20:26 catch 정정 — 국내 종목카드 헤더 DOM 1:1 복제 (renderer.js L1419-1435 verbatim 구조).
     //   head-left 4-child 순서 동일: .cal-trade-rank → .cal-trade-candle(당일캔들) → .cal-feature-sparkline
@@ -316,6 +323,7 @@
       + '</div>'
       + '</div>'
       + rangeHtml
+      + (rangeHtml && rangeDaysNote ? '<div class="idx-range-days-note">' + esc(rangeDaysNote) + '</div>' : '')
       + newsBodyHtml
       + '</div>';
   }

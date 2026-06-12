@@ -3939,6 +3939,9 @@ body.single-card-mode { background: var(--bg) !important; }
   gap: 6px;
   font-size: 12px;
   color: var(--tx2);
+  /* feat/market-context ④ — 시총 span 추가 대비 안전망: 320px 2행 낙하 허용·절단 금지. */
+  flex-wrap: wrap;
+  row-gap: 2px;
 }
 /* v2.4: 메타 자식 모두 글로벌 셀렉터 무력화 + padding/margin 0 + 폰트 패밀리 통일 */
 .cal-feature-meta > span {
@@ -5294,3 +5297,92 @@ body.single-card-mode { background: var(--bg) !important; }
     transition: none !important;
   }
 }
+
+/* ───── feat/market-context (조니 확정 spec 5건, 2026-06-12) ───── */
+
+/* ③ NXT ghost 마커 — 위계 최하위 (테마>출처>NXT). 솔리드 칩 금지: 투명 배경 + 가는 보더 + muted 글자.
+   12px/600 (서브-12px 금지), radius = cal-ind-chip 토큰(999px), flex-shrink:0 (namecell flex 자식). */
+.cal-nxt-marker {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 1px 5px;
+  border: 1px solid var(--dm);
+  border-radius: 999px;
+  color: var(--tx2);
+  background: transparent;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+
+/* ④ 시총 메타 span — var(--tx2)/500/nowrap (거래대금 골드와 위계 분리, 절단 금지·2행 낙하 허용) */
+.cal-feature-meta .cal-mcap { color: var(--tx2); font-weight: 500; font-size: 12px; white-space: nowrap; }
+
+/* ① 시장 지수 — 코스피·코스닥 2카드 블록. 카드 column 레이아웃은 .nightly-us-cards 상속(중복 정의 0). */
+.kr-indices-block { margin-bottom: 14px; }
+.kr-indices-asof {
+  font-size: 12px;
+  color: var(--dm-hi);
+  margin-bottom: 6px;
+  text-align: right;
+}
+/* KR 변종 — 일봉 시리즈 데이터 자체 부재: 회색 빈 박스 placeholder 대신 셀 미렌더 ("빈자리는 정직하다") */
+.cal-feature-card--idx-kr .cal-candles20-empty { display: none; }
+/* range_240d 실가용 일수 정직 표기 ("61일 레인지") — 레인지 바 직하 1줄 */
+.idx-range-days-note {
+  font-size: 12px;
+  color: var(--dm-hi);
+  text-align: right;
+  padding: 0 12px 6px;
+}
+
+/* ② 장중 글로벌 지표 — micro-stat 그리드 (카드 아님). 3종(나스닥 선물·원/달러·WTI) 가용 항목만,
+   390px 1×3 균형 / 항목 감소 시 자연 축소 (auto-fit). */
+.glb-stats { margin: 0 0 18px; }
+.glb-stats-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.glb-stats-title { font-size: 12px; font-weight: 700; color: var(--tx2); }
+.glb-stats-asof { font-size: 12px; color: var(--dm-hi); }
+.glb-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 8px 12px;
+}
+.glb-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.glb-stat-label { font-size: 12px; font-weight: 600; color: var(--tx2); white-space: nowrap; }
+.glb-stat-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.glb-stat-delta { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.glb-stat-delta.up { color: var(--up); }
+.glb-stat-delta.down { color: var(--down); }
+.glb-stat-delta.flat { color: var(--dm-hi); }
+
+/* ① 접힘 미니요약 3종("코스피 · 코스닥 · 나스닥")이 390px에서 행 낙하(+29px) → 헤더 1줄 고정.
+   본 섹션 한정 shrink+ellipsis (타 섹션 요약은 짧아 무영향 — 스코프 격리). y 무회귀 (Δ0). */
+#nightly-us .pm320-section-summary {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* spec ① verbatim "접힘 헤더 미니요약 1줄" — 본 섹션 헤더 1줄 강제 (390px 3종 요약 가용폭 확보:
+   nowrap + gap 10→6 + 요약 12px[플로어 준수]). 초과분(320px 등)은 ellipsis 정직 절단. */
+#nightly-us .pm320-section-header { flex-wrap: nowrap; gap: 6px; }
+#nightly-us .pm320-section-summary { font-size: 12px; }
+/* 1줄 헤더 마감 — 제목("시장 지수") 공백 줄바꿈 차단 + headline 고정폭 + 요약 우측 정렬 유지(margin-auto).
+   부족폭은 요약 ellipsis가 흡수 (제목·chevron 불변). */
+#nightly-us .nightly-us-title { white-space: nowrap; }
+#nightly-us .pm320-section-headline { flex: 0 0 auto; }
+#nightly-us .pm320-section-summary { margin-left: auto; }

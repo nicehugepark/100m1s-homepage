@@ -271,6 +271,86 @@ function _parseNightlyUs(raw) {
   };
 }
 
+// feat/market-context (조니 확정 spec 2026-06-12) — 시장 컨텍스트 단일 파일 4종 로더.
+//   /pm320/data/ 하위 날짜 무관 단일 라이브 파일: kr_indices(시장 지수 ①) / wire_news(기관 와이어 ⑤)
+//   / macro_indicators(장중 글로벌 지표 ② — usdkrw·wti 2종, ust10y 제외 확정 조니 미니 단정 17:06)
+//   / nxt_roster(NXT 동시상장 ③·시총 ④). 각 파일 부재/파싱 실패/schema 미달 시 해당 키 null →
+//   소비측 무렌더 (FLR-AGT-002 거짓 충실성 차단 — 폴백·대시·mock 절대 금지, "빈자리는 정직하다").
+//   캘린더가 날짜별 loadCalDayData 를 다건 호출하므로 TTL 5분 단일 Promise 캐시(과다 fetch 회피 +
+//   장중 10~15분 수집 주기 대비 신선도 유지). 검증은 최소 필수 필드만 — 상세 stale 가드는 렌더 시점.
+let _marketCtxCache = { at: 0, p: null };
+function _loadMarketContext() {
+  const now = Date.now();
+  if (_marketCtxCache.p && (now - _marketCtxCache.at) < 5 * 60 * 1000) return _marketCtxCache.p;
+  const bust = String(Math.floor(now / (5 * 60 * 1000)));  // 5분 단위 cache-bust (CDN 304 친화)
+  const _get = (path) => fetch(`${path}?v=${bust}`).then(r => (r.ok ? r.json() : null)).catch(() => null);
+  const p = Promise.all([
+    _get('/pm320/data/kr_indices.json').then(_parseKrIndices),
+    _get('/pm320/data/wire_news.json').then(_parseWireNews),
+    _get('/pm320/data/macro_indicators.json').then(_parseMacroIndicators),
+    _get('/pm320/data/nxt_roster.json').then(_parseNxtRoster),
+  ]).then(([krIndices, wireNews, macroIndicators, nxtRoster]) => (
+    { krIndices, wireNews, macroIndicators, nxtRoster }
+  )).catch(() => ({ krIndices: null, wireNews: null, macroIndicators: null, nxtRoster: null }));
+  _marketCtxCache = { at: now, p };
+  return p;
+}
+
+// kr_indices.json — { KOSPI:{name,value,prev_close,change_pct,candles_10m[],range_240d{high,low,days},
+//   trade_date,asof,session}, KOSDAQ:{…} }. 지수별 독립 검증 — 유효 0건이면 null.
+function _parseKrIndices(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const out = [];
+  for (const key of ['KOSPI', 'KOSDAQ']) {  // 표시 순서 고정 (코스피 → 코스닥)
+    const e = raw[key];
+    if (!e || typeof e !== 'object') continue;
+    if (typeof e.name !== 'string' || !e.name) continue;
+    if (typeof e.value !== 'number' || !isFinite(e.value)) continue;
+    if (typeof e.change_pct !== 'number' || !isFinite(e.change_pct)) continue;
+    if (typeof e.trade_date !== 'string' || !e.trade_date) continue;
+    out.push(e);
+  }
+  return out.length > 0 ? { list: out } : null;
+}
+
+// wire_news.json — { items:[{published_at, source, title, url}] }. 4필드 전부 필수 (직링크 의무 — 법무).
+function _parseWireNews(raw) {
+  if (!raw || typeof raw !== 'object' || !Array.isArray(raw.items)) return null;
+  const items = raw.items.filter(it =>
+    it && typeof it === 'object'
+    && typeof it.title === 'string' && it.title
+    && typeof it.source === 'string' && it.source
+    && typeof it.url === 'string' && /^https?:\/\//i.test(it.url)
+    && typeof it.published_at === 'string' && it.published_at);
+  return items.length > 0 ? { items } : null;
+}
+
+// macro_indicators.json — { as_of, indicators:{ usdkrw:{label,value,prev_close,change_pct,bar_asof},
+//   wti:{…} } }. 항목별 독립(부분 산출 가용 항목만) — usdkrw·wti 화이트리스트(ust10y 제외 확정, 렌더 0줄).
+function _parseMacroIndicators(raw) {
+  if (!raw || typeof raw !== 'object' || !raw.indicators || typeof raw.indicators !== 'object') return null;
+  const out = {};
+  for (const key of ['usdkrw', 'wti']) {
+    const e = raw.indicators[key];
+    if (!e || typeof e !== 'object') continue;
+    if (typeof e.label !== 'string' || !e.label) continue;
+    if (typeof e.value !== 'number' || !isFinite(e.value)) continue;
+    if (typeof e.change_pct !== 'number' || !isFinite(e.change_pct)) continue;
+    if (typeof e.bar_asof !== 'string' || !e.bar_asof) continue;  // 항목별 60분 stale 가드 축 — 필수
+    out[key] = e;
+  }
+  return Object.keys(out).length > 0 ? { as_of: (typeof raw.as_of === 'string' ? raw.as_of : ''), indicators: out } : null;
+}
+
+// nxt_roster.json — { fetched_at, snapshots:{ "YYYY-MM-DD": { codes_nxt:[…], list_count:{code:int} } } }.
+//   시점 왜곡 금지 — 소비측(renderer)이 "표시 날짜의 스냅샷만" 사용 + fetched_at 7거래일+ 경과 시 suppress.
+function _parseNxtRoster(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  if (typeof raw.fetched_at !== 'string' || !raw.fetched_at) return null;
+  if (!raw.snapshots || typeof raw.snapshots !== 'object') return null;
+  return raw;
+}
+
 async function loadCalDayData(date) {
   // §3.6.2.3 (FLR-20260605-TEC-001 P1-2) — 세션 구간 키로 read/write (calendar.js _cacheKey 단일 출처).
   //   장 시작/마감 경계를 넘으면 키 불일치 → cache miss → 네트워크 재로드(이전 구간 데이터 재사용 0).
@@ -299,14 +379,15 @@ async function loadCalDayData(date) {
   const _closedMarket = (typeof isMarketClosed === 'function') ? isMarketClosed(date) : false;
   // WAVE6-R29 — 휴장일 클릭은 국내장/PM320 산출물이 원칙적으로 없다.
   // 화면은 kiwoom snapshot + renderer 휴장 안내로 충분하므로 확정 404가 되는 interpreted/pm320_history 요청은 건너뛴다.
-  const [kiwoom, stockDailyDirect, pm320Data, nightlyUs, pm320Summary] = await Promise.all([
+  const [kiwoom, stockDailyDirect, pm320Data, nightlyUs, pm320Summary, marketCtx] = await Promise.all([
     loadKiwoomDate(date),
     (_todayPreMarket || _closedMarket)
       ? Promise.resolve(null)
       : fetch(`/data/interpreted/${calCategory}-${date}.json?v=${dateHash}`).then(r => r.ok ? r.json() : null).catch(() => null),
     (_todayPreMarket || _closedMarket || _todayBeforePick) ? Promise.resolve(null) : loadPm320History(date),
     loadNightlyUsSummary(date),
-    loadPm320Summary()
+    loadPm320Summary(),
+    _loadMarketContext()  // feat/market-context — kr_indices/wire_news/macro_indicators/nxt_roster (각 null graceful)
   ]);
   // pm320 stocks → code 기반 lookup map 신축 (interpretedByName 합성 시 사용)
   // schema: { code, name, pm320_pick: { is_pick, entry_price, watering_target_price, ... } }
@@ -534,7 +615,12 @@ async function loadCalDayData(date) {
     _fallbackDate: fallbackDate,
     pm320NoPick,
     nightlyUs,  // Q-20260605-103 Phase 3 — null이면 섹션 미렌더 (FLR-AGT-002)
-    pm320Summary  // PM320-D6 — 4/8 이후 승률 summary (null이면 승률 카드 미렌더, FLR-AGT-002)
+    pm320Summary,  // PM320-D6 — 4/8 이후 승률 summary (null이면 승률 카드 미렌더, FLR-AGT-002)
+    // feat/market-context — 시장 컨텍스트 4종 (각 null = 해당 표시 무렌더, FLR-AGT-002 "빈자리는 정직하다")
+    krIndices: marketCtx ? marketCtx.krIndices : null,
+    wireNews: marketCtx ? marketCtx.wireNews : null,
+    macroIndicators: marketCtx ? marketCtx.macroIndicators : null,
+    nxtRoster: marketCtx ? marketCtx.nxtRoster : null
   };
   // §3.6.2.3 — read 와 동일 세션 구간 키로 write (장경계 무효화 정합).
   calDayCache[_key] = result;

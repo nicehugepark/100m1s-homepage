@@ -78,6 +78,10 @@ const _PM320_GLOSSARY = {
   watering: { t: '물타기', d: '산 종목이 떨어졌을 때 더 사서 평균 매입가를 낮추는 것입니다.' },
   'take-profit': { t: '익절', d: '이익을 본 상태에서 파는 것입니다.' },
   pending: { t: '보류', d: '그날의 조건을 만족하는 종목이 없어 추천을 내지 않는 것. 무리한 추천 대신 쉬어가는 날입니다.' },
+  // feat/market-context ③ — 운영시간 수치는 NXT 공식 페이지(nextrade.co.kr) fetch 검증 (2026-06-12).
+  nxt: { t: 'NXT (넥스트레이드)', d: '한국거래소(KRX)와 별개로 운영되는 대체거래소입니다. NXT 표시는 이 종목이 두 시장에서 함께 거래된다는 뜻입니다. 운영시간: 프리마켓 08:00~08:50 · 메인마켓 09:00:30~15:20 · 애프터마켓 15:40~20:00.' },
+  // feat/market-context ④ — 시총 산출 기준 명시 (보통주 기준, 카드 가격 × 상장주식수).
+  mcap: { t: '시가총액', d: '현재 주가 × 상장주식수(보통주 기준)로 계산한 회사 전체의 시장 가치입니다.' },
 };
 // (?) 마커 — term 키에 해당하는 풀이가 있을 때만 생성. aria-label 로 스크린리더 정합.
 function _termTip(term) {
@@ -331,6 +335,227 @@ function _resolveFutureFor(ix, matched) {
   return { fut, ageMin: matched.ageMin, display: m.display, isStale: matched.isStale };
 }
 
+// ───── feat/market-context (조니 확정 spec 5건, 2026-06-12) — 시장 컨텍스트 헬퍼 ─────
+
+// ⑤ wire_news 분류 — US 기관발(SEC·Fed·백악관) = 미국발 뉴스요약 칩 열 / 국내 기관(연합·금융위) = 국내
+//   매크로 칩 열. 출처 약어는 관습 표기만(창작 0): Federal Reserve→Fed / White House→백악관 / 금융위원회→금융위.
+const _WIRE_US_SOURCE_RE = /\b(SEC|Federal Reserve|White House|Fed)\b|백악관|연방준비제도/i;
+const _WIRE_SOURCE_ABBR = { 'Federal Reserve': 'Fed', 'White House': '백악관', '금융위원회': '금융위' };
+function _splitWireNews(wire) {
+  const out = { us: [], kr: [] };
+  if (!wire || !Array.isArray(wire.items)) return out;
+  for (const it of wire.items) {
+    if (!it || typeof it.title !== 'string' || !it.title) continue;
+    if (typeof it.url !== 'string' || !/^https?:\/\//i.test(it.url)) continue;  // 직링크 의무 (법무)
+    const chip = {
+      summary: it.title,
+      title: it.title,
+      source: _WIRE_SOURCE_ABBR[it.source] || it.source,
+      url: it.url,
+    };
+    (_WIRE_US_SOURCE_RE.test(it.source || '') ? out.us : out.kr).push(chip);
+  }
+  return out;
+}
+
+// ⑤ 국내 매크로 칩 스트림에 wire 국내 기관 칩 합류 — URL dedup(기존 칩 ∪ wire 내부) + 기존 칩 우선.
+//   wire 부재 시 합류 0 (기존 칩 무회귀). 총량 상한·더보기는 호출측 기존 구조(_NEWS_MAX_CHIPS) 그대로.
+//   국내 장중 + 폐장 양 path 공용 (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
+function _mergeWireKrMacro(events, wire) {
+  const base = Array.isArray(events) ? events.slice() : [];
+  const krWire = _splitWireNews(wire).kr;
+  if (krWire.length === 0) return base;
+  const seen = new Set();
+  for (const m of base) {
+    if (m && typeof m.url === 'string' && m.url) seen.add(m.url);
+  }
+  for (const w of krWire) {
+    if (seen.has(w.url)) continue;
+    seen.add(w.url);
+    base.push(w);
+  }
+  return base;
+}
+
+// ③ NXT roster 스냅샷 해석 — "표시 날짜의 스냅샷만" 사용 (과거 날짜에 현재 roster 적용 금지 — 시점 왜곡).
+//   해당 날짜 스냅샷 부재 OR fetched_at 7거래일+ 경과 시 null → 그날 마커·시총 전면 suppress.
+//   거래일 산출 = lib/trading-day.js computeTradingDayDiff (KOREA_HOLIDAYS 정합). 미가용 시 캘린더 9일
+//   보수 근사 (7거래일 최소 스팬 = 9캘린더일 — 휴장 존재 시 더 이른 suppress = 정직 방향).
+function _resolveNxtSnapshot(roster, date) {
+  if (!roster || !roster.snapshots || typeof date !== 'string' || !date) return null;
+  const snap = roster.snapshots[date];
+  if (!snap || typeof snap !== 'object' || !Array.isArray(snap.codes_nxt)) return null;
+  try {
+    const f = String(roster.fetched_at || '').slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(f)) return null;
+    const _k = new Date(Date.now() + 9 * 3600 * 1000);
+    const todayIso = `${_k.getUTCFullYear()}-${String(_k.getUTCMonth() + 1).padStart(2, '0')}-${String(_k.getUTCDate()).padStart(2, '0')}`;
+    let stale = null;
+    if (typeof computeTradingDayDiff === 'function') stale = computeTradingDayDiff(f, todayIso);
+    if (typeof stale === 'number') {
+      if (stale >= 7) return null;
+    } else {
+      const dms = Date.parse(todayIso) - Date.parse(f);
+      if (!isFinite(dms) || Math.floor(dms / 86400000) >= 9) return null;
+    }
+  } catch (_) { return null; }
+  return {
+    codes: new Set(snap.codes_nxt.filter(c => typeof c === 'string' && c)),
+    listCount: (snap.list_count && typeof snap.list_count === 'object') ? snap.list_count : {},
+  };
+}
+
+// ③ NXT ghost 마커 — NXT 동시상장만 표기 (KRX 단독 무표기). 위계 최하위 (테마>출처>NXT — 솔리드 칩 금지).
+//   .cal-feature-namecell 첫 자식 (.cal-feature-name 직전). withTip = 첫 NXT 카드에만 (?) 글로서리.
+function _nxtMarkerHtml(code, nxtSnap, withTip) {
+  if (!nxtSnap || !code || !nxtSnap.codes.has(code)) return '';
+  return `<span class="cal-nxt-marker" aria-label="넥스트레이드(NXT) 동시 거래 종목">NXT</span>${withTip ? _termTip('nxt') : ''}`;
+}
+
+// ④ 시총 메타 — 등락률 | 거래대금 | 시총. mcap = 카드 가격 × roster list_count (보통주 기준 — 글로서리 명시).
+//   fmtTradeAmount 재사용 (신규 포매터 금지 — 경계: 9,999억 → "9,999억" / 10,000억 → "1.0조").
+//   roster 스냅샷 또는 list_count[code] 부재 시 sep+span 통째 무렌더 (폴백·대시 금지).
+function _mcapMetaHtml(code, price, nxtSnap, withTip) {
+  if (!nxtSnap || !code) return '';
+  const lc = nxtSnap.listCount ? nxtSnap.listCount[code] : null;
+  if (typeof lc !== 'number' || !isFinite(lc) || lc <= 0) return '';
+  if (typeof price !== 'number' || !isFinite(price) || price <= 0) return '';
+  return `<span class="cal-meta-sep">|</span><span class="cal-mcap">시총 ${escapeHtml(fmtTradeAmount(price * lc))}${withTip ? _termTip('mcap') : ''}</span>`;
+}
+
+// ① 시장 지수 — 코스피·코스닥 2카드 (index-card.js renderIndexCard 재사용: 당일캔들·스파크·240d 레인지,
+//   색 = rev9 정책 그대로 — 캔들·스파크 시가대비 / 등락률 전일대비). 데이터 = /pm320/data/kr_indices.json.
+//   정직 원칙(조니 단정): 표시 날짜 ≠ trade_date 인 카드 무렌더 (전일 종가 폴백 절대 금지) + range_240d
+//   실가용 일수 240 미만이면 "{days}일 레인지" 표기. 신선도 라벨 = 장중 "HH:MM 기준" / 마감 "15:30 마감".
+function _buildKrIndexCardsHtml(kr, viewDate, isPastDate) {
+  if (!kr || !Array.isArray(kr.list) || kr.list.length === 0) return '';
+  if (typeof renderIndexCard !== 'function') return '';
+  const cards = [];
+  let anyOpen = false;
+  let latestOpenAsof = '';
+  for (const e of kr.list) {
+    // 시점 정직 — kr_indices.json 은 당일 단일 파일. 표시 날짜와 데이터 거래일 불일치 시 그 카드 무렌더.
+    if (typeof viewDate === 'string' && viewDate && e.trade_date !== viewDate) continue;
+    const candles = Array.isArray(e.candles_10m)
+      ? e.candles_10m.filter(c => c && typeof c.o === 'number' && typeof c.h === 'number'
+        && typeof c.l === 'number' && typeof c.c === 'number')
+      : [];
+    // 당일 캔들 = 실 10분봉에서 파생 (o=첫 봉 시가, h/l=전 봉 고저, c=value SSOT). 봉 0건 시 캔들·스파크 미렌더.
+    let candle;
+    if (candles.length > 0) {
+      let hi = -Infinity, lo = Infinity;
+      for (const c of candles) { if (c.h > hi) hi = c.h; if (c.l < lo) lo = c.l; }
+      candle = { o: candles[0].o, h: hi, l: lo, c: e.value };
+    }
+    const spark = candles.map(c => c.c);
+    const isOpen = e.session === 'open';
+    if (isOpen) {
+      anyOpen = true;
+      if (typeof e.asof === 'string' && e.asof.length >= 16 && e.asof > latestOpenAsof) latestOpenAsof = e.asof;
+    }
+    let r240;
+    if (e.range_240d && typeof e.range_240d === 'object'
+      && typeof e.range_240d.high === 'number' && typeof e.range_240d.low === 'number') {
+      r240 = { low: e.range_240d.low, high: e.range_240d.high, current: e.value };
+    }
+    const days = (e.range_240d && typeof e.range_240d.days === 'number') ? e.range_240d.days : null;
+    const tradeDateLabel = /^\d{4}-\d{2}-\d{2}$/.test(e.trade_date)
+      ? `${parseInt(e.trade_date.slice(5, 7), 10)}/${parseInt(e.trade_date.slice(8, 10), 10)}` : '';
+    const html = renderIndexCard({
+      name: e.name,
+      point: e.value,
+      change_pct: e.change_pct,
+      spark: spark.length >= 2 ? spark : undefined,
+      candle,
+      range_240d: r240,
+      session_open: isOpen,
+    }, null, tradeDateLabel, {
+      krVariant: true,
+      isPastDate: !!isPastDate,
+      rangeDaysNote: (r240 && days != null && days > 0 && days < 240) ? `${days}일 레인지` : '',
+    });
+    if (html) cards.push(html);
+  }
+  if (cards.length === 0) return '';
+  // 신선도 라벨 — 장중 "HH:MM 기준"(asof, ISO +09:00 고정 포맷 슬라이스) / 마감 "15:30 마감"(KRX 정규장 제도 시각).
+  //   장중인데 asof 미상이면 라벨 생략 (추정 표기 금지, FLR-AGT-002).
+  let asofLabel = '';
+  if (anyOpen) {
+    if (latestOpenAsof) asofLabel = `${latestOpenAsof.slice(11, 16)} 기준`;
+  } else {
+    asofLabel = '15:30 마감';
+  }
+  const asofHtml = asofLabel ? `<div class="kr-indices-asof">${escapeHtml(asofLabel)}</div>` : '';
+  return `<div class="kr-indices-block">${asofHtml}<div class="nightly-us-cards kr-indices-cards">${cards.join('')}</div></div>`;
+}
+
+// ② 장중 글로벌 지표 구획 — 코스피·코스닥 카드 직후·기존 US 블록 직전. micro-stat 그리드 (카드 아님 —
+//   12px 라벨+값+델타). 항목 3종 확정(조니 미니 단정 2026-06-12 17:06): 나스닥 선물(기존 us-indices
+//   futures 수집 데이터) / 원/달러 / WTI 선물 (macro_indicators.json). 미 10년물 제외 확정 — 렌더 0줄.
+//   라벨 정직 3칙(조니 단정): 즉시성·예측성 단어 2종 미사용 / "지수" 단어 미사용(코스피·코스닥 전용)
+//   / 항목별 60분 stale 가드(마지막 수집 60분+ 시 해당 항목 무렌더). 가용 항목만 렌더(자연 축소) — 0개면 구획 무렌더.
+function _buildGlobalStatsHtml(us, macro) {
+  const nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number')
+    ? window._freshnessNow : Date.now();
+  const STALE_MS = 60 * 60 * 1000;
+  const _freshTs = (s) => {
+    const t = (typeof s === 'string' && s) ? Date.parse(s) : NaN;
+    if (!isFinite(t)) return null;
+    const age = nowMs - t;
+    // 미래시각(>5분 skew)·60분+ 경과 → stale 판정 (해당 항목 무렌더)
+    return (age >= -5 * 60 * 1000 && age <= STALE_MS) ? t : null;
+  };
+  const _fmt2 = (v) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const items = [];
+  let newestTs = null;
+  const _push = (label, value, pct, ts) => {
+    items.push({ label, value, pct });
+    if (newestTs == null || ts > newestTs) newestTs = ts;
+  };
+  // 나스닥 선물 — 기존 us-indices futures (data/us-indices/{date}.json futures.as_of_kst 신선도 축)
+  if (us && us.futures && Array.isArray(us.futures.futures)) {
+    const ts = _freshTs(us.futures.as_of_kst);
+    if (ts != null) {
+      const nq = us.futures.futures.find(f => f && /나스닥|nasdaq/i.test(f.name || ''));
+      if (nq && typeof nq.point === 'number' && isFinite(nq.point)
+        && typeof nq.change_pct === 'number' && isFinite(nq.change_pct)) {
+        _push('나스닥 선물', _fmt2(nq.point), nq.change_pct, ts);
+      }
+    }
+  }
+  // 원/달러 · WTI 선물 — macro_indicators.json (항목별 bar_asof 신선도 축, 부분 산출 가용 항목만)
+  if (macro && macro.indicators) {
+    for (const key of ['usdkrw', 'wti']) {
+      const e = macro.indicators[key];
+      if (!e) continue;
+      const ts = _freshTs(e.bar_asof);
+      if (ts == null) continue;
+      if (typeof e.value !== 'number' || !isFinite(e.value)) continue;
+      if (typeof e.change_pct !== 'number' || !isFinite(e.change_pct)) continue;
+      _push(e.label, _fmt2(e.value), e.change_pct, ts);
+    }
+  }
+  if (items.length === 0) return '';
+  const itemsHtml = items.map((it) => {
+    const dir = it.pct > 0 ? 'up' : (it.pct < 0 ? 'down' : 'flat');
+    const arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
+    const pctText = `${it.pct >= 0 ? '+' : ''}${it.pct.toFixed(2)}%`;
+    return `<div class="glb-stat">`
+      + `<span class="glb-stat-label">${escapeHtml(it.label)}</span>`
+      + `<span class="glb-stat-value">${escapeHtml(it.value)}</span>`
+      + `<span class="glb-stat-delta ${dir}"><span aria-hidden="true">${arrow}</span>${escapeHtml(pctText)}</span>`
+      + `</div>`;
+  }).join('');
+  const asofNote = newestTs != null
+    ? `${new Date(newestTs + 9 * 3600 * 1000).toISOString().slice(11, 16)} 기준 · 장중 10~15분 간격` : '';
+  return `<div class="glb-stats" role="group" aria-label="장중 글로벌 지표">`
+    + `<div class="glb-stats-head"><span class="glb-stats-title">장중 글로벌 지표</span>`
+    + (asofNote ? `<span class="glb-stats-asof">${escapeHtml(asofNote)}</span>` : '')
+    + `</div>`
+    + `<div class="glb-stats-grid">${itemsHtml}</div>`
+    + `</div>`;
+}
+
 // Q-20260605-103 Phase 3 → Q-20260608-140 (A안 페어 카드) — 야간 미국증시 요약 섹션 빌더.
 //   DSN-001 §1~§4. 입력 us = data.nightlyUs (data-loader.loadNightlyUsSummary 검증 산출).
 //   null/부재/지수 0건 시 '' 반환 → 섹션 전체 미렌더 (FLR-AGT-002 거짓 충실성 차단, 빈 카드/mock 금지).
@@ -338,10 +563,13 @@ function _resolveFutureFor(ix, matched) {
 //     삽입형(.idx-futures-row 카드 내 오버레이) 전면 폐기 (라이브 깨짐·NASDAQ/DOW 미노출 원인).
 //   토글 = data-fut-view attribute(regular|futures|both) + CSS 가시성 제어(JS는 attribute만 토글, 재렌더 0).
 //     기본 진입 = _futAutoDefault(시간대 자동). 사용자 클릭 시 localStorage('pm320-us-fut-view') override.
-function _buildNightlyUsHtml(us, viewDate) {
-  if (!us || typeof us !== 'object') return '';
-  if (!Array.isArray(us.indices) || us.indices.length === 0) return '';
+// feat/market-context ① (조니 확정 spec, 2026-06-12) — 섹션 "야간 미국증시" → "시장 지수" 개칭·확장.
+//   펼침 첫 콘텐츠 = 코스피·코스닥 2카드(ctx.kr) → ② 장중 글로벌 지표 구획 → 기존 US 블록(뉴스·토글·카드).
+//   ctx = loadCalDayData result (krIndices/macroIndicators/wireNews 소비). us 부재여도 KR 카드 가용 시
+//   섹션 렌더 (역도 동일) — 양쪽 다 0건이면 '' (데이터 부재 시 무렌더, 조니 단정 "빈자리는 정직하다").
+function _buildNightlyUsHtml(us, viewDate, ctx) {
   if (typeof renderIndexCard !== 'function') return '';
+  const usValid = !!(us && typeof us === 'object' && Array.isArray(us.indices) && us.indices.length > 0);
 
   // Q-20260610 (대표 catch 6/10, 2회차) — 지난 날짜 카드 판정. session_open 은 수집 시점 스냅샷이라
   //   지난 날짜(viewDate < KST 오늘) 카드에서 frozen true 로 "장중"(현재형) 라벨이 오독된다(FLR-AGT-002).
@@ -356,13 +584,18 @@ function _buildNightlyUsHtml(us, viewDate) {
     isPastDate = viewDate < _todayKst;
   }
 
+  // ① 코스피·코스닥 2카드 + ② 장중 글로벌 지표 구획 (둘 다 부재 시 graceful '').
+  //   글로벌 지표는 now-앵커 데이터 — 지난 날짜 뷰에서는 무렌더 (시점 왜곡 금지, FLR-AGT-002).
+  const krCardsHtml = _buildKrIndexCardsHtml(ctx && ctx.krIndices, viewDate, isPastDate);
+  const statsHtml = isPastDate ? '' : _buildGlobalStatsHtml(usValid ? us : null, ctx && ctx.macroIndicators);
+
   // 선물 신선도 매칭 (≤30분). 부재/stale 시 null → 선물 카드·토글 미렌더 (정규장 카드만, 현행 동일).
-  const _futMatched = _matchFuturesToIndices(us);
+  const _futMatched = usValid ? _matchFuturesToIndices(us) : null;
   const _hasFutures = !!_futMatched;
 
   // 지수별 페어 그룹 — 정규장 카드(renderIndexCard) + (가용 시)선물 카드(renderIndexFuturesCard) 묶음.
   //   futureInfo 인자 제거(삽입형 폐기) → renderIndexCard 2번째 인자 null.
-  const groupsHtml = us.indices.map(ix => {
+  const groupsHtml = !usValid ? '' : us.indices.map(ix => {
     const regularCard = renderIndexCard(ix, null, us.trade_date_local, { isPastDate });
     if (!regularCard) return '';
     let futCard = '';
@@ -387,7 +620,8 @@ function _buildNightlyUsHtml(us, viewDate) {
       + (futCard ? `<div class="idx-card-futures">${futCard}</div>` : '')
       + `</div>`;
   }).filter(Boolean).join('');
-  if (!groupsHtml) return '';
+  // feat/market-context ① — KR 카드·US 카드 둘 다 0건일 때만 섹션 무렌더 (한쪽 가용 시 섹션 유지).
+  if (!groupsHtml && !krCardsHtml) return '';
 
   // 토글 세그먼트(§2) → Q-20260608-141 (§2) — "둘 다" 제거. 2-state [정규장|선물]만. 터치 ≥44px(CSS).
   //   초기 active = 자동 기본값(_futAutoDefault). data-fut-view 동기화는 inline init script(_wireUsFutToggle).
@@ -408,10 +642,24 @@ function _buildNightlyUsHtml(us, viewDate) {
 
   // 미국발 뉴스 요약 — 국내 "오늘의 뉴스요약" 칩 클래스 1:1 (대표 21:09 catch).
   //   국내 실제 칩 = .cal-macro-strip > .cal-macro-chip. 본 클래스 그대로 재사용(스타일 복제 금지). a 래핑 + 출처 약어.
+  //   feat/market-context ⑤ — wire US 기관발(SEC·Fed·백악관) 칩 합류: 기존 칩 우선 + URL dedup.
+  //   wire 부재 시 합류 0 (기존 칩 무회귀). 총량 상한·더보기 = 기존 _buildNewsExpand 구조 그대로.
   let newsHtml = '';
-  if (Array.isArray(us.news_chips) && us.news_chips.length > 0) {
+  let _usChipSrc = (usValid && Array.isArray(us.news_chips)) ? us.news_chips.slice() : [];
+  if (usValid) {
+    const _wireUs = _splitWireNews(ctx && ctx.wireNews).us;
+    if (_wireUs.length > 0) {
+      const _seenUrl = new Set(_usChipSrc.map(c => c && c.url).filter(Boolean));
+      for (const w of _wireUs) {
+        if (_seenUrl.has(w.url)) continue;
+        _seenUrl.add(w.url);
+        _usChipSrc.push(w);
+      }
+    }
+  }
+  if (_usChipSrc.length > 0) {
     // R43 — 의미 dedup 양 변형 공통 전제 (국내 칩과 동일 _dedupSimilarMacro, 미장 포함).
-    const _dedupedUsChips = (typeof _dedupSimilarMacro === 'function') ? _dedupSimilarMacro(us.news_chips) : us.news_chips;
+    const _dedupedUsChips = (typeof _dedupSimilarMacro === 'function') ? _dedupSimilarMacro(_usChipSrc) : _usChipSrc;
     const chipItems = _dedupedUsChips.map(c => {
       const safeUrl = (typeof c.url === 'string' && /^https?:\/\//i.test(c.url)) ? c.url : '';
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
@@ -430,30 +678,49 @@ function _buildNightlyUsHtml(us, viewDate) {
   //   #cal-content 내부에서 이 섹션(높이 ~1176px)이 오늘의 뉴스/픽 위에 렌더돼 픽을 4스크롤 아래로 밀어내던
   //   문제(실측 픽 y=2134→접기 시 ~900) 해소. 동일 토글 패턴 + 미니요약 "▸ 나스닥 ±N%"(첫 지수 기준).
   //   localStorage 'pm320SectionExpand' 공유(키 'nightly-us'). aria/Enter/Space 위임은 _wireSectionCollapse.
-  let _nuSummary = '야간 미국증시';
+  // feat/market-context ① — 접힘 헤더 미니요약: "코스피 +0.4% · 코스닥 −1.2% · 나스닥 +0.8%" 3개 상한.
+  //   글로벌 지표(나스닥 선물·원/달러·WTI) 진입 금지 — 코스피·코스닥 + 미장 대표지수 1종만.
+  let _nuSummary = '시장 지수';
   try {
-    const _lead = us.indices.find(ix => /nasdaq|나스닥/i.test(ix && ix.name || '')) || us.indices[0];
-    if (_lead && typeof _lead.change_pct === 'number') {
-      const _sign = _lead.change_pct > 0 ? '+' : (_lead.change_pct < 0 ? '−' : '');
-      const _nm = escapeHtml(_lead.name || '나스닥');
-      _nuSummary = _nm + ' ' + _sign + Math.abs(_lead.change_pct).toFixed(2) + '%';
+    const _parts = [];
+    const _fmtSum = (nm, pct) => {
+      const _sign = pct > 0 ? '+' : (pct < 0 ? '−' : '');
+      return escapeHtml(nm) + ' ' + _sign + Math.abs(pct).toFixed(1) + '%';
+    };
+    if (ctx && ctx.krIndices && Array.isArray(ctx.krIndices.list)) {
+      for (const e of ctx.krIndices.list) {
+        // 카드와 동일 시점 정직 필터 (표시 날짜 ≠ trade_date → 요약에서도 제외)
+        if (typeof viewDate === 'string' && viewDate && e.trade_date !== viewDate) continue;
+        if (typeof e.change_pct === 'number' && isFinite(e.change_pct)) _parts.push(_fmtSum(e.name, e.change_pct));
+      }
     }
+    if (usValid) {
+      const _lead = us.indices.find(ix => /nasdaq|나스닥/i.test(ix && ix.name || '')) || us.indices[0];
+      // 미니요약은 한국어 표기 통일 (조니 spec verbatim "나스닥 +0.8%") — NASDAQ 데이터명만 표준 한역.
+      const _leadNm = (_lead && /nasdaq/i.test(_lead.name || '')) ? '나스닥' : ((_lead && _lead.name) || '나스닥');
+      if (_lead && typeof _lead.change_pct === 'number') _parts.push(_fmtSum(_leadNm, _lead.change_pct));
+    }
+    if (_parts.length > 0) _nuSummary = _parts.slice(0, 3).join(' · ');
   } catch (_) { /* graceful */ }
   const _nuHeaderHtml =
     '<div class="nightly-us-head pm320-section-header" role="button" tabindex="0"'
     + ' data-collapse-section="nightly-us" aria-expanded="false" aria-controls="sec-body-nightly-us"'
-    + ' aria-label="야간 미국증시 요약 섹션 펼치기/접기">'
-    + '<div class="pm320-section-headline"><div class="nightly-us-title">야간 미국증시</div></div>'
+    + ' aria-label="시장 지수 섹션 펼치기/접기">'
+    + '<div class="pm320-section-headline"><div class="nightly-us-title">시장 지수</div></div>'
     + '<span class="pm320-section-summary" data-collapse-summary="1">' + _nuSummary + '</span>'
     + '<span class="pm320-section-chevron" aria-hidden="true">▾</span>'
     + '</div>';
   // data-fut-view = 초기 가시성(CSS). data-fut-auto = 자동 기본값(localStorage 없을 때 fallback, init script 사용).
-  return `<section class="nightly-us-summary pm320-collapsible" id="nightly-us" aria-label="야간 미국증시 요약" data-fut-view="${autoView}" data-fut-auto="${autoView}" data-has-fut="${_hasFutures ? '1' : '0'}">`
+  // 펼침 본문 순서 (조니 확정 spec ①·②): KR 2카드 → 장중 글로벌 지표 → 기존 US 블록(뉴스·토글·카드·고지).
+  //   섹션 id/접힘 키 'nightly-us' 보존 (localStorage 펼침 기억·기존 테스트·_wireSectionCollapse 무회귀).
+  return `<section class="nightly-us-summary pm320-collapsible" id="nightly-us" aria-label="시장 지수" data-fut-view="${autoView}" data-fut-auto="${autoView}" data-has-fut="${_hasFutures ? '1' : '0'}">`
     + _nuHeaderHtml
     + `<div class="section-collapse-body" id="sec-body-nightly-us">`
+    + krCardsHtml
+    + statsHtml
     + newsHtml
     + toggleHtml
-    + `<div class="nightly-us-cards">${groupsHtml}</div>`
+    + (groupsHtml ? `<div class="nightly-us-cards">${groupsHtml}</div>` : '')
     + disclaimerHtml
     + `</div>`
     + `</section>`;
@@ -911,7 +1178,7 @@ function _startPickRevealPoll() {
 
 // PRE_MARKET (장 시작 전, 09:00 이전 + 오늘 view) 빈 상태 — 당일 표출 데이터가 아직 없는 정상 상태.
 // 2026-05-27 대표 발화로 장중 stale 차단(staleInfo) 경로 제거 → PRE_MARKET 단일 모드만 남김.
-function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
+function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs, marketCtx) {
   _stopPreMarketTimer();
   const prevLabel = prevDate ? formatKoDate(prevDate) : '';
   const inner = container || document.getElementById('cal-content');
@@ -926,7 +1193,7 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs) {
   //   → renderCalExpandContent L1833 미장 합류부 도달 못 함 → 미장 통째 누락(design DOM probe usSection:false).
   //   fix: _buildNightlyUsHtml(국내와 동일 SSOT 함수)을 빈상태 안내 아래 삽입. nightlyUs 부재/null
   //   시 빈 문자열 반환(graceful 생략 — 빈 카드 금지, FLR-AGT-002). 국내 빈상태 안내는 그대로 유지.
-  const _usHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(nightlyUs, date) : '';
+  const _usHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(nightlyUs, date, marketCtx) : '';
   // PM320-D6 R22 (오전 동선, "추천 보러 왔는데 추천이 숨어 있다") — 종전 "어제의 픽" 슬롯은
   //   .cal-pre-market-empty 안(미장 섹션 _usHtml 아래)이라 본문 한참 아래로 밀려(top≈1246) 첫 화면에서
   //   안 보임. 슬롯을 cal-content-head 직하·미장 섹션 위로 끌어올려 "토글 없이 기본 상단 노출"(P0).
@@ -1595,7 +1862,7 @@ function renderCalExpandContent(date, data) {
       }
       const inner = document.getElementById('cal-content');
       // P0 (Q-20260609) — data.nightlyUs 전달: 국내 빈상태에서도 미국증시 섹션 독립 렌더.
-      renderPreMarketEmpty(inner, date, prev, null, data && data.nightlyUs);
+      renderPreMarketEmpty(inner, date, prev, null, data && data.nightlyUs, data);
       return;
     } else {
       // 다른 시점 진입 시 PRE_MARKET 타이머 정리
@@ -1680,7 +1947,8 @@ function renderCalExpandContent(date, data) {
     }
     // 휴장일이라도 매크로 이벤트가 있으면 표시
     // R27 P1⑥ — 의미 동일 사실 중복 칩 표시단 dedup (본 렌더 path 양끝 동시, FLR-20260428-TEC-001 동형 예방).
-    const closedMacro = _dedupSimilarMacro((data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)).slice(0, _NEWS_MAX_CHIPS);
+    // feat/market-context ⑤ — wire 국내 기관 칩 합류 (장중 path 와 동형 — FLR-20260428-TEC-001 양 끝 적용).
+    const closedMacro = _dedupSimilarMacro(_mergeWireKrMacro(data.macroEvents || [], data.wireNews).filter(m => m.summary && m.summary.length >= 10)).slice(0, _NEWS_MAX_CHIPS);
     // R44 #3 — 출처 anchor화 공용 빌더 (URL 보유 항목만 링크, 가짜 링크 0).
     const closedMacroChips = closedMacro.map(_buildKrMacroChip);
     // R43/R44 #1 — 뉴스 확대 공통 컴포넌트 (5건+더보기, 미장·국내 장중 path 와 단일 SSOT).
@@ -1694,7 +1962,7 @@ function renderCalExpandContent(date, data) {
     //   fix: PRE_MARKET path(L388/L412)와 동형 — _buildNightlyUsHtml(국내와 동일 SSOT 함수) 삽입 +
     //   _wireUsFutToggle() 동반(어제 wiring 누락 회귀 교훈 FLR-20260609-TEC-001). nightlyUs 부재/null 시
     //   빈 문자열 graceful 생략(빈 카드 금지, FLR-AGT-002). 본 path 는 closed/past/today-empty 모두 커버.
-    const _emptyUsHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(data && data.nightlyUs, date) : '';
+    const _emptyUsHtml = (typeof _buildNightlyUsHtml === 'function') ? _buildNightlyUsHtml(data && data.nightlyUs, date, data) : '';
     inner.innerHTML = `
       ${_emptyVerBanner}
       <div class="cal-content-head" role="button" tabindex="0" aria-label="달력으로 이동" data-scroll-to-cal="1">
@@ -2297,8 +2565,9 @@ function renderCalExpandContent(date, data) {
 
   // (1) 매크로 이벤트 (내러티브 폴백에도 사용)
   // R27 P1⑥ (조니 2심, 2026-06-11) — 의미 동일 사실 중복 칩 표시단 dedup (데이터 수정 0).
+  // feat/market-context ⑤ — wire 국내 기관(연합·금융위) 칩 합류 (URL dedup·기존 우선·상한 기존 구조).
   const macroEvents = _dedupSimilarMacro(
-    (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)
+    _mergeWireKrMacro(data.macroEvents || [], data.wireNews).filter(m => m.summary && m.summary.length >= 10)
   ).slice(0, _NEWS_MAX_CHIPS);
   // R44 #3 — 출처 anchor화 공용 빌더 (URL 보유 항목만 링크, 가짜 링크 0).
   const macroChips = macroEvents.map(_buildKrMacroChip);
@@ -2323,6 +2592,11 @@ function renderCalExpandContent(date, data) {
     }).join('');
   };
 
+  // feat/market-context ③·④ — 표시 날짜의 NXT roster 스냅샷 (null = 그날 마커·시총 전면 suppress).
+  //   (?) 글로서리는 첫 등장 1회만 (NXT 마커·시총 각각 독립) — PM320-D6 "첫 등장" 원칙 정합.
+  const _nxtSnap = _resolveNxtSnapshot(data && data.nxtRoster, date);
+  let _nxtTipPlaced = false;
+  let _mcapTipPlaced = false;
   const renderTodayCard = (it) => {
     const pct = it.pct;
     const dir = (pct ?? 0) >= 0 ? 'up' : 'down';           // 등락률 텍스트 색상용 (전일 대비)
@@ -2903,10 +3177,15 @@ function renderCalExpandContent(date, data) {
       // 메타 줄 (등락률 | 거래대금) — 좌측 정렬·파이프 구분·거래대금 골드 (대표 정정 v2.2)
       // PM320-D6 P1 — 용어 (?) 는 첫 카드(#1)에만 부착 (반복 (?) 노이즈 회피, "첫 등장" 원칙).
       //   양봉/음봉(candle)·거래대금(trade-amount) 풀이를 메타 줄에 그룹화.
+      // feat/market-context ③·④ — NXT ghost 마커(namecell 첫 자식) + 시총 3번째 span (어제픽 카드 제외).
+      const _nxtMkFull = _nxtMarkerHtml(it.code, _nxtSnap, !_nxtTipPlaced);
+      if (_nxtMkFull) _nxtTipPlaced = true;
+      const _mcapHtmlFull = _mcapMetaHtml(it.code, it.price, _nxtSnap, !_mcapTipPlaced);
+      if (_mcapHtmlFull) _mcapTipPlaced = true;
       const metaRow = `<div class="cal-feature-meta">
         <span class="cal-feature-pct ${dir}">${pctText}</span>${it.rank === 1 ? _termTip('candle') : ''}
         <span class="cal-meta-sep">|</span>
-        <span class="cal-trade-amount">${amountText}${it.rank === 1 ? _termTip('trade-amount') : ''}</span>
+        <span class="cal-trade-amount">${amountText}${it.rank === 1 ? _termTip('trade-amount') : ''}</span>${_mcapHtmlFull}
       </div>`;
       const _idAttr_full = it.code ? ` id="stock-${escapeHtml(it.code)}"` : '';
       // Q-20260519-CYCLE19-009 + cycle20 P1 (2026-05-20) — LU(상한가) 좌측 accent bar 시각 구분.
@@ -2952,7 +3231,7 @@ function renderCalExpandContent(date, data) {
             </div>
             <div class="cal-feature-head-right">
               <div class="cal-feature-namecell">
-                <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+                ${_nxtMkFull}<span class="cal-feature-name">${escapeHtml(it.name)}</span>
               </div>
               ${metaRow}
               ${staleMetaHtml}
@@ -2993,10 +3272,15 @@ function renderCalExpandContent(date, data) {
     // range bar: 데이터 부재 → 생략 (대표 지시: 빈 공간 두지 말 것)
     // 메타 줄 (등락률 | 거래대금)
     // PM320-D6 P1 — 용어 (?) 는 첫 카드(#1)에만 (no-interp 분기 정합, full 카드와 동일).
+    // feat/market-context ③·④ — NXT 마커 + 시총 (full 분기와 동형 — FLR-20260428-TEC-001 양 끝 적용).
+    const _nxtMkNi = _nxtMarkerHtml(it.code, _nxtSnap, !_nxtTipPlaced);
+    if (_nxtMkNi) _nxtTipPlaced = true;
+    const _mcapHtmlNi = _mcapMetaHtml(it.code, it.price, _nxtSnap, !_mcapTipPlaced);
+    if (_mcapHtmlNi) _mcapTipPlaced = true;
     const metaRow = `<div class="cal-feature-meta">
       <span class="cal-feature-pct ${dir}">${pctText}</span>${it.rank === 1 ? _termTip('candle') : ''}
       <span class="cal-meta-sep">|</span>
-      <span class="cal-trade-amount">${amountText}${it.rank === 1 ? _termTip('trade-amount') : ''}</span>
+      <span class="cal-trade-amount">${amountText}${it.rank === 1 ? _termTip('trade-amount') : ''}</span>${_mcapHtmlNi}
     </div>`;
     // 본문: 뉴스 부재 placeholder — 기존 .cal-feature-news-empty 스타일 재사용.
     // PM320-D6 P1 (손님 판정 — "빈 깡통" 인상) — "관련 뉴스 없음"(9연속 동일) → 톤 개선.
@@ -3022,7 +3306,7 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="cal-feature-head-right">
             <div class="cal-feature-namecell">
-              <span class="cal-feature-name">${escapeHtml(it.name)}</span>
+              ${_nxtMkNi}<span class="cal-feature-name">${escapeHtml(it.name)}</span>
               ${compactBadge}
               ${compactBullishBadge}
             </div>
@@ -3040,7 +3324,7 @@ function renderCalExpandContent(date, data) {
   // Q-20260605-103 Phase 3 — 야간 미국증시 요약 섹션 (날짜 헤드 ↔ "오늘의 뉴스요약" 사이).
   //   DSN §3.6.9. data.nightlyUs 부재/null 시 빈 문자열 → 섹션 전체 미렌더 (FLR-AGT-002).
   //   single-card mode 에서도 미표시 (외부 임베딩 단독 카드 = 미국증시 무관).
-  const _nightlyUsHtml = (!_isSingleCardMode) ? _buildNightlyUsHtml(data && data.nightlyUs, date) : '';
+  const _nightlyUsHtml = (!_isSingleCardMode) ? _buildNightlyUsHtml(data && data.nightlyUs, date, data) : '';
 
   // Phase 2c-1 (2026-05-23) — single-card mode 본 본 section title / 뉴스요약 / macro / ranking 본 본 hide.
   // 단독 카드 본 본 본 본 본 본 sparkline + chart-tv + bullish lines + status_badges 전체 본 본 본 본 본 본.
