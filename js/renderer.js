@@ -69,14 +69,14 @@ function _dailybarsClose(interp) {
   return null;
 }
 
-// PM320-D6 P1 (손님 판정 — 용어 풀이 0) — 주식 초보(손님) 대상 용어 1줄 풀이.
+// PM320 용어 풀이 (R43 P1⑧ 전략 은닉 — 화면 노출 설명은 검증 가능한 일반 정의만).
 //   라벨 옆 (?) 버튼을 탭하면 팝오버로 풀이 표시 (모바일 터치 동작 = 전역 위임 핸들러 _wireTermTips).
-//   거짓 금지(FLR-AGT-002) — 사실 기반 간결 정의만. 추정·과장 0.
+//   거짓 금지(FLR-AGT-002) — 사실 기반 간결 정의만. 내부 산출 임계값은 노출하지 않는다.
 const _PM320_GLOSSARY = {
   'trade-amount': { t: '거래대금', d: '하루 동안 그 종목이 사고팔린 금액의 합계. 클수록 사람들의 관심·돈이 많이 몰렸다는 뜻입니다.' },
   candle: { t: '양봉 / 음봉', d: '하루 캔들 색. 시작가보다 끝값이 오르면 빨강(양봉), 내리면 파랑(음봉)입니다.' },
-  watering: { t: '물타기', d: '산 종목이 떨어졌을 때 더 사서 평균 매입가를 낮추는 것. PM320은 진입가에서 약 -6.4%일 때를 기준점으로 봅니다.' },
-  'take-profit': { t: '익절', d: '이익을 본 상태에서 파는 것. PM320은 진입가에서 약 +3.2%를 목표로 잡습니다.' },
+  watering: { t: '물타기', d: '산 종목이 떨어졌을 때 더 사서 평균 매입가를 낮추는 것입니다.' },
+  'take-profit': { t: '익절', d: '이익을 본 상태에서 파는 것입니다.' },
   pending: { t: '보류', d: '그날의 조건을 만족하는 종목이 없어 추천을 내지 않는 것. 무리한 추천 대신 쉬어가는 날입니다.' },
 };
 // (?) 마커 — term 키에 해당하는 풀이가 있을 때만 생성. aria-label 로 스크린리더 정합.
@@ -361,7 +361,9 @@ function _buildNightlyUsHtml(us, viewDate) {
   //   국내 실제 칩 = .cal-macro-strip > .cal-macro-chip. 본 클래스 그대로 재사용(스타일 복제 금지). a 래핑 + 출처 약어.
   let newsHtml = '';
   if (Array.isArray(us.news_chips) && us.news_chips.length > 0) {
-    const chipItems = us.news_chips.map(c => {
+    // R43 — 의미 dedup 양 변형 공통 전제 (국내 칩과 동일 _dedupSimilarMacro, 미장 포함).
+    const _dedupedUsChips = (typeof _dedupSimilarMacro === 'function') ? _dedupSimilarMacro(us.news_chips) : us.news_chips;
+    const chipItems = _dedupedUsChips.map(c => {
       const safeUrl = (typeof c.url === 'string' && /^https?:\/\//i.test(c.url)) ? c.url : '';
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
       const summary = escapeHtml(sanitize(c.summary || ''));
@@ -370,14 +372,8 @@ function _buildNightlyUsHtml(us, viewDate) {
         + `${summary}<span class="nightly-us-news-source">${source}</span></a>`;
     }).filter(Boolean);
     if (chipItems.length > 0) {
-      const visibleChips = chipItems.slice(0, 5).join('');
-      const extraChips = chipItems.slice(5).join('');
-      const moreHtml = extraChips
-        ? `<details class="cal-news-more"><summary>뉴스 더보기 ${chipItems.length - 5}개</summary><div class="cal-macro-strip cal-news-more-strip">${extraChips}</div></details>`
-        : '';
-      newsHtml = `<div class="cal-section-title">미국발 뉴스 요약</div>`
-        + `<div class="cal-macro-strip">${visibleChips}</div>`
-        + moreHtml;
+      // R43 — 뉴스 확대 공통 컴포넌트 (변형 A 5건+더보기 / 변형 B ?news=slide 슬라이드).
+      newsHtml = `<div class="cal-section-title">미국발 뉴스 요약</div>` + _buildNewsExpand(chipItems);
     }
   }
 
@@ -1312,6 +1308,90 @@ function _dedupSimilarMacro(events) {
   });
 }
 
+// R43 (대표 지시, 2026-06-12) — 매크로 뉴스 확대 공통 컴포넌트 (미장 + 국내 장중·폐장 3 path 단일 SSOT,
+//   FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
+//   변형 A(디폴트): 첫 5건 + "뉴스 더보기" 버튼 — 탭당 +5건, 상한 2회(최대 15건), 버튼에 잔여 N 명시.
+//   변형 B(?news=slide): 5건 단위 슬라이드 페이지 — "p/N" 표기 + 좌우 탭 버튼 (R44 패널 실측 판정용).
+//   의미 dedup(_dedupSimilarMacro)은 양 변형 공통 전제 — 칩 생성 전 호출측+본 진입 직전 적용.
+//   chips 는 escape 완료된 HTML 문자열 배열 (호출측 escapeHtml/sanitize 책임 유지, 본 함수 가공 0).
+const _NEWS_PAGE_SIZE = 5;
+const _NEWS_MAX_CHIPS = 15; // 변형 A 상한 2회 = 5 + 5 + 5
+function _newsExpandVariant() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    return p.get('news') === 'slide' ? 'slide' : 'more';
+  } catch (_) { return 'more'; }
+}
+function _buildNewsExpand(chips) {
+  if (!Array.isArray(chips) || chips.length === 0) return '';
+  const capped = chips.slice(0, _NEWS_MAX_CHIPS);
+  if (_newsExpandVariant() === 'slide') {
+    // 변형 B — 페이지 단위 strip. 첫 페이지만 노출, 나머지 hidden. 페이지 1개면 nav 미렌더.
+    const pages = [];
+    for (let i = 0; i < capped.length; i += _NEWS_PAGE_SIZE) pages.push(capped.slice(i, i + _NEWS_PAGE_SIZE));
+    const pagesHtml = pages.map((pg, i) =>
+      `<div class="cal-macro-strip cal-news-slide-page" data-news-page="${i}"${i > 0 ? ' hidden' : ''}>${pg.join('')}</div>`
+    ).join('');
+    const navHtml = pages.length > 1
+      ? `<div class="cal-news-slide-nav">`
+        + `<button type="button" class="cal-news-slide-btn" data-news-slide-step="-1" aria-label="이전 뉴스 페이지" disabled>‹</button>`
+        + `<span class="cal-news-slide-ind" data-news-slide-ind aria-live="polite">1/${pages.length}</span>`
+        + `<button type="button" class="cal-news-slide-btn" data-news-slide-step="1" aria-label="다음 뉴스 페이지">›</button>`
+        + `</div>`
+      : '';
+    return `<div class="cal-news-slide" data-news-slide data-page="0" data-pages="${pages.length}">${pagesHtml}${navHtml}</div>`;
+  }
+  // 변형 A — 5건 + 더보기 누적 (상한 2회). 잔여 0이면 버튼 미렌더.
+  const visible = capped.slice(0, _NEWS_PAGE_SIZE).join('');
+  const steps = [];
+  for (let i = _NEWS_PAGE_SIZE; i < capped.length; i += _NEWS_PAGE_SIZE) {
+    steps.push(`<div class="cal-macro-strip cal-news-expand-step" hidden>${capped.slice(i, i + _NEWS_PAGE_SIZE).join('')}</div>`);
+  }
+  const moreBtn = steps.length
+    ? `<button type="button" class="cal-news-more-btn" data-news-more>뉴스 더보기 ${capped.length - _NEWS_PAGE_SIZE}개</button>`
+    : '';
+  return `<div class="cal-news-expand" data-news-expand>`
+    + `<div class="cal-macro-strip">${visible}</div>${steps.join('')}${moreBtn}</div>`;
+}
+// 전역 위임 핸들러 1회 등록 (변형 A 더보기 + 변형 B 슬라이드 nav — _wireTermTips 동형 패턴).
+function _wireNewsExpand() {
+  if (window._newsExpandInit) return;
+  window._newsExpandInit = true;
+  document.addEventListener('click', (e) => {
+    const moreBtn = e.target.closest('[data-news-more]');
+    if (moreBtn) {
+      const root = moreBtn.closest('[data-news-expand]');
+      if (!root) return;
+      const next = root.querySelector('.cal-news-expand-step[hidden]');
+      if (next) next.hidden = false;
+      const remaining = Array.from(root.querySelectorAll('.cal-news-expand-step[hidden]'))
+        .reduce((n, el) => n + el.querySelectorAll('.cal-macro-chip').length, 0);
+      if (remaining > 0) moreBtn.textContent = `뉴스 더보기 ${remaining}개`;
+      else moreBtn.remove();
+      return;
+    }
+    const slideBtn = e.target.closest('[data-news-slide-step]');
+    if (slideBtn) {
+      const root = slideBtn.closest('[data-news-slide]');
+      if (!root) return;
+      const pages = parseInt(root.dataset.pages, 10) || 1;
+      const cur = parseInt(root.dataset.page, 10) || 0;
+      const nextIdx = Math.min(pages - 1, Math.max(0, cur + (parseInt(slideBtn.dataset.newsSlideStep, 10) || 0)));
+      if (nextIdx === cur) return;
+      root.dataset.page = String(nextIdx);
+      root.querySelectorAll('.cal-news-slide-page').forEach((pg) => {
+        pg.hidden = pg.dataset.newsPage !== String(nextIdx);
+      });
+      const ind = root.querySelector('[data-news-slide-ind]');
+      if (ind) ind.textContent = `${nextIdx + 1}/${pages}`;
+      const prev = root.querySelector('[data-news-slide-step="-1"]');
+      const nxt = root.querySelector('[data-news-slide-step="1"]');
+      if (prev) prev.disabled = nextIdx === 0;
+      if (nxt) nxt.disabled = nextIdx === pages - 1;
+    }
+  });
+}
+
 // R27 P1⑦ (조니 2심, 2026-06-11) — 카드 본문 "분석가 화법" 표시단 sanitize.
 //   LLM 생성 본문에 섞이는 자료 메타 언급("제공된 유일 자료는…", "해당 기사는…홍보뿐이다" 등)은
 //   손님에게 무의미한 내부 화법 → 해당 문장만 표시단에서 제거 (원본 데이터 수정 0,
@@ -1434,13 +1514,10 @@ function renderCalExpandContent(date, data) {
     }
     // 휴장일이라도 매크로 이벤트가 있으면 표시
     // R27 P1⑥ — 의미 동일 사실 중복 칩 표시단 dedup (본 렌더 path 양끝 동시, FLR-20260428-TEC-001 동형 예방).
-    const closedMacro = _dedupSimilarMacro((data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)).slice(0, 10);
+    const closedMacro = _dedupSimilarMacro((data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)).slice(0, _NEWS_MAX_CHIPS);
     const closedMacroChips = closedMacro.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`);
-    const closedMacroExtra = closedMacroChips.slice(5).join('');
-    const closedMacroHtml = closedMacroChips.length > 0
-      ? `<div class="cal-macro-strip">${closedMacroChips.slice(0, 5).join('')}</div>`
-        + (closedMacroExtra ? `<details class="cal-news-more"><summary>뉴스 더보기 ${closedMacroChips.length - 5}개</summary><div class="cal-macro-strip cal-news-more-strip">${closedMacroExtra}</div></details>` : '')
-      : '';
+    // R43 — 뉴스 확대 공통 컴포넌트 (변형 A/B, 미장·국내 장중 path 와 단일 SSOT).
+    const closedMacroHtml = _buildNewsExpand(closedMacroChips);
     const _emptyVerBanner = _buildRulesVersionBanner(data && data.rules_version);
     // P0 (Q-20260609 2회차) — 국내 빈상태(휴장 / "데이터 없음" / "장 시작 직후 수집 중" / "수집 지연")
     //   에서도 미국증시 섹션은 국내 종목 상태와 완전 독립으로 렌더한다. 어제 P0(15dc4b465)는 PRE_MARKET
@@ -1706,12 +1783,14 @@ function renderCalExpandContent(date, data) {
       ? Math.round(((_p0 + 2 * _p0 * WATERING_RATIO) / 3) * TAKE_PROFIT_RATIO)
       : pk.take_profit_after_watering_price;
     const entryPrice = _fmtKRW(_p0);
-    // 표기 "약 X원" → "X원 부근" (대표 02:10, 카톡 f107de3 표기 통일). 22:29 ratio % 표기 유지.
-    const wateringPrice = _watering != null ? `${_fmtKRW(_watering)} 부근 (-6.4%)` : '—';
+    // 표기 "약 X원" → "X원 부근" (대표 02:10, 카톡 f107de3 표기 통일).
+    //   R43 P1⑧ (조니 2심 확정) — 전략 은닉: 화면 표기에서 기준 비율 % 제거 ("부근"만).
+    //   재계산 가드·SSOT 우선순위는 Q-20260606-111 라이브 원형 그대로 (P0-2, 표기만 변경).
+    const wateringPrice = _watering != null ? `${_fmtKRW(_watering)} 부근` : '—';
     const wateringWeight = pk.watering_weight || '첫 매수의 2배';
-    const tpPrice = _tp != null ? `${_fmtKRW(_tp)} 부근 (+3.2%)` : '—';
+    const tpPrice = _tp != null ? `${_fmtKRW(_tp)} 부근` : '—';
     const tpAfterPrice = _tpAfter != null
-      ? `${_fmtKRW(_tpAfter)} 부근 (+3.2%)`
+      ? `${_fmtKRW(_tpAfter)} 부근`
       : '—';
     const expiryDate = pk.expiry_date || '';
     // 결과 strip (state != running 시만)
@@ -1798,7 +1877,8 @@ function renderCalExpandContent(date, data) {
       <div class="pm320-rec-detail-row pm320-rec-detail-row--expiry">
         <span class="pm320-rec-label">⏰ 만기청산</span>
         <span class="pm320-rec-value">${escapeHtml(expiryDate)} 종가</span>
-      </div>${mddRow}
+      </div>
+      <div class="pm320-rec-strategy-note" role="note">기준가 산출 비율은 전략 보호를 위해 공개하지 않습니다</div>${mddRow}
       ${resultStrip}`;
   };
   // PICK 배지 (DSN-001 §2 — 헤더 .cal-feature-badges 좌측 첫 자리)
@@ -2064,13 +2144,10 @@ function renderCalExpandContent(date, data) {
   // R27 P1⑥ (조니 2심, 2026-06-11) — 의미 동일 사실 중복 칩 표시단 dedup (데이터 수정 0).
   const macroEvents = _dedupSimilarMacro(
     (data.macroEvents || []).filter(m => m.summary && m.summary.length >= 10)
-  ).slice(0, 10);
+  ).slice(0, _NEWS_MAX_CHIPS);
   const macroChips = macroEvents.map(m => `<span class="cal-macro-chip" title="${escapeHtml(sanitize(m.title || ''))}">${escapeHtml(sanitize(m.summary))}</span>`);
-  const macroExtra = macroChips.slice(5).join('');
-  const macroHtml = macroChips.length > 0
-    ? `<div class="cal-macro-strip">${macroChips.slice(0, 5).join('')}</div>`
-      + (macroExtra ? `<details class="cal-news-more"><summary>뉴스 더보기 ${macroChips.length - 5}개</summary><div class="cal-macro-strip cal-news-more-strip">${macroExtra}</div></details>` : '')
-    : '';
+  // R43 — 뉴스 확대 공통 컴포넌트 (변형 A/B, 미장·국내 폐장 path 와 단일 SSOT).
+  const macroHtml = _buildNewsExpand(macroChips);
 
   // 내러티브: 카페 제거로 빈 값 (하위 호환용 유지)
   const narrPillsHtml = '';
@@ -2828,13 +2905,8 @@ function renderCalExpandContent(date, data) {
     const s = data && data.pm320Summary;
     if (!s || typeof s.settled !== 'number' || s.settled <= 0 || typeof s.win_rate !== 'number') return '';
     const rate = s.win_rate.toFixed(1);
-    // 시점 라벨 (대표 20:48 지적 — 과거 날짜 화면에서 승률을 '그 날짜까지의 성적'으로 오독).
-    //   summary.json 은 선택일과 무관한 단일 '오늘 기준 누적' 스냅샷(per-date 분해 없음, 매일 15:20 갱신).
-    //   과거 날짜를 보는 중에도 동일 누적치가 노출되므로, '오늘 기준 누적'임을 라벨·보조문구로 명시한다.
-    //   per-date 시점 재계산은 전수 history 를 클라이언트에 싣는 별 작업(task #26)으로 분리.
-    const _nowW = new Date();
-    const _todayW = `${_nowW.getFullYear()}-${String(_nowW.getMonth() + 1).padStart(2, '0')}-${String(_nowW.getDate()).padStart(2, '0')}`;
-    const _isPastW = !!(date && date < _todayW);
+    // R43 P1④ — 종전 '오늘 기준 누적' asof 보조 박스(과거 날짜 분기 _isPastW) 삭제.
+    //   기준일은 eyebrow "첫 진입 ~ 마지막 청산" 단일 소스로 통합 (조니 2심 확정).
     const tp = s.take_profit, loss = s.expired_loss || 0, gain = s.expired_gain || 0;
     const lossGainHtml = (loss > 0 || gain > 0)
       ? `<span class="cal-pm320-wr-loss">손실 ${loss}건${gain > 0 ? ` · 만기이익 ${gain}건` : ''}</span>`
@@ -2844,7 +2916,21 @@ function renderCalExpandContent(date, data) {
       : (typeof s.worst_mdd_pct === 'number' ? s.worst_mdd_pct : null);
     const mddLabel = (typeof s.account_mdd_pct === 'number') ? '계좌 MDD' : '장중 최대낙폭';
     const detail = (s.backtest_detail && typeof s.backtest_detail === 'object') ? s.backtest_detail : null;
-    const rows = (detail && Array.isArray(detail.table)) ? detail.table : [];
+    const rowsRaw = (detail && Array.isArray(detail.table)) ? detail.table : [];
+    // R43 P0-1② (조니 2심 확정) — 전수표 청산 순서 정렬 (settlement_order = 백테스트 청산 이벤트 순번).
+    //   graceful fallback 의무: settlement_order 가 전 행 부재(구버전 파이프라인 cron 재생성)면
+    //   종전과 동일한 진입일 정렬로 폴백 — 화면 무파손 (FLR-AGT-002 추정 0).
+    const _hasSettleOrder = rowsRaw.some((r) => r && typeof r.settlement_order === 'number');
+    const rows = _hasSettleOrder
+      ? [...rowsRaw].sort((a, b) => {
+        const ad = String((a && (a.exit_date || a.date)) || '');
+        const bd = String((b && (b.exit_date || b.date)) || '');
+        if (ad !== bd) return ad.localeCompare(bd);
+        const ao = (a && typeof a.settlement_order === 'number') ? a.settlement_order : 1000000;
+        const bo = (b && typeof b.settlement_order === 'number') ? b.settlement_order : 1000000;
+        return ao - bo;
+      })
+      : [...rowsRaw].sort((a, b) => String((a && a.date) || '').localeCompare(String((b && b.date) || '')));
     const curve = (detail && Array.isArray(detail.equity_curve)) ? detail.equity_curve : [];
     const fmtBtPct = (v) => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}%` : '-');
     const fmtBtWon = (v) => (typeof v === 'number' ? Math.round(v).toLocaleString('ko-KR') : '-');
@@ -2864,15 +2950,24 @@ function renderCalExpandContent(date, data) {
         return `${x.toFixed(1)},${y.toFixed(1)}`;
       }).join(' ');
       const last = pts[pts.length - 1];
-      return `<div class="cal-pm320-bt-equity" aria-label="백테스트 잔고 흐름">`
+      // R43 P1⑦ (조니 2심 확정) — 잔고 차트 상·하한 2눈금 (최고/최저 잔고 라벨 + 상단 점선 보조선).
+      //   값 = 곡선 실측 min/max (추정 0). 라벨은 CSS absolute 오버레이 (svg preserveAspectRatio
+      //   none 왜곡 회피 — svg text 는 종횡비 비보존 스케일에서 글자가 찌그러짐).
+      const _scaleHtml = `<div class="cal-pm320-bt-equity-scale" aria-hidden="true">`
+        + `<span class="cal-pm320-bt-equity-scale-hi">${escapeHtml(fmtBtWon(max))}원</span>`
+        + `<span class="cal-pm320-bt-equity-scale-lo">${escapeHtml(fmtBtWon(min))}원</span></div>`;
+      return `<div class="cal-pm320-bt-equity" aria-label="백테스트 잔고 흐름 — 최저 ${escapeHtml(fmtBtWon(min))}원, 최고 ${escapeHtml(fmtBtWon(max))}원">`
         + `<div class="cal-pm320-bt-equity-meta"><span>${escapeHtml(pts[0].date || '')}</span><b>${escapeHtml(fmtBtWon(last.balance))}원</b><span>${escapeHtml(last.date || '')}</span></div>`
+        + `<div class="cal-pm320-bt-equity-plot">${_scaleHtml}`
         + `<svg class="cal-pm320-bt-equity-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">`
+        + `<line class="cal-pm320-bt-equity-grid" x1="${pad}" y1="${pad}" x2="${w - pad}" y2="${pad}" />`
         + `<line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" />`
         + `<polyline points="${points}" />`
-        + `</svg></div>`;
+        + `</svg></div></div>`;
     })();
+    // R43 P0-1② — 6열 (청산일 추가) + sticky 첫 열 (CSS). 청산일 부재(구버전 row) 시 '-' graceful.
     const tableHtml = rows.length ? `<div class="cal-pm320-bt-table-wrap" aria-label="PM320 백테스트 전수표"><table class="cal-pm320-bt-table">`
-      + `<thead><tr><th>진입일</th><th>종목</th><th>결과</th><th>손익률</th><th>잔고</th></tr></thead>`
+      + `<thead><tr><th>진입일</th><th>청산일</th><th>종목</th><th>결과</th><th>손익률</th><th>잔고</th></tr></thead>`
       + `<tbody>${rows.map((r) => {
         const ret = (typeof r.ret_pct === 'number') ? r.ret_pct : null;
         const retCls = ret === null ? '' : (ret >= 0 ? ' cal-pm320-bt-td--pos' : ' cal-pm320-bt-td--neg');
@@ -2881,12 +2976,16 @@ function renderCalExpandContent(date, data) {
           ? exitClass.replace('익절', '물타기 익절')
           : (r.watered === true ? `${exitClass} · 물타기` : exitClass);
         const rowDate = r.date || '-';
-        return `<tr><td>${escapeHtml(rowDate)}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
+        return `<tr><td>${escapeHtml(rowDate)}</td><td>${escapeHtml(r.exit_date || '-')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
       }).join('')}</tbody></table></div>` : '';
+    // R43 P2⑨ — 전수표 하단 용어 범례 (물타기·만기청산·D+N).
+    const legendHtml = rows.length
+      ? `<div class="cal-pm320-bt-legend">물타기 = 진입 후 하락 시 추가 매수로 평균 단가를 낮추는 것 · 만기청산 = 보유 기한 만료일 종가 청산 · D+N = 진입일로부터 N번째 거래일</div>`
+      : '';
     const _historyHtml = (rows.length || equityHtml)
       ? `<details class="cal-pm320-wr-fine cal-pm320-wr-history"><summary>전수표·잔고 흐름</summary>`
         + `<div class="cal-pm320-wr-fine-body cal-pm320-wr-history-body">`
-        + equityHtml + tableHtml + `</div></details>`
+        + equityHtml + tableHtml + legendHtml + `</div></details>`
       : '';
     const _winContextHtml = '';
     // R26 P0-2② (2026-06-11, stale 정직화) — '오늘'을 데이터 생성 시점(generated_at) 날짜로 치환.
@@ -2904,17 +3003,28 @@ function renderCalExpandContent(date, data) {
     const _sinceLabel = (typeof s.since === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s.since))
       ? `${parseInt(s.since.slice(5, 7), 10)}월 ${parseInt(s.since.slice(8, 10), 10)}일`
       : '4월 8일';
-    // 과거 날짜 선택 중에는 '선택일 시점 성적'이 아님을 기준일과 함께 1줄 명시 (R26 P0-2③ —
-    //   "오늘 기준 누적" 도 stale 시 모순이므로 generated_at 기준일로 표기).
-    const _asOfNoteHtml = _isPastW
-      ? `<div class="cal-pm320-wr-asof">이 성적은 선택한 날짜 시점이 아니라 <b>${escapeHtml(_asOfDateLabel)} 기준 누적</b>입니다</div>`
-      : '';
+    // R43 P1④ (조니 2심 확정) — 기준일 = "첫 진입일 ~ 마지막 청산일" (asof 보조 박스 삭제,
+    //   eyebrow 단일 소스). first_pick_date/last_settled_date 실측 (부재 시 since/generated_at fallback —
+    //   구버전 summary graceful, FLR-AGT-002 추정 0).
+    const _fmtMD = (d) => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d))
+      ? `${parseInt(d.slice(5, 7), 10)}월 ${parseInt(d.slice(8, 10), 10)}일`
+      : null;
+    const _firstEntryLabel = _fmtMD(s.first_pick_date) || _sinceLabel;
+    const _lastSettledLabel = _fmtMD(s.last_settled_date) || _asOfDateLabel;
     const _trioCells = [];
     _trioCells.push(
       `<div class="cal-pm320-wr-cell">`
       + `<span class="cal-pm320-wr-cell-k">승률</span>`
       + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--rate">${escapeHtml(rate)}%</span>`
       + `<span class="cal-pm320-wr-cell-sub">청산 ${escapeHtml(String(s.settled))}건 기준</span>`
+      + `</div>`);
+    // R43 P1⑥ (조니 2심 확정) — 손실 건수 셀을 trio 에 결합 (승률·손실·MDD 가 캡처 한 장에 함께,
+    //   손실 은닉 금지 정직성 FLR-AGT-002 — 종전엔 하단 stats 줄에만 있어 캡처 절단 시 누락).
+    _trioCells.push(
+      `<div class="cal-pm320-wr-cell">`
+      + `<span class="cal-pm320-wr-cell-k">손실</span>`
+      + `<span class="cal-pm320-wr-cell-v cal-pm320-wr-cell-v--neg">${escapeHtml(String(loss))}건</span>`
+      + (gain > 0 ? `<span class="cal-pm320-wr-cell-sub">만기이익 ${escapeHtml(String(gain))}건 별도</span>` : '')
       + `</div>`);
     if (typeof mddValue === 'number') {
       _trioCells.push(
@@ -2924,15 +3034,14 @@ function renderCalExpandContent(date, data) {
         + `</div>`);
     }
     const _trioHtml = `<div class="cal-pm320-wr-trio">${_trioCells.join('')}</div>`;
-    const _ariaWr = `${_sinceLabel}부터 ${_asOfDateLabel}까지 누적 성적 — 승률 ${rate}%`
+    const _ariaWr = `${_firstEntryLabel} 첫 진입부터 ${_lastSettledLabel} 청산까지 누적 성적 — 승률 ${rate}%, 손실 ${loss}건`
       + (typeof mddValue === 'number' ? `, ${mddLabel} ${mddValue.toFixed(1)}%` : '');
     const _fineHtml = _historyHtml;
     return `<div class="cal-pm320-winrate" role="group" aria-label="${escapeHtml(_ariaWr)}">`
       + `<div class="cal-pm320-wr-head">`
-      + `<span class="cal-pm320-wr-eyebrow">${escapeHtml(_sinceLabel)} ~ ${escapeHtml(_asOfDateLabel)} 누적 성적</span>`
+      + `<span class="cal-pm320-wr-eyebrow">${escapeHtml(_firstEntryLabel)} 첫 진입 ~ ${escapeHtml(_lastSettledLabel)} 청산 기준</span>`
       + `</div>`
       + _trioHtml
-      + _asOfNoteHtml
       + `<div class="cal-pm320-wr-stats">`
       + `<span class="cal-pm320-wr-stat">총 ${s.total_picks}픽</span>`
       + `<span class="cal-pm320-wr-sep">·</span>`
@@ -2940,6 +3049,7 @@ function renderCalExpandContent(date, data) {
       + (lossGainHtml ? `<span class="cal-pm320-wr-sep">·</span>${lossGainHtml}` : '')
       + (s.running > 0 ? `<span class="cal-pm320-wr-sep">·</span><span class="cal-pm320-wr-running">보유중 ${s.running}건</span>` : '')
       + `</div>`
+      + `<div class="cal-pm320-wr-alloc">종목당 계좌의 1/12 분할 운용 기준</div>`
       + _winContextHtml
       + _fineHtml
       + `</div>`;
@@ -3140,6 +3250,8 @@ function renderCalExpandContent(date, data) {
   _wirePickCountdown();
   // PM320-D6 P1 — 용어 (?) 팝오버 전역 위임 핸들러 (1회만 등록, 모바일 터치).
   _wireTermTips();
+  // R43 — 뉴스 확대 (변형 A 더보기 / 변형 B 슬라이드) 전역 위임 핸들러 (1회만 등록).
+  _wireNewsExpand();
 
   // 접기/펼치기 이벤트 위임 (1회만 등록)
   // REQ-046 — CSS font-size:0 + ::after content trick 폐기 → JS textContent 직접 변경.

@@ -2200,6 +2200,34 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-news-more > summary::after { content: '›'; margin-left: 4px; font-size: 13px; transform: rotate(90deg); }
 .cal-news-more[open] > summary::after { transform: rotate(-90deg); }
 .cal-news-more-strip { margin-top: 2px; }
+/* R43 — 뉴스 확대 공통 컴포넌트 (변형 A: 더보기 버튼 / 변형 B: 슬라이드 nav).
+   색·위계 = 종전 .cal-news-more summary 와 동일 토큰 (다크모드 변수 상속, 대조 0건). */
+.cal-news-expand .cal-news-expand-step { margin-top: 6px; }
+.cal-news-more-btn {
+  display: inline-flex; min-height: 32px; align-items: center;
+  margin: -4px 0 14px; padding: 0 4px;
+  border: 0; background: none; cursor: pointer;
+  color: var(--am); font-size: 12px; font-weight: 800;
+  -webkit-tap-highlight-color: transparent;
+}
+.cal-news-more-btn::after { content: '›'; margin-left: 4px; font-size: 13px; transform: rotate(90deg); }
+.cal-news-slide-nav {
+  display: flex; align-items: center; gap: 10px;
+  margin: -4px 0 14px;
+}
+.cal-news-slide-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; /* 터치 타겟 ≥44px */
+  border: 1px solid var(--bd); border-radius: 8px;
+  background: var(--bg2); color: var(--am);
+  font-size: 17px; font-weight: 800; line-height: 1;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.cal-news-slide-btn:disabled { opacity: 0.35; cursor: default; }
+.cal-news-slide-ind {
+  font-size: 12px; font-weight: 800; color: var(--tx2);
+  font-variant-numeric: tabular-nums;
+}
 
 /* R25 P1⑧ — 히어로 "하루 단 한 종목" vs 후보 N장 첫 화면 충돌 해명 1줄 (카드 리스트 직상). */
 .cal-trade-list-note {
@@ -2958,6 +2986,15 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-pm320-wr-stat { color: var(--tx2); }
 .cal-pm320-wr-win { color: var(--pos); }
 .cal-pm320-wr-loss { color: var(--neg); }
+/* R43 P1⑤ — 종목당 계좌 1/12 분할 운용 고지 1줄 (성적 해석 전제 조건 — 손실 체감 왜곡 방지). */
+.cal-pm320-wr-alloc {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--tx2);
+  word-break: keep-all;
+}
 .cal-pm320-wr-running { color: var(--dm-hi); } /* R28 P1② */
 /* 승률 카드 보조 맥락 1줄. */
 .cal-pm320-wr-context {
@@ -3137,6 +3174,29 @@ body.single-card-mode { background: var(--bg) !important; }
   height: 86px;
   margin-top: 4px;
 }
+/* R43 P1⑦ — 잔고 차트 상·하한 2눈금. 라벨 = CSS absolute 오버레이 (svg 비보존 스케일 왜곡 회피). */
+.cal-pm320-bt-equity-plot { position: relative; }
+.cal-pm320-bt-equity-scale {
+  position: absolute;
+  inset: 4px 2px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 1;
+}
+.cal-pm320-bt-equity-scale span {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tx2);
+  background: color-mix(in srgb, var(--bg2) 78%, transparent);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-variant-numeric: tabular-nums;
+}
+.cal-pm320-bt-equity-grid { stroke-dasharray: 3 4; opacity: 0.7; }
 .cal-pm320-bt-equity-svg line {
   stroke: var(--bd);
   stroke-width: 1;
@@ -3157,7 +3217,7 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-bt-table {
   width: 100%;
-  min-width: 560px;
+  min-width: 660px; /* R43 P0-1② — 청산일 6열 추가분 */
   border-collapse: collapse;
   font-size: 12px;
 }
@@ -3177,6 +3237,22 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--tx2);
   font-weight: 800;
 }
+/* R43 P0-1② — 첫 열(진입일) sticky: 가로 스크롤 중에도 행 기준일 고정 (Codex diff 채택). */
+.cal-pm320-bt-table th:first-child,
+.cal-pm320-bt-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--bg2);
+}
+.cal-pm320-bt-table th:first-child {
+  z-index: 3;
+}
+.cal-pm320-bt-table td:first-child {
+  color: var(--tx);
+  font-weight: 700;
+  box-shadow: 8px 0 10px -10px rgba(15, 23, 42, 0.45);
+}
 .cal-pm320-bt-table tbody tr:last-child td { border-bottom: 0; }
 .cal-pm320-bt-num {
   text-align: right;
@@ -3184,6 +3260,15 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-bt-td--pos { color: var(--up); font-weight: 800; }
 .cal-pm320-bt-td--neg { color: var(--down); font-weight: 800; }
+/* R43 P2⑨ — 전수표 하단 용어 범례 (물타기·만기청산·D+N). 다크모드 = 토큰 변수 상속 (대조 0건). */
+.cal-pm320-bt-legend {
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--tx2);
+  word-break: keep-all;
+}
 @media (max-width: 720px) {
   .cal-pm320-bt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -3492,6 +3577,15 @@ body.single-card-mode { background: var(--bg) !important; }
   line-height: 1.5;
   color: var(--wr-basis-tx, #5E6776);
 }
+/* R43 P1⑧ — 전략 은닉 사유 고지 1줄 (매매 상세 하단, fill-note 동일 위계). */
+.pm320-rec-strategy-note {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--wr-basis-tx, #5E6776);
+  word-break: keep-all;
+}
 
 /* §7.5 — 다크모드 폐기 (2026-06-03 22:50 KST 대표 verbatim "다크모드는 없다. 매매 버튼에 다크모드가 적용된 게 있다면 모두 제거"). 본 서비스 라이트 고정. */
 
@@ -3545,6 +3639,8 @@ body.single-card-mode { background: var(--bg) !important; }
   display: flex; flex-direction: column; gap: 5px;
   padding: 8px 0 4px 0;
 }
+/* R43 — display:flex 가 UA [hidden]{display:none} 를 덮는 것 봉쇄 (뉴스 확대 step/page 접힘 필수). */
+.cal-macro-strip[hidden] { display: none; }
 .cal-macro-chip {
   display: block;
   font-size: 12px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.5;
