@@ -3603,10 +3603,10 @@ function renderCalExpandContent(date, data) {
               <div class="cal-feature-namecell">
                 ${_nxtMkFull}<span class="cal-feature-name">${escapeHtml(it.name)}</span>
               </div>
-              ${metaRow}
-              ${staleMetaHtml}
             </div>
           </div>
+          ${metaRow}
+          ${staleMetaHtml}
           ${rangeHtml}
           ${badgesRowHtml}
           <div class="cal-feature-body">
@@ -3680,9 +3680,9 @@ function renderCalExpandContent(date, data) {
               ${compactBadge}
               ${compactBullishBadge}
             </div>
-            ${metaRow}
           </div>
         </div>
+        ${metaRow}
         <div class="cal-feature-body">
           ${emptyBodyHtml}
         </div>
