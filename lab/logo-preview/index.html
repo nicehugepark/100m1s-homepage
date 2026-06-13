@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1020" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)">
+<meta name="robots" content="noindex, nofollow">
+<title>100M1S 로고 — 움직이는 光彩 (v5b)</title>
+
+<!-- 미리 로딩: LCP 핵심 자산 (모바일 우선) -->
+<link rel="preload" as="image" href="assets/logo-v5b.webp" type="image/webp">
+
+<style>
+/* ====================================================================
+   100M1S "움직이는 光彩" 라이브 프리뷰 — v5b (하이브리드 균형, 대표 결정).
+   기법: 골드 알파 컷아웃 위에 (1) 골드 specular sweep + (2) 프리즘/이리데센트
+         크롬 하이라이트(WWDC 리퀴드 메탈)를 mix-blend로 얹고 로고 알파 마스크로
+         '금속 표면 위'에서만 쓸고 지나가게 → 우아·화려·연속 반복.
+   효과는 전부 CSS GPU 합성 (JS 의존 0). 접근성: reduce-motion → 정지.
+   📱 모바일 우선(390px): 로고가 폰 폭을 꽉 채움. WebP 자산.
+   ⚠ nav 미링크 내부 프리뷰. brand 자산만 (내부 데이터 0).
+   ==================================================================== */
+
+:root{
+  /* 다크 = 기본 (프리미엄 딥 네이비→블랙 그라디언트, 골드 크롬이 가장 산다) */
+  --bg-0:#070b16;
+  --bg-1:#0c1426;
+  --bg-2:#111d38;
+  --ink:#eef1f8;
+  --ink-dim:#8d98b4;
+  --ink-faint:#56607c;
+  --accent:#e6c168;               /* 골드 */
+  --accent-soft:#d9b25a;
+  --hairline:rgba(255,255,255,.10);
+  --panel:rgba(255,255,255,.045);
+  --panel-bd:rgba(255,255,255,.09);
+  /* 로고 발광 강도 (다크에서 강하게) */
+  --glow:0 0 38px rgba(230,193,104,.34), 0 0 88px rgba(230,193,104,.16);
+  /* sweep / iridescence 불투명도 */
+  --sweep-op:.95;
+  --prism-op:.42;
+  --bloom-op:.55;
+}
+
+:root[data-theme="light"]{
+  /* 라이트 = 따뜻한 샴페인 페이퍼. 알파 컷아웃이라 '스티커' 없음.
+     광채는 절제 (밝은 배경에선 과하면 위화감) — 가독·우아 우선. */
+  --bg-0:#efece2;
+  --bg-1:#f4f1e8;
+  --bg-2:#e7e2d4;
+  --ink:#222838;
+  --ink-dim:#5f6883;
+  --ink-faint:#8a92a6;
+  --accent:#9a7a2e;
+  --accent-soft:#a8842f;
+  --hairline:rgba(20,24,40,.10);
+  --panel:rgba(20,24,40,.035);
+  --panel-bd:rgba(20,24,40,.12);
+  --glow:0 0 26px rgba(154,122,46,.20), 0 0 60px rgba(154,122,46,.10);
+  --sweep-op:.72;
+  --prism-op:.22;     /* 라이트에선 무지개 절제 */
+  --bloom-op:.30;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Apple SD Gothic Neo",
+              "Pretendard","Segoe UI","Helvetica Neue",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(130% 100% at 50% -8%, var(--bg-2), var(--bg-1) 46%, var(--bg-0) 100%);
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(26px,7vw,40px);
+  padding:max(28px,env(safe-area-inset-top)) 18px max(36px,env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  transition:background .55s ease, color .35s ease;
+  overflow-x:hidden;
+}
+
+/* ── hero 스테이지 — 모바일에서 폭을 꽉 채움 ───────────────────── */
+.stage{
+  position:relative;
+  width:min(86vw,420px);
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
+  isolation:isolate;            /* blend 격리 → 배경으로 새지 않음 */
+}
+
+/* 0) 뒤 bloom — 로고 뒤에서 은은히 번지는 골드 후광 (느린 호흡) */
+.stage::before{
+  content:"";
+  position:absolute; inset:6%;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 46%,
+              rgba(230,193,104,.30), rgba(230,193,104,.06) 52%, transparent 72%);
+  filter:blur(14px);
+  opacity:var(--bloom-op);
+  z-index:0;
+  animation:bloom 7.5s ease-in-out infinite;
+}
+
+/* 공통 레이어 베이스.
+   ⚠ 마스크는 알파 컷아웃(logo-v5b.webp)을 그대로 사용 — 마스크는 소스의
+   '알파 채널'을 읽으므로(mask-mode:match-source 기본) 실루엣이 알파에 담긴
+   컷아웃이 정확히 클리핑된다. (그레이스케일 이미지는 알파=255 균일 → 클리핑 0) */
+.layer{
+  position:absolute; inset:0;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  -webkit-mask-image:url('assets/logo-v5b.webp');
+          mask-image:url('assets/logo-v5b.webp');
+  -webkit-mask-size:contain;     mask-size:contain;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:center;  mask-position:center;
+  pointer-events:none;
+}
+
+/* 1) base 로고 (알파 컷아웃, 골드 발광) */
+.logo{
+  position:absolute; inset:0;
+  background-image:url('assets/logo-v5b.webp');
+  background-size:contain; background-repeat:no-repeat; background-position:center;
+  z-index:1;
+  filter:drop-shadow(var(--glow));
+  /* 금속 밝기 호흡 — 살아있되 과하지 않게 */
+  animation:breathe 6.5s ease-in-out infinite;
+}
+
+/* 2) 골드 specular sweep — 좁고 부드러운 사선 띠, 연속 통과 (휴지 0) */
+.shine-gold{
+  z-index:2;
+  background:linear-gradient(112deg,
+      transparent 40%,
+      rgba(255,247,224,0) 45%,
+      rgba(255,250,236,.85) 50%,     /* 코어 specular */
+      rgba(255,247,224,0) 55%,
+      transparent 60%);
+  background-size:240% 240%;
+  mix-blend-mode:screen;             /* 빛을 더함 → 골드가 번쩍 */
+  opacity:var(--sweep-op);
+  animation:sweep 6.2s linear infinite;   /* linear + 휴지 0 = 끊김없는 연속 */
+}
+
+/* 3) 프리즘 / 이리데센트 크롬 하이라이트 — WWDC 리퀴드 메탈 무지개 반사.
+   다른 위상·다른 각도로 천천히 흘러 오일슬릭 느낌. screen 블렌드. */
+.shine-prism{
+  z-index:3;
+  background:linear-gradient(128deg,
+      transparent 30%,
+      rgba(120,170,255,.0)  38%,
+      rgba(120,190,255,.55) 44%,     /* 시안-블루 */
+      rgba(180,140,255,.50) 49%,     /* 바이올렛 */
+      rgba(255,140,200,.48) 54%,     /* 마젠타-핑크 */
+      rgba(140,255,210,.40) 59%,     /* 민트 */
+      rgba(120,170,255,.0)  66%,
+      transparent 74%);
+  background-size:300% 300%;
+  mix-blend-mode:screen;
+  opacity:var(--prism-op);
+  filter:saturate(1.2);
+  animation:prism 9.4s cubic-bezier(.45,.05,.25,1) infinite;
+}
+
+/* 4) 옅은 보조 글린트 — 살짝 다른 위상으로 깊이 (절제) */
+.shine-glint{
+  z-index:4;
+  background:linear-gradient(112deg,
+      transparent 47%, rgba(255,255,255,.34) 50%, transparent 53%);
+  background-size:320% 320%;
+  mix-blend-mode:screen;
+  opacity:.5;
+  animation:glint 8.6s ease-in-out infinite;
+}
+
+/* ── keyframes — 전부 연속 loop (긴 휴지 제거), 우아한 느린 속도 ── */
+@keyframes sweep{
+  0%   {background-position:150% -50%;}
+  100% {background-position:-50% 150%;}   /* 끝→처음 자연 wrap (휴지 0) */
+}
+@keyframes prism{
+  0%   {background-position:-40% 150%;}
+  50%  {background-position:150% -40%;}
+  100% {background-position:-40% 150%;}   /* 왕복 → 이리데센스가 계속 흐름 */
+}
+@keyframes glint{
+  0%,100%{background-position:-30% 140%;}
+  50%    {background-position:140% -30%;}
+}
+@keyframes breathe{
+  0%,100%{filter:drop-shadow(var(--glow)) brightness(1)    saturate(1);}
+  50%    {filter:drop-shadow(var(--glow)) brightness(1.05) saturate(1.04);}
+}
+@keyframes bloom{
+  0%,100%{opacity:calc(var(--bloom-op) * .8); transform:scale(.98);}
+  50%    {opacity:var(--bloom-op);            transform:scale(1.03);}
+}
+
+/* ── 접근성: 동작 줄이기 → 정지 (은은한 고정 하이라이트만) ── */
+@media (prefers-reduced-motion:reduce){
+  .logo,.stage::before{animation:none;}
+  .shine-gold{animation:none; background-position:50% 50%; opacity:.45;}
+  .shine-prism{animation:none; background-position:50% 50%; opacity:calc(var(--prism-op)*.6);}
+  .shine-glint{display:none;}
+}
+/* 수동 정지 토글 동일 처리 */
+body.motion-off .logo,
+body.motion-off .stage::before{animation:none;}
+body.motion-off .shine-gold{animation:none; background-position:50% 50%; opacity:.45;}
+body.motion-off .shine-prism{animation:none; background-position:50% 50%; opacity:calc(var(--prism-op)*.6);}
+body.motion-off .shine-glint{display:none;}
+
+/* ── 캡션 / 컨트롤 ─────────────────────────────────────────────── */
+.caption{text-align:center; max-width:min(92vw,440px);}
+.caption .eyebrow{
+  font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--ink-faint); margin:0 0 10px;
+}
+.caption h1{
+  margin:0 0 8px; font-weight:650;
+  font-size:clamp(19px,5.4vw,23px); letter-spacing:.3px;
+}
+.caption h1 .han{color:var(--accent); font-weight:750;}
+.caption p{margin:0; font-size:13.5px; line-height:1.6; color:var(--ink-dim);}
+
+.controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+button{
+  font:inherit; font-size:13px; font-weight:500;
+  color:var(--ink);
+  background:var(--panel);
+  border:1px solid var(--panel-bd);
+  border-radius:999px;
+  padding:11px 20px;            /* 모바일 터치 타깃 ≥44px 높이 확보 */
+  min-height:44px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .2s ease, border-color .2s ease, transform .08s ease;
+}
+button:hover{border-color:var(--accent);}
+button:active{transform:scale(.97);}
+button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+.note{
+  font-size:11px; line-height:1.55; color:var(--ink-faint);
+  text-align:center; max-width:min(92vw,460px); opacity:.85;
+}
+</style>
+</head>
+<body>
+
+  <div class="stage" role="img"
+       aria-label="100M1S 골드 크롬 S 로고. 금속 표면 위로 골드 광채와 무지개빛 크롬 반사가 천천히 연속으로 쓸고 지나갑니다.">
+    <div class="logo"></div>
+    <div class="layer shine-gold"></div>
+    <div class="layer shine-prism"></div>
+    <div class="layer shine-glint"></div>
+  </div>
+
+  <div class="caption">
+    <p class="eyebrow">100M1S · Brand Mark</p>
+    <h1>움직이는 <span class="han">光彩</span> — v5b</h1>
+    <p>금속 표면 위로 골드 광채와 무지개빛 크롬 반사가 끊김 없이
+       천천히 흐릅니다. 광채는 배경이 아닌 <strong>골드 표면 위에서만</strong> 살아 움직입니다.</p>
+  </div>
+
+  <div class="controls">
+    <button id="theme" type="button">라이트 / 다크</button>
+    <button id="motion" type="button">광채 정지 / 재생</button>
+  </div>
+
+  <p class="note">내부 프리뷰 · 시스템 “동작 줄이기” 설정 시 광채가 자동으로 멈춥니다.</p>
+
+<script>
+  // 컨트롤만 — 광채 효과 자체는 전부 CSS(GPU 합성). 시스템 다크/라이트 자동 반영 후 수동 오버라이드.
+  (function(){
+    var root = document.documentElement;
+    // 초기: 시스템 선호 반영
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){
+      root.setAttribute('data-theme','light');
+    }
+    document.getElementById('theme').addEventListener('click', function(){
+      root.setAttribute('data-theme',
+        root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    });
+    document.getElementById('motion').addEventListener('click', function(){
+      document.body.classList.toggle('motion-off');
+    });
+  })();
+</script>
+</body>
+</html>
