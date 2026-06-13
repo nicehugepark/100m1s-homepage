@@ -12,7 +12,7 @@
   <header class="topbar" role="banner">
     <h1>100M1S admin <span class="phase">Phase 1</span></h1>
     <div class="meta">
-      <span id="generated-at" aria-live="polite">생성 시각: -</span>
+      <span id="generated-at" aria-live="polite" title="convergence.json 빌드(데이터 생성) 시각">데이터 생성: -</span>
       <span class="warn" role="note">외부 노출 X · 인덱싱 차단</span>
     </div>
   </header>
@@ -109,7 +109,16 @@
       <div id="conv-glance" class="conv-glance" aria-label="수렴 현황 한눈에"></div>
 
       <!-- ② 품질 수렴 추이 (회차별) -->
-      <h2 class="conv-h">품질 수렴 추이 <span class="conv-h-sub">막대 = 회차별 품질점수(4축 평균·높을수록 좋음) · 결함합(P0+신규P1)은 막대 아래</span></h2>
+      <h2 class="conv-h">품질 수렴 추이 <span class="conv-h-sub">막대 높이 = 품질점수(0~10·4축 평균·높을수록 좋음) · 막대 색 = 라운드 상태 · 결함합(P0+신규P1)은 막대 아래</span></h2>
+      <!-- 범례 (N1): 막대는 높이(품질점수) + 색(라운드 상태) 이중 인코딩. 색 의미를 명시(다크모드 제1원칙: 색 + 텍스트 라벨 병기). -->
+      <ul class="conv-legend" aria-label="추이 막대 범례">
+        <li class="conv-leg-h"><span class="conv-leg-bar"><i style="height:14px"></i><i style="height:9px"></i><i style="height:5px"></i></span>높이 = 품질점수(0~10)</li>
+        <li><span class="conv-leg-sw conv-ok"></span>색 = 종결·수렴·배포</li>
+        <li><span class="conv-leg-sw conv-cand"></span>판정 중·완료</li>
+        <li><span class="conv-leg-sw conv-no"></span>미수렴</li>
+        <li><span class="conv-leg-sw conv-prog"></span>진행·구현·보류</li>
+        <li><span class="conv-leg-sw conv-bar-unknown"></span>미측정(사선)</li>
+      </ul>
       <div id="conv-trend"></div>
 
       <!-- ③ 지금 활동 (진행 중) -->

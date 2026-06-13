@@ -575,6 +575,12 @@
         `<p class="hint">convergence.json 로드 실패: ${escape(e.message)}. 'python3 scripts/admin/build_convergence.py' 로 생성하세요.</p>`;
       return;
     }
+    // N2: 헤더 시각을 수렴 데이터(convergence.json) 빌드 시각으로 갱신.
+    // 디폴트 랜딩이 수렴 탭이므로 헤더는 convergence.json 기준이 정합 (레거시 data.json 시각 오인 방지).
+    if (conv.generated_at) {
+      el("generated-at").textContent =
+        "데이터 생성: " + String(conv.generated_at).slice(0, 19).replace("T", " ");
+    }
     renderConvGlance(conv);
     renderConvTrend(conv);
     renderConvActive(conv);
@@ -595,8 +601,11 @@
         `<tr><td colspan="6">data.json 로드 실패: ${escape(e.message)}. file:// 환경에서는 CORS 제한이 있습니다. 'python3 -m http.server' 로 띄우세요.</td></tr>`;
       return;
     }
+    // 헤더 시각 = 디폴트 랜딩(수렴 탭)의 데이터 기준. 실제 값은 renderConvergence()가
+    // convergence.json generated_at 으로 덮어씀 (N2: data.json=레거시 May 4 표기 오인 방지).
+    // data.json 은 fallback (convergence.json 로드 실패 시).
     el("generated-at").textContent =
-      "생성: " + (state.data.generated_at || "").slice(0, 19).replace("T", " ");
+      "데이터 생성: " + (state.data.generated_at || "").slice(0, 19).replace("T", " ");
     el("build-version").textContent =
       "data.json schema v" + (state.data.schema_version || "?");
 
