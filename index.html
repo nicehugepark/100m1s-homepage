@@ -40,9 +40,10 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
   --tx2: #3D4351;
   --dm: #8B95A8;
   --dm2: #B0B8C9;
-  --am: #C49930;
+  --am: #8A6410;       /* 조니 R2 P1 — 라이트 골드 텍스트 WCAG AA: #C49930(CR 2.19~2.64) → #8A6410(H41° S79% 동일 골드, 더 깊게). 7요소 전건 AA. 다크 --am(L540)은 독립 토큰이라 무손상 */
   --am2: #E8C063;
-  --am3: #FBE9B5;
+  --am3: #FBE9B5;      /* hero 글로우(L175)·BETA 보더(L372) 공용 — 무변경 (글로우 시각 보존) */
+  --am-chip: #FDF3D6;  /* 골드 텍스트용 칩 배경 (hero-eyebrow·LIVE) — --am3에서 분리해 글로우 무영향. 깊은 골드 위 CR 4.85 */
   --am4: #FFF6E5;
   --ru: #A01528;
 }
@@ -187,7 +188,7 @@ header {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  background: var(--am3);
+  background: var(--am-chip);
   border: 1px solid rgba(212, 147, 13, 0.2);
   border-radius: 999px;
   font-size: 11px;
@@ -342,7 +343,7 @@ section.block {
   font-size: 9px;
   font-weight: 800;
   color: var(--am);
-  background: var(--am3);
+  background: var(--am-chip);
   padding: 3px 8px;
   border-radius: 4px;
   letter-spacing: 0.5px;
@@ -540,6 +541,7 @@ footer .copyright {
     --am:  #E8C063;  /* 다크 배경 위 대비 확보 위해 한 단계 밝은 amber */
     --am2: #F2D17E;
     --am3: #3A3320;  /* amber-tinted 다크 칩 배경 */
+    --am-chip: #3A3320;  /* 다크 칩 = --am3 동일 (다크 --am #E8C063 위 CR 7.26 무변경) */
     --am4: #231F12;
     --ru:  #E0556A;  /* 로고 점 — 다크 위 가독 */
   }
