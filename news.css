@@ -5555,6 +5555,17 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .glb-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .glb-stat-label { font-size: 12px; font-weight: 600; color: var(--tx2); white-space: nowrap; }
+/* Q-20260613-166 — 미 선물 3종 1줄 압축(조니 조건 ②). 묶음 항목은 그리드 1행 풀폭(auto-fit 셀 비대 방지).
+   라벨 위 / 3종 인라인 아래. 390px: 1행 우선 + 좁으면 자연 wrap(오버플로 0 — 값 nowrap·row만 wrap). */
+.glb-stat--fut { grid-column: 1 / -1; }
+.glb-fut-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; }
+.glb-fut-item { display: inline-flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+.glb-fut-nm { font-size: 13px; font-weight: 700; color: var(--tx); font-variant-numeric: tabular-nums; }
+.glb-fut-chg { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.glb-fut-chg.up { color: var(--up); }
+.glb-fut-chg.down { color: var(--down); }
+.glb-fut-chg.flat { color: var(--dm-hi); }
+.glb-fut-sep { color: var(--bd); font-size: 12px; }
 .glb-stat-value {
   font-size: 15px;
   font-weight: 700;

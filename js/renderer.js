@@ -459,6 +459,43 @@ function _freshNasdaqFuture(us) {
   return { point: nq.point, change_pct: nq.change_pct, ts: t };
 }
 
+// Q-20260613-166 (조니 어필 양보 2026-06-13 13:32 — 선물 S&P·다우 복원, 조건 ①②③) — 본문 glb-stat
+//   전용 미 선물 3종(S&P500·나스닥100·다우) 묶음 헬퍼. 데이터 = us-indices `futures`(ES=F/NQ=F/YM=F
+//   3종 다 수집 중, collect_us_futures.py:32-39). 신선도 = _freshNasdaqFuture 와 동일 단일 ts
+//   (us.futures.as_of_kst, 60분 stale + 미래 5분 skew) — 3종이 같은 수집 배치라 ts 단일이 정직.
+//   조니 조건 ① 단일 운반체: 본 헬퍼 소비자 = glb-stat 1곳뿐(페어 카드 재도입 0). 짧은라벨(label) =
+//   1줄 압축 표기용(조건 ②). 미니요약(_freshNasdaqFuture)은 나스닥 단독 불변 — R46 P0-1 요약↔본문
+//   동일 자산(본문 첫 미장 노출 자산과 일치). 반환 [{label, point, change_pct}, ...](수집 순서) | null.
+//   null = 미수집/stale/부재(본문 선물 무렌더). FLR-AGT-002: stale 폴백 색칠 금지(무렌더가 정직).
+//   closedLatest(휴장 최신 뷰, Q-158 ③ 동형): true 시 60분→7일 가드 완화 — 주말/연휴에 마지막 영업일
+//   마감 선물 보존(대표 "참고 데이터 누락 0"). 시점 정직은 asofNote 날짜 라벨("M/D (요일) 마감 기준",
+//   _buildGlobalStatsHtml newestTs 파생)이 운반. 7일+ = 수집 사망 → 무렌더(빈자리가 정직). 미래 skew는 불변.
+function _freshUsFutures(us, closedLatest) {
+  if (!us || !us.futures || !Array.isArray(us.futures.futures)) return null;
+  const nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number')
+    ? window._freshnessNow : Date.now();
+  const t = (typeof us.futures.as_of_kst === 'string' && us.futures.as_of_kst)
+    ? Date.parse(us.futures.as_of_kst) : NaN;
+  if (!isFinite(t)) return null;
+  const age = nowMs - t;
+  const maxAge = closedLatest ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
+  if (age < -5 * 60 * 1000 || age > maxAge) return null;
+  // 표시 순서·짧은 라벨 (조건 ② 1줄 압축). name 정규식 매칭 — 데이터명 변동(심볼/번역) 흡수.
+  const wanted = [
+    { label: 'S&P', re: /s&?p|에스앤피|에스엔피/i },
+    { label: '나스닥', re: /나스닥|nasdaq/i },
+    { label: '다우', re: /다우|dow/i },
+  ];
+  const out = [];
+  for (const w of wanted) {
+    const f = us.futures.futures.find(x => x && w.re.test(x.name || ''));
+    if (!f || typeof f.point !== 'number' || !isFinite(f.point)
+      || typeof f.change_pct !== 'number' || !isFinite(f.change_pct)) continue;
+    out.push({ label: w.label, point: f.point, change_pct: f.change_pct });
+  }
+  return out.length > 0 ? { items: out, ts: t } : null;
+}
+
 // Q-20260613-158 ③ — KST 날짜 문자열("YYYY-MM-DD") → "M/D (요일)" 라벨 (휴장 최신 뷰 시점 라벨 공용).
 function _fmtDateDow(iso) {
   if (typeof iso !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
@@ -485,16 +522,32 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
   const _fmt2 = (v) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const items = [];
   let newestTs = null;
-  // deltaText: 미지정 시 pct 를 "±N.NN%" 로 렌더 (원/달러·WTI·선물). 지정 시 그대로 사용
+  // deltaText: 미지정 시 pct 를 "±N.NN%" 로 렌더 (원/달러·WTI). 지정 시 그대로 사용
   //   (미10년물 금리 = "±N.Nbp"). 색 방향(up/down)은 항상 pct 부호에서 파생 — 금리↑(+bp)=up=빨강.
-  const _push = (label, value, pct, ts, deltaText) => {
-    items.push({ label, value, pct, deltaText });
+  // valueHtml(선택): 지정 시 value/delta 영역을 이 안전 HTML 로 대체(선물 묶음 1줄 압축 — 종목별
+  //   색 span 포함). 지정 시 pct/deltaText 무시(delta 칸 없음 — value 안에 색·부호 내장).
+  const _push = (label, value, pct, ts, deltaText, valueHtml) => {
+    items.push({ label, value, pct, deltaText, valueHtml });
     if (newestTs == null || ts > newestTs) newestTs = ts;
   };
-  // 나스닥 선물 — _freshNasdaqFuture 단일 소스 (R46 P0-1 — 접힘 미니요약과 같은 헬퍼에서 파생.
-  //   신선도 가드 동일: 60분 stale + 미래 5분 skew. 한쪽 수정·양끝 누락 FLR-20260428-TEC-001 동형 차단).
-  const _nqFut = _freshNasdaqFuture(us);
-  if (_nqFut) _push('나스닥 선물', _fmt2(_nqFut.point), _nqFut.change_pct, _nqFut.ts);
+  // 미 선물 3종 (S&P500·나스닥100·다우) — Q-20260613-166 (조니 어필 양보 — S&P·다우 복원).
+  //   조건 ① 단일 운반체: glb-stat 1곳뿐(페어 카드 0). 조건 ②: 3종을 1 항목(1줄 압축)으로 묶어
+  //   그리드 비대 방지 — "S&P ▲0.3 · 나스닥 ▲0.3 · 다우 ▲0.5" (종목별 ▲/▼·색). 신선도(_freshUsFutures)
+  //   = _freshNasdaqFuture 동일 단일 ts(60분 stale + 미래 5분 skew) → 조건 ③ 신선도 정직(stale 무렌더·
+  //   마감일 날짜 라벨은 묶음 newestTs 로 asofNote 가 운반). 선물↑=호재=빨강(up, 기존 정책 — pct 부호 파생).
+  const _usFut = _freshUsFutures(us, closedLatest);
+  if (_usFut) {
+    const futHtml = _usFut.items.map((f) => {
+      const fdir = f.change_pct > 0 ? 'up' : (f.change_pct < 0 ? 'down' : 'flat');
+      const farrow = fdir === 'up' ? '▲' : (fdir === 'down' ? '▼' : '·');
+      const fpct = `${f.change_pct >= 0 ? '+' : ''}${f.change_pct.toFixed(1)}%`;
+      return `<span class="glb-fut-item">`
+        + `<span class="glb-fut-nm">${escapeHtml(f.label)}</span>`
+        + `<span class="glb-fut-chg ${fdir}"><span aria-hidden="true">${farrow}</span>${escapeHtml(fpct)}</span>`
+        + `</span>`;
+    }).join('<span class="glb-fut-sep" aria-hidden="true">·</span>');
+    _push('미 선물', '', 0, _usFut.ts, '', `<span class="glb-fut-row">${futHtml}</span>`);
+  }
   // 원/달러 · WTI 선물 — macro_indicators.json (항목별 bar_asof 신선도 축, 부분 산출 가용 항목만)
   if (macro && macro.indicators) {
     for (const key of ['usdkrw', 'wti']) {
@@ -522,9 +575,17 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
   }
   if (items.length === 0) return '';
   const itemsHtml = items.map((it) => {
+    // 선물 묶음(valueHtml 지정) — value/delta 칸 대신 안전 HTML 1줄 압축(종목별 색 내장).
+    //   그리드 1행 풀폭(glb-stat--fut) — 6항목 비대 방지(조건 ②, 390px 안정).
+    if (it.valueHtml) {
+      return `<div class="glb-stat glb-stat--fut">`
+        + `<span class="glb-stat-label">${escapeHtml(it.label)}</span>`
+        + it.valueHtml
+        + `</div>`;
+    }
     const dir = it.pct > 0 ? 'up' : (it.pct < 0 ? 'down' : 'flat');
     const arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
-    // deltaText 지정(미10년물 bp) 시 그대로, 미지정 시 "±N.NN%" (원/달러·WTI·선물).
+    // deltaText 지정(미10년물 bp) 시 그대로, 미지정 시 "±N.NN%" (원/달러·WTI).
     const deltaText = it.deltaText || `${it.pct >= 0 ? '+' : ''}${it.pct.toFixed(2)}%`;
     return `<div class="glb-stat">`
       + `<span class="glb-stat-label">${escapeHtml(it.label)}</span>`
@@ -626,9 +687,9 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
   // feat/market-context ① — KR 카드·US 카드 둘 다 0건일 때만 섹션 무렌더 (한쪽 가용 시 섹션 유지).
   if (!groupsHtml && !krCardsHtml) return '';
 
-  // 선물 고지(§4) — glb-stat 에 신선 나스닥 선물 항목이 실릴 때만 1회 각주 (운반체와 동일 조건 —
-  //   R48 P1-2: 페어 카드 제거 후 고지의 대상 = glb-stat 선물 항목 단일).
-  const disclaimerHtml = (!isPastDate && _freshNasdaqFuture(usValid ? us : null))
+  // 선물 고지(§4) — glb-stat 에 신선 선물 묶음 항목이 실릴 때만 1회 각주 (운반체와 동일 조건 —
+  //   Q-166: 고지 대상 = glb-stat "미 선물" 묶음 항목 단일, _freshUsFutures 와 1:1. R48 P1-2 단일 운반체 정합).
+  const disclaimerHtml = (!isPastDate && _freshUsFutures(usValid ? us : null, _closedLatestView))
     ? `<div class="idx-fut-disclaimer">선물은 현물 지수와 별개 기초자산입니다. 갱신 주기 약 10분.</div>`
     : '';
 
