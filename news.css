@@ -2352,12 +2352,13 @@ a.cal-macro-chip.nightly-us-newschip {
   align-items: center;
   padding: 10px 12px;
   border-radius: 10px;
-  background: var(--bg2);
+  /* R55 P2-6 root fix (twin of .cal-feature-card) — theme 토글 시 --bg2 var() 재해석을
+     background transition 이 보류 → stale paint. background 를 transition 대상에서 제외. */
+  background-color: var(--bg2);
   font-size: 13px;
-  transition: background 0.12s;
 }
 .cal-trade-candle { display: flex; align-items: center; justify-content: center; }
-.cal-trade-row:hover { background: var(--am4); }
+.cal-trade-row:hover { background-color: var(--am4); }
 .cal-trade-rank {
   font-size: 12px; color: var(--dm); font-weight: 800;
   font-family: 'SF Mono', monospace;
@@ -2430,15 +2431,20 @@ a.cal-macro-chip.nightly-us-newschip {
      (rec-mark 등) x좌표가 ±4px 흔들림 → 기본 카드에 동일 폭 투명 보더로 x 통일. */
   border-left: 4px solid transparent;
   overflow: hidden;
-  background: var(--bg2);
-  transition: background 0.12s, box-shadow 0.3s;
+  /* R55 P2-6 root fix — data-theme 토글은 --bg2 커스텀 프로퍼티만 바꾼다. CSS transition 이
+     background(또는 background-color)에 걸려 있으면 Chromium 은 custom-property 변경으로 인한
+     var() 재해석을 transition 종료까지 보류 → stale paint(reflow 강제해도 미해소, 라이브 실측).
+     ∴ background 를 transition 대상에서 제외 → 테마 전환 즉시 repaint. box-shadow transition 유지.
+     hover(--am4) 는 즉시 전환(터치 우선·0.12s 페이드 미관 < 테마 정확성). .cal-trade-row 동일. */
+  background-color: var(--bg2);
+  transition: box-shadow 0.3s;
   position: relative; /* 공유 버튼 absolute 배치용 */
   scroll-margin-top: calc(88px + env(safe-area-inset-top, 0px));
 }
 @media (max-width: 640px) {
   .cal-feature-card { scroll-margin-top: calc(100px + env(safe-area-inset-top, 0px)); }
 }
-.cal-feature-card:hover { background: var(--am4); }
+.cal-feature-card:hover { background-color: var(--am4); }
 
 /* 공유 버튼 — 카드 우측 상단 absolute (레이아웃 훼손 없음) */
 .cal-share-btn {
