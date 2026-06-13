@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0a1020" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)">
 <meta name="robots" content="noindex, nofollow">
-<title>100M1S 로고 — 리퀴드 메탈 光彩 (v6)</title>
+<title>100M1S 로고 — 리퀴드 메탈 光彩 (v6.1 모바일 적응형)</title>
 
 <!-- 미리 로딩: LCP 핵심 자산 (모바일 우선). WebGL 텍스처 마스크로도 동일 자산 재사용. -->
 <link rel="preload" as="image" href="assets/logo-v5b.webp" type="image/webp">
@@ -20,7 +20,13 @@
             크롬 광채가 *살아 흐른다*. 강렬하되 애플급 절제(specular는 좁고 밝게).
    폴백: WebGL 미지원/실패 시 canvas 숨김 → 기존 다층 CSS 光彩(sweep+prism+glint+
          bloom)가 그대로 로고를 채움 (백지 로고 금지, 거짓 충실성 가드).
-   성능(모바일 390px): DPR ≤ 2 캡, 캔버스는 로고 stage 영역만, rAF 단일 루프.
+   성능 적응형 (v6.1, 대표 폰 버벅 catch 2026-06-13 19:32):
+     · 데스크탑: 풀 셰이더 (FBM 5 octave, DPR≤2, rAF 60fps) — WWDC 강도 그대로.
+     · 모바일: DPR=1 캡 + 30fps throttle + FBM 3 octave + 노멀 경량(중복 fbm 제거)
+       → GPU 부하 1/4~1/6. 무지개 흐름·specular 시각은 유지(같은 셰이더, octave만↓).
+     · 런타임 FPS 가드: 프레임 예산(33ms) 연속 초과 시 자동 단계 하향
+       (모바일→저사양: 24fps + 렌더 스케일 0.62x 업스케일). 저사양 폰 끊김 0 목표.
+   캔버스는 로고 stage 영역만, rAF 단일 루프.
    접근성: prefers-reduced-motion → 정지(정적 프레임 1장). 수동 토글 동일.
    📱 모바일 우선: 로고가 폰 폭을 꽉 채움. 다크 = 기본.
    ⚠ nav 미링크 내부 프리뷰. brand 자산만 (내부 데이터 0).
@@ -298,6 +304,24 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
   var root   = document.documentElement;
   var bodyEl = document.body;
 
+  /* ── 성능 프로파일 (적응형) ────────────────────────────────────────
+     대표 폰 버벅 catch (2026-06-13 19:32) → 모바일은 풀 셰이더가 무겁다.
+     티어를 나눠 DPR·fps·FBM octave·노멀 비용을 단계적으로 낮춘다.
+     코어스 포인터(터치) + 작은 화면 = 모바일. 그 외 = 데스크탑. */
+  var coarsePointer = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  var smallScreen   = Math.min(window.innerWidth || 0, window.innerHeight || 0) <= 820;
+  var isMobile      = coarsePointer || smallScreen;
+
+  // 티어별 품질: octaves=FBM 반복(=비용 핵심), fps=프레임 캡, dprCap=해상도,
+  // scale=드로잉버퍼 추가 축소(업스케일은 CSS contain이 처리), cheapNormal=노멀 경량 경로.
+  var PROFILES = {
+    desktop: { octaves: 5, fps: 0,  dprCap: 2, scale: 1.0,  cheapNormal: false },  // fps:0 = rAF 무제한
+    mobile:  { octaves: 3, fps: 30, dprCap: 1, scale: 1.0,  cheapNormal: true  },
+    low:     { octaves: 2, fps: 24, dprCap: 1, scale: 0.62, cheapNormal: true  }   // 런타임 가드가 강등
+  };
+  var tier = isMobile ? 'mobile' : 'desktop';
+  var Q = PROFILES[tier];
+
   /* ── 테마/모션 컨트롤 (CSS 효과와 공통) ── */
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
     root.setAttribute('data-theme', 'light');
@@ -323,8 +347,9 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
     '}'
   ].join('\n');
 
-  var FRAG = [
-    'precision highp float;',
+  /* FRAG 헤더는 JS가 프로파일에 따라 동적 조립:
+       precision (모바일 mediump → 대역폭·발열↓) + FBM_OCTAVES + CHEAP_NORMAL 정의. */
+  var FRAG_BODY = [
     'varying vec2 v_uv;',
     'uniform sampler2D u_logo;',   // 로고 (알파 = 실루엣 마스크)
     'uniform float u_time;',
@@ -344,7 +369,7 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
     '}',
     'float fbm(vec2 p){',
     '  float v = 0.0; float amp = 0.5; mat2 m = mat2(1.6,1.2,-1.2,1.6);',
-    '  for(int i=0;i<5;i++){ v += amp*noise(p); p = m*p; amp *= 0.5; }',
+    '  for(int i=0;i<FBM_OCTAVES;i++){ v += amp*noise(p); p = m*p; amp *= 0.5; }',  // octave = 프로파일 주입 (모바일 3 / 데스크탑 5)
     '  return v;',
     '}',
     '',
@@ -360,17 +385,29 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
     '  if(mask < 0.01){ gl_FragColor = vec4(0.0); return; }',     // 실루엣 밖 = 0
     '',
     '  float t = u_time;',
-    '  // 흐르는 금속 표면 — 두 방향 FBM 이류(advection)로 리퀴드 느낌',
     '  vec2 flow = vec2(t*0.06, -t*0.045);',
+    '',
+    '#ifdef CHEAP_NORMAL',
+    '  // 모바일 경량 경로: 중첩 fbm(advection) 제거 + 노멀을 height 인접 2샘플로 도출.',
+    '  // fbm 호출 7회 → 3회. specular/이리데센스 시각은 유지(저주파 표면).',
+    '  vec2 P  = uv*3.4 + flow;',
+    '  float e = 1.8/u_res.y;',
+    '  float height = fbm(P);',
+    '  float hxr = fbm(P + vec2(e,0.0));',  // +x 인접 height
+    '  float hyr = fbm(P + vec2(0.0,e));',  // +y 인접 height
+    '  float hx = hxr - height;',
+    '  float hy = hyr - height;',
+    '  vec3 N = normalize(vec3(-hx*2.4, -hy*2.4, 1.0));',
+    '#else',
+    '  // 데스크탑 풀 경로: 중첩 fbm 이류 + 4-tap 노멀 (WWDC 리퀴드 강도 그대로)',
     '  float h1 = fbm(uv*3.4 + flow + fbm(uv*2.0 - flow)*0.6);',
     '  float h2 = fbm(uv*6.2 - flow*1.3 + 7.3);',
     '  float height = h1*0.7 + h2*0.3;',
-    '',
-    '  // 절차적 노멀 (height의 화면공간 기울기)',
     '  float e = 1.6/u_res.y;',
     '  float hx = fbm((uv+vec2(e,0.0))*3.4 + flow) - fbm((uv-vec2(e,0.0))*3.4 + flow);',
     '  float hy = fbm((uv+vec2(0.0,e))*3.4 + flow) - fbm((uv-vec2(0.0,e))*3.4 + flow);',
     '  vec3 N = normalize(vec3(-hx*2.4, -hy*2.4, 1.0));',
+    '#endif',
     '',
     '  // 움직이는 광원 + 시선',
     '  vec3 L = normalize(vec3(0.55*sin(t*0.4), 0.5+0.3*cos(t*0.33), 0.9));',
@@ -402,6 +439,17 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
     '  gl_FragColor = vec4(col * edge, 1.0);',
     '}'
   ].join('\n');
+
+  /* 프로파일에 맞춰 fragment 소스 조립.
+     - precision: 데스크탑 highp / 모바일 mediump (대역폭·발열↓, FBM 노이즈는 mediump로 충분).
+     - FBM_OCTAVES: 비용 핵심 (모바일 3 / 데스크탑 5).
+     - CHEAP_NORMAL: 모바일 노멀 경량 경로 활성. */
+  function buildFrag(profile) {
+    var prec = profile.cheapNormal ? 'precision mediump float;' : 'precision highp float;';
+    var head = prec + '\n#define FBM_OCTAVES ' + profile.octaves + '\n'
+             + (profile.cheapNormal ? '#define CHEAP_NORMAL\n' : '');
+    return head + FRAG_BODY;
+  }
 
   /* ── WebGL 부트스트랩 (단계별 실패 → 폴백) ── */
   var canvas = document.getElementById('metal');
@@ -435,8 +483,12 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
     if (!gl) { fallbackToCSS('컨텍스트 생성 실패'); return false; }
 
     var vs = compile(gl.VERTEX_SHADER, VERT);
-    var fs = compile(gl.FRAGMENT_SHADER, FRAG);
-    if (!vs || !fs) { fallbackToCSS('셰이더 컴파일 실패'); return false; }
+    var fs = compile(gl.FRAGMENT_SHADER, buildFrag(Q));   // 프로파일별 octave/precision/normal 주입
+    if (!vs || !fs) {
+      // 모바일 셰이더가 (드물게) 컴파일 실패 시 데스크탑 highp 소스로 1회 재시도 후 폴백.
+      fs = Q.cheapNormal ? compile(gl.FRAGMENT_SHADER, buildFrag(PROFILES.desktop)) : null;
+      if (!vs || !fs) { fallbackToCSS('셰이더 컴파일 실패'); return false; }
+    }
 
     prog = gl.createProgram();
     gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
@@ -485,11 +537,12 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
      호출부가 다음 프레임 재시도 (1×1 frozen 버그 방지). */
   function resize() {
     if (!glReady) return false;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // DPR: 프로파일 캡 (데스크탑 2 / 모바일 1) × 추가 렌더 스케일(저사양 강등 시 0.62).
+    var dpr = Math.min(window.devicePixelRatio || 1, Q.dprCap) * Q.scale;
     var r = canvas.getBoundingClientRect();
     if (r.width < 2 || r.height < 2) return false;   // 레이아웃 미완료 → 재시도 신호
-    var w = Math.round(r.width  * dpr);
-    var h = Math.round(r.height * dpr);
+    var w = Math.max(1, Math.round(r.width  * dpr));
+    var h = Math.max(1, Math.round(r.height * dpr));
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w; canvas.height = h;
     }
@@ -524,14 +577,45 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
     drawFrame(startT + 2400);   // 보기 좋은 고정 위상
   }
 
+  /* ── fps throttle + 런타임 성능 가드 ──────────────────────────────
+     - fps 캡(모바일 30 / 저사양 24): 프레임 간 최소 간격을 두고 drawFrame 스킵.
+       데스크탑(fps:0)은 throttle 없이 rAF 그대로.
+     - 가드: 실제 draw 간격이 예산(1.6× 목표 프레임)을 연속 초과하면 한 단계 강등
+       (mobile→low: 24fps + 렌더 스케일 0.62x). 셰이더 재컴파일 없이 즉시 적용. */
+  var lastFrameMark = 0;       // 마지막으로 실제 draw 한 시각
+  var overBudgetRun = 0;       // 연속 예산 초과 횟수
+  function frameInterval() { return Q.fps > 0 ? (1000 / Q.fps) : 0; }
+
+  function maybeDowngrade(dt) {
+    if (tier !== 'mobile' || Q.fps === 0) return;     // 데스크탑/이미 저사양이면 패스
+    var budget = (1000 / Q.fps) * 1.6;                // 목표 대비 1.6× 초과 = 버벅 징후
+    if (dt > budget) {
+      if (++overBudgetRun >= 12) {                    // 일시 스파이크 무시, 지속 시에만 강등
+        tier = 'low'; Q = PROFILES.low; overBudgetRun = 0;
+        if (resize()) drawFrame(performance.now());   // 새 스케일 즉시 반영
+        if (window.console) console.info('[logo-v6.1] 성능 가드 → 저사양 프로파일 강등(24fps/0.62x)');
+      }
+    } else {
+      overBudgetRun = 0;
+    }
+  }
+
   function loop(now) {
     if (!glReady) return;
     if (prefersReduce() || bodyEl.classList.contains('motion-off')) {
       rafId = 0; drawStatic(); return;   // 루프 중단, 정적 프레임
     }
-    resize();                            // false(미완료)여도 다음 프레임 재시도되므로 OK
+    rafId = requestAnimationFrame(loop);  // 다음 프레임 먼저 예약 (throttle 스킵해도 루프 유지)
+
+    var gap = frameInterval();
+    if (gap > 0) {
+      var since = now - lastFrameMark;
+      if (since < gap - 1) return;        // fps 캡: 아직 간격 미달 → 이번 rAF는 draw 스킵
+      if (lastFrameMark) maybeDowngrade(since);  // 직전 실제 draw 간격으로 가드 평가
+    }
+    lastFrameMark = now;
+    resize();                             // false(미완료)여도 다음 프레임 재시도되므로 OK
     drawFrame(now);
-    rafId = requestAnimationFrame(loop);
   }
 
   function startLoop() {
@@ -603,7 +687,8 @@ button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
       setTimeout(firstPaint, 120);      // rAF 미발화(백그라운드) 폴백
 
       document.getElementById('renderNote').textContent =
-        '내부 프리뷰 · 리퀴드 메탈 실시간 렌더(WebGL) · “동작 줄이기” 시 정지.';
+        '내부 프리뷰 · 리퀴드 메탈 실시간 렌더(WebGL, ' + (isMobile ? '모바일 적응형' : '데스크탑 풀') +
+        ') · “동작 줄이기” 시 정지.';
     };
     img.onerror = function () { fallbackToCSS('로고 텍스처 로드 실패'); };
     img.src = 'assets/logo-v5b.webp';
