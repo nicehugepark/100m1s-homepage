@@ -25,6 +25,7 @@
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-flr" id="t-flr" data-tab="flr">FLR</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-people" id="t-people" data-tab="people">참여자</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-audit" id="t-audit" data-tab="audit">audit</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-convergence" id="t-convergence" data-tab="convergence">수렴</button>
   </nav>
 
   <main>
@@ -96,6 +97,66 @@
       <p class="hint">에이전트 활동 audit — active &lt;24h / idle 24~72h / zombie ≥72h / unknown=records 미흔적</p>
       <div id="audit-summary"></div>
       <div id="audit-grid" class="audit-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="tab-convergence" class="panel" role="tabpanel" aria-labelledby="t-convergence">
+      <p class="hint">요청·라운드·판정 수렴 추적 — 회차↑ 품질 수렴 (P0+신규P1 → 0). 데이터: convergence.json (read-only 파생물)</p>
+      <div id="conv-summary"></div>
+
+      <h2 class="conv-h">repo별 수렴 추이 (회차 × P0+신규P1 합)</h2>
+      <div id="conv-trend"></div>
+
+      <h2 class="conv-h">요청 (repo-scope)</h2>
+      <div class="toolbar">
+        <input id="conv-req-search" type="search" placeholder="req_id·요약·상태 검색"
+               aria-label="요청 검색 (req_id / 요약 / 상태 / repo)">
+        <select id="conv-repo" aria-label="repo 필터">
+          <option value="">전체 repo</option>
+        </select>
+        <span class="count" id="conv-req-count" aria-live="polite"></span>
+      </div>
+      <div class="table-wrap">
+        <table class="grid">
+          <thead><tr>
+            <th>req_id</th><th>repo</th><th>상태</th><th>요약 / 트리거</th><th>provenance</th><th>종결 근거</th>
+          </tr></thead>
+          <tbody id="conv-req-tbody"></tbody>
+        </table>
+      </div>
+
+      <h2 class="conv-h">라운드</h2>
+      <div class="table-wrap">
+        <table class="grid">
+          <thead><tr>
+            <th>round_id</th><th>repo</th><th>대상 요청</th><th>패널</th><th>tier</th><th>state</th>
+          </tr></thead>
+          <tbody id="conv-round-tbody"></tbody>
+        </table>
+      </div>
+
+      <h2 class="conv-h">판정 (verdict)</h2>
+      <div class="table-wrap">
+        <table class="grid">
+          <thead><tr>
+            <th>file</th><th>round_id</th><th>패널</th><th>verdict</th><th>P0</th><th>신규P1</th>
+          </tr></thead>
+          <tbody id="conv-verdict-tbody"></tbody>
+        </table>
+      </div>
+
+      <h2 class="conv-h">SQLite (파생 쿼리 층)</h2>
+      <p class="hint">
+        <a id="conv-db-link" href="./convergence.db" download>convergence.db 다운로드</a>
+        — .md(저작 원천) → SQLite(파생 쿼리/어드민 층) 하이브리드.
+        <button id="conv-sql-toggle" type="button" class="conv-sql-btn">인-브라우저 SQL 쿼리 (sql.js 로드)</button>
+      </p>
+      <div id="conv-sql-box" hidden>
+        <textarea id="conv-sql-input" rows="3" aria-label="SQL 쿼리"
+          placeholder="SELECT round_id, repo, state FROM rounds;">SELECT round_id, repo, state FROM rounds;</textarea>
+        <div class="toolbar"><button id="conv-sql-run" type="button" class="conv-sql-btn">실행</button>
+          <span class="count" id="conv-sql-status" aria-live="polite"></span></div>
+        <div id="conv-sql-result" class="table-wrap"></div>
+      </div>
     </section>
   </main>
 

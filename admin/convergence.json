@@ -1,0 +1,667 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-13T17:50:59.158149+09:00",
+  "summary": {
+    "HOME": {
+      "open_requests": 4,
+      "total_requests": 4,
+      "active_rounds": 2,
+      "latest_round": "RND-HOME-002",
+      "latest_state": "미수렴"
+    },
+    "PM320": {
+      "open_requests": 8,
+      "total_requests": 9,
+      "active_rounds": 6,
+      "latest_round": "RND-PM320-051",
+      "latest_state": "미수렴"
+    },
+    "—": {
+      "open_requests": 1,
+      "total_requests": 6,
+      "active_rounds": 0,
+      "latest_round": null,
+      "latest_state": null
+    }
+  },
+  "trend": {
+    "HOME": [
+      {
+        "round_id": "RND-HOME-001",
+        "alias": "홈 renewal",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-HOME-002",
+        "alias": "홈 R2",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      }
+    ],
+    "PM320": [
+      {
+        "round_id": "RND-PM320-046",
+        "alias": "R46",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-PM320-047",
+        "alias": "R47",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-PM320-048",
+        "alias": "R48",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-PM320-049",
+        "alias": "R49",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-PM320-050",
+        "alias": "R50",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-PM320-051",
+        "alias": "R51",
+        "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      }
+    ]
+  },
+  "integrity_warnings": [
+    "round_id 미매핑 verdict 24건 (frontmatter 미적용·점진 마이그레이션 백로그)"
+  ],
+  "requests": [
+    {
+      "req_id": "Q-158",
+      "repo": "PM320",
+      "summary": "\"뉴스 해석 한줄 과하다 / 뉴스 대부분 사실 노이지 / 시장지수(국채·원유·환율) 사라짐\" (08:53)",
+      "captured": "✅",
+      "state": "배포",
+      "state_raw": "🚀 배포",
+      "owner": "dev-weekend-macro-wire-fix → R48/R49 판정",
+      "provenance": "— / —",
+      "close_evidence": "fix `wt-r48` 착지 09:46 + devops-mainwt-deploy 배포(`d8fa7704d`) 라이브 200 (MQ L56·L41)"
+    },
+    {
+      "req_id": "Q-158확장",
+      "repo": "PM320",
+      "summary": "\"휴장이라며 가리는데 테마 거래대금 추이는 왜 가렸나·상한가 추이는 안 가림·뉴스·지수도\" (09:24) — **휴장 가림 적정성**",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "dev fix + R49 instrument 가드 매트릭스",
+      "provenance": "Q-158 / —",
+      "close_evidence": "배포 후 R49 instrument 확인 \"거래대금/상한가 추이 = collapsed+요약칩+시점 라벨, 가림 아님·Q-158 fix 생존\" (MQ L35·L62) **+ FLR-20260613-TEC-001 등재(recurring 2회차)**"
+    },
+    {
+      "req_id": "Q-159",
+      "repo": "HOME",
+      "summary": "\"홈페이지와 PM320 리포 분리·pm320.100m1s.com CNAME 추가함·분리 생성\" (09:35)",
+      "captured": "⏸️",
+      "state": "보류",
+      "state_raw": "⏸️ 보류",
+      "owner": "dev-repo-split-audit → REQ 설계 → 대표 게이트",
+      "provenance": "— / —",
+      "close_evidence": "repo `(비공개)/100m1s-pm320` 생성+Pages 라이브(13:34) = **0단계 완료**. **본 코드 이동 = L급 별트랙·timing 대표 결정** ⚠️미종결"
+    },
+    {
+      "req_id": "Q-160",
+      "repo": "HOME",
+      "summary": "\"홈 제품 라인업 카테고리 세분화·주식 카테고리(PM320 프로토타입+향후 서비스+용어/팁/교육)·ByBias 베타 노출\" (09:35)",
+      "captured": "🔍",
+      "state": "판정중",
+      "state_raw": "🔍 판정중",
+      "owner": "planning-product-ia + 총괄 심사 패널 제3안 + **design-home-vitality-ia 발사(15:30)**",
+      "provenance": "— / —",
+      "close_evidence": "제안만(planning A안·총괄 심사 패널 제3안 성숙도 1축)·**미구현**. 대표 15:30 \"메뉴 카테고리 안 움직임\" catch 정당 → design 재발사·구현 직렬·총괄 심사 패널 IA 판정 대기 ⚠️미종결"
+    },
+    {
+      "req_id": "Q-161",
+      "repo": "PM320",
+      "summary": "\"지수 카드 — 스파크라인·미니캔들·240d 레인지·고저 날짜\" (지수 일봉)",
+      "captured": "🔨",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "dev 1단(staging 산출 `2d6b62c4`) / 2단 frontend",
+      "provenance": "— / —",
+      "close_evidence": "1단 staging 착지 09:55(promote 3건 lead 결정 대기) · **2단 frontend = R51 후 직렬** (MQ L53·L8) ⚠️미종결"
+    },
+    {
+      "req_id": "Q-162",
+      "repo": "HOME",
+      "summary": "홈 \"정보 부실·심플하나 멋 없다·살아있는 사이트·발전하는 브랜드\"·연락처 (비공개)·법인 보류 개인사업자 (09:51)",
+      "captured": "✅",
+      "state": "배포",
+      "state_raw": "🚀 배포",
+      "owner": "design-home-renewal → dev-homepage-renewal → 총괄 심사 패널 판정",
+      "provenance": "— / —",
+      "close_evidence": "홈 재편 배포 착지 15:18 (`bd1fd78c2` 100m1s.com 라이브·다크모드·연락처·개인사업자·펄스) + 총괄 심사 패널 조건부 수렴(JDG-011) · **잔존 P1 = copyright opacity 대비 → dev-home-p1-fix** ⚠️P1 잔존"
+    },
+    {
+      "req_id": "Q-163",
+      "repo": "PM320",
+      "summary": "\"제일 중요 — PM320 로고·워터마크·파비콘·앱아이콘 재설계·pm320 페이지서 pm320 브랜딩 더 살게\" (09:51)",
+      "captured": "✅",
+      "state": "배포",
+      "state_raw": "🚀 배포",
+      "owner": "branding-pm320-logo → 총괄 심사 패널 로고 판정 → 적용 배포",
+      "provenance": "— / —",
+      "close_evidence": "로고 66파일 완성(branding-logo-finalize 12:11) + 총괄 심사 패널 판정(JDG-008·logo-pm320-총괄 심사 패널.md) + **PM320 로고 라이브 배포 15:01** (`0ba0b6fd9` 헤더 PM320 주인공·100M1S eyebrow·favicon 320-only) 대표 \"브랜딩 더 살았으면\" 해소 (MQ L10)"
+    },
+    {
+      "req_id": "Q-164",
+      "repo": "PM320",
+      "summary": "\"기사에 사실/해석/중립 기능 없어도 될 것 같은데 어떤가\" [판정 부의] (09:51)",
+      "captured": "🔍",
+      "state": "판정중",
+      "state_raw": "🔍 판정중",
+      "owner": "judge-news-chips(총괄 심사 패널 단발)",
+      "provenance": "— / —",
+      "close_evidence": "총괄 심사 패널 판정 = 제거 방향 YES (verdicts/news-chips-총괄 심사 패널.md = DOC-20260613-JDG-012·재발사 착지 15:42). [사실]/[중립] 이미 제거·**잔존 [해석] 경계 마커 dev 절단 대기** ⚠️구현 잔존 (+ JDG-012 records placeholder = RESERVED 빈 파일·hook 위생 별건)"
+    },
+    {
+      "req_id": "Q-신규룰",
+      "repo": "—",
+      "summary": "\"앞으로 내 요청은 긴급 운영 장애 아니면 판정단 판정 주제에 추가해 판정\" (09:51)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "docs-request-jury-rule",
+      "provenance": "— / —",
+      "close_evidence": "lead-meta §14 신설(`§14` L1004) + jury §7/총괄 심사 패널 §8 + 메모리 박제 [[feedback_user_request_to_jury_round]]"
+    },
+    {
+      "req_id": "Q-운영catch",
+      "repo": "—",
+      "summary": "\"작업 우선순위 관리 제대로·대화 블록킹 안 되게\" (09:51)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "lead 자기 박제",
+      "provenance": "— / —",
+      "close_evidence": "lead 09:39→09:57 18분 지연 자기 박제 + 짧은 즉시 응답·전건 BG 위임 전환 (MQ L52)"
+    },
+    {
+      "req_id": "Q-165",
+      "repo": "PM320",
+      "summary": "\"백악관 시장무관 필터·어제 폭락 뉴스소스(알자지라) 빠짐·미국채 어디로\" (12:38+12:50 steer)",
+      "captured": "✅",
+      "state": "배포",
+      "state_raw": "🚀 배포",
+      "owner": "ishikawa-wire-macro-audit + dev-q165-wire-macro → 배포",
+      "provenance": "— / —",
+      "close_evidence": "배포 착지 14:26 (`6bf55ab52`): WH hide(의례성 6건 DOM 부재)·WSJ World 소스·미국채 ^TNX yield(주말 graceful·**월요일 cron 실노출**)·지정학 인과 룰 (MQ L12·L26). 알자지라=법무 BLOCK(ToS)→WSJ World 대체"
+    },
+    {
+      "req_id": "Q-166",
+      "repo": "PM320",
+      "summary": "\"나스닥·S&P·다우 선물 사라짐·꼭 있어야\" (13:20)",
+      "captured": "✅",
+      "state": "배포",
+      "state_raw": "🚀 배포",
+      "owner": "dev-futures-restore2 → 총괄 심사 패널 어필 → 배포",
+      "provenance": "— / —",
+      "close_evidence": "배포 착지 14:26: 선물 3종 1줄 \"S&P▲·나스닥▲·다우▲\"·페어카드 0·단일 운반체·\"6/13 토 마감 기준\" (MQ L12·L16). 총괄 심사 패널 1706-appeal 양보"
+    },
+    {
+      "req_id": "Q-167",
+      "repo": "PM320",
+      "summary": "\"한국 뉴스 너무 잡다·시장 중요 뉴스 밀리거나 캐치/분류 안 됨\" (14:24)",
+      "captured": "🔨",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "ishikawa-domestic-news-audit → dev-news-ranking-fix",
+      "provenance": "— / —",
+      "close_evidence": "조선비즈 swap(`ac4962c3`)+score 배선(`0363f089`) 착지 14:52·**push 보류(cron 디스크 실행=다음 fire 반영)** ⚠️미배포 (분류 root = LLM timeout 별트랙)"
+    },
+    {
+      "req_id": "Q-168",
+      "repo": "PM320",
+      "summary": "(Q-167 파생) 뉴스 분류 커버리지 1.6% root 진단",
+      "captured": "🔍",
+      "state": "판정중",
+      "state_raw": "🔍 확인필요",
+      "owner": "dev-llm-timeout-diagnose",
+      "provenance": "Q-167 / —",
+      "close_evidence": "진단 착지 14:53: \"1.6%=부분 오해(픽 종목만 분류 설계·토요일 fanout 0)\"·진짜 결함 2(죽은 cap 게이트·timeout=60 하드코딩) FLR 후보 → **픽 분류 커버리지 = 월요일 거래일 확인 필요** ⚠️확인필요"
+    },
+    {
+      "req_id": "Q-어필룰",
+      "repo": "—",
+      "summary": "\"내 말 blind 수용 말고 판정단 의견에 어필해야지\" (13:24 catch)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "총괄 심사 패널-1706-appeal",
+      "provenance": "— / —",
+      "close_evidence": "lead 자기 결함 정정 + 총괄 심사 패널-1706-appeal 발사(총괄 심사 패널 자기 17:06 단정 변론/양보·verdicts/1706-appeal-총괄 심사 패널.md)·§14 정합 (MQ L18·L21)"
+    },
+    {
+      "req_id": "Q-패널리포트",
+      "repo": "—",
+      "summary": "\"패널별로 판정 내용·개선 결과 매번 리포트·판정 결과 노출 (안 그러면 의심)\" (14:13+14:17)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "docs-jdg-catchup",
+      "provenance": "— / —",
+      "close_evidence": "lead-meta §15 신설(`§15` L1024·매 라운드 패널별 표 의무) + jury §7.1 + 총괄 심사 패널 §8(c) + main repo 커밋 `7dfc1d76` (MQ L9)"
+    },
+    {
+      "req_id": "Q-생동감",
+      "repo": "HOME",
+      "summary": "\"데이터 신선도 보고싶은게 아니라 생동감(약동감·motion) 필요한 거 아닌가\" 재정의 (15:30)",
+      "captured": "🔍",
+      "state": "판정중",
+      "state_raw": "🔍 판정중",
+      "owner": "design-home-vitality-ia 발사(15:30) → 총괄 심사 패널 생동감 판정",
+      "provenance": "Q-162 / —",
+      "close_evidence": "lead 오독 정직 박제(펄스=신선도 readout=오독). 생동감 2~3안 read-only 제안 → home-p1 착지 후 구현 직렬 → 총괄 심사 패널 판정 (MQ L8) ⚠️미구현"
+    },
+    {
+      "req_id": "Q-169",
+      "repo": "—",
+      "summary": "(본 작업) \"큐 관리 근본적으로·요청 유실 근절\" 레지스터 구축 (15:40)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "docs-request-ledger",
+      "provenance": "— / —",
+      "close_evidence": "레지스터 + lead-meta §16 + README + MQ 헤더 cross-link 생성 (15:53 커밋). **본 RPT-001로 수렴 시스템 진화 완료**"
+    },
+    {
+      "req_id": "Q-170",
+      "repo": "—",
+      "summary": "(본 작업) 수렴 시스템 1단 — 마이그레이션 + 룰 §17 + 전파 (DSN-002 대안 B·16:26 설계 GO)",
+      "captured": "🔨",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "docs-convergence-build(본 RPT-001)",
+      "provenance": "Q-169 / —",
+      "close_evidence": "REQUEST-LEDGER 스키마 확장 + ROUND-LOG 신설(R46~R51·홈R1/R2 backfill) + lead-meta §17 + CLAUDE.md § + 전파 프롬프트 생성 중 ⚠️구현 잔존 (2단 build_convergence.py·어드민 탭 = dev 후행)"
+    }
+  ],
+  "rounds": [
+    {
+      "round_id": "RND-PM320-046",
+      "alias": "R46",
+      "repo": "PM320",
+      "request_refs": "Q-158 (지수·뉴스 해석·노이즈)",
+      "panel": "honesty·pixel·총괄 심사 패널",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "(archive/2026-06-archive.md 체인)",
+      "note": "P0-1 미니요약 나스닥 단독 등 → R47 fix"
+    },
+    {
+      "round_id": "RND-PM320-047",
+      "alias": "R47",
+      "repo": "PM320",
+      "request_refs": "Q-158·Q-163 (브랜딩)",
+      "panel": "총괄 심사 패널·branding-critic·guestpool×6",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "r47-총괄 심사 패널.md(NO)·r47-branding-critic.md(NO)·r47-guestpool-1~6",
+      "note": "브랜딩·게스트풀 → R48"
+    },
+    {
+      "round_id": "RND-PM320-048",
+      "alias": "R48",
+      "repo": "PM320",
+      "request_refs": "Q-158 (풀패널 1심 착지)",
+      "panel": "honesty·pixel·총괄 심사 패널·critic 등 11",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "(archive 체인·11/11 YES 보고분)",
+      "note": "신규 P1 1 (상세보기 CTA 29px pre-existing) → R49"
+    },
+    {
+      "round_id": "RND-PM320-049",
+      "alias": "R49",
+      "repo": "PM320",
+      "request_refs": "Q-158·Q-158확장 (instrument 가드)",
+      "panel": "honesty·pixel·총괄 심사 패널(2심)",
+      "tier": "1심+2심",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "r49-honesty.md(NO)·r49-pixel.md·r49-2nd-총괄 심사 패널.md",
+      "note": "instrument 변별력 우려 → R50"
+    },
+    {
+      "round_id": "RND-PM320-050",
+      "alias": "R50",
+      "repo": "PM320",
+      "request_refs": "Q-158·Q-165·Q-166 (배포분 재측정)",
+      "panel": "honesty·pixel",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "r50-honesty.md(YES)·r50-pixel.md(NO)",
+      "note": "split·신규 P1 1 (라이트 푸터 디스클레이머 CR 3.27) → R51 fix"
+    },
+    {
+      "round_id": "RND-PM320-051",
+      "alias": "R51",
+      "repo": "PM320",
+      "request_refs": "Q-158 (R50 P1 fix·재료정직 재스캔)",
+      "panel": "honesty·pixel",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "r51-honesty.md(YES·JDG-014)·DOC-20260613-JDG-013-r51-pixel.md(NO)",
+      "note": "**현 PM320 최신 라운드**·신규 P1 1 (공통 푸터 .copyright 라이트 CR 3.27 pre-existing) → fix 후 R52 재판정 ⚠️미수렴"
+    },
+    {
+      "round_id": "RND-HOME-001",
+      "alias": "홈 renewal",
+      "repo": "HOME",
+      "request_refs": "Q-162 (홈 재편)",
+      "panel": "총괄 심사 패널",
+      "tier": "2심-총괄종합",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "home-renewal-총괄 심사 패널.md(조건부수렴·JDG-011)",
+      "note": "조건부 — P1-1 copyright opacity CR 미달 자체 적발 → home-p1 fix → R2"
+    },
+    {
+      "round_id": "RND-HOME-002",
+      "alias": "홈 R2",
+      "repo": "HOME",
+      "request_refs": "Q-162 (home-p1 fix 후 재판정)",
+      "panel": "총괄 심사 패널",
+      "tier": "2심-총괄종합",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "home-r2-총괄 심사 패널.md(NO)",
+      "note": "**현 HOME 최신 라운드**·미수렴 ⚠️ → 후속 fix·재판정"
+    }
+  ],
+  "verdicts": [
+    {
+      "file": "1706-appeal-jony.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "unknown",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "DOC-20260613-JDG-013-r51-pixel.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "home-r2-jony.md",
+      "doc_id": "DOC-20260613-JDG-015",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "home-renewal-jony.md",
+      "doc_id": "DOC-20260613-JDG-011",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "조건부",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "logo-pm320-jony.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "조건부",
+      "p0_count": null,
+      "new_p1_count": null
+    },
+    {
+      "file": "news-chips-jony.md",
+      "doc_id": "DOC-20260613-JDG-012",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "positioning-ia-pm320-stock-advisory-jony.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "unknown",
+      "p0_count": null,
+      "new_p1_count": null
+    },
+    {
+      "file": "r3-jony.md",
+      "doc_id": "DOC-20260613-JDG-012",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r47-branding-critic.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-guestpool-1-superfan.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-guestpool-2-overseas-once.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-guestpool-3-japanese.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-guestpool-4-chinese.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-guestpool-5-ugc-sharer.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-guestpool-6-firsttimer.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r47-jony.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r49-2nd-jony.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": null,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r49-honesty.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r49-pixel.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r50-honesty.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r50-pixel.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r51-honesty.md",
+      "doc_id": "DOC-20260613-JDG-014",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r52-honesty.md",
+      "doc_id": "DOC-20260613-JDG-013",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r52-pixel.md",
+      "doc_id": "DOC-20260613-JDG-011",
+      "vrd_id": "",
+      "round_id": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "p0_count": 0,
+      "new_p1_count": 0
+    }
+  ]
+}

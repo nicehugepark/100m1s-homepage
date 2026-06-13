@@ -174,6 +174,86 @@ footer {
   flex-wrap: wrap;
 }
 
+/* ── 수렴 탭 (convergence) — 토큰 전용(하드코딩 0)·라이트/다크 정합 ── */
+.conv-h {
+  font-size: 13px; font-weight: 700; color: var(--tx);
+  margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--bd);
+}
+/* state/verdict 의미 배지 — 라이트/다크 공용 토큰 (다크모드 제1원칙: 색만이 아닌 텍스트 라벨 병기) */
+.badge.conv-ok   { color: var(--pos); border-color: var(--pos); background: var(--pos-bg); }
+.badge.conv-no   { color: var(--ru);  border-color: var(--ru);  background: var(--neg-bg); }
+.badge.conv-cand { color: var(--am);  border-color: var(--am);  background: var(--am3); }
+.badge.conv-prog { color: var(--neu); border-color: var(--neu); background: var(--neu-bg); }
+
+.conv-unknown { color: var(--dm); font-weight: 700; cursor: help; }
+.conv-warn { color: var(--ru); }
+.conv-evid-missing { color: var(--ru); font-weight: 600; }
+
+/* 수렴 추이 — 회차 × (P0+신규P1 합). 단조 하향 = 수렴 시각화 */
+.conv-trend-repo { margin-bottom: 16px; }
+.conv-trend-title {
+  font-size: 12px; font-weight: 600; color: var(--tx2); margin-bottom: 6px;
+}
+.conv-bars {
+  display: flex; gap: 8px; align-items: flex-end;
+  padding: 10px; background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: 8px; overflow-x: auto; min-height: 130px;
+}
+.conv-bar-col {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px; min-width: 56px;
+}
+.conv-bar-val { font-size: 11px; color: var(--tx2); font-variant-numeric: tabular-nums; }
+.conv-bar {
+  width: 28px; border-radius: 4px 4px 0 0; background: var(--neu);
+  transition: height .2s;
+}
+.conv-bar.conv-ok   { background: var(--pos); }
+.conv-bar.conv-no   { background: var(--ru); }
+.conv-bar.conv-cand { background: var(--am2); }
+.conv-bar.conv-prog { background: var(--neu); }
+/* 미측정(count unknown) = 사선 패턴 + 흐림 (거짓 0 막대와 시각 구분) */
+.conv-bar-unknown {
+  background: repeating-linear-gradient(45deg, var(--bd), var(--bd) 3px, transparent 3px, transparent 6px) !important;
+  border: 1px dashed var(--dm);
+}
+.conv-bar-x {
+  font-size: 10px; color: var(--dm); text-align: center;
+  max-width: 56px; word-break: break-all; line-height: 1.2;
+}
+
+.conv-sql-btn {
+  background: var(--sf); color: var(--am); border: 1px solid var(--am);
+  border-radius: 6px; padding: 5px 10px; font-size: 12px;
+  cursor: pointer; font-family: inherit;
+}
+.conv-sql-btn:hover { background: var(--am4); }
+#conv-sql-input {
+  width: 100%; background: var(--sf); color: var(--tx);
+  border: 1px solid var(--bd); border-radius: 6px;
+  padding: 8px 10px; font-size: 12px; margin-bottom: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+#conv-sql-input:focus { outline: none; border-color: var(--am); }
+.sub { color: var(--tx2); font-size: 11px; }
+
+/* 🔴 다크모드 정합 (다크모드 제1원칙: 가독성 저하 0·정보 손실 0).
+   기존 admin은 라이트 전용이었음 — 토큰 remap으로 전 탭 dark 대응(convergence 포함).
+   대비: 본문 tx≥AA, 의미색(pos/ru/am/neu) 다크 배경 위 가독 유지. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161C; --bg2: #1E212A; --sf: #1A1D26; --bd: #2E3340;
+    --tx: #E8ECF3; --tx2: #B4BCCB; --dm: #7E879A;
+    --am: #E8C063; --am2: #D8A93C; --am3: #4A3D1A; --am4: #24201410;
+    --ru: #F08A86;
+    --pos: #6FCB84; --pos-bg: #16301E;
+    --neg: #F08A86; --neg-bg: #341A1A;
+    --neu: #9AA6BD; --neu-bg: #232733;
+  }
+  .topbar { background: #221E14; }
+  code { color: var(--tx); }
+}
+
 /* P0 #2 — 모바일 (≤640px) */
 @media (max-width: 640px) {
   body { font-size: 12px; }
