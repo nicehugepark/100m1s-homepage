@@ -281,6 +281,13 @@ function _splitWireNews(wire) {
     if (Array.isArray(it.impact_tags)) chip.impact_tags = it.impact_tags.filter((t) => typeof t === 'string' && t.trim());
     if (typeof it.direction === 'string' && it.direction.trim()) chip.direction = it.direction.trim();
     if (it.body_fetched === false) chip.body_fetched = false;
+    // Q-20260613-165 ① (대표 12:50 steer) — 시장무관 wire 항목 hide. interpret_wire.py 가
+    //   의례성·기념성 발표를 impact_tags=[] + direction='중립'(=시장 영향 없음 분류)로 산출
+    //   (라이브 WH 5건 전건: 영부인 저축·건국정신·원주민 상아·청소년 AI챌린지·독립250주년).
+    //   이 둘이 동시 성립 = "시장 메커니즘 0" 확정 → 표시 제외 (데이터·수집 무수정 — 렌더만 제한,
+    //   §1.1 wire-ko 디폴트 무표기와 동축). 한쪽만 성립(태그 有 또는 비중립)이면 잔존.
+    const _tags = chip.impact_tags || [];
+    if (_tags.length === 0 && chip.direction === '중립') continue;
     (_WIRE_US_SOURCE_RE.test(it.source || '') ? out.us : out.kr).push(chip);
   }
   return out;
@@ -427,8 +434,10 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) 
 }
 
 // ② 장중 글로벌 지표 구획 — 코스피·코스닥 카드 직후·기존 US 블록 직전. micro-stat 그리드 (카드 아님 —
-//   12px 라벨+값+델타). 항목 3종 확정(조니 미니 단정 2026-06-12 17:06): 나스닥 선물(기존 us-indices
-//   futures 수집 데이터) / 원/달러 / WTI 선물 (macro_indicators.json). 미 10년물 제외 확정 — 렌더 0줄.
+//   12px 라벨+값+델타). 항목 4종: 나스닥 선물(기존 us-indices futures) / 원/달러 / WTI 선물
+//   (macro_indicators.json). 미10년물 금리(ust10y, ^TNX yield)는 종전 ZN=F 선물(역방향 가격)을
+//   조니 단정(2026-06-12 17:06) 제외했다가 Q-20260613-165 대표 12:50 승인으로 yield 직접 되살림
+//   — value=금리(%), delta=bp(change_bp), 금리↑=악재(빨강). 선물 ZN=F 은 여전히 미수집.
 //   라벨 정직 3칙(조니 단정): 즉시성·예측성 단어 2종 미사용 / "지수" 단어 미사용(코스피·코스닥 전용)
 //   / 항목별 60분 stale 가드(마지막 수집 60분+ 시 해당 항목 무렌더). 가용 항목만 렌더(자연 축소) — 0개면 구획 무렌더.
 // R46 P0-1 (조니 2026-06-12 19:37 단정 — 요약↔본문 모순) — 미장 항목 단일 소스 헬퍼.
@@ -476,8 +485,10 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
   const _fmt2 = (v) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const items = [];
   let newestTs = null;
-  const _push = (label, value, pct, ts) => {
-    items.push({ label, value, pct });
+  // deltaText: 미지정 시 pct 를 "±N.NN%" 로 렌더 (원/달러·WTI·선물). 지정 시 그대로 사용
+  //   (미10년물 금리 = "±N.Nbp"). 색 방향(up/down)은 항상 pct 부호에서 파생 — 금리↑(+bp)=up=빨강.
+  const _push = (label, value, pct, ts, deltaText) => {
+    items.push({ label, value, pct, deltaText });
     if (newestTs == null || ts > newestTs) newestTs = ts;
   };
   // 나스닥 선물 — _freshNasdaqFuture 단일 소스 (R46 P0-1 — 접힘 미니요약과 같은 헬퍼에서 파생.
@@ -495,16 +506,30 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
       if (typeof e.change_pct !== 'number' || !isFinite(e.change_pct)) continue;
       _push(e.label, _fmt2(e.value), e.change_pct, ts);
     }
+    // Q-20260613-165 ② (대표 12:50 승인) — 미10년물 금리(ust10y). 종전 ZN=F 선물(역방향
+    //   가격) 제외 확정을 yield(^TNX) 직접으로 되살림: value = yield(%) 그 자체("4.49%"),
+    //   delta = change_bp(bp). 금리↑=악재 → pct 부호에 change_bp 주입 시 +bp=up=빨강
+    //   (원/달러·WTI 동형 색). bar_asof 60분 stale 가드 동일. graceful (값/bp 결손 시 무렌더).
+    const u = macro.indicators.ust10y;
+    if (u && typeof u.value === 'number' && isFinite(u.value)
+      && typeof u.change_bp === 'number' && isFinite(u.change_bp)) {
+      const ts = _freshTs(u.bar_asof);
+      if (ts != null) {
+        const bpText = `${u.change_bp >= 0 ? '+' : ''}${u.change_bp.toFixed(1)}bp`;
+        _push(u.label, `${_fmt2(u.value)}%`, u.change_bp, ts, bpText);
+      }
+    }
   }
   if (items.length === 0) return '';
   const itemsHtml = items.map((it) => {
     const dir = it.pct > 0 ? 'up' : (it.pct < 0 ? 'down' : 'flat');
     const arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
-    const pctText = `${it.pct >= 0 ? '+' : ''}${it.pct.toFixed(2)}%`;
+    // deltaText 지정(미10년물 bp) 시 그대로, 미지정 시 "±N.NN%" (원/달러·WTI·선물).
+    const deltaText = it.deltaText || `${it.pct >= 0 ? '+' : ''}${it.pct.toFixed(2)}%`;
     return `<div class="glb-stat">`
       + `<span class="glb-stat-label">${escapeHtml(it.label)}</span>`
       + `<span class="glb-stat-value">${escapeHtml(it.value)}</span>`
-      + `<span class="glb-stat-delta ${dir}"><span aria-hidden="true">${arrow}</span>${escapeHtml(pctText)}</span>`
+      + `<span class="glb-stat-delta ${dir}"><span aria-hidden="true">${arrow}</span>${escapeHtml(deltaText)}</span>`
       + `</div>`;
   }).join('');
   // Q-20260613-158 ③ — 휴장 최신 뷰 + 최신 항목이 60분+ 경과(주말 전형) → 날짜 명시 시점 라벨.

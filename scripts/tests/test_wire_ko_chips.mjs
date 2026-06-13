@@ -68,13 +68,25 @@ const WIRE_FIXTURE = {
       ko_title: 'Fed, 금융 규제 데이터 표준화 확정',
       causal_summary: '연준이 데이터 표준을 확정했다. 감시 체계 현대화 가능성이 주시된다.',
       causal_chain: '데이터 표준화 → 정보 호환성 강화 → 감시 체계 현대화',
-      impact_tags: [], direction: '중립', body_fetched: false,
+      // Q-20260613-165 ① — 본 항목은 basis(body_fetched=false) 표기 검증용. 시장무관 hide
+      //   규칙(tags=[] && 중립)에 걸리지 않도록 tag 1개 + 비-중립(불확실) 부여 (생존 보장).
+      impact_tags: ['금리'], direction: '불확실', body_fetched: false,
     },
     {
       published_at: '2026-06-12T21:00:00+09:00', source: 'White House',
       title: 'Remarks at the National Prayer Breakfast',
       url: 'https://www.whitehouse.gov/x3',
-      // ko 필드 전무 — 해석 실패분 graceful 케이스
+      // ko 필드 전무 — 해석 실패분 graceful 케이스. impact_tags·direction 부재(=undefined)이므로
+      //   ① hide(tags=[] && direction==='중립') 미해당 → 생존 (graceful 칩으로 렌더).
+    },
+    {
+      // Q-20260613-165 ① — 시장무관 hide 케이스 (대표 12:50). interpret_wire 가 의례성 발표를
+      //   impact_tags=[] + direction='중립'으로 산출 → 표시 제외 (라이브 WH 5건 전건 동형).
+      published_at: '2026-06-12T20:30:00+09:00', source: 'White House',
+      title: 'Presidential Message on the 250th Anniversary',
+      url: 'https://www.whitehouse.gov/x5',
+      ko_title: '독립 250주년 기념 대통령 성명',
+      impact_tags: [], direction: '중립', body_fetched: true,
     },
     {
       published_at: '2026-06-12T20:00:00+09:00', source: '연합뉴스',
@@ -104,7 +116,16 @@ const split = await page.evaluate((wire) => {
     kr0: r.kr[0],
   };
 }, WIRE_FIXTURE);
-assert(split.usLen === 3 && split.krLen === 1, `_splitWireNews 분류 us=3 kr=1 (실측 us=${split.usLen} kr=${split.krLen})`);
+// Q-20260613-165 ① — 시장무관(tags=[] && 중립) hide 적용 후: SEC(호재)·Fed(불확실)·WH프레이어(ko부재)
+//   3건 생존, WH 250주년(tags=[]+중립) 1건 hide → us=3. KR(연합 국고채) 무관 = 1.
+assert(split.usLen === 3 && split.krLen === 1, `_splitWireNews 분류 us=3 kr=1 (① hide 후, 실측 us=${split.usLen} kr=${split.krLen})`);
+// ① hide 직접 검증 — 250주년(tags=[]+중립) 항목이 어느 열에도 없어야 (수집·데이터 무수정·렌더 제외).
+const _allChips = await page.evaluate((wire) => {
+  const r = _splitWireNews(wire);
+  return r.us.concat(r.kr).map((c) => c.title);
+}, WIRE_FIXTURE);
+assert(!_allChips.some((t) => t.includes('250th Anniversary')), '① 시장무관(tags=[]+중립) WH 250주년 hide — 어느 열에도 미출현');
+assert(_allChips.some((t) => t.includes('SEC Proposes')) && _allChips.some((t) => t.includes('Prayer Breakfast')), '① 시장관련(호재)·필드부재(graceful) 항목은 잔존 — 과잉 hide 0');
 assert(split.us0.ko_title === 'SEC, 주식 주문보호 규정(NMS 611) 폐지 추진', 'full-ko: ko_title carry');
 assert(split.us0.causal_chain.includes('→') && split.us0.impact_tags.length === 2 && split.us0.direction === '호재', 'full-ko: chain/tags/direction carry');
 assert(split.us0.body_fetched === undefined, 'body_fetched=true 는 carry 0 (false 명시분만)');
@@ -183,8 +204,9 @@ if (usHtmlInfo.ko) {
   assert(/^https:\/\/www\.sec\.gov/.test(k.srcHref || '') && k.srcTarget === '_blank', '펼침 본문 .wire-ko-srclink a[href] + _blank (법무 딥링크 보존, 158 ①)');
 }
 assert(!!usHtmlInfo.basis && usHtmlInfo.basis.basisLine.length === 1 && usHtmlInfo.basis.basisLine[0].includes('보수 해석'), 'body_fetched=false → 보수 표기 1줄');
-// R49 라이더 3-1 — direction '중립' = 무표기 (비중립 호재/악재만 렌더). 종전 "중립 토큰 1건" 어서션 반전.
-assert(!!usHtmlInfo.basis && usHtmlInfo.basis.tags.length === 0, 'direction 중립 → 토큰 0건 ([중립] 무표기, R49 라이더 3-1)');
+// R49 라이더 3-1 — direction '불확실' = 무표기 (비중립 호재/악재만 렌더). impact_tags(금리)는 잔존.
+//   Q-165 ① 후 본 항목 direction 중립→불확실 (hide 회피용) — 방향 토큰 0건은 동일(불확실도 무표기).
+assert(!!usHtmlInfo.basis && usHtmlInfo.basis.tags.length === 1 && usHtmlInfo.basis.tags[0] === '금리', 'direction 불확실 → 방향 토큰 0 + impact_tags(금리) 1건만 (R49 라이더 3-1)');
 assert(usHtmlInfo.defaultViewKindCount === 0, '디폴트 뷰 분류 라벨 0건 — [해석]은 펼침 본문 경계 마커만 (R49 라이더 3-2)');
 assert(!!usHtmlInfo.plain && usHtmlInfo.plain.koEls === 0, 'ko 부재 EN 칩 = .wire-ko-* 0건 (기존 영문 그대로)');
 assert(!!usHtmlInfo.plain && !usHtmlInfo.plain.dash, 'ko 부재 칩에 "—" 색칠 0');
