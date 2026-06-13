@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="dark light">
 <!-- 미게재 자산 — 검색 노출 차단 + nav 미링크 (브랜드 로고 인트로 영상 프리뷰) -->
 <meta name="robots" content="noindex, nofollow">
-<title>華麗 로고 인트로 — Sora v9 | 100M1S</title>
+<title>華麗 로고 인트로 — Sora v10 | 100M1S</title>
 <!-- 빈 파비콘 인라인 — 브라우저 기본 /favicon.ico 요청(404) 억제, 추가 네트워크 0 -->
 <link rel="icon" href="data:,">
 
@@ -131,13 +131,14 @@
   <main class="stage">
     <div class="player" id="player" role="button" tabindex="0" aria-label="영상 재생/일시정지 토글">
       <!--
-        v9 기본 노출 (딸이 그린 단순 S 형상 보존 + WWDC 'All systems glow' 光彩 — 우아·미니멀).
-        v8 사실적 뱀 디테일(징그러움) 되돌림: 플랫 단일 획 + 발광만. WebM/VP9 우선 + MP4 폴백
-        (faststart moov 선두). poster + preload="metadata"로 첫 페인트 경량화.
+        v10 기본 노출 (딸 단순 S 형상 + 머리 루비 눈 복원 + 웅장·흐르는 光彩의 움직임).
+        v9 누락분(머리 루비 #A01528) 복원 + 정적 glow → 빛이 획을 따라 역동적으로 흐름.
+        절제 가드: 천박 번쩍/밈/도박 네온 회피(태그라인 '1억, 한 걸음에' 묵직함 정합).
+        WebM/VP9 우선 + MP4 폴백(faststart moov 선두). poster + preload="metadata"로 경량화.
       -->
       <video
         id="v"
-        poster="poster-v9.jpg"
+        poster="poster-v10.jpg"
         preload="metadata"
         autoplay
         loop
@@ -146,8 +147,8 @@
         webkit-playsinline
         disablepictureinpicture
         x5-playsinline>
-        <source id="src-webm" src="hwaryeo-intro-sora-v9.webm" type="video/webm">
-        <source id="src-mp4" src="hwaryeo-intro-sora-v9.mp4" type="video/mp4">
+        <source id="src-webm" src="hwaryeo-intro-sora-v10.webm" type="video/webm">
+        <source id="src-mp4" src="hwaryeo-intro-sora-v10.mp4" type="video/mp4">
       </video>
       <div class="play-overlay" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none">
@@ -158,7 +159,8 @@
     </div>
 
     <div class="toggle" role="group" aria-label="버전 선택">
-      <button type="button" data-v="v9" aria-pressed="true">v9</button>
+      <button type="button" data-v="v10" aria-pressed="true">v10</button>
+      <button type="button" data-v="v9" aria-pressed="false">v9</button>
       <button type="button" data-v="v8" aria-pressed="false">v8</button>
       <button type="button" data-v="v4" aria-pressed="false">v4</button>
       <button type="button" data-v="v3" aria-pressed="false">v3</button>
@@ -167,8 +169,8 @@
     </div>
 
     <div class="caption">
-      <div class="t">華麗 <span class="accent">로고 인트로</span> · <span id="ver-label">Sora v9</span></div>
-      <div class="s">16초 · 화면을 탭하면 일시정지/재생 · v1~v4·v8·v9 비교 가능</div>
+      <div class="t">華麗 <span class="accent">로고 인트로</span> · <span id="ver-label">Sora v10</span></div>
+      <div class="s">16초 · 화면을 탭하면 일시정지/재생 · v1~v4·v8~v10 비교 가능</div>
     </div>
   </main>
 
@@ -179,8 +181,13 @@
       var verLabel = document.getElementById('ver-label');
       var toggleBtns = document.querySelectorAll('.toggle button');
 
-      // 버전별 소스 정의 — v9/v4/v3/v2는 WebM 우선+MP4 폴백, v8/v1은 MP4 단일(faststart, 비교용)
+      // 버전별 소스 정의 — v10/v9/v4/v3/v2는 WebM 우선+MP4 폴백, v8/v1은 MP4 단일(faststart, 비교용)
       var SOURCES = {
+        v10: { poster: 'poster-v10.jpg', label: 'Sora v10',
+              sources: [
+                { src: 'hwaryeo-intro-sora-v10.webm', type: 'video/webm' },
+                { src: 'hwaryeo-intro-sora-v10.mp4',  type: 'video/mp4'  }
+              ] },
         v9: { poster: 'poster-v9.jpg', label: 'Sora v9',
               sources: [
                 { src: 'hwaryeo-intro-sora-v9.webm', type: 'video/webm' },
