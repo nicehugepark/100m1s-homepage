@@ -1948,9 +1948,10 @@ function _wireKoBlockHtml(c) {
   if (c.ko_title && typeof c.title === 'string' && c.title && c.title !== c.ko_title) {
     h += `<span class="wire-ko-en">${escapeHtml(sanitize(c.title))}</span>`;
   }
-  // R49 라이더 3-2 — [해석] = 경계 마커 ("여기서부터 추정" 선 긋기): 해석 본문 시작점 단위당 1회.
-  //   현행 interpret_wire 산출은 sm⟺ch 동시 존재 (2026-06-13 라이브 18건 실측 전건) — sm 선두 = 본문 시작점.
-  if (sm) h += `<span class="wire-ko-summary"><span class="cal-chip-kind">해석</span>${escapeHtml(sanitize(sm))}</span>`;
+  // judge-news-chips YES (DOC-20260613-JDG-012) — [해석] 분류 토큰 제거. 펼침 sm 본문은 유지 (정보손실 0).
+  //   KR(_buildKrMacroChip)·US 단일 빌더라 본 1곳 = 양 끝 일괄 (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 예방).
+  //   detail_bracket_tally([다음주 경제]·[투자주의] 등 디스클로저 라벨)는 본 변경과 무관 — 회귀 0.
+  if (sm) h += `<span class="wire-ko-summary">${escapeHtml(sanitize(sm))}</span>`;
   if (ch) h += `<span class="wire-ko-chain">${escapeHtml(sanitize(ch))}</span>`;
   const tags = [];
   // R49 라이더 3-1 (조니 2심 단정 7) — 방향 토큰 = 비중립(호재/악재)만 렌더. [중립]·불확실 등
