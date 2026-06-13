@@ -1,13 +1,27 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-13T18:21:12.183318+09:00",
+  "generated_at": "2026-06-13T23:44:14.319998+09:00",
   "summary": {
-    "HOME": {
-      "open_requests": 4,
-      "total_requests": 4,
-      "active_rounds": 2,
-      "latest_round": "RND-HOME-003",
+    "BYBIAS": {
+      "open_requests": 5,
+      "total_requests": 9,
+      "active_rounds": 1,
+      "latest_round": "RND-BYBIAS-049",
       "latest_state": "판정완료"
+    },
+    "HOME": {
+      "open_requests": 5,
+      "total_requests": 6,
+      "active_rounds": 2,
+      "latest_round": "RND-HOME-004",
+      "latest_state": "unknown"
+    },
+    "INFRA": {
+      "open_requests": 1,
+      "total_requests": 1,
+      "active_rounds": 0,
+      "latest_round": null,
+      "latest_state": null
     },
     "PM320": {
       "open_requests": 8,
@@ -15,6 +29,13 @@
       "active_rounds": 6,
       "latest_round": "RND-PM320-052",
       "latest_state": "판정완료"
+    },
+    "repo": {
+      "open_requests": 1,
+      "total_requests": 1,
+      "active_rounds": 0,
+      "latest_round": null,
+      "latest_state": null
     },
     "—": {
       "open_requests": 1,
@@ -25,25 +46,69 @@
     }
   },
   "trend": {
+    "BYBIAS": [
+      {
+        "round_id": "RND-BYBIAS-047",
+        "alias": "R47",
+        "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-BYBIAS-048",
+        "alias": "R48",
+        "state": "판정완료",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 7,
+        "verdict_count": 3
+      },
+      {
+        "round_id": "RND-BYBIAS-049",
+        "alias": "R49",
+        "state": "판정완료",
+        "quality_score": 5.0,
+        "quality_n": 1,
+        "defect_sum": 10,
+        "verdict_count": 3
+      }
+    ],
     "HOME": [
       {
         "round_id": "RND-HOME-001",
         "alias": "홈 renewal",
         "state": "미수렴",
-        "defect_sum": null,
-        "verdict_count": 0
+        "quality_score": 8.0,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 1
       },
       {
         "round_id": "RND-HOME-002",
         "alias": "홈 R2",
         "state": "미수렴",
-        "defect_sum": null,
-        "verdict_count": 0
+        "quality_score": 7.2,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 1
       },
       {
         "round_id": "RND-HOME-003",
         "alias": "홈 R3",
         "state": "판정완료",
+        "quality_score": 8.0,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 1
+      },
+      {
+        "round_id": "RND-HOME-004",
+        "alias": "홈 R4",
+        "state": "unknown",
+        "quality_score": null,
+        "quality_n": 0,
         "defect_sum": null,
         "verdict_count": 0
       }
@@ -53,6 +118,8 @@
         "round_id": "RND-PM320-046",
         "alias": "R46",
         "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
         "defect_sum": null,
         "verdict_count": 0
       },
@@ -60,6 +127,8 @@
         "round_id": "RND-PM320-047",
         "alias": "R47",
         "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
         "defect_sum": null,
         "verdict_count": 0
       },
@@ -67,6 +136,8 @@
         "round_id": "RND-PM320-048",
         "alias": "R48",
         "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
         "defect_sum": null,
         "verdict_count": 0
       },
@@ -74,34 +145,44 @@
         "round_id": "RND-PM320-049",
         "alias": "R49",
         "state": "미수렴",
-        "defect_sum": null,
-        "verdict_count": 0
+        "quality_score": 6.2,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 3
       },
       {
         "round_id": "RND-PM320-050",
         "alias": "R50",
         "state": "미수렴",
-        "defect_sum": null,
-        "verdict_count": 0
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 0,
+        "verdict_count": 2
       },
       {
         "round_id": "RND-PM320-051",
         "alias": "R51",
         "state": "미수렴",
-        "defect_sum": null,
-        "verdict_count": 0
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 0,
+        "verdict_count": 2
       },
       {
         "round_id": "RND-PM320-052",
         "alias": "R52",
         "state": "판정완료",
-        "defect_sum": null,
-        "verdict_count": 0
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 0,
+        "verdict_count": 2
       }
     ]
   },
   "integrity_warnings": [
-    "round_id 미매핑 verdict 24건 (frontmatter 미적용·점진 마이그레이션 백로그)"
+    "verdict r48-손님 패널.md request_id=R48 REQUEST-LEDGER 미존재",
+    "verdict r49-손님 패널.md request_id=R49 REQUEST-LEDGER 미존재",
+    "round_id 미매핑 verdict 27건 (frontmatter 미적용·점진 마이그레이션 백로그)"
   ],
   "requests": [
     {
@@ -146,7 +227,7 @@
       "state_raw": "🔍 판정중",
       "owner": "planning-product-ia + 총괄 심사 패널 제3안 + **design-home-vitality-ia 발사(15:30)**",
       "provenance": "— / —",
-      "close_evidence": "제안만(planning A안·총괄 심사 패널 제3안 성숙도 1축)·**미구현**. 대표 15:30 \"메뉴 카테고리 안 움직임\" catch 정당 → design 재발사·구현 직렬·총괄 심사 패널 IA 판정 대기 ⚠️미종결"
+      "close_evidence": "제안만(planning A안·총괄 심사 패널 제3안 성숙도 1축)·**미구현**. 대표 15:30 \"메뉴 카테고리 안 움직임\" catch 정당 → design-home-vitality-impl **구현+배포 완료(23:38 라이브 56cdecdeb·「주식 라인」허브·ByBias 베타·총괄 심사 패널 제3안 위계·run-qa 12/12)** → **홈 R4 총괄 심사 패널 IA 판정 발사** 🚀배포·판정중"
     },
     {
       "req_id": "Q-161",
@@ -168,7 +249,7 @@
       "state_raw": "🚀 배포",
       "owner": "design-home-renewal → dev-homepage-renewal → 총괄 심사 패널 판정",
       "provenance": "— / —",
-      "close_evidence": "홈 재편 배포 착지 15:18 (`bd1fd78c2` 100m1s.com 라이브·다크모드·연락처·개인사업자·펄스) + 총괄 심사 패널 조건부 수렴(JDG-011) · **잔존 P1 = copyright opacity 대비 → dev-home-p1-fix** ⚠️P1 잔존"
+      "close_evidence": "홈 재편 배포 착지 15:18 (`bd1fd78c2` 100m1s.com 라이브·다크모드·연락처·개인사업자·펄스) + 총괄 심사 패널 조건부 수렴(JDG-011) · 잔존 P1 = copyright opacity 대비 → **이미 라이브 적용 확인(#9AA3B8 home live)·종결**. fix 브랜치는 범위 밖 워드마크 변경 동반이라 미채택 ✅"
     },
     {
       "req_id": "Q-163",
@@ -199,9 +280,9 @@
       "captured": "✅",
       "state": "종결",
       "state_raw": "✅ 종결",
-      "owner": "docs-request-jury-rule",
+      "owner": "docs-request-심사단-rule",
       "provenance": "— / —",
-      "close_evidence": "lead-meta §14 신설(`§14` L1004) + jury §7/총괄 심사 패널 §8 + 메모리 박제 [[feedback_user_request_to_jury_round]]"
+      "close_evidence": "lead-meta §14 신설(`§14` L1004) + 심사단 §7/총괄 심사 패널 §8 + 메모리 박제 "
     },
     {
       "req_id": "Q-운영catch",
@@ -221,7 +302,7 @@
       "captured": "✅",
       "state": "배포",
       "state_raw": "🚀 배포",
-      "owner": "ishikawa-wire-macro-audit + dev-q165-wire-macro → 배포",
+      "owner": "뉴스분석-wire-macro-audit + dev-q165-wire-macro → 배포",
       "provenance": "— / —",
       "close_evidence": "배포 착지 14:26 (`6bf55ab52`): WH hide(의례성 6건 DOM 부재)·WSJ World 소스·미국채 ^TNX yield(주말 graceful·**월요일 cron 실노출**)·지정학 인과 룰 (MQ L12·L26). 알자지라=법무 BLOCK(ToS)→WSJ World 대체"
     },
@@ -243,7 +324,7 @@
       "captured": "🔨",
       "state": "구현중",
       "state_raw": "🔨 구현중",
-      "owner": "ishikawa-domestic-news-audit → dev-news-ranking-fix",
+      "owner": "뉴스분석-domestic-news-audit → dev-news-ranking-fix",
       "provenance": "— / —",
       "close_evidence": "조선비즈 swap(`ac4962c3`)+score 배선(`0363f089`) 착지 14:52·**push 보류(cron 디스크 실행=다음 fire 반영)** ⚠️미배포 (분류 root = LLM timeout 별트랙)"
     },
@@ -278,7 +359,7 @@
       "state_raw": "✅ 종결",
       "owner": "docs-jdg-catchup",
       "provenance": "— / —",
-      "close_evidence": "lead-meta §15 신설(`§15` L1024·매 라운드 패널별 표 의무) + jury §7.1 + 총괄 심사 패널 §8(c) + main repo 커밋 `7dfc1d76` (MQ L9)"
+      "close_evidence": "lead-meta §15 신설(`§15` L1024·매 라운드 패널별 표 의무) + 심사단 §7.1 + 총괄 심사 패널 §8(c) + main repo 커밋 `7dfc1d76` (MQ L9)"
     },
     {
       "req_id": "Q-생동감",
@@ -289,7 +370,7 @@
       "state_raw": "🔍 판정중",
       "owner": "design-home-vitality-ia 발사(15:30) → 총괄 심사 패널 생동감 판정",
       "provenance": "Q-162 / —",
-      "close_evidence": "lead 오독 정직 박제(펄스=신선도 readout=오독). 생동감 2~3안 read-only 제안 → home-p1 착지 후 구현 직렬 → 총괄 심사 패널 판정 (MQ L8) ⚠️미구현"
+      "close_evidence": "lead 오독 정직 박제(펄스=신선도 readout=오독). 생동감 2~3안 read-only 제안 → design-home-vitality-impl **구현+배포 완료(23:38 라이브·reveal/sun-breathe/nav밑줄·모바일 경량·reduced-motion 정지·run-qa 12/12)** → **홈 R4 총괄 심사 패널 생동감 판정 발사** 🚀배포·판정중"
     },
     {
       "req_id": "Q-169",
@@ -311,7 +392,150 @@
       "state_raw": "🔨 구현중",
       "owner": "docs-convergence-build(본 RPT-001)",
       "provenance": "Q-169 / —",
-      "close_evidence": "REQUEST-LEDGER 스키마 확장 + ROUND-LOG 신설(R46~R51·홈R1/R2 backfill) + lead-meta §17 + CLAUDE.md § + 전파 프롬프트 생성 중 ⚠️구현 잔존 (2단 build_convergence.py·어드민 탭 = dev 후행)"
+      "close_evidence": "REQUEST-LEDGER 스키마 확장 + ROUND-LOG 신설(R46~R51·홈R1/R2 backfill) + lead-meta §17 + CLAUDE.md § + 2단 build_convergence.py 완성(메인 repo·18:21) + 어드민 수렴 탭 라이브(insight-first) + 총괄 심사 패널 JDG-018 NO trend-fix 배포 시도 → **build_convergence.py 버그2건 적발**(FK orphan crash + 영문 persona sanitize 누락·DevOps 정직 catch·lead cross-check 확인 = 라이브 누출 디자인 심사 패널×15·뉴스분석×2) → **dev-convergence-build-fix 발사(23:18)** fix+재빌드+배포 → 총괄 심사 패널 재판정 ⚠️수정중"
+    },
+    {
+      "req_id": "REQ-HOME-20260613-001",
+      "repo": "HOME",
+      "summary": "\"메인 홈페이지가 화려했으면 — WWDC 2026 반짝이는 크롬 + 불가리 세르펜티 반지 느낌으로 화려·강렬한 100m1s 뱀 로고 생성\" (18:13)",
+      "captured": "🆕",
+      "state": "판정중",
+      "state_raw": "🔍 판정중",
+      "owner": "branding-hwaryeo-logo(본 작업·생성) → 총괄 심사 패널/branding 화려 fit 판정(다음 라운드)",
+      "provenance": "— / —",
+      "close_evidence": "gpt-image-2 4변형 생성(`records/qa/design-proposals/hwaryeo-logo-20260613/v1~v4.png`) + REQ 등록. **회사(100m1s) 마크 화려 진화안** (PM320 Q-163과 별개 — 모회사=골드 그라디언트 광택 위계, CONCEPT.md §1 정합). 법무: 불가리/애플 느낌만·상표 복제 0. ⚠️미판정·미적용 (자산 제작만, 적용은 별도 dev 사이클). **+18:38 v5 하이브리드 3변형 추가** (대표 18:32 \"v1·v3 중간 타협점\" — v5a 볼드우세/v5b 균형/v5c 크롬우세, `v5a~c-hybrid-*.png`). 4점 가드 실측: 16px mono-fill 전변형 S 식별 PASS, 권고=**v5a**(소형 최강). 다음=open+판정"
+    },
+    {
+      "req_id": "REQ-HOME-20260613-002",
+      "repo": "HOME",
+      "summary": "\"홈 Products PM320 카드 로고 다크모드 가독 불가 — PM 글리프(#1a1d26)가 다크 카드 배경과 CR~1.1, '320'만 보임. 다크 워드마크 분리(옵션1) + prefers-color-scheme 분기. ByBias 카드(/bybias-logo.svg) 동일 점검\" (18:38)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "design-darklogo(옵션1a 확정) → home-darklogo-dev(격리 fix) → home-darklogo-verify(독립 GO) → devops-deploy-batch 배포",
+      "provenance": "— / —",
+      "close_evidence": "QA 독립검증 GO(4/4 글리프 CR≥4.5·`<picture>` 다크스왑 실발동) → ~~push 대표 결정 대기~~ 대표 standing 지시로 게이트 자율화 → **23:14 배포 완료·라이브 검증 GO**(homepage staging→main FF·다크 SVG 2종 HTTP200·홈 `<picture>` 다크소스 라이브·bybias 동형) ✅종결"
+    },
+    {
+      "req_id": "REQ-INFRA-20260613-001",
+      "repo": "INFRA",
+      "summary": "\"records/INDEX.md placeholder(`?`·빈제목) 행 정상화 — index-rebuild.sh/sync hook의 type정규식(JDG·BEN·TEC·DEC·DBG 미등록)·title H1-only 가정 결함 → frontmatter title→H1→H2 fallback + type 전수 등록 + 재생성 + 단위테스트 + verdict SCHEMA frontmatter 마이그레이션 연동\" (18:38)",
+      "captured": "🆕",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "docs-index-hook-fix(워크트리·발사) → qa-cross 객관 검증 게이트",
+      "provenance": "— / —",
+      "close_evidence": "사전 적발 = MASTER-QUEUE L11(near-term S fix·FLR 검토). hook false-fidelity = (내부코드) 동형. 종결 = 스크립트 fix commit + 단위테스트 PASS + INDEX 타겟 행 정상화(JDG-001/008/009/010·DSN-002 제목 / JDG-012등 RESERVED / 깨진링크 0) + 메인 재반영 + FLR 등재 ⚠️미종결"
+    },
+    {
+      "req_id": "req_id",
+      "repo": "repo",
+      "summary": "대표 요청 (verbatim 요지)",
+      "captured": "포착",
+      "state": "unknown",
+      "state_raw": "상태",
+      "owner": "판정/담당",
+      "provenance": "parent / origin_vrd",
+      "close_evidence": "종결 근거"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-001",
+      "repo": "BYBIAS",
+      "summary": "\"판정단 의견이 다 숨겨져 있어서 참여도가 너무 떨어져 보인다·실제로 동작하긴 하는건지 의심스러울 정도·각자 의견이 제대로 반영되고 있는건지 알 수가 없으니\" (09:45) — 판정 가시성 프로토콜",
+      "captured": "🔍",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "docs-judgment-visibility + R47 spawn prompt 주입",
+      "provenance": "— / —",
+      "close_evidence": "4종 프로토콜 채택(JDG 전문 records 박제·PushNotification·풀패널 요약 직접 보고·의견→반영 추적 매트릭스) + R47 패널별 독립 판정문 9파일 실증(r47-*) + 대표 15:17 6축 리포트 의무로 확장(lead-meta §15)"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-002",
+      "repo": "BYBIAS",
+      "summary": "\"모든 공연이 모든 언어로 모든 어필리에이트를 잘 지원해야 레드오션 니치마켓 선점·언제까지 장난감 만드는 것 같이 할거야·다양한 컨텐츠와 다국어 지원 제대로\" (09:45) — 정식 출시 커버리지",
+      "captured": "🔍",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "biz-affiliate-readiness 감사 + dev-w4 9언어 코스 빌드 트랙",
+      "provenance": "— / —",
+      "close_evidence": "구조 매트릭스 기완성(76공연×11언어×4어필=847 HTML·rel=sponsored 전수). **진짜 갭 = 리치 코스 콘텐츠 1.3%→N 확장(L급 W4)**. 9언어 빌드 19:04 완료(693 html·앵커 9×14/14) → 부분 배포(zh-tw 라이브 18:01) → 나머지 surgical 배포 대기 ⚠️미종결"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-003",
+      "repo": "BYBIAS",
+      "summary": "\"어필리에이트로부터 거절당했다는 사실 명심·원인이 무엇이든 아직 제휴하고 싶은 마음이 안 든다·어떻게든 제휴하고 싶게 만들어야지\" (09:58) — 어필리에이트 거절/trust 페이지 (내부 YES vs 외부 NO)",
+      "captured": "🔍",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "biz-affiliate-readiness + trust-pages(P0) + R47 사업 패널 의제",
+      "provenance": "— / —",
+      "close_evidence": "감사 Top3(trust 13경로 404·thin 템플릿·트래픽 측정불가). 법무 trust 5종 draft 착지(`77242ece` TRUST-PAGES-COPY 307줄 ko+en·GA4 명시). **R47 투자 심사/총괄 심사 패널 P0 재확인(트래킹 5중3 무수익·trust 부재)** → R48 P0②. trust HTML 적용 = 코스 빌드 후 race 회피 ⚠️미종결"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-004",
+      "repo": "BYBIAS",
+      "summary": "\"총괄 심사 패널나 투자 심사 에이전트의 사업가로서의 기지가 거의 발휘되지 않는다\" (09:53) → **정정 \"판정 구조에 사업 축을 강제화할 일인가·각자 역할을 해야 하는데 그게 제대로 동작 안 한다·디자인팀이 사업을 고려해야 하는 건 아니잖아\"** (10:02) — 사업 축 전속 판정",
+      "captured": "🔍",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "(비공개) rev2(10:04) + R47 심사단-r47-투자 심사 전속 발사",
+      "provenance": "— / —",
+      "close_evidence": "전 패널 강제 철회·역할별 전속 재배치: 사업 질문(돈 못 버는 Top1·심사관 제휴)·전환 KPI 수치·수익화 blocker P0 승격권 = **투자 심사·투자자+YC Partner 전속**. 디자인 패널 사업 질문 부과 철회. R47 투자 심사 패널 NO 착지로 전속 동작 실증(트래킹 P0 발굴) + AGENT.md 영구화 A 이관"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-005",
+      "repo": "BYBIAS",
+      "summary": "\"판정 패널들이 모두 각자 역할을 제대로 하고 있나·최선을 다해 객관적으로 비판적인가·동작은 하고 있나·판정 프로세스에 오류와 허점이 없도록\" (10:05) — 판정 프로세스 전수 감사",
+      "captured": "🔍",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "fat-judgment-process-audit(10:06 발사·10:14 착지)",
+      "provenance": "— / —",
+      "close_evidence": "5축 감사 착지: **P0 3건(\"풀패널 전원 YES\" 실체 3/13 라벨 인플레이션·무효 enforcement 0 사문화·투자 심사 소환 누락↔거절 인과)**. 봉쇄 6종 R47 즉시 채택 + AGENT.md 영구화 5종 A 이관 + **FLR 등재(`(내부코드)` high recurring 2회차 `c6266d49` + (내부코드) critical 승격 `df88ae5d`)**"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-006",
+      "repo": "BYBIAS",
+      "summary": "\"MZ세대 K-pop 골수팬 다국어 통역/번역 작가\" 판정 페르소나 신설 + \"판정단이 판정을 안 하는 건가?\"(R47 패널이 코스 가시 한글 잔존 못 잡음) (13:57) — 번역작가 페르소나 신설",
+      "captured": "🆕",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "branding-create-persona(발사·14:09 착지)",
+      "provenance": "— / —",
+      "close_evidence": "`agents/심사단/personas/kpop-fan-번역 심사.md` 신설(`a459462d` 129줄·5축: 미번역 가시=P0·기계번역 톤·팬덤/아티스트명·다국어 일관성 ko SSOT·RTL/비라틴). **R48 풀패널 = 6축**(기존 5 + 번역작가). A 이관: 심사단 AGENT.md §5 로스터 행 추가(R48 prompt verbatim 선적용)"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-007",
+      "repo": "BYBIAS",
+      "summary": "\"언어 선택 박스 크기가 바뀔 때가 있다\" (외출 중 모바일) (13:30) — 언어 스위처 레이아웃 시프트",
+      "captured": "🆕",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "design-langbox-shift(진단 13:35 착지) → R48 dev 통합",
+      "provenance": "— / —",
+      "close_evidence": "진단 근본 2계층: ①`.langpick>summary` min-width 부재(generate.py:306)·언어 native명 길이 reflow(delta 68.8px) ②ko 루트 JS 리다이렉트 재페인트 단일로드 폭점프. fix = `min-width:140px`+`white-space:nowrap`(1줄·RTL 무손상·44px 유지). **R48 dev 통합**(코스 빌드 후 generate.py race 회피). 캡처 6장 ⚠️미배포"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-008",
+      "repo": "BYBIAS",
+      "summary": "\"컨텐츠를 한국어와 동일하게 채우는 게 맞지?\" (외출 중·번역 완성도 의심) (13:52) — 코스 9언어 외국어 콘텐츠 확장·번역 완성도",
+      "captured": "🔍",
+      "state": "구현중",
+      "state_raw": "🔨 구현중",
+      "owner": "dev-w4 9언어 빌드 트랙(bulk-fix·번역 완성도 게이트)",
+      "provenance": "REQ-BYBIAS-20260613-002 / —",
+      "close_evidence": "lead 실측 ko vs ja 구조 동일(섹션 6=6·스텝 73≈72·콘텐츠 채움 OK) 단 ja 한글 잔존 2570자(비가시 주석 + 가시 누락 의심). 14 hung 근본 = 코스 단건 t() 폭주(코드)→bulk-fix 18:03 해소·9언어 19:04 빌드 완료(ja 가게명 grep 0). 게이트 외국문자 잔존 4건 진단·surgical 배포 대기 ⚠️미종결"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260613-009",
+      "repo": "BYBIAS",
+      "summary": "\"부분이라도 먼저 보자·중간에 잘못된 거 있으면 피드백\" (17:50) — 부분 배포",
+      "captured": "🚀",
+      "state": "배포",
+      "state_raw": "🚀 배포",
+      "owner": "dev-course-partial-deploy(발사·18:01 착지)",
+      "provenance": "REQ-BYBIAS-20260613-002 / —",
+      "close_evidence": "부분 배포 완료: **zh-tw 신규 라이브**(bybias `39bd92ca`·main push·Pages success·curl 200·164KB 리치·중국어 번역 실증)·메인 회귀 0. 게이트 선별 PASS=zh-tw / FAIL=es(통화)·ja(가게명)·zh-cn(맛집)·th~vi 미빌드(당시). 제외 7언어 stub 200(깨진 링크 0). URL https://bybias.100m1s.com/zh-tw/twice-thisisfor-seoul.html. **나머지 언어 surgical 배포 = REQ-002에 흡수** ⚠️나머지 미배포"
     }
   ],
   "rounds": [
@@ -320,7 +544,7 @@
       "alias": "R46",
       "repo": "PM320",
       "request_refs": "Q-158 (지수·뉴스 해석·노이즈)",
-      "panel": "honesty·pixel·총괄 심사 패널",
+      "panel": "정직성 심사·디자인 심사 패널·총괄 심사 패널",
       "tier": "1심-풀패널",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
@@ -332,11 +556,11 @@
       "alias": "R47",
       "repo": "PM320",
       "request_refs": "Q-158·Q-163 (브랜딩)",
-      "panel": "총괄 심사 패널·branding-critic·guestpool×6",
+      "panel": "총괄 심사 패널·branding-critic·손님 패널×6",
       "tier": "1심-풀패널",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
-      "verdict_links": "r47-총괄 심사 패널.md(NO)·r47-branding-critic.md(NO)·r47-guestpool-1~6",
+      "verdict_links": "r47-총괄 심사 패널.md(NO)·r47-branding-critic.md(NO)·r47-손님 패널-1~6",
       "note": "브랜딩·게스트풀 → R48"
     },
     {
@@ -344,7 +568,7 @@
       "alias": "R48",
       "repo": "PM320",
       "request_refs": "Q-158 (풀패널 1심 착지)",
-      "panel": "honesty·pixel·총괄 심사 패널·critic 등 11",
+      "panel": "정직성 심사·디자인 심사 패널·총괄 심사 패널·critic 등 11",
       "tier": "1심-풀패널",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
@@ -356,11 +580,11 @@
       "alias": "R49",
       "repo": "PM320",
       "request_refs": "Q-158·Q-158확장 (instrument 가드)",
-      "panel": "honesty·pixel·총괄 심사 패널(2심)",
+      "panel": "정직성 심사·디자인 심사 패널·총괄 심사 패널(2심)",
       "tier": "1심+2심",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
-      "verdict_links": "r49-honesty.md(NO)·r49-pixel.md·r49-2nd-총괄 심사 패널.md",
+      "verdict_links": "r49-정직성 심사.md(NO)·r49-디자인 심사 패널.md·r49-2nd-총괄 심사 패널.md",
       "note": "instrument 변별력 우려 → R50"
     },
     {
@@ -368,11 +592,11 @@
       "alias": "R50",
       "repo": "PM320",
       "request_refs": "Q-158·Q-165·Q-166 (배포분 재측정)",
-      "panel": "honesty·pixel",
+      "panel": "정직성 심사·디자인 심사 패널",
       "tier": "1심-풀패널",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
-      "verdict_links": "r50-honesty.md(YES)·r50-pixel.md(NO)",
+      "verdict_links": "r50-정직성 심사.md(YES)·r50-디자인 심사 패널.md(NO)",
       "note": "split·신규 P1 1 (라이트 푸터 디스클레이머 CR 3.27) → R51 fix"
     },
     {
@@ -380,11 +604,11 @@
       "alias": "R51",
       "repo": "PM320",
       "request_refs": "Q-158 (R50 P1 fix·재료정직 재스캔)",
-      "panel": "honesty·pixel",
+      "panel": "정직성 심사·디자인 심사 패널",
       "tier": "1심-풀패널",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
-      "verdict_links": "r51-honesty.md(YES·JDG-014)·(내부코드)-r51-pixel.md(NO)",
+      "verdict_links": "r51-정직성 심사.md(YES·JDG-014)·(내부코드)-r51-디자인 심사 패널.md(NO)",
       "note": "신규 P1 1 (공통 푸터 .copyright 라이트 CR 3.27 pre-existing) → fix 후 R52 재판정"
     },
     {
@@ -392,12 +616,12 @@
       "alias": "R52",
       "repo": "PM320",
       "request_refs": "Q-158 (R51 P1 fix·픽셀+재료정직 재스캔)",
-      "panel": "honesty·pixel",
+      "panel": "정직성 심사·디자인 심사 패널",
       "tier": "1심-풀패널",
       "state": "판정완료",
       "state_raw": "✔️ 판정완료 (수렴 후보)",
-      "verdict_links": "r52-honesty.md(YES)·r52-pixel.md(YES·JDG-011)",
-      "note": "**현 PM320 최신 라운드**·전 패널 YES·P0 0·신규 P1 0 (1차). R51 pixel NO → R52 = **첫 전원 YES** = 수렴 후보. 🟢 수렴은 **2라운드 연속** all-YES(다음 R53) 충족 시에만 (DSN §2.4·(내부코드) 거짓 종결 금지)"
+      "verdict_links": "r52-정직성 심사.md(YES)·r52-디자인 심사 패널.md(YES·JDG-011)",
+      "note": "**현 PM320 최신 라운드**·전 패널 YES·P0 0·신규 P1 0 (1차). R51 디자인 심사 패널 NO → R52 = **첫 전원 YES** = 수렴 후보. 🟢 수렴은 **2라운드 연속** all-YES(다음 R53) 충족 시에만 (DSN §2.4·(내부코드) 거짓 종결 금지)"
     },
     {
       "round_id": "RND-HOME-001",
@@ -433,7 +657,55 @@
       "state": "판정완료",
       "state_raw": "✔️ 판정완료 (수렴 후보)",
       "verdict_links": "r3-총괄 심사 패널.md(YES·JDG-012)",
-      "note": "**현 HOME 최신 라운드**·총괄 심사 패널 YES·P0 0·신규 P1 0 (1차). R2 NO → R3 = **첫 YES** = 수렴 후보. 🟢 수렴은 **2라운드 연속** all-YES(다음 R4) 충족 시에만 (DSN §2.4·(내부코드) 거짓 종결 금지)"
+      "note": "총괄 심사 패널 YES·P0 0·신규 P1 0 (1차). R2 NO → R3 = **첫 YES** = 수렴 후보. 🟢 수렴은 **2라운드 연속** all-YES(R4) 충족 시에만 (DSN §2.4·(내부코드) 거짓 종결 금지)"
+    },
+    {
+      "round_id": "RND-HOME-004",
+      "alias": "홈 R4",
+      "repo": "HOME",
+      "request_refs": "Q-162(R3 2연속 시도)·Q-생동감·Q-160 (생동감 motion + 메뉴 IA 배포 후 판정)",
+      "panel": "총괄 심사 패널",
+      "tier": "2심-총괄종합",
+      "state": "unknown",
+      "state_raw": "🔍 판정중",
+      "verdict_links": "(총괄 심사 패널-home-r4-verdict 발사 23:45)",
+      "note": "**현 HOME 최신**·56cdecdeb 라이브. R3 수렴후보 2연속 시도 + **신규 생동감/메뉴 스코프 추가** → 변경분 포함 판정이라 2연속 카운트는 총괄 심사 패널 verdict 후 정직 산정 (새 스코프는 1차·(내부코드) 거짓 종결 금지)"
+    },
+    {
+      "round_id": "RND-BYBIAS-047",
+      "alias": "R47",
+      "repo": "BYBIAS",
+      "request_refs": "REQ-BYBIAS-20260613-001~005 (판정 가시성·정식출시 커버리지·어필리에이트 trust·사업축 전속·프로세스 감사)",
+      "panel": "심사단-r47-투자 심사·design·tech·branding·손님 패널×6·총괄 심사 패널(2심)",
+      "tier": "1심+2심",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "r47-총괄 심사 패널.md(NO·2심)·r47-branding-critic.md(NO)·r47-손님 패널-1~6.md(3YES/3NO)·(내부코드)(종합)",
+      "note": "**4 NO(투자 심사 P0×2·디자인 P1×3·브랜딩 P1×2·손님풀 P1×6)/1 YES조건부(기술 P1×1)** + 총괄 심사 패널 2심 NO 독립재측정 P0 2 CONFIRMED → 미수렴·**적립 0 리셋**(2연속 카운트 미진입). 투자 심사/design 등 1심 verdict 일부 = /tmp 캡처 후 records/qa/captures 이동(§10 self-catch). **R48 의제 = P0 2(어필 트래킹 주입[계정 승인 선행]·trust 5종[dev+법무]) + P1 8(eyebrow 11언어·accent bar·코스 커버리지 1→N+홈start·D-day CR/44px·KST·og 이벤트별·중화권·CTA 실기기)**"
+    },
+    {
+      "round_id": "RND-BYBIAS-048",
+      "alias": "R48",
+      "repo": "BYBIAS",
+      "request_refs": "REQ-BYBIAS-001~009 (R47 fix 착지분 재판정·8언어 코스 배포·번역 완성도·언어스위처·어필 트래킹·trust)",
+      "panel": "1심 6축(투자 심사·번역 심사·design·tech·branding·손님 패널) + **총괄 심사 패널 2심(공식 verdict)**",
+      "tier": "1심+2심",
+      "state": "판정완료",
+      "state_raw": "✔️ 판정완료·🔴 미수렴",
+      "verdict_links": "**r48-2nd-총괄 심사 패널.md(NO·공식 판정)** · 1심 r48-{투자 심사·번역 심사·design·tech·branding·손님 패널}.md · r48-legal-trust-review.md(법무) · **(내부코드)(종합)**",
+      "note": "**현 ByBias 최신 라운드**·**총괄 심사 패널 2심 = R48 공식 판정: 🔴 NO 미수렴**(적립 0). 1심 참모 분포 5 NO+1조건부YES(공식 아님·총괄 심사 패널에 올라가는 근거). 총괄 심사 패널 독립 재측정 3건 CONFIRMED. **CONFIRMED P0 6**: ①trust 5종 21URL 404(어필 거절 1순위) ②Booking·Klook·Skyscanner 추적ID 전무(9언어×5=45링크 수익0) ③비영어 8언어 OG 제네릭 ④비영어 8언어 UX모듈(tldr·steps5·prep-list·jump-nav) 미이식 ⑤중화권 구글맵 전용 ⑥langpick fix 미배포(대표 적발 잔존). 출시 1순위=trust(파트너 신청 선행조건)+추적ID. 법무 trust=조건부NO-GO(이메일·시행일·운영자명 3확정 시 GO) → **R49 fix 발사**"
+    },
+    {
+      "round_id": "RND-BYBIAS-049",
+      "alias": "R49",
+      "repo": "BYBIAS",
+      "request_refs": "R48 fix 착지분 재판정 (trust·UX모듈·중화권·batch-1 라이브)",
+      "panel": "1심 6축 + **총괄 심사 패널 2심(공식 verdict)**",
+      "tier": "1심+2심",
+      "state": "판정완료",
+      "state_raw": "✔️ 판정완료·🔴 미수렴",
+      "verdict_links": "**r49-bybias-2nd-총괄 심사 패널.md(NO·공식·JDG-016)** · 1심 r49-{투자 심사·번역 심사·design·tech·branding·손님 패널}.md",
+      "note": "**총괄 심사 패널 2심 = R49 공식 판정 🔴 NO·미수렴·streak 0**(R47→R48→R49 전부 NO·2연속 미시작). 1심 2 조건부YES(투자 심사·기술)+4 NO. **진짜 해소(라이브 실측)**: trust 5종 200·OG 8언어·중화권 바이두·KST·iframe = 신뢰 인프라 0→완료. **false-fidelity 3건 적발**: UX모듈 \"이식\"=헤딩만 번역(lead 헤딩만 보고 8/8 PASS 속음)·th \"배포\"=ko 복사(227,571B vs ko 227,713B·99.94% 동일)·\"11언어\"=ko홈만 현지화. **CONFIRMED P0 3(전부 dev-fixable·100% 패널 자체적발)**: ①번역 값 미완(날짜·가격·캡션·조사 한국어) ②th=ko 복사 ③zh-cn 미배포(OG·UX·langpick). partner-gated 분리: 추적ID(P1-PENDING·Airalo 추적 작동). 1심→2심 정정: 죽은앵커(정상+orphan 동시·동선 차단 아님)·langpick→P1 강등"
     }
   ],
   "verdicts": [
@@ -442,20 +714,76 @@
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "unknown",
+      "quality_score": 8.3,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "(내부코드)-r51-pixel.md",
-      "doc_id": "",
+      "file": "2sim-home-총괄 심사 패널.md",
+      "doc_id": "(내부코드) (`scripts/allocate-doc-id.sh JDG`)",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "2sim-pm320-총괄 심사 패널.md",
+      "doc_id": "(내부코드) (`scripts/allocate-doc-id.sh JDG`)",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "(내부코드)-r51-디자인 심사 패널.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": "RND-PM320-051",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "(내부코드)-r53-정직성 심사.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": 8.0,
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "admin-insight-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "총괄 심사 패널 (Founder Council AI)",
+      "verdict": "NO",
+      "quality_score": 6.8,
       "p0_count": 0,
       "new_p1_count": null
     },
@@ -463,10 +791,12 @@
       "file": "home-r2-총괄 심사 패널.md",
       "doc_id": "(내부코드)",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-HOME-002",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": 7.2,
       "p0_count": 0,
       "new_p1_count": null
     },
@@ -474,10 +804,25 @@
       "file": "home-renewal-총괄 심사 패널.md",
       "doc_id": "(내부코드)",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-HOME-001",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "조건부",
+      "quality_score": 8.0,
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "logo-hwaryeo-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": 7.3,
       "p0_count": 0,
       "new_p1_count": null
     },
@@ -486,9 +831,11 @@
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "조건부",
+      "quality_score": 7.6,
       "p0_count": null,
       "new_p1_count": null
     },
@@ -497,9 +844,11 @@
       "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": 7.7,
       "p0_count": 0,
       "new_p1_count": null
     },
@@ -508,9 +857,11 @@
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "unknown",
+      "quality_score": null,
       "p0_count": null,
       "new_p1_count": null
     },
@@ -518,10 +869,12 @@
       "file": "r3-총괄 심사 패널.md",
       "doc_id": "(내부코드)",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-HOME-003",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": 8.0,
       "p0_count": 0,
       "new_p1_count": 0
     },
@@ -530,75 +883,89 @@
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r47-guestpool-1-superfan.md",
+      "file": "r47-손님 패널-1-superfan.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r47-guestpool-2-overseas-once.md",
+      "file": "r47-손님 패널-2-overseas-once.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r47-guestpool-3-japanese.md",
+      "file": "r47-손님 패널-3-japanese.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r47-guestpool-4-chinese.md",
+      "file": "r47-손님 패널-4-chinese.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r47-guestpool-5-ugc-sharer.md",
+      "file": "r47-손님 패널-5-ugc-sharer.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r47-guestpool-6-firsttimer.md",
+      "file": "r47-손님 패널-6-firsttimer.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
@@ -607,99 +974,330 @@
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": 6.0,
       "p0_count": 0,
       "new_p1_count": 0
+    },
+    {
+      "file": "r48-2nd-총괄 심사 패널.md",
+      "doc_id": "VRD-RND-BYBIAS-048-2nd-총괄 심사 패널",
+      "vrd_id": "VRD-RND-BYBIAS-048-2nd-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-048",
+      "round_alias": null,
+      "request_id": null,
+      "panel": "총괄 심사 패널-founder-council",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": null,
+      "new_p1_count": null
+    },
+    {
+      "file": "r48-branding.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": null
+    },
+    {
+      "file": "r48-design.md",
+      "doc_id": "VRD-RND-BYBIAS-048-design",
+      "vrd_id": "VRD-RND-BYBIAS-048-design",
+      "round_id": "RND-BYBIAS-048",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-001",
+      "panel": "critic",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 1,
+      "new_p1_count": 3
+    },
+    {
+      "file": "r48-손님 패널.md",
+      "doc_id": "VRD-R48-손님 패널",
+      "vrd_id": "VRD-R48-손님 패널-6IN1",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "R48",
+      "panel": "손님 패널",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 4
+    },
+    {
+      "file": "r48-tech.md",
+      "doc_id": "r48-tech",
+      "vrd_id": "VRD-RND-BYBIAS-048-tech",
+      "round_id": "RND-BYBIAS-048",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-002",
+      "panel": "tech-cynic",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 3
+    },
+    {
+      "file": "r48-번역 심사.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": null,
+      "new_p1_count": null
+    },
+    {
+      "file": "r48-투자 심사.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": "R48",
+      "request_id": null,
+      "panel": "투자 심사-investor",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 1
     },
     {
       "file": "r49-2nd-총괄 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-PM320-049",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": 6.2,
       "p0_count": null,
       "new_p1_count": 0
     },
     {
-      "file": "r49-honesty.md",
+      "file": "r49-branding.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r49-pixel.md",
+      "file": "r49-bybias-2nd-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-049-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-049",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "NO",
+      "quality_score": 5.0,
+      "p0_count": 3,
+      "new_p1_count": 4
+    },
+    {
+      "file": "r49-design.md",
+      "doc_id": "VRD-RND-BYBIAS-049-design",
+      "vrd_id": "VRD-RND-BYBIAS-049-design",
+      "round_id": "RND-BYBIAS-049",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-001",
+      "panel": "critic",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 1,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r49-손님 패널.md",
+      "doc_id": "VRD-R49-손님 패널",
+      "vrd_id": "VRD-R49-손님 패널-6IN1",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "R49",
+      "panel": "손님 패널",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 3
+    },
+    {
+      "file": "r49-정직성 심사.md",
       "doc_id": "",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-PM320-049",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
-      "verdict": "YES",
+      "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": null
     },
     {
-      "file": "r50-honesty.md",
+      "file": "r49-디자인 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-PM320-049",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
-      "new_p1_count": 0
+      "new_p1_count": null
     },
     {
-      "file": "r50-pixel.md",
+      "file": "r49-tech.md",
+      "doc_id": "r49-tech",
+      "vrd_id": "VRD-RND-BYBIAS-049-tech",
+      "round_id": "RND-BYBIAS-049",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-002",
+      "panel": "tech-cynic",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 2
+    },
+    {
+      "file": "r49-번역 심사.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "NO",
+      "quality_score": null,
+      "p0_count": null,
+      "new_p1_count": null
+    },
+    {
+      "file": "r49-투자 심사.md",
+      "doc_id": "VRD-R49-투자 심사",
+      "vrd_id": "VRD-R49-투자 심사",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "투자 심사-investor",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 1
+    },
+    {
+      "file": "r50-정직성 심사.md",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": "RND-PM320-050",
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": 0
     },
     {
-      "file": "r51-honesty.md",
-      "doc_id": "(내부코드)",
+      "file": "r50-디자인 심사 패널.md",
+      "doc_id": "",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-PM320-050",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
-      "verdict": "YES",
+      "verdict": "NO",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": 0
     },
     {
-      "file": "r52-honesty.md",
+      "file": "r51-정직성 심사.md",
       "doc_id": "(내부코드)",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-PM320-051",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": 0
     },
     {
-      "file": "r52-pixel.md",
+      "file": "r52-정직성 심사.md",
       "doc_id": "(내부코드)",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-PM320-052",
+      "round_alias": null,
       "request_id": null,
       "panel": "",
       "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r52-디자인 심사 패널.md",
+      "doc_id": "(내부코드)",
+      "vrd_id": "",
+      "round_id": "RND-PM320-052",
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r53-디자인 심사 패널.md",
+      "doc_id": "(내부코드)",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0
+    },
+    {
+      "file": "r54-디자인 심사 패널.md",
+      "doc_id": "(내부코드)",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": null,
+      "panel": "",
+      "verdict": "YES",
+      "quality_score": null,
       "p0_count": 0,
       "new_p1_count": 0
     }
-  ]
+  ],
+  "trend_mapping": {
+    "verdicts_mapped_to_round": 12,
+    "verdicts_total": 45,
+    "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
+  }
 }

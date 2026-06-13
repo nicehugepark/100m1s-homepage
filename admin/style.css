@@ -197,13 +197,15 @@ footer {
 .conv-bars {
   display: flex; gap: 8px; align-items: flex-end;
   padding: 10px; background: var(--bg2); border: 1px solid var(--bd);
-  border-radius: 8px; overflow-x: auto; min-height: 130px;
+  border-radius: 8px; overflow-x: auto; min-height: 160px;
 }
 .conv-bar-col {
   display: flex; flex-direction: column; align-items: center;
   gap: 4px; min-width: 56px;
 }
-.conv-bar-val { font-size: 11px; color: var(--tx2); font-variant-numeric: tabular-nums; }
+.conv-bar-val { font-size: 12px; font-weight: 600; color: var(--tx); font-variant-numeric: tabular-nums; }
+/* 결함합 보조 라벨 — 막대 아래, 품질점수(주)와 시각 위계 구분 */
+.conv-bar-def { font-size: 10px; color: var(--dm); font-variant-numeric: tabular-nums; }
 .conv-bar {
   width: 28px; border-radius: 4px 4px 0 0; background: var(--neu);
   transition: height .2s;

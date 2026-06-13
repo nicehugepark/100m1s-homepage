@@ -17,19 +17,22 @@
     </div>
   </header>
 
+  <!-- 수렴 탭이 디폴트 랜딩 (조니 P1-B): 여는 즉시 '요청 안 빠짐 + 회차별 수렴'을 본다.
+       기존 8탭 순서·구성 보존. 디폴트만 수렴으로 이동 (active 클래스). script.js가 #해시로
+       딥링크(#convergence 등)도 지원하나, 해시 없으면 수렴이 첫 화면. -->
   <nav class="tabs" role="tablist" aria-label="admin 섹션">
-    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-requests" id="t-requests" data-tab="requests">요청</button>
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-convergence" id="t-convergence" data-tab="convergence">수렴</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-requests" id="t-requests" data-tab="requests">요청</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-timeline" id="t-timeline" data-tab="timeline">사이클</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-agents" id="t-agents" data-tab="agents">에이전트</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-releases" id="t-releases" data-tab="releases">릴리스</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-flr" id="t-flr" data-tab="flr">FLR</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-people" id="t-people" data-tab="people">참여자</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="tab-audit" id="t-audit" data-tab="audit">audit</button>
-    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-convergence" id="t-convergence" data-tab="convergence">수렴</button>
   </nav>
 
   <main>
-    <section id="tab-requests" class="panel active" role="tabpanel" aria-labelledby="t-requests">
+    <section id="tab-requests" class="panel" role="tabpanel" aria-labelledby="t-requests">
       <div class="toolbar">
         <input id="req-search" type="search" placeholder="REQ trigger·키워드 검색"
                aria-label="REQ trigger·키워드 검색 (doc_id / 제목 / 태그 / 참여자 / 트리거)">
@@ -99,14 +102,14 @@
       <div id="audit-grid" class="audit-grid" aria-live="polite"></div>
     </section>
 
-    <section id="tab-convergence" class="panel" role="tabpanel" aria-labelledby="t-convergence">
+    <section id="tab-convergence" class="panel active" role="tabpanel" aria-labelledby="t-convergence">
       <p class="hint">내 요청이 빠지지 않고 도는지 · 회차가 쌓일수록 품질이 수렴하는지 한눈에. 데이터: convergence.json (read-only 파생물)</p>
 
       <!-- ① 한눈에 (at-a-glance) -->
       <div id="conv-glance" class="conv-glance" aria-label="수렴 현황 한눈에"></div>
 
       <!-- ② 품질 수렴 추이 (회차별) -->
-      <h2 class="conv-h">품질 수렴 추이 <span class="conv-h-sub">회차가 쌓일수록 미해결(P0+신규P1)이 0으로 내려가는가</span></h2>
+      <h2 class="conv-h">품질 수렴 추이 <span class="conv-h-sub">막대 = 회차별 품질점수(4축 평균·높을수록 좋음) · 결함합(P0+신규P1)은 막대 아래</span></h2>
       <div id="conv-trend"></div>
 
       <!-- ③ 지금 활동 (진행 중) -->
