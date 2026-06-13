@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<!-- 미게재 자산 — 검색 노출 차단 + nav 미링크 (브랜드 로고 인트로 영상 프리뷰) -->
+<meta name="robots" content="noindex, nofollow">
+<title>華麗 로고 인트로 — Sora v1 | 100M1S</title>
+<style>
+  :root {
+    --bg: #06080d;        /* 영상이 주인공 — 깊은 다크 배경 (라이트/다크 공통, 영상 대비 최대) */
+    --fg: #e8ecf4;
+    --muted: rgba(232,236,244,.62);
+    --accent: #d9be7e;    /* PM320 골드 토큰과 동일 계열 */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  /* 화면 꽉 참 — 모바일 주소창 변동 대응(100dvh), 노치 안전영역 패딩 */
+  .stage {
+    position: fixed;
+    inset: 0;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: max(env(safe-area-inset-top), 12px) 12px max(env(safe-area-inset-bottom), 12px);
+    gap: 14px;
+  }
+  .player {
+    position: relative;
+    width: 100%;
+    max-width: 720px;          /* 데스크탑에서 과대 확대 방지 */
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 18px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(217,190,126,.14);
+    cursor: pointer;
+  }
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;       /* 16:9 영상 — 잘림 없이 꽉 차게(contain), 배경 검정과 융합 */
+    background: #000;
+  }
+  /* 일시정지 오버레이 — 탭하면 등장, 다시 탭하면 재생 */
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.34);
+    opacity: 0;
+    transition: opacity .18s ease;
+    pointer-events: none;
+  }
+  .player.paused .play-overlay { opacity: 1; }
+  .play-overlay svg { width: 64px; height: 64px; filter: drop-shadow(0 2px 10px rgba(0,0,0,.6)); }
+  .caption {
+    text-align: center;
+    line-height: 1.5;
+  }
+  .caption .t {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .01em;
+  }
+  .caption .s {
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .caption .accent { color: var(--accent); }
+  @media (min-width: 768px) {
+    .caption .t { font-size: 17px; }
+    .caption .s { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <div class="player" id="player" role="button" tabindex="0" aria-label="영상 재생/일시정지 토글">
+      <video
+        id="v"
+        src="hwaryeo-intro-sora-v1.mp4"
+        poster="poster.jpg"
+        preload="metadata"
+        autoplay
+        loop
+        muted
+        playsinline
+        webkit-playsinline
+        disablepictureinpicture
+        x5-playsinline></video>
+      <div class="play-overlay" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,.45)" stroke="rgba(255,255,255,.85)" stroke-width="1.2"/>
+          <path d="M9.5 8.2v7.6l6-3.8-6-3.8z" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+    <div class="caption">
+      <div class="t">華麗 <span class="accent">로고 인트로</span> · Sora v1</div>
+      <div class="s">16초 · 화면을 탭하면 일시정지/재생</div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var v = document.getElementById('v');
+      var player = document.getElementById('player');
+
+      function syncPausedClass() {
+        player.classList.toggle('paused', v.paused);
+      }
+
+      function toggle() {
+        if (v.paused) {
+          v.play().catch(function () {});
+        } else {
+          v.pause();
+        }
+      }
+
+      player.addEventListener('click', toggle);
+      player.addEventListener('keydown', function (e) {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+      });
+      v.addEventListener('play', syncPausedClass);
+      v.addEventListener('pause', syncPausedClass);
+
+      // iOS 저전력 모드 등으로 autoplay가 막히면 poster 위 재생 버튼 노출(탭 유도)
+      v.play().catch(function () { player.classList.add('paused'); });
+    })();
+  </script>
+</body>
+</html>
