@@ -79,14 +79,19 @@ async function loadKiwoomDate(date) {
   // 폴백 1: stock-*.json에서 종목 리스트 추출 (당일)
   // R18 P0 (콘솔 404 0err화) — PRE_MARKET + 오늘 view 시 오늘 interpreted JSON 은 미생성(확정 404).
   //   kiwoom 본파일도 없고 본 fallback 도 확정 404 → 둘 다 건너뛴다 (장전엔 본 데이터 미사용).
-  let _kiwoomPreMarketSkip = false;
+  // R51 P2 (정직성 적발 — 휴장 콘솔 404) — 휴장일(주말/KRX 휴장)은 거래 자체가 없어 stock-{date}.json
+  //   확정 부재 → fetch 시 콘솔 빨간 404. isMarketClosed(date) 시(과거/오늘 무관) 본 fallback 생략해
+  //   콘솔 청정. loadCalDayData L379~387 의 _closedMarket interpreted 생략과 동형(휴장 데이터 무존재 전제).
+  let _kiwoomStockSkip = false;
   try {
     const _n = new Date();
     const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
-    _kiwoomPreMarketSkip = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
-  } catch (_) { _kiwoomPreMarketSkip = false; }
+    const _preMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
+    const _closed = (typeof isMarketClosed === 'function') && isMarketClosed(date);
+    _kiwoomStockSkip = _preMarket || _closed;
+  } catch (_) { _kiwoomStockSkip = false; }
   try {
-    const fb = _kiwoomPreMarketSkip ? null : await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
+    const fb = _kiwoomStockSkip ? null : await fetch(`/data/interpreted/stock-${date}.json?v=${dateHash}`);
     if (fb && fb.ok) {
       const d = await fb.json();
       if (d.stocks && d.stocks.length > 0) {
@@ -326,7 +331,11 @@ function _parseWireNews(raw) {
 }
 
 // macro_indicators.json — { as_of, indicators:{ usdkrw:{label,value,prev_close,change_pct,bar_asof},
-//   wti:{…} } }. 항목별 독립(부분 산출 가용 항목만) — usdkrw·wti 화이트리스트(ust10y 제외 확정, 렌더 0줄).
+//   wti:{…}, ust10y:{label,value,change_bp,bar_asof} } }. 항목별 독립(부분 산출 가용 항목만).
+//   usdkrw·wti = change_pct(%) 축 / ust10y = 미10년물 금리 = change_bp(bp) 축 (renderer.js _buildGlobalStatsHtml
+//   ust10y 전용 분기 L566~574 와 동형 — value=yield(%)·delta=change_bp). Q-20260613-165 ② 배선 완결:
+//   종전 화이트리스트가 [usdkrw,wti] 2종이라 ust10y 가 렌더 직전에 탈락 → 렌더 분기 도달 불가(죽은 경로).
+//   본 파서가 ust10y 통과시켜 월요일 cron 산출 시 노출(주말은 데이터 부재 → out 미포함 → graceful 무렌더).
 function _parseMacroIndicators(raw) {
   if (!raw || typeof raw !== 'object' || !raw.indicators || typeof raw.indicators !== 'object') return null;
   const out = {};
@@ -338,6 +347,16 @@ function _parseMacroIndicators(raw) {
     if (typeof e.change_pct !== 'number' || !isFinite(e.change_pct)) continue;
     if (typeof e.bar_asof !== 'string' || !e.bar_asof) continue;  // 항목별 60분 stale 가드 축 — 필수
     out[key] = e;
+  }
+  // ust10y (미10년물 금리) — change_pct 가 아니라 change_bp(bp) 축이라 별 분기. renderer ust10y 분기
+  //   (value + change_bp + bar_asof 요구, L567~569)와 동일 계약으로 검증 → 통과분만 운반.
+  const u = raw.indicators.ust10y;
+  if (u && typeof u === 'object'
+    && typeof u.label === 'string' && u.label
+    && typeof u.value === 'number' && isFinite(u.value)
+    && typeof u.change_bp === 'number' && isFinite(u.change_bp)
+    && typeof u.bar_asof === 'string' && u.bar_asof) {
+    out.ust10y = u;
   }
   return Object.keys(out).length > 0 ? { as_of: (typeof raw.as_of === 'string' ? raw.as_of : ''), indicators: out } : null;
 }
