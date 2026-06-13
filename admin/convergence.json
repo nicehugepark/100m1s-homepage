@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-13T17:50:59.158149+09:00",
+  "generated_at": "2026-06-13T18:21:12.183318+09:00",
   "summary": {
     "HOME": {
       "open_requests": 4,
       "total_requests": 4,
       "active_rounds": 2,
-      "latest_round": "RND-HOME-002",
-      "latest_state": "미수렴"
+      "latest_round": "RND-HOME-003",
+      "latest_state": "판정완료"
     },
     "PM320": {
       "open_requests": 8,
       "total_requests": 9,
       "active_rounds": 6,
-      "latest_round": "RND-PM320-051",
-      "latest_state": "미수렴"
+      "latest_round": "RND-PM320-052",
+      "latest_state": "판정완료"
     },
     "—": {
       "open_requests": 1,
@@ -37,6 +37,13 @@
         "round_id": "RND-HOME-002",
         "alias": "홈 R2",
         "state": "미수렴",
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-HOME-003",
+        "alias": "홈 R3",
+        "state": "판정완료",
         "defect_sum": null,
         "verdict_count": 0
       }
@@ -83,6 +90,13 @@
         "state": "미수렴",
         "defect_sum": null,
         "verdict_count": 0
+      },
+      {
+        "round_id": "RND-PM320-052",
+        "alias": "R52",
+        "state": "판정완료",
+        "defect_sum": null,
+        "verdict_count": 0
       }
     ]
   },
@@ -110,7 +124,7 @@
       "state_raw": "✅ 종결",
       "owner": "dev fix + R49 instrument 가드 매트릭스",
       "provenance": "Q-158 / —",
-      "close_evidence": "배포 후 R49 instrument 확인 \"거래대금/상한가 추이 = collapsed+요약칩+시점 라벨, 가림 아님·Q-158 fix 생존\" (MQ L35·L62) **+ FLR-20260613-TEC-001 등재(recurring 2회차)**"
+      "close_evidence": "배포 후 R49 instrument 확인 \"거래대금/상한가 추이 = collapsed+요약칩+시점 라벨, 가림 아님·Q-158 fix 생존\" (MQ L35·L62) **+ (내부코드) 등재(recurring 2회차)**"
     },
     {
       "req_id": "Q-159",
@@ -176,7 +190,7 @@
       "state_raw": "🔍 판정중",
       "owner": "judge-news-chips(총괄 심사 패널 단발)",
       "provenance": "— / —",
-      "close_evidence": "총괄 심사 패널 판정 = 제거 방향 YES (verdicts/news-chips-총괄 심사 패널.md = DOC-20260613-JDG-012·재발사 착지 15:42). [사실]/[중립] 이미 제거·**잔존 [해석] 경계 마커 dev 절단 대기** ⚠️구현 잔존 (+ JDG-012 records placeholder = RESERVED 빈 파일·hook 위생 별건)"
+      "close_evidence": "총괄 심사 패널 판정 = 제거 방향 YES (verdicts/news-chips-총괄 심사 패널.md = (내부코드)·재발사 착지 15:42). [사실]/[중립] 이미 제거·**잔존 [해석] 경계 마커 dev 절단 대기** ⚠️구현 잔존 (+ JDG-012 records placeholder = RESERVED 빈 파일·hook 위생 별건)"
     },
     {
       "req_id": "Q-신규룰",
@@ -370,8 +384,20 @@
       "tier": "1심-풀패널",
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
-      "verdict_links": "r51-honesty.md(YES·JDG-014)·DOC-20260613-JDG-013-r51-pixel.md(NO)",
-      "note": "**현 PM320 최신 라운드**·신규 P1 1 (공통 푸터 .copyright 라이트 CR 3.27 pre-existing) → fix 후 R52 재판정 ⚠️미수렴"
+      "verdict_links": "r51-honesty.md(YES·JDG-014)·(내부코드)-r51-pixel.md(NO)",
+      "note": "신규 P1 1 (공통 푸터 .copyright 라이트 CR 3.27 pre-existing) → fix 후 R52 재판정"
+    },
+    {
+      "round_id": "RND-PM320-052",
+      "alias": "R52",
+      "repo": "PM320",
+      "request_refs": "Q-158 (R51 P1 fix·픽셀+재료정직 재스캔)",
+      "panel": "honesty·pixel",
+      "tier": "1심-풀패널",
+      "state": "판정완료",
+      "state_raw": "✔️ 판정완료 (수렴 후보)",
+      "verdict_links": "r52-honesty.md(YES)·r52-pixel.md(YES·JDG-011)",
+      "note": "**현 PM320 최신 라운드**·전 패널 YES·P0 0·신규 P1 0 (1차). R51 pixel NO → R52 = **첫 전원 YES** = 수렴 후보. 🟢 수렴은 **2라운드 연속** all-YES(다음 R53) 충족 시에만 (DSN §2.4·(내부코드) 거짓 종결 금지)"
     },
     {
       "round_id": "RND-HOME-001",
@@ -395,12 +421,24 @@
       "state": "미수렴",
       "state_raw": "🔴 미수렴",
       "verdict_links": "home-r2-총괄 심사 패널.md(NO)",
-      "note": "**현 HOME 최신 라운드**·미수렴 ⚠️ → 후속 fix·재판정"
+      "note": "미수렴 → 라이트 골드 `--am` AA 미달 fix → R3"
+    },
+    {
+      "round_id": "RND-HOME-003",
+      "alias": "홈 R3",
+      "repo": "HOME",
+      "request_refs": "Q-162 (라이트 골드 --am P1 fix 후 재판정)",
+      "panel": "총괄 심사 패널",
+      "tier": "2심-총괄종합",
+      "state": "판정완료",
+      "state_raw": "✔️ 판정완료 (수렴 후보)",
+      "verdict_links": "r3-총괄 심사 패널.md(YES·JDG-012)",
+      "note": "**현 HOME 최신 라운드**·총괄 심사 패널 YES·P0 0·신규 P1 0 (1차). R2 NO → R3 = **첫 YES** = 수렴 후보. 🟢 수렴은 **2라운드 연속** all-YES(다음 R4) 충족 시에만 (DSN §2.4·(내부코드) 거짓 종결 금지)"
     }
   ],
   "verdicts": [
     {
-      "file": "1706-appeal-jony.md",
+      "file": "1706-appeal-총괄 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
@@ -411,7 +449,7 @@
       "new_p1_count": null
     },
     {
-      "file": "DOC-20260613-JDG-013-r51-pixel.md",
+      "file": "(내부코드)-r51-pixel.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
@@ -422,8 +460,8 @@
       "new_p1_count": null
     },
     {
-      "file": "home-r2-jony.md",
-      "doc_id": "DOC-20260613-JDG-015",
+      "file": "home-r2-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
@@ -433,8 +471,8 @@
       "new_p1_count": null
     },
     {
-      "file": "home-renewal-jony.md",
-      "doc_id": "DOC-20260613-JDG-011",
+      "file": "home-renewal-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
@@ -444,7 +482,7 @@
       "new_p1_count": null
     },
     {
-      "file": "logo-pm320-jony.md",
+      "file": "logo-pm320-총괄 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
@@ -455,8 +493,8 @@
       "new_p1_count": null
     },
     {
-      "file": "news-chips-jony.md",
-      "doc_id": "DOC-20260613-JDG-012",
+      "file": "news-chips-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
@@ -466,7 +504,7 @@
       "new_p1_count": null
     },
     {
-      "file": "positioning-ia-pm320-stock-advisory-jony.md",
+      "file": "positioning-ia-pm320-stock-advisory-총괄 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
@@ -477,8 +515,8 @@
       "new_p1_count": null
     },
     {
-      "file": "r3-jony.md",
-      "doc_id": "DOC-20260613-JDG-012",
+      "file": "r3-총괄 심사 패널.md",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
@@ -565,7 +603,7 @@
       "new_p1_count": null
     },
     {
-      "file": "r47-jony.md",
+      "file": "r47-총괄 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
@@ -576,7 +614,7 @@
       "new_p1_count": 0
     },
     {
-      "file": "r49-2nd-jony.md",
+      "file": "r49-2nd-총괄 심사 패널.md",
       "doc_id": "",
       "vrd_id": "",
       "round_id": null,
@@ -632,7 +670,7 @@
     },
     {
       "file": "r51-honesty.md",
-      "doc_id": "DOC-20260613-JDG-014",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
@@ -643,7 +681,7 @@
     },
     {
       "file": "r52-honesty.md",
-      "doc_id": "DOC-20260613-JDG-013",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
@@ -654,7 +692,7 @@
     },
     {
       "file": "r52-pixel.md",
-      "doc_id": "DOC-20260613-JDG-011",
+      "doc_id": "(내부코드)",
       "vrd_id": "",
       "round_id": null,
       "request_id": null,
