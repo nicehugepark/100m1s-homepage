@@ -3759,9 +3759,9 @@ body.single-card-mode { background: var(--bg) !important; }
 :root[data-theme="dark"] .cal-macro-chip {
   color: var(--section-summary); border-left-color: var(--am3);
 }
-/* R48 W2-3 (조니 R46 2심 W2 — wire 사실/추정 시각 분리, "사실/추정 분리는 리딩방 차별화의 본질") —
-   칩 종류 태그. "사실" = wire 기관·통신 1차 보도 제목 verbatim(골드 outline, 칩 액센트 정합) /
-   "해석" = LLM 종합 요약(muted). 양 토큰 모두 다크 override 보유 (--am 5.x / --wr-basis-tx 5.84 AA). */
+/* R48 W2-3 → Q-20260613-158 ② 개정 (대표 08:53 "대부분 다 사실 — 당연한 걸 잔뜩 표시하니 노이지") —
+   칩 종류 태그 = [해석](LLM 종합 요약, muted)만 마킹. wire 1차 보도 verbatim 은 무표기 디폴트
+   (무표기 = 사실 — --fact 변형 폐기, JS 소비 0). 다크 override 보유 (--wr-basis-tx 5.84 AA). */
 .cal-chip-kind {
   display: inline-block; font-size: 10px; font-weight: 700; line-height: 1.4;
   padding: 0 5px; margin-right: 6px; vertical-align: 1px;
@@ -3769,7 +3769,6 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--wr-basis-tx, #5E6776); background: transparent;
   letter-spacing: 0; white-space: nowrap;
 }
-.cal-chip-kind--fact { color: var(--am); border-color: var(--am2); }
 /* Q-20260612-154 ④ (대표 23:14 직접 지시) — 미장 wire 한국어 인과 해석 노출. 칩 = 기존
    .cal-macro-chip 좌측 골드 바 리스트 그대로 (별도 칩 체계 신설 0 — 내부 확장만).
    시각 위계: ko_title(칩 본문 토큰 그대로) > 해석 요약(--tx 본문) > 인과 체인(칩 골드 상속 —
@@ -3794,6 +3793,30 @@ body.single-card-mode { background: var(--bg) !important; }
   display: block; margin-top: 3px;
   font-size: 11px; font-weight: 400; line-height: 1.4;
   color: var(--wr-basis-tx, #5E6776);
+}
+/* Q-20260613-158 ① (대표 08:53 "한줄로 나오면 좋겠는데 너무 과하다") — ko 해석 보유 칩 접힘.
+   디폴트 = ko_title 한 줄(+출처 약어+셰브론), 탭 펼침 = 인과 요약·체인·EN 원문·원문 링크.
+   네이티브 details/summary (.pm320-term-legend 범례 동형 패턴). summary 터치존 ≥44px (R48 P1-4 동형). */
+.wire-ko-chip > summary {
+  list-style: none; cursor: pointer;
+  min-height: 44px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+.wire-ko-chip > summary::-webkit-details-marker { display: none; }
+.wire-ko-chevron {
+  margin-left: auto; padding-left: 4px;
+  font-size: 10px; line-height: 1;
+  color: var(--wr-basis-tx, #5E6776);
+  transition: transform .15s ease;
+}
+.wire-ko-chip[open] .wire-ko-chevron { transform: rotate(90deg); }
+/* 원문 직링크(법무 딥링크 의무) — 펼침 본문 하단. 칩 골드 상속 + 밑줄 = 링크 어포던스.
+   터치존: 12px*1.4 + 상하 14px = 44.8px. */
+.wire-ko-srclink {
+  display: inline-block; padding: 14px 10px 14px 0;
+  font-size: 12px; font-weight: 600; line-height: 1.4;
+  color: inherit; text-decoration: underline; text-underline-offset: 2px;
 }
 .cal-toppick {
   margin-top: 10px; padding: 10px 14px;

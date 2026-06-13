@@ -126,13 +126,18 @@ function calHasData(date) {
   return (entry.stock_count ?? 0) >= 1 && (entry.news_count ?? 0) >= 1;
 }
 
-// 비거래일이면 테마트리·거래대금 추이 숨김
+// 비거래일이면 테마트리(일자별 카드성)만 숨김 — Q-20260613-158 ③ 확장 (대표 09:24 catch verbatim
+//   "테마별 거래대금 추이는 왜 가린거야? 상한가 추이는 안가렸잖아. 이 두 개는 트렌드라서 장마감이나
+//   휴장과는 무관"). 거래대금 추이(#theme-trend) = 20영업일 윈도 트렌드 차트, x축이 날짜를 운반 →
+//   휴장 선택일에도 항상 표시 (상한가 추이 #limit-up-trend 무가드와 일관). 5/8 04:58 대표 catch fix
+//   (initThemeTrend PRE_MARKET 분기 rollback, "휴장 무관 항상 표시")가 본 함수(4/16 출생)의 휴장
+//   선택일 display:none 경로를 누락한 recurring 2회차 — FLR-20260428-TEC-001 한쪽 수정·다른 끝 누락 동형.
+//   테마트리(해당일 데이터 귀속)는 휴장 숨김 유지 — Q-20260606-118 라벨·데이터 일치 + 5/8 verbatim
+//   "PRE_MARKET 분기는 일자별 카드성 데이터(테마트리)에만 유지" 정합.
 function toggleThemeSections(iso) {
   const closed = isMarketClosed(iso);
   const tree = document.getElementById('theme-tree');
-  const trend = document.getElementById('theme-trend');
   if (tree) tree.style.display = closed ? 'none' : '';
-  if (trend) trend.style.display = closed ? 'none' : '';
 }
 
 // R46 P0-2① (조니 2026-06-12 단정 — 캘린더 기본 접힘 격하) — 접힘 헤더 미니요약 1줄.

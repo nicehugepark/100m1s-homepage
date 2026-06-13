@@ -9,7 +9,8 @@
 //     (3) direction·impact_tags = 기존 .cal-chip-kind 재사용 (muted 해석 계열 — --fact 아님)
 //     (4) body_fetched=false → 보수 표기 1줄 (.wire-ko-basis)
 //     (5) ko 필드 전무 = 기존 영문 그대로 (graceful — .wire-ko-* 0건, 빈 칸 색칠 0)
-//     (6) 칩 머리 태그 = [사실] 유지 (R48 W2-3 기판정 무회귀) + a[href] 직링크 (법무)
+//     (6) Q-20260613-158 ①② 개정 — ko 칩 = details 접힘 디폴트 (한 줄 summary, 머리 태그 무표기 =
+//         사실 디폴트) + 원문 직링크는 펼침 본문 .wire-ko-srclink a[href][_blank] (법무 딥링크 보존)
 //
 // 실행: node scripts/tests/test_wire_ko_chips.mjs  (repo 루트에서)
 //   playwright 미설치 시 PW_PKG 환경변수(절대경로)로 해소.
@@ -138,7 +139,13 @@ const usHtmlInfo = await page.evaluate((wire) => {
       chain: pick('.wire-ko-chain', koChip),
       tagTokens: Array.from(koChip.querySelectorAll('.wire-ko-tags .cal-chip-kind')).map((e) => ({ t: e.textContent, fact: e.classList.contains('cal-chip-kind--fact') })),
       basis: pick('.wire-ko-basis', koChip),
-      href: koChip.getAttribute('href'), target: koChip.getAttribute('target'),
+      // Q-20260613-158 ① — ko 칩 = details 접힘 디폴트. 직링크는 펼침 본문 .wire-ko-srclink 로 이동.
+      isDetails: koChip.tagName === 'DETAILS',
+      defaultOpen: koChip.hasAttribute('open'),
+      headTagCount: koChip.querySelectorAll('summary .cal-chip-kind').length,
+      summaryHasKo: (koChip.querySelector('summary') || { textContent: '' }).textContent.includes('주문보호'),
+      srcHref: (koChip.querySelector('.wire-ko-srclink') || { getAttribute: () => null }).getAttribute('href'),
+      srcTarget: (koChip.querySelector('.wire-ko-srclink') || { getAttribute: () => null }).getAttribute('target'),
       innerKindIsInterp: (koChip.querySelector('.wire-ko-summary .cal-chip-kind') || {}).textContent,
     };
   }
@@ -157,7 +164,11 @@ const usHtmlInfo = await page.evaluate((wire) => {
 assert(!!usHtmlInfo.ko, 'US 빌더: full-ko 칩 렌더');
 if (usHtmlInfo.ko) {
   const k = usHtmlInfo.ko;
-  assert(k.tag0 === '사실' && k.tag0Fact, '칩 머리 태그 [사실] + --fact 유지 (R48 W2-3 기판정)');
+  // Q-20260613-158 ② (대표 08:53 verbatim "대부분 다 사실 — 당연한 걸 잔뜩 표시하니 노이지") —
+  //   wire 칩 머리 무표기 = 사실 디폴트 ([해석]만 마킹, R48 W2-3 전 칩 태그 방식 개정).
+  assert(k.headTagCount === 0 && !k.tag0Fact, '칩 머리 태그 무표기 (158 ② — 무표기 = 사실 디폴트)');
+  // Q-20260613-158 ① (대표 08:53 verbatim "한줄로 나오면 좋겠는데 너무 과하다") — details 접힘 디폴트.
+  assert(k.isDetails && !k.defaultOpen && k.summaryHasKo, 'ko 칩 = details 접힘 디폴트 + summary 한 줄 = ko_title (158 ①)');
   assert(k.bodyHasKo, '칩 본문 = ko_title 우선');
   assert(k.en.length === 1 && k.en[0].includes('SEC Proposes Rescission'), 'EN 원문 부 표기 1줄 (.wire-ko-en)');
   assert(k.summary.length === 1 && k.summary[0].includes('거래비용 구조가 바뀔 전망'), 'causal_summary 본문 노출');
@@ -165,7 +176,7 @@ if (usHtmlInfo.ko) {
   assert(k.chain.length === 1 && k.chain[0].includes('→'), 'causal_chain(A → B → C) 노출 — 국내 해석 칩 동형');
   assert(k.tagTokens.length === 3 && k.tagTokens[0].t === '호재' && k.tagTokens.every((x) => !x.fact), 'direction+tags 3토큰 = .cal-chip-kind muted (해석 계열, --fact 0)');
   assert(k.basis.length === 0, 'body_fetched=true → 보수 표기 0');
-  assert(/^https:\/\/www\.sec\.gov/.test(k.href) && k.target === '_blank', 'a[href] 직링크 + _blank (법무·터치 액션)');
+  assert(/^https:\/\/www\.sec\.gov/.test(k.srcHref || '') && k.srcTarget === '_blank', '펼침 본문 .wire-ko-srclink a[href] + _blank (법무 딥링크 보존, 158 ①)');
 }
 assert(!!usHtmlInfo.basis && usHtmlInfo.basis.basisLine.length === 1 && usHtmlInfo.basis.basisLine[0].includes('보수 해석'), 'body_fetched=false → 보수 표기 1줄');
 assert(!!usHtmlInfo.basis && usHtmlInfo.basis.tags.length === 1 && usHtmlInfo.basis.tags[0] === '중립', 'impact_tags=[] → direction 토큰만 (빈 태그 색칠 0)');
@@ -191,7 +202,8 @@ const krInfo = await page.evaluate((wire) => {
   host.remove();
   return out;
 }, WIRE_FIXTURE);
-assert(krInfo.krKoEls === 0 && krInfo.krText.includes('국고채 금리') && krInfo.krTag === '사실', 'KR 칩 무회귀 (ko 0 + [사실] 태그)');
+// 158 ② — KR wire 칩도 머리 무표기 (krTag = undefined, .cal-chip-kind 자체 0건).
+assert(krInfo.krKoEls === 0 && krInfo.krText.includes('국고채 금리') && krInfo.krTag === undefined, 'KR 칩 무회귀 (ko 0 + 머리 무표기 = 사실 디폴트, 158 ②)');
 assert(krInfo.koViaKrHasBlock === 2, 'KR 빌더도 ko 블록 동형 처리 (FLR-20260428-TEC-001 양 끝)');
 
 assert(pageErrors.length === 0, `콘솔 pageerror 0건 (실측 ${pageErrors.length}건${pageErrors.length ? ': ' + pageErrors[0] : ''})`);

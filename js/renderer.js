@@ -355,15 +355,20 @@ function _mcapMetaHtml(code, price, nxtSnap, withTip) {
 //   색 = rev9 정책 그대로 — 캔들·스파크 시가대비 / 등락률 전일대비). 데이터 = /pm320/data/kr_indices.json.
 //   정직 원칙(조니 단정): 표시 날짜 ≠ trade_date 인 카드 무렌더 (전일 종가 폴백 절대 금지) + range_240d
 //   실가용 일수 240 미만이면 "{days}일 레인지" 표기. 신선도 라벨 = 장중 "HH:MM 기준" / 마감 "15:30 마감".
-function _buildKrIndexCardsHtml(kr, viewDate, isPastDate) {
+function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) {
   if (!kr || !Array.isArray(kr.list) || kr.list.length === 0) return '';
   if (typeof renderIndexCard !== 'function') return '';
   const cards = [];
   let anyOpen = false;
   let latestOpenAsof = '';
+  let anyPrevOpenCard = false;
   for (const e of kr.list) {
     // 시점 정직 — kr_indices.json 은 당일 단일 파일. 표시 날짜와 데이터 거래일 불일치 시 그 카드 무렌더.
-    if (typeof viewDate === 'string' && viewDate && e.trade_date !== viewDate) continue;
+    //   예외 (Q-20260613-158 ③): 휴장일 최신 뷰에서는 마지막 영업일(closedLatestPrevOpen) 카드 허용 —
+    //   현재형 라벨 강등(isPastDate) + 블록 날짜 라벨로 시점 명시 (소실 0 + 정직 양립).
+    const _isPrevOpenCard = !!closedLatestPrevOpen && e.trade_date === closedLatestPrevOpen;
+    if (typeof viewDate === 'string' && viewDate && e.trade_date !== viewDate && !_isPrevOpenCard) continue;
+    if (_isPrevOpenCard) anyPrevOpenCard = true;
     const candles = Array.isArray(e.candles_10m)
       ? e.candles_10m.filter(c => c && typeof c.o === 'number' && typeof c.h === 'number'
         && typeof c.l === 'number' && typeof c.c === 'number')
@@ -399,7 +404,8 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate) {
       session_open: isOpen,
     }, null, tradeDateLabel, {
       krVariant: true,
-      isPastDate: !!isPastDate,
+      // 휴장 최신 뷰의 마지막 영업일 카드도 현재형 라벨 강등 (Q-20260610 시제 정직 보존)
+      isPastDate: !!isPastDate || _isPrevOpenCard,
       rangeDaysNote: (r240 && days != null && days > 0 && days < 240) ? `${days}일 레인지` : '',
     });
     if (html) cards.push(html);
@@ -410,6 +416,9 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate) {
   let asofLabel = '';
   if (anyOpen) {
     if (latestOpenAsof) asofLabel = `${latestOpenAsof.slice(11, 16)} 기준`;
+  } else if (anyPrevOpenCard) {
+    // Q-20260613-158 ③ — 휴장 최신 뷰: 어느 영업일 마감인지 날짜 명시 ("6/12 (금) 15:30 마감")
+    asofLabel = `${_fmtDateDow(closedLatestPrevOpen)} 15:30 마감`.trim();
   } else {
     asofLabel = '15:30 마감';
   }
@@ -441,16 +450,28 @@ function _freshNasdaqFuture(us) {
   return { point: nq.point, change_pct: nq.change_pct, ts: t };
 }
 
-function _buildGlobalStatsHtml(us, macro) {
+// Q-20260613-158 ③ — KST 날짜 문자열("YYYY-MM-DD") → "M/D (요일)" 라벨 (휴장 최신 뷰 시점 라벨 공용).
+function _fmtDateDow(iso) {
+  if (typeof iso !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+  const d = new Date(iso + 'T00:00:00');
+  const dow = ['일', '월', '화', '수', '목', '금', '토'][d.getDay()];
+  return `${parseInt(iso.slice(5, 7), 10)}/${parseInt(iso.slice(8, 10), 10)} (${dow})`;
+}
+
+function _buildGlobalStatsHtml(us, macro, closedLatest) {
   const nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number')
     ? window._freshnessNow : Date.now();
   const STALE_MS = 60 * 60 * 1000;
+  // Q-20260613-158 ③ — 휴장일 최신 뷰(closedLatest)는 "마지막 수집값 + 날짜 라벨" 모드: 60분 가드를
+  //   7일로 완화 (주말 2일 + 연휴 커버, 라벨이 실제 수집 날짜를 운반하므로 시점 정직 유지 —
+  //   FLR-AGT-002). 7일+ 경과는 수집 파이프라인 사망 상태 → 무렌더(빈자리가 정직)가 옳다.
+  const MAX_AGE_MS = closedLatest ? 7 * 24 * 60 * 60 * 1000 : STALE_MS;
   const _freshTs = (s) => {
     const t = (typeof s === 'string' && s) ? Date.parse(s) : NaN;
     if (!isFinite(t)) return null;
     const age = nowMs - t;
-    // 미래시각(>5분 skew)·60분+ 경과 → stale 판정 (해당 항목 무렌더)
-    return (age >= -5 * 60 * 1000 && age <= STALE_MS) ? t : null;
+    // 미래시각(>5분 skew)·한도 초과 경과 → stale 판정 (해당 항목 무렌더)
+    return (age >= -5 * 60 * 1000 && age <= MAX_AGE_MS) ? t : null;
   };
   const _fmt2 = (v) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const items = [];
@@ -486,8 +507,15 @@ function _buildGlobalStatsHtml(us, macro) {
       + `<span class="glb-stat-delta ${dir}"><span aria-hidden="true">${arrow}</span>${escapeHtml(pctText)}</span>`
       + `</div>`;
   }).join('');
-  const asofNote = newestTs != null
-    ? `${new Date(newestTs + 9 * 3600 * 1000).toISOString().slice(11, 16)} 기준 · 장중 10~15분 간격` : '';
+  // Q-20260613-158 ③ — 휴장 최신 뷰 + 최신 항목이 60분+ 경과(주말 전형) → 날짜 명시 시점 라벨.
+  //   휴장이라도 최신 항목이 신선(≤60분, 예: KRX 공휴일에 글로벌 시장 개장)하면 기존 라벨 유지.
+  let asofNote = '';
+  if (newestTs != null) {
+    const _newestKstIso = new Date(newestTs + 9 * 3600 * 1000).toISOString();
+    asofNote = (closedLatest && (nowMs - newestTs) > STALE_MS)
+      ? `${_fmtDateDow(_newestKstIso.slice(0, 10))} 마감 기준`
+      : `${_newestKstIso.slice(11, 16)} 기준 · 장중 10~15분 간격`;
+  }
   return `<div class="glb-stats" role="group" aria-label="장중 글로벌 지표">`
     + `<div class="glb-stats-head"><span class="glb-stats-title">장중 글로벌 지표</span>`
     + (asofNote ? `<span class="glb-stats-asof">${escapeHtml(asofNote)}</span>` : '')
@@ -516,18 +544,46 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
   //   여기서 viewDate vs KST 오늘을 비교해 isPastDate 를 산출, 카드 컴포넌트로 전달 → 현재형 라벨 강등.
   //   viewDate 부재(구 호출) 시 false(현행 유지). KST=UTC+9 (브라우저 timezone 무관 산출, L23 동형).
   var isPastDate = false;
+  // 시계 = window._freshnessNow seam 우선 (L445 _buildGlobalStatsHtml 동형 — 테스트 결정성·단일 시계).
+  var _nowMs = (typeof window !== 'undefined' && typeof window._freshnessNow === 'number')
+    ? window._freshnessNow : Date.now();
+  var _kst = new Date(_nowMs + 9 * 60 * 60 * 1000);
+  var _todayKst = _kst.getUTCFullYear() + '-'
+    + String(_kst.getUTCMonth() + 1).padStart(2, '0') + '-'
+    + String(_kst.getUTCDate()).padStart(2, '0');
   if (typeof viewDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(viewDate)) {
-    var _kst = new Date(Date.now() + 9 * 60 * 60 * 1000);
-    var _todayKst = _kst.getUTCFullYear() + '-'
-      + String(_kst.getUTCMonth() + 1).padStart(2, '0') + '-'
-      + String(_kst.getUTCDate()).padStart(2, '0');
     isPastDate = viewDate < _todayKst;
+  }
+
+  // Q-20260613-158 ③ (대표 catch 6/13 토 08:53 "시장지수를 보던 내용들이 다 사라졌다") — 휴장일
+  //   (주말·공휴일) 최신 뷰 판정. 종전: 글로벌 지표가 isPastDate(6/12 금 뷰) + 60분 stale(6/13 토 뷰)
+  //   이중 차단으로 주말 내내 전멸 + KR 지수 카드도 trade_date 정직 필터로 6/13 뷰에서 소실.
+  //   처방: 오늘(KST)이 휴장일이고 viewDate가 "오늘 또는 마지막 영업일"이면 = 최신 뷰 →
+  //   마지막 영업일 데이터를 노출하되 "M/D (요일) 마감 기준" 시점 라벨로 시점 명시 (정보 소실 0 +
+  //   시점 혼합은 라벨로 해소 — R46 P0-1 운반체 모순 동형 회피). 과거 날짜 수동 탐색(viewDate <
+  //   마지막 영업일)은 기존 무렌더 유지 (isPastDate 본래 의도 = 시점 왜곡 방지, Q-20260610 보존).
+  var _closedLatestView = false;
+  var _lastOpenIso = '';
+  if (typeof isMarketClosed === 'function' && isMarketClosed(_todayKst)
+    && typeof viewDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(viewDate)) {
+    // 마지막 영업일 = 오늘부터 최대 10일 역행 첫 개장일 (renderCalExpandContent PRE_MARKET 동형 산술)
+    var _dt = new Date(_todayKst + 'T00:00:00');
+    for (var _i = 0; _i < 10; _i++) {
+      _dt.setDate(_dt.getDate() - 1);
+      var _iso = _dt.getFullYear() + '-' + String(_dt.getMonth() + 1).padStart(2, '0')
+        + '-' + String(_dt.getDate()).padStart(2, '0');
+      if (!isMarketClosed(_iso)) { _lastOpenIso = _iso; break; }
+    }
+    _closedLatestView = (viewDate === _todayKst || (!!_lastOpenIso && viewDate === _lastOpenIso));
   }
 
   // ① 코스피·코스닥 2카드 + ② 장중 글로벌 지표 구획 (둘 다 부재 시 graceful '').
   //   글로벌 지표는 now-앵커 데이터 — 지난 날짜 뷰에서는 무렌더 (시점 왜곡 금지, FLR-AGT-002).
-  const krCardsHtml = _buildKrIndexCardsHtml(ctx && ctx.krIndices, viewDate, isPastDate);
-  const statsHtml = isPastDate ? '' : _buildGlobalStatsHtml(usValid ? us : null, ctx && ctx.macroIndicators);
+  //   예외 = 휴장일 최신 뷰 (Q-20260613-158 ③): 마지막 영업일 스탯 + 날짜 라벨로 노출.
+  const krCardsHtml = _buildKrIndexCardsHtml(ctx && ctx.krIndices, viewDate, isPastDate,
+    _closedLatestView ? _lastOpenIso : '');
+  const statsHtml = (isPastDate && !_closedLatestView) ? ''
+    : _buildGlobalStatsHtml(usValid ? us : null, ctx && ctx.macroIndicators, _closedLatestView);
 
   // R48 P1-2 (조니 R47 1심 ② — 나스닥 선물 2운반체 해소, 2026-06-12) — 선물 페어 카드·[정규장|선물]
   //   토글 전면 제거. 종전: glb-stat "나스닥 선물"(장중 글로벌 지표)과 선물 페어 카드(cal-feature 골격
@@ -574,13 +630,11 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
     const chipItems = _dedupedUsChips.map(c => {
       const safeUrl = (typeof c.url === 'string' && /^https?:\/\//i.test(c.url)) ? c.url : '';
       if (!safeUrl) return '';  // 유효 URL 없으면 칩 미렌더 (법무: 딥링크 필수)
-      // Q-20260612-154 ④ — 칩 본문 = ko_title 우선 (한국어 인과 해석 보유 시), 부재 시 기존 title.
-      //   EN 원문·해석 블록은 _wireKoBlockHtml (KR 빌더와 양 끝 공용, FLR-20260428-TEC-001).
-      const summary = escapeHtml(sanitize((c.ko_title || c.summary) || ''));
-      const source = escapeHtml(sanitize(c.source || ''));
-      // R48 W2-3 — 사실(wire verbatim)/해석(LLM 요약) 태그. KR 빌더와 동일 _chipKindTag (양 끝 적용).
-      return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">`
-        + `${_chipKindTag(c)}${summary}<span class="nightly-us-news-source">${source}</span>${_wireKoBlockHtml(c)}</a>`;
+      // Q-20260613-158 ① — 칩 생성 = _buildKrMacroChip 단일 빌더로 통합 (KR·US 양 끝 한 몸 —
+      //   FLR-20260428-TEC-001 한쪽 수정·양 끝 누락의 구조적 봉쇄. ko_title 우선(Q-20260612-154 ④)·
+      //   사실/해석 태그(R48 W2-3→158 ② 개정)·ko 한 줄 접힘(details, 158 ①) 전부 단일 지점).
+      //   US 측 법무 전제(딥링크 필수 — URL 무효 칩 미렌더)만 이 자리에 유지.
+      return _buildKrMacroChip(c);
     }).filter(Boolean);
     if (chipItems.length > 0) {
       // R43/R44 #1 — 뉴스 확대 공통 컴포넌트 (5건+더보기 확정, 슬라이드 변형 제거).
@@ -605,8 +659,10 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
     };
     if (ctx && ctx.krIndices && Array.isArray(ctx.krIndices.list)) {
       for (const e of ctx.krIndices.list) {
-        // 카드와 동일 시점 정직 필터 (표시 날짜 ≠ trade_date → 요약에서도 제외)
-        if (typeof viewDate === 'string' && viewDate && e.trade_date !== viewDate) continue;
+        // 카드와 동일 시점 정직 필터 (표시 날짜 ≠ trade_date → 요약에서도 제외).
+        //   예외 = 휴장 최신 뷰의 마지막 영업일 항목 (Q-20260613-158 ③ — 본문 카드와 운반체 일치).
+        if (typeof viewDate === 'string' && viewDate && e.trade_date !== viewDate
+          && !(_closedLatestView && _lastOpenIso && e.trade_date === _lastOpenIso)) continue;
         if (typeof e.change_pct === 'number' && isFinite(e.change_pct)) _parts.push(_fmtSum(e.name, e.change_pct));
       }
     }
@@ -1756,25 +1812,39 @@ function _buildKrMacroChip(m) {
   const titleAttr = escapeHtml(sanitize(m.title || ''));
   const source = m.source ? escapeHtml(sanitize(m.source)) : '';
   const srcHtml = source ? `<span class="nightly-us-news-source">${source}</span>` : '';
-  // R48 W2-3 (조니 R46 2심 W2 — "사실/추정 분리는 리딩방 차별화의 본질") — 칩 종류 태그.
-  //   wire 칩(기관·통신 1차 보도 제목 verbatim) = "사실" / LLM 종합 요약 칩 = "해석". 전 칩 태그
-  //   (무태그 상태가 제3의 모호 상태가 되지 않게). _chipKindTag 단일 헬퍼 — KR·US 양 빌더 공용
+  // R48 W2-3 → Q-20260613-158 ② 개정 — 칩 종류 태그: [해석](LLM 종합 요약)만 마킹, wire 1차 보도
+  //   verbatim 은 무표기 디폴트 (무표기 = 사실). _chipKindTag 단일 헬퍼 — KR·US 양 빌더 공용
   //   (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
   const kindHtml = _chipKindTag(m);
   const koHtml = _wireKoBlockHtml(m);
   const safeUrl = (typeof m.url === 'string' && /^https?:\/\//i.test(m.url)) ? m.url : '';
-  if (safeUrl) {
-    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${kindHtml}${summary}${srcHtml}${koHtml}</a>`;
+  // Q-20260613-158 ① (대표 verbatim 6/13 08:53 "뉴스가 해석이 되서 한줄로 나오면 좋겠는데 너무 과하다")
+  //   — ko 해석 보유 칩 = 디폴트 ko_title 한 줄(+출처 약어), 탭 시 인과 요약·체인·EN 원문 펼침.
+  //   토글 = 네이티브 details/summary 재사용 (.pm320-term-legend 범례 동형 — 신규 토글 발명 0,
+  //   키보드 접근성 무상). 원문 직링크(법무 의무)는 펼침 본문 하단 .wire-ko-srclink 로 이동 (딥링크 보존).
+  //   summary 터치존 ≥44px = CSS min-height (R48 P1-4 범례 동형). ko 부재 칩은 기존 한 줄 그대로.
+  if (koHtml) {
+    const srcLink = safeUrl
+      ? `<a class="wire-ko-srclink" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${source || '원문'} 원문 보기</a>`
+      : '';
+    return `<details class="cal-macro-chip nightly-us-newschip wire-ko-chip" title="${titleAttr}">`
+      + `<summary>${kindHtml}${summary}${srcHtml}<span class="wire-ko-chevron" aria-hidden="true">▸</span></summary>`
+      + koHtml + srcLink
+      + `</details>`;
   }
-  return `<span class="cal-macro-chip" title="${titleAttr}">${kindHtml}${summary}${srcHtml}${koHtml}</span>`;
+  if (safeUrl) {
+    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</a>`;
+  }
+  return `<span class="cal-macro-chip" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</span>`;
 }
 
-// R48 W2-3 — 칩 종류 태그 단일 소스. wire=true(1차 보도 verbatim) → "사실", 그 외(LLM 종합 요약) → "해석".
-//   추정 표기 0: 태그는 데이터 유래(wire 필드)만 따른다 (FLR-AGT-002).
+// R48 W2-3 — 칩 종류 태그 단일 소스. 추정 표기 0: 태그는 데이터 유래(wire 필드)만 따른다 (FLR-AGT-002).
+// Q-20260613-158 ② (대표 verbatim 6/13 08:53 "뉴스를 가져다 쓰니까 대부분 다 사실이지 않나? 당연한 걸
+//   잔뜩 표시하니까 노이지") — [사실] 칩 디폴트 미표기 (무표기 = 사실), [해석] 계열만 마킹.
+//   사실/해석 분리 원칙(조니 R46 2심 W2 기단정)은 유지하되 마킹은 예외쪽(해석)만 — 대표 직접 지시로
+//   R48 W2-3 "전 칩 태그" 마킹 방식 개정 (KR·US 양 빌더 단일 헬퍼 일괄, FLR-20260428-TEC-001).
 function _chipKindTag(c) {
-  return c && c.wire
-    ? '<span class="cal-chip-kind cal-chip-kind--fact">사실</span>'
-    : '<span class="cal-chip-kind">해석</span>';
+  return c && c.wire ? '' : '<span class="cal-chip-kind">해석</span>';
 }
 
 // Q-20260612-154 ④ — 미장 wire 한국어 인과 해석 칩 확장 (대표 2026-06-12 23:14 직접 지시:
@@ -1969,6 +2039,11 @@ function renderCalExpandContent(date, data) {
       const _nuRoot = document.getElementById('nightly-us');
       if (_nuRoot) _applySectionCollapse(_nuRoot, 'nightly-us');
     }
+    // Q-20260613-158 (주말 뷰 실측 catch) — 뉴스 "더보기" 위임 wiring. R43 WAVE6 이 _buildNewsExpand 를
+    //   본 early-return path 에도 도입하면서 _wireNewsExpand() 호출(정상 path 말미 L3870 단일)을 누락 —
+    //   휴장/빈 데이터 뷰에서 더보기 버튼 전부 무반응 (FLR-20260428-TEC-001 한쪽 수정·다른 끝 누락 동형).
+    //   호출 멱등 (window._newsExpandInit 가드) — 양 path 동시 호출 안전.
+    if (typeof _wireNewsExpand === 'function') _wireNewsExpand();
     return;
   }
 
