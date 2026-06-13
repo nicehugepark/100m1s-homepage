@@ -1794,13 +1794,13 @@ footer {
 }
 footer .links { display: flex; gap: 20px; justify-content: center; margin-bottom: 16px; font-weight: 600; }
 footer .links a:hover { color: var(--am2); }
-footer .copyright { color: var(--dm); opacity: 0.6; }
-/* R51 P1 (조니 픽셀 적발 — 법적 디스클레이머 CR 미달) — 공통 푸터 "시장 참고 자료" 법적 고지는
-   .copyright 의 var(--dm)@opacity 0.6(라이트 CR 2.01·다크 2.64, AA 4.5 미달)을 상속해 가독 미달.
-   법적 고지는 접근성 필수(읽혀야 면책 성립) → 푸터 자체 텍스트 토큰 var(--footer-tx)@opacity 1 로
-   분리(라이트 #8B95A8 CR 5.58 / 다크 #8E8676 CR 5.18, 양 모드 AA 통과 — 다크 무손상, 토큰은
-   모드별 튜닝값). 저작권/출처 줄(.copyright)은 진짜 부차 정보라 종전 dim 유지. FLR-20260428-TEC-001
-   한쪽 수정·다른 끝 누락 동형 회피 — 단일 .footer-legal-note 클래스(공통 푸터 1곳). */
+/* R51 픽셀 재판정 NO (조니) — 비대칭 결함 종결: R51 1심은 .footer-legal-note(법적 고지)만 상향하고
+   형제 .copyright(© + DART 출처 줄)은 var(--dm)@0.6(라이트 CR 2.01·다크 2.64, AA 미달)로 남김.
+   → 푸터 텍스트 전체를 단일 토큰 var(--footer-tx)@opacity 1 로 일관화 (공통 .copyright 규칙 1곳).
+   © + DART 라이트 2.01→5.58 / 다크 2.64→5.18, 법적 고지 동일 토큰 유지 — 양 모드 전수 AA 통과.
+   --footer-tx 는 모드별 튜닝값(라이트 #8B95A8 / 다크 #8E8676)이라 다크 무손상.
+   FLR-20260428-TEC-001 한쪽 수정·다른 끝 누락 동형 회피 — 푸터 텍스트 형제 전건 동일 규칙. */
+footer .copyright,
 footer .footer-legal-note { color: var(--footer-tx); opacity: 1; }
 
 /* ───── 키움 거래대금 500억+ 블록 ───── */
