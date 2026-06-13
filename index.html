@@ -470,6 +470,110 @@ footer .copyright {
   color: var(--dm2);
   opacity: 0.6;
 }
+
+/* ─── Live Pulse — 실데이터만, stale 48h 가드 (가짜 활동감 금지 FLR-AGT-002) ─── */
+.pulse {
+  display: none;  /* JS가 실데이터 확인 후에만 노출 (데이터 미확보·stale 시 숨김 유지) */
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+  background: var(--sf2);
+}
+.pulse.live { display: block; }
+.pulse-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  font-size: 12.5px;
+}
+.pulse-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #178B53;  /* 살아있음 신호 (녹색) — 라이트 배경 위 3:1 확보 */
+  box-shadow: 0 0 0 0 rgba(23, 139, 83, 0.5);
+  animation: pulse-glow 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse-glow {
+  0%   { box-shadow: 0 0 0 0 rgba(43, 182, 115, 0.45); }
+  70%  { box-shadow: 0 0 0 7px rgba(43, 182, 115, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 182, 115, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot { animation: none; }
+}
+.pulse-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--tx2);
+  white-space: nowrap;
+}
+.pulse-item b {
+  font-weight: 800;
+  color: var(--tx);
+  letter-spacing: -0.2px;
+}
+.pulse-item .pulse-k {
+  color: var(--tx2);  /* 라벨도 AA 4.5:1 확보 (라이트 9.33 / 다크 11.0) */
+  font-weight: 600;
+}
+
+/* ─── Dark mode (prefers-color-scheme) — 라이트 디자인 무손상, WCAG AA 4.5:1 전 텍스트 검증 ─── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:  #0E1116;
+    --bg2: #161B22;
+    --sf:  #1A1F27;
+    --sf2: #11151B;
+    --bd:  #2A3038;
+    --bd2: #363D47;
+    --tx:  #F0F3F8;
+    --tx2: #C2C9D6;
+    --dm:  #8B95A8;
+    --dm2: #6B7488;
+    --am:  #E8C063;  /* 다크 배경 위 대비 확보 위해 한 단계 밝은 amber */
+    --am2: #F2D17E;
+    --am3: #3A3320;  /* amber-tinted 다크 칩 배경 */
+    --am4: #231F12;
+    --ru:  #E0556A;  /* 로고 점 — 다크 위 가독 */
+  }
+  /* 헤더 반투명 배경 다크 대응 */
+  header {
+    background: rgba(14, 17, 22, 0.85);
+  }
+  /* Hero 햇살 amber glow — 다크 배경 위 은은하게 (대비 유지) */
+  .hero::before {
+    background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(232, 192, 99, 0.14) 0%, rgba(232, 192, 99, 0.04) 38%, var(--bg) 75%);
+  }
+  .hero-eyebrow {
+    border-color: rgba(232, 192, 99, 0.28);
+  }
+  /* product 카드 hover glow 다크 톤 */
+  .product-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    border-color: rgba(232, 192, 99, 0.35);
+  }
+  /* Contact / Footer — 라이트모드에선 var(--tx)=네이비 배경이나 다크모드에선 토큰 역전 → 명시 다크 surface 고정 */
+  .contact {
+    background: var(--bg2);
+    border-top: 1px solid var(--bd);
+  }
+  .contact .block-heading { color: var(--tx); }
+  .contact-card .value { color: var(--tx); }
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--bd);
+  }
+  /* pulse dot — 다크 배경에선 한 단계 밝은 녹 (대비 7:1) */
+  .pulse-dot {
+    background: #2BB673;
+    box-shadow: 0 0 0 0 rgba(43, 182, 115, 0.5);
+  }
+}
 </style>
 </head>
 <body>
@@ -542,6 +646,15 @@ footer .copyright {
     <a href="#products" class="hero-cta">제품 보기 →</a>
   </div>
 </section>
+
+<!-- Live Pulse — 실데이터(배포 이력·PM320 발행)만 표시. stale 48h 시 JS가 .live 미부여 → 숨김 유지 (FLR-AGT-002 가짜 활동감 금지) -->
+<div class="pulse" id="pulse" aria-label="서비스 활동 현황">
+  <div class="pulse-inner">
+    <span class="pulse-dot" aria-hidden="true"></span>
+    <span class="pulse-item"><span class="pulse-k">최근 업데이트</span> <b id="pulse-deploy">—</b></span>
+    <span class="pulse-item"><span class="pulse-k">PM320 발행</span> <b id="pulse-pm320">—</b></span>
+  </div>
+</div>
 
 <section class="block about" id="about">
   <div class="block-inner">
@@ -621,7 +734,7 @@ footer .copyright {
     <div class="contact-grid">
       <div class="contact-card">
         <div class="label">Email</div>
-        <a href="mailto:hello@100m1s.com" class="value">hello@100m1s.com</a>
+        <a href="mailto:nicehugepark@gmail.com" class="value">nicehugepark@gmail.com</a>
         <div class="sub">제품, 협업, 일반 문의</div>
       </div>
       <div class="contact-card">
@@ -640,8 +753,67 @@ footer .copyright {
     <a href="#contact">Contact</a>
     <a href="/lecture.html" style="opacity:0.4;font-size:0.75em">Lecture</a>
   </div>
-  <div class="copyright">© 2026 100M1S · Far. One Step.</div>
+  <div class="copyright">© 2026 100M1S · Far. One Step.<span id="footer-deploy"></span></div>
 </footer>
+
+<script>
+/* Live Pulse — 실데이터만. stale 48h 가드: 멈춘 카운터(=죽음 역증거)는 노출 자체 안 함 (FLR-AGT-002 / FLR-20260605-TEC-001).
+   모든 실패 경로는 fail-closed (가짜 표시 0건): fetch 실패·파싱 실패·필드 부재·stale → pulse 숨김 유지. */
+(function(){
+  var STALE_MS = 48 * 60 * 60 * 1000;  // 48시간
+
+  function relKo(ms){
+    var s = Math.floor(ms/1000);
+    if (s < 90) return '방금';
+    var m = Math.floor(s/60);
+    if (m < 60) return m + '분 전';
+    var h = Math.floor(m/60);
+    if (h < 24) return h + '시간 전';
+    var d = Math.floor(h/24);
+    return d + '일 전';
+  }
+
+  fetch('/data/page-manifest.json', { cache: 'no-store' })
+    .then(function(r){ if (!r.ok) throw new Error('manifest ' + r.status); return r.json(); })
+    .then(function(d){
+      // 1) 신선도 앵커 = generated_at (cron 자동 갱신). 부재/비정상 → 중단(숨김 유지).
+      if (!d || typeof d.generated_at !== 'string') return;
+      var gen = new Date(d.generated_at).getTime();
+      if (!isFinite(gen)) return;
+      var age = Date.now() - gen;
+      // 2) stale 가드: 48h 초과 = 파이프라인 멈춤 → 살아있다고 거짓 표시 금지. 숨김 유지.
+      if (age < 0 || age > STALE_MS) return;
+
+      // 3) 실데이터 렌더
+      var deploy = document.getElementById('pulse-deploy');
+      var pm320  = document.getElementById('pulse-pm320');
+      var anyReal = false;
+
+      if (deploy) {
+        deploy.textContent = relKo(age);
+        anyReal = true;
+      }
+      // PM320 누적 발행일수 = total_landings (실 픽 랜딩 페이지 수, cron 자동 증가). 정수 양수일 때만.
+      var landings = d.total_landings;
+      if (pm320 && typeof landings === 'number' && landings > 0) {
+        pm320.textContent = landings.toLocaleString('ko-KR') + '일';
+        anyReal = true;
+      } else if (pm320) {
+        // 데이터 미확보 → 해당 항목 생략 (억지 표시 금지)
+        var item = pm320.closest('.pulse-item');
+        if (item) item.style.display = 'none';
+      }
+
+      // 4) 최소 1개 실데이터 확보 시에만 pulse 노출
+      if (anyReal) {
+        document.getElementById('pulse').classList.add('live');
+        var fd = document.getElementById('footer-deploy');
+        if (fd) fd.textContent = ' · 최근 업데이트 ' + relKo(age);
+      }
+    })
+    .catch(function(){ /* fail-closed: 아무것도 표시하지 않음 */ });
+})();
+</script>
 
 </body>
 </html>
