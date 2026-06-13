@@ -32,19 +32,34 @@
     return `<span class="badge ${cls || ""}">${escape(text)}</span>`;
   }
 
+  function activateTab(name) {
+    const tab = document.querySelector(`.tab[data-tab="${name}"]`);
+    const panel = el("tab-" + name);
+    if (!tab || !panel) return false;
+    document.querySelectorAll(".tab").forEach((x) => {
+      x.classList.remove("active");
+      x.setAttribute("aria-selected", "false");
+    });
+    document.querySelectorAll(".panel").forEach((x) => x.classList.remove("active"));
+    tab.classList.add("active");
+    tab.setAttribute("aria-selected", "true");
+    panel.classList.add("active");
+    return true;
+  }
+
   function setupTabs() {
     document.querySelectorAll(".tab").forEach((t) => {
       t.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach((x) => {
-          x.classList.remove("active");
-          x.setAttribute("aria-selected", "false");
-        });
-        document.querySelectorAll(".panel").forEach((x) => x.classList.remove("active"));
-        t.classList.add("active");
-        t.setAttribute("aria-selected", "true");
-        el("tab-" + t.dataset.tab).classList.add("active");
+        activateTab(t.dataset.tab);
+        // 해시 동기화 — 새로고침·공유 시 같은 탭 복원 (#convergence 등)
+        if (history.replaceState) history.replaceState(null, "", "#" + t.dataset.tab);
+        else location.hash = t.dataset.tab;
       });
     });
+    // 초기 탭: URL 해시(#convergence 등) 우선, 없으면 디폴트(HTML active=수렴) 유지.
+    // 조니 P1-B — 여는 즉시 수렴 뷰가 첫 화면. 해시 딥링크도 지원.
+    const hash = (location.hash || "").replace(/^#/, "");
+    if (hash) activateTab(hash);
   }
 
   function renderRequests() {
@@ -295,31 +310,48 @@
     return m ? parseInt(m[1], 10) : -1;
   }
 
-  // ② 품질 수렴 추이 — repo별 회차 × (P0+신규P1 합). null=미측정(거짓 0 금지).
+  // ② 품질 수렴 추이 — repo별 회차 × 품질점수(4축 평균, 높을수록 좋음).
+  //    막대 높이 = quality_score(0~10 정규화). 결함합(P0+신규P1)은 보조 라벨/툴팁.
+  //    둘 다 null이면 "미측정"(사선·4px). 거짓 0 색칠 금지(FLR-AGT-002).
+  //    품질점수를 주 지표로 삼는 이유: 결함합은 대개 0(이미 수렴 근처)이라 평평 →
+  //    "회차 돌며 개선됐나"의 실곡선은 4축 품질점수가 보여줌(조니 P1-A 직답).
   function renderConvTrend(conv) {
     const trend = conv.trend || {};
     const repos = Object.keys(trend).sort();
     if (!repos.length) { el("conv-trend").innerHTML = '<p class="hint">라운드 데이터 없음</p>'; return; }
+    const QMAX = 10; // 4축 만점
     el("conv-trend").innerHTML = repos.map((repo) => {
       const pts = trend[repo] || [];
-      const maxV = Math.max(1, ...pts.map((p) => p.defect_sum == null ? 0 : p.defect_sum));
-      const measured = pts.filter((p) => p.defect_sum != null).length;
+      // 측정 = 품질점수 OR 결함합 중 하나라도 실측된 회차
+      const qMeasured = pts.filter((p) => p.quality_score != null).length;
+      const anyMeasured = pts.filter(
+        (p) => p.quality_score != null || p.defect_sum != null
+      ).length;
       const bars = pts.map((p) => {
-        const known = p.defect_sum != null;
-        const h = known ? Math.round((p.defect_sum / maxV) * 100) : 0;
+        const hasQ = p.quality_score != null;
+        const hasD = p.defect_sum != null;
         const label = p.alias || p.round_id;
-        const valTxt = known ? p.defect_sum : "미측정";
         const cls = stateMeta(p.state).cls;
-        return `<div class="conv-bar-col" title="${escape(label)} · ${escape(stateMeta(p.state).label)} · 결함합 ${escape(String(valTxt))} · 판정 ${p.verdict_count}건">
-          <div class="conv-bar-val">${escape(String(valTxt))}</div>
-          <div class="conv-bar ${cls} ${known ? "" : "conv-bar-unknown"}" style="height:${known ? Math.max(h, 4) : 4}px"></div>
+        // 주 막대 높이 = 품질점수(0~10 → px). 품질 없으면 미측정 막대.
+        const h = hasQ ? Math.max(Math.round((p.quality_score / QMAX) * 110), 6) : 4;
+        const headline = hasQ ? p.quality_score.toFixed(1) : (hasD ? "—" : "미측정");
+        // 결함합 보조 표기 (있을 때만): "결함 N"
+        const defTxt = hasD ? `결함 ${p.defect_sum}` : "";
+        const tip = `${label} · ${stateMeta(p.state).label}`
+          + ` · 품질 ${hasQ ? p.quality_score.toFixed(1) + "/10 (4축평균)" : "미측정"}`
+          + ` · 결함합 ${hasD ? p.defect_sum : "미측정"}`
+          + ` · 판정 ${p.verdict_count}건`;
+        return `<div class="conv-bar-col" title="${escape(tip)}">
+          <div class="conv-bar-val">${escape(headline)}</div>
+          <div class="conv-bar ${cls} ${hasQ ? "" : "conv-bar-unknown"}" style="height:${h}px"></div>
+          ${defTxt ? `<div class="conv-bar-def">${escape(defTxt)}</div>` : ""}
           <div class="conv-bar-x">${escape(label)}</div>
         </div>`;
       }).join("");
-      // 미측정 안내 — 거짓 0 막대 아님을 명시(FLR-AGT-002).
-      const note = measured === 0
-        ? `<span class="conv-trend-note">결함 수치 미측정 — 막대 높이는 0이 아니라 "측정 안 됨"(사선)입니다</span>`
-        : `<span class="conv-trend-note">측정 ${measured}/${pts.length}회차</span>`;
+      // 측정 안내 — 거짓 0 막대 아님을 명시(FLR-AGT-002).
+      const note = anyMeasured === 0
+        ? `<span class="conv-trend-note">품질·결함 수치 미측정 — 막대는 0이 아니라 "측정 안 됨"(사선)</span>`
+        : `<span class="conv-trend-note">품질 측정 ${qMeasured}/${pts.length}회차</span>`;
       return `<div class="conv-trend-repo">
         <div class="conv-trend-title">${escape(repo)} ${note}</div>
         <div class="conv-bars">${bars}</div></div>`;
