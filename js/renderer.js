@@ -2687,12 +2687,21 @@ function renderCalExpandContent(date, data) {
   // R46 P1-1 — watering/take-profit (?) 팁 "첫 등장 1회" 플래그 (_pm320DetailRows 소비, NXT/시총 동형).
   let _wateringTipPlaced = false;
   let _tpTipPlaced = false;
-  // R46 P1-5 (조니 단정) — 레인지 바 가운데 "현재" 라벨 정직화. 카드 가격은 그 날짜 데이터 기준
-  //   시각(국내장 build generated_at / kiwoom last_snapshot_at)의 동결값 — NXT 애프터마켓
-  //   (15:40~20:00) 거래 중에도 "현재"로 읽히는 거짓 차단 → "HH:MM 기준". 시각 부재 시 라벨
-  //   생략 (추정 표기 금지, FLR-AGT-002 — kr-indices asof 생략 패턴 동형).
-  const _rangeBasisM = String(_freshSrc || '').match(/^\d{4}-\d{2}-\d{2}T(\d{2}:\d{2})/);
-  const _rangeNowLabel = _rangeBasisM ? `${_rangeBasisM[1]} 기준` : '';
+  // R46 P1-5 (조니 단정, 폐기됨 — 아래 R50 항목① 으로 대체) — 본래 레인지 바 가운데 셀에 "현재"가
+  //   동결값이라 NXT 애프터마켓(15:40~20:00) 거래 중에도 라이브로 오독되는 거짓을 "HH:MM 기준"으로
+  //   교체했었다. R50 에서 이 셀 자체를 비움(섹션 헤더로 외화) — '현재' 거짓-라이브 어휘는 그대로 0건이라
+  //   R46 P1-5 단정의 본질("거짓-라이브 어휘 제거")은 그대로 충족된다. (FLR-AGT-002 정합 유지)
+  // R50 항목① (R49 정직성 NO — "전부에 붙는 표지는 표지가 아니다") + FLR-20260612-PRC-001 diff 체크리스트:
+  //   기준 시각("HH:MM 기준")이 30개 종목 카드 레인지바마다 동일 값으로 반복 = 30x 노이즈.
+  //   동일 값이 섹션 헤더(.cal-content-head 의 .cal-day-meta__updated "HH:MM KST 기준", L2626 generatedSuffix)에
+  //   이미 1회 노출됨 — 양쪽 모두 동일 _freshSrc 파생이라 헤더 라벨 ↔ 카드 라벨은 항상 공존(실측 sameTime).
+  //   → 종목 카드 레인지바 가운데 pcts 셀은 비움(섹션 1회 노출로 충분, 정보 손실 0). 빈 span 은 유지해
+  //     range-prices 가격·range-dates 날짜의 3열 grid 정렬을 보존한다(실측 colCenters 3행 동일).
+  //   [R46 P1-5 단정 비훼손 확인 — FLR-PRC-001 diff 체크리스트] 단정 본질 = "정규장 종가가 NXT 거래
+  //     중에도 '현재'로 읽히는 거짓 차단". 빈 셀은 '현재'(및 어떤 라이브 어휘)도 미표기 → 거짓-라이브 0건
+  //     이라 단정 충족. 기준 시각 자체는 섹션 헤더 1회 정직 노출 유지 → asof 정직성 보존(위치만 30회→1회).
+  //   주: 지수 카드(index-card.js:92)는 별도 코드 path 로 여전히 "현재" 하드코딩 — R46 P1-5 가 거기엔 미적용
+  //     잔존(한쪽 코드 누락 FLR-20260428-TEC-001 동형 — 스코프 외, 보고에 박제).
   const renderTodayCard = (it) => {
     const pct = it.pct;
     const dir = (pct ?? 0) >= 0 ? 'up' : 'down';           // 등락률 텍스트 색상용 (전일 대비)
@@ -3260,7 +3269,7 @@ function renderCalExpandContent(date, data) {
           </div>
           <div class="range-row range-pcts">
             <span class="r-low ${lowCls}">${lowText}</span>
-            <span class="r-now r-now-label">${escapeHtml(_rangeNowLabel)}</span>
+            <span class="r-now r-now-label"></span><!-- R50 항목① — 기준 시각은 섹션 헤더로 외화(정보 손실 0). 빈 span 은 3열 grid 정렬 보존용. -->
             <span class="r-high ${highCls}">${highText}</span>
           </div>
           <div class="range-row range-dates">

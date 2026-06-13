@@ -4106,7 +4106,15 @@ body.single-card-mode { background: var(--bg) !important; }
   color: var(--tx2);
   /* feat/market-context ④ — 시총 span 추가 대비 안전망: 320px 2행 낙하 허용·절단 금지. */
   flex-wrap: wrap;
-  row-gap: 2px;
+  /* R50 항목② (R49 P1-3 = 조니 적발) — 용어 (?) 터치존 wrap 물리 충돌 해소.
+     좁은 우측 컬럼(~138px)에서 시총 span(76px)이 2행 낙하 → candle (?) (행1) 위로 mcap (?) (행2)가
+     세로 인접(중심 간 21px). 각 (?) 의 44×44 투명 hit-area(::before, R28 P1④)가 행 경계를 넘어
+     이웃 (?) 의 중심을 잠식 → DOM 후순위 mcap 가 candle 중심 탈취(실측 candle ownsCenter:false).
+     처방 = 행 간격(row-gap) 11px (pitch 21→27) → 두 44px hit-area 가 서로의 중심에 도달 못 함
+     (실측 candle·trade-amount·mcap 3개 전부 ownsCenter:true). 44×44 터치 타깃 불변(R28 P1④ 보존)·
+     가시 원형 15px 불변·in-view 상세 4행(R46 P0-2②)은 .cal-feature-details 별 영역이라 무영향.
+     FLR-20260428-TEC-001(한쪽 코드 누락) 회피: column-gap 은 모바일 미디어쿼리에서 별도 명시 유지. */
+  row-gap: 11px;
 }
 /* v2.4: 메타 자식 모두 글로벌 셀렉터 무력화 + padding/margin 0 + 폰트 패밀리 통일 */
 .cal-feature-meta > span {
@@ -4166,7 +4174,9 @@ body.single-card-mode { background: var(--bg) !important; }
 @media (max-width: 640px) {
   .cal-feature-head.v2 { padding: 8px 36px 4px 6px; gap: 6px; } /* 모바일 우측 36px 공유 버튼 공간 */
   .cal-feature-head.v2 .cal-feature-name { font-size: 14px; }
-  .cal-feature-meta { font-size: 12px; gap: 5px; }
+  /* R50 항목② — 모바일에서도 row-gap 11px 유지(용어 (?) 세로 인접 hit 충돌 해소). gap 단축형은
+     양 축을 5px 로 덮어쓰므로 column-gap 만 5px 로 분리 명시(row-gap 은 base 11px 상속). */
+  .cal-feature-meta { font-size: 12px; column-gap: 5px; }
   .cal-feature-meta .cal-feature-pct,
   .cal-feature-meta .cal-close-price,
   .cal-feature-meta .cal-trade-amount { font-size: 12px; }
