@@ -962,11 +962,11 @@ footer .copyright {
   </div>
 </section>
 
-<!-- Live Pulse — 실데이터(배포 이력·PM320 발행)만 표시. stale 48h 시 JS가 .live 미부여 → 숨김 유지 (FLR-AGT-002 가짜 활동감 금지) -->
+<!-- Live Pulse — 실데이터(PM320 발행)만 표시. stale/미확보 시 JS가 .live 미부여 → 숨김 유지 (FLR-AGT-002 가짜 활동감 금지).
+     '최근 업데이트' 발행일(배포 시각 readout) 항목은 대표 지시(2026-06-14)로 제거 — 신선도 날짜 노출 비희망. -->
 <div class="pulse" id="pulse" aria-label="서비스 활동 현황">
   <div class="pulse-inner">
     <span class="pulse-dot" aria-hidden="true"></span>
-    <span class="pulse-item"><span class="pulse-k">최근 업데이트</span> <b id="pulse-deploy">—</b></span>
     <span class="pulse-item"><span class="pulse-k">PM320 발행</span> <b id="pulse-pm320">—</b></span>
   </div>
 </div>
@@ -1081,77 +1081,29 @@ footer .copyright {
     <a href="#contact">Contact</a>
     <a href="/lecture.html" style="opacity:0.9;font-size:0.75em">Lecture</a>
   </div>
-  <div class="copyright">© 2026 100M1S · Far. One Step.<span id="footer-deploy"></span></div>
+  <div class="copyright">© 2026 100M1S · Far. One Step.</div>
 </footer>
 
 <script>
-/* Live Pulse — 실데이터만. stale 48h 가드: 멈춘 카운터(=죽음 역증거)는 노출 자체 안 함 (FLR-AGT-002 / FLR-20260605-TEC-001).
-   모든 실패 경로는 fail-closed (가짜 표시 0건): fetch 실패·파싱 실패·필드 부재·stale → pulse 숨김 유지.
-
-   R5 (조니 P1-3) — '최근 업데이트' 시점 정정:
-     BEFORE: manifest 본문 generated_at(파이프라인 산출 시각) = picks 변경 시에만 갱신 → 실 배포(매 커밋)와 괴리(28h 거짓 staleness).
-     AFTER : manifest **응답 헤더 last-modified** = GitHub Pages 실 배포 시각(매 push 갱신·page/sw/manifest 동일 타임스탬프 검증).
-             → '서비스 활동'을 실제 배포 활동 그대로 readout (정직성 ②축 유지·오히려 강화).
-     PM320 발행일수는 산출 데이터가 맞음 → 본문 total_landings 그대로 유지. */
+/* Live Pulse — 실데이터(PM320 누적 발행일수)만. fail-closed: 데이터 미확보 시 pulse 숨김 유지 (FLR-AGT-002 / FLR-20260605-TEC-001).
+   '최근 업데이트' 발행일(배포 시각 last-modified readout) 항목은 대표 지시(2026-06-14)로 제거 —
+   신선도 날짜 노출 비희망. 관련 last-modified 헤더 취득·deploy 주입·footer-deploy 꼬리표 로직 일괄 제거. */
 (function(){
-  var STALE_MS = 48 * 60 * 60 * 1000;  // 48시간
-
-  function relKo(ms){
-    var s = Math.floor(ms/1000);
-    if (s < 90) return '방금';
-    var m = Math.floor(s/60);
-    if (m < 60) return m + '분 전';
-    var h = Math.floor(m/60);
-    if (h < 24) return h + '시간 전';
-    var d = Math.floor(h/24);
-    return d + '일 전';
-  }
-
   fetch('/data/page-manifest.json', { cache: 'no-store' })
     .then(function(r){
       if (!r.ok) throw new Error('manifest ' + r.status);
-      // 1) 신선도 앵커 = 응답 last-modified(실 배포 시각). 헤더 없으면 deployTs=NaN → deploy 항목만 생략(아래).
-      var lm = r.headers.get('last-modified');
-      var deployTs = lm ? new Date(lm).getTime() : NaN;
-      return r.json().then(function(d){ return { d: d, deployTs: deployTs }; });
+      return r.json();
     })
-    .then(function(o){
-      var d = o.d, deployTs = o.deployTs;
+    .then(function(d){
       if (!d) return;
 
-      var deploy = document.getElementById('pulse-deploy');
-      var pm320  = document.getElementById('pulse-pm320');
-      var anyReal = false;
-      var deployAge = NaN;
+      var pm320 = document.getElementById('pulse-pm320');
 
-      // 2) 배포 시각 항목 — last-modified 유효 + stale 48h 이내일 때만. (멈춤=거짓 활동감 금지, fail-closed)
-      if (isFinite(deployTs)) {
-        var age = Date.now() - deployTs;
-        if (age >= 0 && age <= STALE_MS) {
-          deployAge = age;
-          if (deploy) { deploy.textContent = relKo(age); anyReal = true; }
-        } else if (deploy) {
-          var di = deploy.closest('.pulse-item'); if (di) di.style.display = 'none';  // stale/미래 → 생략
-        }
-      } else if (deploy) {
-        var di2 = deploy.closest('.pulse-item'); if (di2) di2.style.display = 'none';  // 헤더 부재 → 생략(억지 표시 금지)
-      }
-
-      // 3) PM320 누적 발행일수 = total_landings (실 픽 랜딩 페이지 수, cron 자동 증가). 정수 양수일 때만.
+      // PM320 누적 발행일수 = total_landings (실 픽 랜딩 페이지 수, cron 자동 증가). 정수 양수일 때만.
       var landings = d.total_landings;
       if (pm320 && typeof landings === 'number' && landings > 0) {
         pm320.textContent = landings.toLocaleString('ko-KR') + '일';
-        anyReal = true;
-      } else if (pm320) {
-        var item = pm320.closest('.pulse-item');
-        if (item) item.style.display = 'none';  // 데이터 미확보 → 생략(억지 표시 금지)
-      }
-
-      // 4) 최소 1개 실데이터 확보 시에만 pulse 노출
-      if (anyReal) {
-        document.getElementById('pulse').classList.add('live');
-        var fd = document.getElementById('footer-deploy');
-        if (fd && isFinite(deployAge)) fd.textContent = ' · 최근 업데이트 ' + relKo(deployAge);
+        document.getElementById('pulse').classList.add('live');  // 실데이터 확보 시에만 노출
       }
     })
     .catch(function(){ /* fail-closed: 아무것도 표시하지 않음 */ });
