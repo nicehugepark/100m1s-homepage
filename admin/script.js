@@ -6,6 +6,28 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+  // ── 디스플레이-바운더리 sanitize (rules/security.md 9종 · 방어선 이중화) ──
+  // 빌드 단계 sanitize 게이트(scripts/admin/build_convergence.py)가 1차이나,
+  // romanized 에이전트명(ishikawa/togusa 등)이 owner 셀에서 누락된 사례 발견 →
+  // 표시 직전 한 번 더 일반화하여 내부 코드네임이 DOM 에 절대 닿지 않게 함(FLR-20260406-TEC-001
+  // 동형 = 한쪽 코드만 fix·romanized 변종 누락 재발 방지). 의미 보존 위해 일반화(삭제 X).
+  const SANITIZE_RULES = [
+    [/ishikawa/gi, "뉴스분석"],   // 이시카와(뉴스분석팀) 역할 라벨 — 의미 보존
+    [/togusa/gi, "투자분석"],     // 토구사(주식투자팀)
+    [/tachikoma/gi, "AI 시스템"], // 타치코마(오케스트레이터)
+    [/hugepark/gi, "운영자"],
+    [/\b(?:FLR|DOC)-(?:\d{8}-[A-Z]+|[A-Z]+)-\d+\b/g, "내부코드"], // doc_id 패턴
+    [/[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/g, "(이메일)"],
+    [/(\/Users\/|~\/company\/)\S*/g, "(내부경로)"],
+  ];
+  function sanitizeText(s) {
+    let t = String(s == null ? "" : s);
+    for (const [re, repl] of SANITIZE_RULES) t = t.replace(re, repl);
+    return t;
+  }
+  // escape + sanitize 동시 적용(자유 텍스트 전용). code/id 등 구조 필드엔 escape 만.
+  const safe = (s) => escape(sanitizeText(s));
+
   function badge(text, cls) {
     return `<span class="badge ${cls || ""}">${escape(text)}</span>`;
   }
@@ -209,99 +231,250 @@
     return n == null ? '<span class="conv-unknown" title="파싱 불가(추정 금지)">?</span>' : String(n);
   }
 
+  // 상태 → 평이한 한국어 + 진행률(%) 매핑. 코드/이모지 노출 X.
+  // 진행률은 "요청이 어디까지 갔나"를 직관화 — 종결/배포=100, 진행계열 중간, 보류=정체.
+  const STATE_META = {
+    "종결":   { label: "종결",     pct: 100, cls: "conv-ok" },
+    "수렴":   { label: "수렴 완료", pct: 100, cls: "conv-ok" },
+    "배포":   { label: "배포됨",    pct: 90,  cls: "conv-ok" },
+    "판정완료": { label: "판정 완료", pct: 70,  cls: "conv-cand" },
+    "판정중":  { label: "판정 중",   pct: 60,  cls: "conv-cand" },
+    "진행중":  { label: "진행 중",   pct: 55,  cls: "conv-prog" },
+    "구현중":  { label: "구현 중",   pct: 50,  cls: "conv-prog" },
+    "미수렴":  { label: "미수렴",    pct: 40,  cls: "conv-no" },
+    "보류":   { label: "보류",     pct: 25,  cls: "conv-prog" },
+  };
+  function stateMeta(s) {
+    return STATE_META[s] || { label: s || "미상", pct: null, cls: convStateClass(s) };
+  }
+  // 닫힌(완료) 요청 = 종결/수렴/배포. 그 외(판정중·구현중·진행중·미수렴·보류 등)는 모두 "열림".
+  const CLOSED_STATES = ["종결", "수렴", "배포"];
+  function isOpenState(s) { return !CLOSED_STATES.includes(s); }
+  // 진행·심사 중 라운드 state (지금 활동/카운트용)
+  const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
+
+  // ① 한눈에 — 열린/진행/수렴/최근 활동
+  function renderConvGlance(conv) {
+    const reqs = conv.requests || [];
+    const rounds = conv.rounds || [];
+    const summary = conv.summary || {};
+
+    const total = reqs.length;
+    const open = reqs.filter((r) => isOpenState(r.state)).length;
+    const settled = reqs.filter((r) => !isOpenState(r.state)).length;
+    const activeRounds = rounds.filter((r) => ACTIVE_ROUND_STATES.includes(r.state)).length;
+
+    // 최근 활동 = 최신 라운드(가장 큰 번호). round_id 끝자리 수치로 정렬.
+    const lastRound = rounds.slice().sort((a, b) => roundNum(b.round_id) - roundNum(a.round_id))[0];
+    const lastTxt = lastRound
+      ? `${escape(lastRound.alias || lastRound.round_id)} · ${escape(lastRound.repo || "")} · ${escape(stateMeta(lastRound.state).label)}`
+      : "기록 없음";
+
+    el("conv-glance").innerHTML = `
+      <div class="glance-card glance-open">
+        <div class="g-v">${open}</div><div class="g-k">열린 요청</div>
+        <div class="g-sub">아직 도는 중</div>
+      </div>
+      <div class="glance-card">
+        <div class="g-v">${activeRounds}</div><div class="g-k">진행·판정 라운드</div>
+        <div class="g-sub">심사 중</div>
+      </div>
+      <div class="glance-card glance-ok">
+        <div class="g-v">${settled}</div><div class="g-k">수렴·종결</div>
+        <div class="g-sub">전체 ${total}건 중</div>
+      </div>
+      <div class="glance-card glance-wide">
+        <div class="g-k">최근 활동</div>
+        <div class="g-recent">${lastTxt}</div>
+      </div>
+    `;
+  }
+
+  function roundNum(id) {
+    const m = String(id || "").match(/(\d+)\s*$/);
+    return m ? parseInt(m[1], 10) : -1;
+  }
+
+  // ② 품질 수렴 추이 — repo별 회차 × (P0+신규P1 합). null=미측정(거짓 0 금지).
   function renderConvTrend(conv) {
     const trend = conv.trend || {};
     const repos = Object.keys(trend).sort();
     if (!repos.length) { el("conv-trend").innerHTML = '<p class="hint">라운드 데이터 없음</p>'; return; }
     el("conv-trend").innerHTML = repos.map((repo) => {
       const pts = trend[repo] || [];
-      // defect_sum null(미측정)은 막대 미표시(거짓 0 막대 금지) — '미측정' 라벨.
       const maxV = Math.max(1, ...pts.map((p) => p.defect_sum == null ? 0 : p.defect_sum));
+      const measured = pts.filter((p) => p.defect_sum != null).length;
       const bars = pts.map((p) => {
         const known = p.defect_sum != null;
         const h = known ? Math.round((p.defect_sum / maxV) * 100) : 0;
         const label = p.alias || p.round_id;
         const valTxt = known ? p.defect_sum : "미측정";
-        const cls = convStateClass(p.state);
-        return `<div class="conv-bar-col" title="${escape(label)} · ${escape(p.state)} · 결함합 ${escape(String(valTxt))} · 판정 ${p.verdict_count}건">
+        const cls = stateMeta(p.state).cls;
+        return `<div class="conv-bar-col" title="${escape(label)} · ${escape(stateMeta(p.state).label)} · 결함합 ${escape(String(valTxt))} · 판정 ${p.verdict_count}건">
           <div class="conv-bar-val">${escape(String(valTxt))}</div>
           <div class="conv-bar ${cls} ${known ? "" : "conv-bar-unknown"}" style="height:${known ? Math.max(h, 4) : 4}px"></div>
           <div class="conv-bar-x">${escape(label)}</div>
         </div>`;
       }).join("");
-      return `<div class="conv-trend-repo"><div class="conv-trend-title">${escape(repo)}</div>
+      // 미측정 안내 — 거짓 0 막대 아님을 명시(FLR-AGT-002).
+      const note = measured === 0
+        ? `<span class="conv-trend-note">결함 수치 미측정 — 막대 높이는 0이 아니라 "측정 안 됨"(사선)입니다</span>`
+        : `<span class="conv-trend-note">측정 ${measured}/${pts.length}회차</span>`;
+      return `<div class="conv-trend-repo">
+        <div class="conv-trend-title">${escape(repo)} ${note}</div>
         <div class="conv-bars">${bars}</div></div>`;
     }).join("");
   }
 
-  function renderConvSummary(conv) {
-    const summary = conv.summary || {};
-    const warns = conv.integrity_warnings || [];
-    const cards = Object.entries(summary).map(([repo, s]) =>
-      `<div class="card"><div class="k">${escape(repo)}</div>
-        <div class="v">${s.open_requests}/${s.total_requests}</div>
-        <div class="sub">열린/전체 요청 · 활성 라운드 ${s.active_rounds} · 최신 ${escape(s.latest_round || "-")} (${escape(s.latest_state || "-")})</div>
-      </div>`).join("");
-    const warnHtml = warns.length
-      ? `<div class="hint conv-warn">무결성 WARN ${warns.length}건: ${warns.map(escape).join(" · ")}</div>`
-      : `<div class="hint">무결성 WARN 0건</div>`;
-    el("conv-summary").innerHTML = `<div class="summary-cards">${cards}</div>${warnHtml}`;
+  // ③ 지금 진행 중 — 진행/판정 대기 라운드만
+  function renderConvActive(conv) {
+    const rounds = (conv.rounds || []).filter((r) => ACTIVE_ROUND_STATES.includes(r.state));
+    if (!rounds.length) {
+      el("conv-active").innerHTML = '<p class="hint conv-idle">현재 진행 중인 라운드가 없습니다. 모든 라운드가 마무리되었거나 대기 상태입니다.</p>';
+      return;
+    }
+    rounds.sort((a, b) => roundNum(b.round_id) - roundNum(a.round_id));
+    el("conv-active").innerHTML = `<div class="conv-active-list">${rounds.map((r) => {
+      const m = stateMeta(r.state);
+      return `<div class="conv-active-card">
+        <div class="ac-top">
+          <span class="badge ${m.cls}">${escape(m.label)}</span>
+          <code>${escape(r.alias || r.round_id)}</code>
+          <span class="ac-repo">${escape(r.repo || "")}</span>
+        </div>
+        <div class="ac-req">${safe(r.request_refs || "대상 요청 미지정")}</div>
+        <div class="ac-meta">패널: ${safe(r.panel || "-")}${r.tier ? " · " + safe(r.tier) : ""}</div>
+      </div>`;
+    }).join("")}</div>`;
   }
 
+  // ④ 요청별 진행 상태 — repo 그룹 카드 + 진행률 바 + 펼침(라운드/판정)
   function renderConvRequests(conv) {
     const reqs = conv.requests || [];
+    const rounds = conv.rounds || [];
     const repos = [...new Set(reqs.map((r) => r.repo).filter(Boolean))].sort();
     const sel = el("conv-repo");
     sel.innerHTML = '<option value="">전체 repo</option>' +
       repos.map((r) => `<option value="${escape(r)}">${escape(r)}</option>`).join("");
+
+    // repo 라벨 평이화: '—' = 미분류
+    const repoLabel = (r) => (!r || r === "—") ? "미분류" : r;
+
     const draw = () => {
       const q = el("conv-req-search").value.trim().toLowerCase();
       const rf = sel.value;
       const filtered = reqs.filter((r) => {
         if (rf && r.repo !== rf) return false;
         if (!q) return true;
-        return [r.req_id, r.summary, r.state, r.repo].join(" ").toLowerCase().includes(q);
+        return [r.req_id, r.summary, r.state, r.repo, r.close_evidence].join(" ").toLowerCase().includes(q);
       });
       el("conv-req-count").textContent = `${filtered.length} / ${reqs.length}`;
-      el("conv-req-tbody").innerHTML = filtered.map((r) => {
-        // 열린 요청인데 종결 근거 공란 = 정상. 종결(✅)인데 공란이면 빨강(유실 가시·DSN §7.3).
-        const closed = r.state === "종결";
-        const evidMissing = closed && !(r.close_evidence || "").trim();
-        return `<tr>
-          <td><code>${escape(r.req_id)}</code></td>
-          <td>${escape(r.repo)}</td>
-          <td><span class="badge ${convStateClass(r.state)}">${escape(r.state)}</span></td>
-          <td>${escape(r.summary || "")}</td>
-          <td>${escape(r.provenance || "")}</td>
-          <td class="${evidMissing ? "conv-evid-missing" : ""}">${escape(r.close_evidence || "")}${evidMissing ? " ⚠️근거공란" : ""}</td>
-        </tr>`;
+
+      // repo로 그룹화 (정렬: HOME, PM320, 그외, 미분류)
+      const groups = new Map();
+      for (const r of filtered) {
+        const key = r.repo || "—";
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(r);
+      }
+      const order = (k) => ({ HOME: 0, PM320: 1 }[k] ?? (k === "—" ? 9 : 5));
+      const sortedKeys = [...groups.keys()].sort((a, b) => order(a) - order(b) || a.localeCompare(b));
+
+      if (!sortedKeys.length) {
+        el("conv-req-cards").innerHTML = '<p class="hint">조건에 맞는 요청이 없습니다.</p>';
+        return;
+      }
+
+      el("conv-req-cards").innerHTML = sortedKeys.map((key) => {
+        const items = groups.get(key);
+        const openN = items.filter((r) => isOpenState(r.state)).length;
+        const cards = items.map((r) => convReqCard(r, rounds)).join("");
+        return `<div class="conv-repo-group">
+          <div class="conv-repo-head">${escape(repoLabel(key))}
+            <span class="conv-repo-meta">${items.length}건 · 열림 ${openN}</span></div>
+          <div class="conv-repo-cards">${cards}</div>
+        </div>`;
       }).join("");
     };
+
     el("conv-req-search").addEventListener("input", draw);
     sel.addEventListener("change", draw);
     draw();
   }
 
+  // 개별 요청 카드 — 제목 + 상태 배지 + 진행률 + 펼침 시 종결근거/관련 라운드
+  function convReqCard(r, allRounds) {
+    const m = stateMeta(r.state);
+    const closed = !isOpenState(r.state);
+    const evidMissing = (r.state === "종결" || r.state === "수렴") && !(r.close_evidence || "").trim();
+    // 진행률 바 — pct 미상이면 바 숨김(거짓 진행률 금지)
+    const bar = m.pct == null
+      ? `<div class="rq-bar-na" title="상태별 진행률 매핑 없음">진행률 미상</div>`
+      : `<div class="rq-bar" role="progressbar" aria-valuenow="${m.pct}" aria-valuemin="0" aria-valuemax="100">
+           <span class="rq-bar-fill rq-${m.cls}" style="width:${m.pct}%"></span></div>`;
+    // 관련 라운드 — req_id가 request_refs에 포함된 것
+    const rid = r.req_id || "";
+    const related = rid ? allRounds.filter((rd) => (rd.request_refs || "").includes(rid)) : [];
+    const relatedHtml = related.length
+      ? `<div class="rq-related"><div class="rq-related-h">관련 라운드 ${related.length}건</div>${
+          related.map((rd) => `<div class="rq-related-row"><code>${escape(rd.alias || rd.round_id)}</code>
+            <span class="badge ${stateMeta(rd.state).cls}">${escape(stateMeta(rd.state).label)}</span>
+            <span class="sub">${safe(rd.note || rd.request_refs || "")}</span></div>`).join("")
+        }</div>`
+      : `<div class="rq-related sub">연결된 라운드 기록 없음</div>`;
+    const evidHtml = (r.close_evidence || "").trim()
+      ? `<div class="rq-evid"><span class="rq-evid-k">종결 근거</span> ${safe(r.close_evidence)}</div>`
+      : (evidMissing
+          ? `<div class="rq-evid conv-evid-missing">⚠️ 종결 처리됐으나 근거 공란 — 유실 의심</div>`
+          : "");
+
+    return `<details class="rq-card${closed ? " rq-closed" : ""}">
+      <summary class="rq-summary">
+        <div class="rq-head">
+          <span class="badge ${m.cls}">${escape(m.label)}</span>
+          <span class="rq-id"><code>${escape(rid)}</code></span>
+        </div>
+        <div class="rq-title">${safe(r.summary || "(요약 없음)")}</div>
+        ${bar}
+      </summary>
+      <div class="rq-body">
+        ${r.owner ? `<div class="rq-owner"><span class="rq-evid-k">담당</span> ${safe(r.owner)}</div>` : ""}
+        ${evidHtml}
+        ${relatedHtml}
+      </div>
+    </details>`;
+  }
+
+  // ⑤ 무결성 경고 — 데이터 신뢰도 가시화(접힌 raw 섹션 상단)
+  function renderConvIntegrity(conv) {
+    const warns = conv.integrity_warnings || [];
+    el("conv-integrity").innerHTML = warns.length
+      ? `<div class="hint conv-warn">⚠️ 데이터 무결성 경고 ${warns.length}건: ${warns.map(escape).join(" · ")}</div>`
+      : `<div class="hint">데이터 무결성 경고 0건</div>`;
+  }
+
   function renderConvRounds(conv) {
     const rounds = conv.rounds || [];
+    el("conv-round-n").textContent = rounds.length;
     el("conv-round-tbody").innerHTML = rounds.map((r) => `
       <tr>
         <td><code>${escape(r.round_id)}</code>${r.alias ? ` <span class="sub">(${escape(r.alias)})</span>` : ""}</td>
         <td>${escape(r.repo)}</td>
-        <td>${escape(r.request_refs || "")}</td>
-        <td>${escape(r.panel || "")}</td>
-        <td>${escape(r.tier || "")}</td>
-        <td><span class="badge ${convStateClass(r.state)}">${escape(r.state)}</span></td>
+        <td>${safe(r.request_refs || "")}</td>
+        <td>${safe(r.panel || "")}</td>
+        <td>${safe(r.tier || "")}</td>
+        <td><span class="badge ${stateMeta(r.state).cls}">${escape(stateMeta(r.state).label)}</span></td>
       </tr>`).join("");
   }
 
   function renderConvVerdicts(conv) {
     const verdicts = conv.verdicts || [];
+    el("conv-verdict-n").textContent = verdicts.length;
     el("conv-verdict-tbody").innerHTML = verdicts.map((v) => `
       <tr>
-        <td><code>${escape(v.file)}</code></td>
+        <td><code>${safe(v.file)}</code></td>
         <td>${escape(v.round_id || "")}</td>
-        <td>${escape(v.panel || "")}</td>
+        <td>${safe(v.panel || "")}</td>
         <td><span class="badge ${verdictClass(v.verdict)}">${escape(v.verdict)}</span></td>
         <td>${numOrUnknown(v.p0_count)}</td>
         <td>${numOrUnknown(v.new_p1_count)}</td>
@@ -366,13 +539,15 @@
       if (!res.ok) throw new Error("HTTP " + res.status);
       conv = await res.json();
     } catch (e) {
-      el("conv-summary").innerHTML =
+      el("conv-glance").innerHTML =
         `<p class="hint">convergence.json 로드 실패: ${escape(e.message)}. 'python3 scripts/admin/build_convergence.py' 로 생성하세요.</p>`;
       return;
     }
-    renderConvSummary(conv);
+    renderConvGlance(conv);
     renderConvTrend(conv);
+    renderConvActive(conv);
     renderConvRequests(conv);
+    renderConvIntegrity(conv);
     renderConvRounds(conv);
     renderConvVerdicts(conv);
     setupConvSql();
