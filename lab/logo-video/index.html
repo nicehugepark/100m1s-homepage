@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="dark light">
 <!-- 미게재 자산 — 검색 노출 차단 + nav 미링크 (브랜드 로고 인트로 영상 프리뷰) -->
 <meta name="robots" content="noindex, nofollow">
-<title>華麗 로고 인트로 — Sora v1 | 100M1S</title>
+<title>華麗 로고 인트로 — Sora v2 | 100M1S</title>
 <!-- 빈 파비콘 인라인 — 브라우저 기본 /favicon.ico 요청(404) 억제, 추가 네트워크 0 -->
 <link rel="icon" href="data:,">
 
@@ -70,6 +70,7 @@
   }
   .player.paused .play-overlay { opacity: 1; }
   .play-overlay svg { width: 64px; height: 64px; filter: drop-shadow(0 2px 10px rgba(0,0,0,.6)); }
+
   .caption {
     text-align: center;
     line-height: 1.5;
@@ -85,6 +86,41 @@
     color: var(--muted);
   }
   .caption .accent { color: var(--accent); }
+
+  /* v1 / v2 비교 토글 — 탭하기 큰 세그먼트(모바일 터치 타깃 ≥44px) */
+  .toggle {
+    display: inline-flex;
+    padding: 4px;
+    gap: 4px;
+    border-radius: 999px;
+    background: rgba(232,236,244,.07);
+    box-shadow: inset 0 0 0 1px rgba(232,236,244,.10);
+  }
+  .toggle button {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    color: var(--muted);
+    background: transparent;
+    transition: color .15s ease, background .15s ease;
+  }
+  .toggle button[aria-pressed="true"] {
+    color: #1a1408;
+    background: var(--accent);
+    box-shadow: 0 2px 10px rgba(217,190,126,.32);
+  }
+  .toggle button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   @media (min-width: 768px) {
     .caption .t { font-size: 17px; }
     .caption .s { font-size: 13px; }
@@ -94,10 +130,14 @@
 <body>
   <main class="stage">
     <div class="player" id="player" role="button" tabindex="0" aria-label="영상 재생/일시정지 토글">
+      <!--
+        v2 기본 노출. WebM/VP9(1.5MB)을 먼저 두어 모바일·모던 브라우저가 우선 선택(용량/LCP 완화),
+        H.264 MP4(10.3MB)는 Safari 등 폴백. poster + preload="metadata"로 첫 페인트 경량화.
+        faststart(moov 선두) — MP4 폴백 시에도 전량 다운로드 전 재생 시작.
+      -->
       <video
         id="v"
-        src="hwaryeo-intro-sora-v1.mp4"
-        poster="poster.jpg"
+        poster="poster-v2.jpg"
         preload="metadata"
         autoplay
         loop
@@ -105,7 +145,10 @@
         playsinline
         webkit-playsinline
         disablepictureinpicture
-        x5-playsinline></video>
+        x5-playsinline>
+        <source id="src-webm" src="hwaryeo-intro-sora-v2.webm" type="video/webm">
+        <source id="src-mp4" src="hwaryeo-intro-sora-v2.mp4" type="video/mp4">
+      </video>
       <div class="play-overlay" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,.45)" stroke="rgba(255,255,255,.85)" stroke-width="1.2"/>
@@ -113,9 +156,15 @@
         </svg>
       </div>
     </div>
+
+    <div class="toggle" role="group" aria-label="버전 선택">
+      <button type="button" data-v="v2" aria-pressed="true">v2</button>
+      <button type="button" data-v="v1" aria-pressed="false">v1</button>
+    </div>
+
     <div class="caption">
-      <div class="t">華麗 <span class="accent">로고 인트로</span> · Sora v1</div>
-      <div class="s">16초 · 화면을 탭하면 일시정지/재생</div>
+      <div class="t">華麗 <span class="accent">로고 인트로</span> · <span id="ver-label">Sora v2</span></div>
+      <div class="s">16초 · 화면을 탭하면 일시정지/재생 · v1/v2 비교 가능</div>
     </div>
   </main>
 
@@ -123,6 +172,21 @@
     (function () {
       var v = document.getElementById('v');
       var player = document.getElementById('player');
+      var verLabel = document.getElementById('ver-label');
+      var toggleBtns = document.querySelectorAll('.toggle button');
+
+      // 버전별 소스 정의 — v2는 WebM 우선+MP4 폴백, v1은 MP4 단일(원본 보존, 비교용)
+      var SOURCES = {
+        v2: { poster: 'poster-v2.jpg', label: 'Sora v2',
+              sources: [
+                { src: 'hwaryeo-intro-sora-v2.webm', type: 'video/webm' },
+                { src: 'hwaryeo-intro-sora-v2.mp4',  type: 'video/mp4'  }
+              ] },
+        v1: { poster: 'poster.jpg', label: 'Sora v1',
+              sources: [
+                { src: 'hwaryeo-intro-sora-v1.mp4',  type: 'video/mp4'  }
+              ] }
+      };
 
       function syncPausedClass() {
         player.classList.toggle('paused', v.paused);
@@ -136,12 +200,44 @@
         }
       }
 
+      function loadVersion(key) {
+        var conf = SOURCES[key];
+        if (!conf) return;
+        // <source> 교체 후 load() 호출 — 브라우저가 type 적합 소스를 다시 선택
+        v.innerHTML = '';
+        conf.sources.forEach(function (s) {
+          var el = document.createElement('source');
+          el.src = s.src;
+          el.type = s.type;
+          v.appendChild(el);
+        });
+        v.poster = conf.poster;
+        verLabel.textContent = conf.label;
+        v.load();
+        v.play().catch(function () { player.classList.add('paused'); });
+
+        toggleBtns.forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.dataset.v === key));
+        });
+        document.title = '華麗 로고 인트로 — ' + conf.label + ' | 100M1S';
+      }
+
+      // 재생/일시정지 토글 (영상 탭)
       player.addEventListener('click', toggle);
       player.addEventListener('keydown', function (e) {
         if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
       });
       v.addEventListener('play', syncPausedClass);
       v.addEventListener('pause', syncPausedClass);
+
+      // 버전 토글 (세그먼트 버튼) — 영상 클릭 토글로 버블링되지 않게 중단
+      toggleBtns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (b.getAttribute('aria-pressed') === 'true') return;
+          loadVersion(b.dataset.v);
+        });
+      });
 
       // iOS 저전력 모드 등으로 autoplay가 막히면 poster 위 재생 버튼 노출(탭 유도)
       v.play().catch(function () { player.classList.add('paused'); });
