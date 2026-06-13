@@ -1630,7 +1630,10 @@ a.cal-credit-row:hover,
   margin-top: 8px; padding: 6px 12px;
   font-size: 12px; font-weight: 700; color: var(--am);
   background: transparent; border: 1px solid var(--bd);
-  border-radius: 999px; cursor: pointer; min-height: 32px;
+  /* R49 E2 (조니 2심 단정 2 — "범례 모두 보기" 실측 119.6×32 < 44) — min-height 32 → 44.
+     .theme-trend-legend-item 5/8 qa D10 fix(36→44)·R47 ④ 동일 패턴 — "같은 결함을 두 번 고치게
+     하지 마라". 모바일 전용 노출 버튼이라 시각 +12px = 터치 우선 (44.1 실측 계열 정합). */
+  border-radius: 999px; cursor: pointer; min-height: 44px;
 }
 .theme-trend-legend-item {
   display: inline-flex; align-items: center; gap: 4px;
@@ -2539,6 +2542,7 @@ body.single-card-mode { background: var(--bg) !important; }
   gap: 6px;
   cursor: pointer;
   width: 100%;
+  position: relative;            /* R49 E1 — ::after 투명 히트 오버레이 기준점 */
   padding: 5px 12px;             /* REQ-061 — page-eyebrow 정합 (5/16 → 5/12, 대표 발화 11:43) */
   min-height: 36px;              /* DSN-001 §3.1 옵션 squircle (2026-06-03 21:31 KST design-lead 4차 권고, 대표 verbatim 21:28 "애플의 스쿼클 같이") — 28↔44 산술 중간 */
   border-radius: 12px;           /* DSN-001 §3.1 옵션 squircle — pill 9999px → 12px (Apple squircle CSS 근사, 36px 높이 기준 33%) */
@@ -2562,6 +2566,17 @@ body.single-card-mode { background: var(--bg) !important; }
 .cal-detail-toggle:focus-visible {
   outline: 2px solid #2563EB;
   outline-offset: 2px;
+}
+/* R49 E1 (조니 2심 단정 2 — 토글 268×40 < 44) — 시각(squircle 36/40px = DSN §3.1 design-lead 4차
+   권고 보존) 불변, 터치존만 ≥44px 투명 오버레이 확장. .cal-term-tip::before(R28 P1④)·
+   .cal-share-btn::after(R46 P1-1) 동형 패턴 — 수직 중심 정렬, 풀폭이라 가로는 자체 충족. */
+.cal-detail-toggle::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
 }
 @media (max-width: 640px) {
   /* REQ-061 — 모바일도 page-eyebrow 정합 (padding 5/12, 대표 발화 11:43)
@@ -2944,6 +2959,7 @@ body.single-card-mode { background: var(--bg) !important; }
   align-items: center;
   gap: 4px;
   margin-top: 11px;
+  position: relative;            /* R49 E1 — ::after 투명 히트 오버레이 기준점 */
   padding: 6px 12px;
   border: 1px solid var(--inset-bd);
   border-radius: 8px;
@@ -2956,6 +2972,17 @@ body.single-card-mode { background: var(--bg) !important; }
 }
 .cal-pm320-today-rec-more:hover { background: var(--pill-sf-hover); }
 .cal-pm320-today-rec-more:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+/* R49 E1 (조니 2심 단정 2 — "상세 보기" CTA 85.9×29 < 44, 풀패널 corroborate) — 시각 불변,
+   터치존 ≥44px 투명 오버레이 (.cal-detail-toggle::after R49 동형). 상부 margin 11px 내 ±7.5px 확장
+   — 위 결과 strip(비인터랙티브 텍스트)·아래 박스 패딩만 점유, 인접 인터랙티브 충돌 0 (실측). */
+.cal-pm320-today-rec-more::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
 @media (max-width: 900px) {
   .pm320-prepick-portal {
     align-items: stretch;
@@ -5059,6 +5086,19 @@ body.single-card-mode { background: var(--bg) !important; }
   outline: 2px solid #0064FF;
   outline-offset: 2px;
   border-radius: 4px;
+}
+/* R49 E1 (조니 2심 단정 2 — 미니캔들 26px < 44) — 시각(78×26/110×32) 불변, 클릭 가능 트리거 변형만
+   터치존 ≥44px 투명 오버레이 (.cal-term-tip::before R28 P1④ 동형 — base가 이미 position:relative).
+   z-index 1 = R44 #4 동형(같은 카드 행의 비인터랙티브 positioned 장식 위 hit 회수). 상하 ±9px 확장
+   — 카드 head(클릭 핸들러 무) 텍스트 행만 점유, 인접 인터랙티브 충돌 0 (실측). */
+.cal-feature-candles20[data-expand-trigger="chart"]::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+  z-index: 1;
 }
 
 /* 확대 차트 슬롯 — accordion expand (max-height 트랜지션) */

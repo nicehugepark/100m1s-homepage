@@ -7,6 +7,7 @@
 //     (1) ko_title 우선 본문 + EN 원문 부 표기 1줄 (.wire-ko-en)
 //     (2) causal_summary + causal_chain(→) 노출 — [해석] 내부 태그 (사실/해석 2존, R46 W2 기단정)
 //     (3) direction·impact_tags = 기존 .cal-chip-kind 재사용 (muted 해석 계열 — --fact 아님)
+//         R49 라이더 3-1 개정 — direction 토큰은 비중립(호재/악재)만, [중립]·불확실 무표기
 //     (4) body_fetched=false → 보수 표기 1줄 (.wire-ko-basis)
 //     (5) ko 필드 전무 = 기존 영문 그대로 (graceful — .wire-ko-* 0건, 빈 칸 색칠 0)
 //     (6) Q-20260613-158 ①② 개정 — ko 칩 = details 접힘 디폴트 (한 줄 summary, 머리 태그 무표기 =
@@ -150,6 +151,9 @@ const usHtmlInfo = await page.evaluate((wire) => {
     };
   }
   if (basisChip) out.basis = { basisLine: pick('.wire-ko-basis', basisChip), tags: pick('.wire-ko-tags .cal-chip-kind', basisChip) };
+  // R49 라이더 3-2 — 디폴트 뷰(칩 머리·비-wire 칩 본문) 분류 라벨 0건 가드: 펼침 존(.wire-ko-*) 밖 .cal-chip-kind 전무.
+  out.defaultViewKindCount = Array.from(host.querySelectorAll('.cal-chip-kind'))
+    .filter((e) => !e.closest('.wire-ko-summary') && !e.closest('.wire-ko-tags')).length;
   if (plainChip) {
     out.plain = {
       koEls: plainChip.querySelectorAll('[class^="wire-ko-"]').length,
@@ -179,7 +183,9 @@ if (usHtmlInfo.ko) {
   assert(/^https:\/\/www\.sec\.gov/.test(k.srcHref || '') && k.srcTarget === '_blank', '펼침 본문 .wire-ko-srclink a[href] + _blank (법무 딥링크 보존, 158 ①)');
 }
 assert(!!usHtmlInfo.basis && usHtmlInfo.basis.basisLine.length === 1 && usHtmlInfo.basis.basisLine[0].includes('보수 해석'), 'body_fetched=false → 보수 표기 1줄');
-assert(!!usHtmlInfo.basis && usHtmlInfo.basis.tags.length === 1 && usHtmlInfo.basis.tags[0] === '중립', 'impact_tags=[] → direction 토큰만 (빈 태그 색칠 0)');
+// R49 라이더 3-1 — direction '중립' = 무표기 (비중립 호재/악재만 렌더). 종전 "중립 토큰 1건" 어서션 반전.
+assert(!!usHtmlInfo.basis && usHtmlInfo.basis.tags.length === 0, 'direction 중립 → 토큰 0건 ([중립] 무표기, R49 라이더 3-1)');
+assert(usHtmlInfo.defaultViewKindCount === 0, '디폴트 뷰 분류 라벨 0건 — [해석]은 펼침 본문 경계 마커만 (R49 라이더 3-2)');
 assert(!!usHtmlInfo.plain && usHtmlInfo.plain.koEls === 0, 'ko 부재 EN 칩 = .wire-ko-* 0건 (기존 영문 그대로)');
 assert(!!usHtmlInfo.plain && !usHtmlInfo.plain.dash, 'ko 부재 칩에 "—" 색칠 0');
 

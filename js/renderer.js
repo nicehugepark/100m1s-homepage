@@ -1812,10 +1812,10 @@ function _buildKrMacroChip(m) {
   const titleAttr = escapeHtml(sanitize(m.title || ''));
   const source = m.source ? escapeHtml(sanitize(m.source)) : '';
   const srcHtml = source ? `<span class="nightly-us-news-source">${source}</span>` : '';
-  // R48 W2-3 → Q-20260613-158 ② 개정 — 칩 종류 태그: [해석](LLM 종합 요약)만 마킹, wire 1차 보도
-  //   verbatim 은 무표기 디폴트 (무표기 = 사실). _chipKindTag 단일 헬퍼 — KR·US 양 빌더 공용
-  //   (FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
-  const kindHtml = _chipKindTag(m);
+  // R49 라이더 3-2 (조니 2심 단정 7 — 대표 부의 확정안, 158 ② 재개정) — 디폴트 뷰 분류 라벨 0건.
+  //   [해석]은 분류 칩이 아니라 경계 마커: 해석 본문이 시작되는 지점(펼침 내 .wire-ko-summary) 1회만.
+  //   칩 머리(디폴트 뷰)는 전 종류 무표기 — _chipKindTag 헬퍼 제거 (KR·US 단일 빌더라 양 끝 일괄,
+  //   FLR-20260428-TEC-001 한쪽 수정·다른 쪽 누락 동형 예방).
   const koHtml = _wireKoBlockHtml(m);
   const safeUrl = (typeof m.url === 'string' && /^https?:\/\//i.test(m.url)) ? m.url : '';
   // Q-20260613-158 ① (대표 verbatim 6/13 08:53 "뉴스가 해석이 되서 한줄로 나오면 좋겠는데 너무 과하다")
@@ -1828,33 +1828,27 @@ function _buildKrMacroChip(m) {
       ? `<a class="wire-ko-srclink" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${source || '원문'} 원문 보기</a>`
       : '';
     return `<details class="cal-macro-chip nightly-us-newschip wire-ko-chip" title="${titleAttr}">`
-      + `<summary>${kindHtml}${summary}${srcHtml}<span class="wire-ko-chevron" aria-hidden="true">▸</span></summary>`
+      + `<summary>${summary}${srcHtml}<span class="wire-ko-chevron" aria-hidden="true">▸</span></summary>`
       + koHtml + srcLink
       + `</details>`;
   }
   if (safeUrl) {
-    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</a>`;
+    return `<a class="cal-macro-chip nightly-us-newschip" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" title="${titleAttr}">${summary}${srcHtml}</a>`;
   }
-  return `<span class="cal-macro-chip" title="${titleAttr}">${kindHtml}${summary}${srcHtml}</span>`;
+  return `<span class="cal-macro-chip" title="${titleAttr}">${summary}${srcHtml}</span>`;
 }
 
-// R48 W2-3 — 칩 종류 태그 단일 소스. 추정 표기 0: 태그는 데이터 유래(wire 필드)만 따른다 (FLR-AGT-002).
-// Q-20260613-158 ② (대표 verbatim 6/13 08:53 "뉴스를 가져다 쓰니까 대부분 다 사실이지 않나? 당연한 걸
-//   잔뜩 표시하니까 노이지") — [사실] 칩 디폴트 미표기 (무표기 = 사실), [해석] 계열만 마킹.
-//   사실/해석 분리 원칙(조니 R46 2심 W2 기단정)은 유지하되 마킹은 예외쪽(해석)만 — 대표 직접 지시로
-//   R48 W2-3 "전 칩 태그" 마킹 방식 개정 (KR·US 양 빌더 단일 헬퍼 일괄, FLR-20260428-TEC-001).
-function _chipKindTag(c) {
-  return c && c.wire ? '' : '<span class="cal-chip-kind">해석</span>';
-}
+// (R48 W2-3 _chipKindTag → 158 ② [해석]만 마킹 → R49 라이더 3-2 헬퍼 자체 제거 — 칩 머리 분류 라벨 0건.
+//  [해석] = 경계 마커로 전환, _wireKoBlockHtml 펼침 본문 시작점 1회만. 이력은 git.)
 
 // Q-20260612-154 ④ — 미장 wire 한국어 인과 해석 칩 확장 (대표 2026-06-12 23:14 직접 지시:
 //   "단순히 헤드라인을 번역만 하지말고 … 국내장 뉴스처럼 인과의 흐름을 설명해줘").
 //   칩 = 기존 .cal-macro-chip 그대로 (별도 칩 체계 신설 0) — 내부에 해석 블록만 추가.
-//   사실/해석 분리 (조니 R46 2심 W2 기단정) 칩 내부 2존 구조로 보존:
-//     · 칩 머리 [사실] + ko_title — 1차 보도 제목의 한국어 표현 (interpret_wire schema PASS 분만).
+//   사실/해석 분리 (조니 R46 2심 W2 기단정) 칩 내부 2존 구조로 보존 (R49 라이더 3 개정):
+//     · 칩 머리 무표기 + ko_title — 1차 보도 제목의 한국어 표현 (interpret_wire schema PASS 분만).
 //       EN 원문 verbatim 은 하위 1줄 부 표기(.wire-ko-en)로 화면 보존 — 사실 축 검증 가능성 유지.
-//     · [해석] causal_summary + 인과 체인(A → B → C, 국내 해석 칩 summary 동형) + direction·
-//       impact_tags 토큰(.cal-chip-kind 재사용 — 해석 계열 muted, R48 태그 체계 합류).
+//     · [해석] 경계 마커(본문 시작점 1회) + causal_summary + 인과 체인(A → B → C) + 비중립
+//       direction·impact_tags 토큰(.cal-chip-kind 재사용 — 해석 계열 muted).
 //   body_fetched=false = 본문 미수집 보수 표기 1줄 (사실/추정 분리 정합).
 //   ko 필드 전무(해석 실패분) = '' 반환 → 기존 영문 칩 그대로 (graceful — 빈 칸·"—" 색칠 금지).
 //   US 인라인 빌더 + _buildKrMacroChip 양 끝 공용 (FLR-20260428-TEC-001 한쪽 수정·양 끝 누락 예방).
@@ -1868,10 +1862,14 @@ function _wireKoBlockHtml(c) {
   if (c.ko_title && typeof c.title === 'string' && c.title && c.title !== c.ko_title) {
     h += `<span class="wire-ko-en">${escapeHtml(sanitize(c.title))}</span>`;
   }
+  // R49 라이더 3-2 — [해석] = 경계 마커 ("여기서부터 추정" 선 긋기): 해석 본문 시작점 단위당 1회.
+  //   현행 interpret_wire 산출은 sm⟺ch 동시 존재 (2026-06-13 라이브 18건 실측 전건) — sm 선두 = 본문 시작점.
   if (sm) h += `<span class="wire-ko-summary"><span class="cal-chip-kind">해석</span>${escapeHtml(sanitize(sm))}</span>`;
   if (ch) h += `<span class="wire-ko-chain">${escapeHtml(sanitize(ch))}</span>`;
   const tags = [];
-  if (typeof c.direction === 'string' && c.direction) tags.push(c.direction);
+  // R49 라이더 3-1 (조니 2심 단정 7) — 방향 토큰 = 비중립(호재/악재)만 렌더. [중립]·불확실 등
+  //   없는 영향은 무표기 (데이터 direction 은 파이프라인 보존 — 렌더만 제한). impact_tags 전건 유지.
+  if (typeof c.direction === 'string' && /호재|악재/.test(c.direction)) tags.push(c.direction);
   if (Array.isArray(c.impact_tags)) {
     for (const t of c.impact_tags) { if (typeof t === 'string' && t) tags.push(t); }
   }
