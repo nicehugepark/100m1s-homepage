@@ -393,10 +393,21 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) 
       anyOpen = true;
       if (typeof e.asof === 'string' && e.asof.length >= 16 && e.asof > latestOpenAsof) latestOpenAsof = e.asof;
     }
+    // Q-20260613-161 2단 — 레인지 고저 *날짜*·등락률 전달(promote 후 staging 산출분: high_date/
+    //   low_date/high_pct/low_pct). 부재(구 cron 산출 stale)면 index-card.buildRangeBar 가 빈 라벨로
+    //   graceful 처리(날짜 행만 비고 바는 정상). current = 라이브 value SSOT.
     let r240;
     if (e.range_240d && typeof e.range_240d === 'object'
       && typeof e.range_240d.high === 'number' && typeof e.range_240d.low === 'number') {
-      r240 = { low: e.range_240d.low, high: e.range_240d.high, current: e.value };
+      r240 = {
+        low: e.range_240d.low,
+        high: e.range_240d.high,
+        current: e.value,
+        low_date: e.range_240d.low_date,
+        high_date: e.range_240d.high_date,
+        low_pct: e.range_240d.low_pct,
+        high_pct: e.range_240d.high_pct,
+      };
     }
     const days = (e.range_240d && typeof e.range_240d.days === 'number') ? e.range_240d.days : null;
     const tradeDateLabel = /^\d{4}-\d{2}-\d{2}$/.test(e.trade_date)
@@ -408,6 +419,11 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) 
       spark: spark.length >= 2 ? spark : undefined,
       candle,
       range_240d: r240,
+      // Q-20260613-161 2단 — 일봉 240봉(promote 산출). index-card.js L197-205: daily_expanded
+      //   존재 시 미니 일봉(tail 20봉 derive) + 확대 차트 trigger 활성(종목카드 동급). 배열·≥1봉
+      //   아니면 미부착(graceful — 셀 미렌더). 구 cron stale JSON(필드 부재) 시 종전 동작 유지.
+      daily_expanded: (Array.isArray(e.daily_expanded) && e.daily_expanded.length >= 1)
+        ? e.daily_expanded : undefined,
       session_open: isOpen,
     }, null, tradeDateLabel, {
       krVariant: true,
@@ -1867,7 +1883,169 @@ function _buildNewsExpand(chips) {
     + `<div class="cal-macro-strip">${visible}</div>${steps.join('')}${moreBtn}</div>`;
 }
 // 전역 위임 핸들러 1회 등록 (더보기 — _wireTermTips 동형 패턴).
+// 미니캔들 클릭 → 카드 하단 확대 차트 expand 위임 (cycle22 P1, SPEC-001 §5 + DSN §3.6.6).
+//   document-level + window._chartExpandInit 멱등 1회 등록. Q-20260613-161 2단에서 renderCalExpandContent
+//   정상 path 인라인 블록 → 모듈 레벨 함수로 추출 (픽 0건 휴장·장전 뷰의 KR 지수 카드 trigger 가
+//   리스너 없이 죽던 갭 봉쇄 — _wireNewsExpand 전 path 공통 호출에서 진입).
+function _ensureChartExpandDelegation() {
+  if (window._chartExpandInit) return;
+  // 종목별 fetch 결과 메모이즈 (재클릭 시 재 fetch 회피)
+  const _dailybarsCache = new Map();
+  async function _fetchDailybars(code) {
+    if (!code) return null;
+    // PM320-D6 (task #32 ⑤): 지수/선물 합성 코드(idx-*)는 per-stock dailybars 파일이 없음(index-card.js:196 idxCode).
+    //   fetch 시 항상 404 2건(dailybars-nxt/idx-*.json + dailybars/idx-*.json) 콘솔 노이즈 → 네트워크 호출 생략하고
+    //   곧장 data-daily20 prototype fallback(null 반환). 렌더 동작 무변(이미 의도된 graceful 경로, index-card.js:194 주석).
+    if (code.startsWith('idx-')) {
+      _dailybarsCache.set(code, null);
+      return null;
+    }
+    if (_dailybarsCache.has(code)) return _dailybarsCache.get(code);
+    try {
+      // 2026-06-10 대표 GO — NXT(넥스트레이드) 장 포함 일봉 우선 (대표 차트 기준).
+      //   1차 `/data/dailybars-nxt/{code}.json` (4/8~ NXT splice, gen_dailybars_nxt.py 산출)
+      //   2차 fallback `/data/dailybars/{code}.json` (KRX 정규장 only) — NXT 미산출 종목/구간 graceful.
+      //   NXT splice = OHLC 전체 교체이므로 캔들 꼬리·MA·피보 저점 앵커 전부 NXT 일관 (앵커-꼬리 정합).
+      //   ※ 한계: NXT 미커버 최근일(예 6/9~)은 KRX OHLC (splice 0일). 종가=정규장 종가 동일이라 양봉/음봉·MA 왜곡 0, 저가만 영향.
+      let payload = null;
+      for (const url of [`/data/dailybars-nxt/${code}.json`, `/data/dailybars/${code}.json`]) {
+        try {
+          const resp = await fetch(url, { credentials: 'omit' });
+          if (!resp.ok) continue;
+          const body = await resp.json();
+          if (body && Array.isArray(body.rows) && body.rows.length > 0) {
+            payload = body;
+            break;
+          }
+        } catch (e) { /* 다음 url 시도 */ }
+      }
+      if (!payload) {
+        _dailybarsCache.set(code, null);
+        return null;
+      }
+      const rows = Array.isArray(payload && payload.rows) ? payload.rows : null;
+      if (!rows || rows.length === 0) {
+        _dailybarsCache.set(code, null);
+        return null;
+      }
+      // Phase 3 schema {d,o,h,l,c,v,ta} → expanded-chart.js normalize 입력 schema {date,o,h,l,c,v,tv} 정합
+      // build_daily prototype {date,o,h,l,c,v,tv} 와 lazy fetch {d,o,h,l,c,v,ta} 양 호환 — d→date / ta→tv alias.
+      const normalized = rows.map(r => ({
+        date: r.date || r.d || null,
+        o: r.o, h: r.h, l: r.l, c: r.c,
+        v: typeof r.v === 'number' ? r.v : 0,
+        tv: typeof r.tv === 'number' ? r.tv : (typeof r.ta === 'number' ? r.ta : (r.c || 0) * (r.v || 0)),
+      }));
+      _dailybarsCache.set(code, normalized);
+      return normalized;
+    } catch (err) {
+      _dailybarsCache.set(code, null);
+      return null;
+    }
+  }
+
+  async function _openChartExpand(trigger, card) {
+    const isOpen = card.classList.contains('chart-expanded');
+    if (isOpen) {
+      card.classList.remove('chart-expanded');
+      card.setAttribute('aria-expanded', 'false');
+      trigger.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    const ticker = card.getAttribute('data-stock-code') || '';
+    // 슬롯 lazy 생성 — SPEC-001 v2 §5.2/§5.3 옵션 B 채택 (Phase 5 design-lead 본질 갱신, cluster v21 99회차 critical FLR-001 catch).
+    // `.cal-feature-details`는 `.cal-feature-body` 직접 자식 (card 직접 자식 아님). 따라서 `insertBefore(slot, details)` 호출 시 NotFoundError throw.
+    // 옵션 B: `card.appendChild(slot)` 단일 분기 — details/hasDetails 분기 자체 제거.
+    // selector `:scope >` 명시 — card 직접 자식만 매칭 (body 내부 잘못된 위치 슬롯 검색 회피).
+    // cycle23 layout 정정 (2026-05-22 15:56 KST 대표 verbatim "현대 확대용 차트가 상세보기 버튼 아래쪽에 있는데 종목이름과 미니캔들 로우의 바로 아래로 옮기고 싶다"):
+    //   slot 위치 본문 = card 마지막 자식 (body sibling) → cal-feature-head 직후 (rangeHtml 위) insert 본질.
+    //   `card.appendChild(slot)` → `card.insertBefore(slot, headEl.nextSibling)` 본질 (head 부재 시 graceful appendChild fallback).
+    let slot = card.querySelector(':scope > .cal-feature-chart-expanded');
+    if (!slot) {
+      slot = document.createElement('div');
+      slot.className = 'cal-feature-chart-expanded';
+      slot.id = `chart-${ticker}`; // SPEC §5.6 MINOR-1 — stable id (aria-controls anchor)
+      slot.setAttribute('aria-live', 'polite');
+      const headEl = card.querySelector(':scope > .cal-feature-head');
+      if (headEl && headEl.nextSibling) {
+        card.insertBefore(slot, headEl.nextSibling); // cycle23 layout — head row 바로 아래
+      } else if (headEl) {
+        card.appendChild(slot); // head 마지막 자식 케이스 fallback
+      } else {
+        card.appendChild(slot); // head 부재 graceful fallback (SPEC §5.2 옵션 B 원본 동작)
+      }
+    }
+    let exDividendDates = [];
+    try {
+      const exd = trigger.getAttribute('data-exdividend');
+      if (exd) exDividendDates = JSON.parse(exd);
+    } catch (err) { /* noop */ }
+    // P0 hotfix (cycle22 라이브 배포 보조지표 누락 catch, 대표 2026-05-21 07:37 KST):
+    // pinkSignalDates source = data-pinksignal attribute (별건 cycle 본질, 현 시점 빈 배열 graceful).
+    // 본질: ChartTV.render options 누락 본질 (Phase 7c integration mismatch — markers attach 호출 시 옵션 omit) 봉쇄.
+    let pinkSignalDates = [];
+    try {
+      const pink = trigger.getAttribute('data-pinksignal');
+      if (pink) pinkSignalDates = JSON.parse(pink);
+    } catch (err) { /* noop */ }
+
+    // 1차 prototype fallback (20영업일) — 즉시 render (사용자 perceived latency ↓)
+    let prototypeData = [];
+    try {
+      const stash = trigger.getAttribute('data-daily20');
+      if (stash) prototypeData = JSON.parse(stash);
+    } catch (err) {
+      prototypeData = [];
+    }
+    // accordion 즉시 open + 1차 render (20일) — 사용자 인지 부담 0 ms 정합 (AC-13 <200ms)
+    card.classList.add('chart-expanded');
+    card.setAttribute('aria-expanded', 'true');
+    trigger.setAttribute('aria-expanded', 'true'); // SPEC §5.1/§5.6 — trigger 동기화
+    // Phase 7c — ChartExpanded (자체 SVG, git rm) → ChartTV (TradingView v5 wrapper, ESM module) 교체.
+    // contract 정합: window.ChartTV.render(slot, dailyArr, { ticker, exDividendDates, pinkSignalDates, ... })
+    // ESM module은 async load이므로 ChartTV global 등록 지연 가능 — graceful fallback "로딩 중" 유지.
+    // exDividendDates / pinkSignalDates 본질 = marker primitive layer (SPEC §3.4 v6 + §15 verbatim).
+    if (window.ChartTV && typeof window.ChartTV.render === 'function') {
+      window.ChartTV.render(slot, prototypeData, { ticker, exDividendDates, pinkSignalDates });
+    } else {
+      slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
+    }
+    requestAnimationFrame(() => {
+      const closeBtn = slot.querySelector('.cal-chart-close');
+      if (closeBtn) closeBtn.focus();
+    });
+
+    // 2차 lazy fetch 240영업일 → 성공 시 swap. 차트가 닫혀있으면 swap skip (race).
+    const lazyData = await _fetchDailybars(ticker);
+    if (!lazyData || lazyData.length === 0) return; // fallback 유지
+    if (!card.classList.contains('chart-expanded')) return; // 닫힘
+    if (window.ChartTV && typeof window.ChartTV.render === 'function') {
+      window.ChartTV.render(slot, lazyData, { ticker, exDividendDates, pinkSignalDates });
+    }
+  }
+
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-expand-trigger="chart"]');
+    if (!trigger) return;
+    const card = trigger.closest('.cal-feature-card');
+    if (!card) return;
+    e.stopPropagation();
+    _openChartExpand(trigger, card);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const trigger = e.target.closest('[data-expand-trigger="chart"]');
+    if (!trigger) return;
+    e.preventDefault();
+    trigger.click();
+  });
+  window._chartExpandInit = true;
+}
+
 function _wireNewsExpand() {
+  // Q-20260613-161 2단 — 차트 확대 위임을 전 path 공통 진입점에서 멱등 등록 (픽 0건 뷰 갭 봉쇄).
+  //   _newsExpandInit early-return 보다 먼저 호출 (뉴스 위임과 독립적인 _chartExpandInit 가드 사용).
+  _ensureChartExpandDelegation();
   if (window._newsExpandInit) return;
   window._newsExpandInit = true;
   document.addEventListener('click', (e) => {
@@ -4204,159 +4382,12 @@ function renderCalExpandContent(date, data) {
   // - per-stock JSON 부재 (Phase 3 cron 미배포) = 정상 fallback. 콘솔 warn 없음 (정상 흐름).
   // ChartTV.render — js/lib/chart-tv/expanded-chart.js (Phase 7c, TradingView v5 wrapper). 13종 보조지표 + marker primitive + localStorage 영구화.
   // 본 핸들러 = .cal-feature-card.expanded (기존 상세 보기 accordion)와 별개 — chart-expanded class 분리.
-  if (!window._chartExpandInit) {
-    // 종목별 fetch 결과 메모이즈 (재클릭 시 재 fetch 회피)
-    const _dailybarsCache = new Map();
-    async function _fetchDailybars(code) {
-      if (!code) return null;
-      // PM320-D6 (task #32 ⑤): 지수/선물 합성 코드(idx-*)는 per-stock dailybars 파일이 없음(index-card.js:196 idxCode).
-      //   fetch 시 항상 404 2건(dailybars-nxt/idx-*.json + dailybars/idx-*.json) 콘솔 노이즈 → 네트워크 호출 생략하고
-      //   곧장 data-daily20 prototype fallback(null 반환). 렌더 동작 무변(이미 의도된 graceful 경로, index-card.js:194 주석).
-      if (code.startsWith('idx-')) {
-        _dailybarsCache.set(code, null);
-        return null;
-      }
-      if (_dailybarsCache.has(code)) return _dailybarsCache.get(code);
-      try {
-        // 2026-06-10 대표 GO — NXT(넥스트레이드) 장 포함 일봉 우선 (대표 차트 기준).
-        //   1차 `/data/dailybars-nxt/{code}.json` (4/8~ NXT splice, gen_dailybars_nxt.py 산출)
-        //   2차 fallback `/data/dailybars/{code}.json` (KRX 정규장 only) — NXT 미산출 종목/구간 graceful.
-        //   NXT splice = OHLC 전체 교체이므로 캔들 꼬리·MA·피보 저점 앵커 전부 NXT 일관 (앵커-꼬리 정합).
-        //   ※ 한계: NXT 미커버 최근일(예 6/9~)은 KRX OHLC (splice 0일). 종가=정규장 종가 동일이라 양봉/음봉·MA 왜곡 0, 저가만 영향.
-        let payload = null;
-        for (const url of [`/data/dailybars-nxt/${code}.json`, `/data/dailybars/${code}.json`]) {
-          try {
-            const resp = await fetch(url, { credentials: 'omit' });
-            if (!resp.ok) continue;
-            const body = await resp.json();
-            if (body && Array.isArray(body.rows) && body.rows.length > 0) {
-              payload = body;
-              break;
-            }
-          } catch (e) { /* 다음 url 시도 */ }
-        }
-        if (!payload) {
-          _dailybarsCache.set(code, null);
-          return null;
-        }
-        const rows = Array.isArray(payload && payload.rows) ? payload.rows : null;
-        if (!rows || rows.length === 0) {
-          _dailybarsCache.set(code, null);
-          return null;
-        }
-        // Phase 3 schema {d,o,h,l,c,v,ta} → expanded-chart.js normalize 입력 schema {date,o,h,l,c,v,tv} 정합
-        // build_daily prototype {date,o,h,l,c,v,tv} 와 lazy fetch {d,o,h,l,c,v,ta} 양 호환 — d→date / ta→tv alias.
-        const normalized = rows.map(r => ({
-          date: r.date || r.d || null,
-          o: r.o, h: r.h, l: r.l, c: r.c,
-          v: typeof r.v === 'number' ? r.v : 0,
-          tv: typeof r.tv === 'number' ? r.tv : (typeof r.ta === 'number' ? r.ta : (r.c || 0) * (r.v || 0)),
-        }));
-        _dailybarsCache.set(code, normalized);
-        return normalized;
-      } catch (err) {
-        _dailybarsCache.set(code, null);
-        return null;
-      }
-    }
-
-    async function _openChartExpand(trigger, card) {
-      const isOpen = card.classList.contains('chart-expanded');
-      if (isOpen) {
-        card.classList.remove('chart-expanded');
-        card.setAttribute('aria-expanded', 'false');
-        trigger.setAttribute('aria-expanded', 'false');
-        return;
-      }
-      const ticker = card.getAttribute('data-stock-code') || '';
-      // 슬롯 lazy 생성 — SPEC-001 v2 §5.2/§5.3 옵션 B 채택 (Phase 5 design-lead 본질 갱신, cluster v21 99회차 critical FLR-001 catch).
-      // `.cal-feature-details`는 `.cal-feature-body` 직접 자식 (card 직접 자식 아님). 따라서 `insertBefore(slot, details)` 호출 시 NotFoundError throw.
-      // 옵션 B: `card.appendChild(slot)` 단일 분기 — details/hasDetails 분기 자체 제거.
-      // selector `:scope >` 명시 — card 직접 자식만 매칭 (body 내부 잘못된 위치 슬롯 검색 회피).
-      // cycle23 layout 정정 (2026-05-22 15:56 KST 대표 verbatim "현대 확대용 차트가 상세보기 버튼 아래쪽에 있는데 종목이름과 미니캔들 로우의 바로 아래로 옮기고 싶다"):
-      //   slot 위치 본문 = card 마지막 자식 (body sibling) → cal-feature-head 직후 (rangeHtml 위) insert 본질.
-      //   `card.appendChild(slot)` → `card.insertBefore(slot, headEl.nextSibling)` 본질 (head 부재 시 graceful appendChild fallback).
-      let slot = card.querySelector(':scope > .cal-feature-chart-expanded');
-      if (!slot) {
-        slot = document.createElement('div');
-        slot.className = 'cal-feature-chart-expanded';
-        slot.id = `chart-${ticker}`; // SPEC §5.6 MINOR-1 — stable id (aria-controls anchor)
-        slot.setAttribute('aria-live', 'polite');
-        const headEl = card.querySelector(':scope > .cal-feature-head');
-        if (headEl && headEl.nextSibling) {
-          card.insertBefore(slot, headEl.nextSibling); // cycle23 layout — head row 바로 아래
-        } else if (headEl) {
-          card.appendChild(slot); // head 마지막 자식 케이스 fallback
-        } else {
-          card.appendChild(slot); // head 부재 graceful fallback (SPEC §5.2 옵션 B 원본 동작)
-        }
-      }
-      let exDividendDates = [];
-      try {
-        const exd = trigger.getAttribute('data-exdividend');
-        if (exd) exDividendDates = JSON.parse(exd);
-      } catch (err) { /* noop */ }
-      // P0 hotfix (cycle22 라이브 배포 보조지표 누락 catch, 대표 2026-05-21 07:37 KST):
-      // pinkSignalDates source = data-pinksignal attribute (별건 cycle 본질, 현 시점 빈 배열 graceful).
-      // 본질: ChartTV.render options 누락 본질 (Phase 7c integration mismatch — markers attach 호출 시 옵션 omit) 봉쇄.
-      let pinkSignalDates = [];
-      try {
-        const pink = trigger.getAttribute('data-pinksignal');
-        if (pink) pinkSignalDates = JSON.parse(pink);
-      } catch (err) { /* noop */ }
-
-      // 1차 prototype fallback (20영업일) — 즉시 render (사용자 perceived latency ↓)
-      let prototypeData = [];
-      try {
-        const stash = trigger.getAttribute('data-daily20');
-        if (stash) prototypeData = JSON.parse(stash);
-      } catch (err) {
-        prototypeData = [];
-      }
-      // accordion 즉시 open + 1차 render (20일) — 사용자 인지 부담 0 ms 정합 (AC-13 <200ms)
-      card.classList.add('chart-expanded');
-      card.setAttribute('aria-expanded', 'true');
-      trigger.setAttribute('aria-expanded', 'true'); // SPEC §5.1/§5.6 — trigger 동기화
-      // Phase 7c — ChartExpanded (자체 SVG, git rm) → ChartTV (TradingView v5 wrapper, ESM module) 교체.
-      // contract 정합: window.ChartTV.render(slot, dailyArr, { ticker, exDividendDates, pinkSignalDates, ... })
-      // ESM module은 async load이므로 ChartTV global 등록 지연 가능 — graceful fallback "로딩 중" 유지.
-      // exDividendDates / pinkSignalDates 본질 = marker primitive layer (SPEC §3.4 v6 + §15 verbatim).
-      if (window.ChartTV && typeof window.ChartTV.render === 'function') {
-        window.ChartTV.render(slot, prototypeData, { ticker, exDividendDates, pinkSignalDates });
-      } else {
-        slot.innerHTML = '<div class="cal-chart-empty">차트 모듈 로딩 중...</div>';
-      }
-      requestAnimationFrame(() => {
-        const closeBtn = slot.querySelector('.cal-chart-close');
-        if (closeBtn) closeBtn.focus();
-      });
-
-      // 2차 lazy fetch 240영업일 → 성공 시 swap. 차트가 닫혀있으면 swap skip (race).
-      const lazyData = await _fetchDailybars(ticker);
-      if (!lazyData || lazyData.length === 0) return; // fallback 유지
-      if (!card.classList.contains('chart-expanded')) return; // 닫힘
-      if (window.ChartTV && typeof window.ChartTV.render === 'function') {
-        window.ChartTV.render(slot, lazyData, { ticker, exDividendDates, pinkSignalDates });
-      }
-    }
-
-    document.addEventListener('click', e => {
-      const trigger = e.target.closest('[data-expand-trigger="chart"]');
-      if (!trigger) return;
-      const card = trigger.closest('.cal-feature-card');
-      if (!card) return;
-      e.stopPropagation();
-      _openChartExpand(trigger, card);
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      const trigger = e.target.closest('[data-expand-trigger="chart"]');
-      if (!trigger) return;
-      e.preventDefault();
-      trigger.click();
-    });
-    window._chartExpandInit = true;
-  }
+  // Q-20260613-161 2단 — 종전 본 블록이 renderCalExpandContent 정상 path 내부에만 있어, 픽 0건
+  //   (휴장·주말·장전) 뷰에서는 미실행 → KR 지수 카드(_buildNightlyUsHtml 경유, 픽 무관 상시 렌더)의
+  //   미니캔들 확대 trigger 가 리스너 없이 죽음(존재≠동작, FLR-AGT-002). 처방: 위임 등록을 모듈 레벨
+  //   _ensureChartExpandDelegation() 로 추출 + _wireNewsExpand() (전 path 공통 호출)에서 호출 → 픽
+  //   유무 무관 1회 등록(window._chartExpandInit 멱등). 본 호출은 정상 path 동작 보존(중복 무해).
+  _ensureChartExpandDelegation();
 
   // 공유 버튼 이벤트 위임 (1회만 등록)
   if (!window._cardShareInit) {
