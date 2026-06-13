@@ -279,6 +279,37 @@ footer {
   font-size: 10.5px; font-weight: 400; color: var(--dm); margin-left: 6px;
 }
 
+/* ② 범례 (N1) — 추이 막대 이중 인코딩(높이=품질점수, 색=라운드 상태) 설명.
+   막대 색 토큰과 동일(.conv-ok/.conv-no/.conv-cand/.conv-bar-unknown)하게 스와치 채색 → 다크모드 자동 정합. */
+.conv-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  list-style: none; margin: 0 0 10px; padding: 8px 10px;
+  background: var(--bg2); border: 1px solid var(--bd); border-radius: 8px;
+}
+.conv-legend li {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--tx2);
+}
+.conv-legend .conv-leg-sw {
+  width: 14px; height: 14px; border-radius: 3px; flex: none;
+  background: var(--neu); border: 1px solid transparent;
+}
+.conv-legend .conv-leg-sw.conv-ok   { background: var(--pos); }
+.conv-legend .conv-leg-sw.conv-no   { background: var(--ru); }
+.conv-legend .conv-leg-sw.conv-cand { background: var(--am2); }
+.conv-legend .conv-leg-sw.conv-prog { background: var(--neu); }
+.conv-legend .conv-leg-sw.conv-bar-unknown {
+  background: repeating-linear-gradient(45deg, var(--bd), var(--bd) 2px, transparent 2px, transparent 4px) !important;
+  border: 1px dashed var(--dm);
+}
+/* 높이 범례 — 미니 막대 3개로 "높이 = 품질점수" 직관화 */
+.conv-legend .conv-leg-bar {
+  display: inline-flex; align-items: flex-end; gap: 2px; height: 14px;
+}
+.conv-legend .conv-leg-bar i {
+  width: 4px; background: var(--neu); border-radius: 1px 1px 0 0; display: block;
+}
+
 /* ③ 지금 진행 중 */
 .conv-idle {
   padding: 12px 14px; background: var(--bg2);
