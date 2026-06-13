@@ -274,7 +274,10 @@ header {
    identity-pm320/wordmark_horizontal 글리프 path verbatim(자간 +200 units fix 포함) 인라인 + 컨테이너 rect
    제거(헤더 글래스와 충돌 회피, 다크 #101829 navy 칩 봉쇄). 색은 토큰 반응: PM=잉크 / 320=골드.
    100m1s는 종속 eyebrow 라벨(작게·위)로 격하 — 위계 = PM320 hero. */
-.brand-pm320 { display: flex; flex-direction: column; gap: 1px; line-height: 1; text-decoration: none; }
+/* R55 P2-5 (픽셀 sweep DOC-20260614-JDG-004 — 로고 링크 93×32 터치 < 44) — 로고 관용 예외 대신
+   실 터치 44 채택: min-height 44 + justify-content center 로 글리프(eyebrow 9 + 워드마크 26 ≈ 32px)
+   크기·간격 불변, 터치존만 세로 중앙 44 확장. 헤더(.brand align-items:center)라 행 정렬 무영향. */
+.brand-pm320 { display: flex; flex-direction: column; justify-content: center; gap: 1px; min-height: 44px; line-height: 1; text-decoration: none; }
 .brand-pm320-eyebrow {
   font-size: 9px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
   color: var(--tx2); opacity: 0.72;
@@ -1793,6 +1796,13 @@ footer {
   margin-top: 80px;
 }
 footer .links { display: flex; gap: 20px; justify-content: center; margin-bottom: 16px; font-weight: 600; }
+/* R55 P2-4 (픽셀 sweep DOC-20260614-JDG-004 — footer 링크 ~40×19 터치 < 44) — inline-flex +
+   min-height 44 로 실 bbox ≥44(WAVE6 교훈: ::after 오버레이는 DQA 측정 40 잔존 → 실 bbox 확장).
+   가로 gap 20px 유지로 인접 링크 충돌 0. 시각 텍스트 크기/색 불변(높이만 19→44, 세로 중앙). */
+footer .links a {
+  display: inline-flex; align-items: center;
+  min-height: 44px; line-height: 1;
+}
 footer .links a:hover { color: var(--am2); }
 /* R51 픽셀 재판정 NO (조니) — 비대칭 결함 종결: R51 1심은 .footer-legal-note(법적 고지)만 상향하고
    형제 .copyright(© + DART 출처 줄)은 var(--dm)@0.6(라이트 CR 2.01·다크 2.64, AA 미달)로 남김.
@@ -2065,6 +2075,11 @@ body.pm320-pickbar-on .cal-content-head {
 .cal-content-head[data-scroll-to-cal] {
   cursor: pointer;
   transition: background-color 200ms ease, transform 100ms ease;
+  /* R55 P2-3 (픽셀 sweep DOC-20260614-JDG-004 — 일자 헤더 토글 340×36 터치 < 44) — 클릭 가능
+     변형만 터치 높이 ≥44. min-height 만 부여(align-items:baseline 유지 → 날짜 텍스트 위치 불변,
+     하단 8px 만 sticky 배경 내 확장). data-scroll-to-cal 없는 비클릭 렌더는 무영향. */
+  min-height: 44px;
+  box-sizing: border-box;
 }
 .cal-content-head[data-scroll-to-cal]:hover {
   background: rgba(196, 153, 48, 0.06);
@@ -2266,6 +2281,16 @@ body.single-card-mode { background: var(--bg) !important; }
    본 블록은 (a) strip 하단 간격 + (b) a 링크 밑줄 제거 + (c) 출처 약어 span 만. 폰트/색 override 0. */
 .nightly-us-summary .cal-macro-strip { margin-bottom: 14px; }
 .nightly-us-newschip { text-decoration: none; }
+/* R55 P1-2 (픽셀 sweep DOC-20260614-JDG-004 — 미장 뉴스 칩 a 변형 304×38 터치 < 44) — 풀너비 칩이라
+   ::after 오버레이는 인접 칩(세로 stack gap 5px) 충돌 → min-height 44 + flex 세로중앙(verdict 권고).
+   anchor 변형(renderer.js:2100 비접힘 wire)만 한정 — details>summary 접힘 변형은 이미 44(L3867),
+   generic .cal-macro-chip(국내 칩/span)은 무수정(FLR-20260428-TEC-001 한쪽 수정 경계). 시각 텍스트 위치
+   불변(좌측 골드바 리스트 동일), 행 높이만 38→44(좌측 정렬 유지 위해 justify 미지정). */
+a.cal-macro-chip.nightly-us-newschip {
+  min-height: 44px;
+  display: flex; align-items: center; flex-wrap: wrap;
+  box-sizing: border-box;
+}
 .nightly-us-news-source {
   margin-left: 6px;
   font-size: 12px; font-weight: 800; color: var(--am);  /* 칩 #6B4A0A 톤 조화 (앰버 darker), 가독 대비 */
@@ -3784,6 +3809,14 @@ body.single-card-mode { background: var(--bg) !important; }
   /* 상속 line-height(≈1.55)로는 border 포함 23px > 테마 칩 22.6px — 강등 위계가 bbox 에서 역전.
      1.4 로 21.4px < 22.6px (verify 게이트: 테마 칩 높이 > 출처 칩 높이). */
   line-height: 1.4;
+  /* R55 P1-1 (픽셀 sweep DOC-20260614-JDG-004 — 출처 핀 48×21 터치 < 44) — 시각 pill(21px) 불변,
+     터치존만 ≥44px 투명 ::after 오버레이(R49 E1 / R28 P1④ 동형). 폭은 핀 본체(48px) 유지로
+     인접 핀(gap 8px) 가로 충돌 0, 세로만 ±11.5px 확장(cal-feature-links 가 카드 본문 말미라 상하 충돌 0). */
+  position: relative;
+}
+.cal-feature-link::after {
+  content: ''; position: absolute; top: 50%; left: 0; right: 0;
+  height: 44px; transform: translateY(-50%);
 }
 .cal-feature-link:hover { background: var(--pos-bg); color: var(--c3); }
 .cal-feature-news-empty {
@@ -3910,7 +3943,15 @@ body.single-card-mode { background: var(--bg) !important; }
   letter-spacing: -0.2px; white-space: nowrap;
 }
 .cal-news-tense--realtime { color: var(--pos); background: rgba(31, 122, 61, 0.12); }
-.cal-news-tense--close { color: var(--dm); background: rgba(107, 98, 86, 0.12); }
+/* R55 P2-6 (픽셀 sweep DOC-20260614-JDG-004 — "미장 마감" 배지 CR 3.98(L)/4.17(D) < 4.5) —
+   배지 틴트 bg(rgba(107,98,86,.12) 합성) 위 muted grey 가 AA 미달. 전역 --dm 미변경(공유 토큰,
+   FLR-20260428-TEC-001 경계) → 배지 한정 텍스트 명도만 상향. 합성 bg 위 실측: 라이트 #525C6B
+   = 5.24:1, 다크 #A09779 = 4.98:1 (둘 다 ≥4.5 마진). muted grey 성격·12px·weight700 불변. */
+.cal-news-tense--close { color: #525C6B; background: rgba(107, 98, 86, 0.12); }
+:root[data-theme="dark"] .cal-news-tense--close { color: #A09779; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cal-news-tense--close { color: #A09779; }
+}
 /* Q-20260608 정규장 장중 — 개장 중 "장중" 배지. P2(design): 가격 상승색(#C53939 빨강)·하락색
    (#1958C7 파랑) 어느 쪽과도 명확히 구분되는 앰버 계열(중립). 빨강(#c0392b)은 상승빨강과 인접해
    하락 카드에서 "상승?" 오인 → 앰버로 분리. 마감(--close, 회색)·realtime(녹)과도 대비. */

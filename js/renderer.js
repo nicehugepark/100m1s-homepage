@@ -4061,7 +4061,9 @@ function renderCalExpandContent(date, data) {
     const dl = formatKoDate(date);   // 표시 중 데이터 기준일(직전 거래일)
     return `<div style="text-align:center;padding:32px 0;">`
       + `<div style="font-size:15px;font-weight:700;color:var(--tx2);margin-bottom:6px;">주말·휴장일에는 국내장 종목을 표시하지 않습니다</div>`
-      + `<div style="font-size:12px;color:var(--dm);line-height:1.6;">직전 거래일${dl ? ' (' + escapeHtml(dl) + ')' : ''} 데이터는 위 야간 미국증시 아래에서 확인하거나, 왼쪽 달력에서 날짜를 선택하세요</div>`
+      // R55 P2-7 (픽셀 sweep DOC-20260614-JDG-004 — 디스클레이머 다크 CR 4.46 < 4.5) — --dm → --dm-hi
+      //   (다크 #A9A18E 6.27 / 라이트 #646E80 4.67, 둘 다 ≥4.5). R45 #3 출처칩 동형 muted 토큰 승계.
+      + `<div style="font-size:12px;color:var(--dm-hi);line-height:1.6;">직전 거래일${dl ? ' (' + escapeHtml(dl) + ')' : ''} 데이터는 위 야간 미국증시 아래에서 확인하거나, 왼쪽 달력에서 날짜를 선택하세요</div>`
       + `</div>`;
   })();
   // R25 P1⑧ (2026-06-11) — 히어로 "하루 단 한 종목" vs 첫 화면 후보 N장 충돌 해명 1줄 (카드 리스트 상단).
