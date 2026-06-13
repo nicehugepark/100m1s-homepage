@@ -269,6 +269,29 @@ header {
 .brand-mark { width: 36px; height: 36px; }
 .brand-mark svg { width: 100%; height: 100%; display: block; }
 .brand-name { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
+
+/* PM320 헤더 브랜딩 (Q-20260613-163, 조니 판정 — 가로 워드마크 채택) — 제품 페이지 주인공 = PM320.
+   identity-pm320/wordmark_horizontal 글리프 path verbatim(자간 +200 units fix 포함) 인라인 + 컨테이너 rect
+   제거(헤더 글래스와 충돌 회피, 다크 #101829 navy 칩 봉쇄). 색은 토큰 반응: PM=잉크 / 320=골드.
+   100m1s는 종속 eyebrow 라벨(작게·위)로 격하 — 위계 = PM320 hero. */
+.brand-pm320 { display: flex; flex-direction: column; gap: 1px; line-height: 1; text-decoration: none; }
+.brand-pm320-eyebrow {
+  font-size: 9px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--tx2); opacity: 0.72;
+}
+.brand-pm320-wordmark { display: block; height: 26px; width: auto; }
+.brand-pm320-wordmark .pm-ink { fill: #1a1d26; }    /* "PM" 잉크 (라이트) */
+.brand-pm320-wordmark .pm-gold { fill: #96741f; }   /* "320" 골드 (라이트) */
+:root[data-theme="dark"] .brand-pm320-wordmark .pm-ink { fill: #ffffff; }
+:root[data-theme="dark"] .brand-pm320-wordmark .pm-gold { fill: #d9be7e; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand-pm320-wordmark .pm-ink { fill: #ffffff; }
+  :root:not([data-theme="light"]) .brand-pm320-wordmark .pm-gold { fill: #d9be7e; }
+}
+@media (max-width: 480px) {
+  .brand-pm320-wordmark { height: 23px; }
+  .brand-pm320-eyebrow { font-size: 8px; letter-spacing: 1.2px; }
+}
 .nav-links { display: flex; gap: 24px; font-size: 13px; font-weight: 600; color: var(--tx2); }
 .nav-links a:hover, .nav-links a.active { color: var(--am); }
 

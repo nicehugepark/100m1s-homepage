@@ -43,31 +43,36 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <link rel="icon" type="image/png" sizes="16x16" href="/pm320-assets/favicon/favicon-16.png">
 <link rel="shortcut icon" href="/pm320-assets/favicon/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="/pm320-assets/favicon/apple-touch-icon-180.png">
-<link rel="preload" href="/news.css?v=20260613v346" as="style">
-<link rel="stylesheet" href="/news.css?v=20260613v346">
+<link rel="preload" href="/news.css?v=20260613v347" as="style">
+<link rel="stylesheet" href="/news.css?v=20260613v347">
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <a href="/" class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 124 124" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#FBE9B5"/>
-              <stop offset="0.5" stop-color="#E8C063"/>
-              <stop offset="1" stop-color="#C49930"/>
-            </linearGradient>
-          </defs>
-          <g transform="translate(5, 3.5)">
-            <path d="M73 24 Q73 12 59 12 Q32 12 32 33 Q32 53 58 57 Q88 61 67 86 Q46 105 26 95" stroke="url(#hg)" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="74" cy="18" r="3.8" fill="#A01528"/>
-            <circle cx="72.5" cy="16.5" r="1.1" fill="#FFE4D8" opacity="0.85"/>
-          </g>
-        </svg>
-      </div>
-      <div class="brand-name">100M1S</div>
+    <!-- Q-20260613-163 — PM320 헤더 브랜딩 적용 (조니 판정·대표 "pm320 브랜딩이 더 잘 살았으면").
+         identity-pm320/wordmark_horizontal 글리프 path verbatim(Poppins-Bold master, 자간 +200 units fix
+         포함) 인라인. 컨테이너 rect 제거 = 헤더 글래스와 자연 융합(다크 #101829 navy 칩 충돌 봉쇄).
+         색은 CSS 토큰 반응: .pm-ink="PM"(잉크) / .pm-gold="320"(골드), 라이트/다크 자동 전환.
+         100m1s는 종속 eyebrow 라벨(작게·위)로 격하. 링크는 회사 홈(/) 유지 — 100m1s가 모회사. -->
+    <a href="/" class="brand brand-pm320" aria-label="PM320 — 100M1S">
+      <span class="brand-pm320-eyebrow">100M1S</span>
+      <svg class="brand-pm320-wordmark" viewBox="76.8 33.8 366.8 90.9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="PM320">
+        <defs>
+          <path id="bw-P" d="M 3821 3046 Q 3821 2656 3641 2333 Q 3462 2010 3091 1811 Q 2720 1613 2170 1613 L 1491 1613 L 1491 0 L 397 0 L 397 4493 L 2170 4493 Q 2707 4493 3078 4307 Q 3450 4122 3635 3795 Q 3821 3469 3821 3046 z M 2086 2483 Q 2400 2483 2553 2630 Q 2707 2778 2707 3046 Q 2707 3315 2553 3462 Q 2400 3610 2086 3610 L 1491 3610 L 1491 2483 L 2086 2483 z"/>
+          <path id="bw-M" d="M 5485 4493 L 5485 0 L 4390 0 L 4390 2694 L 3386 0 L 2502 0 L 1491 2701 L 1491 0 L 397 0 L 397 4493 L 1690 4493 L 2950 1382 L 4198 4493 L 5485 4493 z"/>
+          <path id="bw-3" d="M 326 3354 Q 352 4038 774 4409 Q 1197 4781 1920 4781 Q 2400 4781 2742 4614 Q 3085 4448 3261 4160 Q 3437 3872 3437 3514 Q 3437 3091 3225 2825 Q 3014 2560 2733 2464 L 2733 2438 Q 3098 2317 3309 2035 Q 3520 1754 3520 1312 Q 3520 915 3337 611 Q 3155 307 2806 134 Q 2458 -38 1978 -38 Q 1210 -38 752 339 Q 294 717 269 1478 L 1331 1478 Q 1338 1197 1491 1033 Q 1645 870 1939 870 Q 2189 870 2326 1014 Q 2464 1158 2464 1395 Q 2464 1702 2269 1840 Q 2074 1978 1645 1978 L 1440 1978 L 1440 2867 L 1645 2867 Q 1971 2867 2172 2979 Q 2374 3091 2374 3379 Q 2374 3610 2246 3738 Q 2118 3866 1894 3866 Q 1651 3866 1532 3718 Q 1414 3571 1395 3354 L 326 3354 z"/>
+          <path id="bw-2" d="M 250 877 Q 467 1050 448 1037 Q 1075 1555 1436 1888 Q 1798 2221 2048 2585 Q 2298 2950 2298 3296 Q 2298 3558 2176 3705 Q 2054 3853 1811 3853 Q 1568 3853 1430 3670 Q 1293 3488 1293 3155 L 237 3155 Q 250 3699 470 4064 Q 691 4429 1052 4601 Q 1414 4774 1856 4774 Q 2618 4774 3005 4384 Q 3392 3994 3392 3366 Q 3392 2682 2925 2096 Q 2458 1510 1734 954 L 3462 954 L 3462 64 L 250 64 L 250 877 z"/>
+          <path id="bw-0" d="M 288 2400 Q 288 3501 713 4134 Q 1139 4768 2086 4768 Q 3034 4768 3459 4134 Q 3885 3501 3885 2400 Q 3885 1286 3459 652 Q 3034 19 2086 19 Q 1139 19 713 652 Q 288 1286 288 2400 z M 2810 2400 Q 2810 3046 2669 3395 Q 2528 3744 2086 3744 Q 1645 3744 1504 3395 Q 1363 3046 1363 2400 Q 1363 1965 1414 1680 Q 1466 1395 1622 1219 Q 1779 1043 2086 1043 Q 2394 1043 2550 1219 Q 2707 1395 2758 1680 Q 2810 1965 2810 2400 z"/>
+        </defs>
+        <g transform="translate(74 120) scale(0.0172 -0.0172)">
+          <use xlink:href="#bw-P" class="pm-ink"/>
+          <use xlink:href="#bw-M" class="pm-ink" transform="translate(3990 0)"/>
+          <use xlink:href="#bw-3" class="pm-gold" transform="translate(10070 0)"/>
+          <use xlink:href="#bw-2" class="pm-gold" transform="translate(13720 0)"/>
+          <use xlink:href="#bw-0" class="pm-gold" transform="translate(17370 0)"/>
+        </g>
+      </svg>
     </a>
     <nav class="nav-links">
       <a href="/#about">About</a>
