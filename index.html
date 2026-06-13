@@ -467,8 +467,10 @@ footer .links {
 }
 footer .links a:hover { color: var(--am2); }
 footer .copyright {
-  color: var(--dm2);
-  opacity: 0.6;
+  /* WCAG AA — footer 배경은 양 모드 모두 다크네이비(라이트 var(--tx)=#1A1D26 / 다크 var(--bg2)=#161B22).
+     기존 var(--dm2)+opacity 0.6 = 라이트 3.91:1 / 다크 2.14:1 (AA 미달, 조니 P1-1 적발).
+     밝은 회색 단일 색으로 양 모드 동시 충족 (라이트bg 6.66:1 / 다크bg 6.84:1), opacity 제거. */
+  color: #9AA3B8;
 }
 
 /* ─── Live Pulse — 실데이터만, stale 48h 가드 (가짜 활동감 금지 FLR-AGT-002) ─── */
@@ -568,6 +570,7 @@ footer .copyright {
     background: var(--bg2);
     border-top: 1px solid var(--bd);
   }
+  /* .copyright 색은 라이트 룰의 #9AA3B8 단일 색이 다크 footer 배경(#161B22) 위 6.84:1 → 다크 override 불요 */
   /* pulse dot — 다크 배경에선 한 단계 밝은 녹 (대비 7:1) */
   .pulse-dot {
     background: #2BB673;
