@@ -48,8 +48,7 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
   --ru: #A01528;
   /* ─── 생동감(Vitality) 모션 토큰 (Q-생동감) — 절제·고급 곡선. WWDC급 흐름, 깜빡임 0 ─── */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --rise: 14px;          /* 스크롤 리빌 시 떠오르는 거리 */
-  --rise-dur: 620ms;     /* 등장 길이 — 느리고 묵직 (고급감) */
+  /* --rise / --rise-dur: 구 스크롤 페이드인 토큰. 콘텐츠 즉시 표시(2026-06-14)로 .reveal 페이드 제거 → 현재 미참조(정의만 유지). */
   /* R5 (조니 P1-2) — 생동감 강도 상향 + 상시 약동. hero glow 단일 의존 탈피.
      원칙 불변: transform/opacity GPU only · 진폭 절제(천박 금지) · reduced-motion 전면 정지 · 모바일도 지속 약동. */
   --float-amp: 3px;      /* 카드 상시 부유 진폭 — 의식 경계 아래("정지 아님" 신호). 상한 엄수 */
@@ -78,14 +77,12 @@ a { color: inherit; text-decoration: none; }
   .floatable { translate: 0 0 !important; }
 }
 
-/* ── ① 스크롤 리빌: 콘텐츠가 진입할 때 아래에서 떠오름 (IntersectionObserver) ── */
-/* 토스·Linear·Apple 공통 패턴. 인지 부하 0, "살아 움직인다" 체감 큼. JS 없으면 .in 즉시 부여 → 정적 fallback */
-.reveal { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--rise-dur) var(--ease-out), transform var(--rise-dur) var(--ease-out); }
+/* ── ① 콘텐츠 즉시 표시 (대표 지시 2026-06-14 "아직 느리다") ──
+   스크롤 페이드인(opacity:0 게이팅)이 본문 노출을 지연시켜 전면 제거.
+   .reveal 초기 = opacity:1·transform:none → 로드 즉시 본문 가시·스크롤 팝인 0. JS .in 여부 무관 항상 보임.
+   카드 상시 부유(.floatable)는 콘텐츠 가시성과 무관한 배경 모션이라 유지(아래 ⑤). */
+.reveal { opacity: 1; transform: none; }
 .reveal.in { opacity: 1; transform: none; }
-.reveal.d1 { transition-delay: 60ms; }
-.reveal.d2 { transition-delay: 120ms; }
-.reveal.d3 { transition-delay: 180ms; }
-.reveal.d4 { transition-delay: 240ms; }
 
 /* ⑤ 부유 적용 — JS가 reveal transition 종료 후 .floatable 부여(등장↔부유 충돌 회피).
    about/product 카드만 대상(텍스트·hero 제외 = 산만 방지). stagger = nth-of-type 음수 delay로 위상 분산
@@ -685,56 +682,7 @@ footer .copyright {
   color: #9AA3B8;
 }
 
-/* ─── Live Pulse — 실데이터만, stale 48h 가드 (가짜 활동감 금지 FLR-AGT-002) ─── */
-.pulse {
-  display: none;  /* JS가 실데이터 확인 후에만 노출 (데이터 미확보·stale 시 숨김 유지) */
-  border-top: 1px solid var(--bd);
-  border-bottom: 1px solid var(--bd);
-  background: var(--sf2);
-}
-.pulse.live { display: block; }
-.pulse-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px 28px;
-  font-size: 12.5px;
-}
-.pulse-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #178B53;  /* 살아있음 신호 (녹색) — 라이트 배경 위 3:1 확보 */
-  box-shadow: 0 0 0 0 rgba(23, 139, 83, 0.5);
-  animation: pulse-glow 2.4s ease-out infinite;
-  flex-shrink: 0;
-}
-@keyframes pulse-glow {
-  0%   { box-shadow: 0 0 0 0 rgba(43, 182, 115, 0.45); }
-  70%  { box-shadow: 0 0 0 7px rgba(43, 182, 115, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(43, 182, 115, 0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pulse-dot { animation: none; }
-}
-.pulse-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--tx2);
-  white-space: nowrap;
-}
-.pulse-item b {
-  font-weight: 800;
-  color: var(--tx);
-  letter-spacing: -0.2px;
-}
-.pulse-item .pulse-k {
-  color: var(--tx2);  /* 라벨도 AA 4.5:1 확보 (라이트 9.33 / 다크 11.0) */
-  font-weight: 600;
-}
+/* (구 서비스 활동 현황 readout CSS 제거 — 대표 지시 2026-06-14: 활동감 readout 비희망. HTML·JS 동반 삭제.) */
 
 /* ─── Dark mode (prefers-color-scheme) — 라이트 디자인 무손상, WCAG AA 4.5:1 전 텍스트 검증 ─── */
 @media (prefers-color-scheme: dark) {
@@ -789,11 +737,6 @@ footer .copyright {
     border-top: 1px solid var(--bd);
   }
   /* .copyright 색은 라이트 룰의 #9AA3B8 단일 색이 다크 footer 배경(#161B22) 위 6.84:1 → 다크 override 불요 */
-  /* pulse dot — 다크 배경에선 한 단계 밝은 녹 (대비 7:1) */
-  .pulse-dot {
-    background: #2BB673;
-    box-shadow: 0 0 0 0 rgba(43, 182, 115, 0.5);
-  }
 }
 </style>
 </head>
@@ -911,41 +854,21 @@ footer .copyright {
   });
 })();
 
-/* ─── 생동감 ① 스크롤 리빌 — IntersectionObserver (Q-생동감) ───
-   설계 원칙 = "백지 0" 절대 보증 (viewport 크기·콜백 타이밍에 비의존):
-     1) reduced-motion·IO 미지원 → 즉시 전부 .in (정적)
-     2) IO 표준 동작: observe 시작 시 이미 교차한 요소(첫 화면)도 콜백 발생 → 별도 rect 계산 불요
-     3) 절대 안전망 3중: DOMContentLoaded·load·800ms 타임아웃에서 "아직 안 보이는 요소" 강제 노출
-        → IO가 어떤 이유로든 안 불려도(예: 0-area viewport) 콘텐츠는 반드시 노출됨
-   1회성(unobserve). CSS transform/opacity만 → GPU 친화. */
+/* ─── 콘텐츠 즉시 표시 + 카드 상시 부유 (대표 지시 2026-06-14 "아직 느리다") ───
+   변경: 스크롤 페이드인(opacity 게이팅)·IntersectionObserver·setTimeout(1200/3000) 전면 제거.
+     → 콘텐츠는 CSS(.reveal{opacity:1})로 로드 즉시 노출 (JS 비의존·스크롤 팝인 0·페이드 대기 0).
+   유지: 카드(about/product) 상시 부유(.floatable)는 콘텐츠 가시성과 무관한 배경 모션 → DOM ready 즉시 부여.
+     reduced-motion 일 땐 CSS @media 가드가 animation:none + translate:0 으로 정지(클래스 무해). */
 (function(){
-  // ⑤ 부유 적용 — 카드(about/product)는 reveal 등장 transition 종료 후 .floatable 부여
-  //    → 등장(translateY)과 상시 부유(translate)가 시간적으로 분리되어 시각 충돌 0.
-  //    reduced-motion 일 땐 CSS 가드(@media)가 애니메이션 자체를 정지하므로 클래스 부여돼도 무동작(안전).
-  function maybeFloat(e){
-    if (!(e.classList.contains('about-card') || e.classList.contains('product-card'))) return;
-    var done=false;
-    function add(){ if(done)return; done=true; e.classList.add('floatable'); }
-    e.addEventListener('transitionend', function onEnd(ev){
-      if (ev.propertyName==='transform'){ e.removeEventListener('transitionend', onEnd); add(); }
-    });
-    setTimeout(add, 1200); // transition(620ms)+delay(≤240ms) 여유 안전망 — transitionend 미발화 시에도 부유 시작
+  function applyFloat(){
+    var cards = document.querySelectorAll('.about-card, .product-card');
+    for (var i=0;i<cards.length;i++) cards[i].classList.add('floatable');
   }
-  function show(e){ e.classList.add('in'); maybeFloat(e); }
-  function revealAll(){ var n=document.querySelectorAll('.reveal:not(.in)'); for(var i=0;i<n.length;i++) show(n[i]); }
-
-  var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (rm || !('IntersectionObserver' in window)) { revealAll(); return; }
-
-  var io = new IntersectionObserver(function(ents){
-    ents.forEach(function(en){ if (en.isIntersecting){ show(en.target); io.unobserve(en.target); } });
-  }, { threshold: 0.10, rootMargin: '0px 0px -8% 0px' });
-  var els = document.querySelectorAll('.reveal');
-  for (var i=0;i<els.length;i++) io.observe(els[i]);
-
-  // 절대 안전망: IO가 끝내 미발화(예: 0-area viewport·구형 엔진)면 3s 후 전부 노출.
-  // 정상 브라우저에선 IO가 즉시(첫 화면)/스크롤 시(이하) 먼저 처리하므로 본 타이머는 미발동.
-  setTimeout(revealAll, 3000);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyFloat);
+  } else {
+    applyFloat();
+  }
 })();
 </script>
 
@@ -962,14 +885,7 @@ footer .copyright {
   </div>
 </section>
 
-<!-- Live Pulse — 실데이터(PM320 발행)만 표시. stale/미확보 시 JS가 .live 미부여 → 숨김 유지 (FLR-AGT-002 가짜 활동감 금지).
-     '최근 업데이트' 발행일(배포 시각 readout) 항목은 대표 지시(2026-06-14)로 제거 — 신선도 날짜 노출 비희망. -->
-<div class="pulse" id="pulse" aria-label="서비스 활동 현황">
-  <div class="pulse-inner">
-    <span class="pulse-dot" aria-hidden="true"></span>
-    <span class="pulse-item"><span class="pulse-k">PM320 발행</span> <b id="pulse-pm320">—</b></span>
-  </div>
-</div>
+<!-- Live Pulse(서비스 활동 현황 readout) 전면 제거 — 대표 지시(2026-06-14): 활동 카운트·신선도 날짜 등 활동감 readout 자체 비희망 (조니 P1-③ 정합). 컨테이너·dot·CSS·JS 일괄 삭제. -->
 
 <section class="block about" id="about">
   <div class="block-inner">
@@ -1084,31 +1000,7 @@ footer .copyright {
   <div class="copyright">© 2026 100M1S · Far. One Step.</div>
 </footer>
 
-<script>
-/* Live Pulse — 실데이터(PM320 누적 발행일수)만. fail-closed: 데이터 미확보 시 pulse 숨김 유지 (FLR-AGT-002 / FLR-20260605-TEC-001).
-   '최근 업데이트' 발행일(배포 시각 last-modified readout) 항목은 대표 지시(2026-06-14)로 제거 —
-   신선도 날짜 노출 비희망. 관련 last-modified 헤더 취득·deploy 주입·footer-deploy 꼬리표 로직 일괄 제거. */
-(function(){
-  fetch('/data/page-manifest.json', { cache: 'no-store' })
-    .then(function(r){
-      if (!r.ok) throw new Error('manifest ' + r.status);
-      return r.json();
-    })
-    .then(function(d){
-      if (!d) return;
-
-      var pm320 = document.getElementById('pulse-pm320');
-
-      // PM320 누적 발행일수 = total_landings (실 픽 랜딩 페이지 수, cron 자동 증가). 정수 양수일 때만.
-      var landings = d.total_landings;
-      if (pm320 && typeof landings === 'number' && landings > 0) {
-        pm320.textContent = landings.toLocaleString('ko-KR') + '일';
-        document.getElementById('pulse').classList.add('live');  // 실데이터 확보 시에만 노출
-      }
-    })
-    .catch(function(){ /* fail-closed: 아무것도 표시하지 않음 */ });
-})();
-</script>
+<!-- (구 서비스 활동 현황 readout 주입 JS 제거 — 대표 지시 2026-06-14: 활동감/신선도 readout 비희망. HTML·CSS 동반 삭제.) -->
 
 </body>
 </html>
