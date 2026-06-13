@@ -457,3 +457,51 @@ footer {
   .audit-grid { grid-template-columns: 1fr; }
   footer { padding: 10px 12px; }
 }
+
+/* ── 판정 의견 펼침 (패널별 headline/P0/P1/개선사항) ───────────────────────────
+   대표 지시: YES/NO+숫자만으론 '왜'가 안 보임. 데이터 있는 판정만 detail 행 추가.
+   전 색상 토큰(var(--…))이 prefers-color-scheme:dark 에서 자동 재정의 → 다크모드 정합. */
+.conv-verdict-row.has-reasoning > td:first-child { border-bottom: none; }
+.conv-verdict-detail > td { padding: 0 8px 8px; background: var(--bg2); border-top: none; }
+/* detail 본문은 표 셀 nowrap(.grid td)을 무시하고 줄바꿈 — 모바일 가로 스크롤 없이 읽힘.
+   sticky-left 로 표를 가로 스크롤해도 의견 본문은 좌측에 고정(모바일 UX 최우선). */
+.vd-details {
+  font-size: 12px; white-space: normal;
+  position: sticky; left: 0;
+  width: min(100%, calc(100vw - 40px));
+  box-sizing: border-box;
+}
+.vd-details, .vd-details * { overflow-wrap: anywhere; word-break: break-word; }
+.vd-details > summary {
+  cursor: pointer; padding: 6px 4px; color: var(--tx2);
+  font-weight: 600; list-style: revert; user-select: none;
+}
+.vd-details > summary:hover { color: var(--tx); }
+.vd-details[open] > summary { color: var(--tx); }
+.vd-count {
+  display: inline-block; min-width: 16px; padding: 0 5px; margin-left: 4px;
+  background: var(--am3); color: var(--am); border-radius: 9px;
+  font-size: 11px; text-align: center; font-weight: 700;
+}
+.vd-body { padding: 4px 2px 6px; }
+.vd-headline {
+  margin: 4px 0 8px; padding: 6px 10px; color: var(--tx);
+  background: var(--sf); border-left: 3px solid var(--am2); border-radius: 4px;
+  line-height: 1.5; font-weight: 600;
+}
+.vd-block { margin: 6px 0; }
+.vd-label {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .02em;
+  padding: 1px 7px; border-radius: 4px; margin-bottom: 3px;
+}
+.vd-p0 .vd-label { color: var(--ru); background: var(--neg-bg); border: 1px solid var(--ru); }
+.vd-p1 .vd-label { color: var(--am); background: var(--am3); border: 1px solid var(--am); }
+.vd-imp .vd-label { color: var(--neu); background: var(--neu-bg); border: 1px solid var(--bd); }
+.vd-block ul { margin: 3px 0 0; padding-left: 18px; }
+.vd-block li { margin: 2px 0; color: var(--tx2); line-height: 1.5; }
+.vd-imp-item .vd-state {
+  font-size: 10px; font-weight: 700; padding: 0 5px; border-radius: 3px; margin-left: 4px;
+  white-space: nowrap;
+}
+.vd-imp-item.vd-done .vd-state { color: var(--pos); background: var(--pos-bg); }
+.vd-imp-item.vd-open .vd-state { color: var(--neg); background: var(--neg-bg); }

@@ -11,11 +11,30 @@
   // romanized 에이전트명(ishikawa/togusa 등)이 owner 셀에서 누락된 사례 발견 →
   // 표시 직전 한 번 더 일반화하여 내부 코드네임이 DOM 에 절대 닿지 않게 함(FLR-20260406-TEC-001
   // 동형 = 한쪽 코드만 fix·romanized 변종 누락 재발 방지). 의미 보존 위해 일반화(삭제 X).
+  // 디스플레이 게이트(클라이언트 백스톱) — build_convergence.py mask_text/generalize_persona
+  // 와 양 layer 동기화 의무(FLR-20260406-TEC-001 동형 = 한쪽만 fix·변종 누락 재발 회피).
+  // 서버가 true-0 생성하나, JSON 변조·캐시 stale 대비 동일 역할 라벨로 2차 봉쇄.
+  // 순서: 내부 메모리 wiki-link 통째 제거 → 페르소나 일반화(긴 한글 키 먼저) → 로마자
+  // 슬러그(\b 단어경계, vc 등 정상 단어 보호) → doc_id → 이메일 → 경로.
   const SANITIZE_RULES = [
+    [/\[\[[^\]]*\]\]/g, ""],        // 내부 메모리 wiki-link([[slug]]) 제거
+    [/조니종합/g, "총괄종합"],      // 복합어 우선(부분문자열 "조니"보다 먼저)
+    [/타치코마/g, "AI 시스템"],
+    [/이시카와/g, "뉴스분석"],
+    [/토구사/g, "투자분석"],
+    [/픽셀 퍼펙셔니스트/g, "픽셀 정렬 패널"],
+    [/디터 람스/g, "재료 정직성 패널"],
+    [/조니/g, "총괄 심사 패널"],
+    [/휴지|박성진/g, "운영자"],
     [/ishikawa/gi, "뉴스분석"],   // 이시카와(뉴스분석팀) 역할 라벨 — 의미 보존
     [/togusa/gi, "투자분석"],     // 토구사(주식투자팀)
     [/tachikoma/gi, "AI 시스템"], // 타치코마(오케스트레이터)
     [/hugepark/gi, "운영자"],
+    [/\bjony\b/gi, "총괄 심사 패널"],
+    [/\bpixel\b/gi, "디자인 심사 패널"],
+    [/\bguestpool\b/gi, "손님 패널"],
+    [/\bhonesty\b/gi, "정직성 심사"],
+    [/\bcritic\b/gi, "비평 패널"],
     [/\b(?:FLR|DOC)-(?:\d{8}-[A-Z]+|[A-Z]+)-\d+\b/g, "내부코드"], // doc_id 패턴
     [/[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/g, "(이메일)"],
     [/(\/Users\/|~\/company\/)\S*/g, "(내부경로)"],
@@ -499,18 +518,62 @@
       </tr>`).join("");
   }
 
+  // 패널 의견 본문(headline/improvements/p0_items/p1_items) — 대표 지시: YES/NO+숫자만으론
+  // '왜 그렇게 판정했는지'가 안 보임. 데이터 있을 때만 펼침 detail 렌더(없으면 행 1줄 유지·
+  // 거짓 충실성 회피: 추출 0 = 빈 값). 모든 자유 텍스트 safe()(escape+클라 sanitize 백스톱).
+  function verdictReasoningHtml(v) {
+    const imp = Array.isArray(v.improvements) ? v.improvements : [];
+    const p0 = Array.isArray(v.p0_items) ? v.p0_items : [];
+    const p1 = Array.isArray(v.p1_items) ? v.p1_items : [];
+    if (!v.headline && !imp.length && !p0.length && !p1.length) return "";
+    const parts = [];
+    if (v.headline) {
+      parts.push(`<p class="vd-headline">${safe(v.headline)}</p>`);
+    }
+    if (p0.length) {
+      parts.push(`<div class="vd-block vd-p0"><span class="vd-label">P0</span><ul>${
+        p0.map((s) => `<li>${safe(s)}</li>`).join("")
+      }</ul></div>`);
+    }
+    if (p1.length) {
+      parts.push(`<div class="vd-block vd-p1"><span class="vd-label">신규 P1</span><ul>${
+        p1.map((s) => `<li>${safe(s)}</li>`).join("")
+      }</ul></div>`);
+    }
+    if (imp.length) {
+      parts.push(`<div class="vd-block vd-imp"><span class="vd-label">개선사항</span><ul>${
+        imp.map((it) => {
+          const st = it && it.state ? it.state : "미상";
+          const done = st === "해소";
+          return `<li class="vd-imp-item ${done ? "vd-done" : "vd-open"}">${
+            safe(it && it.text)
+          } <span class="vd-state">${escape(st)}</span></li>`;
+        }).join("")
+      }</ul></div>`);
+    }
+    const n = (v.headline ? 1 : 0) + p0.length + p1.length + imp.length;
+    return `<tr class="conv-verdict-detail"><td colspan="6">
+      <details class="vd-details">
+        <summary>판정 의견 펼치기 <span class="vd-count">${n}</span></summary>
+        <div class="vd-body">${parts.join("")}</div>
+      </details></td></tr>`;
+  }
+
   function renderConvVerdicts(conv) {
     const verdicts = conv.verdicts || [];
     el("conv-verdict-n").textContent = verdicts.length;
-    el("conv-verdict-tbody").innerHTML = verdicts.map((v) => `
-      <tr>
+    el("conv-verdict-tbody").innerHTML = verdicts.map((v) => {
+      const reasoning = verdictReasoningHtml(v);
+      return `
+      <tr class="conv-verdict-row${reasoning ? " has-reasoning" : ""}">
         <td><code>${safe(v.file)}</code></td>
         <td>${escape(v.round_id || "")}</td>
         <td>${safe(v.panel || "")}</td>
         <td><span class="badge ${verdictClass(v.verdict)}">${escape(v.verdict)}</span></td>
         <td>${numOrUnknown(v.p0_count)}</td>
         <td>${numOrUnknown(v.new_p1_count)}</td>
-      </tr>`).join("");
+      </tr>${reasoning}`;
+    }).join("");
   }
 
   // sql.js 인-브라우저 SQLite — 사용자가 명시적으로 클릭할 때만 lazy 로드(WASM ~1.5MB).
