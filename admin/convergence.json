@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-14T21:04:07.698187+09:00",
+  "generated_at": "2026-06-14T21:58:14.629764+09:00",
   "summary": {
     "ADMIN": {
       "status": "idle",
@@ -423,36 +423,6 @@
     ]
   },
   "activity_timeline": [
-    {
-      "ts": "2026-06-14T07:29:26.796680+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r53-손님 패널.md"
-    },
-    {
-      "ts": "2026-06-14T07:29:49.892011+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r53-branding.md"
-    },
-    {
-      "ts": "2026-06-14T07:30:55.005027+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r53-tech.md"
-    },
-    {
-      "ts": "2026-06-14T07:31:20.291127+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r53-투자 심사.md"
-    },
-    {
-      "ts": "2026-06-14T07:32:16.967858+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r53-design.md"
-    },
     {
       "ts": "2026-06-14T07:32:28.773044+09:00",
       "type": "verdict",
@@ -902,12 +872,42 @@
       "type": "round",
       "repo": "BYBIAS",
       "label": "RND-BYBIAS-060 (R60)"
+    },
+    {
+      "ts": "2026-06-14T21:09:57.851644+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-002-정직성 심사.md"
+    },
+    {
+      "ts": "2026-06-14T21:10:17.147748+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-002-시스템 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T21:15:33.557544+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-002-design.md"
+    },
+    {
+      "ts": "2026-06-14T21:17:23.082729+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-002-손님 패널.md"
+    },
+    {
+      "ts": "2026-06-14T21:22:50.557173+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-002-2nd-총괄 심사 패널.md"
     }
   ],
   "freshness": {
-    "last_activity_ts": "2026-06-14T20:54:28.394751+09:00",
-    "generated_at": "2026-06-14T21:04:07.698187+09:00",
-    "stale_minutes": 9
+    "last_activity_ts": "2026-06-14T21:22:50.557173+09:00",
+    "generated_at": "2026-06-14T21:58:14.629764+09:00",
+    "stale_minutes": 35
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -936,7 +936,7 @@
     "verdict r57-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r57-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r58-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "round_id 미매핑 verdict 43건 (frontmatter 미적용·점진 마이그레이션 백로그)",
+    "round_id 미매핑 verdict 48건 (frontmatter 미적용·점진 마이그레이션 백로그)",
     "ROUND-LOG 비정상 칸 수 라운드 2건 (graceful 패딩·drop 0): RND-BYBIAS-051(7칸), RND-BYBIAS-052(7칸) — 표준 8칸 정렬 권고(tier/verdict 칸 누락)"
   ],
   "requests": [
@@ -2790,6 +2790,192 @@
       "improvements": [
         {
           "text": "blocked 판정이 종결(✅)·100%·live 요청을 거짓 교착으로 표시 — _HOLD_RE가 취소선(~~...~~) 안 '대표 결정 대기'를 매칭 + state=종결 가드 부재",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-002-정직성 심사.md",
+      "ts": "2026-06-14T21:09:57.851644+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-ADMIN-002-정직성 심사",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "정직성 심사",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "blocked 거짓 교착 (종결·100%·live 요청을 stuck 표시) — is_closed 단락 가드 + _strip_resolved 취소선 strip 추가",
+          "state": "해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-002-시스템 심사 패널.md",
+      "ts": "2026-06-14T21:10:17.147748+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-ADMIN-002-시스템 심사 패널",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "시스템 심사 패널",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 1,
+      "headline": "YES (라운드1 P0-1 정면 해소 — silent drop → graceful 파싱 + fail-loud. 신규 P0 0. 잔존은 P1 1건뿐)",
+      "improvements": [
+        {
+          "text": "parse_rounds 컬럼 가드(<8 continue)가 7칸 라운드 행을 silent drop — 명시 WARN 또는 비고 셀 누락 graceful 파싱으로 전환",
+          "state": "해소"
+        },
+        {
+          "text": "progress_pct 진행률 매핑을 백엔드 _STATE_PROGRESS 1곳으로 단일화 — 프론트 STATE_META.pct 상수 제거(또는 백엔드값 주입)",
+          "state": "해소"
+        },
+        {
+          "text": "verdict request_id 참조 무결성 게이트 강화 — 'R48'/'N/A'/'SWEEP-*' 등 LEDGER 미존재 27건을 작성 단계에서 차단하거나 정규화",
+          "state": "부분해소"
+        },
+        {
+          "text": "progress_pct는 state 파생 ordinal임을 UI에 명시(예 '구현 단계' 라벨) — '55% 진행'으로 읽히는 측정 오인 제거",
+          "state": "미해소"
+        },
+        {
+          "text": "request ts '오늘 날짜' 부여 근사를 UI에서 명시(추정 표기) 또는 LEDGER에 발화일 컬럼 추가",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": [
+        "P1-1(신규·라운드1 ⑤ 잔존 승계). progress_pct ordinal을 진행바 %로 노출.** `_progress_pct`(L424)는 state→고정값(구현중55·배포85) 매핑이고, script.js L1219-1220이 이를 `width:{pct}%` 바로 렌더. 대표가 \"55% 진척\"으로 읽으면 측정 오인 — 실 의미는 \"구현 단계\". 거짓0 아님(P0 아님)이나 단계 ordinal임을 UI 라벨로 명시(예 '구현 단계 (4/7)') 권고. evidence: build_convergence.py L390-428 + script.js L1213-1220.",
+        "(참고·非차단) request_id 참조 무결성(라운드1 P1-3)은 _VALID_REQ_ID_RE(L556)로 정식등재 셀은 차단층 존재하나 verdict frontmatter 27건은 WARN-노출 잔존 = 부분해소. request ts 근사(라운드1 P1-4)는 미해소. 둘 다 기존 데이터 이질성 수용(integrity §5 비-차단 게이트)이라 신규 P1로 카운트하지 않음 — 라운드1 대비 악화 0."
+      ]
+    },
+    {
+      "file": "(내부코드)-rnd-admin-002-design.md",
+      "ts": "2026-06-14T21:15:33.557544+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-ADMIN-002-design",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "design",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 2,
+      "headline": "NO** — 라운드2는 RND-001의 5개 지적 중 **5개를 실제 해소**(svc 라벨 nowrap·시계열 위계역전 라인차트 재설계·서비스별 1라인 렌더버그·빈 탭 안내·신규 스택바 구조)했고, 신설 상태 스냅샷 스택바는 정보위계·파이프라인 정렬·narrow 세그 정직 처리(거짓채움 0)가 우수하다. 그러나 **확정 결함 2건이 잔존·신설**되어 1px·일관성·다크 가독을 집요하게 보는 본 심급은 PASS하지 않는다:",
+      "improvements": [
+        {
+          "text": "[RND-001 P1-a 해소] svc-card 지표 라벨(.m-k) white-space:nowrap 추가(style.css L466) → '열린 라운드'·'열린 요청'·'전체' 전부 1줄(kH=19=lineHeight19, overflow 0). 데스크톱 1280·모바일 390 4모드 전수 1줄 확인. 진입 첫 데이터 블록 깨짐 제거",
+          "state": "해소"
+        },
+        {
+          "text": "[RND-001 P1-b 미해소·recurring] 요청 카드 priority 칩 cross-card 점유율 21/46=46%(여전히 50% 미만). 권고했던 '미분류 중성 칩'(unclassifiedChips=0) 미적용 → 25개 카드 무칩 거짓 구분 그대로. RND-001 P1-2 동일 패턴 2회차",
+          "state": "미해소"
+        },
+        {
+          "text": "[RND-001 P1-c 미해소·recurring] 다크 --dm #757E88 불변(L940, 저자 git note '다크 불변→회귀 0' 명시적 비수정). 실DOM 측정 .svc-card .m-k·.sb-total·.glance-card .g-sub on --sf CR=4.32 = AA-normal 4.5 미달. 라이트만 #6A6F68로 격상, 다크 누락 그대로. 다크모드 제1원칙(가독성 저하 0) 위반 2회차",
+          "state": "미해소"
+        },
+        {
+          "text": "[신설 컴포넌트 평가] 상태 스냅샷 스택바 = 정보위계·구조 양호(6 repo·100% 트랙·파이프라인 순서 정렬·narrow<12% 라벨 숨김+숫자만+title 풀텍스트·거짓채움 0). 단 신규 P1-1 색 충돌(아래) 보유",
+          "state": "신설"
+        },
+        {
+          "text": "[RND-001 P2-a 해소] 활동 추세를 점/막대 위계역전 차트 → 서비스별 누적 라인차트로 재설계(commit b26cb9c). 6 path 볼륨 비례(bbh 70/26/17/9/2/124)·통계헤더 4종·결함최다 위계역전 해소",
+          "state": "해소"
+        },
+        {
+          "text": "[RND-001 시계열 렌더버그 해소] 서비스별 1라인 정상 렌더 6개(BYBIAS/공통/PM320/HOME/INFRA+합계). 데스크톱 bbw=1000 full·모바일 w=362 미클립. 단일선 버그 재현 0",
+          "state": "해소"
+        },
+        {
+          "text": "[빈 탭 안내 해소] agents·audit·releases·flr 전 populated 탭에 empty-row 안내문 present('...data.json 미생성'). 빈 상태 디자인 충족",
+          "state": "해소"
+        },
+        {
+          "text": "[RND-001 P2-b 미해소·잔존 P2] 모바일 390 탭 nav scrollW 418>390 → 'audit' 우측 +22px off-screen. overflow-x:auto 스와이프 도달 가능하나 어포던스(끝 페이드) 약함. verdict 차단 아님",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-002-손님 패널.md",
+      "ts": "2026-06-14T21:17:23.082729+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-ADMIN-002-손님 패널",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "손님 패널",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 1,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "R1 P1-1 빈 7탭 '데이터 없음' 안내 부재",
+          "state": "해소"
+        },
+        {
+          "text": "R1 P1-2 검색 라운드/토픽 미인덱스(시총 0/46)",
+          "state": "해소"
+        },
+        {
+          "text": "R1 P1-2 검색 owner(담당) 미인덱스",
+          "state": "미해소"
+        },
+        {
+          "text": "R1 P2-a 서비스 스트립 지표 라벨 세로 줄바꿈",
+          "state": "해소"
+        },
+        {
+          "text": "신규 P1 상태 스냅샷 스택바 색 충돌(6상태→4색)",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-002-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-14T21:22:50.557173+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-ADMIN-002-총괄 심사 패널",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "NO",
+      "quality_score": 6.8,
+      "p0_count": 0,
+      "new_p1_count": 1,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[라운드1 P0 해소 확정] parse_rounds silent drop — R051·R052 라이브 복원 + summary.total_rounds 14 정정 + silent→fail-loud(integrity_warnings #27). 라운드1 2심 P0의 verify 조건 3종(라이브 출현·요약 정정·누락 경고 노출) 전부 충족",
+          "state": "해소"
+        },
+        {
+          "text": "[신규 P0→P1 강등 후보 = 본 라운드 본질 결함] 상태 스냅샷 스택바 6상태→4색 거짓 동일시 — 배포됨≡종결(conv-ok)·구현중≡보류(conv-prog). 본 라운드 headline 컴포넌트의 존재 이유(색=상태 한눈)를 색 레이어에서 절반 무력화. design·손님 패널 2패널 교차 적발·4모드 dist=0·모바일 narrow 세그 라벨숨김 가중. 대표 catch '몇 중 얼마 진행됐는지'의 색 차원 직격. 차단(NO)이나 정보손실 아님이라 P1",
+          "state": "미해소"
+        },
+        {
+          "text": "[1심 흡수·P1군·차단 아님] 다크 --dm AA-normal 미달(design P1-2·라운드1 P1-c recurring 2회차, 다크 #757E88 on --sf CR=4.32) · progress_pct ordinal을 진행바 %로 노출(시스템 심사 패널 P1-1) · 검색 owner 미인덱스(손님 패널 R1-P1-2 절반·1줄 fix) · priority 칩 cross-card 46%(design 미해소 2회차)",
           "state": "미해소"
         }
       ],
@@ -5851,7 +6037,7 @@
   ],
   "trend_mapping": {
     "verdicts_mapped_to_round": 16,
-    "verdicts_total": 114,
+    "verdicts_total": 119,
     "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
   }
 }

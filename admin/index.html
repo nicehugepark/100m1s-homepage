@@ -107,7 +107,12 @@
 
       <!-- ⓪-a 지금 동작 중 + 활동 시계열 (진입 즉시·최상단 — 대표 "시계열 어딨어": svc 카드에 밀려 묻힘 직답) -->
       <div id="conv-freshness" class="conv-freshness" aria-label="시스템 활동 신선도"></div>
-      <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열"></div>
+
+      <!-- ⓪-a 활동 시계열 = 목적별 복수 차트(대표 "차트 여러개면 되지 않을까"). 단일 combo가 누적·변동·서비스 3메시지를
+           한 SVG에 중첩 → 정보위계 평탄화(§1.1) → 목적별 분리. 과부하 회피(검토 3패널 우려): 각 차트 작게·핵심만 above-fold.
+           A(단위시간 변동)+B(누적 추세)는 같은 시간축 공유(줌/팬 연동, 인터랙션은 A에). C(서비스별)는 전체 기간 small multiples.
+           D(상태 스냅샷)=아래 conv-statebar 그대로(중복 신설 0). -->
+      <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열 차트"></div>
 
       <!-- ⓪-a2 상태 스냅샷 — 서비스별 요청이 '지금 어느 상태에 몇 건' (대표 시계열 검토 직답).
            누적 라인(위)=활동 속도 추세 / 본 스택바=현재 상태 분포. 둘은 다른 축(서사 분리).

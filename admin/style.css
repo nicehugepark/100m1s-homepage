@@ -38,6 +38,7 @@
   --pos: #1E6B33;  --pos-bg: #E4F1E7;  --pos-bd: #6FAE7E;   /* YES·종결·수렴 */
   --neg: #A01528;  --neg-bg: #FBEAEC;  --neg-bd: #D58189;   /* NO·미수렴·P0 */
   --neu: #5A6470;  --neu-bg: #ECEEF0;  --neu-bd: #A8B0BA;   /* 진행·중립 */
+  --tl:  #0C6E78;  --tl-bg:  #DBEFF1;  --tl-bd:  #5FA9B1;   /* 배포 — 청록(종결 진녹과 변별) */
   --live: #1E6B33;        /* 라이브 점등 색 */
   --warn: #8E1226;        /* blocked 경고 */
 
@@ -326,6 +327,18 @@ footer {
 .badge.conv-no   { color: var(--ru);  border-color: var(--neg-bd); background: var(--neg-bg); }
 .badge.conv-cand { color: var(--am);  border-color: var(--am2);  background: var(--am3); }
 .badge.conv-prog { color: var(--neu); border-color: var(--neu-bd); background: var(--neu-bg); }
+/* "배포" = 청록(teal) — 종결/수렴(진녹)과 변별. 라운드2 P1-1. */
+.badge.conv-deploy { color: var(--tl); border-color: var(--tl-bd); background: var(--tl-bg); }
+/* "보류" = 정지/정체 — 회색 베이스 + 대각 스트라이프(정지 신호). 진행중·구현중(평면 회)과
+   색+패턴 이중 변별. 색 단독 의존 금지(다크모드 제1원칙). 라운드2 P1-1. */
+.badge.conv-hold {
+  color: var(--neu); border-color: var(--neu-bd);
+  background:
+    repeating-linear-gradient(135deg,
+      var(--neu-bg) 0, var(--neu-bg) 5px,
+      transparent 5px, transparent 9px),
+    var(--bg2);
+}
 .badge.conv-superseded {
   color: var(--dm); border-color: var(--bd2); background: var(--bg2);
   font-weight: 500;
@@ -390,6 +403,13 @@ footer {
 .sb-leg-sw.conv-cand { background: var(--am2); }
 .sb-leg-sw.conv-prog { background: var(--neu); }
 .sb-leg-sw.conv-no   { background: var(--ru); }
+.sb-leg-sw.conv-deploy { background: var(--tl); }
+/* 보류 스와치 = 회색 + 대각 스트라이프(배지 세그먼트와 동일 패턴 → 범례 인지 일치) */
+.sb-leg-sw.conv-hold {
+  background:
+    repeating-linear-gradient(135deg, var(--neu) 0, var(--neu) 2px, transparent 2px, transparent 4px),
+    var(--bd2);
+}
 .sb-leg-sw.conv-seed { background: var(--am3); border-color: var(--am2); }
 .sb-leg-sw.conv-superseded { background: var(--bd2); }
 .sb-leg-k { white-space: nowrap; }
@@ -414,10 +434,22 @@ footer {
 .sb-seg-k { overflow: hidden; text-overflow: ellipsis; } /* 칸이 충분하면 라벨, 모자라면 ... (거짓 채움 0) */
 .sb-seg-narrow .sb-seg-k { display: none; } /* 좁은 칸(<12%): 어중간 잘림 대신 숫자만(전체는 호버 title) */
 /* 세그먼트 채움색 — 의미 변수 기반(라이트/다크 공용 자동 반전). 연한 bg + 진한 텍스트(AA). */
-.sb-seg.conv-ok   { background: var(--pos-bg); color: var(--pos); }
-.sb-seg.conv-cand { background: var(--am3);    color: var(--am); }
-.sb-seg.conv-prog { background: var(--neu-bg); color: var(--neu); }
-.sb-seg.conv-no   { background: var(--neg-bg); color: var(--ru); }
+.sb-seg.conv-ok     { background: var(--pos-bg); color: var(--pos); }
+.sb-seg.conv-cand   { background: var(--am3);    color: var(--am); }
+.sb-seg.conv-prog   { background: var(--neu-bg); color: var(--neu); }
+.sb-seg.conv-no     { background: var(--neg-bg); color: var(--ru); }
+.sb-seg.conv-deploy { background: var(--tl-bg);  color: var(--tl); }   /* 배포 = 청록 (P1-1) */
+/* 보류 = 회색 + 대각 스트라이프(정지 신호) → 좁은 세그먼트(<12%)·다크모드서도 색단독 아닌
+   패턴으로 진행계열과 변별. 라운드2 P1-1. */
+.sb-seg.conv-hold {
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(90,100,112,.22) 0, rgba(90,100,112,.22) 5px,
+      transparent 5px, transparent 9px),
+    var(--neu-bg);
+  color: var(--neu);
+  box-shadow: inset 3px 0 0 var(--neu-bd);  /* 좌측 테두리 = 정지 마커(좁아도 식별) */
+}
 .sb-seg.conv-seed { background: var(--am4);    color: var(--am); }
 .sb-seg.conv-superseded { background: var(--bg2); color: var(--dm); }
 
@@ -640,6 +672,8 @@ footer {
 .rq-prio.prio-p1 { color: var(--am); background: var(--am3); border: 1px solid var(--am2); }
 .rq-prio.prio-p2 { color: var(--neu); background: var(--neu-bg); border: 1px solid var(--neu-bd); }
 .rq-prio.prio-p3 { color: var(--dm); background: var(--bg2); border: 1px solid var(--bd); }
+/* "미분류" = 우선순위 미명시(추정 0) — 중성 칩 + 점선 테두리로 P0~P3 등급칩과 시각 구분. P1-4. */
+.rq-prio.prio-none { color: var(--dm); background: transparent; border: 1px dashed var(--bd2); font-weight: 600; }
 
 /* 🆕 미편입 (mq_only) 강조 */
 .rq-mqonly {
@@ -809,20 +843,20 @@ footer {
 }
 @keyframes fresh-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 
-/* ⓪-c 활동 시계열 — 밀도 막대 + 점 + 드래그(팬)/휠·핀치(줌). 판정=녹·라운드=황동·요청=루비 */
+/* ⓪-c 활동 시계열 = 목적별 복수 차트(A 단위시간변동 · B 누적추세 · C 서비스별).
+   대표 "차트 여러개면 되지 않을까" — 단일 combo의 3메시지 중첩을 목적별로 분리.
+   과부하 회피(검토 3패널 우려): 각 차트 작게·정돈 그리드·핵심만 above-fold. */
 .conv-timeline { margin: 0 0 16px; }
 .tl-head { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--tx2); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 7px; }
-/* fix #3 정직 라벨: 누적 라인은 활동 '속도' 추세지 상태 게이지가 아님을 한눈에 표시. */
 .tl-head-tag {
   font-size: 9px; font-weight: 700; letter-spacing: .3px; vertical-align: middle;
   padding: 1px 5px; margin-left: 4px; border-radius: 3px;
   color: var(--neu); background: var(--neu-bg); border: 1px solid var(--neu-bd);
 }
-.tl-sub { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dm); margin-left: 6px; font-family: var(--body, inherit); }
+.tl-sub { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dm); margin: 3px 0 0; font-family: var(--body, inherit); font-size: 11.5px; line-height: 1.45; }
 
-/* 툴바 = 통계 헤더 + 세그먼트 토글 */
-.tl-toolbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; margin-bottom: 9px; }
-.tl-stats { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 360px; }
+/* 통계 readout (총 활동·시간당·피크·최근) */
+.tl-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .tl-stat {
   flex: 1 1 0; min-width: 78px;
   display: flex; flex-direction: column; gap: 1px;
@@ -832,54 +866,60 @@ footer {
 .tl-stat b { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--tx); line-height: 1.15; }
 .tl-stat i { font-style: normal; font-size: 10px; color: var(--dm); letter-spacing: .2px; }
 
-/* 세그먼트 토글 (서비스별 | 유형별) */
-.tl-seg { display: inline-flex; flex: none; padding: 2px; gap: 2px; border-radius: var(--radius); background: var(--bg2); border: 1px solid var(--bd); align-self: stretch; }
-.tl-seg-btn {
-  appearance: none; cursor: pointer; border: 1px solid transparent;
-  padding: 5px 12px; border-radius: var(--radius-sm);
-  background: transparent; color: var(--tx2);
-  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .2px;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
-}
-.tl-seg-btn:hover { color: var(--tx); }
-.tl-seg-btn.is-on { background: var(--sf); color: var(--tx); border-color: var(--bd2); box-shadow: var(--shadow-1); }
-.tl-seg-btn:focus-visible { outline: 2px solid var(--am); outline-offset: 1px; }
+/* ── 차트 카드 공통 (계측 패널 질감) ── */
+.tl-card { background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--radius); padding: 10px 12px 11px; }
+.tl-card-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-bottom: 8px; position: relative; }
+.tl-card-title { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--tx); letter-spacing: .2px; }
+.tl-card-desc { font-size: 10.5px; color: var(--dm); line-height: 1.3; flex: 1 1 200px; }
 
-/* 차트 */
+/* A+B 한 쌍 — 같은 시간축 공유. 위=변동 막대(A), 아래=누적 라인(B). 한 카드 묶음처럼 붙여 정렬. */
+.tl-pair { display: flex; flex-direction: column; gap: 8px; }
+.tl-pair .tl-card-bars { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; }
+.tl-pair .tl-card-cum { border-top-left-radius: 4px; border-top-right-radius: 4px; padding-top: 9px; }
+
+/* 차트 wrap + SVG */
 .tl-chart-wrap { position: relative; }
-.tl-svg {
-  display: block; width: 100%; height: 178px;
-  border-radius: var(--radius);
-  background: var(--bg2); border: 1px solid var(--bd);
-  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+.tl-svg-bars, .tl-svg-cum {
+  display: block; width: 100%;
+  background: var(--sf); border: 1px solid var(--bd); border-radius: var(--radius-sm);
 }
-.tl-svg.tl-grabbing { cursor: grabbing; }
-.tl-svg:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+.tl-svg-bars { height: 132px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.tl-svg-cum  { height: 92px; }
+.tl-svg-bars.tl-grabbing { cursor: grabbing; }
+.tl-svg-bars:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+
+/* 그리드 (A·B 공용) */
 .tl-gridline { stroke: var(--bd); stroke-width: 1; opacity: .45; vector-effect: non-scaling-stroke; }
-.tl-ygrid { stroke: var(--bd); stroke-width: 1; opacity: .35; vector-effect: non-scaling-stroke; }
+.tl-ygrid { stroke: var(--bd); stroke-width: 1; opacity: .32; vector-effect: non-scaling-stroke; }
 .tl-baseline { stroke: var(--bd2, var(--bd)); stroke-width: 1; opacity: .8; vector-effect: non-scaling-stroke; }
 .tl-gridtxt { fill: var(--dm); font-family: var(--mono); font-size: 8px; text-anchor: middle; }
 
-/* 누적 라인 */
-.tl-line { stroke-width: 1.6; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; opacity: .92; }
-.tl-line-total { stroke-width: 2.6; opacity: 1; }
+/* A: 단위시간 변동 막대 — 황동(회사 정체성 1순위). 단독 차트라 또렷하게. */
+.tlb-bar { fill: var(--am); opacity: .82; transition: opacity .12s ease; }
+.tlb-bar:hover { opacity: 1; }
 
-/* Y축 라벨 overlay (viewBox 왜곡 회피용 HTML) */
-.tl-yaxis { position: absolute; left: 0; top: 0; height: 100%; width: 0; pointer-events: none; }
-.tl-yaxis span {
+/* B: 누적 추세 라인 — 청회 라인 + 미세 면적 fill(쌓임 강조, 위계는 라인 아래). */
+.tlc-stroke { stroke: var(--neu); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.tlc-area { fill: var(--neu); opacity: .1; }
+
+/* Y축 라벨 overlay (viewBox 왜곡 회피용 HTML) — A·B 공용 */
+.tlb-yaxis, .tlc-yaxis { position: absolute; left: 0; top: 0; height: 100%; width: 0; pointer-events: none; }
+.tlb-yaxis span, .tlc-yaxis span {
   position: absolute; left: 4px; transform: translateY(-50%);
   font-family: var(--mono); font-size: 8.5px; color: var(--dm);
-  background: var(--bg2); padding: 0 3px; border-radius: 3px;
+  background: var(--sf); padding: 0 3px; border-radius: 3px;
 }
 
-/* crosshair */
+/* crosshair (A·B 동시) */
 .tl-crossline { stroke: var(--tx2); stroke-width: 1; stroke-dasharray: 2 2; opacity: .5; vector-effect: non-scaling-stroke; }
-.tl-crossdot { stroke: var(--sf); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tl-crossdot { stroke: var(--sf); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.tl-crossdot-bar { fill: var(--am); }
+.tl-crossdot-cum { fill: var(--neu); }
 
-/* 툴팁 — 시점별 시리즈 누적값 표 */
+/* 툴팁 — 이 구간 건수(주) + 누적(보조) */
 .tl-tip {
   position: absolute; z-index: 5; pointer-events: none;
-  min-width: 132px; max-width: 220px; padding: 7px 9px;
+  min-width: 150px; max-width: 220px; padding: 7px 9px;
   background: var(--tx); color: var(--bg);
   border-radius: 7px; font-size: 11px; line-height: 1.3;
   box-shadow: 0 6px 18px rgba(0,0,0,.28);
@@ -889,44 +929,67 @@ footer {
 .tl-tip-row i { width: 8px; height: 8px; border-radius: 2px; flex: none; }
 .tl-tip-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .92; }
 .tl-tip-row b { font-family: var(--mono); font-weight: 700; font-variant-numeric: tabular-nums; }
-.tl-tip-total { padding-bottom: 4px; margin-bottom: 3px; border-bottom: 1px solid rgba(255,255,255,.18); }
-.tl-tip-total span, .tl-tip-total b { opacity: 1; font-weight: 700; }
+.tl-tip-main { font-weight: 700; }
+.tl-tip-main span, .tl-tip-main b { opacity: 1; }
+.tl-tip-sw-bar { background: var(--am); }
+.tl-tip-sw-cum { background: var(--neu); }
 
-/* 전체보기 버튼 */
+/* 전체보기 버튼 (A 카드 head 우상단) */
 .tl-reset {
-  position: absolute; top: 8px; right: 8px;
-  padding: 4px 10px; border-radius: 999px;
-  background: var(--sf, var(--bg)); border: 1px solid var(--bd);
-  color: var(--tx2); font-size: 11px; font-weight: 600; cursor: pointer;
-  transition: background .15s ease, color .15s ease;
+  position: absolute; top: -2px; right: 0;
+  padding: 3px 10px; border-radius: 999px;
+  background: var(--sf); border: 1px solid var(--bd);
+  color: var(--tx2); font-size: 10.5px; font-weight: 600; cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
 }
 .tl-reset:hover { color: var(--tx); border-color: var(--am); }
 .tl-reset:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
 
-/* 축 + 보이는 범위 라벨 */
-.tl-axis { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: var(--mono); font-size: 10px; color: var(--dm); margin-top: 5px; }
+/* 축 + 보이는 범위 라벨 (A+B 쌍 하단 1회만) */
+.tl-axis { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: var(--mono); font-size: 10px; color: var(--dm); margin-top: 6px; }
 .tl-range-label { flex: 1; text-align: center; font-weight: 600; color: var(--tx2); }
 
-/* 범례 — 클릭 토글(고립). 작은 라인도 단독으로 크게 볼 수 있게 */
-.tl-legend { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
-.tl-leg {
-  appearance: none; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 3px 9px 3px 7px; border-radius: 999px;
-  background: var(--sf); border: 1px solid var(--bd);
-  color: var(--tx); font-size: 11px; line-height: 1.3;
-  transition: border-color .15s ease, opacity .15s ease, background .15s ease;
+/* C: 서비스(유형)별 활동 — small multiples 그리드. 데스크톱 2열, 모바일 1열 적층. */
+.tl-card-svc { margin-top: 10px; }
+.tl-card-svc .tl-seg { position: absolute; top: -3px; right: 0; }
+.tl-svc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 18px; }
+.tl-svc-row { display: flex; align-items: center; gap: 10px; padding: 3px 0; }
+.tl-svc-meta { flex: none; width: 124px; display: flex; flex-direction: column; gap: 1px; overflow: hidden; }
+.tl-svc-name { display: flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-svc-cnt { display: flex; align-items: baseline; gap: 6px; }
+.tl-svc-cnt b { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--tx); }
+.tl-svc-cnt i { font-style: normal; font-size: 9.5px; color: var(--dm); }
+/* width:100% 필수 — SVG는 viewBox 비율로 intrinsic width를 가져, 없으면 flex shrink 무시 → 가로 오버플로우. */
+.tl-svc-svg { flex: 1 1 auto; width: 100%; height: 34px; min-width: 0; display: block; }
+.tl-svc-svg .tls-bar { fill: var(--svc-color, var(--am)); opacity: .85; }
+
+/* 세그먼트 토글 (서비스별 | 유형별) — C 카드 head 우측 */
+.tl-seg { display: inline-flex; flex: none; padding: 2px; gap: 2px; border-radius: var(--radius); background: var(--bg2); border: 1px solid var(--bd); }
+.tl-seg-btn {
+  appearance: none; cursor: pointer; border: 1px solid transparent;
+  padding: 4px 11px; border-radius: var(--radius-sm);
+  background: transparent; color: var(--tx2);
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .2px;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
 }
-.tl-leg:hover { border-color: var(--bd2); }
-.tl-leg:focus-visible { outline: 2px solid var(--am); outline-offset: 1px; }
-.tl-leg.is-off { opacity: .4; background: var(--bg2); }
-.tl-leg.is-off .tl-sw { opacity: .35; }
-.tl-leg-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tl-leg b { font-family: var(--mono); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tx2); }
+.tl-seg-btn:hover { color: var(--tx); }
+.tl-seg-btn.is-on { background: var(--sf); color: var(--tx); border-color: var(--bd2); box-shadow: var(--shadow-1); }
+.tl-seg-btn:focus-visible { outline: 2px solid var(--am); outline-offset: 1px; }
+
 .tl-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
 
+/* 모바일 390 — C는 1열 적층(가독 우선), 세그는 head 아래로 흘림 */
+@media (max-width: 560px) {
+  .tl-svc-grid { grid-template-columns: 1fr; }
+  .tl-card-svc .tl-seg { position: static; margin-top: 4px; }
+  .tl-card-svc .tl-card-head { flex-direction: column; align-items: flex-start; }
+  /* column flex에서 flex-basis가 *높이*로 해석돼 desc가 200px 빈공간을 차지 → 무효화. */
+  .tl-card-svc .tl-card-desc { flex: 0 0 auto; }
+  .tl-svc-meta { width: 108px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .tl-seg-btn, .tl-reset, .tl-leg { transition: none; }
+  .tl-seg-btn, .tl-reset, .tlb-bar { transition: none; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -937,7 +1000,8 @@ footer {
   :root {
     --bg: #0F1113;     --bg2: #181B1F;  --sf: #15181B;  --sf2: #1C2024;
     --bd: #2A2F35;     --bd2: #3A4047;
-    --tx: #E9ECEE;     --tx2: #AEB6BF;  --dm: #757E88;
+    /* --dm: P1-2(라운드2) — #757E88(on --sf 4.32 < AA) → #828B95(on --sf 4.7+, on --bg 5.5+) */
+    --tx: #E9ECEE;     --tx2: #AEB6BF;  --dm: #828B95;
 
     --am: #D6AE55;     --am2: #C49A3E;  --am3: #3A2F16;  --am4: #1F1B12;
     --ru: #E88891;
@@ -945,6 +1009,7 @@ footer {
     --pos: #5FB877;  --pos-bg: #14301D;  --pos-bd: #3A6B49;
     --neg: #E88891;  --neg-bg: #321518;  --neg-bd: #6B3138;
     --neu: #8C97A4;  --neu-bg: #1E2228;  --neu-bd: #404953;
+    --tl:  #5BBCC8;  --tl-bg:  #0E2E31;  --tl-bd:  #2F6E76;   /* 배포 청록 — 다크 가독 AA */
     --live: #5FB877;
     --warn: #E88891;
     --grain: 0.025;
