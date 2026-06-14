@@ -774,7 +774,10 @@ footer .copyright {
           <div class="dd-group-label">주식 라인</div>
           <a href="/pm320.html" role="menuitem">PM320 <span class="dd-sub">오후 3시 20분</span> <span class="dd-tag">LIVE</span></a>
           <a href="/pm320.html#cal-content" role="menuitem">오늘의 추천 · 백테스트 <span class="dd-tag">LIVE</span></a>
-          <a href="/pm320.html" role="menuitem" aria-disabled="true" tabindex="-1" onclick="return false">주식 용어 · 투자 팁 · 교육 <span class="dd-tag soon">예정</span></a>
+          <!-- 강의(lecture.html 748줄·용어ch1~실전체크리스트) = 예정잠금 해제 + 승격(#2 IA 판정). /stock/ 경로는 #1 cutover 후 일괄 적용 → 현 /lecture.html 유지 -->
+          <a href="/lecture.html" role="menuitem">주식 강의 <span class="dd-sub">초보 실전 매매</span></a>
+          <!-- 투자 팁 = 콘텐츠 0 → 잠금 유지(별건). 강의와 분리해 거짓 충실성 회피(FLR-AGT-002) -->
+          <a href="/pm320.html" role="menuitem" aria-disabled="true" tabindex="-1" onclick="return false">투자 팁 <span class="dd-tag soon">예정</span></a>
           <div class="dd-group-label">기타 라인</div>
           <a href="https://nicehugepark.github.io/100m1s-bybias/" target="_blank" rel="noopener" role="menuitem">ByBias <span class="dd-sub">원정 타이밍</span> <span class="dd-tag beta">BETA</span></a>
         </div>
@@ -796,7 +799,8 @@ footer .copyright {
       <div class="drawer-sub-inner">
         <a href="/pm320.html">PM320<span class="dd-tag">LIVE</span></a>
         <a href="/pm320.html#cal-content">오늘의 추천 · 백테스트<span class="dd-tag">LIVE</span></a>
-        <a href="/pm320.html" aria-disabled="true" onclick="return false">주식 용어 · 투자 팁 · 교육<span class="dd-tag soon">예정</span></a>
+        <a href="/lecture.html">주식 강의</a>
+        <a href="/pm320.html" aria-disabled="true" onclick="return false">투자 팁<span class="dd-tag soon">예정</span></a>
         <a href="https://nicehugepark.github.io/100m1s-bybias/" target="_blank" rel="noopener">ByBias<span class="dd-tag beta">BETA</span></a>
       </div>
     </div>
