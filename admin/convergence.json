@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-14T19:12:40.104860+09:00",
+  "generated_at": "2026-06-14T19:55:01.102499+09:00",
   "summary": {
     "ADMIN": {
       "status": "idle",
@@ -34,10 +34,10 @@
       "open_requests": 4,
       "total_requests": 6,
       "open_rounds": 0,
-      "milestone_rounds": 2,
+      "milestone_rounds": 3,
       "superseded_rounds": 3,
-      "converged_rounds": 2,
-      "total_rounds": 7,
+      "converged_rounds": 3,
+      "total_rounds": 9,
       "latest_round": "RND-HOME-007",
       "latest_state": "수렴"
     },
@@ -55,17 +55,17 @@
       "latest_state": null
     },
     "PM320": {
-      "status": "converged",
-      "status_label": "수렴 완료 — 진짜 열린 라운드 0건 · 옛 라운드 7건은 대체됨(이력)",
-      "open_requests": 7,
-      "total_requests": 9,
-      "open_rounds": 0,
-      "milestone_rounds": 1,
+      "status": "active",
+      "status_label": "진행 중 — 진짜 열린 라운드 1건 · 대체된 옛 라운드 7건",
+      "open_requests": 8,
+      "total_requests": 10,
+      "open_rounds": 1,
+      "milestone_rounds": 2,
       "superseded_rounds": 7,
       "converged_rounds": 3,
-      "total_rounds": 11,
-      "latest_round": "RND-PM320-056",
-      "latest_state": "수렴"
+      "total_rounds": 13,
+      "latest_round": "RND-PM320-058",
+      "latest_state": "판정완료"
     },
     "공통": {
       "status": "idle",
@@ -175,6 +175,24 @@
       }
     ],
     "HOME": [
+      {
+        "round_id": "RND-HOME-어드민-1 (어드민 R1)",
+        "alias": "",
+        "state": "판정완료",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-HOME-어드민-2 (어드민 R2)",
+        "alias": "",
+        "state": "수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": null,
+        "verdict_count": 0
+      },
       {
         "round_id": "RND-HOME-001",
         "alias": "홈 renewal",
@@ -338,22 +356,28 @@
         "quality_n": 0,
         "defect_sum": 0,
         "verdict_count": 1
+      },
+      {
+        "round_id": "RND-PM320-057",
+        "alias": "R57 시총",
+        "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 1,
+        "verdict_count": 1
+      },
+      {
+        "round_id": "RND-PM320-058",
+        "alias": "R58 시총",
+        "state": "판정완료",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 0,
+        "verdict_count": 1
       }
     ]
   },
   "activity_timeline": [
-    {
-      "ts": "2026-06-14T02:08:00.686693+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "pm320-sweep-정직성 심사-20260614.md"
-    },
-    {
-      "ts": "2026-06-14T02:08:50.439106+09:00",
-      "type": "verdict",
-      "repo": "HOME",
-      "label": "r6-home-menu-총괄 심사 패널.md"
-    },
     {
       "ts": "2026-06-14T02:08:50.439106+09:00",
       "type": "round",
@@ -447,8 +471,14 @@
     {
       "ts": "2026-06-14T07:07:26.408112+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "PM320",
       "label": "pm320-mcap-rejudge.md"
+    },
+    {
+      "ts": "2026-06-14T07:07:26.408112+09:00",
+      "type": "round",
+      "repo": "PM320",
+      "label": "RND-PM320-057 (R57 시총)"
     },
     {
       "ts": "2026-06-14T07:20:45.226218+09:00",
@@ -513,8 +543,14 @@
     {
       "ts": "2026-06-14T07:35:23.802063+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "PM320",
       "label": "pm320-mcap-r58.md"
+    },
+    {
+      "ts": "2026-06-14T07:35:23.802063+09:00",
+      "type": "round",
+      "repo": "PM320",
+      "label": "RND-PM320-058 (R58 시총)"
     },
     {
       "ts": "2026-06-14T07:38:00.254935+09:00",
@@ -825,8 +861,8 @@
   ],
   "freshness": {
     "last_activity_ts": "2026-06-14T18:38:00+09:00",
-    "generated_at": "2026-06-14T19:12:40.104860+09:00",
-    "stale_minutes": 34
+    "generated_at": "2026-06-14T19:55:01.102499+09:00",
+    "stale_minutes": 77
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -856,7 +892,7 @@
     "verdict r57-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r57-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r58-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "round_id 미매핑 verdict 39건 (frontmatter 미적용·점진 마이그레이션 백로그)"
+    "round_id 미매핑 verdict 37건 (frontmatter 미적용·점진 마이그레이션 백로그)"
   ],
   "requests": [
     {
@@ -872,14 +908,14 @@
       "close_evidence": "fix `wt-r48` 착지 09:46 + 배포(`d8fa7704d`) 라이브 200. **종결: R52→R54 수렴 체인 = 총괄 심사 패널 2심 공식 확정 (CONVERGED·`2sim-pm320-총괄 심사 패널.md` \"1심 수렴 후보 공식 확정\"·ROUND-LOG R54 🟢) — 2라운드 연속 전원 YES·P0/신규P1 0.** 옛 라운드 R46~R51·R53 📦 대체됨(이력)",
       "narrative": "[⚖️ R49 신판정체계 1호 가동 11:38~ — **instrument 블라인드 측정 → 독립 페르소나 판정 (정직성 NO 착지·픽셀 대기)**] instrument 착지 (records/qa/captures/r49-instrument/ — measurements.json 148KB·캡처 35장·블라인드·판정언어 0). 주말 가드 매트릭스 확인: **테마별 거래대금 추이·상한가 추이 = collapsed+요약칩+시점 라벨 (가림 아님 — Q-158 fix 생존)**·시장지수 visible. *",
       "mq_only": false,
-      "round_count": 10,
-      "latest_round_id": "RND-PM320-055",
-      "latest_round_state": "수렴",
+      "round_count": 11,
+      "latest_round_id": "RND-PM320-057",
+      "latest_round_state": "미수렴",
       "latest_verdict": {
-        "verdict": "YES",
+        "verdict": "NO",
         "quality_score": null,
         "p0_count": 0,
-        "new_p1_count": 0
+        "new_p1_count": 1
       },
       "progress_pct": 100,
       "priority": "P0",
@@ -900,14 +936,14 @@
       "close_evidence": "배포 후 R49 instrument 확인 \"거래대금/상한가 추이 = collapsed+요약칩+시점 라벨, 가림 아님·Q-158 fix 생존\" (MQ L35·L62) **+ (내부코드) 등재(recurring 2회차)**",
       "narrative": "[⚖️ R49 신판정체계 1호 가동 11:38~ — **instrument 블라인드 측정 → 독립 페르소나 판정 (정직성 NO 착지·픽셀 대기)**] instrument 착지 (records/qa/captures/r49-instrument/ — measurements.json 148KB·캡처 35장·블라인드·판정언어 0). 주말 가드 매트릭스 확인: **테마별 거래대금 추이·상한가 추이 = collapsed+요약칩+시점 라벨 (가림 아님 — Q-158 fix 생존)**·시장지수 visible. *",
       "mq_only": false,
-      "round_count": 10,
-      "latest_round_id": "RND-PM320-055",
-      "latest_round_state": "수렴",
+      "round_count": 11,
+      "latest_round_id": "RND-PM320-057",
+      "latest_round_state": "미수렴",
       "latest_verdict": {
-        "verdict": "YES",
+        "verdict": "NO",
         "quality_score": null,
         "p0_count": 0,
-        "new_p1_count": 0
+        "new_p1_count": 1
       },
       "progress_pct": 100,
       "priority": null,
@@ -1002,7 +1038,7 @@
       "close_evidence": "홈 재편 배포 착지 15:18 (`bd1fd78c2` 100m1s.com 라이브·다크모드·연락처·개인사업자·펄스) + 총괄 심사 패널 조건부 수렴(JDG-011). **종결: 잔존 P1(copyright opacity 대비) 이미 라이브 적용 확인(#9AA3B8 home live) + HOME 트랙 R6→R7 🟢 수렴 확정** (`r7-home-menu-confirm-총괄 심사 패널.md` YES·2연속). fix 브랜치는 범위 밖 워드마크 변경 동반이라 미채택",
       "narrative": "[✅ design-home-renewal 착지 10:00 — **Q-162 설계안: \"죽어 보이는 원인 = 시간의 부재\"·다크모드 무반응 = 최대 기본기 결함**] 라이브 기준 실측 (로컬 WT 6/5 stale 식별·라이브 ByBias 카드 기존재 확인). 채택 4 + 기각 1: ①펄스 라인 (배포시각+PM320 발행수+ByBias 이벤트 — 소스 3종 전부 실재 검증·**stale 48h 가드 = 멈춘 카운터는 죽음의 역증거**·기존 cron 편승 신규 스케줄 0) ②카드 활동 메타 1줄 + ",
       "mq_only": false,
-      "round_count": 4,
+      "round_count": 5,
       "latest_round_id": "RND-HOME-004",
       "latest_round_state": "대체됨",
       "latest_verdict": {
@@ -1213,6 +1249,34 @@
     },
     {
       "req_id": "MQ-04",
+      "req_id_raw": "Q-다관점풀패널 (#7)",
+      "repo": "PM320",
+      "summary": "**PM320 다관점 풀패널 판정**(초보·고인물·반대론자·리딩방피해자·세력·금감원 6관점) — 대표 9건 배치 (6/14)",
+      "captured": "🔍",
+      "state": "보류",
+      "state_raw": "⏸️ 보류(대표결정)",
+      "owner": "다관점 풀패널 재판정 (MASTER-QUEUE L143 기록·**단독 verdict 파일 부재**)",
+      "provenance": "Q-158 / —",
+      "close_evidence": "**재판정 2차 착지 17:31**(라이브 v350 verbatim grep): ①의무고지·②선정이유·④손실동등 **완전해소**, ③초보용어 **부분해소**(`?`팁 첫 카드만·\"만기\" 단독정의 부재 = P1 2건). P0 0·shipped-broken 0. 🔴 **잔여 critical 2건 = 대표 결정 게이트**: (1)\"추천/카톡 N차 추천\" 프레이밍(리딩방·도박·유사투자자문 3관점·비-픽행 \"추천 아님\" 차등 완화됨) (2)후보 종목명 15:20 전 노출(세력·장전 portal은 어제픽만=신규 누출 0). **수렴 단정 = critical 2건 대표 결정 후에만**((내부코드) 1회 판정 수렴 금지). ⚠️ **verdict 출처 = MASTER-QUEUE L143 단일**(records/qa/verdicts/ 6페르소나 동시 측정 단독 파일 grep 0건 — 등재만·없는 파일 링크 금지)",
+      "narrative": "[⚖️ R49 신판정체계 1호 가동 11:38~ — **instrument 블라인드 측정 → 독립 페르소나 판정 (정직성 NO 착지·픽셀 대기)**] instrument 착지 (records/qa/captures/r49-instrument/ — measurements.json 148KB·캡처 35장·블라인드·판정언어 0). 주말 가드 매트릭스 확인: **테마별 거래대금 추이·상한가 추이 = collapsed+요약칩+시점 라벨 (가림 아님 — Q-158 fix 생존)**·시장지수 visible. *",
+      "mq_only": false,
+      "round_count": 11,
+      "latest_round_id": "RND-PM320-057",
+      "latest_round_state": "미수렴",
+      "latest_verdict": {
+        "verdict": "NO",
+        "quality_score": null,
+        "p0_count": 0,
+        "new_p1_count": 1
+      },
+      "progress_pct": 0,
+      "priority": "P0",
+      "blocked": true,
+      "blocked_reason": "보류·대표 결정 대기",
+      "push_status": "unknown"
+    },
+    {
+      "req_id": "MQ-05",
       "req_id_raw": "Q-어필룰",
       "repo": "공통",
       "summary": "\"내 말 blind 수용 말고 판정단 의견에 어필해야지\" (13:24 catch)",
@@ -1235,7 +1299,7 @@
       "push_status": "unknown"
     },
     {
-      "req_id": "MQ-05",
+      "req_id": "MQ-06",
       "req_id_raw": "Q-패널리포트",
       "repo": "공통",
       "summary": "\"패널별로 판정 내용·개선 결과 매번 리포트·판정 결과 노출 (안 그러면 의심)\" (14:13+14:17)",
@@ -1258,7 +1322,7 @@
       "push_status": "unknown"
     },
     {
-      "req_id": "MQ-06",
+      "req_id": "MQ-07",
       "req_id_raw": "Q-생동감",
       "repo": "HOME",
       "summary": "\"데이터 신선도 보고싶은게 아니라 생동감(약동감·motion) 필요한 거 아닌가\" 재정의 (15:30)",
@@ -1270,7 +1334,7 @@
       "close_evidence": "lead 오독 정직 박제(펄스=신선도 readout=오독). 생동감 2~3안 read-only 제안 → design-home-vitality-impl **구현+배포 완료(23:38 라이브·reveal/sun-breathe/nav밑줄·모바일 경량·reduced-motion 정지·run-qa 12/12)** → **홈 R4 총괄 심사 패널 NO**(JDG-016·hero glow 단일의존·모바일 약동 부족·WWDC급 못 미침) → R5 2차 모션 → **대표 재정의**(발행일/pulse 제거·레이턴시 거부): 발행일 282 제거 + 콘텐츠 즉시표시 배포(39ff3ffc3)·모션 보존 → 홈 R6 총괄 심사 패널 YES(JDG-003) ✅해소",
       "narrative": "[✅ design-home-renewal 착지 10:00 — **Q-162 설계안: \"죽어 보이는 원인 = 시간의 부재\"·다크모드 무반응 = 최대 기본기 결함**] 라이브 기준 실측 (로컬 WT 6/5 stale 식별·라이브 ByBias 카드 기존재 확인). 채택 4 + 기각 1: ①펄스 라인 (배포시각+PM320 발행수+ByBias 이벤트 — 소스 3종 전부 실재 검증·**stale 48h 가드 = 멈춘 카운터는 죽음의 역증거**·기존 cron 편승 신규 스케줄 0) ②카드 활동 메타 1줄 + ",
       "mq_only": false,
-      "round_count": 5,
+      "round_count": 6,
       "latest_round_id": "RND-HOME-005",
       "latest_round_state": "판정완료",
       "latest_verdict": null,
@@ -1316,9 +1380,9 @@
       "close_evidence": "REQUEST-LEDGER 스키마 확장 + ROUND-LOG 신설(R46~R51·홈R1/R2 backfill) + lead-meta §17 + CLAUDE.md § + 2단 build_convergence.py 완성(메인 repo·18:21) + 어드민 수렴 탭 라이브(insight-first) + 총괄 심사 패널 JDG-018 NO trend-fix → build_convergence 615(quality_score 미생성=빈 차트) 적발·801/834 정본 머지(dev 2회·FK+영문 sanitize+`` strip) → 어드민 trend-fix 배포 완료(23:50 라이브·실측 막대 88/79/68/55px·디폴트 탭·sanitize true-0) → **총괄 심사 패널 재판정 YES**((내부코드)·prev JDG-018 NO 3사유 P1-A/B/C 전부 해소·독립 재측정) 🎉 → 잔존 폴리시 P1 2(N1 색/높이 범례·N2 헤더 생성시각 stale) = canonical 통일(FLR-006) 후행 큐잉. 어드민 YES(JDG-001) → N1 범례·N2 헤더시각(5/04→6/13 코드 오독 정정) fix 배포(2b0f2c55b) → **총괄 심사 패널 재판정 YES(JDG-005)·2라운드 연속 = 🟢 수렴 확정** ✅완전종결",
       "narrative": null,
       "mq_only": false,
-      "round_count": 0,
-      "latest_round_id": null,
-      "latest_round_state": null,
+      "round_count": 2,
+      "latest_round_id": "RND-HOME-어드민-2 (어드민 R2)",
+      "latest_round_state": "수렴",
       "latest_verdict": null,
       "progress_pct": 55,
       "priority": "P1",
@@ -2057,6 +2121,32 @@
       "ts": "2026-06-14T03:56:28.848144+09:00"
     },
     {
+      "round_id": "RND-PM320-057",
+      "alias": "R57 시총",
+      "repo": "PM320",
+      "request_refs": "**시총 커버리지 트랙**(Q-158 하위·별 의제·픽셀 sweep과 무관) — 시총 백필 + 한 줄 fit 배포 게이트",
+      "panel": "디자인 심사 패널",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "✔️ 판정완료·🔴 미수렴",
+      "verdict_links": "pm320-mcap-rejudge.md(NO·(내부코드))",
+      "note": "픽셀 NO·**신규 P1 1**(시총 커버리지 5/35=14%·후보 WT list_count 백필 미promote·상한가 카드 2/11). 줄바꿈/터치44/CR≥4.5는 YES, 신설 차원(커버리지·일관성)만 NO → cross-card 거짓 구분. fix(백필 promote `3079f65e4`) → R58 재판정",
+      "ts": "2026-06-14T07:07:26.408112+09:00"
+    },
+    {
+      "round_id": "RND-PM320-058",
+      "alias": "R58 시총",
+      "repo": "PM320",
+      "request_refs": "시총 커버리지 트랙 (R57 백필 promote 후 재판정)",
+      "panel": "디자인 심사 패널",
+      "tier": "1심-풀패널",
+      "state": "판정완료",
+      "state_raw": "✔️ 판정완료 (첫 전원 YES·수렴 후보)",
+      "verdict_links": "pm320-mcap-r58.md(YES·(내부코드))",
+      "note": "픽셀 **YES·P0 0·신규 P1 0**. R57 NO 2-root 해소(주식카드 30/30=100%·상한가 11/11=100%·후보 WT promote `3079f65e4`). R57 NO → R58 = **첫 전원 YES = 수렴 후보 1차** → confirm R59 발사 후행 의무. 🔴 **2연속 미충족 = 🟢 수렴 단정 금지**((내부코드)). 단 push-held(후보 WT·라이브 미배포)",
+      "ts": "2026-06-14T07:35:23.802063+09:00"
+    },
+    {
       "round_id": "RND-HOME-001",
       "alias": "홈 renewal",
       "repo": "HOME",
@@ -2146,6 +2236,32 @@
       "verdict_links": "r7-home-menu-confirm-총괄 심사 패널.md(YES·JDG-008)",
       "note": "**현 HOME 최신**·총괄 심사 패널 YES·라이브 byte 동일+4모드 실클릭 회귀 0·P0/신규 P1 0 → R6+R7 2연속 = **홈 메뉴 IA(Q-160) 🟢 수렴 확정**. 자체적발 미세(예정행 cursor:pointer·기능결함 아님·일상정비 권고)",
       "ts": "2026-06-14T03:56:06.326462+09:00"
+    },
+    {
+      "round_id": "RND-HOME-어드민-1 (어드민 R1)",
+      "alias": "",
+      "repo": "HOME",
+      "request_refs": "**Q-170 어드민 수렴 탭 트랙**(메뉴 IA·생동감과 별 의제·verdict frontmatter round_id=RND-HOME-004는 Q-162 생동감과 중복 부여된 오기) — 어드민 수렴 추이 차트·디폴트 화면·sanitize 재판정",
+      "panel": "총괄 심사 패널",
+      "tier": "2심-총괄종합",
+      "state": "판정완료",
+      "state_raw": "✔️ 판정완료 (수렴 후보·첫 YES)",
+      "verdict_links": "admin-rejudge-총괄 심사 패널.md(YES·(내부코드))",
+      "note": "총괄 심사 패널 YES·**P0 0·신규 P1 2 self-catch**(N1 막대 색=상태 vs 높이=품질 dual-encoding 범례 부재·N2 헤더 생성시각 stale 5/04). prev=JDG-018(NO) → 본 YES = 첫 YES. byte-identity(live↔`33d460adf` 4파일 md5 IDENTICAL). 신규 P1 2 = 다음 라운드 산입·fix 후 R2",
+      "ts": null
+    },
+    {
+      "round_id": "RND-HOME-어드민-2 (어드민 R2)",
+      "alias": "",
+      "repo": "HOME",
+      "request_refs": "Q-170 어드민 (R1 신규 P1 2 fix 후 완전수렴 재판정)",
+      "panel": "총괄 심사 패널",
+      "tier": "2심-총괄종합",
+      "state": "수렴",
+      "state_raw": "🟢 **수렴 확정**",
+      "verdict_links": "admin-converge-총괄 심사 패널.md(YES·(내부코드))",
+      "note": "총괄 심사 패널 **YES·P0 0·신규 P1 0**. N1(범례 6항 dual-encoding 해독)·N2(헤더 라이브 생성시각 정직 표기) 양 건 실측 해소. prev=JDG-001(YES) → **JDG-001 YES + JDG-005 YES = 2라운드 연속·P0/신규P1 0 = 🟢 수렴 확정**. byte-identity(live↔`33d460adf`)·4모드 hOverflow 0·sanitize 내부에이전트명 0. 본체 \"JDG-001 YES → 본 YES = 2라운드 연속 = 🟢 수렴 확정\" 명시",
+      "ts": null
     },
     {
       "round_id": "RND-BYBIAS-047",
@@ -2654,7 +2770,7 @@
       "ts": "2026-06-14T07:35:23.802063+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-PM320-058-디자인 심사 패널",
-      "round_id": null,
+      "round_id": "RND-PM320-058",
       "round_alias": null,
       "request_id": "Q-158",
       "panel": "디자인 심사 패널",
@@ -2681,7 +2797,7 @@
       "ts": "2026-06-14T07:07:26.408112+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-PM320-057-디자인 심사 패널",
-      "round_id": null,
+      "round_id": "RND-PM320-057",
       "round_alias": null,
       "request_id": "Q-158",
       "panel": "디자인 심사 패널",

@@ -418,39 +418,349 @@
       </div>`;
   }
 
-  // ⓪-c 활동 시계열 — activity_timeline 이벤트를 시간축에 배치. 오른쪽 밀집 = 지금 활발.
+  // ⓪-c 활동 시계열 — activity_timeline 이벤트를 시간축에 밀도(막대)+점으로. 드래그=팬, 휠/더블탭=줌.
   const TL_TYPE = {
-    verdict: { cls: "tl-verdict", label: "판정" },
-    round:   { cls: "tl-round",   label: "라운드" },
-    request: { cls: "tl-request", label: "요청" },
+    verdict: { cls: "tl-verdict", label: "판정", color: "var(--pos)" },
+    round:   { cls: "tl-round",   label: "라운드", color: "var(--am)" },
+    request: { cls: "tl-request", label: "요청", color: "var(--ru)" },
   };
+  const TL_TYPE_ORDER = ["verdict", "round", "request"]; // 막대 누적 순서(아래→위)
   function tlFmt(ms) {
     const d = new Date(ms);
     return (d.getMonth() + 1) + "/" + d.getDate() + " " +
       String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
   }
+  function tlFmtRange(a, b) { // 보이는 범위 라벨 — 같은 날이면 날짜 1회만
+    const da = new Date(a), db = new Date(b);
+    const hm = (d) => String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+    const md = (d) => (d.getMonth() + 1) + "/" + d.getDate();
+    return md(da) === md(db)
+      ? `${md(da)} ${hm(da)} – ${hm(db)}`
+      : `${md(da)} ${hm(da)} – ${md(db)} ${hm(db)}`;
+  }
+  // 활동 시계열 상태(줌/팬). full=전체 [min,max], view=현재 보이는 [v0,v1].
+  const tlState = { full: null, view: null, events: null, vbw: 1000 };
+
   function renderConvTimeline(conv) {
-    const tl = (conv.activity_timeline || []).filter((e) => e && e.ts && !isNaN(new Date(e.ts).getTime()));
-    if (!tl.length) { el("conv-timeline").innerHTML = ""; return; }
-    const tarr = tl.map((e) => new Date(e.ts).getTime());
-    const min = Math.min(...tarr), max = Math.max(...tarr);
-    const span = (max - min) || 1;
-    const dots = tl.map((e) => {
-      const t = new Date(e.ts).getTime();
-      const x = ((t - min) / span) * 100;
-      const ty = TL_TYPE[e.type] || { cls: "tl-other", label: e.type || "활동" };
-      const tip = ty.label + " · " + (e.repo || "") + " · " + tlFmt(t) + " — " + (e.label || "");
-      return `<span class="tl-dot ${ty.cls}" style="left:${x.toFixed(2)}%" title="${escape(tip)}"></span>`;
-    }).join("");
-    el("conv-timeline").innerHTML =
-      `<div class="tl-head">활동 시계열 <span class="tl-sub">최근 ${tl.length}건 · 점이 오른쪽에 몰릴수록 "지금 도는 중" · ${escape(tlFmt(min))} → ${escape(tlFmt(max))}</span></div>
-      <div class="tl-track" role="img" aria-label="활동 시계열 최근 ${tl.length}건">${dots}<span class="tl-edge"></span></div>
-      <div class="tl-axis"><span>${escape(tlFmt(min))}</span><span>지금 →</span></div>
+    const host = el("conv-timeline");
+    if (!host) return;
+    const tl = (conv.activity_timeline || [])
+      .filter((e) => e && e.ts && !isNaN(new Date(e.ts).getTime()))
+      .map((e) => ({ ...e, t: new Date(e.ts).getTime() }))
+      .sort((a, b) => a.t - b.t);
+    if (!tl.length) {
+      host.innerHTML = `<div class="tl-head">활동 시계열</div><p class="hint">표시할 활동 기록이 없습니다 (activity_timeline 미상).</p>`;
+      return;
+    }
+    const min = tl[0].t, max = tl[tl.length - 1].t;
+    const fullSpan = (max - min) || 1;
+    // 줌 상태 유지 — 데이터 재생성 후에도 보던 범위가 [min,max] 안이면 보존, 아니면 전체로.
+    let view;
+    if (tlState.view && tlState.view[0] >= min && tlState.view[1] <= max && tlState.view[1] > tlState.view[0]) {
+      view = tlState.view.slice();
+    } else {
+      view = [min, max];
+    }
+    tlState.full = [min, max];
+    tlState.view = view;
+    tlState.events = tl;
+
+    // 통계 헤더 — 총 N · 시간당 평균 · 피크 1시간 구간 · 최근 활동.
+    const total = tl.length;
+    const spanHrs = fullSpan / 3600000;
+    const perHr = spanHrs > 0 ? (total / spanHrs) : total;
+    // 피크: 60분 슬라이딩 버킷 중 최다(정시 기준 버킷으로 단순화 — 인지 비용 ↓).
+    const hourBuckets = {};
+    tl.forEach((e) => {
+      const hk = Math.floor(e.t / 3600000);
+      hourBuckets[hk] = (hourBuckets[hk] || 0) + 1;
+    });
+    let peakHk = null, peakN = 0;
+    for (const k in hourBuckets) if (hourBuckets[k] > peakN) { peakN = hourBuckets[k]; peakHk = +k; }
+    const peakStart = peakHk != null ? peakHk * 3600000 : null;
+    const peakLabel = peakStart != null
+      ? `${String(new Date(peakStart).getHours()).padStart(2, "0")}시대 (${peakN}건)`
+      : "—";
+    const lastMin = minsAgo(tl[tl.length - 1].ts);
+
+    host.innerHTML =
+      `<div class="tl-head">활동 시계열
+        <span class="tl-sub">판정·라운드·요청이 언제 몰렸는지 · 드래그=좌우 이동 · 휠/더블탭=확대·축소</span>
+      </div>
+      <div class="tl-stats" aria-label="활동 통계">
+        <span class="tl-stat"><b>${total}</b><i>총 활동</i></span>
+        <span class="tl-stat"><b>${perHr.toFixed(1)}</b><i>시간당 평균</i></span>
+        <span class="tl-stat"><b>${escape(peakLabel)}</b><i>피크 구간</i></span>
+        <span class="tl-stat"><b>${escape(agoText(lastMin))}</b><i>최근 활동</i></span>
+      </div>
+      <div class="tl-chart-wrap">
+        <svg class="tl-svg" viewBox="0 0 ${tlState.vbw} 132" preserveAspectRatio="none"
+             role="img" aria-label="활동 시계열 차트 — 총 ${total}건, 드래그로 이동·확대 가능" tabindex="0">
+          <g class="tl-grid"></g>
+          <g class="tl-bars"></g>
+          <g class="tl-dots"></g>
+        </svg>
+        <div class="tl-tip" hidden></div>
+        <button type="button" class="tl-reset" hidden aria-label="전체 기간으로 초기화">전체 보기</button>
+      </div>
+      <div class="tl-axis">
+        <span class="tl-axis-from"></span>
+        <span class="tl-range-label" aria-live="polite"></span>
+        <span class="tl-axis-to"></span>
+      </div>
       <div class="tl-legend">
-        <span class="tl-leg"><i class="tl-dot tl-verdict"></i>판정</span>
-        <span class="tl-leg"><i class="tl-dot tl-round"></i>라운드</span>
-        <span class="tl-leg"><i class="tl-dot tl-request"></i>요청</span>
+        <span class="tl-leg"><i class="tl-sw tl-verdict"></i>판정 <b>${tl.filter((e) => e.type === "verdict").length}</b></span>
+        <span class="tl-leg"><i class="tl-sw tl-round"></i>라운드 <b>${tl.filter((e) => e.type === "round").length}</b></span>
+        <span class="tl-leg"><i class="tl-sw tl-request"></i>요청 <b>${tl.filter((e) => e.type === "request").length}</b></span>
       </div>`;
+
+    drawTimeline(host);
+    bindTimelineInteractions(host);
+  }
+
+  // 현재 view 범위로 막대(밀도)+점+격자+축 라벨을 그린다. (재호출 = 줌/팬 갱신)
+  function drawTimeline(host) {
+    const tl = tlState.events;
+    const [v0, v1] = tlState.view;
+    const span = (v1 - v0) || 1;
+    const VBW = tlState.vbw, VBH = 132, PAD = 4, plotH = 96, baseY = 108;
+    const xOf = (t) => ((t - v0) / span) * VBW;
+
+    // 버킷 수: 보이는 폭(시간)에 비례. 줌인할수록 잘게(최소 8, 최대 48).
+    const viewHrs = span / 3600000;
+    const nb = Math.max(8, Math.min(48, Math.round(viewHrs <= 2 ? viewHrs * 12 : viewHrs * 2.5)));
+    const bw = VBW / nb;
+    const buckets = Array.from({ length: nb }, () => ({ verdict: 0, round: 0, request: 0, other: 0, items: [] }));
+    let maxStack = 0;
+    tl.forEach((e) => {
+      if (e.t < v0 || e.t > v1) return;
+      let bi = Math.floor(((e.t - v0) / span) * nb);
+      if (bi >= nb) bi = nb - 1; if (bi < 0) bi = 0;
+      const k = TL_TYPE[e.type] ? e.type : "other";
+      buckets[bi][k]++;
+      buckets[bi].items.push(e);
+    });
+    buckets.forEach((b) => { const s = b.verdict + b.round + b.request + b.other; if (s > maxStack) maxStack = s; });
+    maxStack = maxStack || 1;
+
+    // 격자: 시간 눈금(보이는 폭에 따라 1h/3h/6h 간격).
+    const stepH = viewHrs <= 3 ? 1 : (viewHrs <= 9 ? 3 : 6);
+    const stepMs = stepH * 3600000;
+    let gridSvg = "", g0 = Math.ceil(v0 / stepMs) * stepMs;
+    for (let t = g0; t <= v1; t += stepMs) {
+      const x = xOf(t).toFixed(1);
+      const hh = String(new Date(t).getHours()).padStart(2, "0");
+      gridSvg += `<line x1="${x}" y1="${PAD}" x2="${x}" y2="${baseY}" class="tl-gridline"/>`
+        + `<text x="${x}" y="${VBH - 4}" class="tl-gridtxt">${hh}시</text>`;
+    }
+    gridSvg += `<line x1="0" y1="${baseY}" x2="${VBW}" y2="${baseY}" class="tl-baseline"/>`;
+
+    // 막대(누적): 아래→위 verdict→round→request→other.
+    const COLORS = { verdict: "var(--pos)", round: "var(--am)", request: "var(--ru)", other: "var(--neu)" };
+    let barsSvg = "";
+    buckets.forEach((b, i) => {
+      const total = b.verdict + b.round + b.request + b.other;
+      if (!total) return;
+      const cx = (i + 0.5) * bw;
+      const innerW = Math.max(bw * 0.62, 3);
+      const x = cx - innerW / 2;
+      let yTop = baseY;
+      ["verdict", "round", "request", "other"].forEach((k) => {
+        if (!b[k]) return;
+        const h = (b[k] / maxStack) * plotH;
+        yTop -= h;
+        barsSvg += `<rect x="${x.toFixed(1)}" y="${yTop.toFixed(1)}" width="${innerW.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="${COLORS[k]}" class="tl-bar tl-bar-${k}"/>`;
+      });
+      // 히트박스(툴팁용) — 버킷 전체 폭.
+      const range = tlFmtRange(v0 + (i * span) / nb, v0 + ((i + 1) * span) / nb);
+      const parts = ["verdict", "round", "request", "other"].filter((k) => b[k]).map((k) => `${TL_TYPE[k] ? TL_TYPE[k].label : "기타"} ${b[k]}`).join(" · ");
+      barsSvg += `<rect x="${(i * bw).toFixed(1)}" y="${PAD}" width="${bw.toFixed(1)}" height="${baseY - PAD}" fill="transparent" class="tl-hit" data-tip="${escape(range + " · " + parts + " (총 " + total + "건)")}"/>`;
+    });
+
+    // 점 오버레이 — 버킷이 성길 때만(과밀 방지). 막대당 평균 1건 이하 가독.
+    let dotsSvg = "";
+    if (tl.filter((e) => e.t >= v0 && e.t <= v1).length <= 60) {
+      tl.forEach((e) => {
+        if (e.t < v0 || e.t > v1) return;
+        const x = xOf(e.t);
+        const c = COLORS[TL_TYPE[e.type] ? e.type : "other"];
+        dotsSvg += `<circle cx="${x.toFixed(1)}" cy="${(baseY + 6).toFixed(1)}" r="2.4" fill="${c}" class="tl-evdot"/>`;
+      });
+    }
+
+    host.querySelector(".tl-grid").innerHTML = gridSvg;
+    host.querySelector(".tl-bars").innerHTML = barsSvg;
+    host.querySelector(".tl-dots").innerHTML = dotsSvg;
+
+    // 축/범위 라벨 + 전체보기 버튼 토글.
+    const [f0, f1] = tlState.full;
+    const isFull = v0 <= f0 + 1 && v1 >= f1 - 1;
+    const fromEl = host.querySelector(".tl-axis-from"), toEl = host.querySelector(".tl-axis-to");
+    if (fromEl) fromEl.textContent = tlFmt(v0);
+    if (toEl) toEl.textContent = tlFmt(v1);
+    const rl = host.querySelector(".tl-range-label");
+    if (rl) rl.textContent = isFull ? "전체 기간" : "확대됨 · " + tlFmtRange(v0, v1);
+    const rb = host.querySelector(".tl-reset");
+    if (rb) rb.hidden = isFull;
+  }
+
+  // 드래그(팬) + 휠/더블탭(줌) + 호버/탭(툴팁) 바인딩. pointer 이벤트로 마우스·터치 통합.
+  function bindTimelineInteractions(host) {
+    const svg = host.querySelector(".tl-svg");
+    const tip = host.querySelector(".tl-tip");
+    const resetBtn = host.querySelector(".tl-reset");
+    if (!svg) return;
+    const VBW = tlState.vbw;
+    const minSpan = 5 * 60000; // 최소 5분까지 확대
+
+    const clampView = (v0, v1) => {
+      const [f0, f1] = tlState.full;
+      let span = v1 - v0;
+      const fullSpan = (f1 - f0) || 1;
+      if (span > fullSpan) span = fullSpan;
+      if (span < minSpan) span = minSpan;
+      if (v0 < f0) { v0 = f0; v1 = f0 + span; }
+      if (v1 > f1) { v1 = f1; v0 = f1 - span; }
+      if (v0 < f0) v0 = f0;
+      return [v0, v1];
+    };
+    // 화면 px → viewBox X.
+    const pxToVbX = (clientX) => {
+      const r = svg.getBoundingClientRect();
+      return ((clientX - r.left) / (r.width || 1)) * VBW;
+    };
+    const vbxToTime = (vbx) => {
+      const [v0, v1] = tlState.view;
+      return v0 + (vbx / VBW) * (v1 - v0);
+    };
+
+    // ── 드래그 팬 ──
+    let dragging = false, moved = false, startX = 0, startView = null, pointerId = null;
+    svg.style.touchAction = "none"; // 모바일: 가로 드래그가 페이지 스크롤로 새지 않게
+    svg.addEventListener("pointerdown", (ev) => {
+      dragging = true; moved = false; startX = ev.clientX; startView = tlState.view.slice();
+      pointerId = ev.pointerId;
+      try { svg.setPointerCapture(pointerId); } catch (e) {}
+      svg.classList.add("tl-grabbing");
+    });
+    svg.addEventListener("pointermove", (ev) => {
+      // 툴팁(드래그 중이 아닐 때).
+      if (!dragging) { showTipAt(ev); return; }
+      const dxPx = ev.clientX - startX;
+      if (Math.abs(dxPx) > 2) moved = true;
+      const r = svg.getBoundingClientRect();
+      const span = startView[1] - startView[0];
+      const dt = -(dxPx / (r.width || 1)) * span; // 오른쪽 드래그 → 과거로
+      const nv = clampView(startView[0] + dt, startView[1] + dt);
+      tlState.view = nv;
+      drawTimeline(host);
+    });
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      svg.classList.remove("tl-grabbing");
+      try { if (pointerId != null) svg.releasePointerCapture(pointerId); } catch (e) {}
+      tlState.view = tlState.view.slice(); // 보던 범위 박제
+    };
+    svg.addEventListener("pointerup", endDrag);
+    svg.addEventListener("pointercancel", endDrag);
+    svg.addEventListener("pointerleave", () => { if (tip) tip.hidden = true; });
+
+    // ── 휠 줌 (커서 지점 중심) ──
+    svg.addEventListener("wheel", (ev) => {
+      ev.preventDefault();
+      const [v0, v1] = tlState.view;
+      const span = v1 - v0;
+      const focusT = vbxToTime(pxToVbX(ev.clientX));
+      const factor = ev.deltaY < 0 ? 0.8 : 1.25; // 위로=확대
+      const nSpan = span * factor;
+      const ratio = (focusT - v0) / span;
+      let nv0 = focusT - ratio * nSpan, nv1 = nv0 + nSpan;
+      tlState.view = clampView(nv0, nv1);
+      drawTimeline(host);
+    }, { passive: false });
+
+    // ── 더블탭/더블클릭 줌인 (모바일 핀치 대체 보조) ──
+    svg.addEventListener("dblclick", (ev) => {
+      const [v0, v1] = tlState.view;
+      const span = v1 - v0;
+      const focusT = vbxToTime(pxToVbX(ev.clientX));
+      const nSpan = span * 0.5;
+      const ratio = (focusT - v0) / span;
+      tlState.view = clampView(focusT - ratio * nSpan, focusT - ratio * nSpan + nSpan);
+      drawTimeline(host);
+    });
+    // 터치 더블탭 (300ms 이내 두 번).
+    let lastTap = 0;
+    svg.addEventListener("pointerup", (ev) => {
+      if (ev.pointerType !== "touch") return;
+      const now = Date.now();
+      if (now - lastTap < 300 && !moved) {
+        const [v0, v1] = tlState.view;
+        const span = v1 - v0;
+        const focusT = vbxToTime(pxToVbX(ev.clientX));
+        const nSpan = span * 0.5;
+        const ratio = (focusT - v0) / span;
+        tlState.view = clampView(focusT - ratio * nSpan, focusT - ratio * nSpan + nSpan);
+        drawTimeline(host);
+      }
+      lastTap = now;
+    });
+
+    // ── 핀치 줌 (두 손가락) ──
+    const activePts = new Map();
+    let pinchBase = null;
+    svg.addEventListener("pointerdown", (ev) => { activePts.set(ev.pointerId, ev.clientX); });
+    svg.addEventListener("pointermove", (ev) => {
+      if (!activePts.has(ev.pointerId)) return;
+      activePts.set(ev.pointerId, ev.clientX);
+      if (activePts.size === 2) {
+        dragging = false; svg.classList.remove("tl-grabbing");
+        const xs = [...activePts.values()];
+        const dist = Math.abs(xs[0] - xs[1]) || 1;
+        const midPx = (xs[0] + xs[1]) / 2;
+        if (!pinchBase) { pinchBase = { dist, view: tlState.view.slice(), midT: vbxToTime(pxToVbX(midPx)) }; return; }
+        const scale = pinchBase.dist / dist; // 벌리면 dist↑ → scale<1 → 확대
+        const baseSpan = pinchBase.view[1] - pinchBase.view[0];
+        const nSpan = baseSpan * scale;
+        const ratio = (pinchBase.midT - pinchBase.view[0]) / baseSpan;
+        tlState.view = clampView(pinchBase.midT - ratio * nSpan, pinchBase.midT - ratio * nSpan + nSpan);
+        drawTimeline(host);
+      }
+    });
+    const dropPt = (ev) => { activePts.delete(ev.pointerId); if (activePts.size < 2) pinchBase = null; };
+    svg.addEventListener("pointerup", dropPt);
+    svg.addEventListener("pointercancel", dropPt);
+
+    // ── 키보드 접근성: ←/→ 팬, +/- 줌 ──
+    svg.addEventListener("keydown", (ev) => {
+      const [v0, v1] = tlState.view; const span = v1 - v0;
+      if (ev.key === "ArrowLeft")  { tlState.view = clampView(v0 - span * 0.25, v1 - span * 0.25); drawTimeline(host); ev.preventDefault(); }
+      else if (ev.key === "ArrowRight") { tlState.view = clampView(v0 + span * 0.25, v1 + span * 0.25); drawTimeline(host); ev.preventDefault(); }
+      else if (ev.key === "+" || ev.key === "=") { const m = (v0 + v1) / 2, n = span * 0.6; tlState.view = clampView(m - n / 2, m + n / 2); drawTimeline(host); ev.preventDefault(); }
+      else if (ev.key === "-" || ev.key === "_") { const m = (v0 + v1) / 2, n = span * 1.6; tlState.view = clampView(m - n / 2, m + n / 2); drawTimeline(host); ev.preventDefault(); }
+    });
+
+    // ── 전체보기 버튼 ──
+    if (resetBtn) resetBtn.addEventListener("click", () => { tlState.view = tlState.full.slice(); drawTimeline(host); });
+
+    // ── 툴팁 ──
+    function showTipAt(ev) {
+      if (!tip) return;
+      const target = ev.target.closest ? ev.target.closest(".tl-hit") : null;
+      const t = target && target.getAttribute("data-tip");
+      if (!t) { tip.hidden = true; return; }
+      const wrap = host.querySelector(".tl-chart-wrap");
+      const wr = wrap.getBoundingClientRect();
+      tip.textContent = t;
+      tip.hidden = false;
+      let left = ev.clientX - wr.left + 10;
+      if (left + tip.offsetWidth > wr.width) left = wr.width - tip.offsetWidth - 4;
+      if (left < 0) left = 0;
+      tip.style.left = left + "px";
+      tip.style.top = (ev.clientY - wr.top - tip.offsetHeight - 8) + "px";
+    }
+    svg.addEventListener("pointermove", showTipAt, { passive: true });
   }
 
   // ② 품질 수렴 추이 — repo별 회차 × 품질점수(4축 평균, 높을수록 좋음).

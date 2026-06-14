@@ -755,23 +755,76 @@ footer {
 }
 @keyframes fresh-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 
-/* ⓪-c 활동 시계열 — activity_timeline 시간축 배치. 오른쪽 밀집 = 지금 활발 */
+/* ⓪-c 활동 시계열 — 밀도 막대 + 점 + 드래그(팬)/휠·핀치(줌). 판정=녹·라운드=황동·요청=루비 */
 .conv-timeline { margin: 0 0 16px; }
 .tl-head { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--tx2); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 7px; }
-.tl-sub { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dm); margin-left: 6px; }
-.tl-track {
-  position: relative; height: 40px; border-radius: var(--radius);
-  background: var(--bg2); border: 1px solid var(--bd); overflow: hidden;
+.tl-sub { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dm); margin-left: 6px; font-family: var(--sans, inherit); }
+
+/* 통계 헤더 — 총 N · 시간당 평균 · 피크 · 최근 */
+.tl-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 9px; }
+.tl-stat {
+  flex: 1 1 0; min-width: 78px;
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 7px 10px; border-radius: var(--radius);
+  background: var(--bg2); border: 1px solid var(--bd);
 }
-.tl-edge { position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: var(--am); opacity: .55; }
-.tl-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 7px; height: 7px; border-radius: 50%; background: var(--neu); }
-.tl-dot.tl-verdict { background: var(--pos); }
-.tl-dot.tl-round   { background: var(--am); }
-.tl-dot.tl-request { background: var(--ru); }
-.tl-axis { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--dm); margin-top: 3px; }
-.tl-legend { display: flex; gap: 14px; margin-top: 7px; font-size: 11px; color: var(--tx); }
+.tl-stat b { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--tx); line-height: 1.15; }
+.tl-stat i { font-style: normal; font-size: 10px; color: var(--dm); letter-spacing: .2px; }
+
+/* 차트 */
+.tl-chart-wrap { position: relative; }
+.tl-svg {
+  display: block; width: 100%; height: 132px;
+  border-radius: var(--radius);
+  background: var(--bg2); border: 1px solid var(--bd);
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.tl-svg.tl-grabbing { cursor: grabbing; }
+.tl-svg:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+.tl-gridline { stroke: var(--bd); stroke-width: 1; opacity: .5; vector-effect: non-scaling-stroke; }
+.tl-baseline { stroke: var(--bd2, var(--bd)); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tl-gridtxt { fill: var(--dm); font-family: var(--mono); font-size: 8px; text-anchor: middle; }
+.tl-bar { transition: opacity .12s ease; }
+.tl-hit { cursor: grab; }
+.tl-hit:hover ~ .tl-bar { opacity: .85; }
+.tl-evdot { opacity: .9; }
+
+/* 툴팁 */
+.tl-tip {
+  position: absolute; z-index: 5; pointer-events: none;
+  max-width: 260px; padding: 6px 9px;
+  background: var(--tx); color: var(--bg);
+  border-radius: 7px; font-size: 11px; line-height: 1.35;
+  box-shadow: 0 6px 18px rgba(0,0,0,.22);
+}
+
+/* 전체보기 버튼 */
+.tl-reset {
+  position: absolute; top: 8px; right: 8px;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--sf, var(--bg)); border: 1px solid var(--bd);
+  color: var(--tx2); font-size: 11px; font-weight: 600; cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.tl-reset:hover { color: var(--tx); border-color: var(--am); }
+.tl-reset:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+
+/* 축 + 보이는 범위 라벨 */
+.tl-axis { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: var(--mono); font-size: 10px; color: var(--dm); margin-top: 5px; }
+.tl-range-label { flex: 1; text-align: center; font-weight: 600; color: var(--tx2); }
+
+/* 범례 */
+.tl-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; font-size: 11px; color: var(--tx); }
 .tl-leg { display: inline-flex; align-items: center; gap: 5px; }
-.tl-leg .tl-dot { position: static; transform: none; }
+.tl-leg b { font-family: var(--mono); font-weight: 700; color: var(--tx2); }
+.tl-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.tl-sw.tl-verdict { background: var(--pos); }
+.tl-sw.tl-round   { background: var(--am); }
+.tl-sw.tl-request { background: var(--ru); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-bar, .tl-reset { transition: none; }
+}
 
 /* ════════════════════════════════════════════════════════════════════════
    🔴 다크모드 (다크모드 제1원칙: 가독성 저하 0 · 정보 손실 0)
