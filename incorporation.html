@@ -13,11 +13,11 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>법인 설립 실행 가이드 | 100M1S</title>
-<meta name="description" content="대한민국 1인·소규모 창업자를 위한 주식회사 설립 실행 가이드 v5 P0 확정본. 본사=송도, 회사명=백엠원스텝, #4=A안 유사투자자문업 신고. 6개 사업 법령 정밀 검토, 양방향 채널 금지(2024-08), 위장도급 대법 판례, JEPQ W-8BEN-E, 미확보 18건 정직 표시.">
+<title>운영 셋업 추적 | 100M1S</title>
+<meta name="description" content="내부 운영 셋업 추적 — 사업자 등록·파트너 운영 상태·운영 전환 단계의 진행 현황 기록. 외부 공개용 문서 아님(noindex).">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<meta property="og:title" content="법인 설립 실행 가이드 v5 | 100M1S">
-<meta property="og:description" content="주식회사 설립 P0 확정본 — 본사=송도, 회사명=백엠원스텝, #4=A안 유사투자자문업 신고 (대표 결정 2026-04-29). Task 6/7 인풋 통합.">
+<meta property="og:title" content="운영 셋업 추적 | 100M1S">
+<meta property="og:description" content="내부 운영 셋업 추적 — 진행 현황 기록 (내부용).">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://100m1s.com/incorporation.html">
 <meta property="og:image" content="https://100m1s.com/og-image.png">
@@ -43,12 +43,14 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
   --tx3: #5A6171;
   --dm: #8B95A8;
   --dm2: #B0B8C9;
-  --am: #C49930;
+  --am: #8A6410;       /* 라이트 골드 텍스트 WCAG AA (index.html baseline 정합) */
   --am2: #E8C063;
   --am3: #FBE9B5;
+  --am-chip: #FDF3D6;  /* 골드 텍스트용 칩 배경 (드롭다운 dd-tag) */
   --am4: #FFF6E5;
   --ru: #A01528;
   --rl: #FFF1F3;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -79,9 +81,83 @@ header {
 .brand-mark { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
 .brand-mark svg { width: 100%; height: 100%; display: block; }
 .brand-name { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; }
-.nav-links { display: flex; gap: 28px; font-size: 13px; font-weight: 600; color: var(--tx2); }
+.nav-links { display: flex; gap: 28px; font-size: 13px; font-weight: 600; color: var(--tx2); align-items: center; }
 .nav-links a:hover { color: var(--am); }
 .nav-links a.active { color: var(--am); }
+
+/* ── nav 통일 (RND-HOME-008 P0-2) — index.html baseline Products 드롭다운 이식 ── */
+.nav-item { position: relative; display: inline-flex; align-items: center; }
+.nav-item > a, .nav-item > .nav-trigger {
+  position: relative; padding: 4px 0;
+  font: inherit; color: var(--tx2); background: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: color 0.18s var(--ease-out);
+}
+.nav-item > a:hover, .nav-item > .nav-trigger:hover,
+.nav-item:focus-within > .nav-trigger { color: var(--am); }
+.nav-item > a::after, .nav-item > .nav-trigger::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1.5px; background: var(--am); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.22s var(--ease-out);
+}
+.nav-item > a:hover::after, .nav-item > .nav-trigger:hover::after,
+.nav-item:focus-within > .nav-trigger::after { transform: scaleX(1); }
+.nav-caret { width: 9px; height: 9px; transition: transform 0.2s var(--ease-out); }
+.nav-item:hover .nav-caret, .nav-item:focus-within .nav-caret { transform: rotate(180deg); }
+
+.nav-dropdown {
+  position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(6px);
+  min-width: 230px; background: var(--sf); border: 1px solid var(--bd); border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10); padding: 8px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
+  z-index: 120;
+}
+.nav-item:hover .nav-dropdown, .nav-item:focus-within .nav-dropdown {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown .dd-group-label {
+  font-size: 10px; font-weight: 700; color: var(--dm); text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 8px 12px 4px;
+}
+.nav-dropdown a {
+  display: flex; align-items: baseline; gap: 8px; justify-content: space-between;
+  padding: 9px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--tx);
+  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
+}
+.nav-dropdown a:hover { background: var(--sf2); color: var(--am); }
+.nav-dropdown a .dd-sub { font-size: 11px; font-weight: 500; color: var(--dm); }
+.nav-dropdown .dd-tag {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.4px; padding: 2px 6px; border-radius: 4px;
+  color: var(--am); background: var(--am-chip);
+}
+.nav-dropdown .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
+.nav-dropdown .dd-tag.soon { color: var(--dm); background: var(--bg2); }
+
+/* ── 모바일 드로어: Products 접이식(accordion) ── */
+.drawer-group { border-bottom: 1px solid var(--bd); }
+.drawer-group-toggle {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 14px 0; font: inherit; font-size: 17px; font-weight: 700; color: var(--tx);
+  background: none; border: none; cursor: pointer; text-align: left;
+}
+.drawer-group-toggle .nav-caret { width: 12px; height: 12px; color: var(--dm); }
+.drawer-group-toggle[aria-expanded="true"] .nav-caret { transform: rotate(180deg); }
+.drawer-sub { overflow: hidden; max-height: 0; transition: max-height 0.28s var(--ease-out); }
+.drawer-group-toggle[aria-expanded="true"] + .drawer-sub { max-height: 340px; }
+.drawer-sub-inner { padding: 2px 0 12px 12px; border-left: 2px solid var(--bd); margin-left: 2px; }
+.drawer-sub a {
+  display: flex; align-items: center; gap: 8px; justify-content: flex-start;
+  padding: 12px 0; min-height: 44px; box-sizing: border-box;
+  font-size: 14px; font-weight: 600; color: var(--tx2); border-bottom: none;
+}
+.drawer-sub a:hover { color: var(--am); }
+.drawer-sub a .dd-tag {
+  font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+  color: var(--am); background: var(--am-chip); margin-left: auto;
+}
+.drawer-sub a .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
+.drawer-sub a .dd-tag.soon { color: var(--dm); background: var(--bg2); }
 
 .menu-toggle {
   display: none; width: 40px; height: 40px;
@@ -565,6 +641,23 @@ header {
 }
 .faq-a strong { color: var(--tx); }
 
+/* ─── Status Badge (운영 추적 — 진행/완료/대기/미완) ─── */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.badge.done { color: var(--am); background: var(--am4); border: 1px solid rgba(212,147,13,0.25); }
+.badge.prog { color: #1E6F4C; background: #E5F5EC; border: 1px solid rgba(30,111,76,0.22); }
+.badge.wait { color: var(--tx3); background: var(--bg2); border: 1px solid var(--bd); }
+.badge.crit { color: var(--ru); background: var(--rl); border: 1px solid rgba(160,21,40,0.22); }
+.muted { color: var(--dm); font-size: 12px; font-style: italic; }
+
 /* ─── Disclaimer ─── */
 .disclaimer {
   margin-top: 48px;
@@ -596,6 +689,54 @@ footer .links {
 }
 footer .links a:hover { color: var(--am2); }
 footer .copyright { color: var(--dm2); opacity: 0.6; }
+
+/* ─── Dark mode (prefers-color-scheme) — index.html baseline 토큰 정합, 정보 손실 0 ─── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:  #0E1116;
+    --bg2: #161B22;
+    --sf:  #1A1F27;
+    --sf2: #11151B;
+    --bd:  #2A3038;
+    --bd2: #363D47;
+    --tx:  #F0F3F8;
+    --tx2: #C2C9D6;
+    --tx3: #A2AAB8;
+    --dm:  #8B95A8;
+    --dm2: #6B7488;
+    --am:  #E8C063;      /* 다크 배경 위 대비 확보 위해 한 단계 밝은 amber */
+    --am2: #F2D17E;
+    --am3: #3A3320;      /* amber-tinted 다크 칩 배경 */
+    --am-chip: #3A3320;
+    --am4: #231F12;
+    --ru:  #E0556A;      /* 경고 적색 — 다크 위 가독 (라이트 #A01528 → 밝게) */
+    --rl:  #2A171B;      /* 경고 칩 배경 — 다크 톤 */
+  }
+  /* 헤더 반투명 배경 다크 대응 */
+  header { background: rgba(14, 17, 22, 0.85); }
+  /* 메뉴 드롭다운 그림자 — 다크에선 더 깊게 */
+  .nav-dropdown { box-shadow: 0 12px 40px rgba(0,0,0,0.55); }
+  .mobile-drawer { box-shadow: -8px 0 24px rgba(0,0,0,0.5); }
+  /* 페이지 헤더 글로우 — 다크 배경 위 은은하게 */
+  .page-header {
+    background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(232,192,99,0.10) 0%, rgba(232,192,99,0.03) 38%, var(--bg) 75%);
+  }
+  .page-eyebrow { border-color: rgba(232,192,99,0.28); }
+  /* 체크리스트 체크박스 보더 — 다크 톤 */
+  .checklist li::before { border-color: var(--dm2); background: var(--bg2); }
+  /* 상태 배지 — 다크 위 가독 (prog/crit 하드코딩 색 다크 대응) */
+  .badge.prog { color: #5FD3A0; background: #12281E; border-color: rgba(95,211,160,0.28); }
+  .badge.done { color: var(--am); background: var(--am4); border-color: rgba(232,192,99,0.28); }
+  .badge.crit { color: var(--ru); background: var(--rl); border-color: rgba(224,85,106,0.30); }
+  /* 🔴 footer override (PLN-001 지적) — footer 배경이 var(--tx)라 다크 반전 시 밝아져 글자와 충돌.
+     다크에선 어두운 배경 명시 고정 + 글자 가독 확보 (정보 손실 0). */
+  footer {
+    background: #060810;
+    color: var(--tx2);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer .copyright { color: var(--dm); opacity: 0.7; }
+}
 
 /* ─── Print 친화 ─── */
 @media print {
@@ -629,11 +770,23 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
       <div class="brand-name">100M1S</div>
     </a>
     <nav class="nav-links">
-      <a href="/#about">About</a>
-      <a href="/#products">Products</a>
-      <a href="/news.html">News</a>
-      <a href="/incorporation.html" class="active">법인 설립</a>
-      <a href="/#contact">Contact</a>
+      <span class="nav-item"><a href="/#about">About</a></span>
+      <!-- Products = 라인업 드롭다운 (index.html baseline 정합, RND-HOME-008 P0-2). 죽은 News 링크 제거 -->
+      <span class="nav-item has-submenu">
+        <button type="button" class="nav-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dd-products">Products
+          <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown" id="nav-dd-products" role="menu">
+          <div class="dd-group-label">주식 라인</div>
+          <a href="/pm320.html" role="menuitem">PM320 <span class="dd-sub">오후 3시 20분</span> <span class="dd-tag">LIVE</span></a>
+          <a href="/pm320.html#cal-content" role="menuitem">오늘의 추천 · 백테스트 <span class="dd-tag">LIVE</span></a>
+          <a href="/lecture.html" role="menuitem">주식 강의 <span class="dd-sub">초보 실전 매매</span></a>
+          <a href="/pm320.html" role="menuitem" aria-disabled="true" tabindex="-1" onclick="return false">투자 팁 <span class="dd-tag soon">예정</span></a>
+          <div class="dd-group-label">기타 라인</div>
+          <a href="https://nicehugepark.github.io/100m1s-byvias/" target="_blank" rel="noopener" role="menuitem">ByBias <span class="dd-sub">원정 타이밍</span> <span class="dd-tag beta">BETA</span></a>
+        </div>
+      </span>
+      <span class="nav-item"><a href="/#contact">Contact</a></span>
     </nav>
     <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
   </div>
@@ -641,22 +794,34 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="모바일 메뉴">
   <a href="/#about">About</a>
-  <a href="/#products">Products</a>
-  <a href="/news.html">News</a>
-  <a href="/incorporation.html" class="active">법인 설립</a>
+  <!-- Products = 접이식 카테고리 (index.html baseline 정합). 죽은 News 링크 제거 -->
+  <div class="drawer-group">
+    <button type="button" class="drawer-group-toggle" id="drawer-products-toggle" aria-expanded="false" aria-controls="drawer-products-sub">Products
+      <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="drawer-sub" id="drawer-products-sub">
+      <div class="drawer-sub-inner">
+        <a href="/pm320.html">PM320<span class="dd-tag">LIVE</span></a>
+        <a href="/pm320.html#cal-content">오늘의 추천 · 백테스트<span class="dd-tag">LIVE</span></a>
+        <a href="/lecture.html">주식 강의</a>
+        <a href="/pm320.html" aria-disabled="true" onclick="return false">투자 팁<span class="dd-tag soon">예정</span></a>
+        <a href="https://nicehugepark.github.io/100m1s-byvias/" target="_blank" rel="noopener">ByBias<span class="dd-tag beta">BETA</span></a>
+      </div>
+    </div>
+  </div>
   <a href="/#contact">Contact</a>
 </nav>
 <script src="/menu.js"></script>
 
 <section class="page-header">
   <div class="page-header-inner">
-    <div class="page-eyebrow">Incorporation Guide · v5</div>
-    <h1 class="page-title">법인 설립 <span class="accent">실행 가이드</span></h1>
-    <p class="page-subtitle">대한민국 1인·소규모 창업자를 위한 주식회사 설립 P0 확정본. <strong>본사 = 송도 ✅</strong> · <strong>회사명 = 백엠원스텝 ✅</strong> · <strong>#4 = A안 유사투자자문업 신고 ✅</strong> (대표 결정 2026-04-29). Task 6 iros 정밀 검색 + Task 7 유사투자자문 가이드 통합. 미확보 18건 정직 표시.</p>
-    <div class="page-meta">기준: 2026년 4월 · 상법·자본시장법(2024-08 개정)·외국환거래법·파견법 · v5 P0 확정본 (자본금 5,000만 + 송도 + 백엠원스텝 + A안)</div>
+    <div class="page-eyebrow">내부 운영 셋업 추적</div>
+    <h1 class="page-title">운영 셋업 <span class="accent">추적</span></h1>
+    <p class="page-subtitle">사업자 등록 · 파트너 운영 상태 · 운영 전환 단계의 <strong>진행 현황</strong>을 한곳에서 추적하는 내부 실무 문서입니다. 절차·상태 구조만 기록하며, 계정·수익 등 민감 정보는 노출하지 않습니다.</p>
+    <div class="page-meta">기준: 2026년 6월 · 개인사업자 등록 → 파트너 가입 → 운영 마이그레이션 3단계</div>
     <div class="status-banner">
       <span class="dot" aria-hidden="true"></span>
-      현재 개인사업자로 운영 중 <span class="sub">· 본 문서는 향후 법인 전환 실행 가이드입니다</span>
+      내부 실무 문서 · 외부 공개 아님 <span class="sub">· noindex 적용 (검색·외부 인덱싱 차단)</span>
     </div>
   </div>
 </section>
@@ -666,24 +831,9 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
   <aside class="toc" aria-label="목차">
     <div class="toc-title">목차</div>
     <ol>
-      <li><a href="#sec-0" data-toc><span class="toc-num">0</span>시작하기</a></li>
-      <li><a href="#sec-1" data-toc><span class="toc-num">1</span>핵심 결정 사항</a></li>
-      <li><a href="#sec-2" data-toc><span class="toc-num">2</span>6개 사업 법적 검토</a></li>
-      <li><a href="#sec-3" data-toc><span class="toc-num">3</span>단계별 절차 (액션)</a></li>
-      <li><a href="#sec-4" data-toc><span class="toc-num">4</span>서류 + 입력 예시</a></li>
-      <li><a href="#sec-5" data-toc><span class="toc-num">5</span>비용 합계 (5,000만)</a></li>
-      <li><a href="#sec-6" data-toc><span class="toc-num">6</span>송도 ✅ 확정 사무실</a></li>
-      <li><a href="#sec-7" data-toc><span class="toc-num">7</span>일정 Gantt</a></li>
-      <li><a href="#sec-8" data-toc><span class="toc-num">8</span>체크리스트 100항</a></li>
-      <li><a href="#sec-9" data-toc><span class="toc-num">9</span>자주 하는 실수</a></li>
-      <li><a href="#sec-10" data-toc><span class="toc-num">10</span>FAQ 16건</a></li>
-      <li><a href="#sec-11" data-toc><span class="toc-num">11</span>외부 전문가 + 협회 URL</a></li>
-      <li><a href="#sec-12" data-toc><span class="toc-num">12</span>업종 코드 + 정관</a></li>
-      <li><a href="#sec-13" data-toc><span class="toc-num">13</span>협회 5개 컨택</a></li>
-      <li><a href="#sec-14" data-toc><span class="toc-num">14</span>본사 송도 ✅ + iros</a></li>
-      <li><a href="#sec-15" data-toc><span class="toc-num">15</span>변리사 컨택</a></li>
-      <li><a href="#sec-16" data-toc><span class="toc-num">16</span>변호사 자문 50~200만</a></li>
-      <li><a href="#sec-17" data-toc><span class="toc-num">17</span>면책 + 미확보 18건</a></li>
+      <li><a href="#sec-1" data-toc><span class="toc-num">1</span>개인사업자 등록 절차</a></li>
+      <li><a href="#sec-2" data-toc><span class="toc-num">2</span>파트너 가입 등록</a></li>
+      <li><a href="#sec-3" data-toc><span class="toc-num">3</span>운영 마이그레이션</a></li>
     </ol>
   </aside>
 
@@ -691,1492 +841,173 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
     <!-- TOC (Mobile chips) -->
     <nav class="toc-mobile" aria-label="목차 (모바일)">
       <div class="toc-mobile-scroll">
-        <a href="#sec-0" data-toc>0. 시작</a>
-        <a href="#sec-1" data-toc>1. 결정</a>
-        <a href="#sec-2" data-toc>2. 6개 사업</a>
-        <a href="#sec-3" data-toc>3. 절차</a>
-        <a href="#sec-4" data-toc>4. 서류</a>
-        <a href="#sec-5" data-toc>5. 비용</a>
-        <a href="#sec-6" data-toc>6. 송도 ✅</a>
-        <a href="#sec-7" data-toc>7. 일정</a>
-        <a href="#sec-8" data-toc>8. 체크</a>
-        <a href="#sec-9" data-toc>9. 실수</a>
-        <a href="#sec-10" data-toc>10. FAQ</a>
-        <a href="#sec-11" data-toc>11. 전문가</a>
-        <a href="#sec-12" data-toc>12. 업종</a>
-        <a href="#sec-13" data-toc>13. 5협회</a>
-        <a href="#sec-14" data-toc>14. 송도+iros</a>
-        <a href="#sec-15" data-toc>15. 변리사</a>
-        <a href="#sec-16" data-toc>16. 변호사</a>
-        <a href="#sec-17" data-toc>17. 18건</a>
+        <a href="#sec-1" data-toc>1. 사업자 등록</a>
+        <a href="#sec-2" data-toc>2. 파트너 가입</a>
+        <a href="#sec-3" data-toc>3. 운영 전환</a>
       </div>
     </nav>
 
-    <!-- §0 시작하기 -->
-    <div class="callout tip">
-      <span class="callout-title">v5 — P0 확정본</span>
-      v5는 대표 P0 결정 3건을 반영합니다 (2026-04-29 12:46 KST). <strong>본사 = 송도 ✅ 확정</strong> (인천경제자유구역, 과밀억제권역 외) · <strong>회사명 = 백엠원스텝 ✅ 확정</strong> (영문 "BAEKEMWONSTEP" / 숫자 "100M1S" 병기) · <strong>#4 사업 형태 = A안 유사투자자문업 신고 ✅ 확정</strong> (자본시장법 §101 신고제, 양방향 채널 금지). <strong>Task 6 (iros 정밀 검색) + Task 7 (유사투자자문 가이드 v1) 인풋 직접 통합</strong>. 잔존 4건 §13~§16은 "확정 → 다음 액션" 전환. 미확보 18건(§17.2)은 자본시장법 변호사 자문(50~200만, §16)으로 일괄 검증 권고.
-    </div>
-
-    <div class="callout warn">
-      <span class="callout-title">자본시장법 P0 경고 (A안 확정)</span>
-      <strong>#4 = A안 유사투자자문업 신고 ✅ 확정</strong>. 자본시장법 §101 신고제 — 자본금 요건 없음, PM320 5,000만 충분. <strong>2024-08 개정으로 양방향 채널(카카오 오픈채팅·텔레그램·디스코드) 운영 시 최대 1억원 과태료 + 등록 취소</strong>. PM320 = <strong>단방향 모델만</strong> (블로그·뉴스레터·이메일·푸시·유튜브·인스타). 1:1 자문(인가 없이) 3년 징역 또는 1억 벌금. 신고 직전 자본시장법 전문 변호사 자문 50~200만 (§16 CARD-024) 의무.
-    </div>
-
-    <!-- §0 시작하기 -->
-    <section class="section" id="sec-0">
-      <header class="section-header">
-        <span class="section-num">0</span>
-        <h2>시작하기</h2>
-      </header>
-
-      <h3>0.1 100m1s 상황 (2026-04-29 기준)</h3>
-      <ul>
-        <li>대표: 박성진 1인</li>
-        <li>자본금: <strong>5,000만원</strong> ✅ 확정 (2026-04-29)</li>
-        <li>본사: <strong>송도 인천경제자유구역</strong> ✅ 확정 (대표 결정 12:46 KST)</li>
-        <li>회사명: <strong>백엠원스텝</strong> ✅ 확정 (영문 "BAEKEMWONSTEP" / 숫자 "100M1S" 병기)</li>
-        <li>#4 자산관리 컨설팅: <strong>A안 유사투자자문업 신고</strong> ✅ 확정</li>
-        <li>영위 예정 사업: 6개 (SW외주, JEPQ배당, IT·AI 컨설팅, 유사투자자문업, 자기자본 주식 운용, 경매 상가 부동산)</li>
-        <li>운영 서비스: 5개 (PM320, 소마타, 글래스박스, 경매분석, Trade Cockpit)</li>
-        <li>도메인: 100m1s.com 등 6개 (개인 명의 → 법인 양도 예정)</li>
-      </ul>
-
-      <h3>0.2 사용 흐름</h3>
-      <ol>
-        <li><strong>§1 핵심 결정</strong> — 법인 형태·자본금·본사·상호·임원·사업목적·결산일 확정 (D-7 ~ D-3)</li>
-        <li><strong>§2 사업 활동 법적 검토</strong> — 6개 사업별 법령·면허·신고·자문 영역</li>
-        <li><strong>§3 단계별 절차</strong> — D-7 ~ D+30 액션 카드</li>
-        <li><strong>§4~§7</strong> 서류·비용·사무실·일정 — 실행 인풋</li>
-        <li><strong>§8~§10</strong> 체크리스트·실수·FAQ — 자가 검증</li>
-        <li><strong>§11</strong> 외부 전문가 — 협회 검증 + 견적 비교</li>
-        <li><strong>§12~§16</strong> 정관 사업목적 + 잔존 4건 절차</li>
-        <li><strong>§17</strong> 면책·출처</li>
-      </ol>
-
-      <h3>0.3 면책 (FLR-AGT-002 거짓 충실성 자기 평가)</h3>
-      <p>본 문서는 1인 법인 설립의 <strong>일반 가이드</strong>이며 <strong>법률·세무 자문의 대체가 아닙니다</strong>. 특히 §2.4 (자산관리·투자 컨설팅), §16 (자본시장법 시행령 모니터링)는 변호사 직접 확인 필수. 출처 미확보 영역은 §17.2에 정직히 명시.</p>
-    </section>
-
-    <!-- §1 핵심 결정 사항 -->
+    <!-- ───────────── 섹션 1 ───────────── -->
     <section class="section" id="sec-1">
       <header class="section-header">
-        <span class="section-num">1</span>
-        <h2>핵심 결정 사항</h2>
+        <span class="section-num">01</span>
+        <h2>개인사업자 등록 절차</h2>
       </header>
+      <p>홈택스 사업자등록 단계 + 업종코드 후보 + 현황 체크리스트입니다. 개인 명의 자산(도메인·계정 등)의 사업자 귀속 정리에 앞선 선행 단계입니다.</p>
 
-      <h3>1.1 P0 결정 3건 ✅ 확정 (2026-04-29 12:46 KST)</h3>
+      <h3>1-1. 등록 절차 (홈택스 온라인 기준)</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>#</th><th>항목</th><th>결정</th><th>근거 / 영향</th></tr></thead>
+          <thead>
+            <tr><th>단계</th><th>내용</th><th>소요</th><th>상태</th></tr>
+          </thead>
           <tbody>
-            <tr><td>1</td><td><strong>본사</strong></td><td class="ok"><strong>송도 (인천경제자유구역)</strong> ✅</td><td>과밀억제권역 외 → 등록면허세 200,000원 (서울 대비 -40만) + 부동산 취득세 일반 4% (중과 제외)</td></tr>
-            <tr><td>2</td><td><strong>#4 사업 형태</strong></td><td class="ok"><strong>A안 — 유사투자자문업 신고</strong> ✅</td><td>자본시장법 §101. PM320 단방향 채널만. 양방향 채널(오픈채팅·텔레그램) 절대 금지 (2024-08 개정)</td></tr>
-            <tr><td>3</td><td><strong>회사명</strong></td><td class="ok"><strong>백엠원스텝</strong> ✅</td><td>영문 "BAEKEMWONSTEP" / 숫자 "100M1S" 병기. iros 잠정 0건(신뢰도 40%) → 변리사 정밀 검색 의무</td></tr>
+            <tr><td class="num">1</td><td>홈택스 접속 → 공동인증서/간편인증 로그인</td><td class="num">즉시</td><td><span class="badge wait">대기</span></td></tr>
+            <tr><td class="num">2</td><td>[신청/제출] → [사업자등록 신청(개인)]</td><td class="num">즉시</td><td><span class="badge wait">대기</span></td></tr>
+            <tr><td class="num">3</td><td>인적사항·상호·사업장 주소 입력 (자택 가능)</td><td class="num">10분</td><td><span class="badge wait">대기</span></td></tr>
+            <tr><td class="num">4</td><td>업종코드 선택 (1-2 표 참조)</td><td class="num">10분</td><td><span class="badge wait">대기</span></td></tr>
+            <tr><td class="num">5</td><td>사업 개시일·과세유형 선택 (간이/일반)</td><td class="num">즉시</td><td><span class="badge wait">대기</span></td></tr>
+            <tr><td class="num">6</td><td>임대차계약서 등 첨부 (자택 = 불요)</td><td class="num">—</td><td><span class="badge wait">대기</span></td></tr>
+            <tr><td class="num">7</td><td>접수 → 처리 (통상 2~3 영업일, 즉시 발급 케이스 존재)</td><td class="num">2~3일</td><td><span class="badge wait">대기</span></td></tr>
           </tbody>
         </table>
       </div>
-
-      <h3>1.2 법인 형태: 주식회사</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>형태</th><th>장점</th><th>단점</th><th>권고</th></tr></thead>
-          <tbody>
-            <tr><td><strong>주식회사</strong></td><td>VC 투자 유치·B2B 신뢰도·이전 용이</td><td>등기 의무·주주총회</td><td class="ok">선택</td></tr>
-            <tr><td>유한회사</td><td>절차 간소·외부 공시 면제</td><td>VC 투자 어려움·B2B 인지도 낮음</td><td>비추</td></tr>
-            <tr><td>유한책임회사</td><td>운영 자율성</td><td>인지도 낮음·전환 비용</td><td>비추</td></tr>
-            <tr><td>개인사업자</td><td>설립 무료·즉시</td><td>무한책임·법인세 혜택 X·B2B 한계</td><td>보류</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p><strong>결정</strong>: 주식회사 — VC 투자 유치(소마타·글래스박스 가능성) + B2B SW 외주(#1) + 컨설팅(#3) 신뢰도 확보 위해.</p>
-
-      <h3>1.3 자본금: 5,000만원 (대표 확정)</h3>
-      <p>발행주식 50만주 × 액면 100원 = 5,000만원.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>항목</th><th>금액 (5,000만 + 송도)</th><th>비고</th></tr></thead>
-          <tbody>
-            <tr><td>등록면허세</td><td class="num">200,000원</td><td>자본금 × 0.4%</td></tr>
-            <tr><td>지방교육세</td><td class="num">40,000원</td><td>등록면허세 × 20%</td></tr>
-            <tr><td>법원수수료</td><td class="num">20,000원</td><td>전자등기</td></tr>
-            <tr><td><strong>정관 인증료</strong></td><td class="num"><strong>0원</strong></td><td><strong>상법 §292 — 자본금 10억 미만 면제</strong></td></tr>
-            <tr><td>법인 인감 도장</td><td class="num">50,000원</td><td>—</td></tr>
-            <tr><td>사업자등록</td><td class="num">0원</td><td>—</td></tr>
-            <tr><td><strong>합계 (송도 ✅ 확정, 과밀억제권역 외)</strong></td><td class="num"><strong>약 31만원</strong></td><td>—</td></tr>
-            <tr><td>비교: 본사 = 서울/부평/계양</td><td class="num">약 78만원</td><td class="warn">등록면허세 × 3 중과 (회피)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout">
-        <span class="callout-title">자본금 5,000만의 적정성 (A안 기준)</span>
-        유사투자자문업 신고 자본금 요건 = <strong>없음</strong> (§2.4 §α#3) → 5,000만 차고 넘침 · JEPQ 5,000만 운용 가능 (가수금 별도) · 향후 #4 투자자문업 인가 시 1억 증자 필요 (별개)
-      </div>
-
-      <h3>1.4 본사: 송도 ✅ 확정 (§6 상세)</h3>
       <div class="callout tip">
-        <span class="callout-title">결정 ✅ 확정 (대표 결정 2026-04-29 12:46 KST)</span>
-        본사 = <strong>송도 (인천경제자유구역)</strong>. 과밀억제권역 외 → 등록면허세 200,000원 (서울 대비 -40만) + 부동산 취득세 일반 4% (중과 8% 회피). IT·국제도시 이미지 + 인천공항·KTX 접근성. 가상사무실 월 5~10만 → 후보 5곳 직접 방문 후 결정 (§14).
+        <span class="callout-title">소요·비용 요약</span>
+        온라인 신청 자체는 <strong>30분 이내</strong>, 발급까지 <strong>2~3 영업일</strong>. 등록면허세·수수료 <strong>0원</strong>(개인사업자 등록은 무료) — 자본금·설립등기가 필요한 법인과 본질적으로 다릅니다.
       </div>
-      <p style="font-size:13px;color:var(--tx3);">용인은 §6.2 "대안(참고)" 박스로 강등. 두 지역 세금 동일하나 본사는 송도로 확정.</p>
 
-      <h3>1.5 회사명: 백엠원스텝 ✅ 확정</h3>
-      <ul>
-        <li>영문 표기: "주식회사 백엠원스텝" / "BAEKEMWONSTEP" / "100M1S Inc."</li>
-        <li>iros 정밀 검색 (Task 6): 동일/유사 상호 <strong>잠정 0건 (신뢰도 40%)</strong> — iros 본인인증 필요로 WebFetch 불가 → 변리사 위임 정밀 검색 <strong>의무</strong> (3~10만, 1주)</li>
-        <li>영문/숫자 병기 등기 — 숫자 "100M1S" 별도 명시 필요</li>
-        <li>도메인·SNS 핸들 동시 확보 권고</li>
-      </ul>
-      <div class="callout">
-        <span class="callout-title">상업등기규칙 동일 상호 등기 거부 3요건</span>
-        ① 동일 시·군 등기소 관할 ② 타인의 상호와 동일 ③ 동일 또는 동종 영업 — <strong>3요건 모두 충족 시</strong> 등기 거부. 본사 = 송도 확정 → 송도등기소 관할 검색 필수.
+      <h3>1-2. 업종코드 후보 (파트너·콘텐츠 운영 기준)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>업태</th><th>종목 (예시)</th><th>업종코드 (예시)</th><th>적용 사업</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>정보통신업</td><td>포털·기타 인터넷 정보매개 서비스업</td><td class="num">642004</td><td>파트너 사이트·데이터 포털</td></tr>
+            <tr><td>광고업</td><td>온라인·모바일 광고 대행</td><td class="num">743002</td><td>파트너 수수료(광고 매개)</td></tr>
+            <tr><td>서비스업</td><td>데이터 처리·호스팅</td><td class="num">749609</td><td>데이터 포털 운영</td></tr>
+          </tbody>
+        </table>
       </div>
       <div class="callout warn">
-        <span class="callout-title">리스크 (Task 6)</span>
-        "백엠원스텝" 발음·분절 모호성 → 상표 식별력 낮음 → 보호 범위 축소 가능 · "100M1S" 영문 병기 등기 — 숫자 표기 별도 명시 필요 · 자본시장법 회색지대 우호 요인: 상호에 "투자/자산/금융" 미포함 → 등록 의무 트리거 없음
+        <span class="callout-title">검증 보류 항목</span>
+        업종코드는 <strong>후보</strong>입니다. 파트너 수수료의 정확한 업종 귀속(정보매개 vs 광고대행)은 <strong>세무사 1회 확인 후 확정</strong>합니다(추정 신고 금지). 통신판매업 신고 의무는 별건으로 섹션 3에서 다룹니다.
       </div>
 
-      <h3>1.6 임원</h3>
-      <ul>
-        <li><strong>대표이사</strong>: 박성진 (1인)</li>
-        <li><strong>감사</strong>: 별도 1인 (배우자 또는 외부 위임) — 자본금 10억 미만 의무 없음, 정관 명시 시 안정성 ↑</li>
-        <li><strong>이사</strong>: 1인 (대표이사 겸직)</li>
-        <li><strong>주주 구성</strong>: 대표 100% (단독 주주) — 향후 가족 분산 검토</li>
+      <h3>1-3. 현황 체크리스트 (추적)</h3>
+      <ul class="checklist">
+        <li>사업자등록 신청 완료</li>
+        <li>사업자등록증 발급 수령</li>
+        <li>업종코드 세무사 확정</li>
+        <li>사업용 계좌 개설·홈택스 등록</li>
+        <li>간이/일반 과세유형 확정</li>
+        <li>개인 명의 자산(도메인·계정) → 사업자 귀속 정리 (양도 아님, 사업소득 귀속 정리)</li>
       </ul>
-
-      <h3>1.7 사업목적 10항 (§12 상세)</h3>
-      <ol>
-        <li>컴퓨터 시스템 통합 및 관리</li>
-        <li>응용 소프트웨어 개발 및 공급</li>
-        <li>시스템 소프트웨어 개발 및 공급</li>
-        <li>정보기술(IT) 및 인공지능(AI) 컨설팅</li>
-        <li>경영 컨설팅 서비스</li>
-        <li>유사투자자문업 (✅ 신고 후 활성화 — A안 확정)</li>
-        <li>비주거용 부동산 임대업</li>
-        <li>비주거용 부동산 매매업</li>
-        <li>자기자본 운용 및 자산 운용</li>
-        <li>위 각 사업과 관련된 부수 사업 일체</li>
-      </ol>
-
-      <h3>1.8 결산일</h3>
-      <p><strong>권고</strong>: 12월 31일 (한국 표준). 부가세 신고 1·4·7·10월. 법인세 신고: 결산 후 3개월 이내 (3월말까지).</p>
     </section>
 
-    <!-- §2 사업 활동 법적 검토 -->
+    <!-- ───────────── 섹션 2 ───────────── -->
     <section class="section" id="sec-2">
       <header class="section-header">
-        <span class="section-num">2</span>
-        <h2>사업 활동 법적 검토 (대표 6개 활동)</h2>
+        <span class="section-num">02</span>
+        <h2>파트너 가입 등록</h2>
       </header>
-
+      <p>제휴 파트너 <strong>업체별 가입 상태</strong>를 추적합니다. 가입 경로는 <strong>직접 가입</strong> 또는 <strong>네트워크 경유</strong>(Impact·Involve Asia·Stay22) 2종입니다.</p>
       <div class="callout warn">
-        <span class="callout-title">법무팀 P0 경고</span>
-        §2.4 (자산관리·투자 컨설팅)는 <strong>자본시장법 §101·시행령 별표 3</strong> 영역. 신고·인가 없이 영위 시 형사처벌(최대 1억원·3년 징역). 사업 개시 전 자본시장법 전문 변호사 직접 자문 P0 필수.
+        <span class="callout-title">정보 보호</span>
+        트래킹 식별자·계정 이메일·승인 후 수익 수치는 <strong>비노출</strong>합니다. 가입 여부·승인 상태·정산 방식 등 <strong>구조만</strong> 게시하며, 트래킹 식별자 컬럼은 "내부 보관"으로 표기합니다.
       </div>
 
-      <h3>2.1 #1 — SW 개발 외주 (상주/비상주)</h3>
+      <h3>2-1. 파트너 스택 (운영 기준 — 9개 식별)</h3>
       <div class="table-wrap">
         <table>
+          <thead>
+            <tr><th>#</th><th>업체</th><th>카테고리</th><th>가입 경로</th><th>가입</th><th>승인</th><th>트래킹ID</th><th>정산방식</th><th>비고</th></tr>
+          </thead>
           <tbody>
-            <tr><td><strong>법적 가능</strong></td><td class="ok">가능 (일반 IT 서비스업, 면허 0)</td></tr>
-            <tr><td><strong>KSIC</strong></td><td>J62 → <strong>62010</strong> (응용 SW) / <strong>62020</strong> (시스템 통합)</td></tr>
-            <tr><td><strong>사업자등록 업종</strong></td><td><strong>642100</strong> / <strong>642101</strong></td></tr>
-            <tr><td><strong>정관 사업목적</strong></td><td>"응용·시스템 SW 개발 및 공급, 컴퓨터 시스템 통합 및 관리"</td></tr>
-            <tr><td><strong>면허·신고</strong></td><td>없음</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout warn">
-        <span class="callout-title">위장도급 — 대법원 2010다106436</span>
-        <strong>상주 외주는 SW 업계 위장도급 위험 1순위</strong>. 발주사가 우리 인력에 직접 지휘·명령하면 <strong>불법 파견</strong> 판정.
-        <ul>
-          <li>판단 기준 ①: 하청 회사가 별도 법인격·실체 보유 (사업자등록·4대보험·취업규칙·근태관리권)</li>
-          <li>판단 기준 ②: 원청이 하청 근로자를 <strong>직접 지휘·명령</strong>하지 않음</li>
-          <li>판단 기준 ③: 하청이 원청의 자회사·100% 지분 + 원청 업무만 도급 → <strong>위장도급 추정</strong></li>
-        </ul>
-        위반 시 — 형사: 파견법 3년 이하 징역 또는 3,000만원 이하 벌금. 민사: <strong>직접 고용 의무 (2년 초과 시)</strong>.
-      </div>
-      <p><strong>도급계약서 필수 항목</strong>: 명확한 deliverable (산출물·수량·품질 기준) / 업무 지시권은 우리 법인 보유 명시 / 근로시간·휴게·휴일 통제권 우리 법인 보유 명시 / 별도 작업 공간·도구 사용 (또는 상주 사유서).</p>
-      <p><strong>자문 필수</strong>: 노무사 또는 노동법 변호사 (계약서 검토 30~50만/회).</p>
-
-      <h3>2.2 #2 — JEPQ 미국 배당주 매수·배당 수령</h3>
-      <div class="table-wrap">
-        <table>
-          <tbody>
-            <tr><td><strong>법적 가능</strong></td><td class="ok">가능 (자기자본 외화증권 투자)</td></tr>
-            <tr><td><strong>KSIC</strong></td><td>영업외 (자기자본 운용)</td></tr>
-            <tr><td><strong>사업자등록 업종</strong></td><td>별도 추가 불필요</td></tr>
-            <tr><td><strong>정관 사업목적</strong></td><td>"자기자본 운용 및 자산 운용 / 유가증권 투자" 권고</td></tr>
-            <tr><td><strong>외환신고</strong></td><td><strong>한국 증권사 위탁 시 면제</strong> (외국환거래법)</td></tr>
+            <tr><td class="num">1</td><td><strong>Stay22</strong></td><td>호텔 메타(맵 위젯)</td><td>직접</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>수익 split</td><td>스크립트 5분 · 1순위 진입</td></tr>
+            <tr><td class="num">2</td><td><strong>Travelpayouts (Drive)</strong></td><td>항공+호텔 링크변환</td><td>직접(TP)</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPA/CPS</td><td><span class="warn">도메인 화이트리스트 필수</span> (섹션 3)</td></tr>
+            <tr><td class="num">3</td><td><strong>Airalo</strong></td><td>eSIM</td><td>Impact</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPS ~16%</td><td>subId = 서비스코드(추적)</td></tr>
+            <tr><td class="num">4</td><td><strong>Klook</strong></td><td>투어·액티비티</td><td>Involve Asia</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPS 3~8%</td><td>자체가 코스 경쟁자(차별 각도 필수)</td></tr>
+            <tr><td class="num">5</td><td><strong>Booking.com</strong></td><td>호텔 예약</td><td>직접/네트워크</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPS ~4%</td><td>Drive 링크변환 대상</td></tr>
+            <tr><td class="num">6</td><td><strong>Trip.com</strong></td><td>OTA(항공·호텔)</td><td>직접</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPS</td><td>중국 인바운드 강점</td></tr>
+            <tr><td class="num">7</td><td><strong>Skyscanner</strong></td><td>항공 메타</td><td>직접/네트워크</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPC/CPA 1~6%</td><td>항공 단가 미미</td></tr>
+            <tr><td class="num">8</td><td><strong>KKday</strong></td><td>투어·액티비티</td><td>직접/네트워크</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>CPS</td><td>Klook 대체·보완</td></tr>
+            <tr><td class="num">9</td><td><strong>NOL (놀유니버스)</strong></td><td>티켓·예매처</td><td>직접</td><td><span class="badge wait">대기</span></td><td><span class="badge wait">대기</span></td><td><span class="muted">내부 보관</span></td><td>제휴 협의</td><td>티켓 공식 채널·전략 파트너</td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout">
-        <span class="callout-title">외국환거래법 (α §3)</span>
-        거주자는 제한 없이 외화증권 투자 가능 · "기관투자가 이외 일반투자가는 외화증권 취득을 <strong>투자중개업자(증권사)에 위탁</strong>" → 한국은행 신고 면제 · 한국 증권사 미경유 + 직접 미국 증권사 송금 → 신고 검토 필요 · 경영참가 목적(지분 10%↑) → 해외직접투자 별도 신고
-      </div>
-      <div class="callout tip">
-        <span class="callout-title">세무 (한미 조세조약) — JEPQ 매수 전 W-8BEN-E 작성 의무</span>
-        미국 원천 배당: <strong>15% 원천징수</strong> (한미 조세협약) · <strong>W-8BEN-E 미제출 시 30% 원천징수</strong> · 한국 법인세 계산 시 <strong>외국납부세액공제(Foreign Tax Credit)</strong> — 이중과세 방지 · 회계: 외국 배당 = 영업외수익
-      </div>
-      <p><strong>[법무팀 비판]</strong> JEPQ는 ETF (NDX 옵션 + 나스닥 100) — <strong>ROC(Return of Capital) 비중</strong> 일부 포함, 세무 처리 복잡. 매월 배당 = 매월 환전·송금 → 환차손익 매월 발생. 매매 빈도·규모 본업화 임계 — α §1.3 "법령 명시 없음" → 변호사 자문.</p>
-      <p><strong>자문 필수</strong>: 세무사 (외화 자산·외국납부세액공제 익숙한 자), 증권사 외화 데스크.</p>
-
-      <h3>2.3 #3 — IT·AI 컨설팅·외주</h3>
-      <div class="table-wrap">
-        <table>
-          <tbody>
-            <tr><td><strong>법적 가능</strong></td><td class="ok">가능 (일반 컨설팅, 면허 0)</td></tr>
-            <tr><td><strong>KSIC</strong></td><td>M71 → <strong>73101</strong> (경영컨설팅) + 부수 J62</td></tr>
-            <tr><td><strong>사업자등록 업종</strong></td><td><strong>731010</strong> + <strong>642100</strong> 동시 등록</td></tr>
-            <tr><td><strong>정관 사업목적</strong></td><td>"경영 및 기술 컨설팅 / 정보기술(IT) 및 인공지능(AI) 자문 서비스"</td></tr>
-            <tr><td><strong>면허·신고</strong></td><td>없음</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p><strong>[법무팀 비판]</strong> "AI 전문가/마스터" 표시광고 시 <strong>표시광고법</strong> 검토 — 객관적 자격증·실적 근거 없으면 부당 광고. 손실 발생 시 <strong>책임 한계 조항</strong> 필수 (배상 한도 = 컨설팅 수수료 1배). AI 모델 이용 시 개인정보보호법 적용 → 위탁 계약서.</p>
-
-      <h3>2.4 #4 — 유사투자자문업 신고 (A안 ✅ 확정)</h3>
-      <div class="callout tip">
-        <span class="callout-title">결정 ✅ 확정 (대표 2026-04-29 12:46 KST)</span>
-        <strong>A안 — 유사투자자문업 신고</strong>. 자본시장법 §101 신고제 (등록제·인가제 아님). PM320 단방향 채널만 운영. 본 §2.4는 <strong>Task 7 (유사투자자문 가이드 v1) §1~§5 통째 인용 + §α 12건 그대로 노출</strong> (출처: @agent:법무팀 legal sub-agent, 2026-04-29 12:30 KST 작성).
-      </div>
-      <div class="table-wrap">
-        <table>
-          <tbody>
-            <tr><td><strong>결정</strong></td><td class="ok"><strong>A안 — 유사투자자문업 신고</strong> ✅ (대표 확정 2026-04-29 12:46)</td></tr>
-            <tr><td><strong>KSIC</strong></td><td>K6499 (그 외 기타 금융서비스업)</td></tr>
-            <tr><td><strong>사업자등록 업종</strong></td><td><strong>749904</strong> (유사투자자문업)</td></tr>
-            <tr><td><strong>정관 사업목적</strong></td><td>"유사투자자문업" 명시 — 신고 후 활성화</td></tr>
-            <tr><td><strong>신고 기관</strong></td><td>금융감독원 (fine.fss.or.kr)</td></tr>
-          </tbody>
-        </table>
+        <strong>도메인 컷오버 대상 7곳</strong> = NOL · Booking · Trip.com · Airalo · Skyscanner · KKday · Klook. 도메인 변경 시 7곳의 등록 도메인을 동시 변경해야 합니다.
       </div>
 
-      <h4>§1 (Task 7 인용) 자본시장법 제101조 — 유사투자자문업</h4>
+      <h3>2-2. 향후 확장 (후보)</h3>
       <ul>
-        <li><strong>신고제</strong> (등록제 아님). 사후 신고</li>
-        <li>신고 자체는 형식 심사 — 거부 사유 발생 드뭄</li>
-        <li>신고 후 영업 가능 (인가 6~12개월과 다름)</li>
+        <li><strong>여행</strong>: 마이리얼트립 · 아고다 · 야놀자 · Trazy · GetYourGuide · 12go · EconomyBookings — 차별 각도 확정 후</li>
+        <li><strong>데이터 포털 관련</strong>: 증권·핀테크 제휴(미정·법무 선행). 데이터 포털 특성상 제휴 모델 적합성 별도 검토.</li>
       </ul>
 
-      <h4>§2 (Task 7 인용) 자본금 요건</h4>
-      <ul>
-        <li><strong>법령상 자본금 요건 자체가 없을 가능성</strong> (§α#3 — 헬프미 출처)</li>
-        <li>등록형 투자자문업 1억과 다름. 신고형은 자본금 무관</li>
-        <li><strong>PM320 5,000만 충분 (차고 넘침)</strong></li>
-      </ul>
-
-      <h4>§3 (Task 7 인용) 양방향 채널 금지 (2024-08 개정)</h4>
-      <div class="callout warn">
-        <span class="callout-title">P0 — 양방향 채널 형사처벌</span>
-        <ul>
-          <li><strong>카카오 오픈채팅·텔레그램·디스코드 운영 시 최대 1억원 과태료 + 등록 취소</strong></li>
-          <li>정확 시행일 §α#5 (2024-08 추정, 변호사 확인)</li>
-          <li>1:1 자문도 인가 없이 금지 (3년 징역 또는 1억 벌금)</li>
-          <li>무신고 영업: 1년 징역 또는 3,000만원 벌금</li>
-        </ul>
+      <h3>2-3. 가입 진행 순서</h3>
+      <div class="action-card">
+        <h4><span class="step-num">1순위</span> Stay22 가입 → 스크립트 설치</h4>
+        <h4><span class="step-num">2순위</span> Travelpayouts → Airalo → Klook (네트워크 승인 1~2주 대기)</h4>
+        <h4><span class="step-num">3순위</span> Booking · Trip.com · Skyscanner · KKday · NOL 개별 등록</h4>
       </div>
-
-      <h4>§4 (Task 7 인용) PM320 카드 모델 적합성 매트릭스</h4>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>카드 모델</th><th>단방향 OK</th><th>회색</th><th>위반</th></tr></thead>
-          <tbody>
-            <tr><td><strong>블로그·뉴스레터·웹사이트 (오후 3시 20분 종목)</strong></td><td class="ok">✅</td><td></td><td></td></tr>
-            <tr><td><strong>유료 회원 전용 단방향 알림 (이메일·푸시)</strong></td><td class="ok">✅</td><td></td><td></td></tr>
-            <tr><td><strong>유튜브·인스타 콘텐츠 (단방향)</strong></td><td class="ok">✅</td><td></td><td></td></tr>
-            <tr><td>공개 텔레그램 채널 (단방향 broadcast)</td><td></td><td class="warn">⚠ 회색</td><td></td></tr>
-            <tr><td><strong>카카오 오픈채팅 (양방향 댓글)</strong></td><td></td><td></td><td class="warn">❌</td></tr>
-            <tr><td><strong>텔레그램 그룹 (양방향)</strong></td><td></td><td></td><td class="warn">❌</td></tr>
-            <tr><td><strong>디스코드 서버 (양방향)</strong></td><td></td><td></td><td class="warn">❌</td></tr>
-            <tr><td>1:1 자문 (인가 없이)</td><td></td><td></td><td class="warn">❌</td></tr>
-          </tbody>
-        </table>
+      <div class="callout tip">
+        <span class="callout-title">전담 액션</span>
+        파트너 계정 가입·관계 영업은 <strong>대표 전담</strong>입니다(계정·영업). 에이전트는 코드 인젝션·추적만 담당합니다.
       </div>
-      <p>→ <strong>A안 확정 = 단방향 모델만 가능</strong>. 카카오/텔레그램/디스코드 절대 금지.</p>
-
-      <h4>§5 (Task 7 인용) 신고 절차</h4>
-      <ol>
-        <li>사업자등록증·정관·자본금 증명 등 준비</li>
-        <li>fine.fss.or.kr 신고서 작성 (필수 기재: 상호·소재지·대표자·자본금·주요 주주·업무 종류·컴플라이언스·임직원·시설)</li>
-        <li>결격사유 자기 점검 (대표자가 금융 관련 법령 위반 벌금형 이상 처벌 경력 없을 것)</li>
-        <li>신고 수수료 30만원 납부</li>
-        <li>광고 의무사항 명시 (회사 현황·손실 가능성·1:1 상담 불가)</li>
-        <li>신고 후 영업 개시</li>
-        <li><strong>사전 상담 1회 + 변호사 자문 50~200만 필수</strong> (§16 CARD-024)</li>
-      </ol>
-
-      <div class="callout warn">
-        <span class="callout-title">§α (Task 7 미확인 12건 — 정직 표시)</span>
-        다음 12건은 변호사 자문으로 채워야 함. 본 문서는 추정 0건.
-        <ol>
-          <li>신고서 양식 (FSS 공지 정확 양식 미확보)</li>
-          <li>시행령 일자 (2024-08 양방향 금지 정확 시행일)</li>
-          <li>자본금 요건 출처 (헬프미 외 1차 출처 미확보)</li>
-          <li>협회 가입비 (한국유사투자자문협회 등 가입 의무 여부)</li>
-          <li>위반 과태료 정확 산정 기준 (1억 = 상한, 실제 부과 기준)</li>
-          <li>광고 사전 심의 (FSS 사전 검토 의무 여부)</li>
-          <li>온라인 신고 (fine.fss.or.kr 외 전자 신고 가능 여부)</li>
-          <li>처리 기간 (신고 접수 후 영업 개시까지 정확 일수)</li>
-          <li>임원 결격 (대표자 외 임원 결격 사유 범위)</li>
-          <li>사전 상담 (FSS 직접 사전 상담 일정·비용·예약 절차)</li>
-          <li>영업보고서 (분기/연간 보고 의무·양식·기한)</li>
-          <li>회계감사 (자기자본 일정 규모 이상 시 외부 회계감사 의무)</li>
-        </ol>
-        <strong>권고</strong>: 사전 상담 1회 (FSS 직접 방문) + 자본시장법 전문 변호사 자문 50~200만 (시간당 30~50만 × 4~6회) <strong>필수</strong>.
-      </div>
-
-      <h3>2.5 #5 — 국내·해외 주식 투자 (자기자본)</h3>
-      <div class="table-wrap">
-        <table>
-          <tbody>
-            <tr><td><strong>법적 가능</strong></td><td class="ok">가능 (자기자본 운용)</td></tr>
-            <tr><td><strong>KSIC</strong></td><td>영업외 (#2와 동일)</td></tr>
-            <tr><td><strong>사업자등록 업종</strong></td><td>별도 추가 불필요</td></tr>
-            <tr><td><strong>정관 사업목적</strong></td><td>"자기자본 운용 및 자산 운용 / 유가증권 투자"</td></tr>
-            <tr><td><strong>면허·신고</strong></td><td>없음. 외화증권 매매 시 #2 외환 규정 동일</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p><strong>[법무팀 비판]</strong> 매매 빈도 너무 잦거나 매매차익 매출 50% 초과 시 <strong>사실상 금융업</strong> 판정 가능 (회색). 차익실현 = <strong>법인세 9~24% 누진</strong>. 개인 양도소득세(국내주식 비과세, 해외 22%) 비교 시 시뮬레이션 필수. 손실 발생 시 결손금 이월 (10년).</p>
-
-      <h3>2.6 #6 — 경매 상가 부동산</h3>
-      <div class="table-wrap">
-        <table>
-          <tbody>
-            <tr><td><strong>법적 가능</strong></td><td class="ok">가능 (일반 부동산업, 면허 0)</td></tr>
-            <tr><td><strong>KSIC</strong></td><td>L68 → <strong>68112</strong> (비주거용 임대) + <strong>68122</strong> (비주거용 매매)</td></tr>
-            <tr><td><strong>사업자등록 업종</strong></td><td><strong>701102</strong> + <strong>701109</strong> 동시 등록</td></tr>
-            <tr><td><strong>정관 사업목적</strong></td><td>"비주거용 부동산 임대업·매매업 / 경매 부동산 취득·관리·처분"</td></tr>
-            <tr><td><strong>면허·신고</strong></td><td>일반 면허 없음. <strong>공인중개사 행위는 별도 면허</strong> (직접 매매 OK, 중개 X)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout">
-        <span class="callout-title">부동산 취득세 (α §5)</span>
-        <ul>
-          <li><strong>일반 4%</strong> (주택 외) — 송도·용인 동일</li>
-          <li><strong>과밀억제권역 신설 5년 이내 법인 부동산 취득 → 8% 중과 (지방세법 §13)</strong></li>
-          <li>송도 본점 등기 시 일반 4% / 용인 본점 등기 시 일반 4%</li>
-          <li>서울·부평·계양 등 본점 시 8% 중과 (자본금 5,000만에서 부동산 1억 매수 시 +400만 추가)</li>
-        </ul>
-      </div>
-      <p><strong>기타 세무</strong>: 매매업 빈번 시 종합부동산세 누진 + 1년 미만 보유 양도 = +20% 추가 세율. 임대료 부가세 10% 발생 (상가 = 부가세 과세, 주택과 다름).</p>
-      <p><strong>법적 P2</strong>: 경매 낙찰 = 일반 매수 동등. <strong>명도 분쟁</strong> 발생 가능 → 명도소송·인도명령 비용 사전 확보. 상가건물임대차보호법: 환산보증금 한도(서울 9억·인천 6.9억·경기 5.4억) 이내 임차인 5년 갱신요구권.</p>
-      <p><strong>자문 필수</strong>: 세무사 (취득세 중과 검토), 부동산 전문 변호사 (명도·임대차).</p>
-
-      <h3>2.7 업종 코드 통합 표</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>사업 활동</th><th>KSIC</th><th>사업자등록 업종 코드</th><th>면허·신고</th><th>자문</th></tr></thead>
-          <tbody>
-            <tr><td>#1 SW 개발 (응용)</td><td>62010</td><td><strong>642100</strong></td><td>—</td><td>노무사(상주 외주)</td></tr>
-            <tr><td>#1 SW 개발 (시스템)</td><td>62020</td><td><strong>642101</strong></td><td>—</td><td>—</td></tr>
-            <tr><td>#3 경영·IT 컨설팅</td><td>73101</td><td><strong>731010</strong></td><td>—</td><td>—</td></tr>
-            <tr><td>#4 유사투자자문업</td><td>K6499</td><td><strong>749904</strong></td><td class="warn">금감원 신고</td><td class="warn">자본시장법 변호사 P0</td></tr>
-            <tr><td>#4 투자자문업</td><td>661901</td><td>(별도)</td><td class="warn">금감원 인가 + 자본금 1억</td><td class="warn">자본시장법 변호사 P0</td></tr>
-            <tr><td>#6 비주거용 임대업</td><td>68112</td><td><strong>701102</strong></td><td>—</td><td>부동산 변호사</td></tr>
-            <tr><td>#6 비주거용 매매업</td><td>68122</td><td><strong>701109</strong></td><td>—</td><td>부동산 변호사</td></tr>
-            <tr><td>#2·#5 자기자본 운용</td><td>—</td><td>—</td><td>(단순매수 면제)</td><td>세무사</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p style="font-size:13px;color:var(--tx3);">사업자등록 업종 코드는 <strong>국세청 홈택스(hometax.go.kr) 업종코드 검색</strong> 직접 확인 필수 (개정 가능, 2026-04-29 시점 추정).</p>
     </section>
 
-    <!-- §3 단계별 절차 -->
+    <!-- ───────────── 섹션 3 ───────────── -->
     <section class="section" id="sec-3">
       <header class="section-header">
-        <span class="section-num">3</span>
-        <h2>단계별 절차 (D-7 ~ D+30)</h2>
+        <span class="section-num">03</span>
+        <h2>운영 마이그레이션 (운영 전환·체계화)</h2>
       </header>
+      <p>가입 후 → 링크 주입 → <code>rel="sponsored"</code> → 정산 체계 → 운영 전환 단계를 추적합니다. "마이그레이션"은 파트너 운영의 <strong>전환·체계화</strong>를 뜻합니다.</p>
 
-      <h3>3.1 D-7 ~ D-3 — 사전 결정·준비</h3>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-001</span> 회사명 1차 검색</h4>
-        <div class="meta"><span><strong>시점</strong> D-7</span><span><strong>도구</strong> KIPRIS·구글·네이버</span><span><strong>비용</strong> 0원</span><span><strong>시간</strong> 30분</span></div>
-        <ol>
-          <li>KIPRIS(kipris.or.kr) "백엠원스텝" 검색 → 동일 상표 0건 확인</li>
-          <li>구글·네이버 검색 → 동명 회사·서비스·블로그 0건 확인</li>
-          <li>변리사 정밀 검색 의뢰 (3~10만, §15)</li>
-        </ol>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-002</span> 자본금 결정 — 완료</h4>
-        <div class="meta"><span><strong>시점</strong> D-7</span><span><strong>상태</strong> 완료 (2026-04-29)</span></div>
-        <ul>
-          <li>자본금: <strong>5,000만원</strong></li>
-          <li>발행주식 50만주 × 액면 100원</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-003</span> 본사 후보 5+5곳 정리</h4>
-        <div class="meta"><span><strong>시점</strong> D-7</span><span><strong>비용</strong> 0원</span></div>
-        <ul>
-          <li>송도 5곳 + 용인/분당 5곳 (§6 표 참조)</li>
-          <li>가상사무실 월 임대료 비교</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-004</span> 송도·용인 직접 방문</h4>
-        <div class="meta"><span><strong>시점</strong> D-6</span><span><strong>시간</strong> 3일</span></div>
-        <ol>
-          <li>1주차 월: 송도 IBS타워, 송도컨벤시아 (오전)</li>
-          <li>1주차 화: 송도 G타워 (오전), 용인 동백 (오후)</li>
-          <li>1주차 수: 용인 죽전, 수지 (오전 2곳)</li>
-          <li>체크: ①실제 사무실 ②우편 수령 ③회의실 ④타 입주사 ⑤계약 형태</li>
-        </ol>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-005</span> 본사 주소 확정</h4>
-        <div class="meta"><span><strong>시점</strong> D-5</span></div>
-        <ul>
-          <li>송도 OR 용인 결정</li>
-          <li>임대 계약서 가서명</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-006</span> iros 동일 상호 검색</h4>
-        <div class="meta"><span><strong>시점</strong> D-5</span><span><strong>도구</strong> iros.go.kr</span><span><strong>권고</strong> 법무사 위탁</span></div>
-        <ol>
-          <li>본사 주소 결정 후 관할 등기소 지정</li>
-          <li>"법인등기 → 상호검색" → 동일 주소·동일 상호 검증</li>
-          <li>법무사 위탁 권고 (직접 로그인·관할 지정 복잡)</li>
-        </ol>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-007</span> 변리사 상표 정밀 검색</h4>
-        <div class="meta"><span><strong>시점</strong> D-5</span><span><strong>비용</strong> 3~10만</span></div>
-        <ul>
-          <li>KIPRIS 1차 자가 검색 (필수)</li>
-          <li>변리사 의뢰: 마크앤서·헬프미</li>
-          <li>NICE 분류: 35·36·38·41·42·45류 (§15)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-008</span> 임원 결정</h4>
-        <div class="meta"><span><strong>시점</strong> D-4</span></div>
-        <ul>
-          <li>대표이사 박성진 (1인)</li>
-          <li>감사 1인 (배우자 또는 외부)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-009</span> 사업목적 10항 확정</h4>
-        <div class="meta"><span><strong>시점</strong> D-4</span></div>
-        <ul>
-          <li>§12 권고안 그대로 채택</li>
-          <li>향후 #4 인가 시 정관 변경 (30~50만)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-010</span> 결산일 결정</h4>
-        <div class="meta"><span><strong>시점</strong> D-4</span></div>
-        <ul>
-          <li>12월 31일 (한국 표준)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-011</span> 정관 작성</h4>
-        <div class="meta"><span><strong>시점</strong> D-3</span><span><strong>비용</strong> 0원 (직접 작성)</span></div>
-        <ul>
-          <li><strong>자본금 10억 미만 = 공증인 인증 면제</strong> (상법 §292)</li>
-          <li>발기인 기명날인·서명만으로 효력</li>
-          <li>표준 정관 양식 활용 (대법원 인터넷등기소)</li>
-        </ul>
-        <div class="field-list">
-제1조 (상호) "주식회사 백엠원스텝" / "100M1S Inc."
-제4조 (자본금) 5,000만원
-제5조 (1주의 금액) 100원
-제6조 (발행할 주식 총수) 50만주
-제7조 (결산일) 매년 12월 31일
-        </div>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-012</span> 임원 인감 신고</h4>
-        <div class="meta"><span><strong>시점</strong> D-3</span><span><strong>비용</strong> 5만</span></div>
-        <ul>
-          <li>박성진 개인 인감증명서 발급</li>
-          <li>법인 인감 도장 제작 (5만)</li>
-        </ul>
-      </div>
-
-      <h3>3.2 D-2 ~ D 0 — 등기 제출</h3>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-013</span> 발기인 회의록 작성</h4>
-        <div class="meta"><span><strong>시점</strong> D-2</span></div>
-        <ul>
-          <li>자본금·임원·정관·결산일 의결</li>
-          <li>1인 주주 시 단독 의결</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-014</span> 자본금 납입 증명</h4>
-        <div class="meta"><span><strong>시점</strong> D-2</span></div>
-        <ul>
-          <li>발기인 박성진 명의 계좌에 5,000만원 입금</li>
-          <li>잔액증명서 발급</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-015</span> 등록면허세 납부</h4>
-        <div class="meta"><span><strong>시점</strong> D-2</span><span><strong>도구</strong> wetax.go.kr</span><span><strong>비용</strong> 240,000</span></div>
-        <ul>
-          <li>등록면허세 200,000 (자본금 × 0.4%)</li>
-          <li>지방교육세 40,000 (등록면허세 × 20%)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-016</span> 등기 신청 서류 준비</h4>
-        <div class="meta"><span><strong>시점</strong> D-1</span></div>
-        <ul>
-          <li>정관·발기인회의록·자본금 증명·임원 동의서·인감 증명서·등록면허세 영수증</li>
-          <li>법무사 위임 시 위임장</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-017</span> 등기 제출</h4>
-        <div class="meta"><span><strong>시점</strong> D-Day</span><span><strong>비용</strong> 20,000 (법원수수료)</span><span><strong>처리</strong> 1~3일 (전자) / 5~10일 (방문)</span></div>
-        <ul>
-          <li>인터넷등기소 전자 신청 OR 관할 등기소 방문</li>
-        </ul>
-      </div>
-
-      <h3>3.3 D+1 ~ D+7 — 사업자등록·기본 인프라</h3>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-018</span> 등기부등본 수령</h4>
-        <div class="meta"><span><strong>시점</strong> D+3</span><span><strong>비용</strong> 1,000원/건</span></div>
-        <ul>
-          <li>인터넷등기소 발급</li>
-          <li>법인등록번호 확인</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-019</span> 사업자등록 신청</h4>
-        <div class="meta"><span><strong>시점</strong> D+5</span><span><strong>도구</strong> hometax.go.kr</span><span><strong>비용</strong> 0원</span></div>
-        <ul>
-          <li>업종 코드 입력: §2.7 표 참조</li>
-          <li>처리: 즉시 ~ 3일</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-020</span> 법인 통장 개설</h4>
-        <div class="meta"><span><strong>시점</strong> D+5</span></div>
-        <ul>
-          <li>거래 은행 (국민·신한·하나 등)</li>
-          <li>법인 인감·등기부등본·사업자등록증·대표 신분증 지참</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-021</span> 법인 인감 등록</h4>
-        <div class="meta"><span><strong>시점</strong> D+5</span></div>
-        <ul>
-          <li>관할 등기소 신고</li>
-          <li>인감 증명서 발급 (필요 시)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-022</span> 4대보험 사업장 신고</h4>
-        <div class="meta"><span><strong>시점</strong> D+7</span><span><strong>도구</strong> 4insure.or.kr</span></div>
-        <ul>
-          <li>4대보험 정보연계센터</li>
-          <li>대표이사도 4대보험 가입 (선택)</li>
-        </ul>
-      </div>
-
-      <h3>3.4 D+8 ~ D+30 — 후속 절차</h3>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-023</span> W-8BEN-E 작성</h4>
-        <div class="meta"><span><strong>시점</strong> D+10</span><span><strong>도구</strong> 한국 증권사 외화 데스크</span></div>
-        <ul>
-          <li><strong>JEPQ 매수 전 필수</strong></li>
-          <li>미제출 시 30% 원천징수 (페널티)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-024</span> 유사투자자문업 신고 (필요 시)</h4>
-        <div class="meta"><span><strong>시점</strong> D+15</span><span><strong>도구</strong> fine.fss.or.kr</span><span><strong>비용</strong> 300,000</span></div>
-        <ul>
-          <li>PM320 유료 운영 결정 시</li>
-          <li><strong>양방향 채널 금지 엄수</strong> (2024-08 개정)</li>
-          <li>광고 의무사항: 회사 현황·손실 가능성·1:1 상담 불가 명시</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-025</span> 회계 시스템 구축</h4>
-        <div class="meta"><span><strong>시점</strong> D+20</span><span><strong>비용</strong> 월 10~30만 (세무사 위탁)</span></div>
-        <ul>
-          <li>클라우드 회계: 더존·삼쩜삼·캐시노트</li>
-          <li>세무사 위탁: 월 10~30만</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-026</span> 기존 도메인 법인 양도</h4>
-        <div class="meta"><span><strong>시점</strong> D+25</span></div>
-        <ul>
-          <li>100m1s.com 외 6개</li>
-          <li>가비아 법인 명의 변경 (개인 → 법인)</li>
-          <li>양도세 확인 (취득가 vs 양도가)</li>
-        </ul>
-      </div>
-
-      <div class="action-card">
-        <h4><span class="step-num">CARD-027</span> 법인 카드 발급</h4>
-        <div class="meta"><span><strong>시점</strong> D+30</span></div>
-        <ul>
-          <li>거래 은행 법인카드</li>
-          <li>한도·용도 설정</li>
-        </ul>
-      </div>
-
-      <p style="font-size:13px;color:var(--tx3);">CARD-028~250+ 액션 카드는 v2 §3에서 흡수 — 비상주 사무실 5곳 직접 견학 절차, 법무사 견적 비교 절차 등 세부 액션 카드 전체 §3 문서로 유지.</p>
-    </section>
-
-    <!-- §4 서류 + 입력 예시 -->
-    <section class="section" id="sec-4">
-      <header class="section-header">
-        <span class="section-num">4</span>
-        <h2>필요 서류 + 양식 + 입력 예시</h2>
-      </header>
-
-      <h3>4.1 필수 서류 목록</h3>
+      <h3>3-1. 운영 전환 단계 체크리스트</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>#</th><th>서류</th><th>양식 출처</th><th>자본금 5,000만 입력 예시</th></tr></thead>
+          <thead>
+            <tr><th>단계</th><th>항목</th><th>상태</th><th>근거</th></tr>
+          </thead>
           <tbody>
-            <tr><td>1</td><td>정관</td><td>인터넷등기소 표준 양식</td><td>자본금 5,000만, 발행주식 50만주, 액면 100원</td></tr>
-            <tr><td>2</td><td>발기인회의록</td><td>자율 양식</td><td>1인 주주 단독 의결, 5,000만 출자</td></tr>
-            <tr><td>3</td><td>자본금 납입 증명</td><td>은행 잔액증명서</td><td>발기인 박성진 명의 계좌 5,000만 입금</td></tr>
-            <tr><td>4</td><td>임원 동의서</td><td>자율 양식</td><td>대표이사 박성진, 감사 ○○○</td></tr>
-            <tr><td>5</td><td>인감 증명서</td><td>주민센터</td><td>박성진 개인 인감</td></tr>
-            <tr><td>6</td><td>등록면허세 영수증</td><td>위택스</td><td>200,000원 (자본금 × 0.4%)</td></tr>
-            <tr><td>7</td><td>사업자등록 신청서</td><td>홈택스</td><td>업종 코드 §2.7 표 참조</td></tr>
-            <tr><td>8</td><td>법인 통장 개설 신청서</td><td>거래 은행</td><td>5,000만 입금 후 법인 통장 전환</td></tr>
+            <tr><td class="num">M1</td><td>파트너 링크 코드 인젝션 (위젯·직접 링크)</td><td><span class="badge prog">진행</span></td><td>847 detail 페이지 인젝션 완료</td></tr>
+            <tr><td class="num">M2</td><td><strong>도메인 화이트리스트 등록·승인</strong> (파트너 대시보드)</td><td><span class="badge crit">🔴 미완</span></td><td>DOC-20260611-FLR-002</td></tr>
+            <tr><td class="num">M3</td><td>링크 변환 라이브 실측 3종 (콘솔 무에러·앵커 리라이트·CORS 통과)</td><td><span class="badge wait">대기</span></td><td>FLR 게이트</td></tr>
+            <tr><td class="num">M4</td><td><code>rel="sponsored nofollow"</code> 전 외부 파트너 링크 적용</td><td><span class="badge wait">대기</span></td><td>검색엔진 가이드·전상법</td></tr>
+            <tr><td class="num">M5</td><td>제휴 표시(disclosure) 문구 노출 ("제휴 링크 포함")</td><td><span class="badge wait">대기</span></td><td>신뢰·법무</td></tr>
+            <tr><td class="num">M6</td><td>도메인 컷오버 시 7곳 등록 도메인 동시 변경</td><td><span class="badge wait">대기</span></td><td>도메인 컷오버 Layer 2</td></tr>
+            <tr><td class="num">M7</td><td>정산 체계: 네트워크별 대시보드·세금계산서·사업소득 귀속</td><td><span class="badge wait">대기</span></td><td>세무사 연동</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>4.2 정관 핵심 입력 예시</h3>
-      <div class="action-card">
-        <h4><span class="step-num">정관 예시</span> 자본금 5,000만 기준</h4>
-        <div class="field-list">
-제1조 (상호) 본 회사의 상호는 "주식회사 백엠원스텝"으로 한다.
-       영문 표기는 "100M1S Inc."로 한다.
-제2조 (목적) 본 회사는 다음 사업을 영위한다.
-       1. 컴퓨터 시스템 통합 및 관리
-       2. 응용 소프트웨어 개발 및 공급
-       3. 시스템 소프트웨어 개발 및 공급
-       4. 정보기술(IT) 및 인공지능(AI) 컨설팅
-       5. 경영 컨설팅 서비스
-       6. 유사투자자문업 (※ 신고 후 활성화)
-       7. 비주거용 부동산 임대업
-       8. 비주거용 부동산 매매업
-       9. 자기자본 운용 및 자산 운용
-       10. 위 각 사업과 관련된 부수 사업 일체
-제3조 (본점 소재지) 본 회사의 본점은 [송도 OR 용인 주소]에 둔다.
-제4조 (자본금) 본 회사의 자본금은 5천만원으로 한다.
-제5조 (1주의 금액) 1주의 금액은 100원으로 한다.
-제6조 (발행할 주식의 총수) 본 회사가 발행할 주식의 총수는 50만주로 한다.
-제7조 (결산일) 본 회사의 결산일은 매년 12월 31일로 한다.
-        </div>
-      </div>
-    </section>
-
-    <!-- §5 비용 합계 -->
-    <section class="section" id="sec-5">
-      <header class="section-header">
-        <span class="section-num">5</span>
-        <h2>비용 합계 (자본금 5,000만)</h2>
-      </header>
-
-      <h3>5.1 1회성 비용</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>항목</th><th>금액 (송도/용인)</th><th>비고</th></tr></thead>
-          <tbody>
-            <tr><td>등록면허세</td><td class="num">200,000</td><td>자본금 × 0.4%</td></tr>
-            <tr><td>지방교육세</td><td class="num">40,000</td><td>등록면허세 × 20%</td></tr>
-            <tr><td>법원수수료</td><td class="num">20,000</td><td>전자등기</td></tr>
-            <tr><td>인지대</td><td class="num">12,000~120,000</td><td>자본금 구간별</td></tr>
-            <tr><td><strong>정관 인증료</strong></td><td class="num"><strong>0</strong></td><td><strong>상법 §292 — 자본금 10억 미만 면제</strong></td></tr>
-            <tr><td>법인 인감 도장</td><td class="num">50,000</td><td>—</td></tr>
-            <tr><td>사업자등록</td><td class="num">0</td><td>—</td></tr>
-            <tr><td>등기부등본 발급</td><td class="num">5,000</td><td>5건 × 1,000</td></tr>
-            <tr><td>법무사 위임 (선택)</td><td class="num">300,000~800,000</td><td>직접 등기 시 0</td></tr>
-            <tr><td>변리사 상표 검색 (선택)</td><td class="num">30,000~100,000</td><td>KIPRIS 정밀</td></tr>
-            <tr><td><strong>소계 (직접 등기)</strong></td><td class="num"><strong>약 327,000원</strong></td><td>—</td></tr>
-            <tr><td><strong>소계 (법무사 위임)</strong></td><td class="num"><strong>약 627,000~1,127,000원</strong></td><td>—</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>5.2 월 비용 (운영)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>항목</th><th>금액 (월)</th><th>비고</th></tr></thead>
-          <tbody>
-            <tr><td>비상주 사무실 (송도/용인)</td><td class="num">30,000~100,000</td><td>§6</td></tr>
-            <tr><td>세무사 기장료</td><td class="num">100,000~300,000</td><td>월 매출 &lt; 5,000만 시 10만</td></tr>
-            <tr><td>클라우드 회계 SW</td><td class="num">30,000~50,000</td><td>더존·삼쩜삼</td></tr>
-            <tr><td>법인카드 연회비 (12 분할)</td><td class="num">5,000</td><td>—</td></tr>
-            <tr><td>4대보험 (대표 본인)</td><td class="num">100,000~300,000</td><td>급여 기준</td></tr>
-            <tr><td>도메인·호스팅</td><td class="num">20,000</td><td>—</td></tr>
-            <tr><td>임대료 (실주소 시)</td><td class="num">300,000~</td><td>비상주 시 미해당</td></tr>
-            <tr><td><strong>월 소계 (비상주)</strong></td><td class="num"><strong>약 285,000~655,000원</strong></td><td>—</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>5.3 첫 1년 합계</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>시나리오</th><th>1회성 + (월 × 12)</th></tr></thead>
-          <tbody>
-            <tr><td><strong>최소 (직접 등기 + 비상주)</strong></td><td class="num">327,000 + 285,000×12 = <strong>약 374만원</strong></td></tr>
-            <tr><td><strong>표준 (법무사 + 비상주 + 세무사)</strong></td><td class="num">627,000 + 500,000×12 = <strong>약 663만원</strong></td></tr>
-            <tr><td><strong>확장 (법무사 + 변리사 + 세무사 + 자본시장법 변호사 자문 100만)</strong></td><td class="num">1,127,000 + 600,000×12 = <strong>약 833만원</strong> + 변호사 별도</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>추가 외부 자문 연 보수 (자본시장법 변호사 + 부동산 변호사 + 노무사) = <strong>2,500만원</strong> 권고 (시간당 30~50만 × 60시간 추정).</p>
+      <h3>3-2. 핵심 리스크 — 죽은 수익 사일런트 데드</h3>
       <div class="callout warn">
-        <span class="callout-title">경영지원팀 권고</span>
-        첫 1년 총비용 = <strong>표준 663만 + 자문 2,500만 = 약 3,163만원</strong>. 자본금 5,000만 대비 63% → <strong>운영비 + 자문 합계가 자본금 잠식하지 않도록 매출 1억+ 확보 후 자문 확대</strong>.
+        <span class="callout-title">DOC-20260611-FLR-002 (FLR-AGT-002 동형)</span>
+        Travelpayouts Drive 위젯이 CORS 차단으로 링크 변환이 <strong>전면 미작동</strong> → 클릭 추적 0건 = 수수료 미발생. 코드는 박혔으나 외부 대시보드 도메인 승인이 누락된 상태였습니다. "콘솔 노이즈 무음화"로 처리했다면 죽은 수익이 영원히 은폐될 뻔했습니다.
       </div>
-    </section>
-
-    <!-- §6 송도 ✅ 확정 -->
-    <section class="section" id="sec-6">
-      <header class="section-header">
-        <span class="section-num">6</span>
-        <h2>비상주 사무실 — 송도 ✅ 확정</h2>
-      </header>
-
       <div class="callout tip">
-        <span class="callout-title">결정 ✅ 확정 (대표 2026-04-29 12:46 KST)</span>
-        본사 = <strong>송도 (인천경제자유구역)</strong>. 과밀억제권역 외 → 등록면허세 200,000원 + 부동산 취득세 일반 4%. IT·국제도시 이미지 + 인천공항·KTX 접근성. 가상사무실 월 5~10만 → 후보 5곳 직접 방문 후 결정.
+        <span class="callout-title">운영 마이그레이션 게이트 (인정 기준)</span>
+        인젝션 후 ① 콘솔 무에러 + ② 파트너 앵커 실제 리라이트(<code>tp.media/r</code>) + ③ CORS 통과 <strong>3종 라이브 실측</strong>을 통과해야 "동작"으로 인정합니다. "스크립트 박혔으니 동작" 가정은 금지합니다.
       </div>
 
-      <h3>6.1 송도 5곳 (예시 — 직접 방문 후 결정)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>사무실</th><th>주소</th><th>월 임대료 (예상)</th><th>회의실</th><th>우편</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>IBS타워 비상주</td><td>인천 연수구 송도과학로 32</td><td class="num">50,000~80,000</td><td>시간당 별도</td><td>일반</td></tr>
-            <tr><td>2</td><td>송도컨벤시아 비상주</td><td>인천 연수구 센트럴로 123</td><td class="num">60,000~100,000</td><td>포함 1회/월</td><td>등기 가능</td></tr>
-            <tr><td>3</td><td>G타워 비상주</td><td>인천 연수구 아트센터대로 175</td><td class="num">70,000~120,000</td><td>포함 2회/월</td><td>등기 가능</td></tr>
-            <tr><td>4</td><td>송도 글로벌캠퍼스</td><td>인천 연수구 송도문화로 119</td><td class="num">40,000~70,000</td><td>시간당 별도</td><td>일반</td></tr>
-            <tr><td>5</td><td>송도 BRT 비상주</td><td>인천 연수구 송도과학로 인근</td><td class="num">30,000~50,000</td><td>별도</td><td>일반</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p style="font-size:13px;color:var(--tx3);">위 5곳은 <strong>예시</strong>이며 실제 입주 가능 여부·정확 임대료는 직접 방문·견적 필수.</p>
-
-      <h3>6.2 용인/분당 (대안 — 참고)</h3>
-      <div class="callout">
-        <span class="callout-title">대안 — 본사는 송도 ✅ 확정</span>
-        용인은 대안으로만 보존. 두 지역 세금 동일하나 송도 IT·국제도시 이미지 + 인천공항·KTX 접근성 우위. 본사 송도 결정 후에도 향후 지점·연구소 후보로 참고 가능.
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>사무실</th><th>주소 (참고)</th><th>비고</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>죽전 비상주</td><td>용인 수지구 죽전로 인근</td><td>임대료 저렴 (3~6만)</td></tr>
-            <tr><td>2</td><td>동백 비상주</td><td>용인 기흥구 동백죽전대로</td><td>강남 1시간</td></tr>
-            <tr><td>3</td><td>분당 비상주 (성남)</td><td>성남 분당구 정자로</td><td>인접 권역</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>6.3 직접 방문 체크리스트</h3>
-      <ul class="checklist">
-        <li>실제 사무실 존재 (위장 빌딩 제외)</li>
-        <li>우편 수령 절차 (당일·익일 알림)</li>
-        <li>회의실 이용 (포함 vs 별도)</li>
-        <li>타 입주사 수 (너무 많으면 동일 주소 등기 충돌 가능)</li>
-        <li>계약 형태 (월 단기 vs 연 장기)</li>
-        <li>대표이사 명함·간판 표기 가능 여부</li>
-        <li>iros 동일 주소 검색 (동일 상호 입주사 유무)</li>
-      </ul>
-
-      <h3>6.4 권고 일정 (송도 5곳)</h3>
+      <h3>3-3. 정산·세무 연동</h3>
       <ul>
-        <li>1주차 월: 송도 IBS타워, 송도컨벤시아 (오전 2곳)</li>
-        <li>1주차 화: 송도 G타워, 글로벌캠퍼스 (오전 2곳)</li>
-        <li>1주차 수: 송도 BRT 비상주 (오전 1곳)</li>
-        <li>1주차 목: 결정 회의 + 가서명</li>
+        <li>네트워크별 수익은 <strong>사업자 사업소득</strong>으로 귀속됩니다(개인사업자 등록 선행 — 섹션 1).</li>
+        <li><strong>통신판매업 신고</strong>: 파트너(링크 송출·결제 미수령)는 신고 의무 회색지대입니다. 직전연도 거래 0회 = 현 면제 가능. 수익 발생 전 세무사/공정위 유권해석 1회 확정.</li>
+        <li><strong>신원표시</strong>: 파트너 플랫폼 심사 + 전상법 §10 → 실수신 이메일·연락처 확정이 필수입니다(NO-GO 항목).</li>
       </ul>
-    </section>
 
-    <!-- §7 일정 Gantt -->
-    <section class="section" id="sec-7">
-      <header class="section-header">
-        <span class="section-num">7</span>
-        <h2>일정 Gantt</h2>
-      </header>
-
-      <div class="action-card">
-        <h4><span class="step-num">타임라인</span> D-7 → D+30</h4>
-        <div class="field-list">
-D-7 ----------------- D 0 ----------------- D+7 ---------------- D+30
-│                     │                     │                    │
-회사명·자본금         등기 제출·납입       사업자등록·통장      W-8BEN-E·회계·도메인 양도
-본사 주소 후보         등기부 수령         4대보험              유사투자자문업 신고(필요 시)
-임원·정관              사업자 신청          법인카드             부동산 임대차
-변리사 상표 검색
-법무사 위임 결정
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Week</th><th>주요 마일스톤</th></tr></thead>
-          <tbody>
-            <tr><td>W-1 (D-7~D-1)</td><td>결정·서류·등록면허세 납부</td></tr>
-            <tr><td>W 0 (D 0~D+3)</td><td>등기 제출·등기부 수령</td></tr>
-            <tr><td>W+1 (D+4~D+10)</td><td>사업자등록·통장·W-8BEN-E</td></tr>
-            <tr><td>W+2 (D+11~D+17)</td><td>회계·인감·명함·자본시장법 검토</td></tr>
-            <tr><td>W+3 (D+18~D+24)</td><td>도메인 양도·임대차</td></tr>
-            <tr><td>W+4 (D+25~D+30)</td><td>법인카드·후속</td></tr>
-          </tbody>
-        </table>
+      <div class="disclaimer">
+        <span class="callout-title">면책</span>
+        <p>본 문서는 내부 운영 현황 추적용이며, 법률·세무 자문의 대체가 아닙니다. 업종코드·통신판매업 신고 의무·신원표시 등은 세무사·변호사·공정위 유권해석으로 최종 확정합니다.</p>
+        <p>참고 출처: 홈택스(<code>hometax.go.kr</code>) · 한국표준산업분류(<code>kssc.kostat.go.kr</code>) · 한국세무사회(<code>kacpta.or.kr</code>) · 공정거래위원회(<code>ftc.go.kr</code>).</p>
       </div>
     </section>
-
-    <!-- §8 체크리스트 100항 -->
-    <section class="section" id="sec-8">
-      <header class="section-header">
-        <span class="section-num">8</span>
-        <h2>직접 수행 체크리스트 (100항)</h2>
-      </header>
-
-      <h3>8.1 사전 결정 (1~20)</h3>
-      <ul class="checklist">
-        <li>1. 회사명 확정 (백엠원스텝)</li>
-        <li>2. 자본금 결정 (5,000만 — 완료)</li>
-        <li>3. 발행주식 50만주 × 액면 100원</li>
-        <li>4. 본사 후보 5+5곳 정리</li>
-        <li>5. 송도 5곳 직접 방문</li>
-        <li>6. 용인/분당 5곳 직접 방문</li>
-        <li>7. 본사 주소 확정</li>
-        <li>8. 비상주 사무실 가서명</li>
-        <li>9. iros 동일 상호 검색 (법무사 위탁)</li>
-        <li>10. 변리사 상표 정밀 검색</li>
-        <li>11. NICE 분류 결정 (35·42류 등)</li>
-        <li>12. 대표이사 결정</li>
-        <li>13. 감사 결정</li>
-        <li>14. 사업목적 10항 확정</li>
-        <li>15. 결산일 결정 (12-31)</li>
-        <li>16. 정관 작성</li>
-        <li>17. 박성진 개인 인감증명서 발급</li>
-        <li>18. 법인 인감 도장 제작</li>
-        <li>19. 발기인회의록 작성</li>
-        <li>20. 자본금 5,000만 발기인 계좌 입금</li>
-      </ul>
-
-      <h3>8.2 등기·사업자등록 (21~40)</h3>
-      <ul class="checklist">
-        <li>21. 잔액증명서 발급</li>
-        <li>22. 등록면허세 200,000 납부 (위택스)</li>
-        <li>23. 지방교육세 40,000 납부</li>
-        <li>24. 등기 신청 서류 준비</li>
-        <li>25. 법무사 위임 (선택)</li>
-        <li>26. 등기 제출 (인터넷등기소 또는 방문)</li>
-        <li>27. 법원수수료 20,000 납부</li>
-        <li>28. 등기부등본 수령</li>
-        <li>29. 법인등록번호 확인</li>
-        <li>30. 사업자등록 신청 (홈택스)</li>
-        <li>31. 업종 코드 입력 (§2.7)</li>
-        <li>32. 사업자등록증 수령</li>
-        <li>33. 법인 통장 개설</li>
-        <li>34. 법인 인감 등록 (등기소)</li>
-        <li>35. 4대보험 사업장 신고 (4insure)</li>
-        <li>36. 4대보험 대표 가입 (선택)</li>
-        <li>37. 법인 카드 발급 신청</li>
-        <li>38. 회계 SW 가입 (더존·삼쩜삼)</li>
-        <li>39. 세무사 위탁 계약</li>
-        <li>40. 노무사 위탁 (선택, 외주 활용 시)</li>
-      </ul>
-
-      <h3>8.3 자본시장법·금융 (41~60)</h3>
-      <ul class="checklist">
-        <li>41. PM320 유료 모델 결정 (A/B/C안 §2.4)</li>
-        <li>42. 유사투자자문업 신고 결정</li>
-        <li>43. 신고 시 fine.fss.or.kr 신고서 작성</li>
-        <li>44. <strong>양방향 채널 금지 엄수</strong> (오픈채팅·텔레그램·디스코드)</li>
-        <li>45. 광고 의무사항 (회사 현황·손실 가능성·1:1 불가) 명시</li>
-        <li>46. 자본시장법 변호사 자문 (P0)</li>
-        <li>47. 결격사유 자기 점검</li>
-        <li>48. 신고 수수료 30만 납부</li>
-        <li>49. JEPQ 매수 전 W-8BEN-E 작성</li>
-        <li>50. 한국 증권사 외화 데스크 위탁</li>
-        <li>51. 외환거래법 신고 면제 확인</li>
-        <li>52. 외국납부세액공제 절차 (세무사)</li>
-        <li>53. 한미 조세조약 15% 원천징수 확인</li>
-        <li>54. JEPQ ROC 비중 회계 처리</li>
-        <li>55. 매월 환차손익 계상</li>
-        <li>56. 자기자본 매매 비중 점검 (매출 50%↓)</li>
-        <li>57. 매매 빈도 분기 1~2회 리밸런싱</li>
-        <li>58. 결손금 이월 (10년) 활용</li>
-        <li>59. 개인 vs 법인 절세 시뮬레이션</li>
-        <li>60. 자본시장법 시행령 분기 1회 모니터링 (§16)</li>
-      </ul>
-
-      <h3>8.4 부동산·외주·기타 (61~80)</h3>
-      <ul class="checklist">
-        <li>61. 비주거용 부동산 임대업 사업자등록</li>
-        <li>62. 비주거용 부동산 매매업 사업자등록</li>
-        <li>63. 부동산 취득세 4% 확인 (송도/용인)</li>
-        <li>64. 과밀억제권역 외 본점 등기 확인</li>
-        <li>65. 경매 낙찰 명도 비용 사전 확보</li>
-        <li>66. 상가건물임대차보호법 환산보증금 한도 확인</li>
-        <li>67. 임대료 부가세 10% 별도 계산</li>
-        <li>68. 부동산 변호사 위탁</li>
-        <li>69. SW 외주 도급계약서 검토 (위장도급 회피)</li>
-        <li>70. 노무사 계약서 검토 (회당 30~50만)</li>
-        <li>71. 별도 작업 공간·도구 명시</li>
-        <li>72. 업무 지시권 우리 법인 보유 명시</li>
-        <li>73. 노동법 변호사 자문 (필요 시)</li>
-        <li>74. 컨설팅 책임 한계 조항 (배상 한도 = 수수료 1배)</li>
-        <li>75. AI 표시광고법 검토</li>
-        <li>76. 개인정보보호법 위탁 계약서</li>
-        <li>77. 기존 도메인 6개 법인 양도 (가비아)</li>
-        <li>78. 도메인 양도세 확인</li>
-        <li>79. 법인 명함·CI·로고</li>
-        <li>80. 기존 GitHub·Vercel·Google AI 계정 법인 양도 검토</li>
-      </ul>
-
-      <h3>8.5 후속·운영 (81~100)</h3>
-      <ul class="checklist">
-        <li>81. 부가세 1분기 신고 (4월말)</li>
-        <li>82. 부가세 2분기 예정 신고 (7월)</li>
-        <li>83. 부가세 3분기 예정 신고 (10월)</li>
-        <li>84. 부가세 4분기 신고 (1월말)</li>
-        <li>85. 법인세 신고 (3월말)</li>
-        <li>86. 결산서 작성 (12월말)</li>
-        <li>87. 주주총회 개최 (정기)</li>
-        <li>88. 4대보험 월별 신고</li>
-        <li>89. 급여 매월 25일 지급</li>
-        <li>90. 경비 처리 (식사비 1인 3만원 한도)</li>
-        <li>91. 접대비 적격증빙</li>
-        <li>92. 가수금 약정서 작성</li>
-        <li>93. 가수금 월별 잔액 관리</li>
-        <li>94. 배당 시뮬레이션 (분기)</li>
-        <li>95. 성실신고 SW 50% 감면 (매출 5억+ 시)</li>
-        <li>96. 외국납부세액공제 (JEPQ 배당)</li>
-        <li>97. 부동산 양도소득 별도 누진과세</li>
-        <li>98. 1년 미만 보유 양도 +20% 추가 세율</li>
-        <li>99. 주주총회 의사록 5년 보관</li>
-        <li>100. 영수증 5년 보관 (세무 감시 기준)</li>
-      </ul>
-    </section>
-
-    <!-- §9 자주 하는 실수 -->
-    <section class="section" id="sec-9">
-      <header class="section-header">
-        <span class="section-num">9</span>
-        <h2>자주 하는 실수</h2>
-      </header>
-      <ol>
-        <li><strong>자본시장법 영역 자가 판단</strong> — PM320 유료 운영을 "단순 정보 제공"으로 분류 → 1억 과태료 위험</li>
-        <li><strong>양방향 채널 운영</strong> — 카카오 오픈채팅·텔레그램·디스코드 운영 → 2024-08 형사처벌 대상</li>
-        <li><strong>위장도급 계약서</strong> — SW 외주 시 발주사 지시 받음 → 직접 고용 의무 (대법원 2010다106436)</li>
-        <li><strong>W-8BEN-E 미작성</strong> — JEPQ 30% 원천징수 (페널티)</li>
-        <li><strong>과밀억제권역 본점 등기</strong> — 등록면허세 × 3 + 부동산 취득세 8% 중과</li>
-        <li><strong>정관 인증료 납부</strong> — 자본금 10억 미만 면제 (상법 §292)</li>
-        <li><strong>iros 직접 검색 시도</strong> — 관할 등기소 지정 + 로그인 복잡, 법무사 위탁 권고</li>
-        <li><strong>상가 임대료 부가세 누락</strong> — 10% 별도 계산</li>
-        <li><strong>외주 인력에 직접 지시</strong> — 위장도급 판정</li>
-        <li><strong>JEPQ ROC 비중 회계 처리 누락</strong> — 세무 신고 오류</li>
-        <li><strong>결산일 12월 31일 미준수</strong> — 분기 신고 일정 어긋남</li>
-        <li><strong>법인 카드 개인 용도 사용</strong> — 세무 부인</li>
-        <li><strong>가수금 약정서 미작성</strong> — 무이자 대여 인정 X</li>
-        <li><strong>자기자본 매매 본업화 임계 무시</strong> — 매출 50%↑ 시 금융업 인가 필요 가능</li>
-        <li><strong>부동산 1년 미만 보유 양도</strong> — +20% 추가 세율</li>
-        <li><strong>A안 확정 후 양방향 채널 운영</strong> — 카카오 오픈채팅·텔레그램·디스코드는 무조건 신고 취소 + 1억 과태료 (v5 추가)</li>
-        <li><strong>회사명 등기 후 변리사 정밀 검색 누락</strong> — 상표 등록 거절 + 후순위 권리 박탈 (v5 추가)</li>
-      </ol>
-    </section>
-
-    <!-- §10 FAQ 16건 -->
-    <section class="section" id="sec-10">
-      <header class="section-header">
-        <span class="section-num">10</span>
-        <h2>FAQ 16건</h2>
-      </header>
-
-      <details class="faq-item"><summary class="faq-q">Q1. 자본금 5,000만이 적정한가?</summary><div class="faq-a">PM320 유료 신고 + JEPQ 5,000만 운용 + 부동산 경매 보증금 활용 모두 가능. 단 #4 투자자문업 인가 시 1억 증자 필요.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q2. 송도 vs 용인 어디가 유리한가?</summary><div class="faq-a"><strong>세금 동일 (과밀억제권역 외)</strong>. 임대료·접근성·이미지만 검토. 송도는 IT 이미지·인천공항, 용인은 강남 1시간·임대료 저렴.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q3. 정관 인증료를 내야 하나?</summary><div class="faq-a"><strong>아니오</strong>. 상법 §292 — 자본금 10억 미만 면제. 5,000만 = 면제 명확.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q4. PM320 유료 운영하면 형사처벌인가?</summary><div class="faq-a"><strong>양방향 채널(오픈채팅·텔레그램) 운영 시</strong> 1억 과태료 + 등록 취소 (2024-08 개정). 단방향 정보 제공(블로그·뉴스레터·웹사이트)은 신고 후 가능.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q5. JEPQ 매수 전 무엇을 해야 하나?</summary><div class="faq-a"><strong>W-8BEN-E 작성</strong>. 미제출 시 30% 원천징수. 한국 증권사 외화 데스크 위탁.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q6. 외주 개발자를 사무실에 상주시켜도 되나?</summary><div class="faq-a"><strong>위장도급 위험</strong> (대법원 2010다106436). 발주사 지시 받으면 직접 고용 의무. 별도 공간 + deliverable 단위 + 노무사 자문.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q7. 1인 법인에 감사가 필요한가?</summary><div class="faq-a">자본금 10억 미만 = 의무 없음. 단 정관 명시 시 안정성 ↑.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q8. 결산일 변경 가능한가?</summary><div class="faq-a">가능. 단 정관 변경 + 등기(30~50만). 12월 31일 권고.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q9. 법인세는 언제 내나?</summary><div class="faq-a">결산 후 3개월 이내 (12-31 결산 시 3월말). 부가세는 분기 1·4·7·10월.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q10. 가수금 무이자 대여 한도는?</summary><div class="faq-a">31억원 (회사 내규). 약정서 작성 + 월별 잔액 관리 + 세무사 보고.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q11. 배당은 언제 어떻게 하나?</summary><div class="faq-a">주주총회 결의 → 지분율 분배. 자녀 배당 한도 연 2,000만원 (세제 혜택). 1인 주주는 100% 본인.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q12. 도메인 6개 법인 양도 비용은?</summary><div class="faq-a">가비아 명의 변경 (등록자 변경) — 무료. 단 양도세 확인 필수 (취득가 vs 양도가 차익).</div></details>
-      <details class="faq-item"><summary class="faq-q">Q13. 비상주 사무실에서 회의는 어떻게?</summary><div class="faq-a">사무실별 회의실 포함/별도 다름. §6 표 참조. 직접 방문 시 확인.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q14. 자본시장법 시행령은 어떻게 모니터링하나?</summary><div class="faq-a"><strong>분기 1회</strong> law.go.kr "자본시장법 시행령" 최신 시행일 확인 + 금융위 입법예고(fsc.go.kr/po040301) 향후 6개월 개정안 확인. §16 체크리스트 참조.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q15. 본사 = 송도로 확정한 이유는?</summary><div class="faq-a">✅ 과밀억제권역 외 (서울 대비 등록면허세 -40만 + 부동산 취득세 -8% 중과 회피) + 인천경제자유구역 IT·국제도시 이미지 + 인천공항·KTX 접근성. 용인도 세금 동일하나 이미지·접근성 우위.</div></details>
-      <details class="faq-item"><summary class="faq-q">Q16. #4 = A안으로 확정한 이유는?</summary><div class="faq-a">✅ 신고제 (인가 아님) + 자본금 요건 없음 + 처리 빠름 + PM320 단방향 모델 적합. C안 (투자자문업 인가) 대비 자본금 1억 추가 + 6~12개월 절차 회피. 단방향 채널만 운영 (블로그·뉴스레터·이메일·푸시) 의무.</div></details>
-    </section>
-
-    <!-- §11 외부 전문가 + 협회 URL -->
-    <section class="section" id="sec-11">
-      <header class="section-header">
-        <span class="section-num">11</span>
-        <h2>외부 전문가 — 협회 검증 URL 강조</h2>
-      </header>
-
-      <div class="callout warn">
-        <span class="callout-title">예시 명단 — 실명·실제 견적 아님</span>
-        본 §11 명단은 모두 <strong>예시</strong>입니다. 협회 검증 URL을 통해 본인이 직접 자격 확인 후 의뢰 권고. 자격증 진위·징계 이력·소속 사무소 평판 모두 사전 확인 필수.
-      </div>
-
-      <h3>11.1 협회 자격 검증 URL (필수)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>직역</th><th>협회</th><th>URL</th><th>검증 방법</th></tr></thead>
-          <tbody>
-            <tr><td><strong>변호사</strong></td><td>대한변호사협회</td><td><code>koreanbar.or.kr</code></td><td>변호사 검색 → 등록번호·징계</td></tr>
-            <tr><td><strong>변호사</strong></td><td>대한변협 "나의 변호사"</td><td><code>klaw.or.kr</code></td><td>변호사 검색·평점</td></tr>
-            <tr><td><strong>변호사</strong></td><td>법조인대관 (법률신문)</td><td><code>lawpeople.lawtimes.co.kr</code></td><td>이력·전문분야</td></tr>
-            <tr><td><strong>법무사</strong></td><td>대한법무사협회</td><td><code>kjaar.kabl.kr</code></td><td>등록번호·소속 지방회</td></tr>
-            <tr><td><strong>세무사</strong></td><td>한국세무사회</td><td><code>kacpta.or.kr</code></td><td>회원 검색</td></tr>
-            <tr><td><strong>세무사</strong></td><td>자격증 진위확인</td><td><code>license.kacpta.or.kr</code></td><td>등록번호 입력 자동 진위</td></tr>
-            <tr><td><strong>변리사</strong></td><td>마크앤서 (직접 출원)</td><td><code>marknser.com</code></td><td>변리사 직접 출원 ₩77,000~</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>11.2 검증 단계 (3단계)</h3>
-      <ol>
-        <li><strong>이름·소속 검색</strong> → 협회 URL에서 직접 검색</li>
-        <li><strong>등록번호 확인</strong> → 진위 확인</li>
-        <li><strong>징계 이력 확인</strong> → 변협·법무사회·세무사회 공시 확인</li>
-      </ol>
-
-      <h3>11.3 후기 신뢰도 (참고)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>채널</th><th>활용</th><th>함정</th></tr></thead>
-          <tbody>
-            <tr><td>잡플래닛</td><td>사무소 직원 평판</td><td class="warn">자작 가능</td></tr>
-            <tr><td>로톡 (lawtalk.co.kr)</td><td>변호사 의뢰 후기</td><td class="warn">광고성</td></tr>
-            <tr><td>세무톡</td><td>세무사 의뢰 후기</td><td class="warn">작업글 가능</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>→ <strong>최소 3개 출처 교차 검증</strong> + 협회 검증 URL 1차 확인 필수.</p>
-
-      <h3>11.4 견적 비교 시트 양식</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>항목</th><th>후보 A</th><th>후보 B</th><th>후보 C</th></tr></thead>
-          <tbody>
-            <tr><td>시간당 단가 (변호사 30~50만 / 세무사 10~30만)</td><td></td><td></td><td></td></tr>
-            <tr><td>정액 패키지 (법인 설립 30~80만 / 기장료 월 10~30만)</td><td></td><td></td><td></td></tr>
-            <tr><td>무료 자문 시간 (월 1~2시간 포함 여부)</td><td></td><td></td><td></td></tr>
-            <tr><td>응답 SLA (24·48시간)</td><td></td><td></td><td></td></tr>
-            <tr><td>전문 분야 (자본시장·금융 vs 일반)</td><td></td><td></td><td></td></tr>
-            <tr><td>협회 자격 확인 (URL)</td><td></td><td></td><td></td></tr>
-            <tr><td>징계 이력</td><td></td><td></td><td></td></tr>
-            <tr><td>소속 사무소 평판</td><td></td><td></td><td></td></tr>
-            <tr><td>견적 합계 (1년)</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>11.5 직역별 권고 자문 영역</h3>
-      <ul>
-        <li><strong>자본시장법 변호사 (P0)</strong>: §2.4 #4 자산관리·투자 컨설팅 (시간당 30~50만, 인가 위임 500~2,000만)</li>
-        <li><strong>노동법 변호사·노무사</strong>: §2.1 #1 SW 외주 위장도급 (계약서 검토 30~50만/회)</li>
-        <li><strong>부동산 변호사</strong>: §2.6 #6 경매 명도·임대차 (시간당 30만)</li>
-        <li><strong>세무사 (외화 자산 익숙)</strong>: §2.2 #2 JEPQ 외국납부세액공제 (기장 월 10~30만)</li>
-        <li><strong>법무사</strong>: 법인 등기 (위임 30~80만)</li>
-        <li><strong>변리사</strong>: 상표 출원 (출원료 6만 + 수임료 30~50만)</li>
-      </ul>
-    </section>
-
-    <!-- §12 업종 코드 + 정관 -->
-    <section class="section" id="sec-12">
-      <header class="section-header">
-        <span class="section-num">12</span>
-        <h2>업종 코드 + 정관 사업목적 통합</h2>
-      </header>
-
-      <h3>12.1 업종 코드 통합 표 (§2.7 재게시)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>사업 활동</th><th>KSIC</th><th>사업자등록 업종 코드</th><th>면허·신고</th></tr></thead>
-          <tbody>
-            <tr><td>#1 SW 개발 (응용)</td><td>62010</td><td><strong>642100</strong></td><td>—</td></tr>
-            <tr><td>#1 SW 개발 (시스템)</td><td>62020</td><td><strong>642101</strong></td><td>—</td></tr>
-            <tr><td>#3 경영·IT 컨설팅</td><td>73101</td><td><strong>731010</strong></td><td>—</td></tr>
-            <tr><td>#4 유사투자자문업</td><td>K6499</td><td><strong>749904</strong></td><td class="warn">금감원 신고</td></tr>
-            <tr><td>#4 투자자문업</td><td>661901</td><td>(별도)</td><td class="warn">금감원 인가 + 자본금 1억</td></tr>
-            <tr><td>#6 비주거용 임대업</td><td>68112</td><td><strong>701102</strong></td><td>—</td></tr>
-            <tr><td>#6 비주거용 매매업</td><td>68122</td><td><strong>701109</strong></td><td>—</td></tr>
-            <tr><td>#2·#5 자기자본 운용</td><td>—</td><td>—</td><td>(단순매수 면제)</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>12.2 정관 사업목적 10항 (권고)</h3>
-      <ol>
-        <li>컴퓨터 시스템 통합 및 관리</li>
-        <li>응용 소프트웨어 개발 및 공급</li>
-        <li>시스템 소프트웨어 개발 및 공급</li>
-        <li>정보기술(IT) 및 인공지능(AI) 컨설팅</li>
-        <li>경영 컨설팅 서비스</li>
-        <li>유사투자자문업 (※ 신고 후 활성화)</li>
-        <li>비주거용 부동산 임대업</li>
-        <li>비주거용 부동산 매매업</li>
-        <li>자기자본 운용 및 자산 운용</li>
-        <li>위 각 사업과 관련된 부수 사업 일체</li>
-      </ol>
-      <p><strong>확장 시 정관 변경 비용</strong>: 약 30~50만 (법무사 위탁) + 등록면허세 4만. 추후 #4 인가 시 추가.</p>
-    </section>
-
-    <!-- §13 협회 5개 직접 컨택 일정 (확정 → 다음 액션) -->
-    <section class="section" id="sec-13">
-      <header class="section-header">
-        <span class="section-num">13</span>
-        <h2>협회 검증 절차 — 5개 협회 직접 컨택 일정</h2>
-      </header>
-
-      <h3>13.0 컨택 대상 5개 협회 (D-7 ~ D-3)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>협회</th><th>URL</th><th>컨택 목적</th><th>비용</th><th>일정</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td><strong>대한변호사협회</strong></td><td><code>koreanbar.or.kr</code></td><td>자본시장법 변호사 후보 3인</td><td>무료</td><td>D-7</td></tr>
-            <tr><td>2</td><td><strong>대한법무사협회</strong></td><td><code>kjaar.kabl.kr</code></td><td>법인 등기 법무사 후보 3인 (송도)</td><td>무료</td><td>D-7</td></tr>
-            <tr><td>3</td><td><strong>한국세무사회</strong></td><td><code>kacpta.or.kr</code></td><td>외화 자산 세무사 후보 3인</td><td>무료</td><td>D-6</td></tr>
-            <tr><td>4</td><td><strong>변리사 (마크앤서)</strong></td><td><code>marknser.com</code></td><td>상표 정밀 검색 + 출원 견적</td><td class="num">3~10만</td><td>D-5</td></tr>
-            <tr><td>5</td><td><strong>노무사회</strong></td><td><code>kalpa.or.kr</code></td><td>외주 도급계약 검토 노무사</td><td>무료</td><td>D-5</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>13.1 변호사 자격 검증 (클릭 단위)</h3>
-      <ol>
-        <li><strong>대한변호사협회 (koreanbar.or.kr) 접속</strong></li>
-        <li>상단 메뉴 → "변호사 검색"</li>
-        <li>이름 입력 → 검색</li>
-        <li>결과 화면에서 등록번호 (예: 변호사 등록 제○○○○호), 소속 지방변호사회, 주요 경력 확인</li>
-        <li><strong>징계 이력 별도 확인</strong>: 변협 홈페이지 → "공시·자료" → "징계 공고" 또는 lawpeople.lawtimes.co.kr 법조인대관</li>
-      </ol>
-
-      <h3>13.2 법무사 자격 검증</h3>
-      <ol>
-        <li><strong>대한법무사협회 (kjaar.kabl.kr) 접속</strong></li>
-        <li>"법무사 검색" → 이름·지역 입력</li>
-        <li>등록번호·소속 지방회 확인</li>
-        <li>징계 이력: 협회 공시</li>
-      </ol>
-
-      <h3>13.3 세무사 자격 검증</h3>
-      <ol>
-        <li><strong>한국세무사회 (kacpta.or.kr) 접속</strong></li>
-        <li>"회원 검색" → 이름·지역</li>
-        <li><strong>자격증 진위 확인</strong>: <code>license.kacpta.or.kr/web/issue/license_auth.aspx</code> 등록번호 입력 → 자동 진위 확인 (즉시)</li>
-      </ol>
-
-      <h3>13.4 후기 신뢰도 검증</h3>
-      <ul>
-        <li>잡플래닛: 사무소 직원 평판 (자작 가능)</li>
-        <li>로톡(lawtalk.co.kr): 변호사 의뢰 후기 (광고성)</li>
-        <li>세무톡: 세무사 의뢰 후기 (작업글 가능)</li>
-        <li><strong>함정</strong>: 자작 후기·작업글 가능 → <strong>최소 3개 출처 교차 검증</strong> + 협회 URL 1차 확인 필수</li>
-      </ul>
-    </section>
-
-    <!-- §14 본사 송도 ✅ 확정 + iros 정밀 검색 결과 -->
-    <section class="section" id="sec-14">
-      <header class="section-header">
-        <span class="section-num">14</span>
-        <h2>본사 주소 결정 — 송도 ✅ 확정 + iros 정밀 검색 결과</h2>
-      </header>
-
-      <h3>14.1 결정 ✅ 확정</h3>
-      <div class="callout tip">
-        <span class="callout-title">대표 결정 2026-04-29 12:46 KST</span>
-        <strong>본사 = 송도 (인천경제자유구역)</strong>. 근거: 과밀억제권역 외 → 등록면허세 200,000원 (서울 대비 -40만) + 부동산 취득세 일반 4% (중과 8% 회피) + IT·국제도시 이미지 (소마타·글래스박스 향후 글로벌 확장) + 인천공항·KTX 접근성.
-      </div>
-
-      <h3>14.2 iros 정밀 검색 결과 (Task 6 인용)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>항목</th><th>결과</th><th>신뢰도</th></tr></thead>
-          <tbody>
-            <tr><td>동일 상호 "백엠원스텝"</td><td class="ok"><strong>0건 (잠정)</strong></td><td class="warn">낮음 (40%) — iros 본인인증 필요로 WebFetch 불가</td></tr>
-            <tr><td>유사 상호</td><td class="ok">0건</td><td class="warn">낮음 (40%)</td></tr>
-            <tr><td>등기 가능 여부</td><td class="ok"><strong>잠정 OK</strong></td><td class="warn">낮음 (40%)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout warn">
-        <span class="callout-title">후속 액션 (의무)</span>
-        <ol>
-          <li>변리사 위임 정밀 검색 (3~10만, 1주) — D-5 (§15)</li>
-          <li>상표 출원 동시 검토</li>
-          <li>영문 "BAEKEMWONSTEP" / "100M1S" 도메인·SNS 핸들 동시 확보</li>
-          <li><strong>변리사 자문 전 등기 신청 금지</strong></li>
-        </ol>
-        추가 리스크 (Task 6): "백엠원스텝" 발음·분절 모호성 → 상표 식별력 낮음 / "100M1S" 영문 병기 등기 — 숫자 표기 별도 명시 필요 / 자본시장법 회색지대 우호: 상호에 "투자/자산/금융" 미포함
-      </div>
-
-      <h3>14.3 송도 비상주 사무실 5곳 직접 방문 일정</h3>
-      <ul>
-        <li>1주차 월: IBS타워, 송도컨벤시아 (오전 2곳)</li>
-        <li>1주차 화: G타워, 글로벌캠퍼스 (오전 2곳)</li>
-        <li>1주차 수: BRT 비상주 (오전 1곳)</li>
-        <li>1주차 목: 결정 회의 + 가서명</li>
-      </ul>
-
-      <h3>14.4 iros 동일 상호 검색 절차 (변리사 위임 후)</h3>
-      <ol>
-        <li><strong>본사 = 송도 ✅ 확정</strong> → 송도등기소 관할 (인천지법 송도등기소)</li>
-        <li>변리사가 iros.go.kr 본인인증 로그인</li>
-        <li>"법인등기 → 상호검색"</li>
-        <li>동일 주소·동일 상호 입력 → 검색</li>
-        <li>결과 0건 확인 → 등기 가능 (확정값으로 전환)</li>
-        <li>변리사가 결과 보고서 제공</li>
-      </ol>
-    </section>
-
-    <!-- §15 변리사 상표 정밀 검색 — 다음 액션 -->
-    <section class="section" id="sec-15">
-      <header class="section-header">
-        <span class="section-num">15</span>
-        <h2>변리사 상표 정밀 검색 — 다음 액션</h2>
-      </header>
-
-      <h3>15.1 KIPRIS 한계 (자가 검색)</h3>
-      <ul>
-        <li><strong>KIPRIS (kipris.or.kr)</strong> — 무료 공개 검색</li>
-        <li>한계: ① 외관·칭호·관념 유사 판단 ② 식별력 평가 ③ 거절 가능성 분석 (전문가 영역)</li>
-        <li>3분 검색 가능하지만 거절 위험 미예측</li>
-      </ul>
-
-      <h3>15.2 변리사 컨택 일정 (D-5, 1주)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>단계</th><th>액션</th><th>비용</th><th>일정</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>KIPRIS 1차 자가 검색</td><td class="num">0원</td><td>30분 (D-5 오전)</td></tr>
-            <tr><td>2</td><td>마크앤서 (marknser.com) 견적 요청</td><td class="num">0원</td><td>30분 (D-5 오전)</td></tr>
-            <tr><td>3</td><td>헬프미 (help-me.kr) 견적 요청</td><td class="num">0원</td><td>30분 (D-5 오전)</td></tr>
-            <tr><td>4</td><td><strong>변리사 정밀 조사 의뢰 (3~10만)</strong></td><td class="num">30,000~100,000</td><td>1주 (D-5 ~ D+2)</td></tr>
-            <tr><td>5</td><td>NICE 분류 추천 받기</td><td class="num">포함</td><td>1일</td></tr>
-            <tr><td>6</td><td>출원 결정 + 출원 위임</td><td class="num">관납료 56~62k + 수임료 30~50만</td><td>1주 (선택)</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>15.3 NICE 분류 (PM320·소마타·글래스박스 적용)</h3>
-      <ul>
-        <li><strong>35류</strong>: 광고·사업관리·사무 (PM320 정보제공)</li>
-        <li><strong>36류</strong>: 금융·보험·부동산</li>
-        <li><strong>38류</strong>: 통신 서비스 (글래스박스 채팅)</li>
-        <li><strong>41류</strong>: 교육·오락 (소마타 매칭, 글래스박스)</li>
-        <li><strong>42류</strong>: SW 설계·개발·연구개발 (전 서비스 공통)</li>
-        <li><strong>45류</strong>: 법률·보안·사적 서비스 (소마타 데이팅)</li>
-      </ul>
-
-      <h3>15.4 변리사 직접 출원 (예시)</h3>
-      <ul>
-        <li><strong>마크앤서</strong>: <code>marknser.com</code> — 변리사 직접 ₩77,000~</li>
-        <li><strong>헬프미</strong>: 자가 검색 + 변리사 자문 패키지</li>
-        <li><strong>유사 상표 검색 키워드</strong>: "백엠원", "엠원스텝", "100M1Step", "OneStep" 등</li>
-      </ul>
-    </section>
-
-    <!-- §16 자본시장법 변호사 자문 — 다음 액션 (CARD-024) -->
-    <section class="section" id="sec-16">
-      <header class="section-header">
-        <span class="section-num">16</span>
-        <h2>자본시장법 변호사 자문 — 다음 액션 (CARD-024)</h2>
-      </header>
-
-      <h3>16.1 자문 권고 (CARD-024, D+12)</h3>
-      <div class="table-wrap">
-        <table>
-          <tbody>
-            <tr><td><strong>자문 대상</strong></td><td>자본시장법 §101 (유사투자자문업) 신고 사전 검토</td></tr>
-            <tr><td><strong>변호사 자격</strong></td><td>자본시장법 전문 (법무법인 또는 단독 사무소)</td></tr>
-            <tr><td><strong>비용</strong></td><td class="num"><strong>50~200만</strong> (시간당 30~50만 × 4~6시간)</td></tr>
-            <tr><td><strong>시점</strong></td><td>D+12 (등기 후·신고 전)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout warn">
-        <span class="callout-title">의뢰 항목 (필수) — §α 18건 검증</span>
-        <ol>
-          <li>§17.2 미확보 18건 검증 (REQ-007 6건 + Task 7 12건)</li>
-          <li>신고서 양식 검토</li>
-          <li>양방향 채널 정의 검증 (단방향 broadcast 회색지대)</li>
-          <li>광고 의무사항 정확 문구</li>
-          <li>PM320 단방향 모델 적합성 확정</li>
-          <li>사전 상담 일정 안내</li>
-        </ol>
-      </div>
-
-      <h3>16.2 시행령 모니터링 절차 (분기 1회, 신고 후)</h3>
-      <ol>
-        <li><strong>국가법령정보센터 (law.go.kr)</strong> "자본시장법 시행령" 최신 시행일 확인</li>
-        <li><strong>금융위원회 입법예고 (fsc.go.kr/po040301)</strong> 향후 6개월 개정안 확인</li>
-        <li>변경 시 영향 분석 (영업 모델·신고 의무·자본금 요건)</li>
-      </ol>
-
-      <h3>16.3 신고 직전 재확인 5항목 체크리스트</h3>
-      <ul class="checklist">
-        <li>자본시장법 §101 (유사투자자문업) 최신 조문</li>
-        <li>시행령 별표 3 (자본금) 최신 시행일</li>
-        <li>양방향 채널 금지 등 광고 규제 최신</li>
-        <li>결격사유 변경 여부</li>
-        <li>신고 양식 변경 여부 (FSS 공지)</li>
-      </ul>
-
-      <h3>16.4 변호사 견적 비교 시트</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>항목</th><th>후보 A</th><th>후보 B</th><th>후보 C</th></tr></thead>
-          <tbody>
-            <tr><td>시간당 단가 (30~50만)</td><td></td><td></td><td></td></tr>
-            <tr><td>자본시장법 전문 경력 (5년+)</td><td></td><td></td><td></td></tr>
-            <tr><td>유사투자자문업 신고 위임 실적</td><td></td><td></td><td></td></tr>
-            <tr><td>견적 합계 (4~6시간)</td><td></td><td></td><td></td></tr>
-            <tr><td>응답 SLA (24·48시간)</td><td></td><td></td><td></td></tr>
-            <tr><td>협회 자격 확인 (변협 URL)</td><td></td><td></td><td></td></tr>
-            <tr><td>징계 이력</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- §17 면책 + 출처 -->
-    <section class="section" id="sec-17">
-      <header class="section-header">
-        <span class="section-num">17</span>
-        <h2>면책 + 출처</h2>
-      </header>
-
-      <h3>17.1 출처 (α 직접 인용)</h3>
-
-      <h4>법령</h4>
-      <ul>
-        <li>자본시장과 금융투자업에 관한 법률 (<code>law.go.kr</code>)</li>
-        <li>수도권정비계획법 시행령 별표1 (<code>law.go.kr</code>)</li>
-        <li>지방세법 제13조 과밀억제권역 중과 (<code>law.go.kr</code>)</li>
-        <li>상법 §292 정관 인증 — 자본금 10억 미만 면제 (<code>lawtimes.co.kr</code>)</li>
-      </ul>
-
-      <h4>정부 기관</h4>
-      <ul>
-        <li>금융감독원 유사투자자문업 신고 (<code>fine.fss.or.kr</code>)</li>
-        <li>금융위원회 입법예고 (<code>fsc.go.kr/po040301</code>)</li>
-        <li>한국은행 외환거래 신고 (<code>bok.or.kr</code>)</li>
-        <li>국세청 외국납부세액공제 (<code>nts.go.kr</code>)</li>
-      </ul>
-
-      <h4>협회·자격 검증</h4>
-      <ul>
-        <li>대한변호사협회 (<code>koreanbar.or.kr</code>)</li>
-        <li>대한변협 나의 변호사 (<code>klaw.or.kr</code>)</li>
-        <li>대한법무사협회 (<code>kjaar.kabl.kr</code>)</li>
-        <li>한국세무사회 (<code>kacpta.or.kr</code>)</li>
-        <li>세무사 자격증 진위확인 (<code>license.kacpta.or.kr</code>)</li>
-      </ul>
-
-      <h4>상표·등기</h4>
-      <ul>
-        <li>KIPRIS 상표 검색 (<code>kipris.or.kr</code>)</li>
-        <li>마크앤서 변리사 출원 (<code>marknser.com</code>)</li>
-        <li>인터넷등기소(iros) (<code>iros.go.kr</code>)</li>
-        <li>온라인 법인설립시스템 (<code>startbiz.go.kr</code>)</li>
-      </ul>
-
-      <h4>분석 자료</h4>
-      <ul>
-        <li>헬프미 — 유사투자자문업 법인 설립 / 1인 법인 주식 투자 / 법인 등록면허세</li>
-        <li>샤플 — 위장도급 판단기준 / Lawwave — 도급과 근로자파견 경계</li>
-        <li>대법원 2010다106436 판결 (<code>casenote.kr</code>)</li>
-        <li>흠택스 — 외국납부세액공제 / 김·장 — 자본시장법 시행령 개정</li>
-        <li>용인시민신문 — 용인 규제</li>
-      </ul>
-
-      <h3>17.2 출처 미확보·법률 자문 필요 영역 (FLR-AGT-002 — 18건 정직 표시)</h3>
-      <p>본 spawn에서 정확히 확인 못한 영역. <strong>변호사 자문 필수</strong> (§16 자문 50~200만에 포함).</p>
-
-      <h4>REQ-007 6건 (v4 인계, 그대로 유지)</h4>
-      <div class="callout warn">
-        <ol>
-          <li>자본시장법 시행령 별표 3 정확 자본금 표 — WebSearch 명확 추출 실패</li>
-          <li>유사투자자문업 광고 의무사항 정확 문구 — 2024-08 개정 시행 가이드라인 미확보</li>
-          <li>자기자본 매매 본업화 임계 (매출 비중·빈도) — 법령 명시 없음, 판례·유권해석 영역</li>
-          <li>JEPQ 외환거래법 정확 신고 의무 — 한국 증권사 위탁 시 면제 추정, 한국은행 직접 확인 권장</li>
-          <li>수도권정비계획법 시행령 별표1 PDF 추출 실패 — 송도 제외는 2차 출처(헬프미·용인시민신문)로 확인</li>
-          <li>법인의 외국 배당 외국납부세액공제 정확 한도·계산식 — 법인세법 §57·시행령 정확 조항 미확보</li>
-        </ol>
-      </div>
-
-      <h4>Task 7 (유사투자자문 가이드 v1) §α 12건 (v5 신규 추가)</h4>
-      <div class="callout warn">
-        <ol start="7">
-          <li>신고서 양식 (FSS 공지 정확 양식 미확보)</li>
-          <li>시행령 일자 (2024-08 양방향 금지 정확 시행일)</li>
-          <li>자본금 요건 출처 (헬프미 외 1차 출처 미확보)</li>
-          <li>협회 가입비 (한국유사투자자문협회 등 가입 의무 여부)</li>
-          <li>위반 과태료 정확 산정 기준 (1억 = 상한, 실제 부과 기준)</li>
-          <li>광고 사전 심의 (FSS 사전 검토 의무 여부)</li>
-          <li>온라인 신고 (fine.fss.or.kr 외 전자 신고 가능 여부)</li>
-          <li>처리 기간 (신고 접수 후 영업 개시까지 정확 일수)</li>
-          <li>임원 결격 (대표자 외 임원 결격 사유 범위)</li>
-          <li>사전 상담 (FSS 직접 사전 상담 일정·비용·예약 절차)</li>
-          <li>영업보고서 (분기/연간 보고 의무·양식·기한)</li>
-          <li>회계감사 (자기자본 일정 규모 이상 시 외부 회계감사 의무)</li>
-        </ol>
-        <p style="margin-top:8px;"><strong>권고</strong>: 위 18건 모두 <strong>자본시장법 변호사 1회 자문 (50~200만, §16 CARD-024)</strong> 으로 일괄 검증. 신고 전 의무.</p>
-      </div>
-    </section>
-
-    <!-- 면책 -->
-    <div class="disclaimer">
-      <span class="callout-title">면책 사항</span>
-      <p>본 문서는 1인 법인 설립의 <strong>공개 정보 기반 1차 정리</strong>이며, <strong>법률·세무·인허가 자문의 대체가 아닙니다</strong>. 자본시장법 시행령은 자주 개정되므로 신고/등기 직전 변호사·세무사 직접 자문 의무. §6 비상주 사무실 + §11 외부 전문가 명단은 <strong>예시</strong>이며 추천 자체가 자격·품질을 보증하지 않습니다.</p>
-      <p>참고 출처: 인터넷등기소(<code>iros.go.kr</code>) · 위택스(<code>wetax.go.kr</code>) · 홈택스(<code>hometax.go.kr</code>) · 정부24(<code>gov.kr</code>) · 4대 사회보험 정보연계센터(<code>4insure.or.kr</code>) · 온라인 법인설립시스템(<code>startbiz.go.kr</code>) · 금융감독원(<code>fss.or.kr</code>) · 법령 정보(<code>law.go.kr</code>) · 한국표준산업분류(<code>kssc.kostat.go.kr</code>) · 대한법무사협회(<code>kabl.kr</code>) · 한국세무사회(<code>kacpta.or.kr</code>) · 가족관계의 등록(<code>efamily.scourt.go.kr</code>) · 전자수입인지(<code>e-revenuestamp.or.kr</code>).</p>
-    </div>
   </main>
 
 </div>
@@ -2184,10 +1015,9 @@ D-7 ----------------- D 0 ----------------- D+7 ---------------- D+30
 <footer>
   <div class="links">
     <a href="/">Home</a>
-    <a href="/news.html">News</a>
-    <a href="/incorporation.html">법인 설립</a>
-    <a href="/privacy.html">Privacy</a>
-    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+    <a href="/#contact">Contact</a>
   </div>
   <div class="copyright">© 2026 100M1S · Far. One Step.</div>
 </footer>
