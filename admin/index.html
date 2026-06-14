@@ -124,6 +124,11 @@
            데이터=rounds[] 직접 집계(summary.*_rounds 분해 필드는 total과 합산 불일치 → 미사용·FLR-AGT-002). -->
       <div id="conv-roundbar" class="conv-statebar" aria-label="서비스별 라운드 수렴 현황"></div>
 
+      <!-- ⓪-a4 상태 추이 — state_transitions(실측 ts 보유 사건만)를 시간축 위 repo별 행으로.
+           위 둘(상태 스냅샷·라운드 수렴)은 '지금' 분포, 본 섹션은 '시간에 따라' 상태가 바뀐 이력(다른 축).
+           거짓 충실성 0(FLR-AGT-002): coverage(실측/전체) 헤더 노출 + ts 없는 사건 미생성(소급 추정 0). -->
+      <div id="conv-transitions" class="conv-statebar conv-transitions" aria-label="서비스별 상태 추이(시간별 전이)"></div>
+
       <!-- ⓪ 서비스(repo)별 요약 — summary 키에서 동적 렌더(하드코딩 0, N개 확장 안전) -->
       <div id="conv-svc-strip" class="conv-svc-strip" aria-label="서비스별 수렴 요약"></div>
 

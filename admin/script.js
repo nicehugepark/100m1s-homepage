@@ -483,6 +483,104 @@
       <div class="sb-rows">${rows}</div>`;
   }
 
+  // ⓪-a4 상태 추이 — state_transitions(실측 ts 보유 사건만)를 시간축 위 repo별 행으로.
+  //   위 막대 둘(상태 스냅샷·라운드 수렴)은 '지금' 분포(현재 단면), 본 섹션은 '시간에 따라
+  //   상태가 어떻게 바뀌었나'(전이 이력) → 다른 축이라 형제 섹션 분리(§정보위계: 화면=한 메시지).
+  //   거짓 충실성 0(FLR-AGT-002): coverage(실측/전체)를 헤더에 그대로 노출. ts 없는 사건은
+  //   백엔드가 애초 emit 안 함(소급 미생성) → 빈 시간대는 마커 없음(보간·가짜 점 0).
+  //   색·패턴 = stateMeta(s).cls 재사용(적록색맹 패턴 자동 상속). kind = 마커 모양으로 변별,
+  //   is_approx = 흐림(opacity)으로 "근사 시각" 정직 표기. is_snapshot = 테두리(전이 아님).
+  const TR_KIND_META = {
+    verdict_emitted:  { sym: "●", label: "판정" },   // 원: 판정 전이(실측 mtime)
+    round_snapshot:   { sym: "◆", label: "라운드" }, // 마름모: 라운드 현재상태 스냅샷
+    request_captured: { sym: "▸", label: "요청" },   // 삼각: 요청 발화(근사 시각)
+  };
+  function trKindMeta(k) { return TR_KIND_META[k] || { sym: "•", label: k || "기타" }; }
+  function renderConvTransitions(conv) {
+    const host = el("conv-transitions");
+    if (!host) return;
+    const trs = (conv.state_transitions || [])
+      .filter((e) => e && e.ts && !isNaN(Date.parse(e.ts)))
+      .map((e) => ({ ...e, t: Date.parse(e.ts) }))
+      .sort((a, b) => a.t - b.t);
+    const cov = conv.state_timeline_coverage || null;
+    if (!trs.length) {
+      host.innerHTML = `<div class="tl-head">상태 추이</div>`
+        + `<p class="hint">실측 시각을 가진 상태 전이 기록이 없습니다 (거짓 시각 미생성).</p>`;
+      return;
+    }
+    const t0 = trs[0].t, t1 = trs[trs.length - 1].t, span = (t1 - t0) || 1;
+    // repo → 전이들. 행 정렬: 전이 많은 repo 먼저(활동 큰 곳), 동률은 이름순.
+    const byRepo = {};
+    const stateSet = new Set(), kindSet = new Set();
+    trs.forEach((e) => {
+      const repo = (e.repo && String(e.repo).trim()) || "미상";
+      (byRepo[repo] = byRepo[repo] || []).push(e);
+      stateSet.add((e.state && String(e.state).trim()) || "미상");
+      kindSet.add(e.kind);
+    });
+    const repos = Object.keys(byRepo).sort((a, b) =>
+      byRepo[b].length - byRepo[a].length || a.localeCompare(b));
+    // 범례 1: 상태 색(stateMeta.cls 재사용 — 색+라벨 병기, 색 단독 의존 0).
+    const states = [...stateSet].sort((a, b) => stateRank(a) - stateRank(b) || a.localeCompare(b));
+    const stateLeg = states.map((s) => {
+      const m = stateMeta(s);
+      return `<span class="sb-leg"><i class="tr-leg-sw ${escape(m.cls)}"></i>`
+        + `<span class="sb-leg-k">${escape(m.label)}</span></span>`;
+    }).join("");
+    // 범례 2: kind 마커 모양(색맹 안전 — 모양으로 종류 변별).
+    const kinds = [...kindSet].sort();
+    const kindLeg = kinds.map((k) => {
+      const km = trKindMeta(k);
+      return `<span class="sb-leg"><span class="tr-leg-sym" aria-hidden="true">${km.sym}</span>`
+        + `<span class="sb-leg-k">${escape(km.label)}</span></span>`;
+    }).join("")
+      + `<span class="sb-leg tr-leg-approx"><span class="tr-leg-sym tr-approx" aria-hidden="true">${trKindMeta("request_captured").sym}</span>`
+      + `<span class="sb-leg-k">흐림 = 근사 시각</span></span>`;
+    // repo별 1행 = 라벨 + 시간 트랙(전이 마커를 시간 비율 위치에 절대배치).
+    const rows = repos.map((repo) => {
+      const evs = byRepo[repo];
+      const marks = evs.map((e) => {
+        const m = stateMeta(e.state);
+        const km = trKindMeta(e.kind);
+        const leftPct = ((e.t - t0) / span) * 100;
+        const cls = ["tr-mark", escape(m.cls)];
+        if (e.is_approx) cls.push("tr-approx");       // 흐림 = 근사 시각(정직)
+        if (e.is_snapshot) cls.push("tr-snapshot");   // 테두리 = 전이 아닌 스냅샷
+        const apx = e.is_approx ? " · 근사 시각" : "";
+        const snp = e.is_snapshot ? " · 스냅샷(전이 아님)" : "";
+        return `<span class="${cls.join(" ")}" style="left:${leftPct.toFixed(2)}%"`
+          + ` title="${escape(tlFmt(e.t))} · ${escape(repoDisplay(repo))} · ${escape(m.label)} · ${escape(km.label)}${apx}${snp}"`
+          + ` aria-label="${escape(tlFmt(e.t))} ${escape(m.label)} ${escape(km.label)}${apx}">${km.sym}</span>`;
+      }).join("");
+      return `<div class="tr-row" role="group" aria-label="${escape(repoDisplay(repo))} 상태 전이 ${evs.length}건">
+        <div class="tr-row-head"><span class="sb-repo">${escape(repoDisplay(repo))}</span><span class="sb-total">${evs.length}</span></div>
+        <div class="tr-track">${marks}</div>
+      </div>`;
+    }).join("");
+    // coverage 정직 노출 — 유형별 실측/전체 + 근사 여부(FLR-AGT-002 가짜 채움 0).
+    const TR_COV_LABEL = { verdict: "판정", round: "라운드", request: "요청" };
+    let covLine = "";
+    if (cov) {
+      // 유형별 {available,total} 객체만 — note(설명 문자열) 등 비-카운트 키는 제외(노이즈 0).
+      const parts = Object.keys(cov)
+        .filter((k) => cov[k] && typeof cov[k] === "object" && "total" in cov[k])
+        .map((k) => {
+          const c = cov[k] || {};
+          const apx = c.approx ? ' <span class="tr-cov-approx">(근사)</span>' : "";
+          return `${escape(TR_COV_LABEL[k] || k)} ${c.available ?? "?"}/${c.total ?? "?"}${apx}`;
+        });
+      covLine = `<div class="tr-cov" role="note">실측 시각 보유: ${parts.join(" · ")} — ts 없는 사건은 미생성(소급 추정 0)</div>`;
+    }
+    host.innerHTML =
+      `<div class="tl-head">상태 추이
+        <span class="tl-sub">서비스별 상태가 <b>시간에 따라</b> 어떻게 바뀌었나 — 위 ‘상태 스냅샷/라운드 수렴’은 ‘지금’ 분포, 본 추이는 전이 이력. ${escape(tlFmt(t0))} ~ ${escape(tlFmt(t1))} · 총 ${trs.length}건.</span>
+      </div>
+      <div class="sb-legend tr-legend" role="group" aria-label="상태·종류 범례">${stateLeg}<span class="tr-leg-div" aria-hidden="true"></span>${kindLeg}</div>
+      <div class="tr-rows">${rows}</div>
+      ${covLine}`;
+  }
+
   // ① 서비스(repo) 요약 스트립 — summary 키에서 동적 렌더(하드코딩 0·미션 4축).
   // HOME·ADMIN·INFRA 등 N개로 늘어도 레이아웃 안 깨짐. status: active/converged/idle.
   const SVC_STATUS = {
@@ -825,8 +923,10 @@
   //   거짓 채움 0(FLR-AGT-002): 빈 구간은 막대 없음(높이 0=그리지 않음), 보간·최소높이 없음.
   function tlBarBuckets(tl, v0, v1) {
     const viewHrs = ((v1 - v0) || 1) / 3600000;
-    // 보이는 시간폭을 약 30칸으로 — 1/2/3/6h 스냅(전체 보기서도 시간당 변동이 촘촘).
-    const barHrs = viewHrs <= 1.5 ? 1
+    // 보이는 시간폭을 약 30칸으로 — 0.5/1/2/3/6h 스냅(전체 보기서도 시간당 변동이 촘촘).
+    // "자세한 시간대" 1단계: 깊게 줌인(≤12h)하면 30분(0.5h) 버킷으로 세밀화 — 1시간 안의
+    // 변동까지 분해(거짓 채움 0: 빈 30분 칸은 막대 없음). 6h 같은 넓은 칸은 불변(전체보기 회귀 0).
+    const barHrs = viewHrs <= 12 ? 0.5
       : viewHrs <= 60 ? 1 : viewHrs <= 96 ? 2 : viewHrs <= 200 ? 3 : 6;
     const barStepMs = barHrs * 3600000;
     const buckets = {}; // bucketStartMs → count(전 시리즈 합 = 그 시간대 '실제' 밀도)
@@ -1675,6 +1775,7 @@
     renderConvTimeline(conv);
     renderConvStatebar(conv);
     renderConvRoundbar(conv);
+    renderConvTransitions(conv);
     renderConvGlance(conv);
     renderConvTrend(conv);
     renderConvActive(conv);

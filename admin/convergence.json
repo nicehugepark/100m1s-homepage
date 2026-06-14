@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-15T00:06:40.041237+09:00",
+  "generated_at": "2026-06-15T06:46:04.390240+09:00",
   "summary": {
     "ADMIN": {
       "status": "idle",
@@ -460,12 +460,6 @@
   },
   "activity_timeline": [
     {
-      "ts": "2026-06-14T14:43:49.431887+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r54-marketing.md"
-    },
-    {
       "ts": "2026-06-14T14:53:04.356587+09:00",
       "type": "verdict",
       "repo": "BYBIAS",
@@ -788,6 +782,12 @@
       "type": "verdict",
       "repo": "공통",
       "label": "(내부코드)-rnd-admin-003-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-15T06:37:36.218176+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "r63-kpop-fan-번역 심사.md"
     },
     {
       "ts": "2026-06-15T08:53:00+09:00",
@@ -2582,6 +2582,16 @@
       "is_approx": false
     },
     {
+      "ts": "2026-06-15T06:37:36.218176+09:00",
+      "entity_type": "verdict",
+      "entity_id": "r63-kpop-fan-번역 심사.md",
+      "repo": "공통",
+      "state": "unknown",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
       "ts": "2026-06-15T08:53:00+09:00",
       "entity_type": "request",
       "entity_id": "Q-158",
@@ -2834,8 +2844,8 @@
   ],
   "state_timeline_coverage": {
     "verdict": {
-      "available": 133,
-      "total": 133,
+      "available": 134,
+      "total": 134,
       "approx": false
     },
     "round": {
@@ -2852,8 +2862,8 @@
   },
   "freshness": {
     "last_activity_ts": "2026-06-15T18:38:00+09:00",
-    "generated_at": "2026-06-15T00:06:40.041237+09:00",
-    "stale_minutes": -1112
+    "generated_at": "2026-06-15T06:46:04.390240+09:00",
+    "stale_minutes": -712
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -2882,7 +2892,7 @@
     "verdict r57-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r57-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r58-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "round_id 미매핑 verdict 53건 (frontmatter 미적용·점진 마이그레이션 백로그)",
+    "round_id 미매핑 verdict 54건 (frontmatter 미적용·점진 마이그레이션 백로그)",
     "ROUND-LOG 비정상 칸 수 라운드 2건 (graceful 패딩·drop 0): RND-BYBIAS-051(7칸), RND-BYBIAS-052(7칸) — 표준 8칸 정렬 권고(tier/verdict 칸 누락)"
   ],
   "requests": [
@@ -8606,6 +8616,41 @@
       "p1_items": []
     },
     {
+      "file": "r63-kpop-fan-번역 심사.md",
+      "ts": "2026-06-15T06:37:36.218176+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-063-kpop-fan-번역 심사",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO (영어 고정)",
+      "improvements": [
+        {
+          "text": "[채택] 질문 'Where are you?' 전 5언어 EN 고정 — 답 'By vias.'와 동일 영어 고정 원칙 연장. 콜앤리스폰스 device 무결성 유지",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-①] ja/zh 현지어 sub-line 동반 의무 — 질문 바로 아래 또는 동일 장치 내 뜻풀이: ja '推しのいるところへ'(네 최애가 있는 곳으로) / zh-cn '在最爱的地方' / zh-tw '在最愛的地方'",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-②] ko 현지어 sub-line 선택 허용 — '어디야?' 병기 가능(구어 친근감 추가). 단 main copy = EN 고정",
+          "state": "미해소"
+        },
+        {
+          "text": "[위험 관리] 오역 차단 실현 — 자동번역 '어디야?→Where to?'(ja tc4 캐시 실측 'Where to?') 방지 효과 확인",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
       "file": "r7-home-menu-confirm-총괄 심사 패널.md",
       "ts": "2026-06-14T03:56:06.326462+09:00",
       "doc_id": "(내부코드)",
@@ -8666,7 +8711,7 @@
   ],
   "trend_mapping": {
     "verdicts_mapped_to_round": 16,
-    "verdicts_total": 133,
+    "verdicts_total": 134,
     "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
   }
 }

@@ -444,6 +444,59 @@ footer {
 /* 대체됨 = solid 흐림 */
 .sb-leg-sw.conv-superseded { background: var(--bd2); }
 .sb-leg-k { white-space: nowrap; }
+
+/* ── ⓪-a4 상태 추이(state_transitions) — 시간축 위 repo별 전이 마커 ──
+   색(stateMeta.cls→글자색) + 모양(kind 심볼) 이중 인코딩으로 색 단독 의존 0(WCAG 1.4.1).
+   is_approx=흐림(근사 시각 정직), is_snapshot=테두리(전이 아님). 거짓 채움 0: 빈 시간대 마커 없음. */
+.tr-legend { flex-wrap: wrap; row-gap: 6px; }
+.tr-leg-div { width: 1px; height: 13px; background: var(--bd); margin: 0 4px; flex: none; }
+.tr-leg-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.tr-leg-sw.conv-ok { background: var(--pos); }
+.tr-leg-sw.conv-no { background: var(--ru); }
+.tr-leg-sw.conv-cand { background: var(--am); }
+.tr-leg-sw.conv-prog { background: var(--neu); }
+.tr-leg-sw.conv-deploy { background: var(--tl); }
+.tr-leg-sw.conv-seed { background: var(--am); }
+.tr-leg-sw.conv-hold, .tr-leg-sw.conv-superseded { background: var(--bd2); }
+.tr-leg-sw:not([class*="conv-"]) { background: var(--dm); } /* 미상 */
+.tr-leg-sym { font-size: 12px; line-height: 1; color: var(--tx2); width: 13px; text-align: center; flex: none; }
+.tr-leg-approx .tr-leg-sym.tr-approx { opacity: .42; }
+.tr-rows { display: flex; flex-direction: column; gap: 8px; }
+.tr-row-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 3px; }
+/* 시간 트랙 = 상대배치 레일. 마커는 시간 비율(left%)로 절대배치. 좌우 7px 여백 = 양끝 마커 잘림 방지. */
+.tr-track {
+  position: relative; height: 22px; border-radius: 6px;
+  border: 1px solid var(--bd); background: var(--bg2);
+  margin: 0 7px;
+}
+.tr-mark {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  font-size: 12px; line-height: 1; cursor: default;
+  transition: transform .12s, filter .12s;
+}
+.tr-mark:hover, .tr-mark:focus { transform: translate(-50%, -50%) scale(1.45); filter: brightness(1.15); z-index: 2; }
+/* 색 = 상태(stateMeta.cls) 글자색. 모양(심볼)이 kind를 변별 → 색맹에서도 종류 구분. */
+.tr-mark.conv-ok { color: var(--pos); }
+.tr-mark.conv-no { color: var(--ru); }
+.tr-mark.conv-cand { color: var(--am); }
+.tr-mark.conv-prog { color: var(--neu); }
+.tr-mark.conv-deploy { color: var(--tl); }
+.tr-mark.conv-seed { color: var(--am); }
+.tr-mark.conv-hold, .tr-mark.conv-superseded { color: var(--bd2); }
+.tr-mark:not([class*="conv-"]) { color: var(--dm); } /* 미상 상태 */
+.tr-mark.tr-approx { opacity: .42; } /* 근사 시각 = 흐림(정직 표기) */
+.tr-mark.tr-snapshot { text-shadow: 0 0 0 currentColor; } /* 스냅샷(전이 아님) = 외곽 강조 */
+.tr-mark.tr-snapshot::after {
+  content: ""; position: absolute; inset: -3px -2px; border: 1px dotted currentColor;
+  border-radius: 4px; opacity: .55;
+}
+/* coverage 정직 노출 — 실측/전체 + 근사 표기(FLR-AGT-002 가짜 채움 0) */
+.tr-cov {
+  margin-top: 9px; padding: 6px 9px; font-size: 11px; line-height: 1.5;
+  color: var(--dm); background: var(--bg2); border-radius: var(--radius-sm);
+  border: 1px solid var(--bd); font-variant-numeric: tabular-nums;
+}
+.tr-cov-approx { color: var(--am); font-weight: 600; }
 /* repo 1행 = 라벨 + 100% 트랙 */
 .sb-rows { display: flex; flex-direction: column; gap: 10px; }
 .sb-row-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
