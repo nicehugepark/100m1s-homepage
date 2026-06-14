@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-14T21:58:14.629764+09:00",
+  "generated_at": "2026-06-14T22:55:22.875244+09:00",
   "summary": {
     "ADMIN": {
       "status": "idle",
@@ -17,29 +17,29 @@
     },
     "BYBIAS": {
       "status": "active",
-      "status_label": "진행 중 — 진짜 열린 라운드 9건",
-      "open_requests": 6,
+      "status_label": "진행 중 — 진짜 열린 라운드 9건 · 대체된 옛 라운드 1건",
+      "open_requests": 5,
       "total_requests": 10,
       "open_rounds": 9,
       "milestone_rounds": 0,
-      "superseded_rounds": 0,
-      "converged_rounds": 3,
-      "total_rounds": 14,
-      "latest_round": "RND-BYBIAS-060",
+      "superseded_rounds": 1,
+      "converged_rounds": 4,
+      "total_rounds": 16,
+      "latest_round": "RND-BYBIAS-062",
       "latest_state": "수렴"
     },
     "HOME": {
-      "status": "converged",
-      "status_label": "수렴 완료 — 진짜 열린 라운드 0건 · 옛 라운드 3건은 대체됨(이력)",
+      "status": "active",
+      "status_label": "진행 중 — 진짜 열린 라운드 1건 · 대체된 옛 라운드 3건",
       "open_requests": 4,
       "total_requests": 6,
-      "open_rounds": 0,
+      "open_rounds": 1,
       "milestone_rounds": 3,
       "superseded_rounds": 3,
       "converged_rounds": 3,
-      "total_rounds": 9,
-      "latest_round": "RND-HOME-007",
-      "latest_state": "수렴"
+      "total_rounds": 10,
+      "latest_round": "RND-HOME-008",
+      "latest_state": "미수렴"
     },
     "INFRA": {
       "status": "idle",
@@ -63,9 +63,9 @@
       "milestone_rounds": 2,
       "superseded_rounds": 7,
       "converged_rounds": 4,
-      "total_rounds": 14,
-      "latest_round": "RND-PM320-059",
-      "latest_state": "수렴"
+      "total_rounds": 15,
+      "latest_round": "RND-PM320-060",
+      "latest_state": "unknown"
     },
     "공통": {
       "status": "idle",
@@ -203,8 +203,26 @@
       {
         "round_id": "RND-BYBIAS-060",
         "alias": "R60",
-        "state": "수렴",
+        "state": "대체됨",
         "quality_score": 6.8,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 4
+      },
+      {
+        "round_id": "RND-BYBIAS-061",
+        "alias": "R61",
+        "state": "수렴",
+        "quality_score": 7.5,
+        "quality_n": 1,
+        "defect_sum": 6,
+        "verdict_count": 4
+      },
+      {
+        "round_id": "RND-BYBIAS-062",
+        "alias": "R62",
+        "state": "수렴",
+        "quality_score": 7.2,
         "quality_n": 1,
         "defect_sum": 0,
         "verdict_count": 4
@@ -290,6 +308,15 @@
         "quality_score": 8.8,
         "quality_n": 1,
         "defect_sum": 0,
+        "verdict_count": 1
+      },
+      {
+        "round_id": "RND-HOME-008",
+        "alias": "서브페이지 nav",
+        "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 3,
         "verdict_count": 1
       }
     ],
@@ -419,82 +446,19 @@
         "quality_n": 0,
         "defect_sum": 0,
         "verdict_count": 1
+      },
+      {
+        "round_id": "RND-PM320-060",
+        "alias": "R60 다관점#7",
+        "state": "unknown",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": null,
+        "verdict_count": 0
       }
     ]
   },
   "activity_timeline": [
-    {
-      "ts": "2026-06-14T07:32:28.773044+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r53-marketing.md"
-    },
-    {
-      "ts": "2026-06-14T07:33:12.828597+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r53-legal.md"
-    },
-    {
-      "ts": "2026-06-14T07:33:54.452170+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r53-mobile.md"
-    },
-    {
-      "ts": "2026-06-14T07:35:23.802063+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "pm320-mcap-r58.md"
-    },
-    {
-      "ts": "2026-06-14T07:35:23.802063+09:00",
-      "type": "round",
-      "repo": "PM320",
-      "label": "RND-PM320-058 (R58 시총)"
-    },
-    {
-      "ts": "2026-06-14T07:38:00.254935+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r53-a11y-seo.md"
-    },
-    {
-      "ts": "2026-06-14T07:54:10.784334+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r53-2nd-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T07:54:10.784334+09:00",
-      "type": "round",
-      "repo": "BYBIAS",
-      "label": "RND-BYBIAS-053 (R53)"
-    },
-    {
-      "ts": "2026-06-14T08:53:00+09:00",
-      "type": "request",
-      "repo": "PM320",
-      "label": "\"뉴스 해석 한줄 과하다 / 뉴스 대부분 사실 노이지 / 시장지수(국채·원유·환율) 사라짐\" (08:53)"
-    },
-    {
-      "ts": "2026-06-14T09:24:00+09:00",
-      "type": "request",
-      "repo": "PM320",
-      "label": "\"휴장이라며 가리는데 테마 거래대금 추이는 왜 가렸나·상한가 추이는 안 가림·뉴스·지수도\" (09:24) — **휴장 가림 적정성**"
-    },
-    {
-      "ts": "2026-06-14T09:35:00+09:00",
-      "type": "request",
-      "repo": "HOME",
-      "label": "\"홈페이지와 PM320 리포 분리·pm320.100m1s.com CNAME 추가함·분리 생성\" (09:35)"
-    },
-    {
-      "ts": "2026-06-14T09:35:00+09:00",
-      "type": "request",
-      "repo": "HOME",
-      "label": "\"홈 제품 라인업 카테고리 세분화·주식 카테고리(PM320 프로토타입+향후 서비스+용어/팁/교육)·ByBias 베타 노출\" (09:35)"
-    },
     {
       "ts": "2026-06-14T09:45:00+09:00",
       "type": "request",
@@ -902,12 +866,84 @@
       "type": "verdict",
       "repo": "공통",
       "label": "(내부코드)-rnd-admin-002-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T22:12:04.630392+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r61-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T22:16:24.637571+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r61-branding-critic.md"
+    },
+    {
+      "ts": "2026-06-14T22:17:01.207893+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r61-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-14T22:17:34.453501+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r61-bybias-guest-pool.md"
+    },
+    {
+      "ts": "2026-06-14T22:17:34.453501+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-061 (R61)"
+    },
+    {
+      "ts": "2026-06-14T22:25:14.243108+09:00",
+      "type": "verdict",
+      "repo": "HOME",
+      "label": "rnd-home-008-subpage-nav-design.md"
+    },
+    {
+      "ts": "2026-06-14T22:25:14.243108+09:00",
+      "type": "round",
+      "repo": "HOME",
+      "label": "RND-HOME-008 (서브페이지 nav)"
+    },
+    {
+      "ts": "2026-06-14T22:36:29.068001+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r62-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T22:39:48.382182+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r62-branding-critic.md"
+    },
+    {
+      "ts": "2026-06-14T22:40:41.791216+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r62-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-14T22:41:32.060890+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r62-bybias-guest-pool.md"
+    },
+    {
+      "ts": "2026-06-14T22:41:32.060890+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-062 (R62)"
     }
   ],
   "freshness": {
-    "last_activity_ts": "2026-06-14T21:22:50.557173+09:00",
-    "generated_at": "2026-06-14T21:58:14.629764+09:00",
-    "stale_minutes": 35
+    "last_activity_ts": "2026-06-14T22:41:32.060890+09:00",
+    "generated_at": "2026-06-14T22:55:22.875244+09:00",
+    "stale_minutes": 13
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -1032,19 +1068,19 @@
       "close_evidence": "제안만(planning A안·총괄 심사 패널 제3안 성숙도 1축)·**미구현**. 대표 15:30 \"메뉴 카테고리 안 움직임\" catch 정당 → design-home-vitality-impl **구현+배포 완료(23:38 라이브 56cdecdeb·「주식 라인」허브·ByBias 베타·총괄 심사 패널 제3안 위계·run-qa 12/12)** → **홈 R4 총괄 심사 패널 NO**(JDG-016·메뉴 카테고리가 카드 칩으로만·글로벌 nav/드로어 평면 4앵커) → 파생 Q-160-d1 → R5 fix(nav Products▾ 드롭다운 + 모바일 드로어 아코디언) 배포 → **홈 R6 총괄 심사 패널 YES**(JDG-003·메뉴 위계 해소·실클릭 동작) ✅수렴 후보",
       "narrative": "[🔴 대표 15:30 — **\"살아있음=생동감(데이터 신선도 아님)\" 재정의 + 메뉴 카테고리 안 움직임 catch + 판정 누락 불안**] verbatim ①\"살아있다는 느낌이 데이터 신선도를 홈페이지에서 보고싶다는게 아니라 생동감이 필요한게 아닌가\" → **lead 오독 정직 박제: 펄스 라인(최근 업데이트 19h前·발행 282일)=데이터 신선도 readout = 대표 의도 오독.** 진짜 ask=생동감(motion·약동감·미니멀 유지하며 멋 주입). ②\"홈페이지 메뉴 카테고리도 작업 중인거 ",
       "mq_only": false,
-      "round_count": 4,
-      "latest_round_id": "RND-HOME-007",
-      "latest_round_state": "수렴",
+      "round_count": 5,
+      "latest_round_id": "RND-HOME-008",
+      "latest_round_state": "미수렴",
       "latest_verdict": {
-        "verdict": "YES",
-        "quality_score": 8.8,
-        "p0_count": 0,
-        "new_p1_count": 0
+        "verdict": "NO",
+        "quality_score": null,
+        "p0_count": 2,
+        "new_p1_count": 1
       },
       "progress_pct": 25,
       "priority": null,
-      "blocked": false,
-      "blocked_reason": null,
+      "blocked": true,
+      "blocked_reason": "열린 P0 2건 (최신 라운드 RND-HOME-008)",
       "push_status": "live"
     },
     {
@@ -1717,18 +1753,23 @@
       "repo": "BYBIAS",
       "summary": "\"byvias 카피 — by vias / by your vias / stand by your vias 어때?\" (대표 브레인스토밍 2026-06-14 20:24) — 태그라인 결정",
       "captured": "🔍",
-      "state": "판정중",
-      "state_raw": "🔍 판정완료·대표 결정 대기",
-      "owner": "branding 평가 + R60 브랜드 판정(1심 3패널 + 총괄 심사 패널 2심)",
+      "state": "종결",
+      "state_raw": "✅ **R62 복수채용 아키텍처 확정**(카피 4슬롯 A/C/D/B + 비주얼 G·E/F 폐기)·대표 최종확정+구현 대기(ja/zh 2·3비트 서브카피 P0)",
+      "owner": "R61 1심+2심(4파일) + R62 1심+2심(4파일) 총 8파일",
       "provenance": "— / —",
-      "close_evidence": "총괄 심사 패널 위계 병용 권고(C `stand by your vias` EN·ko 시그니처 + Alt1 `Follow Your Bias` ja/zh·캠페인 글로벌 훅)·대표 최종 결정 대기·구현 시 ja/zh 서브카피 P0(推しのルートで / 跟着爱豆走)·발음 vy-as 온보딩 의무. verdict 4파일(r60-branding-critic·r60-kpop-fan-번역 심사·r60-bybias-guest-pool·r60-2nd-총괄 심사 패널).",
+      "close_evidence": "**R62 복수채용 GO 확정**: 카피 4슬롯 = ① 시그니처 A('Where are you?'→'By vias.') ② 랠리/슬로건 C('Stand by your vias.') ③ CTA D('Follow your vias.') ④ 개인화 B('By your vias.'·비퍼블릭). 비주얼 레이어 G('Vias>Bias'·카피 슬롯 아님). **E·F 폐기 확정**(vias 소실=무기 폐기). 퍼블릭 실질 3개(A·C·D)·동일 화면 3개+ 동시 노출 금지. R61 device GO(3비트) 기반 위 D·G 신규 편입 + E/F 폐기로 아키텍처 닫힘. ja/zh B·C·D 서브카피 분리 미구현 = 구현 라운드 P0 자동 승격. verdict 총 8파일(r60 4 + r61 4·backfill R62 4 = 12파일).",
       "narrative": null,
       "mq_only": false,
-      "round_count": 0,
-      "latest_round_id": null,
-      "latest_round_state": null,
-      "latest_verdict": null,
-      "progress_pct": 25,
+      "round_count": 2,
+      "latest_round_id": "RND-BYBIAS-062",
+      "latest_round_state": "수렴",
+      "latest_verdict": {
+        "verdict": "조건부",
+        "quality_score": 7.2,
+        "p0_count": 0,
+        "new_p1_count": 0
+      },
+      "progress_pct": 100,
       "priority": "P0",
       "blocked": false,
       "blocked_reason": null,
@@ -2228,6 +2269,19 @@
       "ts": "2026-06-14T19:59:36.774526+09:00"
     },
     {
+      "round_id": "RND-PM320-060",
+      "alias": "R60 다관점#7",
+      "repo": "PM320",
+      "request_refs": "다관점 풀패널 #7 재판정 — critical 2건 법무 정밀평가(legal 선행) + UX 4종/P1 2건(심사단 후행)",
+      "panel": "legal(critical) → 심사단(UX)",
+      "tier": "1심",
+      "state": "unknown",
+      "state_raw": "🔨 발사·법무평가중",
+      "verdict_links": "(legal 판정단 a1718fd·측정중)",
+      "note": "직전 2차 17:31(MASTER-QUEUE #7): P0 0·shipped-broken 0·4종(의무고지·선정이유·손실동등 해소·초보용어 부분·P1 2)·🔴critical 2건=대표 결정 게이트(①\"추천\" 프레이밍=유사투자자문 ②후보종목명 15:20전 노출=세력)·hook 법적키워드 차단→legal 선행 정합·verdict 단독파일 부재(SSOT) 정합·수렴단정 금지((내부코드))",
+      "ts": null
+    },
+    {
       "round_id": "RND-HOME-001",
       "alias": "홈 renewal",
       "repo": "HOME",
@@ -2315,8 +2369,21 @@
       "state": "수렴",
       "state_raw": "🟢 **수렴 확정**",
       "verdict_links": "r7-home-menu-confirm-총괄 심사 패널.md(YES·JDG-008)",
-      "note": "**현 HOME 최신**·총괄 심사 패널 YES·라이브 byte 동일+4모드 실클릭 회귀 0·P0/신규 P1 0 → R6+R7 2연속 = **홈 메뉴 IA(Q-160) 🟢 수렴 확정**. 자체적발 미세(예정행 cursor:pointer·기능결함 아님·일상정비 권고)",
+      "note": "**홈 메뉴 IA 트랙 최신**·총괄 심사 패널 YES·라이브 byte 동일+4모드 실클릭 회귀 0·P0/신규 P1 0 → R6+R7 2연속 = **홈 메뉴 IA(Q-160) 🟢 수렴 확정**. 자체적발 미세(예정행 cursor:pointer·기능결함 아님·일상정비 권고)",
       "ts": "2026-06-14T03:56:06.326462+09:00"
+    },
+    {
+      "round_id": "RND-HOME-008",
+      "alias": "서브페이지 nav",
+      "repo": "HOME",
+      "request_refs": "Q-160 연장 — 서브페이지 nav 통일(Products▾ 드롭다운 + 죽은 News 제거) 배포 후 IA 일관성 수렴 측정",
+      "panel": "design(1심)",
+      "tier": "1심",
+      "state": "미수렴",
+      "state_raw": "✔️ 판정완료·🔴 미수렴",
+      "verdict_links": "rnd-home-008-subpage-nav-design.md(NO·P0 2·신규P1 1)",
+      "note": "홈 r7 수렴 baseline·서브페이지(pm320·lecture·incorporation·privacy·terms) nav 일관성 + 죽은링크0 + 4모드 시각 · 🔴`/stock` 404 = 의도(제3안 카테고리 미생성·결함 아님) · bybias 제외(B세션). 발사 = AI 시스템 A세션 2026-06-14 21:5x",
+      "ts": "2026-06-14T22:25:14.243108+09:00"
     },
     {
       "round_id": "RND-HOME-어드민-1 (어드민 R1)",
@@ -2520,11 +2587,37 @@
       "request_refs": "**태그라인 브랜드 판정 — 텍스트/전략 (태그라인 미구현·라이브 렌더 미측정)**",
       "panel": "1심 3인(branding-critic·kpop-fan-번역 심사·bybias-guest-pool) + 총괄 심사 패널 2심",
       "tier": "1심+2심",
-      "state": "수렴",
-      "state_raw": "✔️ 판정완료·🟢 조건부GO(비-streak 대상)",
+      "state": "대체됨",
+      "state_raw": "📦 대체됨(→R61 전제교정 상위 대체)",
       "verdict_links": "**r60-branding-critic.md(조건부·JDG-015)** · **r60-kpop-fan-번역 심사.md(조건부GO)** · **r60-bybias-guest-pool.md(조건부·JDG-016)** · **r60-2nd-총괄 심사 패널.md(조건부GO·JDG-017)**",
-      "note": "**위계 병용 권고**: C `stand by your vias` = EN·ko 브랜드 시그니처 히어로 / Alt1 `Follow Your Bias` = 글로벌(ja/zh) 현지 훅·캠페인·해시태그. 1심 분열(branding-critic·kpop 추천 C / guest-pool 팬 5/6 Alt1) → 총괄 심사 패널 2심 위계 종합. **streak 비대상**: 태그라인 미구현·UI 렌더 미측정 — 구현 후 5언어×4모드 렌더 라운드 시 streak 산입. verdict 4파일.",
+      "note": "위계 병용 권고(C `stand by your vias` EN·ko / Alt1 `Follow Your Bias` ja/zh). 1심 분열(branding/kpop 추천 C / guest-pool 팬 5/6 Alt1). **📦 대체됨**: R60 전제('독립 슬로건 6안 경합')가 오판으로 교정 → R61이 '콜앤리스폰스 3비트' 전제로 상위 대체(이력 보존·stuck 아님).",
       "ts": "2026-06-14T20:54:28.394751+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-061",
+      "alias": "R61",
+      "repo": "BYBIAS",
+      "request_refs": "**태그라인 RE-판정(콜앤리스폰스·R60 전제오류 교정)** — REQ-BYBIAS-20260614-001",
+      "panel": "1심 3인(branding-critic·kpop-fan-번역 심사·bybias-guest-pool) + 총괄 심사 패널 2심",
+      "tier": "1심+2심",
+      "state": "수렴",
+      "state_raw": "✔️ 판정완료·🟢 **device GO**(비-streak 대상)",
+      "verdict_links": "**r61-branding-critic.md(GO·JDG-024)** · **r61-kpop-fan-번역 심사.md(조건부GO·JDG-025)** · **r61-bybias-guest-pool.md(GO조건부·JDG-026)** · **r61-2nd-총괄 심사 패널.md(GO·JDG-018)**",
+      "note": "**device GO 확정**: 'Where are you?'→'By vias.' 콜앤리스폰스 시그니처 + 'Stand by your vias.' 독립 랠리/공식 슬로건 + 'By your vias.' 개인화 채널 전용. R60 1심 분열(C vs Alt1) 소멸 — 전제 교정(독립 슬로건→콜앤리스폰스 3비트)으로 전원 GO 계열 수렴. **R60(위계병용 C+Alt1) 상위 대체**. streak 비대상(태그라인 미구현·구현 후 5언어×4모드 렌더 라운드 시 streak 산입). P0 0. verdict 4파일.",
+      "ts": "2026-06-14T22:17:34.453501+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-062",
+      "alias": "R62",
+      "repo": "BYBIAS",
+      "request_refs": "**태그라인 복수채용 판정(브랜드 언어 아키텍처)** — REQ-BYBIAS-20260614-001",
+      "panel": "1심 3인(branding-critic·kpop-fan-번역 심사·bybias-guest-pool) + 총괄 심사 패널 2심",
+      "tier": "1심+2심",
+      "state": "수렴",
+      "state_raw": "✔️ 판정완료·🟢 **복수채용 GO**(비-streak 대상)",
+      "verdict_links": "**r62-branding-critic.md(GO·JDG-028)** · **r62-kpop-fan-번역 심사.md(조건부GO·JDG-029)** · **r62-bybias-guest-pool.md(GO조건부·JDG-030)** · **r62-2nd-총괄 심사 패널.md(GO·JDG-027)**",
+      "note": "**복수채용 GO 확정**: 카피 4슬롯(A 시그니처/C 랠리/D CTA/B 개인화) + 비주얼 1레이어(G 'Vias>Bias') 아키텍처 확정. **E·F 폐기 확정**(vias 브랜드 소실=무기 폐기). 퍼블릭 실질 3개(A·C·D·B는 비퍼블릭). 동일 화면 3개+ 동시 노출 금지·채널 분업 의무. streak 비대상(태그라인 미구현·구현 후 5언어×4모드 렌더 라운드 시 streak 산입). P0 0. verdict 4파일.",
+      "ts": "2026-06-14T22:41:32.060890+09:00"
     }
   ],
   "verdicts": [
@@ -6008,6 +6101,406 @@
       "p1_items": []
     },
     {
+      "file": "r61-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-14T22:12:04.630392+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-061-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-061",
+      "round_alias": "RND-BYBIAS-061",
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "unknown",
+      "quality_score": 7.5,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[채택-① 시그니처 = 'Where are you?' → 'By vias.' 확정] 콜앤리스폰스 단위로만 노출. 브랜드명(ByVias)이 질문의 '답'이 되는 희귀 device — 'By vias.'는 미완성 문장이 아니라 구어 주어생략(어디야? → 바이어스(에).)으로 강점 전환(branding-critic device YES). via=루트 메아리 + bias 메아리 동시. 운용 가드: 'By vias.' 단독 노출 금지 — 반드시 'Where are you?' 질문(또는 등가 콜)과 동반.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-② 독립 랠리/공식 슬로건 = 'Stand by your vias.' 확정] 답강도 최강(Stand by your vias > By vias > By your vias·branding-critic). 콜 없이 단독 노출 가능한 유일 줄 — 히어로/포스터/캠페인 공식 슬로건. R60 채택-① 'C=브랜드 시그니처'를 R61이 '독립 랠리'로 역할 재정의(콜앤리스폰스 안에서 충성 랠리 비트). 총괄 심사 패널 선행 네이밍 자문((내부코드)) 정합: 'bias 말놀이=브랜드의 단 하나뿐인 무기' — Stand by your vias가 그 무기의 최강 발화체.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-③ 개인화 채널 전용 = 'By your vias.' 확정] 'your' 추가로 개인화(친밀 비트) — 앱 내·로그인 후·온보딩 등 사용자 맥락 확보 채널 전용. 퍼블릭 히어로/광고 노출 아님. progression의 중간 친밀 비트로 역할 한정(branding-critic 추천 정합).",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-④ ja/zh 콜앤리스폰스 현지화 = 1비트만 EN 통일·2·3비트 현지 서브카피 P0] kpop-fan-번역 심사 R61: 1비트(앵커 'By vias.')만 전 5언어 EN 통일, 2·3비트(By your vias / Stand by your vias)는 현지화. ja/zh 원문 단독 노출 시 의미 소멸 → ja 推しのルートで·zh-cn 跟着爱豆走·zh-tw 跟著愛豆走 서브카피 분리를 디자인 스펙 P0 강제. zh-cn 2·3비트 기계직역 금지(現地 번역작가 필수). 서브카피 분리 미구현 = 구현 라운드 즉시 P0.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑤ 브랜드 침투 선행 = device 약한 런칭 초기 가드] guest-pool R61 + kpop R61 합치: 런칭 초기 'vias' 미인지 상태에서 device(브랜드명=답)가 약함 + 팬덤 밖 이해 0. → 퍼블릭 광범 노출 전 팬덤 버즈/브랜드 침투 선행. 첫 노출 채널은 서비스 맥락(K-pop 공연 여행) 확보된 곳 한정. 침투 후 device 점화.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑥ 발음·표기 가이드 의무] vias 발음 vy-as(공식) — 온보딩/푸터/about 1회 노출 + 'vias = your bias + your via' 1회 풀어쓰기. 브랜드명 표기 ByVias 카멜 단일(BYVIAS 전대문자 파스 모호 — 총괄 심사 패널 네이밍 자문 ③ 동형). 'vias' 복수철자 혼란(#byvias vs #byvia 분산·via 오타 오해) 가드: 공식 해시태그 #ByVias 단일 고정 노출.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑦ 'bias=편견' 비-팬 부정 오독 가드 — 콜앤리스폰스가 1차 완화] 콜앤리스폰스 구조가 문맥상 via=루트 자동 독해를 유도해 bias=편견 오독을 구조적으로 감소(kpop R61 catch). 단 완전 소거 아님 — 탈맥락 단독 광고(네이버/구글 배너)는 'Stand by your vias.'(독립 줄) + 서비스 1줄 또는 ko 카피 병기. 'By vias.' 비트는 콜 동반 의무라 탈맥락 단독 노출 자체가 금지(운용-① 가드와 동일).",
+          "state": "미해소"
+        },
+        {
+          "text": "[측정-⑧ 구현 후 별도 렌더 라운드 의무] 본 판정=텍스트 전략(라이브 미측정). 콜앤리스폰스 UI 구현 시 5언어(ko/en/ja/zh-cn/zh-tw) × 모바일390/데스크탑1440 × 라이트/다크 4모드 실렌더 측정 라운드 발사 의무. 측정 항목: 콜('Where are you?')+답('By vias.') 단위 노출 레이아웃·답 줄 모바일 줄바꿈·ja/zh 2·3비트 서브카피 분리 노출·3역할(시그니처/랠리/개인화) 채널별 배치 일관·오독 가드 채널 분리·#ByVias 해시태그 단일 표기. 그때 수렴 streak 산입.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r61-branding-critic.md",
+      "ts": "2026-06-14T22:16:24.637571+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-061-branding-critic",
+      "round_id": "RND-BYBIAS-061",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "branding-critic",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[운용-① By vias. 단독 노출 금지] 'By vias.' 비트는 반드시 'Where are you?' 질문(또는 등가 콜)과 동반 노출. 콜 없는 단독 노출 시 device 소멸(미완성 인상·구어 주어생략 강점 발화 불가). 구현 시 단독 노출 확인 P0 승격.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-② Stand by your vias. 독립 노출 가능] 답강도 최강(Stand by your vias > By vias > By your vias). 콜 없이 단독 노출 가능한 유일 줄 — 히어로/포스터/캠페인 공식 슬로건 포지션.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-③ By your vias. 개인화 채널 전용] 'your' 추가로 개인화 친밀 비트. 앱 내·로그인 후·온보딩 등 사용자 맥락 확보 채널 전용. 퍼블릭 히어로/광고 노출 금지.",
+          "state": "미해소"
+        },
+        {
+          "text": "[리스크] 중국어권 더블미닝 1겹 약화 — 콜앤리스폰스 구조가 1차 완화하나 완전 소거 아님. 탈맥락 채널(배너) 가드 별도 필요.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r61-bybias-guest-pool.md",
+      "ts": "2026-06-14T22:17:34.453501+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-061-bybias-guest-pool",
+      "round_id": "RND-BYBIAS-061",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "bybias-guest-pool",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 3,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[P1-① vias 복수철자 혼란 가드] 'vias' 복수철자 → via 오타 오해·#byvias vs #byvia 해시태그 분산 위험. 공식 해시태그 #ByVias 단일 고정 노출 + 온보딩 1회 'vias = your bias + your via' 풀어쓰기 의무.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-② 팬덤 밖 이해 0 — 퍼블릭 전 브랜드 침투 선행] 팬덤 내부에서는 By vias. 즉각(6인 전원). 팬덤 밖(일반 여행자 등) 이해 0 — 퍼블릭 광범 노출 전 K-pop 팬덤 버즈/브랜드 침투 선행 의무.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-③ Stand by your vias. 번역 난이도] ja/zh 직역 시 팬덤 공명 소멸. 1비트(By vias.)는 EN 통일 앵커로 해결되나, 2비트(By your vias.)·3비트(Stand by your vias.)는 ja/zh 현지 서브카피 분리 필수. 기계번역 금지·現地 팬덤 네이티브 검토 의무.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r61-kpop-fan-번역 심사.md",
+      "ts": "2026-06-14T22:17:01.207893+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-061-kpop-fan-번역 심사",
+      "round_id": "RND-BYBIAS-061",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 3,
+      "headline": "조건부 GO",
+      "improvements": [
+        {
+          "text": "[P1-① zh-cn 2·3비트 직역 금지 — 現地 번역작가 필수] zh-cn 'By your vias.' / 'Stand by your vias.' 기계 직역 금지. 현지 팬 언어와 괴리 심각 — 現地 번역작가(MZ K-pop 팬덤 네이티브) 검토 필수. 구현 시 P0 승격.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-② 브랜드 침투 선행 가드] 런칭 초기 'vias' 미인지 상태에서 콜앤리스폰스 device가 약함. 퍼블릭 광범 노출 전 팬덤 버즈/브랜드 침투 선행 — 첫 노출 채널은 서비스 맥락(K-pop 공연 여행) 확보된 곳 한정.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-③ 1비트만 전언어 통일·2·3비트 현지화 의무] By vias.(1비트) = 전 5언어 EN 통일 앵커. By your vias.(2비트) + Stand by your vias.(3비트)는 ja/zh 현지 서브카피 분리 의무. 현지화 미구현 = 구현 라운드 P0.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r62-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-14T22:36:29.068001+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-062-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-062",
+      "round_alias": "RND-BYBIAS-062",
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "unknown",
+      "quality_score": 7.2,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[채택-① 시그니처 = 'Where are you?'→'By vias.'(A) 확정·R61 승계] 콜앤리스폰스 앵커. 브랜드명이 질문의 답이 되는 device. 'By vias.' 단독 노출 금지(콜 동반 의무) — R61 운용-① 그대로 유지. via=루트 + bias=최애 동시 메아리. EN 1비트 전 5언어 통일 앵커.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-② 공식 슬로건/랠리 = 'Stand by your vias.'(C) 확정·R61 승계] 답강도 최강. 콜 없이 단독 노출 가능한 유일 줄 — 히어로/포스터/캠페인. progression 헌신 비트. R61 채택-② 그대로 유지. ja/zh 서브카피 동반 의무.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-③ 액션 CTA = 'Follow your vias.'(D) 신규 편입] R62 신규. 전환 버튼·예약 유도·CTA 슬롯 전용 — 명령형(Follow)이 '클릭/행동'을 직접 호명. 'vias' 보존(무기 유지)이 E와의 결정적 차이. 'Stand by your vias.'(정서·헌신)와 역할 분리: D=행동 전환 동사, C=정서 랠리. 동일 화면 C·D 동시 노출 금지(역할 충돌·중복 인상) — CTA 영역(버튼/링크)에만 D, 히어로 카피에 C.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-④ 개인화 채널 전용 = 'By your vias.'(B) 확정·R61 승계] 'your' 추가 친밀 비트. 앱 내·로그인 후·온보딩 등 사용자 맥락 확보 채널 전용. 퍼블릭 히어로/광고 노출 금지. R61 채택-③ 그대로 유지.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-⑤ 비주얼 레이어 = 'Vias > Bias.'(G) — 태그라인 슬롯 아님·시각 레이어 분류] 3패널 모두 G 활용 동의하나 '태그라인 슬롯 vs 비주얼 레이어' 정의 차이 → 본 2심 단정: G는 언어 카피 슬롯이 아니라 시각 레이어다. '>' 기호 비주얼 훅·번역 0·언어 독립(kpop catch 유일 언어독립). 용처 한정: OG 이미지/스티커/머치/티셔츠/소셜 썸네일. 히어로 본문 카피 슬롯에 배치 금지(기호식이라 음성 발화·검색·구전 불가). 첫 방문 단독 노출 금지(guest-pool catch — 'vias가 bias보다 낫다'의 의미가 vias 미인지 시 0). 'bias=편견' 부정 오독 가드: G는 오히려 'bias를 넘어선다'는 긍정 프레임이라 device 보조 효과 — 단 vias 인지 후에만.",
+          "state": "미해소"
+        },
+        {
+          "text": "[폐기-⑥ E 'Follow Your Bias' 폐기 확정 — vias 소실 = 무기 폐기] 즉시성·최저 진입장벽(guest-pool 채택 근거)은 인정하나, 'vias'를 버리는 순간 이 브랜드의 단 하나뿐인 무기(via 루트 말놀이)를 폐기한다(총괄 심사 패널 네이밍 자문 (내부코드) verbatim: 'bias는 제거하면 제품 가치가 사라지는 요소'의 역상 — vias도 동일). 더해 'Follow Your Bias'는 'bias=편견' 부정 오독을 정면 노출(via 보정 장치 부재). E의 효용(첫 노출 즉시성)은 A(콜앤리스폰스)+질문+ko/현지 서브카피로 흡수 — 'Where are you? → By vias.(추시 루트로/最愛のルートで)'가 E보다 진입장벽 낮고 무기 보존. 전문가 2/3 폐기(branding·kpop) 채택.",
+          "state": "미해소"
+        },
+        {
+          "text": "[폐기-⑦ F 'Where Your Bias Leads' 폐기 확정 — via 소실 + 장황] 3패널 만장 폐기. via 말놀이 0(소실)·4단어 장황(해시태그/구전/버튼 전부 마찰)·'Stand By Me' 류 잔상 없으나 산문적이라 device 비트 부재. 채택 슬롯 어디에도 적합 없음. 폐기.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑧ 적정 개수 = 카피 4슬롯 + 비주얼 1레이어 (희석 경계 명시)] 카피 노출 슬롯은 A·C·D·B 4개로 닫는다(B는 비퍼블릭이라 퍼블릭 동시 노출은 실질 A·C·D 3개). 동일 화면 3개+ 카피 동시 노출 금지(guest-pool 조건 승계) — 슬롯이 채널별로 분리돼야 device가 산다. G는 카피 카운트에서 제외(비주얼 레이어). 5개+ 카피 슬롯 = 희석선 초과(branding 3개 초과=희석 catch 연장).",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑨ 채널-역할 배치 표 = 동일 화면 역할 충돌 금지] 히어로=A(콜+답) 또는 C(슬로건) 택1 / CTA 버튼=D / 개인화 화면=B / OG·스티커·머치=G. 한 화면에 C와 D 동시 금지(정서 랠리 vs 행동 동사 충돌). 한 화면에 A와 C 동시는 가능하나 위계(A 앵커 상단·C 보조) 명시. 구현 시 화면별 1차 카피 1개 원칙.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑩ ja/zh 콜앤리스폰스 현지화 = A 1비트만 EN 통일·B·C·D 현지 서브카피 P0] R61 운용-④ 승계·D 추가. A(앵커 'By vias.')만 전 5언어 EN 통일. B(By your vias)·C(Stand by your vias)·D(Follow your vias)는 ja 推しのルートで / zh-cn 跟着爱豆走 / zh-tw 跟著愛豆走 계열 현지 서브카피 분리. zh-cn 기계직역 금지(現地 번역작가 필수). D 'Follow your vias' ja/zh 직역도 동일 가드. 서브카피 분리 미구현 = 구현 라운드 즉시 P0.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑪ 브랜드 침투 선행 = device 약한 런칭 초기 가드] R61 운용-⑤ 승계. 런칭 초기 'vias' 미인지 상태에서 device(브랜드명=답)·G(Vias>Bias)·D(Follow your vias) 모두 약함(vias 의미 의존). 퍼블릭 광범 노출 전 팬덤 버즈/브랜드 침투 선행. 첫 노출 채널은 서비스 맥락(K-pop 공연 여행) 확보된 곳 한정. 침투 후 device·G 점화.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑫ 발음·표기·해시태그 단일 가이드 의무] R61 운용-⑥ 승계. vias 발음 vy-as(공식) — 온보딩/푸터/about 1회 노출 + 'vias = your bias + your via' 1회 풀어쓰기. 브랜드명 표기 ByVias 카멜 단일(총괄 심사 패널 네이밍 자문 ③ 동형). 공식 해시태그 #ByVias 단일 고정(#byvias vs #byvia 분산 가드). G 'Vias > Bias'는 시각물이라 해시태그 분산 위험 없으나 alt-text에 'vias beats bias' 풀이 1회.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑬ 'bias=편견' 비-팬 부정 오독 가드] R61 운용-⑦ 승계·확장. 콜앤리스폰스(A) + G(Vias>Bias 긍정 프레임)가 1차 완화하나 완전 소거 아님. 탈맥락 단독 광고(네이버/구글 배너)는 C('Stand by your vias.' 독립 줄) + 서비스 1줄 또는 ko 카피 병기. A·D 비트는 콜/CTA 맥락 동반 의무라 탈맥락 단독 노출 자체 금지. E 폐기로 'Follow Your Bias'(부정 오독 정면 노출)는 제거됨.",
+          "state": "미해소"
+        },
+        {
+          "text": "[측정-⑭ 구현 후 별도 렌더 라운드 의무] R61 측정-⑧ 승계·D·G 추가. 본 판정=텍스트 전략(라이브 미측정). 구현 시 5언어(ko/en/ja/zh-cn/zh-tw) × 모바일390/데스크탑1440 × 라이트/다크 4모드 실렌더 측정 라운드 발사 의무. 측정 항목: A 콜+답 단위 노출·C 히어로 단독 노출·D CTA 버튼 노출(C와 동일 화면 충돌 0 확인)·B 개인화 화면 노출·G OG/스티커 비주얼 노출(히어로 카피 슬롯 미배치 확인)·ja/zh B·C·D 서브카피 분리·동일 화면 3개+ 카피 동시 노출 0 확인·#ByVias 단일 표기. 그때 수렴 streak 산입.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r62-branding-critic.md",
+      "ts": "2026-06-14T22:39:48.382182+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-062-branding-critic",
+      "round_id": "RND-BYBIAS-062",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "branding-critic",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[채택] A(Q&A 시그니처) — 콜앤리스폰스 앵커. vias 공유축 보존. 단독 노출 금지(콜 동반 의무)",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] D(CTA) — 'Follow your vias.' 전환 버튼 전용. vias 보존이 E와의 결정적 차이",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] C(랠리) — 'Stand by your vias.' 콜 없이 단독 설 수 있는 유일 줄. 히어로/캠페인 슬롯",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] B — 개인화 친밀 슬롯이나 퍼블릭 경쟁 슬롯 대비 희석 유발. 3개 초과=희석선 기준 제외",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] E('Follow Your Bias') — vias 소실=무기 폐기. A+콜+서브카피가 즉시성 흡수",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] F('Where Your Bias Leads') — via 소실+장황(4단어). 어떤 슬롯도 적합 없음",
+          "state": "미해소"
+        },
+        {
+          "text": "[비주얼 레이어 분류] G('Vias > Bias') — 태그라인 슬롯 아님. OG/스티커/머치 비주얼 레이어. 카피 카운트 제외",
+          "state": "미해소"
+        },
+        {
+          "text": "[희석 경계 명시] 3개 초과 = 희석선. 퍼블릭 카피 슬롯 3개(A·C·D)로 닫음. 동일 화면 복수 동시 노출 금지",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r62-bybias-guest-pool.md",
+      "ts": "2026-06-14T22:41:32.060890+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-062-bybias-guest-pool",
+      "round_id": "RND-BYBIAS-062",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "bybias-guest-pool",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[채택] A(OG 서브헤드·시그니처) — 콜앤리스폰스 앵커. 첫 방문자도 질문+답 구조로 이해 가능. 메인 히어로 상단",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] C(Q&A 스티커/랠리) — 팬덤 굿즈·스티커 최적. '랠리 외침'으로 콘서트/이벤트 활용. 히어로 슬로건",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] D(CTA) — '예약하기' 버튼 텍스트 대체. 행동 유도 최적. vias 보존",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] E(스플래시·첫화면 앵커·최저 장벽) — 2심에서 폐기 결정·본 1심 채택 이력 보존",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] G(비주얼) — 스티커/머치/OG 배경. 언어독립. 팬덤 굿즈 상상력 자극",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] B — 'your vias'가 첫 방문 팬에게 낯섦. A+CTA가 역할 흡수",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] F — 장황. 팬 직관 언어와 거리. 즉각 공감 불가",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-①] 동일 화면 3개+ 동시 노출 금지 — 슬롯별 채널 분업 의무",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-②] 채널 분업 명시 — A(히어로 상단/OG) / C(랠리/스티커) / D(CTA 버튼) / E(스플래시 전용) / G(비주얼 레이어)",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-③] G 첫 방문 단독 노출 금지 — vias 인지 없는 맥락에서 'Vias>Bias' 의미 공허",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-④] E 메인+A 서브 위계 불가 — E는 스플래시/첫화면 전용, A가 메인 앵커 상위. E를 히어로에 올리면 A device 희석",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r62-kpop-fan-번역 심사.md",
+      "ts": "2026-06-14T22:40:41.791216+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-062-kpop-fan-번역 심사",
+      "round_id": "RND-BYBIAS-062",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "조건부 GO",
+      "improvements": [
+        {
+          "text": "[채택] A(앵커) — 전 5언어 EN 1비트 통일. vias 말놀이 살아있는 유일 앵커",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] D(CTA) — 'Follow your vias.' vias 보존. 행동 호명 동사. 3패널 만장 채택",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택] G(비주얼훅) — 유일 언어독립 요소. '>' 기호 번역 0. zh/ja/ko/en 통일 사용 가능. vias 인지 후 효과",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] B — 다국어 개인화 채널에서 'your vias' 직역 어색. A가 역할 흡수",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] C — 다국어 'stand by'=待機(일본어·대기 뉘앙스) 의미 흔들림. 5언어 단독 노출 리스크",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] E('Follow Your Bias') — vias 소실=무기 폐기. bias=편견 부정 오독 정면 노출",
+          "state": "미해소"
+        },
+        {
+          "text": "[버림] F — via 소실+장황. 해시태그/구전 불가. 전 언어 마찰",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-①] vias 신조어 부제 4언어(ja/zh-cn/zh-tw/ko) 동반 의무 — 'vias=루트+최애' 풀이 1회",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-②] zh 간체(zh-cn)/번체(zh-tw) 분리 의무 — 기계직역 0, 현지 번역작가 필수",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-③] ja 경어 네이티브 의무 — 직역 없이 현지 팬 언어 감각 사용",
+          "state": "미해소"
+        },
+        {
+          "text": "[조건-④] G 'Vias>Bias' 비하 오독 가드 — vias 인지 없는 맥락에서 단독 노출 금지",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
       "file": "r7-home-menu-confirm-총괄 심사 패널.md",
       "ts": "2026-06-14T03:56:06.326462+09:00",
       "doc_id": "(내부코드)",
@@ -6033,11 +6526,42 @@
       ],
       "p0_items": [],
       "p1_items": []
+    },
+    {
+      "file": "rnd-home-008-subpage-nav-design.md",
+      "ts": "2026-06-14T22:25:14.243108+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-HOME-008-design",
+      "round_id": "RND-HOME-008",
+      "round_alias": null,
+      "request_id": "Q-160",
+      "panel": "design",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 1,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "P0-1 ByBias 링크 죽은 도메인 회귀 — 서브페이지 통일 작업이 ByBias href를 홈의 살아있는 `(비공개).github.io/100m1s-byvias/`(301→bybias.100m1s.com·HTTP200) 대신 존재하지 않는 `(비공개).github.io/100m1s-bybias/`(HTTP404)로 바꿔 pm320.html·lecture.html의 ByBias 드롭다운/드로어 링크 4건(데스크탑 drop 2 + 모바일 drawer 2)이 전부 죽은 링크. 홈은 `byvias`(정상)인데 서브 2페이지가 `bybias`(404). 측정 항목 '죽은 링크 0건' 정면 위반.",
+          "state": "미해소"
+        },
+        {
+          "text": "P0-2 incorporation.html nav 완전 미통일 — 데스크탑/모바일/footer 3곳 모두 구버전 평면 nav [About / Products(평면·드롭다운 없음) / News / 법인설립 / Contact] 유지. (a) Products▾ 드롭다운 미적용(hasProductsDropdown=false·nav-trigger 부재) (b) 죽은 News 링크(/news.html = noindex + JS location.replace('/pm320.html') 거짓 동선) 3곳 잔존. 통일 작업이 이 페이지를 통째로 누락. 홈/pm320/lecture와 IA 단절.",
+          "state": "미해소"
+        },
+        {
+          "text": "P1 incorporation.html 다크모드 미대응 — prefers-color-scheme:dark에서 bodyColor=rgb(26,29,38)(어두운 텍스트) 유지·배경 밝게 고정 = 다크 토큰 미적용. 본 라운드 nav 범위 밖이나 동일 페이지 품질 결함으로 측정 시 적발(다크모드 제1원칙: 정보 손실·가독성 저하 0). pm320/lecture/index는 다크 정상 반전.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
     }
   ],
   "trend_mapping": {
     "verdicts_mapped_to_round": 16,
-    "verdicts_total": 119,
+    "verdicts_total": 128,
     "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
   }
 }

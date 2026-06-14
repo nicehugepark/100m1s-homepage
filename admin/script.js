@@ -647,7 +647,8 @@
     //   A(단위시간 변동, 막대) + B(누적 추세, 총합 라인) = 시간축 공유 한 쌍(.tl-pair). 줌/팬 인터랙션은 A에만.
     //   C(서비스별 활동) = 전체 기간 고정 small multiples(repo별 mini 막대). 모바일=세로 적층(CSS grid).
     //   유형별↔서비스별 토글은 C 차트(어느 *서비스/유형*이 언제 활발한가)에 귀속.
-    const modeLabel = tlState.mode === "repo" ? "서비스" : "유형";
+    tlState.mode = "repo"; // C는 서비스 1차 고정(유형 단독 토글 폐지). keys=서비스 키.
+    const modeLabel = "서비스";
 
     host.innerHTML =
       `<div class="tl-head">활동 시계열 <small class="tl-head-tag">목적별 분리</small>
@@ -703,17 +704,18 @@
         </div>
       </div>
 
-      <!-- C: 서비스별(유형별) 활동 — 전체 기간 small multiples. 어느 서비스가 언제 활발/변하나. -->
+      <!-- C: 서비스 > 유형 계층 활동 — 전체 기간 small multiples. 서비스별 막대를 유형 3색으로 스택. -->
       <div class="tl-card tl-card-svc">
         <div class="tl-card-head">
-          <span class="tl-card-title">③ ${escape(modeLabel)}별 활동</span>
-          <span class="tl-card-desc">어느 ${escape(modeLabel)}가 언제 활발했나 — 전체 기간, 시간대별 건수</span>
-          <div class="tl-seg" role="group" aria-label="분류 기준">
-            <button type="button" class="tl-seg-btn${tlState.mode === "repo" ? " is-on" : ""}" data-mode="repo" aria-pressed="${tlState.mode === "repo"}">서비스별</button>
-            <button type="button" class="tl-seg-btn${tlState.mode === "type" ? " is-on" : ""}" data-mode="type" aria-pressed="${tlState.mode === "type"}">유형별</button>
+          <span class="tl-card-title">③ 서비스별 활동 <small class="tl-card-sub2">유형 세분</small></span>
+          <span class="tl-card-desc">어느 서비스가 어떤 유형 활동을 했나 — 막대 = 유형 스택</span>
+          <div class="tl-svc-legend" role="list" aria-label="유형 범례">
+            <span class="tl-svc-leg" role="listitem"><i class="tl-svc-tdot" style="background:${TL_TYPE.verdict.color}"></i>판정</span>
+            <span class="tl-svc-leg" role="listitem"><i class="tl-svc-tdot" style="background:${TL_TYPE.round.color}"></i>라운드</span>
+            <span class="tl-svc-leg" role="listitem"><i class="tl-svc-tdot" style="background:${TL_TYPE.request.color}"></i>요청</span>
           </div>
         </div>
-        <div class="tl-svc-grid" aria-label="${escape(modeLabel)}별 시간대 활동"></div>
+        <div class="tl-svc-grid" aria-label="서비스별 유형 세분 시간대 활동"></div>
       </div>`;
 
     drawBarsChart(host);     // A
@@ -861,60 +863,88 @@
     tlState._drawCum = { totalSteps, yOf, xOf, baseY, PADT, yMax, VBW, VBH };
   }
 
-  // ── C: 서비스(유형)별 활동 — small multiples. 전체 기간 고정, repo별 mini 막대 1줄씩. ──
-  //   "어느 서비스가 언제 활발/변하나"가 한 메시지. 동적 repo(하드코딩 0). 모바일=CSS grid 1열 적층.
-  //   각 미니차트는 같은 시간 버킷·같은 시간폭(정렬). Y는 각 행 자기 최댓값(상대 비교는 행 라벨의 총건수로).
-  //   거짓 채움 0: 빈 시간대는 막대 없음.
+  // ── C: 서비스 > 유형 계층 활동 — small multiples. 전체 기간 고정, 서비스별 mini 막대 1줄씩. ──
+  //   1차=서비스(행), 2차=유형(막대 스택 3색: 판정·라운드·요청). "어느 서비스가 어떤 유형 활동을 했나"가 한 메시지.
+  //   동적 서비스(하드코딩 0). 모바일=CSS grid 1열 적층. 유형 색 의미는 상단 범례 1회.
+  //   각 미니차트는 같은 시간 버킷·같은 시간폭(정렬). 한 버킷 = 유형별 스택(아래부터 판정→라운드→요청).
+  //   Y는 전 서비스·전 버킷 공통 스케일(행 간 높이 비교 가능). 거짓 채움 0: 빈 시간대는 막대 없음.
+  //   세그먼트 최소 높이 보장(1건도 1.2px↑ 보이게 — false-fidelity 방지). 툴팁=버킷 유형별 내역.
+  const SVC_TYPE_ORDER = ["request", "round", "verdict"]; // 스택 하단→상단 (요청→라운드→판정)
   function drawSvcChart(host) {
     const grid = host.querySelector(".tl-svc-grid");
     if (!grid) return;
     const tl = tlState.events;
     const [f0, f1] = tlState.full;
     const span = (f1 - f0) || 1;
-    const keys = tlState.keys, colorOf = tlState.colorOf;
+    const keys = tlState.keys; // 서비스(repo) 키 — mode 고정 'repo'
 
     // 전체 기간 기준 단위시간 버킷(시간폭 따라 1/2/3/6h) — 전 행 공통 축.
     const { barStepMs, barStepH } = tlBarBuckets(tl, f0, f1);
-    // bucket 시작값들(축 정렬용).
     const bStart = Math.floor(f0 / barStepMs) * barStepMs, bEnd = Math.floor(f1 / barStepMs) * barStepMs;
 
-    // key별 버킷 집계 + 전 key 통틀어 한 버킷 최댓값(행 간 높이 비교 가능하도록 공통 스케일).
+    // 서비스 × 버킷 × 유형 3중 집계. perKey[svc][bucket] = {verdict, round, request}.
     const perKey = {}; keys.forEach((k) => { perKey[k] = {}; });
     tl.forEach((e) => {
-      const k = tlKeyOf(e); if (perKey[k] == null) perKey[k] = {};
+      const k = (e.repo && String(e.repo).trim()) || "미상";
+      if (perKey[k] == null) perKey[k] = {};
       const b = Math.floor(e.t / barStepMs) * barStepMs;
-      perKey[k][b] = (perKey[k][b] || 0) + 1;
+      if (!perKey[k][b]) perKey[k][b] = { verdict: 0, round: 0, request: 0 };
+      const ty = TL_TYPE[e.type] ? e.type : null;
+      if (ty) perKey[k][b][ty] += 1; else perKey[k][b].request += 0; // 미상 유형은 스택서 제외(높이 0)
     });
+    // 공통 스케일 = 전 서비스·전 버킷의 총합(스택 높이) 최댓값.
     let globalMax = 0;
-    keys.forEach((k) => { for (const b in perKey[k]) globalMax = Math.max(globalMax, perKey[k][b]); });
+    keys.forEach((k) => { for (const b in perKey[k]) { const s = perKey[k][b]; globalMax = Math.max(globalMax, s.verdict + s.round + s.request); } });
     globalMax = globalMax || 1;
 
-    const total = {}; tl.forEach((e) => { const k = tlKeyOf(e); total[k] = (total[k] || 0) + 1; });
+    // 서비스별 총건수 + 유형별 내역(행 라벨용).
+    const total = {}, byType = {};
+    keys.forEach((k) => { total[k] = 0; byType[k] = { verdict: 0, round: 0, request: 0 }; });
+    tl.forEach((e) => {
+      const k = (e.repo && String(e.repo).trim()) || "미상";
+      if (total[k] == null) { total[k] = 0; byType[k] = { verdict: 0, round: 0, request: 0 }; }
+      total[k] += 1;
+      if (TL_TYPE[e.type]) byType[k][e.type] += 1;
+    });
 
-    const MVBW = 1000, MVBH = 40, MPB = 0, mBaseY = MVBH - MPB, mPlotH = mBaseY - 2;
+    const MVBW = 1000, MVBH = 40, mBaseY = MVBH, mPlotH = mBaseY - 2, MIN_SEG = 1.2;
     const mxOf = (t) => ((t - f0) / span) * MVBW;
     const mBarW = (barStepMs / span) * MVBW;
     const mPad = Math.min(mBarW * 0.16, 2);
 
     grid.innerHTML = keys.map((k) => {
       const bkts = perKey[k] || {};
-      // 이 행 피크 시간대(라벨용).
-      let pHk = null, pN = 0; for (const b in bkts) if (bkts[b] > pN) { pN = bkts[b]; pHk = +b; }
+      let pHk = null, pN = 0; // 이 서비스 피크 시간대(스택 총합 기준).
+      for (const b in bkts) { const s = bkts[b], sum = s.verdict + s.round + s.request; if (sum > pN) { pN = sum; pHk = +b; } }
       const peakTxt = pHk != null ? `${String(new Date(pHk).getHours()).padStart(2, "0")}시 피크` : "—";
       let bars = "";
       for (let b = bStart; b <= bEnd; b += barStepMs) {
-        const c = bkts[b]; if (!c) continue; // 거짓 채움 0
+        const s = bkts[b]; if (!s) continue;
+        const sum = s.verdict + s.round + s.request; if (!sum) continue; // 거짓 채움 0
         const x = mxOf(b) + mPad, w = Math.max(mBarW - mPad * 2, 1);
-        const h = (c / globalMax) * mPlotH, y = mBaseY - h;
-        bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1" class="tls-bar"><title>${tlFmt(b)}~ ${barStepH}시간 · ${c}건</title></rect>`;
+        let yTop = mBaseY;
+        // 아래부터 위로 스택(요청→라운드→판정). 0건 유형은 건너뜀, 1건도 MIN_SEG 보장.
+        SVC_TYPE_ORDER.forEach((ty) => {
+          const c = s[ty]; if (!c) return;
+          const h = Math.max((c / globalMax) * mPlotH, MIN_SEG);
+          yTop -= h;
+          bars += `<rect x="${x.toFixed(1)}" y="${yTop.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="0.8" fill="${TL_TYPE[ty].color}" class="tls-bar"/>`;
+        });
+        // 한 버킷 통합 툴팁(유형별 내역).
+        const parts = SVC_TYPE_ORDER.filter((ty) => s[ty]).map((ty) => `${TL_TYPE[ty].label} ${s[ty]}`).join(" · ");
+        const hSum = Math.max((sum / globalMax) * mPlotH, MIN_SEG);
+        bars += `<rect x="${x.toFixed(1)}" y="${(mBaseY - hSum).toFixed(1)}" width="${w.toFixed(1)}" height="${hSum.toFixed(1)}" fill="transparent"><title>${tlFmt(b)}~ ${barStepH}시간 · ${sum}건 (${parts})</title></rect>`;
       }
+      // 행 라벨: 서비스명 + 총건수 + 유형 내역(0 아닌 것만, 색점).
+      const typeChips = SVC_TYPE_ORDER.filter((ty) => byType[k][ty]).map((ty) =>
+        `<i class="tl-svc-tchip"><i class="tl-svc-tdot" style="background:${TL_TYPE[ty].color}"></i>${byType[k][ty]}</i>`).join("");
       return `<div class="tl-svc-row">
         <div class="tl-svc-meta">
-          <span class="tl-svc-name"><i class="tl-sw" style="background:${colorOf[k]}"></i>${escape(tlSeriesLabel(k))}</span>
-          <span class="tl-svc-cnt"><b>${total[k] || 0}</b><i>${escape(peakTxt)}</i></span>
+          <span class="tl-svc-name">${escape(k)}</span>
+          <span class="tl-svc-cnt"><b>${total[k] || 0}</b>${typeChips}</span>
         </div>
         <svg class="tl-svc-svg" viewBox="0 0 ${MVBW} ${MVBH}" preserveAspectRatio="none"
-             style="--svc-color:${colorOf[k]}" role="img" aria-label="${escape(tlSeriesLabel(k))} 시간대별 활동 ${total[k] || 0}건">${bars}</svg>
+             role="img" aria-label="${escape(k)} 시간대별 활동 ${total[k] || 0}건 (판정 ${byType[k].verdict} 라운드 ${byType[k].round} 요청 ${byType[k].request})">${bars}</svg>
       </div>`;
     }).join("");
   }
@@ -950,17 +980,8 @@
     const tip = host.querySelector(".tlb-tip");
     const resetBtn = host.querySelector(".tl-reset");
 
-    // 세그먼트 토글(서비스별↔유형별) — svg 유무와 무관하게 항상 바인딩(C 차트 분류 전환).
-    host.querySelectorAll(".tl-seg-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const m = btn.getAttribute("data-mode");
-        if (m === tlState.mode) return;
-        tlState.mode = m;
-        tlState.hidden = new Set(); tlState.solo = null;
-        // view 줌 상태는 보존하고 전체 재렌더(C 차트가 mode 따라 재구성).
-        renderConvTimeline({ activity_timeline: tlState.events }, { preserveToggle: true });
-      });
-    });
+    // (서비스별↔유형별 동급 토글 제거 — 유형 단독은 서비스 맥락이 없어 무의미.
+    //  이제 C는 서비스 1차 · 유형 2차(스택) 고정. 분류 전환 핸들러 없음.)
 
     if (!svg) return;
     const VBW = tlState.vbw;

@@ -949,47 +949,40 @@ footer {
 .tl-axis { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: var(--mono); font-size: 10px; color: var(--dm); margin-top: 6px; }
 .tl-range-label { flex: 1; text-align: center; font-weight: 600; color: var(--tx2); }
 
-/* C: 서비스(유형)별 활동 — small multiples 그리드. 데스크톱 2열, 모바일 1열 적층. */
+/* C: 서비스 > 유형 계층 활동 — small multiples 그리드. 데스크톱 2열, 모바일 1열 적층. */
+/*   1차=서비스(행), 2차=유형(막대 스택 3색). 색 의미는 head 우측 범례 1회. */
 .tl-card-svc { margin-top: 10px; }
-.tl-card-svc .tl-seg { position: absolute; top: -3px; right: 0; }
+.tl-card-sub2 { font-family: var(--mono); font-size: 9.5px; font-weight: 600; color: var(--dm); margin-left: 5px; letter-spacing: .2px; }
 .tl-svc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 18px; }
 .tl-svc-row { display: flex; align-items: center; gap: 10px; padding: 3px 0; }
-.tl-svc-meta { flex: none; width: 124px; display: flex; flex-direction: column; gap: 1px; overflow: hidden; }
-.tl-svc-name { display: flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tl-svc-cnt { display: flex; align-items: baseline; gap: 6px; }
+.tl-svc-meta { flex: none; width: 132px; display: flex; flex-direction: column; gap: 1px; overflow: hidden; }
+.tl-svc-name { font-size: 11.5px; font-weight: 600; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-svc-cnt { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
 .tl-svc-cnt b { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--tx); }
-.tl-svc-cnt i { font-style: normal; font-size: 9.5px; color: var(--dm); }
+/* 유형 내역 칩(행 라벨) — 0 아닌 유형만 색점+건수. */
+.tl-svc-tchip { display: inline-flex; align-items: center; gap: 3px; font-style: normal; font-family: var(--mono); font-size: 9.5px; color: var(--tx2); }
+.tl-svc-tdot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
 /* width:100% 필수 — SVG는 viewBox 비율로 intrinsic width를 가져, 없으면 flex shrink 무시 → 가로 오버플로우. */
 .tl-svc-svg { flex: 1 1 auto; width: 100%; height: 34px; min-width: 0; display: block; }
-.tl-svc-svg .tls-bar { fill: var(--svc-color, var(--am)); opacity: .85; }
+/* 스택 세그먼트 — fill은 유형색 인라인. 세그먼트 경계 살짝 분리(겹침 가독). */
+.tl-svc-svg .tls-bar { opacity: .88; shape-rendering: crispEdges; }
 
-/* 세그먼트 토글 (서비스별 | 유형별) — C 카드 head 우측 */
-.tl-seg { display: inline-flex; flex: none; padding: 2px; gap: 2px; border-radius: var(--radius); background: var(--bg2); border: 1px solid var(--bd); }
-.tl-seg-btn {
-  appearance: none; cursor: pointer; border: 1px solid transparent;
-  padding: 4px 11px; border-radius: var(--radius-sm);
-  background: transparent; color: var(--tx2);
-  font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .2px;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
-}
-.tl-seg-btn:hover { color: var(--tx); }
-.tl-seg-btn.is-on { background: var(--sf); color: var(--tx); border-color: var(--bd2); box-shadow: var(--shadow-1); }
-.tl-seg-btn:focus-visible { outline: 2px solid var(--am); outline-offset: 1px; }
+/* 유형 범례 (판정·라운드·요청) — C 카드 head 우측 */
+.tl-svc-legend { display: inline-flex; flex: none; align-items: center; gap: 11px; position: absolute; top: 0; right: 0; }
+.tl-svc-leg { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--tx2); }
 
-.tl-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
-
-/* 모바일 390 — C는 1열 적층(가독 우선), 세그는 head 아래로 흘림 */
+/* 모바일 390 — C는 1열 적층(가독 우선), 범례는 head 아래로 흘림 */
 @media (max-width: 560px) {
   .tl-svc-grid { grid-template-columns: 1fr; }
-  .tl-card-svc .tl-seg { position: static; margin-top: 4px; }
+  .tl-svc-legend { position: static; margin-top: 4px; gap: 14px; }
   .tl-card-svc .tl-card-head { flex-direction: column; align-items: flex-start; }
   /* column flex에서 flex-basis가 *높이*로 해석돼 desc가 200px 빈공간을 차지 → 무효화. */
   .tl-card-svc .tl-card-desc { flex: 0 0 auto; }
-  .tl-svc-meta { width: 108px; }
+  .tl-svc-meta { width: 116px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tl-seg-btn, .tl-reset, .tlb-bar { transition: none; }
+  .tl-reset, .tlb-bar { transition: none; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════
