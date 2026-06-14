@@ -293,6 +293,86 @@ header {
 .nav-links { display: flex; gap: 24px; font-size: 13px; font-weight: 600; color: var(--tx2); }
 .nav-links a:hover, .nav-links a.active { color: var(--am); }
 
+/* ═══ 메뉴 간극 해소 (대표 2026-06-14 "회사 홈과 pm320 사이 간극을 다 채워") ═══
+   회사 홈 index.html 의 Products ▾ 드롭다운을 pm320(news.css)에도 동일 적용 → 서브페이지에서도
+   주식 라인 횡이동. index.html 은 자체 :root 토큰(--ease-out·--am-chip)을 쓰지만 news.css 는
+   --t-fast/--am4 가 동치 → 매핑(--ease-out=cubic-bezier(0.16,1,0.3,1), --am-chip=--am4). 시각 동일. */
+.nav-item { position: relative; display: inline-flex; align-items: center; }
+.nav-item > a, .nav-item > .nav-trigger {
+  position: relative; padding: 4px 0;
+  font: inherit; color: var(--tx2); background: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: color 0.18s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-item > a:hover, .nav-item > .nav-trigger:hover,
+.nav-item:focus-within > .nav-trigger { color: var(--am); }
+.nav-item > a::after, .nav-item > .nav-trigger::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1.5px; background: var(--am); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.22s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-item > a:hover::after, .nav-item > .nav-trigger:hover::after,
+.nav-item:focus-within > .nav-trigger::after { transform: scaleX(1); }
+.nav-caret { width: 9px; height: 9px; transition: transform 0.2s cubic-bezier(0.16,1,0.3,1); }
+.nav-item:hover .nav-caret, .nav-item:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(6px);
+  min-width: 230px; background: var(--sf); border: 1px solid var(--bd); border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10); padding: 8px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16,1,0.3,1), transform 0.2s cubic-bezier(0.16,1,0.3,1), visibility 0.2s;
+  z-index: 120;
+}
+.nav-item:hover .nav-dropdown, .nav-item:focus-within .nav-dropdown {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown .dd-group-label {
+  font-size: 10px; font-weight: 700; color: var(--dm); text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 8px 12px 4px;
+}
+.nav-dropdown a {
+  display: flex; align-items: baseline; gap: 8px; justify-content: space-between;
+  padding: 9px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--tx);
+  transition: background 0.15s cubic-bezier(0.16,1,0.3,1), color 0.15s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-dropdown a:hover, .nav-dropdown a.active { background: var(--sf2); color: var(--am); }
+.nav-dropdown a .dd-sub { font-size: 11px; font-weight: 500; color: var(--dm); }
+.nav-dropdown .dd-tag {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.4px; padding: 2px 6px; border-radius: 4px;
+  color: var(--am); background: var(--am4);
+}
+.nav-dropdown .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
+.nav-dropdown .dd-tag.soon { color: var(--dm); background: var(--bg2); }
+/* 다크: 그림자 더 깊게(bg/border 토큰 자동 반전) */
+:root[data-theme="dark"] .nav-dropdown { box-shadow: 0 12px 40px rgba(0,0,0,0.55); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .nav-dropdown { box-shadow: 0 12px 40px rgba(0,0,0,0.55); }
+}
+/* ── 모바일 드로어: Products 접이식(accordion) ── */
+.drawer-group { border-bottom: 1px solid var(--bd); }
+.drawer-group-toggle {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 14px 0; font: inherit; font-size: 17px; font-weight: 700; color: var(--tx);
+  background: none; border: none; cursor: pointer; text-align: left;
+}
+.drawer-group-toggle .nav-caret { width: 12px; height: 12px; color: var(--dm); }
+.drawer-group-toggle[aria-expanded="true"] .nav-caret { transform: rotate(180deg); }
+.drawer-sub { overflow: hidden; max-height: 0; transition: max-height 0.28s cubic-bezier(0.16,1,0.3,1); }
+.drawer-group-toggle[aria-expanded="true"] + .drawer-sub { max-height: 340px; }
+.drawer-sub-inner { padding: 2px 0 12px 12px; border-left: 2px solid var(--bd); margin-left: 2px; }
+.drawer-sub a {
+  display: flex; align-items: center; gap: 8px; justify-content: flex-start;
+  padding: 12px 0; min-height: 44px; box-sizing: border-box;
+  font-size: 14px; font-weight: 600; color: var(--tx2); border-bottom: none;
+}
+.drawer-sub a:hover, .drawer-sub a.active { color: var(--am); }
+.drawer-sub a .dd-tag {
+  font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+  color: var(--am); background: var(--am4); margin-left: auto;
+}
+.drawer-sub a .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
+.drawer-sub a .dd-tag.soon { color: var(--dm); background: var(--bg2); }
+
 /* 헤더 우측 액션 그룹 (테마 토글 + 햄버거) — space-between 4-child 붕괴 방지 위해 묶음 */
 .header-actions { display: flex; align-items: center; gap: 4px; }
 

@@ -66,6 +66,82 @@ header {
 .mobile-drawer a.active { color: var(--am); }
 .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.32); z-index: 150; }
 .drawer-backdrop.open { display: block; }
+
+/* ═══ 메뉴 간극 해소 (대표 2026-06-14 "회사 홈과 pm320 사이 간극을 다 채워") ═══
+   회사 홈 index.html 의 Products ▾ 드롭다운을 강의 페이지에도 동일 적용. lecture.html 은 라이트 전용
+   + --ease-out/--am-chip/--sf2 미정의 → 매핑(--ease-out=cubic-bezier(0.16,1,0.3,1), --am-chip=--am4, --sf2=--bg2). */
+.nav-item { position: relative; display: inline-flex; align-items: center; }
+.nav-item > a, .nav-item > .nav-trigger {
+  position: relative; padding: 4px 0;
+  font: inherit; color: var(--tx2); background: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: color 0.18s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-item > a:hover, .nav-item > .nav-trigger:hover,
+.nav-item:focus-within > .nav-trigger { color: var(--am); }
+.nav-item > a::after, .nav-item > .nav-trigger::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1.5px; background: var(--am); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.22s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-item > a:hover::after, .nav-item > .nav-trigger:hover::after,
+.nav-item:focus-within > .nav-trigger::after { transform: scaleX(1); }
+.nav-caret { width: 9px; height: 9px; transition: transform 0.2s cubic-bezier(0.16,1,0.3,1); }
+.nav-item:hover .nav-caret, .nav-item:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(6px);
+  min-width: 230px; background: var(--sf); border: 1px solid var(--bd); border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.10); padding: 8px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16,1,0.3,1), transform 0.2s cubic-bezier(0.16,1,0.3,1), visibility 0.2s;
+  z-index: 120;
+}
+.nav-item:hover .nav-dropdown, .nav-item:focus-within .nav-dropdown {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown .dd-group-label {
+  font-size: 10px; font-weight: 700; color: var(--dm); text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 8px 12px 4px;
+}
+.nav-dropdown a {
+  display: flex; align-items: baseline; gap: 8px; justify-content: space-between;
+  padding: 9px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--tx);
+  transition: background 0.15s cubic-bezier(0.16,1,0.3,1), color 0.15s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-dropdown a:hover, .nav-dropdown a.active { background: var(--bg2); color: var(--am); }
+.nav-dropdown a .dd-sub { font-size: 11px; font-weight: 500; color: var(--dm); }
+.nav-dropdown .dd-tag {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.4px; padding: 2px 6px; border-radius: 4px;
+  color: var(--am); background: var(--am4);
+}
+.nav-dropdown .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
+.nav-dropdown .dd-tag.soon { color: var(--dm); background: var(--bg2); }
+/* ── 모바일 드로어: Products 접이식(accordion) ── */
+.drawer-group { border-bottom: 1px solid var(--bd); }
+.drawer-group-toggle {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 14px 0; font: inherit; font-size: 17px; font-weight: 700; color: var(--tx);
+  background: none; border: none; cursor: pointer; text-align: left;
+}
+.drawer-group-toggle .nav-caret { width: 12px; height: 12px; color: var(--dm); }
+.drawer-group-toggle[aria-expanded="true"] .nav-caret { transform: rotate(180deg); }
+.drawer-sub { overflow: hidden; max-height: 0; transition: max-height 0.28s cubic-bezier(0.16,1,0.3,1); }
+.drawer-group-toggle[aria-expanded="true"] + .drawer-sub { max-height: 340px; }
+.drawer-sub-inner { padding: 2px 0 12px 12px; border-left: 2px solid var(--bd); margin-left: 2px; }
+/* .mobile-drawer a (block·border-bottom) override — 드로어 하위 항목은 flex·무경계 */
+.drawer-sub a {
+  display: flex; align-items: center; gap: 8px; justify-content: flex-start;
+  padding: 12px 0; min-height: 44px; box-sizing: border-box;
+  font-size: 14px; font-weight: 600; color: var(--tx2); border-bottom: none;
+}
+.drawer-sub a:hover, .drawer-sub a.active { color: var(--am); }
+.drawer-sub a .dd-tag {
+  font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+  color: var(--am); background: var(--am4); margin-left: auto;
+}
+.drawer-sub a .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
+.drawer-sub a .dd-tag.soon { color: var(--dm); background: var(--bg2); }
+
 @media (max-width: 720px) {
   .nav-links { display: none; }
   .menu-toggle { display: inline-flex; }
@@ -223,12 +299,26 @@ footer {
       </div>
       <div class="brand-name">100M1S</div>
     </a>
+    <!-- 간극 해소 (대표 2026-06-14 "회사 홈과 pm320 사이 간극을 다 채워. 메뉴 구성 등") — 회사 홈 index.html 과
+         동일한 Products ▾ 드롭다운으로 통일. 강의 페이지에서도 PM320·오늘의 추천·ByBias 횡이동 확보.
+         죽은 News 링크(/news.html = pm320 redirect stub·noindex) 제거 = 거짓 동선 차단(FLR-AGT-002). -->
     <nav class="nav-links">
-      <a href="/#about">About</a>
-      <a href="/#products">Products</a>
-      <a href="/news.html">News</a>
-      <a href="/lecture.html" class="active">Lecture</a>
-      <a href="/#contact">Contact</a>
+      <span class="nav-item"><a href="/#about">About</a></span>
+      <span class="nav-item has-submenu">
+        <button type="button" class="nav-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dd-products">Products
+          <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown" id="nav-dd-products" role="menu">
+          <div class="dd-group-label">주식 라인</div>
+          <a href="/pm320.html" role="menuitem">PM320 <span class="dd-sub">오후 3시 20분</span> <span class="dd-tag">LIVE</span></a>
+          <a href="/pm320.html#cal-content" role="menuitem">오늘의 추천 · 백테스트 <span class="dd-tag">LIVE</span></a>
+          <a href="/lecture.html" class="active" role="menuitem" aria-current="page">주식 강의 <span class="dd-sub">초보 실전 매매</span></a>
+          <a href="/pm320.html" role="menuitem" aria-disabled="true" tabindex="-1" onclick="return false">투자 팁 <span class="dd-tag soon">예정</span></a>
+          <div class="dd-group-label">기타 라인</div>
+          <a href="https://nicehugepark.github.io/100m1s-bybias/" target="_blank" rel="noopener" role="menuitem">ByBias <span class="dd-sub">원정 타이밍</span> <span class="dd-tag beta">BETA</span></a>
+        </div>
+      </span>
+      <span class="nav-item"><a href="/#contact">Contact</a></span>
     </nav>
     <button class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
   </div>
@@ -236,9 +326,21 @@ footer {
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="모바일 메뉴">
   <a href="/#about">About</a>
-  <a href="/#products">Products</a>
-  <a href="/news.html">News</a>
-  <a href="/lecture.html" class="active">Lecture</a>
+  <!-- 간극 해소 — 회사 홈과 동일한 Products 접이식(accordion). 죽은 News 링크 제거 -->
+  <div class="drawer-group">
+    <button type="button" class="drawer-group-toggle" id="drawer-products-toggle" aria-expanded="false" aria-controls="drawer-products-sub">Products
+      <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="drawer-sub" id="drawer-products-sub">
+      <div class="drawer-sub-inner">
+        <a href="/pm320.html">PM320<span class="dd-tag">LIVE</span></a>
+        <a href="/pm320.html#cal-content">오늘의 추천 · 백테스트<span class="dd-tag">LIVE</span></a>
+        <a href="/lecture.html" class="active" aria-current="page">주식 강의</a>
+        <a href="/pm320.html" aria-disabled="true" onclick="return false">투자 팁<span class="dd-tag soon">예정</span></a>
+        <a href="https://nicehugepark.github.io/100m1s-bybias/" target="_blank" rel="noopener">ByBias<span class="dd-tag beta">BETA</span></a>
+      </div>
+    </div>
+  </div>
   <a href="/#contact">Contact</a>
 </nav>
 <script>
@@ -256,7 +358,34 @@ footer {
   }
   btn.addEventListener('click',function(){toggle();});
   bd.addEventListener('click',function(){toggle(false);});
-  drw.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){toggle(false);});});
+  /* 실 링크 탭 시 닫기 — aria-disabled(예정) 행은 네비 없음 → 닫지 않음 */
+  drw.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){ if(a.getAttribute('aria-disabled')==='true')return; toggle(false); });
+  });
+  /* 간극 해소 (대표 2026-06-14) — Products 접이식(accordion). 탭하면 주식 라인 하위 펼침(드로어 유지) */
+  var grpBtn=document.getElementById('drawer-products-toggle');
+  if(grpBtn){
+    grpBtn.addEventListener('click',function(){
+      var open=grpBtn.getAttribute('aria-expanded')==='true';
+      grpBtn.setAttribute('aria-expanded',String(!open));
+    });
+  }
+  /* 데스크탑 nav 드롭다운 — CSS hover/focus-within 으로 열리되 트리거 aria-expanded 동기 */
+  document.querySelectorAll('.nav-item.has-submenu').forEach(function(item){
+    var trig=item.querySelector('.nav-trigger');
+    if(!trig)return;
+    function sync(open){ trig.setAttribute('aria-expanded',String(open)); }
+    item.addEventListener('mouseenter',function(){sync(true);});
+    item.addEventListener('mouseleave',function(){sync(false);});
+    item.addEventListener('focusin',function(){sync(true);});
+    item.addEventListener('focusout',function(){ if(!item.contains(document.activeElement)) sync(false); });
+    trig.addEventListener('click',function(e){
+      e.preventDefault();
+      var isOpen=item.contains(document.activeElement);
+      if(isOpen){ trig.blur(); sync(false); }
+      else { trig.focus(); sync(true); }
+    });
+  });
 })();
 </script>
 
