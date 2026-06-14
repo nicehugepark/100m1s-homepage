@@ -119,6 +119,11 @@
            데이터=convergence.json requests[].state 프론트 집계(백엔드 보강 불요). -->
       <div id="conv-statebar" class="conv-statebar" aria-label="서비스별 요청 상태 분포"></div>
 
+      <!-- ⓪-a3 라운드 수렴 현황 — "어느 repo/요청이 수렴됐나" (대표 직접: "요청부터 수렴까지인데 차트에 수렴이 안 보인다").
+           위 D(상태 스냅샷)는 requests[].state(포착~종결·수렴 라벨 없음)만 그려 수렴 미가시 → 수렴은 rounds[].state에 있어 별 막대로 가시화.
+           데이터=rounds[] 직접 집계(summary.*_rounds 분해 필드는 total과 합산 불일치 → 미사용·FLR-AGT-002). -->
+      <div id="conv-roundbar" class="conv-statebar" aria-label="서비스별 라운드 수렴 현황"></div>
+
       <!-- ⓪ 서비스(repo)별 요약 — summary 키에서 동적 렌더(하드코딩 0, N개 확장 안전) -->
       <div id="conv-svc-strip" class="conv-svc-strip" aria-label="서비스별 수렴 요약"></div>
 

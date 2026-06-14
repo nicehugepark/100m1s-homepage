@@ -6,6 +6,11 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+  // repo 표시명 매핑 — 데이터 코드(summary 키·RND/REQ-BYBIAS·필터 value)는 수렴태그·이력
+  // 보존 위해 BYBIAS 유지, 사용자에게 보이는 표시 텍스트만 ByVias로(ByBias→ByVias 리브랜딩,
+  // DOC-20260614-REQ-001). 나머지 repo는 그대로 — 동적 서비스 발견과 정합(하드코딩 트랙 0).
+  const repoDisplay = (repo) => (repo === "BYBIAS" ? "ByVias" : repo);
+
   // ── 디스플레이-바운더리 sanitize (rules/security.md 9종 · 방어선 이중화) ──
   // 빌드 단계 sanitize 게이트(scripts/admin/build_convergence.py)가 1차이나,
   // romanized 에이전트명(ishikawa/togusa 등)이 owner 셀에서 누락된 사례 발견 →
@@ -385,12 +390,12 @@
         // 전체 정보는 호버 title + aria-label 로 보존(정보 손실 0).
         const narrow = pct < 12 ? " sb-seg-narrow" : "";
         return `<span class="sb-seg ${escape(m.cls)}${narrow}" style="width:${pct.toFixed(2)}%"`
-          + ` title="${escape(repo)} · ${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)"`
+          + ` title="${escape(repoDisplay(repo))} · ${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)"`
           + ` aria-label="${escape(m.label)} ${n}건">`
           + `<b class="sb-seg-n">${n}</b><span class="sb-seg-k">${escape(m.label)}</span></span>`;
       }).join("");
-      return `<div class="sb-row" role="group" aria-label="${escape(repo)} 상태 분포 (총 ${total}건)">
-        <div class="sb-row-head"><span class="sb-repo">${escape(repo)}</span><span class="sb-total">${total}</span></div>
+      return `<div class="sb-row" role="group" aria-label="${escape(repoDisplay(repo))} 상태 분포 (총 ${total}건)">
+        <div class="sb-row-head"><span class="sb-repo">${escape(repoDisplay(repo))}</span><span class="sb-total">${total}</span></div>
         <div class="sb-track">${segs}</div>
       </div>`;
     }).join("");
@@ -399,6 +404,77 @@
         <span class="tl-sub">서비스별 요청이 지금 어느 상태에 몇 건인지 — 막대 = 100% 상태 구성 (위 라인차트는 활동 '속도' 추세, 본 막대는 현재 '상태')</span>
       </div>
       <div class="sb-legend" role="group" aria-label="상태 범례">${legend}</div>
+      <div class="sb-rows">${rows}</div>`;
+  }
+
+  // ⓪-a3 라운드 수렴 현황 — "어느 repo/요청이 수렴됐나" 한눈 (대표 직접: "요청부터 수렴까지인데
+  //   차트에 수렴이 안 보인다"). D(상태 스냅바)는 requests[].state(포착~종결, 수렴 라벨 없음)만 그려
+  //   수렴이 영영 안 보였음 → 수렴은 rounds[].state(수렴/미수렴/판정완료/대체)에 있으므로 별 막대로 가시화.
+  //   요청 상태(위 D) vs 라운드 수렴(본 막대)은 축이 다름(§정보위계: 화면=하나의 메시지) → 형제 섹션 분리.
+  //   데이터=rounds[] 직접 집계(summary.*_rounds 분해 필드는 total과 합산 불일치 → 거짓 채움 위험으로 미사용·FLR-AGT-002).
+  //   색=STATE_META.cls 재사용(수렴=conv-ok 진녹 / 미수렴=conv-no 적 / 판정완료=conv-cand 황 / 대체됨=conv-superseded 회).
+  const ROUND_STATE_ORDER = ["수렴", "판정완료", "진행중", "판정중", "미수렴", "대체됨"];
+  function roundStateRank(s) { const i = ROUND_STATE_ORDER.indexOf(s); return i < 0 ? ROUND_STATE_ORDER.length : i; }
+  function renderConvRoundbar(conv) {
+    const host = el("conv-roundbar");
+    if (!host) return;
+    const rounds = conv.rounds || [];
+    if (!rounds.length) {
+      host.innerHTML = `<div class="tl-head">라운드 수렴 현황</div>`
+        + `<p class="hint">표시할 라운드가 없습니다.</p>`;
+      return;
+    }
+    // repo → { state → count }. 수렴 막대는 라운드 단위(요청 상태 막대와 별개 축).
+    const byRepo = {};
+    const stateSet = new Set();
+    let convergedTotal = 0, grandTotal = 0;
+    rounds.forEach((r) => {
+      const repo = (r.repo && String(r.repo).trim()) || "미상";
+      const st = (r.state && String(r.state).trim()) || "미상";
+      (byRepo[repo] = byRepo[repo] || {})[st] = (byRepo[repo][st] || 0) + 1;
+      stateSet.add(st);
+      grandTotal += 1;
+      if (st === "수렴") convergedTotal += 1;
+    });
+    const repos = Object.keys(byRepo).sort((a, b) => {
+      // 수렴 라운드 많은 repo 먼저(대표 관심사 = "어디가 수렴됐나"), 동률은 합계 큰 순.
+      const ca = byRepo[a]["수렴"] || 0, cb = byRepo[b]["수렴"] || 0;
+      const ta = Object.values(byRepo[a]).reduce((x, y) => x + y, 0);
+      const tb = Object.values(byRepo[b]).reduce((x, y) => x + y, 0);
+      return cb - ca || tb - ta || a.localeCompare(b);
+    });
+    const states = [...stateSet].sort((a, b) => roundStateRank(a) - roundStateRank(b) || a.localeCompare(b));
+    const legend = states.map((s) => {
+      const m = stateMeta(s);
+      return `<span class="sb-leg"><i class="sb-leg-sw ${escape(m.cls)}"></i>`
+        + `<span class="sb-leg-k">${escape(m.label)}</span></span>`;
+    }).join("");
+    const rows = repos.map((repo) => {
+      const counts = byRepo[repo];
+      const total = Object.values(counts).reduce((x, y) => x + y, 0) || 1;
+      const convN = counts["수렴"] || 0;
+      const segs = states.filter((s) => counts[s]).map((s) => {
+        const n = counts[s];
+        const m = stateMeta(s);
+        const pct = (n / total) * 100;
+        const narrow = pct < 12 ? " sb-seg-narrow" : "";
+        return `<span class="sb-seg ${escape(m.cls)}${narrow}" style="width:${pct.toFixed(2)}%"`
+          + ` title="${escape(repoDisplay(repo))} · ${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)"`
+          + ` aria-label="${escape(m.label)} ${n}건">`
+          + `<b class="sb-seg-n">${n}</b><span class="sb-seg-k">${escape(m.label)}</span></span>`;
+      }).join("");
+      // repo 헤더에 "수렴 N/전체" 병기 — 한눈에 수렴 도달도(거짓 채움 0, 실 카운트).
+      return `<div class="sb-row" role="group" aria-label="${escape(repoDisplay(repo))} 라운드 수렴 (수렴 ${convN}/${total})">
+        <div class="sb-row-head"><span class="sb-repo">${escape(repoDisplay(repo))}</span>
+          <span class="sb-total"><b class="sb-conv-n">수렴 ${convN}</b> / ${total}</span></div>
+        <div class="sb-track">${segs}</div>
+      </div>`;
+    }).join("");
+    host.innerHTML =
+      `<div class="tl-head">라운드 수렴 현황
+        <span class="tl-sub">요청 → 라운드 반복 → <b>수렴</b>(전 패널 YES·2라운드 연속 = 요청 종결의 관문). 위 ‘상태 스냅샷’은 요청이 어느 단계인지, 본 막대는 그 라운드가 수렴했는지 — 전체 ${grandTotal}개 라운드 중 ${convergedTotal}개 수렴.</span>
+      </div>
+      <div class="sb-legend" role="group" aria-label="라운드 수렴 범례">${legend}</div>
       <div class="sb-rows">${rows}</div>`;
   }
 
@@ -424,9 +500,9 @@
       const totalR = s.total_requests ?? 0;
       const openRounds = s.open_rounds ?? 0;
       // 라벨: status_label(서버 산출) 그대로 — 거짓 채움 0. 길면 CSS가 줄임.
-      return `<div class="svc-card ${st.cls}" role="group" aria-label="${escape(repo)} ${escape(st.label)}">
+      return `<div class="svc-card ${st.cls}" role="group" aria-label="${escape(repoDisplay(repo))} ${escape(st.label)}">
         <div class="svc-head">
-          <span class="svc-name">${escape(repo)}</span>
+          <span class="svc-name">${escape(repoDisplay(repo))}</span>
           <span class="svc-status-dot" title="${escape(st.label)}"></span>
         </div>
         <div class="svc-label">${safe(s.status_label || st.label)}</div>
@@ -453,7 +529,7 @@
     // 최근 활동 = 최신 라운드(가장 큰 번호). round_id 끝자리 수치로 정렬.
     const lastRound = rounds.slice().sort((a, b) => roundNum(b.round_id) - roundNum(a.round_id))[0];
     const lastTxt = lastRound
-      ? `${escape(lastRound.alias || lastRound.round_id)} · ${escape(lastRound.repo || "")} · ${escape(stateMeta(lastRound.state).label)}`
+      ? `${escape(lastRound.alias || lastRound.round_id)} · ${escape(repoDisplay(lastRound.repo || ""))} · ${escape(stateMeta(lastRound.state).label)}`
       : "기록 없음";
 
     el("conv-glance").innerHTML = `
@@ -940,7 +1016,7 @@
         `<i class="tl-svc-tchip"><i class="tl-svc-tdot" style="background:${TL_TYPE[ty].color}"></i>${byType[k][ty]}</i>`).join("");
       return `<div class="tl-svc-row">
         <div class="tl-svc-meta">
-          <span class="tl-svc-name">${escape(k)}</span>
+          <span class="tl-svc-name">${escape(repoDisplay(k))}</span>
           <span class="tl-svc-cnt"><b>${total[k] || 0}</b>${typeChips}</span>
         </div>
         <svg class="tl-svc-svg" viewBox="0 0 ${MVBW} ${MVBH}" preserveAspectRatio="none"
@@ -1207,7 +1283,7 @@
         ? `<span class="conv-trend-note">품질·결함 수치 미측정 — 막대는 0이 아니라 "측정 안 됨"(사선)</span>`
         : `<span class="conv-trend-note">품질 측정 ${qMeasured}/${pts.length}회차</span>`;
       return `<div class="conv-trend-repo">
-        <div class="conv-trend-title">${escape(repo)} ${note}</div>
+        <div class="conv-trend-title">${escape(repoDisplay(repo))} ${note}</div>
         <div class="conv-bars">${bars}</div></div>`;
     }).join("");
   }
@@ -1226,7 +1302,7 @@
         <div class="ac-top">
           <span class="badge ${m.cls}">${escape(m.label)}</span>
           <code>${escape(r.alias || r.round_id)}</code>
-          <span class="ac-repo">${escape(r.repo || "")}</span>
+          <span class="ac-repo">${escape(repoDisplay(r.repo || ""))}</span>
         </div>
         <div class="ac-req">${safe(r.request_refs || "대상 요청 미지정")}</div>
         <div class="ac-meta">패널: ${safe(r.panel || "-")}${r.tier ? " · " + safe(r.tier) : ""}</div>
@@ -1241,7 +1317,7 @@
     const repos = [...new Set(reqs.map((r) => r.repo).filter(Boolean))].sort();
     const sel = el("conv-repo");
     sel.innerHTML = '<option value="">전체 repo</option>' +
-      repos.map((r) => `<option value="${escape(r)}">${escape(r)}</option>`).join("");
+      repos.map((r) => `<option value="${escape(r)}">${escape(repoDisplay(r))}</option>`).join("");
 
     // repo 라벨 평이화: '—' = 미분류
     const repoLabel = (r) => (!r || r === "—") ? "미분류" : r;
@@ -1311,7 +1387,7 @@
         //       텍스트 라벨 1회만 유지(스크린리더 중복도 해소). 색상 위계는 .conv-repo-head 자체로.
         const blockedMeta = blockedN ? ` · <span style="color:var(--ru);font-weight:600">교착 ${blockedN}</span>` : "";
         return `<div class="conv-repo-group">
-          <div class="conv-repo-head">${escape(repoLabel(key))}
+          <div class="conv-repo-head">${escape(repoDisplay(repoLabel(key)))}
             <span class="conv-repo-meta">${items.length}건 · 열림 ${openN}${blockedMeta}</span></div>
           <div class="conv-repo-cards">${cards}</div>
         </div>`;
@@ -1449,7 +1525,7 @@
     el("conv-round-tbody").innerHTML = rounds.map((r) => `
       <tr>
         <td><code>${escape(r.round_id)}</code>${r.alias ? ` <span class="sub">(${escape(r.alias)})</span>` : ""}</td>
-        <td>${escape(r.repo)}</td>
+        <td>${escape(repoDisplay(r.repo))}</td>
         <td>${safe(r.request_refs || "")}</td>
         <td>${safe(r.panel || "")}</td>
         <td>${safe(r.tier || "")}</td>
@@ -1587,6 +1663,7 @@
     renderConvFreshness(conv);
     renderConvTimeline(conv);
     renderConvStatebar(conv);
+    renderConvRoundbar(conv);
     renderConvGlance(conv);
     renderConvTrend(conv);
     renderConvActive(conv);
