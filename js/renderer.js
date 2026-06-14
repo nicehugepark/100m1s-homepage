@@ -254,7 +254,9 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
 
 // ⑤ wire_news 분류 — US 기관발(SEC·Fed·백악관) = 미국발 뉴스요약 칩 열 / 국내 기관(연합·금융위) = 국내
 //   매크로 칩 열. 출처 약어는 관습 표기만(창작 0): Federal Reserve→Fed / White House→백악관 / 금융위원회→금융위.
-const _WIRE_US_SOURCE_RE = /\b(SEC|Federal Reserve|White House|Fed)\b|백악관|연방준비제도/i;
+//   트럼프(트루스 소셜) = 미국발 야간 속보(대표 GO 2026-06-14·법무 조건부 GO DOC-20260614-LEGAL-002) →
+//   US 열. 출처 표시명은 발화 주체 명확 귀속(법무 §3) "트럼프(트루스 소셜)" 원형 유지(약어 미적용).
+const _WIRE_US_SOURCE_RE = /\b(SEC|Federal Reserve|White House|Fed)\b|백악관|연방준비제도|트루스 소셜/i;
 const _WIRE_SOURCE_ABBR = { 'Federal Reserve': 'Fed', 'White House': '백악관', '금융위원회': '금융위' };
 function _splitWireNews(wire) {
   const out = { us: [], kr: [] };
