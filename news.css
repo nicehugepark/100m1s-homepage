@@ -2879,6 +2879,27 @@ a.cal-macro-chip.nightly-us-newschip {
   font-size: 11px; font-weight: 700; letter-spacing: 0.1px;
   color: var(--am); white-space: nowrap; flex-shrink: 0;
 }
+/* R49 #2 (다관점 판정 #7 — 초보·고인물, 2026-06-14) — "왜 이 종목" 선정 이유 1줄.
+   헤드 직하·grid 위. 라벨(약한 amber)·본문(tx2) 한 줄, 줄바꿈 허용. 실재 데이터만(FLR-AGT-002). */
+.cal-pm320-today-rec-why {
+  margin: 6px 0 0;
+  display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
+  font-size: 12px; line-height: 1.45; word-break: keep-all; overflow-wrap: break-word;
+}
+.cal-pm320-today-rec-why-k {
+  flex-shrink: 0;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+  color: var(--am); white-space: nowrap;
+}
+.cal-pm320-today-rec-why-v { font-weight: 600; color: var(--tx2); }
+/* R49 #3 (다관점 판정 #7 — 초보, 2026-06-14) — grid 용어(익절·물타기·만기) 인라인 미니 정의 1줄.
+   툴팁(?) 의존 없이 항상 보임. 절제 — 가장 작은 보조 텍스트(11px)·muted 토큰. 카드당 1회. */
+.cal-pm320-today-rec-terms {
+  margin-top: 7px;
+  font-size: 11px; font-weight: 500; line-height: 1.5;
+  color: var(--dm-hi);
+  word-break: keep-all; overflow-wrap: break-word;
+}
 
 /* R28 제거① (조니 2심) — 테마트리 동일 종목 구성 병합 행의 형제 테마명 칩. */
 .theme-tree-merged-chips { display: inline-flex; flex-wrap: wrap; gap: 3px; margin-left: 6px; min-width: 0; }
@@ -3156,6 +3177,26 @@ a.cal-macro-chip.nightly-us-newschip {
   word-break: keep-all;
 }
 .cal-pm320-wr-running { color: var(--dm-hi); } /* R28 P1② */
+/* R49 #1 (다관점 판정 #7 — 법무·금감원, 2026-06-14) — 의무 고지 1줄. 성적 trio·백테스트 사이에
+   항상 노출(details 안에 숨기지 않음). 중립 슬레이트 박스 + ⓘ 아이콘. 토큰 색은 라이트/다크 AA. */
+.cal-pm320-wr-disclaimer {
+  margin-top: 8px;
+  padding: 7px 9px;
+  border-radius: 7px;
+  background: var(--neu-bg);
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--neu-tx-aa, #525F78);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.cal-pm320-wr-disclaimer-ico { flex-shrink: 0; margin-top: 2px; color: var(--neu-tx-aa, #525F78); }
+.cal-pm320-wr-disclaimer b { font-weight: 700; color: var(--tx2); }
 /* 승률 카드 보조 맥락 1줄. */
 .cal-pm320-wr-context {
   margin-top: 6px;

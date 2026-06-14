@@ -2700,8 +2700,35 @@ function renderCalExpandContent(date, data) {
   //   - 픽 부재(보류/미생성) 시 빈 문자열 → 미렌더 (기존 카운트다운/보류 분기 무회귀).
   //   - 과거 날짜 시 헤더 "이날의 추천" + (청산 완료면) 결과 mark. 진행중이면 "잠정".
   //   진입가 SSOT = 매매 row와 동일(authClose 우선, _buildPm320RecRow 와 같은 식, 추정 0).
-  const _buildPm320TodayRecCard = (pk, code, name, authClose, isPast, nxtSnap) => {
+  const _buildPm320TodayRecCard = (pk, code, name, authClose, isPast, nxtSnap, pickIt) => {
     if (!pk || !pk.is_pick) return '';
+    // R49 #2 (다관점 판정 #7 — 초보·고인물 관점, 2026-06-14) — "왜 이 종목" 선정 이유 1줄.
+    //   pickIt(거래대금 순위·테마·연속선정 join 완료된 종목 객체)에서 *실재 데이터만* 평문 조합.
+    //   전략 임계값/내부 산식은 노출 0 — 검증 가능한 관찰값(순위·테마명·연속선정 일수)만 (FLR-AGT-002).
+    //   가용 조각이 0이면 줄 자체를 생략(가짜 생성 금지). 조각은 ·(middot) 로 연결, 최대 3개.
+    const _whyHtml = (() => {
+      if (!pickIt) return '';
+      const bits = [];
+      // ① 거래대금 순위 — rank 가 숫자일 때만 (장 마감 10분 전 자금 쏠림 = PM320 1차 관문).
+      if (typeof pickIt.rank === 'number' && pickIt.rank > 0) {
+        const amtV = pickIt.amount ? ` ${escapeHtml(fmtTradeAmount(pickIt.amount))}` : '';
+        bits.push(`거래대금 ${pickIt.rank}위${amtV}`);
+      }
+      // ② 테마 — 실재 테마명 1개 (themes[].name, 가짜 0). 다중이면 첫 1개 + "외 N".
+      const _themes = Array.isArray(pickIt.themes)
+        ? pickIt.themes.map((t) => (t && typeof t === 'object' ? t.name : t)).filter((n) => typeof n === 'string' && n.trim())
+        : [];
+      if (_themes.length === 1) bits.push(`${escapeHtml(_themes[0])} 테마`);
+      else if (_themes.length > 1) bits.push(`${escapeHtml(_themes[0])} 테마 외 ${_themes.length - 1}`);
+      // ③ 연속선정 — interp.pick_count >= 2 (DSN §3.6.3 "연속선정+N" 동일 정의 SSOT).
+      const _pc = pickIt.interp && typeof pickIt.interp.pick_count === 'number' ? pickIt.interp.pick_count : 0;
+      if (_pc >= 2) bits.push(`연속선정 ${_pc}일째`);
+      if (!bits.length) return '';
+      return `<div class="cal-pm320-today-rec-why" role="note">`
+        + `<span class="cal-pm320-today-rec-why-k">왜 이 종목</span>`
+        + `<span class="cal-pm320-today-rec-why-v">${bits.slice(0, 3).join(' · ')}</span>`
+        + `</div>`;
+    })();
     // 대표 20:51 지적 — 익절가는 물타기 체결 시 평단 하락으로 바뀌므로 단일 단정 금지.
     //   풀 카드의 "물타기 시: X원"과 동일 SSOT — R44 #2: lib/pm320-recompute.js 단일 함수
     //   (watering_weight 데이터 파라미터, 종전 2배 가정 하드코딩 폐기). 저장값/재계산 분기 동일.
@@ -2745,12 +2772,14 @@ function renderCalExpandContent(date, data) {
         <span class="cal-pm320-today-rec-name">${escapeHtml(nameV)}</span>
         ${codeV ? `<span class="cal-pm320-today-rec-code">${escapeHtml(codeV)}</span>` : ''}
       </div>
+      ${_whyHtml}
       <div class="cal-pm320-today-rec-grid">
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">매수</span><span class="cal-pm320-today-rec-v">${escapeHtml(buyV)}</span></div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">익절${tpAfterV ? '<span class="cal-pm320-today-rec-k-cond">(조건부)</span>' : ''}</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span>${tpAfterV ? `<span class="cal-pm320-today-rec-v-sub">물타기 후 익절가 ${escapeHtml(tpAfterV)}</span>` : ''}</div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">물타기</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--dn">${escapeHtml(waterV)}</span></div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k">만기</span><span class="cal-pm320-today-rec-v">${escapeHtml(expiryV)}</span></div>
       </div>
+      <div class="cal-pm320-today-rec-terms" aria-hidden="true">익절 = 이익 보고 매도 · 물타기 = 하락 시 추가 매수로 평단 낮추기 · 만기 = 보유 기한</div>
       ${resultHtml}
       ${_dNoteHtml}
       ${_nxtNoteHtml}
@@ -3861,6 +3890,14 @@ function renderCalExpandContent(date, data) {
       + (s.running > 0 ? `<span class="cal-pm320-wr-sep">·</span><span class="cal-pm320-wr-running">보유중 ${s.running}건</span>` : '')
       + `</div>`
       + `<div class="cal-pm320-wr-alloc">종목당 계좌의 1/12 분할 운용 기준</div>`
+      // R49 #1 (다관점 판정 #7 — 법무·금감원 관점, 2026-06-14) — 의무 고지. 승률/손실 trio 와
+      //   백테스트 전수표(_fineHtml) 사이에 항상 보이는 1줄 고지. 종전엔 footer 면책만 있어
+      //   성적표 인접 고지가 부재(규제 회색지대). details 안에 숨기지 않음 — 성적 숫자와 한 화면.
+      //   문구는 검증 가능한 사실(가상 산출·과거≠미래)만 — 추정·과장 0 (FLR-AGT-002).
+      + `<div class="cal-pm320-wr-disclaimer" role="note">`
+      + `<svg class="cal-pm320-wr-disclaimer-ico" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>`
+      + `<span>위 성적은 <b>과거 데이터를 규칙대로 적용한 가상 산출</b>이며, <b>미래 수익을 보장하지 않습니다</b>. 실제 체결가는 슬리피지·시가 갭 등으로 다를 수 있습니다.</span>`
+      + `</div>`
       + _winContextHtml
       + _fineHtml
       + `</div>`;
@@ -4047,7 +4084,7 @@ function renderCalExpandContent(date, data) {
       const _isPastR = !!(date && date < _todayR);
       // R48 라이더-1 — _nxtSnap(표시 날짜 NXT roster 스냅샷, _resolveNxtSnapshot 산출) 전달: D+0 NXT 캡션 게이트.
       _pm320TodayRecHtml = _buildPm320TodayRecCard(
-        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR, _nxtSnap);
+        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR, _nxtSnap, _pickIt);
     }
   }
   // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
