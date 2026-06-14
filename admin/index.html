@@ -105,12 +105,12 @@
     <section id="tab-convergence" class="panel active" role="tabpanel" aria-labelledby="t-convergence">
       <p class="hint">내 요청이 빠지지 않고 도는지 · 회차가 쌓일수록 품질이 수렴하는지 한눈에. 데이터: convergence.json (read-only 파생물)</p>
 
-      <!-- ⓪ 서비스(repo)별 요약 — summary 키에서 동적 렌더(하드코딩 0, N개 확장 안전) -->
-      <div id="conv-svc-strip" class="conv-svc-strip" aria-label="서비스별 수렴 요약"></div>
-
-      <!-- ⓪-b 지금 동작 중 + 활동 시계열 (대표 직접: 숫자만으론 진척 속도·동작 여부 모름) -->
+      <!-- ⓪-a 지금 동작 중 + 활동 시계열 (진입 즉시·최상단 — 대표 "시계열 어딨어": svc 카드에 밀려 묻힘 직답) -->
       <div id="conv-freshness" class="conv-freshness" aria-label="시스템 활동 신선도"></div>
       <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열"></div>
+
+      <!-- ⓪ 서비스(repo)별 요약 — summary 키에서 동적 렌더(하드코딩 0, N개 확장 안전) -->
+      <div id="conv-svc-strip" class="conv-svc-strip" aria-label="서비스별 수렴 요약"></div>
 
       <!-- ① 한눈에 (at-a-glance) -->
       <div id="conv-glance" class="conv-glance" aria-label="수렴 현황 한눈에"></div>
