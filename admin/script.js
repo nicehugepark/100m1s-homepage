@@ -51,6 +51,16 @@
     return `<span class="badge ${cls || ""}">${escape(text)}</span>`;
   }
 
+  // 빈 상태(empty-state) — 데이터 0건일 때 백지 대신 한 줄 안내(사용자 인지 부하↓·"고장?" 오인 방지).
+  // table tbody 용: colspan 행. 본 어드민은 data.json 이 빈 스텁(convergence.json 만 채워짐)일 때
+  // 요청·에이전트·릴리스·FLR·참여자·audit 탭이 백지가 되던 문제 해소.
+  function emptyRow(cols, msg) {
+    return `<tr class="empty-row"><td colspan="${cols}">${escape(msg)}</td></tr>`;
+  }
+  function emptyHint(msg) {
+    return `<p class="hint empty-hint">${escape(msg)}</p>`;
+  }
+
   function activateTab(name) {
     const tab = document.querySelector(`.tab[data-tab="${name}"]`);
     const panel = el("tab-" + name);
@@ -108,6 +118,11 @@
       });
       filtered.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
       el("req-count").textContent = `${filtered.length} / ${reqs.length}`;
+      if (!filtered.length) {
+        el("req-tbody").innerHTML = emptyRow(6,
+          reqs.length ? "검색·필터 조건에 맞는 요청이 없습니다." : "표시할 요청 데이터가 없습니다 (data.json 미생성).");
+        return;
+      }
       el("req-tbody").innerHTML = filtered.map((r) => {
         const trig = r.trigger
           ? `<span class="trigger">트리거: ${escape(r.trigger)}</span>`
@@ -134,8 +149,12 @@
 
   function renderTimeline() {
     const counts = (state.data.req_status && state.data.req_status.by_status) || {};
-    const cards = Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
+    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    if (!entries.length) {
+      el("timeline-summary").innerHTML = emptyHint("표시할 status 집계가 없습니다 (data.json 미생성). 수렴 탭의 ‘활동 추세’·‘상태 스냅샷’을 참고하세요.");
+      return;
+    }
+    const cards = entries
       .map(([k, v]) => `<div class="card"><div class="k">${escape(k)}</div><div class="v">${v}</div></div>`)
       .join("");
     el("timeline-summary").innerHTML = `<div class="summary-cards">${cards}</div>`;
@@ -143,6 +162,7 @@
 
   function renderAgents() {
     const rows = state.data.agents || [];
+    if (!rows.length) { el("agents-tbody").innerHTML = emptyRow(4, "에이전트 카탈로그 데이터가 없습니다 (data.json 미생성)."); return; }
     el("agents-tbody").innerHTML = rows.map((a) => `
       <tr>
         <td><code>${escape(a.name)}</code></td>
@@ -154,6 +174,7 @@
 
   function renderReleases() {
     const rows = state.data.releases || [];
+    if (!rows.length) { el("releases-tbody").innerHTML = emptyRow(4, "릴리스(commit log) 데이터가 없습니다 (data.json 미생성)."); return; }
     el("releases-tbody").innerHTML = rows.map((c) => `
       <tr>
         <td>${escape((c.date || "").slice(0, 19).replace("T", " "))}</td>
@@ -188,6 +209,7 @@
       <div class="hint">월별: ${monthList}</div>
     `;
 
+    if (!flrs.length) { el("flr-tbody").innerHTML = emptyRow(4, "FLR 레코드가 없습니다 (data.json 미생성)."); return; }
     el("flr-tbody").innerHTML = flrs.map((r) => `
       <tr>
         <td><code>${escape(r.doc_id)}</code></td>
@@ -207,6 +229,7 @@
       }
     }
     const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+    if (!rows.length) { el("people-tbody").innerHTML = emptyRow(2, "참여자 집계 데이터가 없습니다 (data.json 미생성)."); return; }
     el("people-tbody").innerHTML = rows.map(([p, c]) =>
       `<tr><td>${escape(p)}</td><td>${c}</td></tr>`
     ).join("");
@@ -232,6 +255,7 @@
       return (b.idle_h || 0) - (a.idle_h || 0);
     });
 
+    if (!rows.length) { el("audit-grid").innerHTML = emptyHint("에이전트 활동 audit 데이터가 없습니다 (data.json 미생성)."); return; }
     el("audit-grid").innerHTML = rows.map((r) => {
       const last = (r.last_seen || r.last_record_date || "").slice(0, 10);
       const idleTxt = r.idle_h != null
@@ -277,6 +301,9 @@
     "판정완료": { label: "판정 완료", pct: 70,  cls: "conv-cand" },
     "판정중":  { label: "판정 중",    pct: 60,  cls: "conv-cand" },
     "진행중":  { label: "진행 중",    pct: 55,  cls: "conv-prog" },
+    // "포착" = 파이프라인 맨 앞(요청 잡힘·아직 라운드 미진입). 구현중과 색 겹침 회피 위해
+    // 전용 토큰 conv-seed(연한 중립). 정보 손실 0(다크모드 제1원칙) — 상태마다 고유 색.
+    "포착":   { label: "포착됨",     pct: 10,  cls: "conv-seed" },
     "구현중":  { label: "구현 중",    pct: 50,  cls: "conv-prog" },
     "미수렴":  { label: "미수렴",     pct: 40,  cls: "conv-no" },
     "보류":   { label: "보류",      pct: 25,  cls: "conv-prog" },
@@ -302,6 +329,73 @@
   function isOpenState(s) { return !CLOSED_STATES.includes(s); }
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
+
+  // ⓪-a2 상태 스냅샷 스택바 — 서비스(repo)별 요청이 '지금 어느 상태에 몇 건'.
+  //   누적 라인(위)=활동 속도 추세 / 본 스택바=현재 상태 분포 → 둘은 다른 축(서사 분리, §정보위계).
+  //   진행 파이프라인 순서(포착→판정중→구현중→배포→종결)로 세그먼트 정렬 + 보류는 끝(정지).
+  //   색=STATE_META.cls 재사용(거짓 채움 0). 100% 가로 스택 → repo 간 '상태 구성' 직관 비교.
+  //   데이터=requests[].state 프론트 집계(백엔드 보강 불요). 모바일=세로 적층(CSS).
+  const STATE_ORDER = ["포착", "판정중", "구현중", "배포", "종결", "수렴", "보류"];
+  function stateRank(s) { const i = STATE_ORDER.indexOf(s); return i < 0 ? STATE_ORDER.length : i; }
+  function renderConvStatebar(conv) {
+    const host = el("conv-statebar");
+    if (!host) return;
+    const reqs = conv.requests || [];
+    if (!reqs.length) {
+      host.innerHTML = `<div class="tl-head">상태 스냅샷</div>`
+        + `<p class="hint">표시할 요청이 없습니다.</p>`;
+      return;
+    }
+    // repo → { state → count }, repo 합계. repo 정렬은 svc-strip과 동일(진행 많은 순 근사 = 합계 큰 순).
+    const byRepo = {};
+    const stateSet = new Set();
+    reqs.forEach((r) => {
+      const repo = (r.repo && String(r.repo).trim()) || "미상";
+      const st = (r.state && String(r.state).trim()) || "미상";
+      (byRepo[repo] = byRepo[repo] || {})[st] = (byRepo[repo][st] || 0) + 1;
+      stateSet.add(st);
+    });
+    const repos = Object.keys(byRepo).sort((a, b) => {
+      const ta = Object.values(byRepo[a]).reduce((x, y) => x + y, 0);
+      const tb = Object.values(byRepo[b]).reduce((x, y) => x + y, 0);
+      return tb - ta || a.localeCompare(b);
+    });
+    // 등장한 상태를 파이프라인 순서로 — 범례 + 세그먼트 정렬 공통.
+    const states = [...stateSet].sort((a, b) => stateRank(a) - stateRank(b) || a.localeCompare(b));
+    // 범례 — 색(stateMeta.cls) + 라벨 병기(다크모드 제1원칙: 색만으로 의미 전달 금지).
+    const legend = states.map((s) => {
+      const m = stateMeta(s);
+      return `<span class="sb-leg"><i class="sb-leg-sw ${escape(m.cls)}"></i>`
+        + `<span class="sb-leg-k">${escape(m.label)}</span></span>`;
+    }).join("");
+    // repo별 1행 = 라벨 + 100% 스택바. 세그먼트 = 상태(width=비율), 호버 title=상태·건수.
+    const rows = repos.map((repo) => {
+      const counts = byRepo[repo];
+      const total = Object.values(counts).reduce((x, y) => x + y, 0) || 1;
+      const segs = states.filter((s) => counts[s]).map((s) => {
+        const n = counts[s];
+        const m = stateMeta(s);
+        const pct = (n / total) * 100;
+        // 좁은 칸(<12%)은 라벨 어중간 잘림이 오히려 인지 방해(힉의 법칙) → 숫자만, 라벨은 CSS로 숨김.
+        // 전체 정보는 호버 title + aria-label 로 보존(정보 손실 0).
+        const narrow = pct < 12 ? " sb-seg-narrow" : "";
+        return `<span class="sb-seg ${escape(m.cls)}${narrow}" style="width:${pct.toFixed(2)}%"`
+          + ` title="${escape(repo)} · ${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)"`
+          + ` aria-label="${escape(m.label)} ${n}건">`
+          + `<b class="sb-seg-n">${n}</b><span class="sb-seg-k">${escape(m.label)}</span></span>`;
+      }).join("");
+      return `<div class="sb-row" role="group" aria-label="${escape(repo)} 상태 분포 (총 ${total}건)">
+        <div class="sb-row-head"><span class="sb-repo">${escape(repo)}</span><span class="sb-total">${total}</span></div>
+        <div class="sb-track">${segs}</div>
+      </div>`;
+    }).join("");
+    host.innerHTML =
+      `<div class="tl-head">상태 스냅샷
+        <span class="tl-sub">서비스별 요청이 지금 어느 상태에 몇 건인지 — 막대 = 100% 상태 구성 (위 라인차트는 활동 '속도' 추세, 본 막대는 현재 '상태')</span>
+      </div>
+      <div class="sb-legend" role="group" aria-label="상태 범례">${legend}</div>
+      <div class="sb-rows">${rows}</div>`;
+  }
 
   // ① 서비스(repo) 요약 스트립 — summary 키에서 동적 렌더(하드코딩 0·미션 4축).
   // HOME·ADMIN·INFRA 등 N개로 늘어도 레이아웃 안 깨짐. status: active/converged/idle.
@@ -418,13 +512,27 @@
       </div>`;
   }
 
-  // ⓪-c 활동 시계열 — activity_timeline 이벤트를 시간축에 밀도(막대)+점으로. 드래그=팬, 휠/더블탭=줌.
+  // ⓪-c 활동 시계열 — activity_timeline(ts·repo·type)을 시간축 위 *누적 라인*으로.
+  //   서비스별 라인 = 각 repo의 누적 활동 수가 시간 따라 우상향 → "어떤 서비스가 언제 활발했나/어떻게 변하나".
+  //   총합 라인(굵게) = 전체 누적 추이. 기울기가 곧 활동 밀도(평평=쉼, 가파름=활발).
+  //   세그먼트 토글(서비스별↔유형별)로 한 축 전환. 범례 클릭=라인 고립/숨김. 드래그=팬, 휠/더블탭/핀치=줌.
   const TL_TYPE = {
-    verdict: { cls: "tl-verdict", label: "판정", color: "var(--pos)" },
-    round:   { cls: "tl-round",   label: "라운드", color: "var(--am)" },
-    request: { cls: "tl-request", label: "요청", color: "var(--ru)" },
+    verdict: { label: "판정", color: "var(--pos)" },
+    round:   { label: "라운드", color: "var(--am)" },
+    request: { label: "요청", color: "var(--ru)" },
   };
-  const TL_TYPE_ORDER = ["verdict", "round", "request"]; // 막대 누적 순서(아래→위)
+  // 서비스(repo)별 색 — 동적 발견 순서대로 팔레트 순환 배정(잉크다크/황동·루비 정합 톤).
+  // 고정 의미 없는 카테고리라 정체성 톤 안에서 구분 가능한 7색(다크/라이트 양쪽 AA 검증된 토큰).
+  const TL_REPO_PALETTE = [
+    "var(--am)",   // 황동 — 회사 정체성 1순위
+    "var(--pos)",  // 녹
+    "var(--ru)",   // 루비
+    "var(--neu)",  // 청회
+    "var(--am2)",  // 밝은 황동
+    "var(--pos-bd)", // 연녹
+    "var(--neu-bd)", // 연청회
+  ];
+  const TL_TOTAL_COLOR = "var(--tx2)"; // 총합 = 본문 보조색(굵은 라인, 채도 낮춰 위계 위)
   function tlFmt(ms) {
     const d = new Date(ms);
     return (d.getMonth() + 1) + "/" + d.getDate() + " " +
@@ -439,17 +547,39 @@
       : `${md(da)} ${hm(da)} – ${md(db)} ${hm(db)}`;
   }
   // 활동 시계열 상태(줌/팬). full=전체 [min,max], view=현재 보이는 [v0,v1].
-  const tlState = { full: null, view: null, events: null, vbw: 1000 };
+  //   mode: "repo"(서비스별) | "type"(유형별). keys=현재 모드 시리즈 키 목록.
+  //   hidden=숨긴 시리즈 키 Set, solo=고립 시리즈 키(null이면 전부) — 범례 클릭으로 토글.
+  const tlState = {
+    full: null, view: null, events: null, vbw: 1000,
+    mode: "repo", keys: [], colorOf: {}, hidden: new Set(), solo: null,
+  };
+  // 시리즈가 현재 보이는지(solo 우선, 아니면 hidden 제외).
+  function tlVisible(k) {
+    if (tlState.solo) return k === tlState.solo;
+    return !tlState.hidden.has(k);
+  }
+  // 현재 모드에서 한 이벤트의 시리즈 키(repo 또는 type). 빈 값은 '미상'으로.
+  function tlKeyOf(e) {
+    if (tlState.mode === "type") return TL_TYPE[e.type] ? e.type : "기타";
+    return (e.repo && String(e.repo).trim()) || "미상";
+  }
+  function tlSeriesLabel(k) {
+    return tlState.mode === "type" ? (TL_TYPE[k] ? TL_TYPE[k].label : "기타") : k;
+  }
 
-  function renderConvTimeline(conv) {
+  function renderConvTimeline(conv, opts) {
     const host = el("conv-timeline");
     if (!host) return;
+    // 렌더버그 fix: 표시 토글(hidden/solo)은 *일시 탐색 상태*. 탭 진입/데이터 갱신 시엔
+    // 무조건 전체 라인 표시로 초기화(이전 solo/hidden 잔존 → 라인 1개만 그려지던 버그).
+    // mode 전환 재호출만 preserveToggle=true (그 핸들러가 이미 직접 리셋함). 줌(view)은 항상 보존.
+    if (!(opts && opts.preserveToggle)) { tlState.hidden = new Set(); tlState.solo = null; }
     const tl = (conv.activity_timeline || [])
       .filter((e) => e && e.ts && !isNaN(new Date(e.ts).getTime()))
       .map((e) => ({ ...e, t: new Date(e.ts).getTime() }))
       .sort((a, b) => a.t - b.t);
     if (!tl.length) {
-      host.innerHTML = `<div class="tl-head">활동 시계열</div><p class="hint">표시할 활동 기록이 없습니다 (activity_timeline 미상).</p>`;
+      host.innerHTML = `<div class="tl-head">활동 추세 <small class="tl-head-tag">속도</small></div><p class="hint">표시할 활동 기록이 없습니다 (activity_timeline 미상).</p>`;
       return;
     }
     const min = tl[0].t, max = tl[tl.length - 1].t;
@@ -465,16 +595,37 @@
     tlState.view = view;
     tlState.events = tl;
 
+    // 시리즈 키 = 현재 모드(repo|type)별 등장 키. 발견 순서 보존(첫 등장 시각 순).
+    const seen = [];
+    tl.forEach((e) => { const k = tlKeyOf(e); if (!seen.includes(k)) seen.push(k); });
+    // 유형은 의미 순(판정·라운드·요청·기타) 고정, 서비스는 총량 내림차순(굵직한 라인이 앞 범례).
+    let keys;
+    if (tlState.mode === "type") {
+      const order = ["verdict", "round", "request", "기타"];
+      keys = seen.slice().sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    } else {
+      const cnt = {}; tl.forEach((e) => { const k = tlKeyOf(e); cnt[k] = (cnt[k] || 0) + 1; });
+      keys = seen.slice().sort((a, b) => cnt[b] - cnt[a]);
+    }
+    tlState.keys = keys;
+    // 색 배정 — 유형은 의미색 고정, 서비스는 팔레트 순환.
+    const colorOf = {};
+    if (tlState.mode === "type") {
+      keys.forEach((k) => { colorOf[k] = TL_TYPE[k] ? TL_TYPE[k].color : "var(--neu)"; });
+    } else {
+      keys.forEach((k, i) => { colorOf[k] = TL_REPO_PALETTE[i % TL_REPO_PALETTE.length]; });
+    }
+    tlState.colorOf = colorOf;
+    // 사라진 키는 hidden/solo에서 정리(데이터 재생성 후 잔존 방지).
+    tlState.hidden.forEach((k) => { if (!keys.includes(k)) tlState.hidden.delete(k); });
+    if (tlState.solo && !keys.includes(tlState.solo)) tlState.solo = null;
+
     // 통계 헤더 — 총 N · 시간당 평균 · 피크 1시간 구간 · 최근 활동.
     const total = tl.length;
     const spanHrs = fullSpan / 3600000;
     const perHr = spanHrs > 0 ? (total / spanHrs) : total;
-    // 피크: 60분 슬라이딩 버킷 중 최다(정시 기준 버킷으로 단순화 — 인지 비용 ↓).
     const hourBuckets = {};
-    tl.forEach((e) => {
-      const hk = Math.floor(e.t / 3600000);
-      hourBuckets[hk] = (hourBuckets[hk] || 0) + 1;
-    });
+    tl.forEach((e) => { const hk = Math.floor(e.t / 3600000); hourBuckets[hk] = (hourBuckets[hk] || 0) + 1; });
     let peakHk = null, peakN = 0;
     for (const k in hourBuckets) if (hourBuckets[k] > peakN) { peakN = hourBuckets[k]; peakHk = +k; }
     const peakStart = peakHk != null ? peakHk * 3600000 : null;
@@ -483,23 +634,44 @@
       : "—";
     const lastMin = minsAgo(tl[tl.length - 1].ts);
 
+    // 시리즈별 총건수(범례 카운트 — 모드 무관 전체 기간 기준).
+    const seriesTotal = {}; tl.forEach((e) => { const k = tlKeyOf(e); seriesTotal[k] = (seriesTotal[k] || 0) + 1; });
+
+    const sub = tlState.mode === "repo"
+      ? "서비스별 누적 활동(속도 추세) — 기울기 = 활발한 정도, 평평 = 쉼 · 상태 분포는 아래 ‘상태 스냅샷’ · 범례 탭=해당 라인만 · 드래그=이동 · 휠/더블탭=확대"
+      : "유형별 누적 활동(속도 추세) — 판정·라운드·요청이 시간 따라 어떻게 쌓였나 · 상태 분포는 아래 ‘상태 스냅샷’ · 범례 탭=해당 라인만";
+
+    const legendHtml = keys.map((k) => {
+      const dim = !tlVisible(k) ? " is-off" : "";
+      return `<button type="button" class="tl-leg${dim}" data-series="${escape(k)}" aria-pressed="${tlVisible(k)}">`
+        + `<i class="tl-sw" style="background:${colorOf[k]}"></i>`
+        + `<span class="tl-leg-name">${escape(tlSeriesLabel(k))}</span> <b>${seriesTotal[k] || 0}</b></button>`;
+    }).join("");
+
     host.innerHTML =
-      `<div class="tl-head">활동 시계열
-        <span class="tl-sub">판정·라운드·요청이 언제 몰렸는지 · 드래그=좌우 이동 · 휠/더블탭=확대·축소</span>
+      `<div class="tl-head">활동 추세 <small class="tl-head-tag">속도</small>
+        <span class="tl-sub">${escape(sub)}</span>
       </div>
-      <div class="tl-stats" aria-label="활동 통계">
-        <span class="tl-stat"><b>${total}</b><i>총 활동</i></span>
-        <span class="tl-stat"><b>${perHr.toFixed(1)}</b><i>시간당 평균</i></span>
-        <span class="tl-stat"><b>${escape(peakLabel)}</b><i>피크 구간</i></span>
-        <span class="tl-stat"><b>${escape(agoText(lastMin))}</b><i>최근 활동</i></span>
+      <div class="tl-toolbar">
+        <div class="tl-stats" aria-label="활동 통계">
+          <span class="tl-stat"><b>${total}</b><i>총 활동</i></span>
+          <span class="tl-stat"><b>${perHr.toFixed(1)}</b><i>시간당 평균</i></span>
+          <span class="tl-stat"><b>${escape(peakLabel)}</b><i>피크 구간</i></span>
+          <span class="tl-stat"><b>${escape(agoText(lastMin))}</b><i>최근 활동</i></span>
+        </div>
+        <div class="tl-seg" role="group" aria-label="라인 분류 기준">
+          <button type="button" class="tl-seg-btn${tlState.mode === "repo" ? " is-on" : ""}" data-mode="repo" aria-pressed="${tlState.mode === "repo"}">서비스별</button>
+          <button type="button" class="tl-seg-btn${tlState.mode === "type" ? " is-on" : ""}" data-mode="type" aria-pressed="${tlState.mode === "type"}">유형별</button>
+        </div>
       </div>
       <div class="tl-chart-wrap">
-        <svg class="tl-svg" viewBox="0 0 ${tlState.vbw} 132" preserveAspectRatio="none"
-             role="img" aria-label="활동 시계열 차트 — 총 ${total}건, 드래그로 이동·확대 가능" tabindex="0">
+        <svg class="tl-svg" viewBox="0 0 ${tlState.vbw} 156" preserveAspectRatio="none"
+             role="img" aria-label="활동 누적 추이 라인 차트 — 총 ${total}건, 드래그로 이동·확대 가능" tabindex="0">
           <g class="tl-grid"></g>
-          <g class="tl-bars"></g>
-          <g class="tl-dots"></g>
+          <g class="tl-lines"></g>
+          <g class="tl-cursor"></g>
         </svg>
+        <div class="tl-yaxis" aria-hidden="true"></div>
         <div class="tl-tip" hidden></div>
         <button type="button" class="tl-reset" hidden aria-label="전체 기간으로 초기화">전체 보기</button>
       </div>
@@ -508,89 +680,105 @@
         <span class="tl-range-label" aria-live="polite"></span>
         <span class="tl-axis-to"></span>
       </div>
-      <div class="tl-legend">
-        <span class="tl-leg"><i class="tl-sw tl-verdict"></i>판정 <b>${tl.filter((e) => e.type === "verdict").length}</b></span>
-        <span class="tl-leg"><i class="tl-sw tl-round"></i>라운드 <b>${tl.filter((e) => e.type === "round").length}</b></span>
-        <span class="tl-leg"><i class="tl-sw tl-request"></i>요청 <b>${tl.filter((e) => e.type === "request").length}</b></span>
-      </div>`;
+      <div class="tl-legend" role="group" aria-label="시리즈 표시 토글">${legendHtml}</div>`;
 
     drawTimeline(host);
     bindTimelineInteractions(host);
   }
 
-  // 현재 view 범위로 막대(밀도)+점+격자+축 라벨을 그린다. (재호출 = 줌/팬 갱신)
+  // 현재 view 범위로 *누적 라인*(서비스별/유형별)+총합 라인+격자+Y축을 그린다. (재호출 = 줌/팬 갱신)
+  //   누적은 *전체 기간* 기준으로 계산하되, view 범위만 잘라 그린다 → 줌해도 누적값(절대 높이)이 일관.
+  //   거짓 0 채움 금지(FLR-AGT-002): 데이터 없으면 그냥 평평(실제 누적이 그대로 멈춤), 가짜 보간 없음.
   function drawTimeline(host) {
     const tl = tlState.events;
     const [v0, v1] = tlState.view;
     const span = (v1 - v0) || 1;
-    const VBW = tlState.vbw, VBH = 132, PAD = 4, plotH = 96, baseY = 108;
+    const VBW = tlState.vbw, VBH = 156, PADT = 8, PADB = 24, baseY = VBH - PADB; // 상단 8 여백, 하단 24 시각라벨
+    const plotH = baseY - PADT;
     const xOf = (t) => ((t - v0) / span) * VBW;
-
-    // 버킷 수: 보이는 폭(시간)에 비례. 줌인할수록 잘게(최소 8, 최대 48).
     const viewHrs = span / 3600000;
-    const nb = Math.max(8, Math.min(48, Math.round(viewHrs <= 2 ? viewHrs * 12 : viewHrs * 2.5)));
-    const bw = VBW / nb;
-    const buckets = Array.from({ length: nb }, () => ({ verdict: 0, round: 0, request: 0, other: 0, items: [] }));
-    let maxStack = 0;
-    tl.forEach((e) => {
-      if (e.t < v0 || e.t > v1) return;
-      let bi = Math.floor(((e.t - v0) / span) * nb);
-      if (bi >= nb) bi = nb - 1; if (bi < 0) bi = 0;
-      const k = TL_TYPE[e.type] ? e.type : "other";
-      buckets[bi][k]++;
-      buckets[bi].items.push(e);
-    });
-    buckets.forEach((b) => { const s = b.verdict + b.round + b.request + b.other; if (s > maxStack) maxStack = s; });
-    maxStack = maxStack || 1;
+    const keys = tlState.keys, colorOf = tlState.colorOf;
 
-    // 격자: 시간 눈금(보이는 폭에 따라 1h/3h/6h 간격).
+    // 시리즈별 누적 step 좌표 — 각 이벤트 시각에 +1. 시작점(누적 0)부터.
+    // 보이는 시리즈만 최댓값 산정(숨기면 Y스케일이 보이는 라인에 맞게 재조정 → 작은 라인도 읽힘).
+    const cum = {}; keys.forEach((k) => { cum[k] = 0; });
+    const steps = {}; keys.forEach((k) => { steps[k] = [[tl[0].t, 0]]; }); // [time, cumValue]
+    let totalCum = 0; const totalSteps = [[tl[0].t, 0]];
+    tl.forEach((e) => {
+      const k = tlKeyOf(e);
+      if (cum[k] == null) { cum[k] = 0; steps[k] = [[tl[0].t, 0]]; }
+      cum[k]++; steps[k].push([e.t, cum[k]]);
+      totalCum++; totalSteps.push([e.t, totalCum]);
+    });
+    // 끝점 연장(마지막 이벤트 이후 ~ max 까지 평평하게).
+    const maxT = tlState.full[1];
+    keys.forEach((k) => { const s = steps[k]; if (s.length) steps[k].push([maxT, s[s.length - 1][1]]); });
+    totalSteps.push([maxT, totalCum]);
+
+    // Y 최댓값: 총합 표시 중이면 총합 기준, 아니면 보이는 시리즈 최댓값 기준.
+    const totalVisible = tlVisible("__total__");
+    let yMax = 0;
+    if (totalVisible) yMax = totalCum;
+    keys.forEach((k) => { if (tlVisible(k)) yMax = Math.max(yMax, cum[k]); });
+    yMax = yMax || 1;
+    const yOf = (v) => baseY - (v / yMax) * plotH;
+
+    // 격자: 시간 눈금(보이는 폭에 따라 1h/3h/6h) + Y 눈금(가로선).
     const stepH = viewHrs <= 3 ? 1 : (viewHrs <= 9 ? 3 : 6);
     const stepMs = stepH * 3600000;
     let gridSvg = "", g0 = Math.ceil(v0 / stepMs) * stepMs;
     for (let t = g0; t <= v1; t += stepMs) {
       const x = xOf(t).toFixed(1);
       const hh = String(new Date(t).getHours()).padStart(2, "0");
-      gridSvg += `<line x1="${x}" y1="${PAD}" x2="${x}" y2="${baseY}" class="tl-gridline"/>`
-        + `<text x="${x}" y="${VBH - 4}" class="tl-gridtxt">${hh}시</text>`;
+      gridSvg += `<line x1="${x}" y1="${PADT}" x2="${x}" y2="${baseY}" class="tl-gridline"/>`
+        + `<text x="${x}" y="${VBH - 7}" class="tl-gridtxt">${hh}시</text>`;
     }
-    gridSvg += `<line x1="0" y1="${baseY}" x2="${VBW}" y2="${baseY}" class="tl-baseline"/>`;
-
-    // 막대(누적): 아래→위 verdict→round→request→other.
-    const COLORS = { verdict: "var(--pos)", round: "var(--am)", request: "var(--ru)", other: "var(--neu)" };
-    let barsSvg = "";
-    buckets.forEach((b, i) => {
-      const total = b.verdict + b.round + b.request + b.other;
-      if (!total) return;
-      const cx = (i + 0.5) * bw;
-      const innerW = Math.max(bw * 0.62, 3);
-      const x = cx - innerW / 2;
-      let yTop = baseY;
-      ["verdict", "round", "request", "other"].forEach((k) => {
-        if (!b[k]) return;
-        const h = (b[k] / maxStack) * plotH;
-        yTop -= h;
-        barsSvg += `<rect x="${x.toFixed(1)}" y="${yTop.toFixed(1)}" width="${innerW.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="${COLORS[k]}" class="tl-bar tl-bar-${k}"/>`;
-      });
-      // 히트박스(툴팁용) — 버킷 전체 폭.
-      const range = tlFmtRange(v0 + (i * span) / nb, v0 + ((i + 1) * span) / nb);
-      const parts = ["verdict", "round", "request", "other"].filter((k) => b[k]).map((k) => `${TL_TYPE[k] ? TL_TYPE[k].label : "기타"} ${b[k]}`).join(" · ");
-      barsSvg += `<rect x="${(i * bw).toFixed(1)}" y="${PAD}" width="${bw.toFixed(1)}" height="${baseY - PAD}" fill="transparent" class="tl-hit" data-tip="${escape(range + " · " + parts + " (총 " + total + "건)")}"/>`;
+    // Y 가로 눈금 — 4단계(0 포함). 라벨은 HTML overlay(.tl-yaxis)로(viewBox 왜곡 회피).
+    const yTicks = niceYticks(yMax, 4);
+    yTicks.forEach((v) => {
+      const y = yOf(v).toFixed(1);
+      gridSvg += `<line x1="0" y1="${y}" x2="${VBW}" y2="${y}" class="tl-ygrid${v === 0 ? " tl-baseline" : ""}"/>`;
     });
 
-    // 점 오버레이 — 버킷이 성길 때만(과밀 방지). 막대당 평균 1건 이하 가독.
-    let dotsSvg = "";
-    if (tl.filter((e) => e.t >= v0 && e.t <= v1).length <= 60) {
-      tl.forEach((e) => {
-        if (e.t < v0 || e.t > v1) return;
-        const x = xOf(e.t);
-        const c = COLORS[TL_TYPE[e.type] ? e.type : "other"];
-        dotsSvg += `<circle cx="${x.toFixed(1)}" cy="${(baseY + 6).toFixed(1)}" r="2.4" fill="${c}" class="tl-evdot"/>`;
-      });
+    // 라인 path 생성기 — step-after(누적은 계단). 한 시리즈.
+    const pathOf = (pts) => {
+      // view 밖 점도 포함해 그려야 양 끝이 잘리지 않음(SVG가 클립).
+      let dd = "";
+      for (let i = 0; i < pts.length; i++) {
+        const [t, v] = pts[i];
+        const x = xOf(t), y = yOf(v);
+        if (i === 0) { dd = `M${x.toFixed(1)} ${y.toFixed(1)}`; }
+        else { const py = yOf(pts[i - 1][1]); dd += `H${x.toFixed(1)}V${y.toFixed(1)}`; }
+      }
+      return dd;
+    };
+
+    // 라인 그리기 — 보이는 시리즈만. solo면 나머지 흐릿하게 1개만.
+    let linesSvg = "";
+    keys.forEach((k) => {
+      if (!tlVisible(k)) return;
+      linesSvg += `<path d="${pathOf(steps[k])}" fill="none" stroke="${colorOf[k]}" class="tl-line" data-series="${escape(k)}"/>`;
+    });
+    // 총합 라인 — 굵게, 맨 위(가독). solo 모드일 땐 숨김(혼란 방지).
+    if (totalVisible && !tlState.solo) {
+      linesSvg += `<path d="${pathOf(totalSteps)}" fill="none" stroke="${TL_TOTAL_COLOR}" class="tl-line tl-line-total" data-series="__total__"/>`;
     }
 
     host.querySelector(".tl-grid").innerHTML = gridSvg;
-    host.querySelector(".tl-bars").innerHTML = barsSvg;
-    host.querySelector(".tl-dots").innerHTML = dotsSvg;
+    host.querySelector(".tl-lines").innerHTML = linesSvg;
+
+    // Y축 라벨 overlay (HTML — preserveAspectRatio none 왜곡 회피).
+    const yax = host.querySelector(".tl-yaxis");
+    if (yax) {
+      yax.innerHTML = yTicks.filter((v) => v > 0).map((v) => {
+        const pct = (1 - (yOf(v) - PADT) / plotH); // 0=하단
+        const topPct = ((yOf(v)) / VBH) * 100;
+        return `<span style="top:${topPct.toFixed(1)}%">${v}</span>`;
+      }).join("");
+    }
+
+    // 현재 view 범위 데이터를 crosshair용으로 박제(시점별 각 시리즈 누적값 lookup).
+    tlState._draw = { steps, totalSteps, keys, colorOf, yOf, xOf, baseY, PADT, yMax, totalVisible };
 
     // 축/범위 라벨 + 전체보기 버튼 토글.
     const [f0, f1] = tlState.full;
@@ -602,6 +790,26 @@
     if (rl) rl.textContent = isFull ? "전체 기간" : "확대됨 · " + tlFmtRange(v0, v1);
     const rb = host.querySelector(".tl-reset");
     if (rb) rb.hidden = isFull;
+  }
+
+  // Y축 "보기 좋은" 눈금값 배열(0 포함, n단계 근사). 정수 누적이므로 1/2/5×10ⁿ 스텝.
+  function niceYticks(maxV, n) {
+    if (maxV <= 0) return [0];
+    const raw = maxV / n;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const norm = raw / mag;
+    const step = (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10) * mag;
+    const ticks = [];
+    for (let v = 0; v <= maxV + 0.0001; v += step) ticks.push(Math.round(v));
+    if (ticks[ticks.length - 1] < maxV) ticks.push(Math.round(Math.ceil(maxV / step) * step));
+    return ticks;
+  }
+
+  // 특정 시각 t에서 한 시리즈의 누적값(step-after lookup) — crosshair 툴팁용.
+  function tlCumAt(pts, t) {
+    let v = 0;
+    for (let i = 0; i < pts.length; i++) { if (pts[i][0] <= t) v = pts[i][1]; else break; }
+    return v;
   }
 
   // 드래그(팬) + 휠/더블탭(줌) + 호버/탭(툴팁) 바인딩. pointer 이벤트로 마우스·터치 통합.
@@ -744,23 +952,82 @@
     // ── 전체보기 버튼 ──
     if (resetBtn) resetBtn.addEventListener("click", () => { tlState.view = tlState.full.slice(); drawTimeline(host); });
 
-    // ── 툴팁 ──
+    // ── 세그먼트 토글 (서비스별 ↔ 유형별) ──
+    host.querySelectorAll(".tl-seg-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const m = btn.getAttribute("data-mode");
+        if (m === tlState.mode) return;
+        tlState.mode = m;
+        tlState.hidden = new Set(); tlState.solo = null; // 모드 바뀌면 표시 상태 리셋
+        // tlState.events는 이미 파싱된 이벤트 — 그대로 재렌더(view 줌 상태는 보존).
+        // preserveToggle: 위에서 이미 리셋했으므로 진입부 재리셋 불요(중복 회피).
+        renderConvTimeline({ activity_timeline: tlState.events }, { preserveToggle: true });
+      });
+    });
+
+    // ── 범례 토글 (탭=고립, 다시 탭=해제 / 작은 라인도 단독으로 크게 볼 수 있게) ──
+    host.querySelectorAll(".tl-legend .tl-leg").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const k = btn.getAttribute("data-series");
+        // solo 토글 방식: 클릭=그것만, 같은 걸 다시 클릭=전체 복귀.
+        tlState.solo = (tlState.solo === k) ? null : k;
+        tlState.hidden = new Set();
+        // 범례 dim + aria 갱신, 차트 재그리기(전체 재렌더 없이).
+        host.querySelectorAll(".tl-legend .tl-leg").forEach((b) => {
+          const bk = b.getAttribute("data-series");
+          const on = tlState.solo ? bk === tlState.solo : true;
+          b.classList.toggle("is-off", !on);
+          b.setAttribute("aria-pressed", String(on));
+        });
+        drawTimeline(host);
+      });
+    });
+
+    // ── crosshair 툴팁 — 호버/탭 지점의 시각 + 보이는 각 시리즈 누적값(+총합). ──
+    const cursorG = host.querySelector(".tl-cursor");
     function showTipAt(ev) {
-      if (!tip) return;
-      const target = ev.target.closest ? ev.target.closest(".tl-hit") : null;
-      const t = target && target.getAttribute("data-tip");
-      if (!t) { tip.hidden = true; return; }
+      if (!tip || !cursorG) return;
+      const d = tlState._draw;
+      if (!d) return;
+      const vbx = pxToVbX(ev.clientX);
+      if (vbx < 0 || vbx > VBW) { tip.hidden = true; cursorG.innerHTML = ""; return; }
+      const t = vbxToTime(vbx);
+      const x = d.xOf(t);
+      // 보이는 시리즈별 누적값 — 큰 값 순 정렬.
+      const rows = [];
+      d.keys.forEach((k) => {
+        if (!tlVisible(k)) return;
+        const v = tlCumAt(d.steps[k], t);
+        rows.push({ k, v, color: d.colorOf[k], label: tlSeriesLabel(k) });
+      });
+      rows.sort((a, b) => b.v - a.v);
+      let totalRow = null;
+      if (d.totalVisible && !tlState.solo) {
+        totalRow = { v: tlCumAt(d.totalSteps, t), color: TL_TOTAL_COLOR, label: "총합" };
+      }
+      // 세로 crosshair 선 + 각 시리즈 교차 도트.
+      let cur = `<line x1="${x.toFixed(1)}" y1="${d.PADT}" x2="${x.toFixed(1)}" y2="${d.baseY}" class="tl-crossline"/>`;
+      rows.forEach((r) => { cur += `<circle cx="${x.toFixed(1)}" cy="${d.yOf(r.v).toFixed(1)}" r="3" fill="${r.color}" class="tl-crossdot"/>`; });
+      if (totalRow) cur += `<circle cx="${x.toFixed(1)}" cy="${d.yOf(totalRow.v).toFixed(1)}" r="3.4" fill="${totalRow.color}" class="tl-crossdot"/>`;
+      cursorG.innerHTML = cur;
+      // 툴팁 내용 — 시각 헤더 + 시리즈 행(색 점·라벨·누적값).
+      const head = `<div class="tl-tip-time">${tlFmt(t)} 기준 누적</div>`;
+      const body = (totalRow ? [`<div class="tl-tip-row tl-tip-total"><i style="background:${totalRow.color}"></i><span>총합</span><b>${totalRow.v}</b></div>`] : [])
+        .concat(rows.map((r) => `<div class="tl-tip-row"><i style="background:${r.color}"></i><span>${escape(r.label)}</span><b>${r.v}</b></div>`))
+        .join("");
+      tip.innerHTML = head + body;
+      tip.hidden = false;
       const wrap = host.querySelector(".tl-chart-wrap");
       const wr = wrap.getBoundingClientRect();
-      tip.textContent = t;
-      tip.hidden = false;
-      let left = ev.clientX - wr.left + 10;
-      if (left + tip.offsetWidth > wr.width) left = wr.width - tip.offsetWidth - 4;
-      if (left < 0) left = 0;
+      const localX = ev.clientX - wr.left;
+      let left = localX + 14;
+      if (left + tip.offsetWidth > wr.width) left = localX - tip.offsetWidth - 14;
+      if (left < 0) left = 2;
       tip.style.left = left + "px";
-      tip.style.top = (ev.clientY - wr.top - tip.offsetHeight - 8) + "px";
+      tip.style.top = "6px"; // 상단 고정 — 라인과 겹쳐 가리지 않게
     }
     svg.addEventListener("pointermove", showTipAt, { passive: true });
+    svg.addEventListener("pointerleave", () => { if (cursorG) cursorG.innerHTML = ""; });
   }
 
   // ② 품질 수렴 추이 — repo별 회차 × 품질점수(4축 평균, 높을수록 좋음).
@@ -1182,6 +1449,7 @@
     renderConvServices(conv);
     renderConvFreshness(conv);
     renderConvTimeline(conv);
+    renderConvStatebar(conv);
     renderConvGlance(conv);
     renderConvTrend(conv);
     renderConvActive(conv);

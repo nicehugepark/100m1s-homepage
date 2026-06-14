@@ -109,6 +109,11 @@
       <div id="conv-freshness" class="conv-freshness" aria-label="시스템 활동 신선도"></div>
       <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열"></div>
 
+      <!-- ⓪-a2 상태 스냅샷 — 서비스별 요청이 '지금 어느 상태에 몇 건' (대표 시계열 검토 직답).
+           누적 라인(위)=활동 속도 추세 / 본 스택바=현재 상태 분포. 둘은 다른 축(서사 분리).
+           데이터=convergence.json requests[].state 프론트 집계(백엔드 보강 불요). -->
+      <div id="conv-statebar" class="conv-statebar" aria-label="서비스별 요청 상태 분포"></div>
+
       <!-- ⓪ 서비스(repo)별 요약 — summary 키에서 동적 렌더(하드코딩 0, N개 확장 안전) -->
       <div id="conv-svc-strip" class="conv-svc-strip" aria-label="서비스별 수렴 요약"></div>
 

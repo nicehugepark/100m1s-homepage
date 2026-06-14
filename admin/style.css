@@ -235,6 +235,10 @@ code {
 
 .hint { color: var(--tx2); font-size: 12px; margin: 4px 0 14px; line-height: 1.5; }
 
+/* 빈 상태(empty-state) — 데이터 0건 시 백지 대신 안내. "고장났나?" 오인 방지. */
+.empty-row td { text-align: center; color: var(--dm); padding: 22px 12px; font-size: 13px; }
+.empty-hint { color: var(--dm); padding: 14px 2px; margin: 2px 0; }
+
 /* ════════════ BADGE — 의미 토큰 ════════════ */
 .badge {
   display: inline-flex; align-items: center; gap: 4px;
@@ -326,6 +330,9 @@ footer {
   color: var(--dm); border-color: var(--bd2); background: var(--bg2);
   font-weight: 500;
 }
+/* "포착" = 파이프라인 맨 앞(요청 잡힘·라운드 미진입). 진행계열(conv-prog)과 색 겹침 회피 전용 토큰.
+   연한 황동 배경 + 진한 황동 텍스트 — WCAG AA. 라이트/다크 공용 변수라 자동 반전. */
+.badge.conv-seed { color: var(--am);  border-color: var(--am3); background: var(--am4); }
 
 .conv-unknown { color: var(--dm); font-weight: 700; cursor: help; font-family: var(--mono); }
 .conv-warn { color: var(--ru); }
@@ -367,6 +374,52 @@ footer {
   font-size: 13px; font-weight: 600; color: var(--tx); margin-top: 4px;
   line-height: 1.4; font-family: var(--mono);
 }
+
+/* ════════ ⓪-a2 상태 스냅샷 스택바 — 서비스별 요청 상태 분포 ════════ */
+/* 누적 라인(위)=활동 속도 추세 / 본 스택바=현재 상태 구성. 둘은 다른 축(서사 분리). */
+.conv-statebar {
+  background: var(--sf); border: 1px solid var(--bd); border-radius: var(--radius);
+  padding: 14px 16px 16px; margin: 4px 0 10px; box-shadow: var(--shadow-1);
+}
+/* 범례 — 색 스와치 + 라벨 병기(다크모드 제1원칙: 색만으로 의미 전달 금지) */
+.sb-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 12px; }
+.sb-leg { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--tx2); }
+.sb-leg-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; border: 1px solid transparent; }
+/* 스와치는 진한 의미색 채움(작아서 연한 bg면 체크박스로 오인 → 식별성 확보). */
+.sb-leg-sw.conv-ok   { background: var(--pos); }
+.sb-leg-sw.conv-cand { background: var(--am2); }
+.sb-leg-sw.conv-prog { background: var(--neu); }
+.sb-leg-sw.conv-no   { background: var(--ru); }
+.sb-leg-sw.conv-seed { background: var(--am3); border-color: var(--am2); }
+.sb-leg-sw.conv-superseded { background: var(--bd2); }
+.sb-leg-k { white-space: nowrap; }
+/* repo 1행 = 라벨 + 100% 트랙 */
+.sb-rows { display: flex; flex-direction: column; gap: 10px; }
+.sb-row-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+.sb-repo { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--tx); }
+.sb-total { font-family: var(--mono); font-size: 12px; color: var(--dm); font-variant-numeric: tabular-nums; }
+.sb-track {
+  display: flex; width: 100%; height: 26px; border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--bd); background: var(--bg2);
+}
+.sb-seg {
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  min-width: 0; overflow: hidden; white-space: nowrap;
+  font-size: 11px; font-weight: 600; transition: filter .14s;
+  border-right: 1px solid var(--sf); box-sizing: border-box;
+}
+.sb-seg:last-child { border-right: 0; }
+.sb-seg:hover { filter: brightness(1.06); }
+.sb-seg-n { font-family: var(--mono); font-variant-numeric: tabular-nums; flex: none; }
+.sb-seg-k { overflow: hidden; text-overflow: ellipsis; } /* 칸이 충분하면 라벨, 모자라면 ... (거짓 채움 0) */
+.sb-seg-narrow .sb-seg-k { display: none; } /* 좁은 칸(<12%): 어중간 잘림 대신 숫자만(전체는 호버 title) */
+/* 세그먼트 채움색 — 의미 변수 기반(라이트/다크 공용 자동 반전). 연한 bg + 진한 텍스트(AA). */
+.sb-seg.conv-ok   { background: var(--pos-bg); color: var(--pos); }
+.sb-seg.conv-cand { background: var(--am3);    color: var(--am); }
+.sb-seg.conv-prog { background: var(--neu-bg); color: var(--neu); }
+.sb-seg.conv-no   { background: var(--neg-bg); color: var(--ru); }
+.sb-seg.conv-seed { background: var(--am4);    color: var(--am); }
+.sb-seg.conv-superseded { background: var(--bg2); color: var(--dm); }
 
 /* ════════ 서비스(repo) 요약 스트립 — 동적 N개 ════════ */
 .conv-svc-strip {
@@ -410,6 +463,7 @@ footer {
 .svc-metric .m-k {
   font-size: 12px; color: var(--dm); text-transform: uppercase; letter-spacing: .4px;
   font-family: var(--mono);
+  white-space: nowrap; /* 데스크톱 6서비스 그리드에서 '열린 요청' 줄바꿈(요/청) 방지 */
 }
 .svc-metric.m-open .m-v { color: var(--am); }
 
@@ -758,10 +812,17 @@ footer {
 /* ⓪-c 활동 시계열 — 밀도 막대 + 점 + 드래그(팬)/휠·핀치(줌). 판정=녹·라운드=황동·요청=루비 */
 .conv-timeline { margin: 0 0 16px; }
 .tl-head { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--tx2); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 7px; }
-.tl-sub { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dm); margin-left: 6px; font-family: var(--sans, inherit); }
+/* fix #3 정직 라벨: 누적 라인은 활동 '속도' 추세지 상태 게이지가 아님을 한눈에 표시. */
+.tl-head-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: .3px; vertical-align: middle;
+  padding: 1px 5px; margin-left: 4px; border-radius: 3px;
+  color: var(--neu); background: var(--neu-bg); border: 1px solid var(--neu-bd);
+}
+.tl-sub { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dm); margin-left: 6px; font-family: var(--body, inherit); }
 
-/* 통계 헤더 — 총 N · 시간당 평균 · 피크 · 최근 */
-.tl-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 9px; }
+/* 툴바 = 통계 헤더 + 세그먼트 토글 */
+.tl-toolbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; margin-bottom: 9px; }
+.tl-stats { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 360px; }
 .tl-stat {
   flex: 1 1 0; min-width: 78px;
   display: flex; flex-direction: column; gap: 1px;
@@ -771,32 +832,65 @@ footer {
 .tl-stat b { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--tx); line-height: 1.15; }
 .tl-stat i { font-style: normal; font-size: 10px; color: var(--dm); letter-spacing: .2px; }
 
+/* 세그먼트 토글 (서비스별 | 유형별) */
+.tl-seg { display: inline-flex; flex: none; padding: 2px; gap: 2px; border-radius: var(--radius); background: var(--bg2); border: 1px solid var(--bd); align-self: stretch; }
+.tl-seg-btn {
+  appearance: none; cursor: pointer; border: 1px solid transparent;
+  padding: 5px 12px; border-radius: var(--radius-sm);
+  background: transparent; color: var(--tx2);
+  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .2px;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.tl-seg-btn:hover { color: var(--tx); }
+.tl-seg-btn.is-on { background: var(--sf); color: var(--tx); border-color: var(--bd2); box-shadow: var(--shadow-1); }
+.tl-seg-btn:focus-visible { outline: 2px solid var(--am); outline-offset: 1px; }
+
 /* 차트 */
 .tl-chart-wrap { position: relative; }
 .tl-svg {
-  display: block; width: 100%; height: 132px;
+  display: block; width: 100%; height: 178px;
   border-radius: var(--radius);
   background: var(--bg2); border: 1px solid var(--bd);
   cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
 }
 .tl-svg.tl-grabbing { cursor: grabbing; }
 .tl-svg:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
-.tl-gridline { stroke: var(--bd); stroke-width: 1; opacity: .5; vector-effect: non-scaling-stroke; }
-.tl-baseline { stroke: var(--bd2, var(--bd)); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tl-gridline { stroke: var(--bd); stroke-width: 1; opacity: .45; vector-effect: non-scaling-stroke; }
+.tl-ygrid { stroke: var(--bd); stroke-width: 1; opacity: .35; vector-effect: non-scaling-stroke; }
+.tl-baseline { stroke: var(--bd2, var(--bd)); stroke-width: 1; opacity: .8; vector-effect: non-scaling-stroke; }
 .tl-gridtxt { fill: var(--dm); font-family: var(--mono); font-size: 8px; text-anchor: middle; }
-.tl-bar { transition: opacity .12s ease; }
-.tl-hit { cursor: grab; }
-.tl-hit:hover ~ .tl-bar { opacity: .85; }
-.tl-evdot { opacity: .9; }
 
-/* 툴팁 */
+/* 누적 라인 */
+.tl-line { stroke-width: 1.6; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; opacity: .92; }
+.tl-line-total { stroke-width: 2.6; opacity: 1; }
+
+/* Y축 라벨 overlay (viewBox 왜곡 회피용 HTML) */
+.tl-yaxis { position: absolute; left: 0; top: 0; height: 100%; width: 0; pointer-events: none; }
+.tl-yaxis span {
+  position: absolute; left: 4px; transform: translateY(-50%);
+  font-family: var(--mono); font-size: 8.5px; color: var(--dm);
+  background: var(--bg2); padding: 0 3px; border-radius: 3px;
+}
+
+/* crosshair */
+.tl-crossline { stroke: var(--tx2); stroke-width: 1; stroke-dasharray: 2 2; opacity: .5; vector-effect: non-scaling-stroke; }
+.tl-crossdot { stroke: var(--sf); stroke-width: 1; vector-effect: non-scaling-stroke; }
+
+/* 툴팁 — 시점별 시리즈 누적값 표 */
 .tl-tip {
   position: absolute; z-index: 5; pointer-events: none;
-  max-width: 260px; padding: 6px 9px;
+  min-width: 132px; max-width: 220px; padding: 7px 9px;
   background: var(--tx); color: var(--bg);
-  border-radius: 7px; font-size: 11px; line-height: 1.35;
-  box-shadow: 0 6px 18px rgba(0,0,0,.22);
+  border-radius: 7px; font-size: 11px; line-height: 1.3;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
 }
+.tl-tip-time { font-family: var(--mono); font-size: 10px; opacity: .72; margin-bottom: 5px; letter-spacing: .2px; }
+.tl-tip-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+.tl-tip-row i { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+.tl-tip-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .92; }
+.tl-tip-row b { font-family: var(--mono); font-weight: 700; font-variant-numeric: tabular-nums; }
+.tl-tip-total { padding-bottom: 4px; margin-bottom: 3px; border-bottom: 1px solid rgba(255,255,255,.18); }
+.tl-tip-total span, .tl-tip-total b { opacity: 1; font-weight: 700; }
 
 /* 전체보기 버튼 */
 .tl-reset {
@@ -813,17 +907,26 @@ footer {
 .tl-axis { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: var(--mono); font-size: 10px; color: var(--dm); margin-top: 5px; }
 .tl-range-label { flex: 1; text-align: center; font-weight: 600; color: var(--tx2); }
 
-/* 범례 */
-.tl-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; font-size: 11px; color: var(--tx); }
-.tl-leg { display: inline-flex; align-items: center; gap: 5px; }
-.tl-leg b { font-family: var(--mono); font-weight: 700; color: var(--tx2); }
+/* 범례 — 클릭 토글(고립). 작은 라인도 단독으로 크게 볼 수 있게 */
+.tl-legend { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+.tl-leg {
+  appearance: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px 3px 7px; border-radius: 999px;
+  background: var(--sf); border: 1px solid var(--bd);
+  color: var(--tx); font-size: 11px; line-height: 1.3;
+  transition: border-color .15s ease, opacity .15s ease, background .15s ease;
+}
+.tl-leg:hover { border-color: var(--bd2); }
+.tl-leg:focus-visible { outline: 2px solid var(--am); outline-offset: 1px; }
+.tl-leg.is-off { opacity: .4; background: var(--bg2); }
+.tl-leg.is-off .tl-sw { opacity: .35; }
+.tl-leg-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tl-leg b { font-family: var(--mono); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tx2); }
 .tl-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
-.tl-sw.tl-verdict { background: var(--pos); }
-.tl-sw.tl-round   { background: var(--am); }
-.tl-sw.tl-request { background: var(--ru); }
 
 @media (prefers-reduced-motion: reduce) {
-  .tl-bar, .tl-reset { transition: none; }
+  .tl-seg-btn, .tl-reset, .tl-leg { transition: none; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════

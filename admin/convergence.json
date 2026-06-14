@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-14T19:55:01.102499+09:00",
+  "generated_at": "2026-06-14T21:04:07.698187+09:00",
   "summary": {
     "ADMIN": {
       "status": "idle",
@@ -17,15 +17,15 @@
     },
     "BYBIAS": {
       "status": "active",
-      "status_label": "진행 중 — 진짜 열린 라운드 8건",
-      "open_requests": 5,
-      "total_requests": 9,
-      "open_rounds": 8,
+      "status_label": "진행 중 — 진짜 열린 라운드 9건",
+      "open_requests": 6,
+      "total_requests": 10,
+      "open_rounds": 9,
       "milestone_rounds": 0,
       "superseded_rounds": 0,
-      "converged_rounds": 2,
-      "total_rounds": 10,
-      "latest_round": "RND-BYBIAS-058",
+      "converged_rounds": 3,
+      "total_rounds": 14,
+      "latest_round": "RND-BYBIAS-060",
       "latest_state": "수렴"
     },
     "HOME": {
@@ -57,15 +57,15 @@
     "PM320": {
       "status": "active",
       "status_label": "진행 중 — 진짜 열린 라운드 1건 · 대체된 옛 라운드 7건",
-      "open_requests": 8,
+      "open_requests": 7,
       "total_requests": 10,
       "open_rounds": 1,
       "milestone_rounds": 2,
       "superseded_rounds": 7,
-      "converged_rounds": 3,
-      "total_rounds": 13,
-      "latest_round": "RND-PM320-058",
-      "latest_state": "판정완료"
+      "converged_rounds": 4,
+      "total_rounds": 14,
+      "latest_round": "RND-PM320-059",
+      "latest_state": "수렴"
     },
     "공통": {
       "status": "idle",
@@ -120,6 +120,24 @@
         "verdict_count": 5
       },
       {
+        "round_id": "RND-BYBIAS-051",
+        "alias": "R51",
+        "state": "unknown",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
+        "round_id": "RND-BYBIAS-052",
+        "alias": "R52",
+        "state": "unknown",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": null,
+        "verdict_count": 0
+      },
+      {
         "round_id": "RND-BYBIAS-053",
         "alias": "R53",
         "state": "미수렴",
@@ -172,6 +190,24 @@
         "quality_n": 1,
         "defect_sum": 0,
         "verdict_count": 1
+      },
+      {
+        "round_id": "RND-BYBIAS-059",
+        "alias": "R59",
+        "state": "미수렴",
+        "quality_score": 4.2,
+        "quality_n": 1,
+        "defect_sum": 29,
+        "verdict_count": 6
+      },
+      {
+        "round_id": "RND-BYBIAS-060",
+        "alias": "R60",
+        "state": "수렴",
+        "quality_score": 6.8,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 4
       }
     ],
     "HOME": [
@@ -319,7 +355,7 @@
         "quality_score": 10.0,
         "quality_n": 1,
         "defect_sum": 0,
-        "verdict_count": 4
+        "verdict_count": 3
       },
       {
         "round_id": "RND-PM320-053",
@@ -374,124 +410,19 @@
         "quality_n": 0,
         "defect_sum": 0,
         "verdict_count": 1
+      },
+      {
+        "round_id": "RND-PM320-059",
+        "alias": "R59 시총",
+        "state": "수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 0,
+        "verdict_count": 1
       }
     ]
   },
   "activity_timeline": [
-    {
-      "ts": "2026-06-14T02:08:50.439106+09:00",
-      "type": "round",
-      "repo": "HOME",
-      "label": "RND-HOME-006 (홈 R6)"
-    },
-    {
-      "ts": "2026-06-14T02:09:15.145424+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "pm320-sweep-디자인 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T02:22:24.006462+09:00",
-      "type": "verdict",
-      "repo": "HOME",
-      "label": "admin-converge-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T02:22:24.006462+09:00",
-      "type": "round",
-      "repo": "HOME",
-      "label": "RND-HOME-004 (홈 R4)"
-    },
-    {
-      "ts": "2026-06-14T02:42:56.073610+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "(내부코드)-konews-rejudge-뉴스분석.md"
-    },
-    {
-      "ts": "2026-06-14T02:50:28.166468+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "pm320-디자인 심사 패널-rejudge.md"
-    },
-    {
-      "ts": "2026-06-14T03:41:50.905375+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "pm320-디자인 심사 패널-final-rejudge.md"
-    },
-    {
-      "ts": "2026-06-14T03:41:50.905375+09:00",
-      "type": "round",
-      "repo": "PM320",
-      "label": "RND-PM320-055 (R55 sweep)"
-    },
-    {
-      "ts": "2026-06-14T03:56:06.326462+09:00",
-      "type": "verdict",
-      "repo": "HOME",
-      "label": "r7-home-menu-confirm-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T03:56:06.326462+09:00",
-      "type": "round",
-      "repo": "HOME",
-      "label": "RND-HOME-007 (홈 R7)"
-    },
-    {
-      "ts": "2026-06-14T03:56:28.848144+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "pm320-디자인 심사 패널-r56-confirm.md"
-    },
-    {
-      "ts": "2026-06-14T03:56:28.848144+09:00",
-      "type": "round",
-      "repo": "PM320",
-      "label": "RND-PM320-056 (R56)"
-    },
-    {
-      "ts": "2026-06-14T05:57:55.134624+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "r52-ko-parity-diff.md"
-    },
-    {
-      "ts": "2026-06-14T05:57:55.134624+09:00",
-      "type": "round",
-      "repo": "PM320",
-      "label": "RND-PM320-052 (R52)"
-    },
-    {
-      "ts": "2026-06-14T06:08:59.641829+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "mcap-decision-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T07:07:26.408112+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "pm320-mcap-rejudge.md"
-    },
-    {
-      "ts": "2026-06-14T07:07:26.408112+09:00",
-      "type": "round",
-      "repo": "PM320",
-      "label": "RND-PM320-057 (R57 시총)"
-    },
-    {
-      "ts": "2026-06-14T07:20:45.226218+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r53-path-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T07:28:43.634262+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "r53-번역 심사.md"
-    },
     {
       "ts": "2026-06-14T07:29:26.796680+09:00",
       "type": "verdict",
@@ -857,12 +788,126 @@
       "type": "request",
       "repo": "INFRA",
       "label": "\"records/INDEX.md placeholder(`?`·빈제목) 행 정상화 — index-rebuild.sh/sync hook의 type정규식(JDG·BEN·TEC·DEC·DBG 미등록)·title H1-only 가정 결함 → frontmatter title→H1→H2 fallback + type 전수 등록 + 재생성 + 단위테스트 + verdict SCHEMA frontmatter 마이그레이션 연동\" (18:38)"
+    },
+    {
+      "ts": "2026-06-14T19:59:36.774526+09:00",
+      "type": "verdict",
+      "repo": "PM320",
+      "label": "pm320-mcap-r59.md"
+    },
+    {
+      "ts": "2026-06-14T19:59:36.774526+09:00",
+      "type": "round",
+      "repo": "PM320",
+      "label": "RND-PM320-059 (R59 시총)"
+    },
+    {
+      "ts": "2026-06-14T20:01:34.553174+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-001-시스템 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T20:09:11.148640+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r59-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-14T20:10:49.010338+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-001-design.md"
+    },
+    {
+      "ts": "2026-06-14T20:16:29.110477+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r59-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T20:17:59.463200+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-001-정직성 심사.md"
+    },
+    {
+      "ts": "2026-06-14T20:20:06.696182+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r59-fable-design-critic.md"
+    },
+    {
+      "ts": "2026-06-14T20:20:22.908033+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r59-투자 심사-investor.md"
+    },
+    {
+      "ts": "2026-06-14T20:20:47.330050+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r59-tech-cynic.md"
+    },
+    {
+      "ts": "2026-06-14T20:21:11.160786+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r59-bybias-guest-pool.md"
+    },
+    {
+      "ts": "2026-06-14T20:21:11.160786+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-059 (R59)"
+    },
+    {
+      "ts": "2026-06-14T20:22:14.780376+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-001-손님 패널.md"
+    },
+    {
+      "ts": "2026-06-14T20:38:04.036291+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "(내부코드)-rnd-admin-001-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T20:43:36.820557+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r60-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-14T20:49:32.923234+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r60-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T20:53:40.891468+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r60-branding-critic.md"
+    },
+    {
+      "ts": "2026-06-14T20:54:28.394751+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r60-bybias-guest-pool.md"
+    },
+    {
+      "ts": "2026-06-14T20:54:28.394751+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-060 (R60)"
     }
   ],
   "freshness": {
-    "last_activity_ts": "2026-06-14T18:38:00+09:00",
-    "generated_at": "2026-06-14T19:55:01.102499+09:00",
-    "stale_minutes": 77
+    "last_activity_ts": "2026-06-14T20:54:28.394751+09:00",
+    "generated_at": "2026-06-14T21:04:07.698187+09:00",
+    "stale_minutes": 9
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -878,7 +923,6 @@
     "verdict r53-mobile.md request_id=Q-20260614-MOBILE-001 REQUEST-LEDGER 미존재",
     "verdict r53-path-총괄 심사 패널.md request_id=Q-BYBIAS-i18n-path REQUEST-LEDGER 미존재",
     "verdict r54-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "verdict r54-a11y-seo.md request_id=REQ-BYBIAS-20260614-001 REQUEST-LEDGER 미존재",
     "verdict r54-branding.md request_id=Q-BYBIAS-R54 REQUEST-LEDGER 미존재",
     "verdict r54-design.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r54-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
@@ -892,7 +936,8 @@
     "verdict r57-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r57-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r58-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "round_id 미매핑 verdict 37건 (frontmatter 미적용·점진 마이그레이션 백로그)"
+    "round_id 미매핑 verdict 43건 (frontmatter 미적용·점진 마이그레이션 백로그)",
+    "ROUND-LOG 비정상 칸 수 라운드 2건 (graceful 패딩·drop 0): RND-BYBIAS-051(7칸), RND-BYBIAS-052(7칸) — 표준 8칸 정렬 권고(tier/verdict 칸 누락)"
   ],
   "requests": [
     {
@@ -906,7 +951,7 @@
       "owner": "dev-weekend-macro-wire-fix → R48~R54 판정",
       "provenance": "— / —",
       "close_evidence": "fix `wt-r48` 착지 09:46 + 배포(`d8fa7704d`) 라이브 200. **종결: R52→R54 수렴 체인 = 총괄 심사 패널 2심 공식 확정 (CONVERGED·`2sim-pm320-총괄 심사 패널.md` \"1심 수렴 후보 공식 확정\"·ROUND-LOG R54 🟢) — 2라운드 연속 전원 YES·P0/신규P1 0.** 옛 라운드 R46~R51·R53 📦 대체됨(이력)",
-      "narrative": "[⚖️ R49 신판정체계 1호 가동 11:38~ — **instrument 블라인드 측정 → 독립 페르소나 판정 (정직성 NO 착지·픽셀 대기)**] instrument 착지 (records/qa/captures/r49-instrument/ — measurements.json 148KB·캡처 35장·블라인드·판정언어 0). 주말 가드 매트릭스 확인: **테마별 거래대금 추이·상한가 추이 = collapsed+요약칩+시점 라벨 (가림 아님 — Q-158 fix 생존)**·시장지수 visible. *",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 11,
       "latest_round_id": "RND-PM320-057",
@@ -934,7 +979,7 @@
       "owner": "dev fix + R49 instrument 가드 매트릭스",
       "provenance": "Q-158 / —",
       "close_evidence": "배포 후 R49 instrument 확인 \"거래대금/상한가 추이 = collapsed+요약칩+시점 라벨, 가림 아님·Q-158 fix 생존\" (MQ L35·L62) **+ (내부코드) 등재(recurring 2회차)**",
-      "narrative": "[⚖️ R49 신판정체계 1호 가동 11:38~ — **instrument 블라인드 측정 → 독립 페르소나 판정 (정직성 NO 착지·픽셀 대기)**] instrument 착지 (records/qa/captures/r49-instrument/ — measurements.json 148KB·캡처 35장·블라인드·판정언어 0). 주말 가드 매트릭스 확인: **테마별 거래대금 추이·상한가 추이 = collapsed+요약칩+시점 라벨 (가림 아님 — Q-158 fix 생존)**·시장지수 visible. *",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 11,
       "latest_round_id": "RND-PM320-057",
@@ -962,7 +1007,7 @@
       "owner": "dev-repo-split-audit → REQ 설계 → 대표 게이트",
       "provenance": "— / —",
       "close_evidence": "repo `(비공개)/100m1s-pm320` 생성+Pages 라이브(13:34) = **0단계 완료**. **본 코드 이동 = L급 별트랙·timing 대표 결정** ⚠️미종결",
-      "narrative": "[🔴 대표 15:30 — **\"살아있음=생동감(데이터 신선도 아님)\" 재정의 + 메뉴 카테고리 안 움직임 catch + 판정 누락 불안**] verbatim ①\"살아있다는 느낌이 데이터 신선도를 홈페이지에서 보고싶다는게 아니라 생동감이 필요한게 아닌가\" → **lead 오독 정직 박제: 펄스 라인(최근 업데이트 19h前·발행 282일)=데이터 신선도 readout = 대표 의도 오독.** 진짜 ask=생동감(motion·약동감·미니멀 유지하며 멋 주입). ②\"홈페이지 메뉴 카테고리도 작업 중인거 ",
+      "narrative": "[🔴 대표 \"오래된 작업부터 쳐내기\" — A세션 미종결 6행 실재 state cross-check (verdict+git log+라이브 grep) → closed/미완 분류] **근거**: 큐 추적이 verdict/배포 실재보다 stale (Q-164 사례 = \"절단 대기\" 표기인데 실제 R49 라이더 이미 배포). **결과 = closed 3 / 진짜 미완 3** (REQUEST-LEDGER 정밀 정정·ByVias 미변경). ✅ **종결 3**: ①**Q-164** = R49 라이더 `d0b5b",
       "mq_only": false,
       "round_count": 0,
       "latest_round_id": null,
@@ -1007,23 +1052,23 @@
       "req_id_raw": null,
       "repo": "PM320",
       "summary": "\"지수 카드 — 스파크라인·미니캔들·240d 레인지·고저 날짜\" (지수 일봉)",
-      "captured": "🔨",
-      "state": "구현중",
-      "state_raw": "🔨 구현중",
-      "owner": "dev 1단(staging 산출 `2d6b62c4`) / 2단 frontend",
+      "captured": "🚀",
+      "state": "배포",
+      "state_raw": "🚀 배포 대기",
+      "owner": "dev 1단(`2d6b62c4`) → **2단 frontend(`3ab70cc3`)** → cron 영속화(`fe1b8fac`)",
       "provenance": "— / —",
-      "close_evidence": "1단 staging 착지 09:55(promote 3건 lead 결정 대기) · **2단 frontend = R51 후 직렬** (MQ L53·L8) ⚠️미종결",
-      "narrative": "[⚖️ **R48 2심 확정 09:55 — NO·미수렴·단정 7건 전건** → 라이더 dev + JDG docs + push 즉시 발사 10:00~10:02] 4축 5/8/7/6·YC 55/80 승계. **\"웨이브는 성공했다 (fix 11항 전건 생존·기판정 0/14) — 미수렴 사유 = 신규 P1 5\"**. 충돌 해소: \"측정은 일치했다 (사실 충돌 0), 판단이 갈렸다 — **큐는 사면장이 아니다, 출하 판정 대상은 트래킹 상태가 아니라 화면**\" (풀패널 YES 기각 논리). 단정 7: ①N",
+      "close_evidence": "**상태 정정 (2026-06-14 docs-queue-state-audit cross-check)**: 옛 \"2단 frontend = R51 후 직렬(미착수)\" 표기는 **stale** — 2단 **이미 구현 완료**. git grep 실증: `2d6b62c4`(1단 staging) → `3ab70cc3`(\"KR 지수 카드 240d 서빙 지속 반영·**2/2단**\"·§3.2.2/§3.2.4 frontend) → `fe1b8fac`(240d enrich cron 영속화·멀티세션 3-way union·내일 cron 회귀 차단). **잔존 = push 보류만**(3종 모두 main-repo origin/main 미반영·§11.31 commit-push 분리 정합). **다음 액션 = lead 배포 결정 1건**(코드 잔존 0·라이브 검증은 배포 후). R51은 R54로 수렴됨(직렬 전제 소멸)",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 0,
       "latest_round_id": null,
       "latest_round_state": null,
       "latest_verdict": null,
-      "progress_pct": 55,
+      "progress_pct": 85,
       "priority": null,
-      "blocked": false,
-      "blocked_reason": null,
-      "push_status": "unknown"
+      "blocked": true,
+      "blocked_reason": "보류·대표 결정 대기",
+      "push_status": "local_only"
     },
     {
       "req_id": "Q-162",
@@ -1081,23 +1126,23 @@
       "req_id_raw": null,
       "repo": "PM320",
       "summary": "\"기사에 사실/해석/중립 기능 없어도 될 것 같은데 어떤가\" [판정 부의] (09:51)",
-      "captured": "🔍",
-      "state": "판정중",
-      "state_raw": "🔍 판정중",
-      "owner": "judge-news-chips(총괄 심사 패널 단발)",
+      "captured": "✅",
+      "state": "종결",
+      "state_raw": "✅ 종결",
+      "owner": "judge-news-chips(총괄 심사 패널 단발) → R49 라이더 dev → 배포",
       "provenance": "— / —",
-      "close_evidence": "총괄 심사 패널 판정 = 제거 방향 YES (verdicts/news-chips-총괄 심사 패널.md = (내부코드)·재발사 착지 15:42). [사실]/[중립] 이미 제거·**잔존 [해석] 경계 마커 dev 절단 대기** ⚠️구현 잔존 (+ JDG-012 records placeholder = RESERVED 빈 파일·hook 위생 별건)",
-      "narrative": "[🔴 대표 지시 09:51 — **4건 분해: 홈 보강 (Q-162)·PM320 로고 (Q-163)·칩 존폐 [판정 부의] (Q-164)·신규 룰 + 운영 catch**] verbatim 요지: ①100m1s.com \"정보 부실·심플해서 보기 좋은데 멋이 없다·살아있는 사이트·계속 발전하는 브랜드 느낌으로\" + 연락처 (메일) + **법인 보류·개인사업자 진행** ②\"제일 중요\" PM320 로고·워터마크·파비콘·앱아이콘 재설계 — \"pm320 페이지에서 100m1s",
+      "close_evidence": "총괄 심사 패널 판정 = 제거 방향 YES (verdicts/news-chips-총괄 심사 패널.md = (내부코드)). **종결 (2026-06-14 docs-queue-state-audit cross-check)**: R49 라이더 `d0b5bf624` (homepage origin/main 머지 confirmed = 배포 완료) 본문 verbatim — `_chipKindTag 헬퍼 제거`(디폴트 뷰 분류 라벨 10→0 실측)·`[중립] 무표기`(direction 비중립만 렌더·중립7/불확실1→0)·`[해석] = 경계 마커 1회만`(해석 보유 칩 5건 정확 1:1, **대표 부의 확정안 = 전면제거 아닌 경계마커**·JDG-012 단정 7 ⑦ 정합). **증거 2종**: verdict(JDG-012) + 배포 hash(`d0b5bf624` in origin/main). 옛 \"절단 대기\" 표기는 stale — 확정안=경계마커 전환이 이미 ship. (JDG-012 records placeholder RESERVED·INDEX hook 위생 = REQ-INFRA-001 별건)",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 0,
       "latest_round_id": null,
       "latest_round_state": null,
       "latest_verdict": null,
-      "progress_pct": 25,
+      "progress_pct": 100,
       "priority": null,
       "blocked": false,
       "blocked_reason": null,
-      "push_status": "unknown"
+      "push_status": "live"
     },
     {
       "req_id": "MQ-02",
@@ -1206,23 +1251,23 @@
       "req_id_raw": null,
       "repo": "PM320",
       "summary": "\"한국 뉴스 너무 잡다·시장 중요 뉴스 밀리거나 캐치/분류 안 됨\" (14:24)",
-      "captured": "🔨",
-      "state": "구현중",
-      "state_raw": "🔨 구현중",
-      "owner": "뉴스분석-domestic-news-audit → dev-news-ranking-fix",
+      "captured": "🚀",
+      "state": "배포",
+      "state_raw": "🚀 배포(재판정 YES)",
+      "owner": "뉴스분석-domestic-news-audit → dev-news-ranking-fix → 뉴스분석 재판정",
       "provenance": "— / —",
-      "close_evidence": "조선비즈 swap+score(종목카드 news_pipeline용·이미 라이브) ≠ 대표 catch(별 lane=wire 패널 코너). **wire 코너+연재칼럼 denylist 20종**(3f619ad6·67360348·2f9b6d77 메인 WT cron 경로) → 02:30 fire 라이브 코너 0건 → **뉴스분석 재판정 YES**(잡다 해소·중복0·과배제0·하드뉴스 보존) ✅. 잔존(별트랙)=중요도 score 정렬 미구현(시간역순)·interpret_wire KR 확장",
-      "narrative": "[🔴 대표 14:24 — **국내장 뉴스 노이즈·밀림·캐치/분류 (Q-20260613-167)**] verbatim \"한국 뉴스가 너무 잡다한 뉴스가 많아졌다. 시장 판단에 중요한 뉴스가 밀리거나 캐치가 잘 안되거나 분류가 잘 안되는 느낌\". 북극성(시장 관련 중요 뉴스 적시 노출) 위반. lead grep: 국내 RSS 11종(+2026-04-14 6종 추가 = 볼륨 급증 후보)·interpret_stocks 로봇후순위·본문우선·테마매핑은 有·**시장 중요도 절대 랭킹 score 미관측**. →",
+      "close_evidence": "**상태 정정 (2026-06-14 cross-check)**: 옛 🔨 구현중 → **본질(잡다 해소) fix 라이브 실반영 + 재판정 YES** confirmed. 조선비즈 swap+score(종목카드 news_pipeline용·이미 라이브) ≠ 대표 catch(별 lane=wire 패널 코너). **wire 코너+연재칼럼 denylist 20종**(`3f619ad6·67360348·2f9b6d77` 메인 WT cron 경로) → 02:30 fire 라이브 코너 0건 → **뉴스분석 재판정 YES**(`(내부코드)-konews-rejudge-뉴스분석.md`·코너0/중복0/과배제0/시장보존 4축 PASS·라이브 14건 실측). **증거 2종**: verdict(JDG-001-konews) + 라이브 코너 0건(메인 WT cron self-deploy). 잔존(별트랙·대상 외)=중요도 score 정렬 미구현(시간역순)·interpret_wire KR 확장. `2f9b6d77`은 followup commit main-repo origin/main 미반영(push 보류) but 본질 denylist는 cron 경로 실반영",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 0,
       "latest_round_id": null,
       "latest_round_state": null,
       "latest_verdict": null,
-      "progress_pct": 55,
+      "progress_pct": 85,
       "priority": null,
-      "blocked": false,
-      "blocked_reason": null,
-      "push_status": "unknown"
+      "blocked": true,
+      "blocked_reason": "보류·대표 결정 대기",
+      "push_status": "local_only"
     },
     {
       "req_id": "Q-168",
@@ -1235,7 +1280,7 @@
       "owner": "dev-llm-timeout-diagnose",
       "provenance": "Q-167 / —",
       "close_evidence": "진단 착지 14:53: \"1.6%=부분 오해(픽 종목만 분류 설계·토요일 fanout 0)\"·진짜 결함 2(죽은 cap 게이트·timeout=60 하드코딩) FLR 후보 → **픽 분류 커버리지 = 월요일 거래일 확인 필요** ⚠️확인필요",
-      "narrative": "[🔴 대표 14:42+14:53 — **시각/구조 작업 미적용 catch → 재가동 4병렬**] 대표 \"100m1s 메인 안 변함·pm320 분리·로고 안 보여\" + \"멈췄던 애들 다시 작동\". **lead 자기 평가: 데이터 층(선물·매크로·뉴스)만 배포·설계한 시각/구조(로고·홈·IA) 라이브 미적용**. 재가동: ①**로고 착지 14:50** (`0ba0b6fd9` fix/pm320-logo-apply·헤더 100M1S Serpenti→PM320 워드마크 주인공·100M1S eyebrow 종",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 0,
       "latest_round_id": null,
@@ -1258,7 +1303,7 @@
       "owner": "다관점 풀패널 재판정 (MASTER-QUEUE L143 기록·**단독 verdict 파일 부재**)",
       "provenance": "Q-158 / —",
       "close_evidence": "**재판정 2차 착지 17:31**(라이브 v350 verbatim grep): ①의무고지·②선정이유·④손실동등 **완전해소**, ③초보용어 **부분해소**(`?`팁 첫 카드만·\"만기\" 단독정의 부재 = P1 2건). P0 0·shipped-broken 0. 🔴 **잔여 critical 2건 = 대표 결정 게이트**: (1)\"추천/카톡 N차 추천\" 프레이밍(리딩방·도박·유사투자자문 3관점·비-픽행 \"추천 아님\" 차등 완화됨) (2)후보 종목명 15:20 전 노출(세력·장전 portal은 어제픽만=신규 누출 0). **수렴 단정 = critical 2건 대표 결정 후에만**((내부코드) 1회 판정 수렴 금지). ⚠️ **verdict 출처 = MASTER-QUEUE L143 단일**(records/qa/verdicts/ 6페르소나 동시 측정 단독 파일 grep 0건 — 등재만·없는 파일 링크 금지)",
-      "narrative": "[⚖️ R49 신판정체계 1호 가동 11:38~ — **instrument 블라인드 측정 → 독립 페르소나 판정 (정직성 NO 착지·픽셀 대기)**] instrument 착지 (records/qa/captures/r49-instrument/ — measurements.json 148KB·캡처 35장·블라인드·판정언어 0). 주말 가드 매트릭스 확인: **테마별 거래대금 추이·상한가 추이 = collapsed+요약칩+시점 라벨 (가림 아님 — Q-158 fix 생존)**·시장지수 visible. *",
+      "narrative": "[🟢 자율 사이클 ~20:39 — 대표 3지시(오래된 작업 쳐내기·로고 챙겨·치킨주 기억) cascade] **완료**: ①워치독 완전 off(부하 catch `243b6f6a`) ②시총 Q-158 🟢수렴 확정(R59 영속화 `d8337165`·운영자 2심 R59 환각 catch·라이브 30/30 시각캡처) ③간극 메뉴 라이브(서브페이지 nav Products▾ 통일+죽은 News 제거·homepage main `23a6271f1`) ④lectures 주식강의 라이브(`82469dd2d`) ⑤Q-1",
       "mq_only": false,
       "round_count": 11,
       "latest_round_id": "RND-PM320-057",
@@ -1432,8 +1477,8 @@
       "latest_verdict": null,
       "progress_pct": 100,
       "priority": null,
-      "blocked": true,
-      "blocked_reason": "보류·대표 결정 대기",
+      "blocked": false,
+      "blocked_reason": null,
       "push_status": "unknown"
     },
     {
@@ -1441,12 +1486,12 @@
       "req_id_raw": null,
       "repo": "INFRA",
       "summary": "\"records/INDEX.md placeholder(`?`·빈제목) 행 정상화 — index-rebuild.sh/sync hook의 type정규식(JDG·BEN·TEC·DEC·DBG 미등록)·title H1-only 가정 결함 → frontmatter title→H1→H2 fallback + type 전수 등록 + 재생성 + 단위테스트 + verdict SCHEMA frontmatter 마이그레이션 연동\" (18:38)",
-      "captured": "🆕",
+      "captured": "🔨",
       "state": "구현중",
-      "state_raw": "🔨 구현중",
-      "owner": "docs-index-hook-fix(워크트리·발사) → qa-cross 객관 검증 게이트",
+      "state_raw": "🔨 구현중(진짜 미완)",
+      "owner": "(워크트리 부재 — 발사 필요) → qa-cross 객관 검증 게이트",
       "provenance": "— / —",
-      "close_evidence": "사전 적발 = MASTER-QUEUE L11(near-term S fix·FLR 검토). hook false-fidelity = (내부코드) 동형. 종결 = 스크립트 fix commit + 단위테스트 PASS + INDEX 타겟 행 정상화(JDG-001/008/009/010·DSN-002 제목 / JDG-012등 RESERVED / 깨진링크 0) + 메인 재반영 + FLR 등재 ⚠️미종결",
+      "close_evidence": "**상태 cross-check (2026-06-14)**: **진짜 미완 confirmed**. (a) `scripts/index-rebuild.sh` = **title fallback 일부 적용됨**(L70-71 frontmatter `title:` awk → H1 → 폴백)·`376ff30d` 헤더 PRESERVE 선반영. (b) **그러나 type 전수 등록 미완** — L100 `${type:-?}` 폴백만, JDG/BEN/TEC/DEC/DBG 정규식 미등록 → **records/INDEX.md 잔존 `?`+빈제목 다수 실측**(JDG-008~018·DSN-001/002·FLR-005, 13행+). (c) **`docs-index-hook-fix` 워크트리 부재**(worktree list grep 0건 — 발사 안 됨/소멸). 다음 액션 = type 전수 등록 + 재생성 sub-agent 발사(신규 name·워크트리) → INDEX 타겟 행 정상화 + 단위테스트 PASS + 메인 재반영 + FLR 등재. hook false-fidelity = (내부코드) 동형 ⚠️미종결",
       "narrative": null,
       "mq_only": false,
       "round_count": 0,
@@ -1630,7 +1675,7 @@
       "state_raw": "🔨 구현중",
       "owner": "dev-w4 9언어 빌드 트랙(bulk-fix·번역 완성도 게이트)",
       "provenance": "REQ-BYBIAS-20260613-002 / —",
-      "close_evidence": "lead 실측 ko vs ja 구조 동일(섹션 6=6·스텝 73≈72·콘텐츠 채움 OK) 단 ja 한글 잔존 2570자(비가시 주석 + 가시 누락 의심). 14 hung 근본 = 코스 단건 t() 폭주(코드)→bulk-fix 18:03 해소·9언어 19:04 빌드 완료(ja 가게명 grep 0). 게이트 외국문자 잔존 4건 진단·surgical 배포 대기 ⚠️미종결",
+      "close_evidence": "lead 실측 ko vs ja 구조 동일(섹션 6=6·스텝 73≈72·콘텐츠 채움 OK) 단 ja 한글 잔존 2570자(비가시 주석 + 가시 누락 의심). 14 hung 근본 = 코스 단건 t() 폭주(코드)→bulk-fix 18:03 해소·9언어 19:04 빌드 완료(ja 가게명 grep 0). 게이트 외국문자 잔존 4건 진단·surgical 배포 대기 ⚠️미종결. **R59 ja ko-parity 실측 NO·P0 3(stays 섹션 증발·venue h2→div·sec-c7 spot 0)·신규P1 7·미수렴·직전 lead \"구조 동일\" 주장 반박 확정(stays 증발 실측)** — R57·R58 false-convergence 정정. streak 0.",
       "narrative": null,
       "mq_only": false,
       "round_count": 0,
@@ -1638,7 +1683,7 @@
       "latest_round_state": null,
       "latest_verdict": null,
       "progress_pct": 55,
-      "priority": null,
+      "priority": "P0",
       "blocked": false,
       "blocked_reason": null,
       "push_status": "unknown"
@@ -1665,6 +1710,29 @@
       "blocked": false,
       "blocked_reason": null,
       "push_status": "local_only"
+    },
+    {
+      "req_id": "REQ-BYBIAS-20260614-001",
+      "req_id_raw": null,
+      "repo": "BYBIAS",
+      "summary": "\"byvias 카피 — by vias / by your vias / stand by your vias 어때?\" (대표 브레인스토밍 2026-06-14 20:24) — 태그라인 결정",
+      "captured": "🔍",
+      "state": "판정중",
+      "state_raw": "🔍 판정완료·대표 결정 대기",
+      "owner": "branding 평가 + R60 브랜드 판정(1심 3패널 + 총괄 심사 패널 2심)",
+      "provenance": "— / —",
+      "close_evidence": "총괄 심사 패널 위계 병용 권고(C `stand by your vias` EN·ko 시그니처 + Alt1 `Follow Your Bias` ja/zh·캠페인 글로벌 훅)·대표 최종 결정 대기·구현 시 ja/zh 서브카피 P0(推しのルートで / 跟着爱豆走)·발음 vy-as 온보딩 의무. verdict 4파일(r60-branding-critic·r60-kpop-fan-번역 심사·r60-bybias-guest-pool·r60-2nd-총괄 심사 패널).",
+      "narrative": null,
+      "mq_only": false,
+      "round_count": 0,
+      "latest_round_id": null,
+      "latest_round_state": null,
+      "latest_verdict": null,
+      "progress_pct": 25,
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "push_status": "unknown"
     },
     {
       "req_id": "REQ-ADMIN-20260614-001",
@@ -2066,7 +2134,7 @@
       "state_raw": "✔️ 판정완료 (첫 전원 YES)",
       "verdict_links": "r52-정직성 심사.md(YES)·r52-디자인 심사 패널.md(YES·JDG-011)",
       "note": "R51 디자인 심사 패널 NO → R52 = **첫 전원 YES** = 수렴 후보 → R53/R54 진행",
-      "ts": "2026-06-14T05:57:55.134624+09:00"
+      "ts": "2026-06-14T02:08:00.686693+09:00"
     },
     {
       "round_id": "RND-PM320-053",
@@ -2141,10 +2209,23 @@
       "panel": "디자인 심사 패널",
       "tier": "1심-풀패널",
       "state": "판정완료",
-      "state_raw": "✔️ 판정완료 (첫 전원 YES·수렴 후보)",
+      "state_raw": "✔️ 판정완료 (첫 전원 YES·수렴 후보)·**R59 confirm 완료**",
       "verdict_links": "pm320-mcap-r58.md(YES·(내부코드))",
-      "note": "픽셀 **YES·P0 0·신규 P1 0**. R57 NO 2-root 해소(주식카드 30/30=100%·상한가 11/11=100%·후보 WT promote `3079f65e4`). R57 NO → R58 = **첫 전원 YES = 수렴 후보 1차** → confirm R59 발사 후행 의무. 🔴 **2연속 미충족 = 🟢 수렴 단정 금지**((내부코드)). 단 push-held(후보 WT·라이브 미배포)",
+      "note": "픽셀 **YES·P0 0·신규 P1 0**. R57 NO 2-root 해소(주식카드 30/30=100%·상한가 11/11=100%·후보 WT promote `3079f65e4`). R57 NO → R58 = **첫 전원 YES = 수렴 후보 1차** → R59 confirm 발사 완료(아래 행). 🔴 **R58은 후보 WT(`3079f65e4`·push-held) 측정 — R59가 라이브(origin/main·데이터 `ef6b72c74`) 독립 재측정으로 영속화·hash 정정**(운영자 2심 catch 정합)",
       "ts": "2026-06-14T07:35:23.802063+09:00"
+    },
+    {
+      "round_id": "RND-PM320-059",
+      "alias": "R59 시총",
+      "repo": "PM320",
+      "request_refs": "시총 커버리지 트랙 — R58 confirm 영속화(운영자 2심 catch: R59 verdict 파일 0건 = 기록상 미실행) + 라이브 독립 재측정",
+      "panel": "디자인 심사 패널",
+      "tier": "1심-풀패널",
+      "state": "수렴",
+      "state_raw": "🟢 **수렴 확정** (R58+R59 2연속)",
+      "verdict_links": "pm320-mcap-r59.md(YES·(내부코드))",
+      "note": "픽셀 **YES·P0 0·신규 P1 0**. 라이브(미러 origin/main·`?date=2026-06-12`) 주식카드 **30/30**·상한가 **11/11**·빈/대시 0·wrap 0/35·가로오버 false·CR 라이트4.67~9.0/다크4.61~9.83·코드 L353-359 no-fallback verbatim·**시각 캡처 라이트/다크 잘림·폴백 0**(records/qa/captures/r59-mcap/). 라이브 착지 hash = `ef6b72c74`(R57 백필·origin/main 조상·R58 인용 `3079f65e4`는 push-held 미반영 정정). **R58+R59 2연속 전원 YES·P0/신규P1 0 → 🟢 PM320 시총 트랙 수렴 확정**. 🔴 월요일(6/16) 신 universe 실픽 카드 30/30 재현 = 별건 후행 게이트(데이터 6/12 스냅샷 고정)",
+      "ts": "2026-06-14T19:59:36.774526+09:00"
     },
     {
       "round_id": "RND-HOME-001",
@@ -2316,6 +2397,32 @@
       "ts": "2026-06-14T01:12:30.251705+09:00"
     },
     {
+      "round_id": "RND-BYBIAS-051",
+      "alias": "R51",
+      "repo": "BYBIAS",
+      "request_refs": "R50 P0 fix (죽은앵커·zh-cn·코스 hero+번역 9언어)",
+      "panel": "dev fix·lead 자율배포",
+      "tier": "fix 라운드",
+      "state": "unknown",
+      "state_raw": "커밋 체인 0ebe274a~cf9ecb06",
+      "verdict_links": "R50 P0 2건 + 대표 catch fix 배포: 죽은앵커 #sec-stays 8언어·zh-cn 풀콘텐츠(185KB)·9 비-en 코스 hero카드+가시번역. **단 표면적**(hero+가시한글만)·ko 전체 구성 미반영 → R52서 적발",
+      "note": "",
+      "ts": null
+    },
+    {
+      "round_id": "RND-BYBIAS-052",
+      "alias": "R52",
+      "repo": "BYBIAS",
+      "request_refs": "**대표 \"눈으로 봤냐·한국어 구성과 다른 곳 다수·다시 판정\"** — ko 파리티 정밀 재판정",
+      "panel": "ko-parity-diff 구조 감사",
+      "tier": "1심-구조감사",
+      "state": "unknown",
+      "state_raw": "r52-ko-parity-diff.md(NO)",
+      "verdict_links": "🔴 **대표 catch 정량 입증**: 비-en 9언어 전원 **ko 대비 언어당 21~38곳 차이**. 공통 결함: ①공연장/숙소 섹션 위치 이탈(상단3→맨밑14·UX붕괴) ②notice(이용안내·제휴고지) 섹션 통째 부재[법무] ③h2 8개 누락 ④인포그래픽 7종 누락. **lead 자성: \"검증\"이 grep(hero수·한글수)였지 눈으로 스크롤 안 함·시각캡처 FLR-005 사망·hero fix는 표면.** 근본=ko→전언어 자동 생성 파이프라인 부재(수동 wave-patch) → R53",
+      "note": "",
+      "ts": null
+    },
+    {
       "round_id": "RND-BYBIAS-053",
       "alias": "R53",
       "repo": "BYBIAS",
@@ -2392,6 +2499,32 @@
       "verdict_links": "**r58-2nd-총괄 심사 패널.md(dev-gate YES·streak 2·JDG-013)**",
       "note": "총괄 심사 패널 dev-gate **YES·streak 2 → 🟢 dist-level dev-fixable 수렴 확정**. 회귀 0(R55~R57 fix 6종 라이브 잔존·INDEX 11언어 byte=R57 동일·cron/빌더 재빌드 회귀 0). 1회성 아님(byte 입증·(내부코드) 안전)",
       "ts": "2026-06-14T17:25:02.377238+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-059",
+      "alias": "R59",
+      "repo": "BYBIAS",
+      "request_refs": "ja ko-parity 실화면 재판정 — R57·R58 dist-byte 거짓 수렴 정정",
+      "panel": "1심 5인(kpop·fable·투자 심사·tech·손님 패널) + 총괄 심사 패널 2심",
+      "tier": "1심+2심",
+      "state": "미수렴",
+      "state_raw": "✔️ 판정완료·🔴 **미수렴 (streak 0 리셋)**",
+      "verdict_links": "**r59-kpop-fan-번역 심사.md(NO·JDG-없음)** · **r59-fable-design-critic.md(NO·JDG-010)** · **r59-투자 심사-investor.md(NO·JDG-011)** · **r59-tech-cynic.md(NO·JDG-012)** · **r59-bybias-guest-pool.md(NO·JDG-013)** · **r59-2nd-총괄 심사 패널.md(NO·JDG-016)**",
+      "note": "1심 5/5 NO + 총괄 심사 패널 2심 NO. P0 3(①stays 섹션 부재·②venue h2→div+위치설명 p 누락·③sec-c7 spot-card 7→0)·신규 P1 7. **streak 0 강제 리셋** — R57·R58 dist-byte 좁은 게이트가 숙소 증발·venue 강등을 게이트 밖으로 분류해 false-convergence 선언. R59 실화면 실측으로 정정. ja byte -30,037B = 섹션 증발 정합.",
+      "ts": "2026-06-14T20:21:11.160786+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-060",
+      "alias": "R60",
+      "repo": "BYBIAS",
+      "request_refs": "**태그라인 브랜드 판정 — 텍스트/전략 (태그라인 미구현·라이브 렌더 미측정)**",
+      "panel": "1심 3인(branding-critic·kpop-fan-번역 심사·bybias-guest-pool) + 총괄 심사 패널 2심",
+      "tier": "1심+2심",
+      "state": "수렴",
+      "state_raw": "✔️ 판정완료·🟢 조건부GO(비-streak 대상)",
+      "verdict_links": "**r60-branding-critic.md(조건부·JDG-015)** · **r60-kpop-fan-번역 심사.md(조건부GO)** · **r60-bybias-guest-pool.md(조건부·JDG-016)** · **r60-2nd-총괄 심사 패널.md(조건부GO·JDG-017)**",
+      "note": "**위계 병용 권고**: C `stand by your vias` = EN·ko 브랜드 시그니처 히어로 / Alt1 `Follow Your Bias` = 글로벌(ja/zh) 현지 훅·캠페인·해시태그. 1심 분열(branding-critic·kpop 추천 C / guest-pool 팬 5/6 Alt1) → 총괄 심사 패널 2심 위계 종합. **streak 비대상**: 태그라인 미구현·UI 렌더 미측정 — 구현 후 5언어×4모드 렌더 라운드 시 streak 산입. verdict 4파일.",
+      "ts": "2026-06-14T20:54:28.394751+09:00"
     }
   ],
   "verdicts": [
@@ -2500,6 +2633,166 @@
       "new_p1_count": null,
       "headline": null,
       "improvements": [],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-001-시스템 심사 패널.md",
+      "ts": "2026-06-14T20:01:34.553174+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-AD(비공개)-시스템 심사 패널",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "시스템 심사 패널",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 1,
+      "new_p1_count": 4,
+      "headline": "NO (P0 1건 — 라운드 파싱 silent drop. 동적 발견·추정0 규율은 production-grade, 그러나 silent drop 하나로 출하 차단)",
+      "improvements": [
+        {
+          "text": "parse_rounds 컬럼 가드(<8 continue)가 7칸 라운드 행을 silent drop — 명시 WARN 또는 비고 셀 누락 graceful 파싱으로 전환",
+          "state": "미해소"
+        },
+        {
+          "text": "progress_pct 진행률 매핑을 백엔드 _STATE_PROGRESS 1곳으로 단일화 — 프론트 STATE_META.pct 상수 제거(또는 백엔드값 주입)",
+          "state": "미해소"
+        },
+        {
+          "text": "verdict request_id 참조 무결성 게이트 강화 — 'R48'/'N/A'/'SWEEP-*' 등 LEDGER 미존재 27건을 작성 단계에서 차단하거나 정규화",
+          "state": "미해소"
+        },
+        {
+          "text": "progress_pct는 state 파생 ordinal임을 UI에 명시(예 '구현 단계' 라벨) — '55% 진행'으로 읽히는 측정 오인 제거",
+          "state": "미해소"
+        },
+        {
+          "text": "request ts '오늘 날짜' 부여 근사를 UI에서 명시(추정 표기) 또는 LEDGER에 발화일 컬럼 추가",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [
+        "evidence(코드): `parse_rounds` build_convergence.py L470 `if len(cells) < 8 or not cells[0]...startswith(\"RND-\"): continue` — 비고 셀이 비거나 파이프가 7칸인 라운드 행을 조용히 버린다.",
+        "evidence(SSOT): `grep '^| RND-' ROUND-LOG.md | awk -F'|' '{print NF-2}'` → 8칸 32행 + **7칸 2행**. 7칸 2행 = `RND-BYBIAS-051 (R51)`, `RND-BYBIAS-052 (R52)`.",
+        "evidence(라이브): `curl …/convergence.json` → BYBIAS rounds = [047,048,049,050,**053**,…058]. **051·052 부재.",
+        "충격도: R52는 \"대표 catch 정량 입증 — 비-en 9언어 ko 대비 21~38곳 차이\" **미수렴 라운드**다. 진짜 열린 중요 라운드가 어드민에서 통째로 사라졌고, `integrity_warnings` 28건 어디에도 \"라운드 2건 누락\"이 없다. 이건 정확히 본 시스템 북극성(\"내 요청·라운드가 빠지지 않고 도는지\")의 정면 위반 + 대표가 6/14 catch한 \"진짜 끝난 건지 신뢰가 떨어진다\"의 재발 씨앗. read-only projection이라도 입력 행을 손실하면서 침묵하는 건 production-grade 미달 — fail-loud(누락 행 수를 WARN) 또는 graceful 파싱(비고 공란 허용)이 필수."
+      ],
+      "p1_items": [
+        "P1-1. 진행률 2벌(매직넘버 drift).** 백엔드 `_STATE_PROGRESS`(L390 구현중55/배포85) ≠ 프론트 `STATE_META.pct`(script.js L273 구현중50/배포90). 요청 카드 바는 백엔드값, 라운드칩·trend 색/라벨은 프론트값 — 한 화면에서 같은 상태가 다른 숫자. 단일 소스화 필요.",
+        "P1-2. verdict→round 매핑률 17%(미매핑 37/98).** trend_mapping=17 newly·미매핑 37. 시계열·추이에서 38%가 누락. frontmatter round_id 점진 적용(50/98 보유)이 원인이나, 시계열의 신뢰도를 떨어뜨린다. (정직하게 \"미측정\" 표기는 함 — P0 아님.)",
+        "P1-3. request_id 참조 무결성 27건 깨짐.** `R48`/`N/A`/`SWEEP-*` 등 비표준 request_id가 LEDGER 미존재로 WARN 27건. 노출은 되나 작성 단계 차단/정규화 게이트 부재.",
+        "P1-4. request ts \"오늘 날짜\" 근사.** `_request_ts` L1017 — LEDGER 요청 행에 날짜 셀이 없어 (HH:MM)+빌드일 부여. 발화일이 어제여도 오늘로 시계열에 찍힘(코드 주석도 \"근사\" 명시). UI에 추정 표기 없음. (verdict/round ts는 파일 mtime 실측이라 별개.)"
+      ]
+    },
+    {
+      "file": "(내부코드)-rnd-admin-001-손님 패널.md",
+      "ts": "2026-06-14T20:22:14.780376+09:00",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "손님 패널",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 2,
+      "headline": null,
+      "improvements": [],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-001-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-14T20:38:04.036291+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-AD(비공개)-총괄 심사 패널",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "NO",
+      "quality_score": 6.0,
+      "p0_count": 1,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0·승계+격상] parse_rounds silent drop — RND-BYBIAS-051·052(7칸 행)가 에러·경고 없이 소실. 단 리스트 누락에 그치지 않고 summary.total_rounds·open_rounds 등 대표가 최상단에서 보는 요약 숫자까지 오염(BYBIAS total_rounds=10, 실제 12). 대표 catch '몇 중 얼마 진행됐는지'의 정면 직격. fail-loud(누락 행 수 WARN) + graceful 파싱(비고 공란 허용·8칸 패딩) 동시 의무",
+          "state": "미해소"
+        },
+        {
+          "text": "[본질 격상] R52는 '대표 catch 정량 입증 — 비-en 9언어 ko 대비 21~38곳 차이·notice(이용안내·제휴고지) 섹션 통째 부재[법무]' 미수렴 라운드. 사라진 게 하필 법무 리스크 동반 열린 라운드 = 어드민 북극성('내 라운드가 안 빠지고 도는지')의 최악 케이스 위반",
+          "state": "미해소"
+        },
+        {
+          "text": "[1심 흡수·P1군 — fix 트랙 합류] 진행률 2벌(백엔드 _STATE_PROGRESS 55/85 ≠ 프론트 STATE_META 50/90, 시스템 심사 패널 P1-1) · svc-card .m-k 라벨 4모드 중간끊김(design P1-1·손님 패널 P2-a·1줄 fix) · 빈 7탭 안내 부재(손님 패널 P1-1) · blocked 거짓 교착 종결요청 표시(정직성 심사 P1)",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-001-design.md",
+      "ts": "2026-06-14T20:10:49.010338+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-AD(비공개)-design",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "design",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 2,
+      "headline": "NO** — 비주얼 정체성·정보위계·시계열 차트는 어드민 V1 기준을 명백히 상회한다(밋밋 generic 회색 아님: 황동 액센트 + 종이/잉크 입자감 + monospace 계측 readout + 루비 경고 + WWDC급 드래그/줌 시계열). 그러나 **진입 첫 데이터 블록(서비스 스트립)의 지표 라벨이 4모드 전부 중간 끊김으로 깨져 보이고**, **요청 카드 priority 칩이 43%만 present해 (내부코드)(cross-card 거짓 구분)와 동형 패턴**이며, **다크모드 무드 메타가 AA-normal 미달**. 1px·일관성·다크 가독을 집요하게 보는 본 심급은 확정 결함 1건이라도 있으면 PASS하지 않는다 → NO. 모두 저비용 fix(P1-a는 1줄)이며 비주얼 방향 자체는 유지 권고.",
+      "improvements": [
+        {
+          "text": "svc-card 지표 라벨(.m-k) white-space:nowrap 부재 → 라이트/다크·데스크톱/모바일 4모드 전부 '열린 라운→드'·'열린 요→청'·'전→체' 2줄 중간끊김. 진입 첫 데이터 블록이 깨져 보임 (style.css L410-413, fix=1줄)",
+          "state": "미해소"
+        },
+        {
+          "text": "요청 카드 priority 칩 cross-card 점유율 20/46=43% (50% 미만). 26개 카드는 등급 칩 부재 → '왜 이건 등급 있고 저건 없나' 거짓 구분 암시 ((내부코드) 동형). root는 정직(원천 ledger priority 공백·폴백 색칠 0)이나 일관성 NO",
+          "state": "미해소"
+        },
+        {
+          "text": "다크모드 --dm(#757E88) 무드 메타가 결함카운트('결함 N')·m-k 등 normal 텍스트에서 CR 4.19(on bg2)·4.32(on sf) = AA-normal 4.5 미달(3.0 UI는 통과). 라이트는 저자가 4.5+로 명시 격상했는데 다크만 누락 (다크모드 제1원칙 가독성 저하 0 위반, fix=dm을 ~#828B95로)",
+          "state": "미해소"
+        },
+        {
+          "text": "[관찰·P2] 활동 시계열 막대: value '—'(품질 미측정)인데 '결함 18/25' 보유한 라운드(R50/R53)가 4px 미측정 사선 막대로 floor → 결함 최다 라운드가 시각상 가장 잠잠하게 읽힘(위계 역전). 데이터 정직하나 직관 반대",
+          "state": "미해소"
+        },
+        {
+          "text": "[관찰·P2] 모바일 390에서 탭 nav scrollW 418>390 → 'audit' 탭 우측 22px off-screen. 스와이프로 도달 가능하나 스크롤 어포던스 약함",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "(내부코드)-rnd-admin-001-정직성 심사.md",
+      "ts": "2026-06-14T20:17:59.463200+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-AD(비공개)-정직성 심사",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-ADMIN-20260614-001",
+      "panel": "정직성 심사",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 1,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "blocked 판정이 종결(✅)·100%·live 요청을 거짓 교착으로 표시 — _HOLD_RE가 취소선(~~...~~) 안 '대표 결정 대기'를 매칭 + state=종결 가드 부재",
+          "state": "미해소"
+        }
+      ],
       "p0_items": [],
       "p1_items": []
     },
@@ -2786,6 +3079,29 @@
         },
         {
           "text": "R57②상한가 카드 시총 2/11(18%) — 백필이 상한가 universe 11종 전부 포함(032820·052690·079650·083650·083660·192650·204320·240810·270660·365590·403870). --lu 카드 11/11(100%) 시총 present(HPSP 시총5.9조·원익IPS 시총9.0조 캡처 확인)",
+          "state": "해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "pm320-mcap-r59.md",
+      "ts": "2026-06-14T19:59:36.774526+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-PM320-059-디자인 심사 패널",
+      "round_id": "RND-PM320-059",
+      "round_alias": null,
+      "request_id": "Q-158",
+      "panel": "디자인 심사 패널",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "YES (수렴 confirm — 잔존 0)",
+      "improvements": [
+        {
+          "text": "R58 confirm 영속화 누락(운영자 2심 catch) — R58은 직전 planning 측정에서 라이브 30/30 YES였으나 records/qa/verdicts/에 R59 verdict 파일 0건 = 기록상 confirm 미실행 = 수렴 게이트(2연속) 미충족. R59 = 라이브 독립 재측정 + verdict 파일 영속화로 충족",
           "state": "해소"
         }
       ],
@@ -3964,7 +4280,7 @@
       "ts": "2026-06-14T05:57:55.134624+09:00",
       "doc_id": "",
       "vrd_id": "",
-      "round_id": "RND-PM320-052",
+      "round_id": null,
       "round_alias": null,
       "request_id": null,
       "panel": "",
@@ -5100,6 +5416,250 @@
       "p1_items": []
     },
     {
+      "file": "r59-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-14T20:16:29.110477+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-059-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-059",
+      "round_alias": "RND-BYBIAS-059",
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "총괄 심사 패널",
+      "verdict": "NO",
+      "quality_score": 4.2,
+      "p0_count": 3,
+      "new_p1_count": 7,
+      "headline": "NO** (1심 5/5 NO 종합 · 🔴 **streak 0 리셋** · 거짓 수렴 정정)",
+      "improvements": [
+        {
+          "text": "[P0-① stays 섹션 통째 증발 — 어필리에이트 수익 퍼널 단절] ja 실화면에서 ko의 '함께 묵는 숙소' 호텔 4카드(stay-card)+예약 CTA(stay-cta 4·postlink 4·예약하기 Trip.com)+'호텔 더 보기' 블록이 DOM에서 통째 부재. ja는 sec-stays div 2줄 텍스트로만 대체. 라이브 cross-check: ja stay-card 0·stay-cta 0·postlink 0·id=stays-sec 0 (ko 4·4·4·1). 캡처 r-ja-nostays.png = Day3 일정 직후 바로 '日程情報の出典' 푸터로 점프(예약 카드 그리드 자리 증발 결정적). 5인 패널 중 4인(kpop·fable·투자 심사·tech)이 독립 P0 적발·1인(손님 패널) P0 적발 = 5/5 P0 합의.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-② venue h2→div 시맨틱 강등 + 위치설명 p/올림픽공원 area chip 누락] ja sec-venue=<div id=sec-venue>(ko=<h2 ... id=sec-venue>). sec-stays도 동형 div 강등. ja venue 위치설명 p('서울 동남쪽 송파구 올림픽공원 안. 잠실 8호선 1정거장…') 전체 누락 + 독립 area bdi <bdi>올림픽공원</bdi> 누락(ja는 KSPOドーム 괄호 안 オリンピック体操競技場만). WCAG 1.3.1 위계 훼손. 5/5 패널 전원 P0 적발 = 합의도 최고.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-③ 7박8일 sec-c7 코스 spot-card 7→0 (tech-cynic 단독 분해)] 특정 코스 슬롯(sec-c7)에서 ko spot-card 7장이 ja 0장. 전체 spot-card 28→20(8 누락)의 일부가 코스 단위로 통째 소실. 핫플/식당 동선 정보 차원 누락.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-1 spot-card 28→20 (8장·28.6% 누락)] 라이브 cross-check 확정: ko spot-card 28 · ja 20. 동일 코스 기준 핫플/식당 카드 8장 소실. kpop·fable·투자 심사·tech·손님 패널 5인 전원 적발(차이값 8 합의).",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-2 lock-now 4→10 과다·중복 vendor] 라이브 cross-check 확정: ko lock-now 4 · ja 10. 실제 stays 예약 CTA(stay-cta)는 0인데 lock-now 형식 CTA만 10개로 과다·중복 vendor. fable(4→10 과다)·tech(분포 불균형)·투자 심사(중복 vendor)·손님 패널(분포) 적발. '예약 동선은 끊겼는데 lock CTA만 난립' = cross-card 거짓 신호.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-3 振り仮名 히라가나 관습 어색] 弘大(ほんで)·延南洞(えんなんどん)·江南(こうなん) 등 26건. 일본 K-pop 팬덤 표준은 카타카나(ホンデ·ヨンナムドン·カンナム). 히라가나 음가 직역은 기계 티. kpop·손님 패널(弘大(ほんで)→ホンデ 지명 독음) 적발.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-4 숙소 팁 텍스트 기계번역 티] 蚕室·江東エリア+地下鉄(직역·や/と地下鉄 자연)·ソンネ/チョンホエリア(카나 병기 없어 일본 팬 위치 인지 불가). kpop 적발.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-5 公演後の帰路 ja 단독 h2 추가 — venue 박스 내 id 없는 혼재] ja에만 <h2>公演後の帰路</h2> 추가(ko 미존재). stays-sec 증발 보완 의도로 보이나 ko SSOT 구조 이탈 + id 없음(앵커 부재) + venue 박스 내 혼재. kpop(구조 divergence)·fable(venue 박스 내 혼재)·tech(id 없음) 적발.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-6 sec-stays h2→div 헤딩 강등(venue와 별건)] sec-stays 헤딩도 ja=div(ko=h2). 위 P0-②는 sec-venue, 본건은 sec-stays — 양 섹션 동형 강등. tech 적발.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-7 티켓팅 섹션 깊이 38% 약화] ko 티켓팅 가시 텍스트 ~2693자 vs ja 1642자(38% 짧음). '스탠딩=플로어 입석(선착순·자리 미지정) vs 지정석' 설명 + '좌석 구조 공개 미확인' 안내 ja 누락. 해외 팬 실용 정보 손실. kpop 적발.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r59-bybias-guest-pool.md",
+      "ts": "2026-06-14T20:21:11.160786+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-059-bybias-guest-pool",
+      "round_id": "RND-BYBIAS-059",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "bybias-guest-pool",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 3,
+      "headline": "NO** (손님풀 6인 합산: 5 NO / 1 YES)",
+      "improvements": [
+        {
+          "text": "[P0-1] 숙소카드/예약경로 소실 — stay-card 4→0·postlink 4→0. ja 방문객이 Trip.com 예약 링크 접근 불가·외부 검색 강제.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-2] venue h2→div 강등 — sec-venue 헤딩 태그 강등·위치 위계 붕괴.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-1] spot-card 28→20 (핫플 8 차이)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-2] 지명 독음 弘大(ほんで)→ホンデ — 히라가나 비표준 표기(팬덤 표준=카타카나)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-3] 헤딩 톤 불일치 — 公演後の帰路 ja 단독 h2 추가(このステップで大丈夫ですね 등 톤 이탈)",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": [
+        "P1-1**: spot-card 8 차이 (ko 28 / ja 20 — 핫플/식당 28% 소실)",
+        "P1-2**: 지명 독음 어색 — 弘大(ほんで) 히라가나 표기 (일본 K-pop 팬덤 표준 = カタカナ ホンデ)",
+        "P1-3**: 헤딩 톤 불일치 — `公演後の帰路` ja 단독 추가(ko SSOT 이탈)"
+      ]
+    },
+    {
+      "file": "r59-fable-design-critic.md",
+      "ts": "2026-06-14T20:20:06.696182+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-059-fable-design-critic",
+      "round_id": "RND-BYBIAS-059",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "fable-design-critic",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 3,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0-1] stays-sec 섹션 부재 — TOC '一緒に泊まる宿' 링크가 존재하나 실제 id=stays-sec DOM 없음(2줄 div 텍스트로 대체). 기능 파손.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-2] venue h2→div 시맨틱 강등 — sec-venue 헤딩이 ko <h2>에서 ja <div>로 강등. WCAG 1.3.1 위계 훼손.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-1] spot-card 28→20 (8장 누락) — 핫플/식당 카드 8장 소실.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-2] lock-now 4→10 과다 — stays 예약 CTA 0인데 lock-now 형식 CTA 10개 난립(중복 vendor).",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-3] 公演後の帰路 venue 박스 내 혼재 — ja 단독 h2 추가·venue 박스 내 혼재·ko SSOT 이탈.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": [
+        "P1-1**: spot-card 28→20 (8장 누락·코스 핫플/식당 동선 소실)",
+        "P1-2**: lock-now 4→10 과다·중복 vendor (예약 CTA 없는데 lock CTA만 난립)",
+        "P1-3**: `公演後の帰路` ja 단독 h2 추가·venue 박스 내 혼재·ko SSOT 이탈"
+      ]
+    },
+    {
+      "file": "r59-kpop-fan-번역 심사.md",
+      "ts": "2026-06-14T20:09:11.148640+09:00",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": "RND-BYBIAS-059",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": null,
+      "new_p1_count": null,
+      "headline": null,
+      "improvements": [],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r59-tech-cynic.md",
+      "ts": "2026-06-14T20:20:47.330050+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-059-tech-cynic",
+      "round_id": "RND-BYBIAS-059",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "tech-cynic",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 3,
+      "new_p1_count": 3,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0-1] stays 완전 누락 — stays-rail 1/0·stay-card 4/0·stay-cta 4/0. stays 관련 DOM 요소 전수 부재.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-2] sec-c7 코스(7박8일) spot-card 7→0 — 코스 단위 동선 정보 통째 소실.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-3] venue h2→div + 말단 재배치 WCAG 1.3.1 위반 — sec-venue·sec-stays 양 섹션 헤딩 강등.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-1] sec-stays h2→div 헤딩 강등 (venue P0와 별건)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-2] 公演後の帰路 id 없음 — 앵커 부재(접근성 손상)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-3] lock-now 분포 불균형 — ko 4 / ja 10 (예약 CTA 0인데 lock-now 10 분포 불균형)",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": [
+        "P1-1**: sec-stays h2→div 헤딩 강등 (P0-3 venue와 별건 카운팅)",
+        "P1-2**: 公演後の帰路 id 속성 없음 (앵커 링크 불가·접근성 손상)",
+        "P1-3**: lock-now 분포 불균형 (ko 4 / ja 10 — 예약 CTA 없는 상태에서 lock-now만 2.5배)"
+      ]
+    },
+    {
+      "file": "r59-투자 심사-investor.md",
+      "ts": "2026-06-14T20:20:22.908033+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-059-투자 심사-investor",
+      "round_id": "RND-BYBIAS-059",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "투자 심사-investor",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 1,
+      "new_p1_count": 2,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0-1] stay-cta-single 4→0 — 숙박 수익 퍼널 단절. ja는 맥락 없는 범용 검색 링크만 노출(어필리에이트 예약 CTA 전무).",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-1] spot-card 누락 (28→20) — 핫플/식당 카드 8장 소실.",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-2] lock-now 중복 vendor — 예약 CTA 없는데 lock-now 10개 난립.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": [
+        "P1-1**: spot-card 28→20 (핫플 8장 소실 → 코스 완성도 저하)",
+        "P1-2**: lock-now 중복 vendor (예약 CTA 0·lock-now 10 = cross-card 거짓 신호·중복 vendor 정리 필요)"
+      ]
+    },
+    {
       "file": "r6-home-menu-총괄 심사 패널.md",
       "ts": "2026-06-14T02:08:50.439106+09:00",
       "doc_id": "(내부코드)",
@@ -5127,6 +5687,137 @@
           "state": "취향정합"
         }
       ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r60-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-14T20:49:32.923234+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-060-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-060",
+      "round_alias": "RND-BYBIAS-060",
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "조건부",
+      "quality_score": 6.8,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "조건부GO",
+      "improvements": [
+        {
+          "text": "[채택-① C = EN·ko 브랜드 시그니처 히어로 확정] 1심 2/3 패널(branding-critic·kpop-fan-번역 심사) 1위 + 대표 직접 발의·선호. C만 bias+via 더블미닝(3중 엔진: 관용구 플립 + 팬덤 충성 + via 동선)을 살리는 유일안. 총괄 심사 패널 선행 네이밍 자문((내부코드)) 단정 정합: 'bias 말놀이=브랜드의 단 하나뿐인 무기, 제거하면 제품 가치 소멸' → C는 그 무기를 태그라인에 박는다. 적용 게이트: EN/ko 히어로 전용. 발음 가이드(vy-as) + 'vias=bias+via' 1회 풀어쓰기 의무.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-② Alt1 = 글로벌(ja/zh)·캠페인 훅·해시태그 확정] 손님 풀(팬 6인) 5/6 1위·즉시성·#followyourbias 바이럴·다국어 전달 최강이라는 팬 데이터를 정직 반영. C가 'vias' 미인지로 첫 노출 팬 전달 실패한다는 손님 풀 catch는 실측 신호 — 무시 불가(맹종도 무시도 금지). Alt1을 ja/zh 현지 서브카피의 의미 원천(ja 推しについていく/zh 跟着爱豆走) + 글로벌 캠페인/SNS 훅으로 운용. via 소멸·범용 약점은 '브랜드명=ByVias가 via를 운반'으로 위계 분담 해소.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-③ ja/zh 원문 단독 노출 금지 = P0 스펙 강제] 1심 kpop·guest-pool 합의: C 원문(stand by your vias)을 ja/zh 페이지에 서브카피 없이 단독 노출 시 의미 완전 소멸. ja 必須 推しのルートで / zh-cn 跟着爱豆走 / zh-tw 跟著愛豆走 서브카피 분리를 디자인 스펙에 P0으로 강제. 구현 라운드 측정 게이트 1순위.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-④ 'bias=편견' 비-팬 부정 오독 가드] 총괄 심사 패널 선행 자문 + kpop R1 동형 catch: 영어권 1차 의미 bias=편견(부정). 서비스 맥락(K-pop 공연 여행) 확보된 채널에서만 C/Alt1 원문 단독 노출. 탈맥락 광고(네이버/구글 배너 등)는 Alt1+서비스 1줄 또는 ko 카피 병기. 가드 없는 탈맥락 단독 노출 = 신규 유입 오독 리스크.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑤ 발음·표기 가이드 의무] vias 발음 vy-as vs vi-as 혼선(kpop R2). 온보딩/푸터/about에 공식 발음 가이드(vy-as) 1회 노출 + 'vias = your bias + your via' 의미 풀어쓰기 1회. 브랜드명 표기 ByVias 카멜 단일(BYVIAS 전대문자 파스 모호 — 조인 네이밍 자문 ③ 동형 연장).",
+          "state": "미해소"
+        },
+        {
+          "text": "[측정-⑥ 구현 후 별도 렌더 라운드 의무] 본 판정=텍스트 전략(라이브 미측정). 태그라인 UI 구현 시 5언어(ko/en/ja/zh-cn/zh-tw) × 모바일390/데스크탑1440 × 라이트/다크 4모드 실렌더 측정 라운드 발사 의무. 측정 항목: 히어로 18자 모바일 렌더 줄바꿈(branding-critic 조건)·ja/zh 서브카피 분리 노출·C/Alt1 위계 배치 일관·오독 가드 채널 분리. 그때 수렴 streak 산입.",
+          "state": "미해소"
+        },
+        {
+          "text": "[참고-Alt3 = SNS 소재 한정 활용] Vias > Bias는 발음 불가 태그라인(구전 확산 0·ja/zh 소멸)이라 히어로 부적합이나, K-pop 패러디 포스터/SNS 캠페인 단일 소재로는 유효. 채택 위계 밖 보조 자산으로만(히어로/서브카피 아님).",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r60-branding-critic.md",
+      "ts": "2026-06-14T20:53:40.891468+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-060-branding-critic",
+      "round_id": "RND-BYBIAS-060",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "branding-critic",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "조건부** (C안 채택 권고, 발음 가이드·ko 서브카피·모바일 렌더 QA 조건)",
+      "improvements": [
+        {
+          "text": "발음 가이드 vy-as 온보딩/푸터/about 1회 노출 의무",
+          "state": "미해소"
+        },
+        {
+          "text": "ko 서브카피 '최애의 동선으로' 히어로 하단 병기",
+          "state": "미해소"
+        },
+        {
+          "text": "모바일 390px 18자 1줄 렌더 QA — 히어로 줄바꿈 미검증",
+          "state": "미해소"
+        },
+        {
+          "text": "Alt3(Vias > Bias) = 히어로 아님, SNS 캠페인 소재로 재배치",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r60-bybias-guest-pool.md",
+      "ts": "2026-06-14T20:54:28.394751+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-060-bybias-guest-pool",
+      "round_id": "RND-BYBIAS-060",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "bybias-guest-pool",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "조건부** (Alt1 채택 권고, 단 브랜드 정체성 이슈 명시)",
+      "improvements": [
+        {
+          "text": "Alt1(Follow Your Bias) 글로벌 훅·캠페인 채널 운용 시 브랜드명 ByVias와 via 개념 소멸 문제 운용 가이드 필요",
+          "state": "미해소"
+        },
+        {
+          "text": "bias=편견 부정 오독 가드 — 서비스 맥락 확보된 채널 한정 노출",
+          "state": "미해소"
+        },
+        {
+          "text": "C(stand by your vias)를 히어로로 노출 시 'vias' 미인지 팬 대상 1회 풀어쓰기('your bias + your via') 필수",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r60-kpop-fan-번역 심사.md",
+      "ts": "2026-06-14T20:43:36.820557+09:00",
+      "doc_id": "",
+      "vrd_id": "",
+      "round_id": "RND-BYBIAS-060",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "조건부",
+      "quality_score": null,
+      "p0_count": null,
+      "new_p1_count": null,
+      "headline": "조건부GO",
+      "improvements": [],
       "p0_items": [],
       "p1_items": []
     },
@@ -5159,8 +5850,8 @@
     }
   ],
   "trend_mapping": {
-    "verdicts_mapped_to_round": 17,
-    "verdicts_total": 98,
+    "verdicts_mapped_to_round": 16,
+    "verdicts_total": 114,
     "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
   }
 }
