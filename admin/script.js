@@ -321,7 +321,12 @@
     "대체됨":  { label: "📦 대체됨",  pct: null, cls: "conv-superseded" },
   };
   function stateMeta(s) {
-    return STATE_META[s] || { label: s || "미상", pct: null, cls: convStateClass(s) };
+    if (STATE_META[s]) return STATE_META[s];
+    // 한국어 룰: 영문 'unknown'·공백 fallback을 '미상'으로(라운드3 1심 손님풀 P1, 모바일 잘림).
+    // truthy 'unknown'도 포함 — 백엔드 미상 표기 누출 차단. 거짓 채움 아님(상태 자체가 미상).
+    const t = (s || "").trim();
+    const label = (!t || t.toLowerCase() === "unknown") ? "미상" : t;
+    return { label, pct: null, cls: convStateClass(s) };
   }
   // priority 토큰 → 표시 클래스 (P0~P3). 백엔드는 본문 명시 P0~P3만 채택(추정 0·FLR-AGT-002).
   function prioClass(p) {
@@ -1423,16 +1428,22 @@
     const pushHtml = r.push_status
       ? `<span class="rq-push ${pm.cls}" title="배포 반영 상태(추정 0·해시 검증)">${escape(pm.label)}</span>` : "";
 
-    // ── 계측 진행 트랙 — 백엔드 progress_pct 우선(요청별 실측). null이면 '미상'(거짓 0 금지). ──
-    // track = inner(트랙바 + % 또는 '미상'). 호출부에서 .rq-track-wrap 로 감싸 round 칩과 정렬.
+    // ── 계측 진행 트랙 — progress_pct. null이면 '미상'(거짓 0 금지). ──
+    // ⚠ progress_pct는 state 기반 ordinal(종결=100·배포=90·구현중=50…)이지 실측 측정값이 아님.
+    // "55%" 단독 노출 = 측정값 오인(FLR-20260613-PRC-001 라벨 인플레). → 단계 라벨(m.label) 병기 +
+    // tooltip·aria로 "단계 환산값" 명시. 거짓 채움 아님(상태→환산 규칙 노출).
+    // track = inner(트랙바 + 단계 라벨 + %). 호출부에서 .rq-track-wrap 로 감싸 round 칩과 정렬.
     const pct = (typeof r.progress_pct === "number") ? r.progress_pct : null;
+    const stageLbl = escape(m.label);  // 상태 단계명(구현 중·배포됨 등)
     const track = pct == null
       ? `<div class="rq-track-na" title="진행률 미측정(추정 금지)">진행률 미상</div>`
       : `<div class="rq-track" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
-              aria-label="진행률 ${pct}%">
+              aria-label="진행 단계 ${stageLbl} (단계 환산 ${pct}%, 측정값 아님)"
+              title="진행 단계 환산값(측정값 아님) — 상태 '${stageLbl}' 기준">
            <span class="rq-track-fill rq-${m.cls}" style="width:${pct}%"></span>
          </div>
-         <span class="rq-track-pct">${pct}%</span>`;
+         <span class="rq-track-stage">${stageLbl}</span>
+         <span class="rq-track-pct" title="단계 환산값(측정값 아님)">${pct}%</span>`;
     // round_count 칩 (몇 라운드 돌았나) — 0이면 '미착수'로 명시(거짓 채움 아님).
     // 라운드가 돌았으면 latest_round_state(최근 라운드 상태)를 칩에 병기(실데이터·null이면 생략).
     const rc = (typeof r.round_count === "number") ? r.round_count : null;

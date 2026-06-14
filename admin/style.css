@@ -397,20 +397,51 @@ footer {
 /* 범례 — 색 스와치 + 라벨 병기(다크모드 제1원칙: 색만으로 의미 전달 금지) */
 .sb-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 12px; }
 .sb-leg { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--tx2); }
-.sb-leg-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; border: 1px solid transparent; }
-/* 스와치는 진한 의미색 채움(작아서 연한 bg면 체크박스로 오인 → 식별성 확보). */
+.sb-leg-sw { width: 11px; height: 11px; border-radius: 3px; flex: none; border: 1px solid transparent; overflow: hidden; }
+/* 스와치 = 세그먼트와 동일 패턴 동기화(범례 인지 일치 + 색맹 변별). 11px 작아
+   진한 의미색 베이스 + 흰 텍스처로 형태 식별(주기 2.5~3.5px). 세그(연 bg+진 텍스처)와
+   명암 반전이나 "형태"는 동일(도트/사선/수평/수직/대각/크로스/무지) → 인지 일치. */
+/* 종결·수렴 = solid (완료, 무텍스처) */
 .sb-leg-sw.conv-ok   { background: var(--pos); }
-.sb-leg-sw.conv-cand { background: var(--am2); }
-.sb-leg-sw.conv-prog { background: var(--neu); }
-.sb-leg-sw.conv-no   { background: var(--ru); }
-.sb-leg-sw.conv-deploy { background: var(--tl); }
-/* 보류 스와치 = 회색 + 대각 스트라이프(배지 세그먼트와 동일 패턴 → 범례 인지 일치) */
+/* 판정중 = 45° 사선 */
+.sb-leg-sw.conv-cand {
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0, rgba(255,255,255,.55) 1px, transparent 1px, transparent 3px),
+    var(--am2);
+}
+/* 진행 = 수평 줄무늬 */
+.sb-leg-sw.conv-prog {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3px),
+    var(--neu);
+}
+/* 미수렴 = 교차 해칭 */
+.sb-leg-sw.conv-no {
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3.5px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3.5px),
+    var(--ru);
+}
+/* 배포 = 수직 줄무늬 */
+.sb-leg-sw.conv-deploy {
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3px),
+    var(--tl);
+}
+/* 보류 = 135° 대각 스트라이프(세그먼트와 동일 패턴 → 범례 인지 일치) */
 .sb-leg-sw.conv-hold {
   background:
     repeating-linear-gradient(135deg, var(--neu) 0, var(--neu) 2px, transparent 2px, transparent 4px),
     var(--bd2);
 }
-.sb-leg-sw.conv-seed { background: var(--am3); border-color: var(--am2); }
+/* 포착 = 도트 */
+.sb-leg-sw.conv-seed {
+  background:
+    radial-gradient(rgba(255,255,255,.6) 0.7px, transparent 0.9px) 0 0 / 3.5px 3.5px,
+    var(--am2);
+  border-color: var(--am2);
+}
+/* 대체됨 = solid 흐림 */
 .sb-leg-sw.conv-superseded { background: var(--bd2); }
 .sb-leg-k { white-space: nowrap; }
 /* repo 1행 = 라벨 + 100% 트랙 */
@@ -434,14 +465,75 @@ footer {
 .sb-seg-n { font-family: var(--mono); font-variant-numeric: tabular-nums; flex: none; }
 .sb-seg-k { overflow: hidden; text-overflow: ellipsis; } /* 칸이 충분하면 라벨, 모자라면 ... (거짓 채움 0) */
 .sb-seg-narrow .sb-seg-k { display: none; } /* 좁은 칸(<12%): 어중간 잘림 대신 숫자만(전체는 호버 title) */
-/* 세그먼트 채움색 — 의미 변수 기반(라이트/다크 공용 자동 반전). 연한 bg + 진한 텍스트(AA). */
+/* ── 세그먼트 채움 = 색 + 패턴 이중 인코딩 (WCAG 1.4.1 색 비의존) ──
+   대표 catch(적록색맹: 청록 보더 vs 회색 보더 변별 실패) → 색맹/grayscale서도
+   "패턴 형태"만으로 변별. 라이트 bg 5종 grayscale 명도 228~238로 거의 동색이라
+   색 단독 구분 불가가 실측 입증됨(종결·판정·진행·미수렴·배포 무특징 회색 뭉개짐).
+
+   ▸ 패턴 시스템(상태별 고유 형태 — 서로 직교 = 색맹서도 즉시 구분):
+       포착   conv-seed       옅은 도트       (막 발견, 점점이)
+       판정중 conv-cand       45° 사선        (심사 진행)
+       진행   conv-prog       수평 줄무늬     (작업 중)
+       배포   conv-deploy     수직 줄무늬+좌보더(라이브, 직립 = 거의 완료)
+       미수렴 conv-no         교차 해칭       (실패, ✕ 결)
+       보류   conv-hold       135° 대각 스트라이프+좌보더 (정지)
+       종결   conv-ok         solid           (완료 = 무텍스처, 깔끔)
+       수렴   conv-ok         solid           (완료)
+       대체   conv-superseded solid 흐림       (폐기)
+   ▸ 진척 의미 연결: 미완=텍스처 / 완료(종결·수렴)=solid. 텍스처는 절제된 얇은 선·
+     낮은 alpha(.18~.26)로 라벨 가독 침해 0. 패턴색=각 상태 텍스트색(색조 일관).
+   ▸ 핵심 변별 직교: 배포(수직)≠종결(무지)≠보류(대각). 좁은 세그(<12%)·11px 범례서도
+     패턴 주기 4~7px라 식별. 라운드4 디자인 P1(대표 직접). */
+
+/* 종결·수렴 = solid (완료감, 텍스처 없음) */
 .sb-seg.conv-ok     { background: var(--pos-bg); color: var(--pos); }
-.sb-seg.conv-cand   { background: var(--am3);    color: var(--am); }
-.sb-seg.conv-prog   { background: var(--neu-bg); color: var(--neu); }
-.sb-seg.conv-no     { background: var(--neg-bg); color: var(--ru); }
-.sb-seg.conv-deploy { background: var(--tl-bg);  color: var(--tl); }   /* 배포 = 청록 (P1-1) */
-/* 보류 = 회색 + 대각 스트라이프(정지 신호) → 좁은 세그먼트(<12%)·다크모드서도 색단독 아닌
-   패턴으로 진행계열과 변별. 라운드2 P1-1. */
+
+/* 판정중·판정완료 = 45° 가는 사선 (심사 진행) */
+.sb-seg.conv-cand {
+  background:
+    repeating-linear-gradient(45deg,
+      rgba(154,123,46,.24) 0, rgba(154,123,46,.24) 1.5px,
+      transparent 1.5px, transparent 5px),
+    var(--am3);
+  color: var(--am);
+}
+
+/* 진행·구현중 = 수평 줄무늬 (작업 중) */
+.sb-seg.conv-prog {
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(90,100,112,.22) 0, rgba(90,100,112,.22) 1.5px,
+      transparent 1.5px, transparent 5px),
+    var(--neu-bg);
+  color: var(--neu);
+}
+
+/* 미수렴 = 교차 해칭 (✕ 결 = 실패) */
+.sb-seg.conv-no {
+  background:
+    repeating-linear-gradient(45deg,
+      rgba(142,18,38,.20) 0, rgba(142,18,38,.20) 1.5px,
+      transparent 1.5px, transparent 6px),
+    repeating-linear-gradient(-45deg,
+      rgba(142,18,38,.20) 0, rgba(142,18,38,.20) 1.5px,
+      transparent 1.5px, transparent 6px),
+    var(--neg-bg);
+  color: var(--ru);
+}
+
+/* 배포 = 청록 + 수직 줄무늬 + 좌 보더 (라이브, 직립 = 거의 완료). 종결(solid 연녹)·
+   보류(대각)와 패턴 형태 직교 → 좁은 세그·grayscale서도 셋 즉시 구분. */
+.sb-seg.conv-deploy {
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(12,110,120,.24) 0, rgba(12,110,120,.24) 2px,
+      transparent 2px, transparent 6px),
+    var(--tl-bg);
+  color: var(--tl);
+  box-shadow: inset 3px 0 0 var(--tl-bd);
+}
+
+/* 보류 = 회색 + 135° 대각 스트라이프 + 좌 보더 (정지 신호). 배포(수직)와 직교. */
 .sb-seg.conv-hold {
   background:
     repeating-linear-gradient(135deg,
@@ -451,7 +543,15 @@ footer {
   color: var(--neu);
   box-shadow: inset 3px 0 0 var(--neu-bd);  /* 좌측 테두리 = 정지 마커(좁아도 식별) */
 }
-.sb-seg.conv-seed { background: var(--am4);    color: var(--am); }
+
+/* 포착 = 옅은 도트 (막 발견, 점점이 — 진척 시작점) */
+.sb-seg.conv-seed {
+  background:
+    radial-gradient(rgba(154,123,46,.30) 0.9px, transparent 1px) 0 0 / 5px 5px,
+    var(--am4);
+  color: var(--am);
+}
+/* 대체됨 = solid 흐림 (폐기, 텍스처 없음 = 비활성) */
 .sb-seg.conv-superseded { background: var(--bg2); color: var(--dm); }
 
 /* ════════ 서비스(repo) 요약 스트립 — 동적 N개 ════════ */
@@ -740,6 +840,12 @@ footer {
 .rq-track-fill.rq-conv-no   { background: linear-gradient(90deg, var(--ru), #b01a30); }
 .rq-track-fill.rq-conv-cand { background: linear-gradient(90deg, var(--am), var(--am2)); }
 .rq-track-fill.rq-conv-prog { background: linear-gradient(90deg, var(--neu), #6a7682); }
+/* 단계 라벨(구현 중·배포됨 등) — % 앞 병기. % 가 측정값 오인되지 않게 '단계' 맥락 제공
+   (FLR-20260613-PRC-001 라벨 인플레 봉쇄). muted 톤 = % 강조와 위계 분리. */
+.rq-track-stage {
+  font-family: var(--display); font-size: 11px; font-weight: 600; color: var(--dm);
+  white-space: nowrap; flex: none;
+}
 .rq-track-pct {
   font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--tx2);
   font-variant-numeric: tabular-nums; min-width: 34px; text-align: right;
