@@ -2397,7 +2397,7 @@ function renderCalExpandContent(date, data) {
 
   // DOC-20260603-DSN-001 §1+§3+§4 — PM320 추천/결과 row HTML build helper.
   // 본문 영어 enum (running / taken_profit / expired_gain / expired_loss) → 한국어 매핑.
-  // 카톡 6차 본문 verbatim 정합 (매수 / 물타기 / 익절 / 만기청산 4 row).
+  // 화면 픽 본문 verbatim 정합 (매수 / 물타기 / 익절 / 만기청산 4 row).
   // non-PICK = 매매 muted 차등 (FLR-AGT-002 거짓 충실성 차단, 대표 verbatim 2026-06-03).
   // 입력: pm320_pick 객체 (data-loader.js 합성 패스스루) + viewDate (카드 일자).
   // 출력: HTML string (배지 / row), 부재 시 빈 string.
@@ -2528,7 +2528,7 @@ function renderCalExpandContent(date, data) {
     }
     return '';
   };
-  // 펼침 본문 4 row (DSN-001 §3.4 카톡 6차 verbatim 정합)
+  // 펼침 본문 4 row (DSN-001 §3.4 화면 픽 본문 verbatim 정합)
   const _pm320DetailRows = (pk, authClose) => {
     if (!pk) return '';
     const buyDate = pk.pick_date || '';
@@ -2541,7 +2541,7 @@ function renderCalExpandContent(date, data) {
     const _rc = pm320Recompute.targets(pk, authClose);
     const _p0 = _rc.p0, _watering = _rc.watering, _tp = _rc.tp, _tpAfter = _rc.tpAfter;
     const entryPrice = _fmtKRW(_p0);
-    // 표기 "약 X원" → "X원 부근" (대표 02:10, 카톡 f107de3 표기 통일).
+    // 표기 "약 X원" → "X원 부근" (대표 02:10, f107de3 표기 통일).
     //   R43 P1⑧ (조니 2심 확정) — 전략 은닉: 화면 표기에서 기준 비율 % 제거 ("부근"만).
     //   재계산 가드·SSOT 우선순위는 Q-20260606-111 라이브 원형 그대로 (P0-2, 표기만 변경).
     const wateringPrice = _watering != null ? `${_fmtKRW(_watering)} 부근` : '—';
@@ -2652,7 +2652,7 @@ function renderCalExpandContent(date, data) {
     if (!pk || !pk.is_pick) return '';
     const _lbl = isPast ? '이날의 PM320 추천' : '오늘 PM320 추천';
     const _aria = isPast ? '이 날 15:20에 PM320이 추천한 종목' : '오늘 15:20에 PM320이 추천한 종목';
-    return `<span class="cal-pm320-pick-badge" aria-label="${_aria}" title="15:20 카톡 6차 추천"><svg class="cal-pm320-pick-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="cal-pm320-pick-label">${_lbl}</span></span>`;
+    return `<span class="cal-pm320-pick-badge" aria-label="${_aria}" title="15:20 PM320 추천"><svg class="cal-pm320-pick-icon" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span class="cal-pm320-pick-label">${_lbl}</span></span>`;
   };
   // 추천/결과 row (DSN-001 §3 — .cal-feature-summary 마지막 줄)
   const _buildPm320RecRow = (pk, code, authClose) => {
@@ -2665,7 +2665,7 @@ function renderCalExpandContent(date, data) {
     const labelText = isPick ? '매매' : '가상매매';
     const labelAria = isPick
       ? 'PM320 추천 매매 상세'
-      : 'PM320 카톡 6차 규칙으로 만약 진입했다면 — 가상 매매 (추천 아님)';
+      : 'PM320 규칙으로 만약 진입했다면 — 가상 매매 (추천 아님)';
     // 비-픽 행 상단 안내 (추천 아님 — 동일 규칙 가상 시뮬레이션). 픽은 빈 문자열(무회귀).
     const virtualNoteHtml = isPick
       ? ''
@@ -4451,9 +4451,9 @@ function renderCalExpandContent(date, data) {
       //   폴백 chain: data-card-date > ?date= 쿼리 > calSelectedDate(전역) > ''.
       const cardDate = card.getAttribute('data-card-date') || '';
       const dateStr = cardDate || dateParam || (typeof calSelectedDate !== 'undefined' ? calSelectedDate : '');
-      // 2026-05-27 (대표 결정, 카톡 미리보기 개선): 공유 URL = OG landing 경로
+      // 2026-05-27 (대표 결정, 공유 미리보기 개선): 공유 URL = OG landing 경로
       //   `/pm320/{date}/{code}.html` (generate_stock_og.py 산출, OG 메타 + 미니캔들 PNG, Q-119 stock 제거).
-      //   기존 `?stock={code}&date={date}` query는 OG 메타 부재 → 카톡 미리보기 안 뜸.
+      //   기존 `?stock={code}&date={date}` query는 OG 메타 부재 → 공유 미리보기 안 뜸.
       //   landing HTML이 `?stock={code}&date={date}` single-card mode로 JS redirect (Phase 2c-1 정합).
       //   feedback_share_url_ticker_only.md 정합 — URL 경로엔 code 6자리만 (한글 X). 한글은 OG title만.
       //   fallback: date 없으면 OG landing 경로 불가(날짜 디렉토리 필수) → 기존 query URL 유지.
