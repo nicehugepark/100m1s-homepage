@@ -1288,6 +1288,14 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs, ma
     const _nuRoot = document.getElementById('nightly-us');
     if (_nuRoot) _applySectionCollapse(_nuRoot, 'nightly-us');
   }
+  // 대표 catch (2026-06-15 06:53) — PRE_MARKET 뷰에서 "미국발 뉴스 더보기" 무반응 fix.
+  //   미장 섹션(_buildNightlyUsHtml)이 미국발 뉴스 칩 + _buildNewsExpand(5건+더보기 step)을 주입하나,
+  //   PRE_MARKET 은 early-return(renderCalExpandContent L2190)으로 정상 path 말미의 _wireNewsExpand()
+  //   호출(L4151)에 도달 못 함 → data-news-more 위임 미등록 → 더보기 클릭 0 반응(window._newsExpandInit
+  //   false 확인). 선물 토글 누락(L1278~ FLR-20260609-TEC-001)과 동형 — 한쪽 path fix·다른 path 누락
+  //   (FLR-20260428-TEC-001). fix: 미장 HTML 주입 path 에 _wireNewsExpand() 동반 호출(멱등 — _newsExpandInit
+  //   가드, 정상 path 와 중복 안전). _ensureChartExpandDelegation 도 함께 등록되어 미니캔들 확대도 복구.
+  if (typeof _wireNewsExpand === 'function') _wireNewsExpand();
   // 카운트다운 1초 단위 + Page Visibility API
   {
     const cdEl = inner.querySelector('[data-cd]');
