@@ -278,10 +278,6 @@ header {
    실 터치 44 채택: min-height 44 + justify-content center 로 글리프(eyebrow 9 + 워드마크 26 ≈ 32px)
    크기·간격 불변, 터치존만 세로 중앙 44 확장. 헤더(.brand align-items:center)라 행 정렬 무영향. */
 .brand-pm320 { display: flex; flex-direction: column; justify-content: center; gap: 1px; min-height: 44px; line-height: 1; text-decoration: none; }
-.brand-pm320-eyebrow {
-  font-size: 9px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
-  color: var(--tx2); opacity: 0.72;
-}
 .brand-pm320-wordmark { display: block; height: 26px; width: auto; }
 .brand-pm320-wordmark .pm-ink { fill: #1a1d26; }    /* "PM" 잉크 (라이트) */
 .brand-pm320-wordmark .pm-gold { fill: #96741f; }   /* "320" 골드 (라이트) */
@@ -293,7 +289,6 @@ header {
 }
 @media (max-width: 480px) {
   .brand-pm320-wordmark { height: 23px; }
-  .brand-pm320-eyebrow { font-size: 8px; letter-spacing: 1.2px; }
 }
 .nav-links { display: flex; gap: 24px; font-size: 13px; font-weight: 600; color: var(--tx2); }
 .nav-links a:hover, .nav-links a.active { color: var(--am); }
