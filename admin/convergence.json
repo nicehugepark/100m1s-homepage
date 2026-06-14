@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-15T06:46:04.390240+09:00",
+  "generated_at": "2026-06-15T06:55:32.025731+09:00",
   "summary": {
     "ADMIN": {
       "status": "idle",
@@ -23,9 +23,9 @@
       "open_rounds": 9,
       "milestone_rounds": 0,
       "superseded_rounds": 1,
-      "converged_rounds": 4,
-      "total_rounds": 16,
-      "latest_round": "RND-BYBIAS-062",
+      "converged_rounds": 5,
+      "total_rounds": 17,
+      "latest_round": "RND-BYBIAS-063",
       "latest_state": "수렴"
     },
     "HOME": {
@@ -223,6 +223,15 @@
         "alias": "R62",
         "state": "수렴",
         "quality_score": 7.2,
+        "quality_n": 1,
+        "defect_sum": 0,
+        "verdict_count": 4
+      },
+      {
+        "round_id": "RND-BYBIAS-063",
+        "alias": "R63",
+        "state": "수렴",
+        "quality_score": 7.5,
         "quality_n": 1,
         "defect_sum": 0,
         "verdict_count": 4
@@ -459,30 +468,6 @@
     ]
   },
   "activity_timeline": [
-    {
-      "ts": "2026-06-14T14:53:04.356587+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r54-2nd-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T14:53:04.356587+09:00",
-      "type": "round",
-      "repo": "BYBIAS",
-      "label": "RND-BYBIAS-054 (R54)"
-    },
-    {
-      "ts": "2026-06-14T16:36:29.119727+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r55-손님 패널.md"
-    },
-    {
-      "ts": "2026-06-14T16:38:02.079195+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r55-2nd-총괄 심사 패널.md"
-    },
     {
       "ts": "2026-06-14T16:38:02.079195+09:00",
       "type": "round",
@@ -786,8 +771,32 @@
     {
       "ts": "2026-06-15T06:37:36.218176+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "BYBIAS",
       "label": "r63-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-15T06:50:57.775620+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r63-branding-critic.md"
+    },
+    {
+      "ts": "2026-06-15T06:51:53.170896+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r63-bybias-guest-pool.md"
+    },
+    {
+      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r63-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-063 (R63)"
     },
     {
       "ts": "2026-06-15T08:53:00+09:00",
@@ -2583,12 +2592,52 @@
     },
     {
       "ts": "2026-06-15T06:37:36.218176+09:00",
-      "entity_type": "verdict",
-      "entity_id": "r63-kpop-fan-번역 심사.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-063",
+      "repo": "BYBIAS",
       "state": "unknown",
       "kind": "verdict_emitted",
       "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T06:50:57.775620+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-063",
+      "repo": "BYBIAS",
+      "state": "unknown",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T06:51:53.170896+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-063",
+      "repo": "BYBIAS",
+      "state": "unknown",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-063",
+      "repo": "BYBIAS",
+      "state": "unknown",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-063 (R63)",
+      "repo": "BYBIAS",
+      "state": "수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
       "is_approx": false
     },
     {
@@ -2844,13 +2893,13 @@
   ],
   "state_timeline_coverage": {
     "verdict": {
-      "available": 134,
-      "total": 134,
+      "available": 137,
+      "total": 137,
       "approx": false
     },
     "round": {
-      "available": 31,
-      "total": 41,
+      "available": 32,
+      "total": 42,
       "approx": false
     },
     "request": {
@@ -2862,8 +2911,8 @@
   },
   "freshness": {
     "last_activity_ts": "2026-06-15T18:38:00+09:00",
-    "generated_at": "2026-06-15T06:46:04.390240+09:00",
-    "stale_minutes": -712
+    "generated_at": "2026-06-15T06:55:32.025731+09:00",
+    "stale_minutes": -703
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -2892,7 +2941,7 @@
     "verdict r57-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r57-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r58-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "round_id 미매핑 verdict 54건 (frontmatter 미적용·점진 마이그레이션 백로그)",
+    "round_id 미매핑 verdict 53건 (frontmatter 미적용·점진 마이그레이션 백로그)",
     "ROUND-LOG 비정상 칸 수 라운드 2건 (graceful 패딩·drop 0): RND-BYBIAS-051(7칸), RND-BYBIAS-052(7칸) — 표준 8칸 정렬 권고(tier/verdict 칸 누락)"
   ],
   "requests": [
@@ -3674,18 +3723,18 @@
       "summary": "\"byvias 카피 — by vias / by your vias / stand by your vias 어때?\" (대표 브레인스토밍 2026-06-14 20:24) — 태그라인 결정",
       "captured": "🔍",
       "state": "종결",
-      "state_raw": "✅ **R62 복수채용 아키텍처 확정**(카피 4슬롯 A/C/D/B + 비주얼 G·E/F 폐기)·대표 최종확정+구현 대기(ja/zh 2·3비트 서브카피 P0)",
-      "owner": "R61 1심+2심(4파일) + R62 1심+2심(4파일) 총 8파일",
+      "state_raw": "✅ **R62 복수채용 아키텍처 확정** + **R63 질문 영어고정 GO·라이브 적용**(콜앤리스폰스 통째 영어)·ja/zh sub-line 구현 대기(P0)",
+      "owner": "R61 1심+2심(4파일) + R62 1심+2심(4파일) + R63 1심 3인(JDG-001/002/003)+총괄 심사 패널 2심(작성 중) 총 11파일",
       "provenance": "— / —",
-      "close_evidence": "**R62 복수채용 GO 확정**: 카피 4슬롯 = ① 시그니처 A('Where are you?'→'By vias.') ② 랠리/슬로건 C('Stand by your vias.') ③ CTA D('Follow your vias.') ④ 개인화 B('By your vias.'·비퍼블릭). 비주얼 레이어 G('Vias>Bias'·카피 슬롯 아님). **E·F 폐기 확정**(vias 소실=무기 폐기). 퍼블릭 실질 3개(A·C·D)·동일 화면 3개+ 동시 노출 금지. R61 device GO(3비트) 기반 위 D·G 신규 편입 + E/F 폐기로 아키텍처 닫힘. ja/zh B·C·D 서브카피 분리 미구현 = 구현 라운드 P0 자동 승격. verdict 총 8파일(r60 4 + r61 4·backfill R62 4 = 12파일).",
+      "close_evidence": "**R62 복수채용 GO 확정**: 카피 4슬롯 = ① 시그니처 A('Where are you?'→'By vias.') ② 랠리/슬로건 C('Stand by your vias.') ③ CTA D('Follow your vias.') ④ 개인화 B('By your vias.'·비퍼블릭). **R63 질문 EN 고정 GO**: 콜앤리스폰스 통째 EN 고정 라이브 적용 완료. 1심 만장일치(branding-critic JDG-002 / kpop-fan-번역 심사 JDG-001 / bybias-guest-pool JDG-003). 조건: ja/zh-cn/zh-tw 현지어 sub-line 동반(구현 P0)·ko 선택 `어디야?` 병기 허용. ja/zh B·C·D 서브카피 + 질문 sub-line 미구현 = 구현 라운드 P0 자동 승격.",
       "narrative": null,
       "mq_only": false,
-      "round_count": 2,
-      "latest_round_id": "RND-BYBIAS-062",
+      "round_count": 3,
+      "latest_round_id": "RND-BYBIAS-063",
       "latest_round_state": "수렴",
       "latest_verdict": {
-        "verdict": "조건부",
-        "quality_score": 7.2,
+        "verdict": "unknown",
+        "quality_score": 7.5,
         "p0_count": 0,
         "new_p1_count": 0
       },
@@ -4538,6 +4587,19 @@
       "verdict_links": "**r62-branding-critic.md(GO·JDG-028)** · **r62-kpop-fan-번역 심사.md(조건부GO·JDG-029)** · **r62-bybias-guest-pool.md(GO조건부·JDG-030)** · **r62-2nd-총괄 심사 패널.md(GO·JDG-027)**",
       "note": "**복수채용 GO 확정**: 카피 4슬롯(A 시그니처/C 랠리/D CTA/B 개인화) + 비주얼 1레이어(G 'Vias>Bias') 아키텍처 확정. **E·F 폐기 확정**(vias 브랜드 소실=무기 폐기). 퍼블릭 실질 3개(A·C·D·B는 비퍼블릭). 동일 화면 3개+ 동시 노출 금지·채널 분업 의무. streak 비대상(태그라인 미구현·구현 후 5언어×4모드 렌더 라운드 시 streak 산입). P0 0. verdict 4파일.",
       "ts": "2026-06-14T22:41:32.060890+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-063",
+      "alias": "R63",
+      "repo": "BYBIAS",
+      "request_refs": "**히어로 질문 \"Where are you?\" 전 언어 영어 고정 판정** — REQ-BYBIAS-20260614-001",
+      "panel": "1심 3인(branding-critic·kpop-fan-번역 심사·bybias-guest-pool) + 총괄 심사 패널 2심",
+      "tier": "1심+2심",
+      "state": "수렴",
+      "state_raw": "✔️ 판정완료·🟢 **GO**(비-streak 대상)",
+      "verdict_links": "**r63-branding-critic.md(GO·JDG-002)** · **r63-kpop-fan-번역 심사.md(GO·JDG-001)** · **r63-bybias-guest-pool.md(GO·JDG-003)** · **r63-2nd-총괄 심사 패널.md(2심 별도 에이전트 작성 중)**",
+      "note": "**질문 EN 고정 GO 확정**: 콜앤리스폰스('Where are you?'→'By vias.') 통째 EN 고정 — 1심 3인 만장일치 GO. 라이브 적용 완료. 근거: 콜앤리스폰스 분리불가 단위·via/bias 말장난 짝맞춤·자동번역 버그 구조 차단(`Where to?` 오역 실측)·Nike/Apple 글로벌 선례·팬 6/6 EN 고정 지지. 조건: ja/zh-cn/zh-tw 현지어 sub-line 동반 의무(구현 P0)·ko 선택적 `어디야?` 병기 허용. 대표 요청→판정 라운드 편입(역질문 금지 원칙). P0 0. verdict 4파일(총괄 심사 패널 2심 작성 중).",
+      "ts": "2026-06-15T06:53:29.440984+09:00"
     }
   ],
   "verdicts": [
@@ -8616,11 +8678,112 @@
       "p1_items": []
     },
     {
+      "file": "r63-2nd-총괄 심사 패널.md",
+      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-063-총괄 심사 패널",
+      "round_id": "RND-BYBIAS-063",
+      "round_alias": "RND-BYBIAS-063",
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "총괄 심사 패널",
+      "verdict": "unknown",
+      "quality_score": 7.5,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO",
+      "improvements": [
+        {
+          "text": "[채택-① 콜앤리스폰스 질문 'Where are you?' 전 5언어 EN 고정 확정] R61~R62 'A 1비트 전 5언어 EN 통일' 원칙을 답(By vias.)뿐 아니라 콜(질문)까지 연장. 콜·답 동일 EN = 시그니처 device 무결성. 'どこにいる? → By vias.' 류 언어 혼합체 구조적 차단. 시그니처 카피는 번역되는 순간 기능어(안내문)로 강등 — 콜도 답도 EN 고정이라야 브랜드 장치로 산다. main copy = EN 고정 불변.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-② ja/zh-cn/zh-tw 현지어 서브카피(brand-lore) 동반 의무 — 구현 P0] 질문 바로 하단 또는 동일 콜앤리스폰스 블록 내 뜻풀이 현지어: ja '推しのいるところへ'(네 최애가 있는 곳으로) / zh-cn '在最爱的地方'(가장 사랑하는 곳에서) / zh-tw '在最愛的地方'. R62 운용-⑩(B·C·D 현지 서브카피 분리 P0)과 동일 원칙 연장·질문(A 콜)으로 확장. 현지 번역작가 필수·zh 간체/번체 분리·직역 0. 서브카피 분리 미구현 = 구현 라운드 즉시 P0. **이 조건은 이해보조이지 main copy 현지화가 아님** — 서브카피가 친근감·vias 신조어 진입장벽을 받쳐 EN 고정 device가 언어 장벽 없이 작동.",
+          "state": "미해소"
+        },
+        {
+          "text": "[채택-③ ko 현지어 선택 병기 허용] ko 화면에서 'Where are you?' main copy EN 고정 유지하되 '어디야?' 선택 병기(폰트 계층 작게·서브카피 위계·main copy 아님) 허용 — 구어 친근감 보완. 단 main copy = EN 고정 불변. 의무 아님(선택). kpop 1심 조건-② 채택.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-④ 자동번역 오역 구조적 차단 = EN 고정의 결정적 실용 논거] 라이브 i18n 캐시 실측(en:tc4:9ddec6cbd4f14dd9 → 'Where to?' 오역·projects/byvias/site/.i18n_cache.json) = 같은 원문에 자동번역이 이미 다른 결과. 시그니처 카피를 자동번역(i18n.py 파이프라인)에 맡기면 매 언어(ja どこにいる?/どこにいますか?/どちらですか?·경어 흔들림 / zh 你在哪?/你在哪里? / ko 어디야?/어디에 계세요?·경어 흔들림)·매 업데이트마다 다르게 번역 → 시그니처 카피로서 사망. 구현 시 히어로 질문은 i18n 자동번역 파이프라인 제외·하드코딩 EN 고정 의무(generate.py/i18n.py 분기). 'Where to?' 자동번역 캐시 엔트리는 hero 질문 미사용이어야(혼선 방지).",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑤ 콜+답 단위 노출 의무 = device 무결성 — R61 운용-① 승계] 'By vias.'(답) 단독 노출 금지(콜 동반 의무)는 R61~R62 기확정. R63은 역으로 콜(질문)도 답과 한 호흡(콜+답 단위)으로 노출돼야 device가 산다 — 질문만 단독, 답만 단독 모두 device 약화. 히어로에서 콜+답이 한 시각 블록 내 위계 노출(콜 상단 질문·답 하단 브랜드명). 구현 라운드에서 콜+답 단위 노출·콜과 답 동일 EN 라이브 측정.",
+          "state": "미해소"
+        },
+        {
+          "text": "[운용-⑥ 브랜드 침투 선행 = device 약한 런칭 초기 가드 — R61 운용-⑤·R62 운용-⑪ 승계] 런칭 초기 'vias' 미인지 상태에서 EN 고정 device(브랜드명=답)는 비영어권 첫 노출 팬에게 약함(vias 의미 의존·서브카피로 1차 완화하나 완전 소거 아님). 퍼블릭 광범 노출 전 팬덤 버즈/브랜드 침투 선행. 첫 노출 채널은 서비스 맥락(K-pop 공연 여행) 확보된 곳 한정. 침투 후 EN 고정 device 점화. R61 2심 evidence('비영어 첫 노출 device 약함 → 브랜드 침투 선행이 명료성 안전망') 연장.",
+          "state": "미해소"
+        },
+        {
+          "text": "[측정-⑦ 구현 후 별도 렌더 라운드 의무 — R61 측정-⑧·R62 측정-⑭ 승계·질문 EN 고정 추가] 본 판정=텍스트 전략(라이브 미측정). 구현 시 5언어(ko/en/ja/zh-cn/zh-tw) × 모바일390/데스크탑1440 × 라이트/다크 4모드 실렌더 측정 라운드 발사 의무. 신규 측정 항목: (a) 히어로 질문 'Where are you?' 전 5언어 EN 동일 렌더 확인(현지화 0) (b) 콜+답 단위 노출(질문+By vias. 한 시각 블록) (c) ja/zh 현지어 서브카피 분리 노출(질문 하단) (d) ko 선택 병기 '어디야?' 위계(서브 폰트) (e) i18n 자동번역 파이프라인이 히어로 질문 미오염('Where to?' 류 오역 hero 미노출). 그때 수렴 streak 산입.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r63-branding-critic.md",
+      "ts": "2026-06-15T06:50:57.775620+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-063-branding-critic",
+      "round_id": "RND-BYBIAS-063",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "branding-critic",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO (영어 고정)",
+      "improvements": [
+        {
+          "text": "[채택] 히어로 질문 'Where are you?' 전 5언어 EN 고정 확정 — 콜앤리스폰스 단위(콜+답) 통째 EN 통일. 라이브 적용 완료",
+          "state": "해소"
+        },
+        {
+          "text": "[조건] ja/zh-cn/zh-tw 현지어 sub-line 동반 의무 유지 (R61·R62 조건 연장) — 질문 하단 뜻풀이 현지화",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r63-bybias-guest-pool.md",
+      "ts": "2026-06-15T06:51:53.170896+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-063-bybias-guest-pool",
+      "round_id": "RND-BYBIAS-063",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260614-001",
+      "panel": "bybias-guest-pool",
+      "verdict": "unknown",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "GO (영어 고정)",
+      "improvements": [
+        {
+          "text": "[채택] 히어로 질문 'Where are you?' 전 5언어 EN 고정 — 라이브 적용 완료",
+          "state": "해소"
+        },
+        {
+          "text": "[조건] 하단 설명 현지화 유지 의무 — 질문 아래 브랜드 뜻풀이(vias = 루트+최애) 현지어 제공",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
       "file": "r63-kpop-fan-번역 심사.md",
       "ts": "2026-06-15T06:37:36.218176+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-BYBIAS-063-kpop-fan-번역 심사",
-      "round_id": null,
+      "round_id": "RND-BYBIAS-063",
       "round_alias": null,
       "request_id": "REQ-BYBIAS-20260614-001",
       "panel": "kpop-fan-번역 심사",
@@ -8711,7 +8874,7 @@
   ],
   "trend_mapping": {
     "verdicts_mapped_to_round": 16,
-    "verdicts_total": 134,
+    "verdicts_total": 137,
     "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
   }
 }

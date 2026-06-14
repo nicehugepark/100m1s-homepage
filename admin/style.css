@@ -333,10 +333,12 @@ footer {
    색+패턴 이중 변별. 색 단독 의존 금지(다크모드 제1원칙). 라운드2 P1-1. */
 .badge.conv-hold {
   color: var(--neu); border-color: var(--neu-bd);
+  /* 톤다운(라운드5): 굵은 띠(5px/9px)→가는 선(1.5px/11px). 정지 신호(대각 형태)는 유지,
+     강도만 절제 → 색이 주·패턴이 보조. */
   background:
     repeating-linear-gradient(135deg,
-      var(--neu-bg) 0, var(--neu-bg) 5px,
-      transparent 5px, transparent 9px),
+      var(--neu-bg) 0, var(--neu-bg) 1.5px,
+      transparent 1.5px, transparent 11px),
     var(--bg2);
 }
 .badge.conv-superseded {
@@ -403,41 +405,42 @@ footer {
    명암 반전이나 "형태"는 동일(도트/사선/수평/수직/대각/크로스/무지) → 인지 일치. */
 /* 종결·수렴 = solid (완료, 무텍스처) */
 .sb-leg-sw.conv-ok   { background: var(--pos); }
-/* 판정중 = 45° 사선 */
+/* 판정중 = 45° 사선. 톤다운(세그 동기화): alpha .55→.40 / 주기 3px→4.5px. */
 .sb-leg-sw.conv-cand {
   background:
-    repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0, rgba(255,255,255,.55) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.40) 0, rgba(255,255,255,.40) 1px, transparent 1px, transparent 4.5px),
     var(--am2);
 }
-/* 진행 = 수평 줄무늬 */
+/* 진행 = 수평 줄무늬. 톤다운 alpha .5→.38 / 주기 3px→4.5px. */
 .sb-leg-sw.conv-prog {
   background:
-    repeating-linear-gradient(0deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.38) 0, rgba(255,255,255,.38) 1px, transparent 1px, transparent 4.5px),
     var(--neu);
 }
-/* 미수렴 = 교차 해칭 */
+/* 미수렴 = 교차 해칭. 2겹이라 더 절제: alpha .5→.34 / 주기 3.5px→5px. */
 .sb-leg-sw.conv-no {
   background:
-    repeating-linear-gradient(45deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3.5px),
-    repeating-linear-gradient(-45deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3.5px),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.34) 0, rgba(255,255,255,.34) 1px, transparent 1px, transparent 5px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.34) 0, rgba(255,255,255,.34) 1px, transparent 1px, transparent 5px),
     var(--ru);
 }
-/* 배포 = 수직 줄무늬 */
+/* 배포 = 수직 줄무늬. 톤다운 alpha .5→.40 / 주기 3px→4.5px. */
 .sb-leg-sw.conv-deploy {
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.40) 0, rgba(255,255,255,.40) 1px, transparent 1px, transparent 4.5px),
     var(--tl);
 }
-/* 보류 = 135° 대각 스트라이프(세그먼트와 동일 패턴 → 범례 인지 일치) */
+/* 보류 = 135° 대각 스트라이프(세그먼트와 동일 패턴 → 범례 인지 일치).
+   톤다운: 굵은 띠(2px/4px)→가는 선(1px/5px)으로 절제. */
 .sb-leg-sw.conv-hold {
   background:
-    repeating-linear-gradient(135deg, var(--neu) 0, var(--neu) 2px, transparent 2px, transparent 4px),
+    repeating-linear-gradient(135deg, var(--neu) 0, var(--neu) 1px, transparent 1px, transparent 5px),
     var(--bd2);
 }
-/* 포착 = 도트 */
+/* 포착 = 도트. 톤다운 alpha .6→.42 / 주기 3.5px→5px. */
 .sb-leg-sw.conv-seed {
   background:
-    radial-gradient(rgba(255,255,255,.6) 0.7px, transparent 0.9px) 0 0 / 3.5px 3.5px,
+    radial-gradient(rgba(255,255,255,.42) 0.7px, transparent 0.9px) 0 0 / 5px 5px,
     var(--am2);
   border-color: var(--am2);
 }
@@ -541,66 +544,72 @@ footer {
 /* 종결·수렴 = solid (완료감, 텍스처 없음) */
 .sb-seg.conv-ok     { background: var(--pos-bg); color: var(--pos); }
 
-/* 판정중·판정완료 = 45° 가는 사선 (심사 진행) */
+/* 판정중·판정완료 = 45° 가는 사선 (심사 진행).
+   톤다운(라운드5 대표 피드백: 색맹 변별 유지하되 일상 시야 자연): alpha .24→.13 +
+   주기 5px→8px + 선폭 1.5px→1px. 색이 주(主)·패턴은 보조 단서. 각도(45°) 불변 = 직교 보존. */
 .sb-seg.conv-cand {
   background:
     repeating-linear-gradient(45deg,
-      rgba(154,123,46,.24) 0, rgba(154,123,46,.24) 1.5px,
-      transparent 1.5px, transparent 5px),
+      rgba(154,123,46,.13) 0, rgba(154,123,46,.13) 1px,
+      transparent 1px, transparent 8px),
     var(--am3);
   color: var(--am);
 }
 
-/* 진행·구현중 = 수평 줄무늬 (작업 중) */
+/* 진행·구현중 = 수평 줄무늬 (작업 중). 톤다운 alpha .22→.13 / 주기 5px→8px / 선폭 1px. */
 .sb-seg.conv-prog {
   background:
     repeating-linear-gradient(0deg,
-      rgba(90,100,112,.22) 0, rgba(90,100,112,.22) 1.5px,
-      transparent 1.5px, transparent 5px),
+      rgba(90,100,112,.13) 0, rgba(90,100,112,.13) 1px,
+      transparent 1px, transparent 8px),
     var(--neu-bg);
   color: var(--neu);
 }
 
-/* 미수렴 = 교차 해칭 (✕ 결 = 실패) */
+/* 미수렴 = 교차 해칭 (✕ 결 = 실패). 2겹 중첩이라 가장 절제: alpha .20→.10 / 주기 6px→9px /
+   선폭 1px. 교차(45°+-45°) 형태 = 변별 핵심이므로 불변. */
 .sb-seg.conv-no {
   background:
     repeating-linear-gradient(45deg,
-      rgba(142,18,38,.20) 0, rgba(142,18,38,.20) 1.5px,
-      transparent 1.5px, transparent 6px),
+      rgba(142,18,38,.10) 0, rgba(142,18,38,.10) 1px,
+      transparent 1px, transparent 9px),
     repeating-linear-gradient(-45deg,
-      rgba(142,18,38,.20) 0, rgba(142,18,38,.20) 1.5px,
-      transparent 1.5px, transparent 6px),
+      rgba(142,18,38,.10) 0, rgba(142,18,38,.10) 1px,
+      transparent 1px, transparent 9px),
     var(--neg-bg);
   color: var(--ru);
 }
 
 /* 배포 = 청록 + 수직 줄무늬 + 좌 보더 (라이브, 직립 = 거의 완료). 종결(solid 연녹)·
-   보류(대각)와 패턴 형태 직교 → 좁은 세그·grayscale서도 셋 즉시 구분. */
+   보류(대각)와 패턴 형태 직교 → 좁은 세그·grayscale서도 셋 즉시 구분.
+   톤다운 alpha .24→.14 / 주기 6px→9px / 선폭 2px→1px. 좌 보더는 좁은 세그 식별 핵심 → 유지. */
 .sb-seg.conv-deploy {
   background:
     repeating-linear-gradient(90deg,
-      rgba(12,110,120,.24) 0, rgba(12,110,120,.24) 2px,
-      transparent 2px, transparent 6px),
+      rgba(12,110,120,.14) 0, rgba(12,110,120,.14) 1px,
+      transparent 1px, transparent 9px),
     var(--tl-bg);
   color: var(--tl);
   box-shadow: inset 3px 0 0 var(--tl-bd);
 }
 
-/* 보류 = 회색 + 135° 대각 스트라이프 + 좌 보더 (정지 신호). 배포(수직)와 직교. */
+/* 보류 = 회색 + 135° 대각 스트라이프 + 좌 보더 (정지 신호). 배포(수직)와 직교.
+   톤다운 alpha .22→.13 / 주기 9px→13px / 선폭 5px→1.5px(굵은 띠→가는 선, 정지감은 좌 보더가 담당). */
 .sb-seg.conv-hold {
   background:
     repeating-linear-gradient(135deg,
-      rgba(90,100,112,.22) 0, rgba(90,100,112,.22) 5px,
-      transparent 5px, transparent 9px),
+      rgba(90,100,112,.13) 0, rgba(90,100,112,.13) 1.5px,
+      transparent 1.5px, transparent 13px),
     var(--neu-bg);
   color: var(--neu);
   box-shadow: inset 3px 0 0 var(--neu-bd);  /* 좌측 테두리 = 정지 마커(좁아도 식별) */
 }
 
-/* 포착 = 옅은 도트 (막 발견, 점점이 — 진척 시작점) */
+/* 포착 = 옅은 도트 (막 발견, 점점이 — 진척 시작점). 톤다운 alpha .30→.16 / 주기 5px→7px /
+   점 반경 축소(0.9→0.7px). 도트 형태 = 변별 핵심이므로 유지. */
 .sb-seg.conv-seed {
   background:
-    radial-gradient(rgba(154,123,46,.30) 0.9px, transparent 1px) 0 0 / 5px 5px,
+    radial-gradient(rgba(154,123,46,.16) 0.7px, transparent 0.9px) 0 0 / 7px 7px,
     var(--am4);
   color: var(--am);
 }
