@@ -125,16 +125,34 @@
       <h2 class="conv-h">지금 진행 중 <span class="conv-h-sub">판정 대기·진행 라운드</span></h2>
       <div id="conv-active"></div>
 
-      <!-- ④ 요청별 상태 (repo 그룹) -->
-      <h2 class="conv-h">요청별 진행 상태 <span class="conv-h-sub">repo별 그룹 · 카드 클릭 시 라운드·판정 펼침</span></h2>
-      <div class="toolbar">
-        <input id="conv-req-search" type="search" placeholder="요청 내용·상태 검색"
-               aria-label="요청 검색 (내용 / 상태 / repo)">
-        <select id="conv-repo" aria-label="repo 필터">
-          <option value="">전체 repo</option>
+      <!-- ④ 이슈 트래킹 보드 — 요청 1건 = 이슈 1건 (대표 직접 발화 2026-06-14: -->
+      <!-- "Jira만큼 완벽한 이슈 트래킹"). 대표 요청 전건이 이슈로 노출 + 상태/서비스 필터. -->
+      <h2 class="conv-h">이슈 트래킹 보드 <span class="conv-h-sub">요청 1건 = 이슈 1건 · 상태·서비스 필터 · 이슈 클릭 시 라운드·판정·종결근거 펼침</span></h2>
+      <div class="toolbar conv-issue-toolbar">
+        <input id="conv-req-search" type="search" placeholder="이슈 내용·상태 검색"
+               aria-label="이슈 검색 (내용 / 상태 / 서비스)">
+        <select id="conv-repo" aria-label="서비스 필터">
+          <option value="">전체 서비스</option>
+        </select>
+        <select id="conv-state" aria-label="상태 필터">
+          <option value="">전체 상태</option>
+          <option value="open">열린 이슈만</option>
+          <option value="closed">종결만</option>
+        </select>
+        <select id="conv-sort" aria-label="정렬">
+          <option value="status">정렬: 상태순(열림 먼저)</option>
+          <option value="updated">정렬: 갱신 최신순</option>
+          <option value="progress">정렬: 진척 높은순</option>
+          <option value="progress-asc">정렬: 진척 낮은순</option>
+        </select>
+        <select id="conv-view" aria-label="보기 방식">
+          <option value="group">보기: 서비스별 그룹</option>
+          <option value="flat">보기: 전체 평면 리스트</option>
         </select>
         <span class="count" id="conv-req-count" aria-live="polite"></span>
       </div>
+      <!-- 상태별 한 줄 카운트 칩 (칸반 헤더 역할 — 클릭 시 해당 상태 필터) -->
+      <div id="conv-state-chips" class="conv-state-chips" aria-label="상태별 이슈 수"></div>
       <div id="conv-req-cards" class="conv-req-cards" aria-live="polite"></div>
 
       <!-- ⑤ 데이터 무결성 / 원시 데이터 (접힘) -->

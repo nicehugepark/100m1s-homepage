@@ -287,41 +287,156 @@
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
 
-  // ① 한눈에 — 열린/진행/수렴/최근 활동
+  // 서비스(repo) 표시 라벨 + 정렬 순서. 내부 repo 코드 → 평이한 서비스명.
+  // '공통' = repo 미지정(전사 룰·메타). '—' = 구 JSON 잔재(미분류) 호환.
+  const SERVICE_LABEL = { PM320: "PM320", HOME: "홈페이지", BYBIAS: "ByVias",
+    INFRA: "인프라", "공통": "공통", "—": "미분류" };
+  const serviceLabel = (k) => SERVICE_LABEL[k] || k || "미분류";
+  const serviceOrder = (k) =>
+    ({ PM320: 0, HOME: 1, BYBIAS: 2, INFRA: 3, "공통": 4 }[k] ?? (k === "—" ? 9 : 5));
+
+  // 요청 state → 진척 3분류 (백엔드 _classify_request_progress 와 동일 규칙).
+  // 구 JSON(summary에 req_closed 등 없음) 폴백 계산용. 종결="종결"만(배포 제외·
+  // 거짓 종결 금지 FLR-AGT-002)·미착수=포착/unknown·그 외=진행.
+  function classifyReqProgress(stateStr) {
+    if (stateStr === "종결") return "closed";
+    if (stateStr === "포착" || stateStr === "unknown" || !stateStr) return "not_started";
+    return "in_progress";
+  }
+
+  // summary 행에 req_closed/in_progress/not_started 가 있으면(신 스키마) 그대로,
+  // 없으면(구 스키마) requests 에서 폴백 집계. 거짓 충실성 X — 실측만.
+  function repoProgress(repo, summaryRow, reqs) {
+    if (summaryRow && summaryRow.req_closed != null) {
+      return {
+        total: summaryRow.total_requests || 0,
+        closed: summaryRow.req_closed || 0,
+        in_progress: summaryRow.req_in_progress || 0,
+        not_started: summaryRow.req_not_started || 0,
+        label: summaryRow.status_label || "",
+      };
+    }
+    const rows = reqs.filter((r) => (r.repo || "공통") === repo);
+    let c = 0, p = 0, n = 0;
+    for (const r of rows) {
+      const k = classifyReqProgress(r.state);
+      if (k === "closed") c++; else if (k === "not_started") n++; else p++;
+    }
+    return { total: rows.length, closed: c, in_progress: p, not_started: n,
+      label: (summaryRow && summaryRow.status_label) || "" };
+  }
+
+  // 진행바 — 종결 비율(%). 거짓 진행률 금지: total 0 이면 바 숨김.
+  function progressBar(closed, total) {
+    if (!total) return `<div class="svc-bar-na">요청 없음</div>`;
+    const pct = Math.round((closed / total) * 100);
+    return `<div class="svc-bar" role="progressbar" aria-valuenow="${pct}"
+      aria-valuemin="0" aria-valuemax="100" aria-label="종결 ${pct}%">
+      <span class="svc-bar-fill" style="width:${pct}%"></span></div>
+      <span class="svc-bar-pct">${pct}%</span>`;
+  }
+
+  // ① 한눈에 — 전사 1줄 + 서비스별 진척 카드 (대표 직답: "몇 중 얼마 진행됐는지").
   function renderConvGlance(conv) {
     const reqs = conv.requests || [];
     const rounds = conv.rounds || [];
     const summary = conv.summary || {};
 
-    const total = reqs.length;
-    const open = reqs.filter((r) => isOpenState(r.state)).length;
-    const settled = reqs.filter((r) => !isOpenState(r.state)).length;
-    const activeRounds = rounds.filter((r) => ACTIVE_ROUND_STATES.includes(r.state)).length;
+    // 전사 합계 — totals(신 스키마) 우선, 없으면 summary/requests 폴백.
+    let tot = conv.totals;
+    if (!tot || tot.total_requests == null) {
+      const keys = Object.keys(summary).length
+        ? Object.keys(summary)
+        : [...new Set(reqs.map((r) => r.repo || "공통"))];
+      let T = 0, C = 0, P = 0, N = 0;
+      for (const k of keys) {
+        const pr = repoProgress(k, summary[k], reqs);
+        T += pr.total; C += pr.closed; P += pr.in_progress; N += pr.not_started;
+      }
+      tot = { total_requests: T, req_closed: C, req_in_progress: P,
+        req_not_started: N, closed_pct: T ? Math.round((C / T) * 100) : 0 };
+    }
 
-    // 최근 활동 = 최신 라운드(가장 큰 번호). round_id 끝자리 수치로 정렬.
+    const activeRounds = rounds.filter((r) => ACTIVE_ROUND_STATES.includes(r.state)).length;
+    const openIssues = reqs.filter((r) => isOpenState(r.state)).length;
+    // 🔴 미수렴(진짜 열린) 라운드 — 라운드 state 직접 카운트(실측·정직). request_refs
+    // 자유텍스트 매칭은 약식 표기로 불완전 → "막힘"을 요청 단위로 단정하면 거짓 정밀
+    // (FLR-AGT-002). 라운드 state는 정확하므로 "미수렴 라운드 N"으로 정직 노출.
+    const unconvergedRounds = rounds.filter((r) => r.state === "미수렴").length;
     const lastRound = rounds.slice().sort((a, b) => roundNum(b.round_id) - roundNum(a.round_id))[0];
     const lastTxt = lastRound
-      ? `${escape(lastRound.alias || lastRound.round_id)} · ${escape(lastRound.repo || "")} · ${escape(stateMeta(lastRound.state).label)}`
+      ? `${escape(lastRound.alias || lastRound.round_id)} · ${escape(serviceLabel(lastRound.repo))} · ${escape(stateMeta(lastRound.state).label)}`
       : "기록 없음";
 
-    el("conv-glance").innerHTML = `
-      <div class="glance-card glance-open">
-        <div class="g-v">${open}</div><div class="g-k">열린 요청</div>
-        <div class="g-sub">아직 도는 중</div>
-      </div>
-      <div class="glance-card">
-        <div class="g-v">${activeRounds}</div><div class="g-k">진행·판정 라운드</div>
-        <div class="g-sub">심사 중</div>
-      </div>
-      <div class="glance-card glance-ok">
-        <div class="g-v">${settled}</div><div class="g-k">수렴·종결</div>
-        <div class="g-sub">전체 ${total}건 중</div>
-      </div>
-      <div class="glance-card glance-wide">
-        <div class="g-k">최근 활동</div>
-        <div class="g-recent">${lastTxt}</div>
-      </div>
-    `;
+    // 서비스 키 = summary 키 ∪ requests repo. 정렬: PM320·홈·ByVias·인프라·공통.
+    const svcKeys = [...new Set([
+      ...Object.keys(summary),
+      ...reqs.map((r) => r.repo || "공통"),
+    ])].filter(Boolean).sort((a, b) => serviceOrder(a) - serviceOrder(b) || a.localeCompare(b));
+
+    // 도넛 게이지 — 종결률 원형 시각화 (반지름 34, stroke 7). 절제된 임팩트.
+    const pct = tot.closed_pct;
+    const R = 34, C = 2 * Math.PI * R;
+    const dash = (pct / 100) * C;
+    const donut = `
+      <svg class="cb-donut" viewBox="0 0 80 80" width="80" height="80" aria-hidden="true">
+        <circle cx="40" cy="40" r="${R}" class="cb-donut-track"></circle>
+        <circle cx="40" cy="40" r="${R}" class="cb-donut-fill"
+          stroke-dasharray="${dash.toFixed(1)} ${C.toFixed(1)}"
+          transform="rotate(-90 40 40)"></circle>
+        <text x="40" y="40" class="cb-donut-pct" text-anchor="middle" dominant-baseline="central">${pct}%</text>
+      </svg>`;
+
+    // 보조 메트릭 4종 — 종결/진행/미착수/미수렴 라운드. 의미색 + tabular 숫자.
+    const metrics = [
+      { v: tot.req_closed, k: "종결", cls: "m-ok", icon: "✓" },
+      { v: tot.req_in_progress, k: "진행 중", cls: "m-prog", icon: "↻" },
+      { v: tot.req_not_started, k: "미착수", cls: "m-wait", icon: "○" },
+      { v: unconvergedRounds, k: "미수렴 라운드", cls: unconvergedRounds ? "m-no" : "m-ok", icon: unconvergedRounds ? "!" : "✓" },
+    ].map((m) => `
+      <div class="cb-metric ${m.cls}">
+        <span class="cbm-icon" aria-hidden="true">${m.icon}</span>
+        <span class="cbm-v">${m.v}</span>
+        <span class="cbm-k">${escape(m.k)}</span>
+      </div>`).join("");
+
+    const banner = `
+      <div class="conv-banner">
+        <div class="cb-gauge">${donut}
+          <div class="cb-gauge-cap">
+            <div class="cb-total"><b>${tot.total_requests}</b> 이슈</div>
+            <div class="cb-closed-frac">종결 ${tot.req_closed} / ${tot.total_requests}</div>
+          </div>
+        </div>
+        <div class="cb-metrics">${metrics}</div>
+        <div class="cb-foot">
+          🟠 열린 이슈 <b>${openIssues}</b>건 · 🔍 진행·판정 라운드 <b>${activeRounds}</b>건 · 최근 활동 ${lastTxt}
+        </div>
+      </div>`;
+
+    // status code(active/converged/superseded/idle) → 카드 좌측 레일 색.
+    const statusCls = (k) => "svc-" + ((summary[k] && summary[k].status) || "idle");
+    const cards = svcKeys.map((k, i) => {
+      const pr = repoProgress(k, summary[k], reqs);
+      const labelLine = pr.label
+        ? `<div class="svc-status">${safe(pr.label)}</div>` : "";
+      return `<div class="svc-card ${statusCls(k)}" style="--svc-i:${i}">
+        <div class="svc-head">
+          <span class="svc-name">${escape(serviceLabel(k))}</span>
+          <span class="svc-total">총 ${pr.total}건</span>
+        </div>
+        <div class="svc-counts">
+          <span class="svc-c svc-c-ok">🟢 종결 ${pr.closed}</span>
+          <span class="svc-c svc-c-prog">🔄 진행 ${pr.in_progress}</span>
+          <span class="svc-c svc-c-wait">⏳ 미착수 ${pr.not_started}</span>
+        </div>
+        <div class="svc-bar-row">${progressBar(pr.closed, pr.total)}</div>
+        ${labelLine}
+      </div>`;
+    }).join("");
+
+    el("conv-glance").innerHTML =
+      banner + `<div class="svc-grid">${cards}</div>`;
   }
 
   function roundNum(id) {
@@ -399,75 +514,176 @@
     }).join("")}</div>`;
   }
 
-  // ④ 요청별 진행 상태 — repo 그룹 카드 + 진행률 바 + 펼침(라운드/판정)
+  // 이슈(요청) → 관련 라운드 list (req_id가 round.request_refs에 포함). 최신순.
+  function relatedRounds(reqId, allRounds) {
+    if (!reqId) return [];
+    return allRounds
+      .filter((rd) => (rd.request_refs || "").includes(reqId))
+      .sort((a, b) => roundNum(b.round_id) - roundNum(a.round_id));
+  }
+
+  // 이슈의 라운드 진척 1줄 요약 — "최신 R56 · 수렴(2/2)" 식. 라운드 없으면 "".
+  // Jira의 'sprint/progress' 칸 대응. 거짓 충실성: 실 라운드 데이터만(없으면 빈 값).
+  function roundProgressSummary(reqId, allRounds) {
+    const rels = relatedRounds(reqId, allRounds);
+    if (!rels.length) return null;
+    const latest = rels[0];
+    const lm = stateMeta(latest.state);
+    const conv = rels.filter((r) => r.state === "수렴").length;
+    const tail = conv >= 2 ? ` · 수렴 ${conv}회` : (rels.length > 1 ? ` · ${rels.length}R` : "");
+    return { label: latest.alias || latest.round_id, state: lm.label, cls: lm.cls, tail };
+  }
+
+  // ④ 이슈 트래킹 보드 — 요청 1건 = 이슈 1건. 상태/서비스 필터 + 상태칩 + 서비스 그룹.
   function renderConvRequests(conv) {
     const reqs = conv.requests || [];
     const rounds = conv.rounds || [];
-    const repos = [...new Set(reqs.map((r) => r.repo).filter(Boolean))].sort();
+    const repos = [...new Set(reqs.map((r) => r.repo).filter(Boolean))]
+      .sort((a, b) => serviceOrder(a) - serviceOrder(b) || a.localeCompare(b));
     const sel = el("conv-repo");
-    sel.innerHTML = '<option value="">전체 repo</option>' +
-      repos.map((r) => `<option value="${escape(r)}">${escape(r)}</option>`).join("");
+    sel.innerHTML = '<option value="">전체 서비스</option>' +
+      repos.map((r) => `<option value="${escape(r)}">${escape(serviceLabel(r))}</option>`).join("");
+    const stateSel = el("conv-state");
+    const sortSel = el("conv-sort");
+    const viewSel = el("conv-view");
 
-    // repo 라벨 평이화: '—' = 미분류
-    const repoLabel = (r) => (!r || r === "—") ? "미분류" : r;
+    // 이슈 정렬 비교자 — 정직: 우선순위 데이터 부재로 우선순위 정렬 미제공.
+    //   status: 열린 것 먼저, 그 안에서 갱신(captured) 최신순.
+    //   updated: captured 문자열 역순(최신 발화 위). progress: 진척% 내림/오름.
+    function issueComparator(mode) {
+      const pctOf = (r) => { const m = stateMeta(r.state); return m.pct == null ? -1 : m.pct; };
+      const upd = (r) => (r.captured || "") + " " + (r.req_id || "");
+      if (mode === "updated") return (a, b) => upd(b).localeCompare(upd(a));
+      if (mode === "progress") return (a, b) => pctOf(b) - pctOf(a) || upd(b).localeCompare(upd(a));
+      if (mode === "progress-asc") return (a, b) => pctOf(a) - pctOf(b) || upd(b).localeCompare(upd(a));
+      // status (기본): 열림 먼저 → captured 최신
+      return (a, b) => {
+        const ao = isOpenState(a.state) ? 0 : 1, bo = isOpenState(b.state) ? 0 : 1;
+        if (ao !== bo) return ao - bo;
+        return upd(b).localeCompare(upd(a));
+      };
+    }
 
     const draw = () => {
       const q = el("conv-req-search").value.trim().toLowerCase();
       const rf = sel.value;
+      const sf = stateSel.value; // "" | "open" | "closed" | 특정 state 토큰(칩)
+      const cmp = issueComparator(sortSel.value);
+      const flat = viewSel.value === "flat";
       const filtered = reqs.filter((r) => {
         if (rf && r.repo !== rf) return false;
+        if (sf === "open" && !isOpenState(r.state)) return false;
+        if (sf === "closed" && isOpenState(r.state)) return false;
+        if (sf && sf !== "open" && sf !== "closed" && r.state !== sf) return false;
         if (!q) return true;
-        return [r.req_id, r.summary, r.state, r.repo, r.close_evidence].join(" ").toLowerCase().includes(q);
+        return [r.req_id, r.summary, r.state, r.repo, r.owner, r.close_evidence]
+          .join(" ").toLowerCase().includes(q);
       });
-      el("conv-req-count").textContent = `${filtered.length} / ${reqs.length}`;
+      const openTotal = filtered.filter((r) => isOpenState(r.state)).length;
+      el("conv-req-count").textContent =
+        `${filtered.length} / ${reqs.length} 이슈 · 열림 ${openTotal}`;
 
-      // repo로 그룹화 (정렬: HOME, PM320, 그외, 미분류)
+      // 상태칩 — 상태별 카운트(전체 reqs 기준·필터 무관 항상 노출). 클릭 시 그 상태 필터.
+      renderStateChips(reqs, sf, stateSel, draw);
+
+      if (!filtered.length) {
+        el("conv-req-cards").innerHTML = '<p class="hint">조건에 맞는 이슈가 없습니다.</p>';
+        return;
+      }
+
+      // 평면 뷰 — 서비스 무관 단일 리스트(정렬만 적용). 대표가 "갱신순 전체" 보고 싶을 때.
+      if (flat) {
+        el("conv-req-cards").innerHTML =
+          `<div class="conv-flat-list">${
+            filtered.slice().sort(cmp).map((r) => convReqCard(r, rounds, true)).join("")
+          }</div>`;
+        return;
+      }
+
+      // 그룹 뷰 — 서비스별. 그룹 키 = 데이터에서 동적 발견(하드코딩 0·새 서비스 자동 등장).
       const groups = new Map();
       for (const r of filtered) {
         const key = r.repo || "—";
         if (!groups.has(key)) groups.set(key, []);
         groups.get(key).push(r);
       }
-      const order = (k) => ({ HOME: 0, PM320: 1 }[k] ?? (k === "—" ? 9 : 5));
-      const sortedKeys = [...groups.keys()].sort((a, b) => order(a) - order(b) || a.localeCompare(b));
-
-      if (!sortedKeys.length) {
-        el("conv-req-cards").innerHTML = '<p class="hint">조건에 맞는 요청이 없습니다.</p>';
-        return;
-      }
+      // 그룹 순서: 알려진 서비스 힌트(serviceOrder) → 미지 서비스는 알파벳(자동 편입).
+      const sortedKeys = [...groups.keys()]
+        .sort((a, b) => serviceOrder(a) - serviceOrder(b) || a.localeCompare(b));
 
       el("conv-req-cards").innerHTML = sortedKeys.map((key) => {
-        const items = groups.get(key);
+        const items = groups.get(key).slice().sort(cmp);
         const openN = items.filter((r) => isOpenState(r.state)).length;
+        const closedN = items.length - openN;
+        const gpct = items.length ? Math.round((closedN / items.length) * 100) : 0;
         const cards = items.map((r) => convReqCard(r, rounds)).join("");
         return `<div class="conv-repo-group">
-          <div class="conv-repo-head">${escape(repoLabel(key))}
-            <span class="conv-repo-meta">${items.length}건 · 열림 ${openN}</span></div>
+          <div class="conv-repo-head">
+            <span class="crh-name">${escape(serviceLabel(key))}</span>
+            <span class="conv-repo-meta">${items.length}건 · 열림 ${openN} · 종결 ${gpct}%</span>
+            <span class="crh-bar"><span class="crh-bar-fill" style="width:${gpct}%"></span></span>
+          </div>
           <div class="conv-repo-cards">${cards}</div>
         </div>`;
       }).join("");
     };
 
-    el("conv-req-search").addEventListener("input", draw);
-    sel.addEventListener("change", draw);
+    [el("conv-req-search")].forEach((e) => e.addEventListener("input", draw));
+    [sel, stateSel, sortSel, viewSel].forEach((e) => e.addEventListener("change", draw));
     draw();
   }
 
-  // 개별 요청 카드 — 제목 + 상태 배지 + 진행률 + 펼침 시 종결근거/관련 라운드
-  function convReqCard(r, allRounds) {
+  // 상태별 카운트 칩 (칸반 헤더 역할). 클릭 = 해당 상태로 필터 토글.
+  function renderStateChips(reqs, activeSf, stateSel, draw) {
+    // 상태 순서 = 상태머신 흐름(포착→판정중→구현중→배포→종결, 보류는 끝).
+    const ORDER = ["포착", "판정중", "구현중", "배포", "종결", "보류", "unknown"];
+    const counts = new Map();
+    for (const r of reqs) counts.set(r.state, (counts.get(r.state) || 0) + 1);
+    const keys = [...counts.keys()].sort(
+      (a, b) => (ORDER.indexOf(a) + 1 || 99) - (ORDER.indexOf(b) + 1 || 99));
+    el("conv-state-chips").innerHTML = keys.map((st) => {
+      const m = stateMeta(st);
+      const on = activeSf === st;
+      return `<button type="button" class="state-chip ${m.cls}${on ? " on" : ""}"
+        data-state="${escape(st)}" aria-pressed="${on}">
+        ${escape(m.label)} <span class="sc-n">${counts.get(st)}</span></button>`;
+    }).join("");
+    el("conv-state-chips").querySelectorAll(".state-chip").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const st = btn.dataset.state;
+        stateSel.value = (stateSel.value === st) ? "" : st; // 토글
+        draw();
+      });
+    });
+  }
+
+  // 개별 이슈 카드 — 상태 배지 + 서비스 + 진행률 + 라운드 진척 1줄 + 갱신일.
+  //   펼침 시: 담당 · 종결근거 · 관련 라운드 히스토리(verdict state).
+  //   showService=true(평면 뷰)면 서비스 태그 노출(그룹 헤더 없으므로).
+  function convReqCard(r, allRounds, showService) {
     const m = stateMeta(r.state);
     const closed = !isOpenState(r.state);
     const evidMissing = (r.state === "종결" || r.state === "수렴") && !(r.close_evidence || "").trim();
-    // 진행률 바 — pct 미상이면 바 숨김(거짓 진행률 금지)
+    const rid = r.req_id || "";
+    const svcTag = showService
+      ? `<span class="rq-svc">${escape(serviceLabel(r.repo))}</span>` : "";
     const bar = m.pct == null
       ? `<div class="rq-bar-na" title="상태별 진행률 매핑 없음">진행률 미상</div>`
-      : `<div class="rq-bar" role="progressbar" aria-valuenow="${m.pct}" aria-valuemin="0" aria-valuemax="100">
-           <span class="rq-bar-fill rq-${m.cls}" style="width:${m.pct}%"></span></div>`;
-    // 관련 라운드 — req_id가 request_refs에 포함된 것
-    const rid = r.req_id || "";
-    const related = rid ? allRounds.filter((rd) => (rd.request_refs || "").includes(rid)) : [];
+      : `<div class="rq-bar" role="progressbar" aria-valuenow="${m.pct}" aria-valuemin="0" aria-valuemax="100" aria-label="진행률 ${m.pct}%">
+           <span class="rq-bar-fill rq-${m.cls}" style="width:${m.pct}%"></span></div>
+         <span class="rq-bar-pct">${m.pct}%</span>`;
+    // 라운드 진척 1줄 (요약줄에 노출 — 펼치지 않아도 보임)
+    const rp = roundProgressSummary(rid, allRounds);
+    const rpHtml = rp
+      ? `<span class="rq-round badge ${rp.cls}" title="최신 관련 라운드">${escape(rp.label)} · ${escape(rp.state)}${escape(rp.tail)}</span>`
+      : "";
+    // 갱신일 = captured (대표 발화 시각). 마지막 갱신 칸 역할.
+    const upd = (r.captured || "").trim()
+      ? `<span class="rq-upd" title="포착·갱신">${safe(r.captured)}</span>` : "";
+    // 관련 라운드 히스토리 (펼침)
+    const related = relatedRounds(rid, allRounds);
     const relatedHtml = related.length
-      ? `<div class="rq-related"><div class="rq-related-h">관련 라운드 ${related.length}건</div>${
+      ? `<div class="rq-related"><div class="rq-related-h">라운드 히스토리 ${related.length}건</div>${
           related.map((rd) => `<div class="rq-related-row"><code>${escape(rd.alias || rd.round_id)}</code>
             <span class="badge ${stateMeta(rd.state).cls}">${escape(stateMeta(rd.state).label)}</span>
             <span class="sub">${safe(rd.note || rd.request_refs || "")}</span></div>`).join("")
@@ -479,14 +695,17 @@
           ? `<div class="rq-evid conv-evid-missing">⚠️ 종결 처리됐으나 근거 공란 — 유실 의심</div>`
           : "");
 
-    return `<details class="rq-card${closed ? " rq-closed" : ""}">
+    return `<details class="rq-card rq-rail-${m.cls}${closed ? " rq-closed" : ""}">
       <summary class="rq-summary">
         <div class="rq-head">
           <span class="badge ${m.cls}">${escape(m.label)}</span>
+          ${svcTag}
           <span class="rq-id"><code>${escape(rid)}</code></span>
+          ${rpHtml}
+          ${upd}
         </div>
         <div class="rq-title">${safe(r.summary || "(요약 없음)")}</div>
-        ${bar}
+        <div class="rq-bar-row">${bar}</div>
       </summary>
       <div class="rq-body">
         ${r.owner ? `<div class="rq-owner"><span class="rq-evid-k">담당</span> ${safe(r.owner)}</div>` : ""}
