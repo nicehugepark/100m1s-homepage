@@ -60,6 +60,35 @@
   // escape + sanitize 동시 적용(자유 텍스트 전용). code/id 등 구조 필드엔 escape 만.
   const safe = (s) => escape(sanitizeText(s));
 
+  // ── REQ-ADMIN-20260615-011 (P1·마크다운 렌더) ──
+  //   요청 narrative·blocked_reason·verdict headline/improvements 등 자유 텍스트에 raw 마크다운
+  //   (**bold** 155쌍·`백틱코드` 124건)이 그대로 덤프되어 펼침 시 가장 안 편한 화면(guestpool P1-2).
+  //   경량 인라인 렌더: 이미 escape+sanitize 된 안전 문자열에 한해 **굵게**→<strong>, `코드`→<code>
+  //   로 변환(XSS 안전 — escape 후 마크업만 삽입·태그 신규 생성 0). 블록 요소(헤더·리스트)는 카드
+  //   구조가 이미 담당하므로 인라인만. 내부 경로/doc_id 는 sanitizeText 가 선마스킹(보안 유지).
+  //   커밋해시(백틱 안 7~40 hex)는 9종 보안 카테고리 외(admin=noindex 내부용)이나 raw 백틱 제거 +
+  //   8자 단축 표기로 가독 정리. 이모지 배지(🟢🔴⚖️ 등)는 의미 신호라 보존(strip 안 함).
+  function mdInline(escaped) {
+    let t = String(escaped == null ? "" : escaped);
+    // `코드` — 백틱 쌍. 내부가 순수 hex(커밋해시)면 8자 단축(전체는 title 로 보존).
+    t = t.replace(/`([^`]+)`/g, (_, code) => {
+      const isHash = /^[0-9a-f]{7,40}$/i.test(code);
+      const shown = isHash ? code.slice(0, 8) : code;
+      const titleAttr = isHash && code.length > 8 ? ` title="${code}"` : "";
+      return `<code class="md-code"${titleAttr}>${shown}</code>`;
+    });
+    // **굵게** — escape 후 '*' 는 보존되므로 안전. 비탐욕·줄바꿈 불허(한 토큰).
+    //   먼저 줄바꿈 없는 짝 → 다음 줄바꿈 포함 짝(원본 데이터가 긴 문장 가로지름).
+    t = t.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+    t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    // 짝 안 맞는 잔여 ** (원본이 'P1-1**' 처럼 비정형 절단) 제거 — raw 마크업 노출 방지.
+    //   ***·**** 등 연쇄도 흡수. 정상 텍스트에 ** 의도 사용은 거의 없음(요청 본문=메타 로그).
+    t = t.replace(/\*\*+/g, "");
+    return t;
+  }
+  // 자유 텍스트 + 마크다운 렌더 동시 적용 (safe 의 마크다운-aware 버전).
+  const mdSafe = (s) => mdInline(safe(s));
+
   function badge(text, cls) {
     return `<span class="badge ${cls || ""}">${escape(text)}</span>`;
   }
@@ -74,6 +103,32 @@
     return `<p class="hint empty-hint">${escape(msg)}</p>`;
   }
 
+  // REQ-ADMIN-20260615-006 (P0·freshness 정직): 전역 헤더 '데이터 생성' 시각이 전 탭 공통
+  //   단일값(convergence.json 6/15)을 표시 → data.json 기반 레거시 7탭(요청·사이클·에이전트·
+  //   릴리스·FLR·참여자·audit)이 빈 스텁/stale 인데도 '오늘 데이터' 위장(honesty P0-2 적발).
+  //   탭마다 그 탭이 읽는 데이터 소스의 실제 생성 시각을 표시(소스별 freshness 정직 고지).
+  //   - 수렴 탭 = convergence.json generated_at (라이브 6/15).
+  //   - 레거시 탭(data.json 기반) = data.json generated_at. 빈 스텁("")이면 '레거시 데이터 미생성'
+  //     명시(거짓 신선도 0·FLR-AGT-002). convergence.json 로드 실패 fallback 시도 data.json 동일.
+  const CONV_TAB = "convergence";
+  function updateHeaderFreshness(name) {
+    const elGen = el("generated-at");
+    if (!elGen) return;
+    if (name === CONV_TAB) {
+      const iso = state.convGeneratedAt || "";
+      elGen.textContent = iso
+        ? "데이터 생성: " + String(iso).slice(0, 19).replace("T", " ")
+        : "데이터 생성: 미상";
+      elGen.title = "수렴 데이터(convergence.json) 빌드 시각";
+    } else {
+      const iso = (state.data && state.data.generated_at) || "";
+      elGen.textContent = iso
+        ? "데이터 생성: " + String(iso).slice(0, 19).replace("T", " ")
+        : "이 탭 데이터: 미생성 (레거시 집계 data.json 비어 있음)";
+      elGen.title = "이 탭이 읽는 데이터(data.json)의 빌드 시각 — 수렴 탭과 별개 소스";
+    }
+  }
+
   function activateTab(name) {
     const tab = document.querySelector(`.tab[data-tab="${name}"]`);
     const panel = el("tab-" + name);
@@ -86,7 +141,36 @@
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
     panel.classList.add("active");
+    updateHeaderFreshness(name);   // REQ-006: 탭별 데이터 소스 freshness 정직 표기
     return true;
+  }
+
+  // REQ-ADMIN-20260615-010 (P1·드릴다운): 결단보드 행 클릭 → 해당 요청 카드로 점프.
+  //   요청별 진행 상태 섹션(#conv-req-cards)은 수렴 탭 내부 → 탭 전환 불요. 카드 id=rqcard-<rid>.
+  //   카드를 펼치고(scrollIntoView) 잠시 하이라이트(시각 피드백). 없으면 무동작(정직·거짓 점프 0).
+  function jumpToReqCard(rid) {
+    if (!rid) return;
+    const card = document.getElementById("rqcard-" + rid);
+    if (!card) return;
+    if (card.tagName === "DETAILS") card.open = true;
+    try { card.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (_) { card.scrollIntoView(); }
+    card.classList.remove("rq-jump-hl");
+    // reflow 후 클래스 재부여 → 애니메이션 재시작 (연속 클릭 시에도 깜빡임 보장).
+    void card.offsetWidth;
+    card.classList.add("rq-jump-hl");
+    setTimeout(() => card.classList.remove("rq-jump-hl"), 1800);
+  }
+
+  // REQ-010: stat 타일 클릭 → 요청 섹션을 해당 분류(막힘/결정대기)로 필터 + 스크롤.
+  //   상태 필터(window.__convReqStateFilter)를 세팅하고 검색 draw 재실행(요청 카드 렌더가 참조).
+  //   blocked = classifyBlocked==='blocked', wait = 'wait'. 검색창은 건드리지 않음(별 축).
+  function applyReqFilter(kind) {
+    state.reqStateFilter = kind;        // 'blocked' | 'wait'
+    if (typeof state.redrawReqCards === "function") state.redrawReqCards();
+    const sec = el("conv-req-cards");
+    if (sec) {
+      try { sec.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (_) { sec.scrollIntoView(); }
+    }
   }
 
   function setupTabs() {
@@ -321,11 +405,13 @@
   function verdictClass(v) {
     return ({ YES: "conv-ok", NO: "conv-no", "조건부": "conv-cand" })[v] || "";
   }
-  // verdict 토큰 → 표시 라벨(한국어 고정). YES/NO/조건부는 표준 토큰 그대로,
-  // 매핑 밖(영문 'unknown'·공백·미정의 토큰)은 stateMeta 경유로 '미상' 한글화
-  // (회사 전 화면 한국어 룰 + FLR-AGT-002: 상태가 미상일 뿐 거짓 채움 아님).
+  // verdict 토큰 → 표시 라벨(한국어 고정). REQ-ADMIN-20260615-013 (P1·R5 재적발):
+  //   종전 YES/NO 영문 잔존(상태 배지는 한글화됐으나 verdict 토큰만 영문) → 전 화면 한국어 룰
+  //   (2026-06-14 대표 직접 지시) 정합 한글화. 표시만 한글, CSS 클래스(verdictClass)·데이터
+  //   토큰(YES/NO/조건부)은 이력·정합 위해 영문 유지(라벨↔토큰 분리). 조건부=YES도 NO도 아닌
+  //   미수렴 사유 동반(부분 충족). 매핑 밖(영문 'unknown'·공백·미정의)은 stateMeta 경유 '미상'.
   function verdictLabel(v) {
-    return ({ YES: "YES", NO: "NO", "조건부": "조건부" })[v] || stateMeta(v).label;
+    return ({ YES: "통과", NO: "미통과", "조건부": "조건부" })[v] || stateMeta(v).label;
   }
 
   // null = unknown(파싱 불가). 거짓 0 금지 — '?' 로 명시.
@@ -378,8 +464,13 @@
     unknown:    { label: "반영 미상",   cls: "push-unknown" },
   };
   function pushMeta(s) { return PUSH_META[s] || PUSH_META.unknown; }
-  // 닫힌(완료) 요청 = 종결/수렴/배포. 그 외(판정중·구현중·진행중·미수렴·보류 등)는 모두 "열림".
-  const CLOSED_STATES = ["종결", "수렴", "배포"];
+  // REQ-ADMIN-20260615-007 (P0·open/closed SSOT 통일): 종전 프론트 정의 ["종결","수렴","배포"]가
+  //   백엔드 build_convergence.py compute_summary 의 closed_req={"종결"}(배포=열림)과 발산 →
+  //   PM320 summary.open vs 프론트 재집계 동시 노출 모순(R5 cadence P0-2 적발). 프론트는 open
+  //   정의를 독립 결정하지 않고 백엔드 현 SSOT(closed_req={"종결"})에 1:1 정합(독립 결정 금지).
+  //   배포=아직 종결 아님(라이브 반영됐으나 잔존 가능)→ 백엔드와 동일하게 '열림' 취급.
+  //   ⚠️ 백엔드 정의 변경 시(예 burndown-design 정본 {배포·종결} 채택) 본 상수도 동기 의무.
+  const CLOSED_STATES = ["종결"];
   function isOpenState(s) { return !CLOSED_STATES.includes(s); }
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
@@ -407,7 +498,7 @@
         + `<p class="hint">표시할 서비스가 없습니다.</p>`;
       return;
     }
-    // repo → 집계 누산기. 요청 상태 분포(stateCounts) + 열림/막힘 + 수렴 라운드.
+    // repo → 집계 누산기. 요청 상태 분포(stateCounts·미니바용) + 열림/막힘 + 수렴 라운드.
     const acc = {};
     const ensure = (repo) => (acc[repo] = acc[repo] || {
       stateCounts: {}, open: 0, blocked: 0, converged: 0, totalReq: 0, totalRounds: 0,
@@ -419,7 +510,10 @@
       const a = ensure(repo);
       a.stateCounts[st] = (a.stateCounts[st] || 0) + 1;
       a.totalReq += 1;
-      if (isOpenState(st)) a.open += 1;
+      // REQ-ADMIN-20260615-007 (P0·open SSOT 통일): 종전 프론트 isOpenState 독립 재집계가
+      //   백엔드 summary.open_requests(closed 정의)와 발산 → PM320 summary.open=8 vs
+      //   프론트 재집계=3 동시 노출 사고. open 카운트는 프론트가 정의하지 않고 백엔드 SSOT만
+      //   신뢰(아래 백엔드 주입). 여기선 분포(stateCounts)·막힘만 집계, open은 미집계.
       if (r.blocked === true) a.blocked += 1;
       stateSet.add(st);
     });
@@ -431,10 +525,20 @@
     });
     // summary 에만 있고 requests/rounds 엔 없는 repo도 행 보존(동적 발견 정합).
     Object.keys(summary).forEach((repo) => ensure(repo));
+    // ── open = 백엔드 summary[repo].open_requests 단일 출처 주입 (REQ-007) ──
+    //   프론트는 open 정의(어떤 state가 열림/닫힘인가)를 갖지 않는다. 백엔드 build_convergence.py
+    //   compute_summary 가 산출한 open_requests 를 그대로 표시 → 양 layer 동일 값 보장.
+    //   summary 미수록 repo(요청/라운드에만 등장·드묾)는 open 미상 → null 표기(거짓 0 금지·정직).
+    Object.keys(acc).forEach((repo) => {
+      const s = summary[repo];
+      acc[repo].open = (s && typeof s.open_requests === "number") ? s.open_requests : null;
+    });
 
     // 정렬: 막힘 많은 순(대표 관심사 = "어디가 막혔나") → 열림 많은 순 → 이름순.
+    //   open=null(미상)은 정렬 시 0으로 취급(맨 뒤). 백엔드 SSOT 주입 후라 acc[].open 사용.
+    const openOf = (repo) => (typeof acc[repo].open === "number" ? acc[repo].open : 0);
     const repos = Object.keys(acc).sort((a, b) =>
-      acc[b].blocked - acc[a].blocked || acc[b].open - acc[a].open || a.localeCompare(b));
+      acc[b].blocked - acc[a].blocked || openOf(b) - openOf(a) || a.localeCompare(b));
     // 미니 스택바 세그먼트 = 등장 상태를 파이프라인 순서로(범례 공통).
     const states = [...stateSet].sort((a, b) => stateRank(a) - stateRank(b) || a.localeCompare(b));
     // 범례 — 색(stateMeta.cls) + 라벨 병기(다크모드 제1원칙: 색만으로 의미 전달 금지).
@@ -444,10 +548,11 @@
         + `<span class="sb-leg-k">${escape(m.label)}</span></span>`;
     }).join("");
 
-    // 전체 합계(헤더 요약 — 한눈 총량).
+    // 전체 합계(헤더 요약 — 한눈 총량). open은 백엔드 SSOT 합(null=미상 repo는 제외·정직).
     const tot = repos.reduce((o, repo) => {
       const a = acc[repo];
-      o.open += a.open; o.blocked += a.blocked; o.converged += a.converged;
+      if (typeof a.open === "number") o.open += a.open;
+      o.blocked += a.blocked; o.converged += a.converged;
       return o;
     }, { open: 0, blocked: 0, converged: 0 });
 
@@ -472,9 +577,10 @@
       const convCell = a.converged
         ? `<span class="rs-conv rs-has">${a.converged}</span>`
         : `<span class="rs-conv rs-zero">0</span>`;
-      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열림 ${a.open}·막힘 ${a.blocked}·수렴 ${a.converged}">
+      const openTxt = typeof a.open === "number" ? a.open : "?";
+      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열림 ${openTxt}·막힘 ${a.blocked}·수렴 ${a.converged}">
         <span class="rs-repo" role="cell">${escape(repoDisplay(repo))}</span>
-        <span class="rs-num rs-open" role="cell" title="열린(미종결) 요청">${a.open}</span>
+        <span class="rs-num rs-open" role="cell" title="열린(미종결) 요청 — 백엔드 집계값">${openTxt}</span>
         <span class="rs-num" role="cell" title="막힌(blocked) 요청">${blockedCell}</span>
         <span class="rs-num" role="cell" title="수렴한 라운드">${convCell}</span>
         <span class="rs-bar" role="cell" aria-label="${escape(repoDisplay(repo))} 요청 상태 구성">${miniBar(a)}</span>
@@ -621,6 +727,7 @@
     if (!host) return;
     const reqs = conv.requests || [];
     const rounds = conv.rounds || [];
+    const summary = conv.summary || {};
 
     const blockedItems = [];
     const waitItems = [];
@@ -629,8 +736,15 @@
       if (cls === "blocked") blockedItems.push(r);
       else if (cls === "wait") waitItems.push(r);
     });
-    // 최근 수렴 = 수렴 라운드 수 (실측 state). summary.converged_rounds 합과 동일 출처 정합.
-    const convergedN = rounds.filter((r) => r.state === "수렴").length;
+    // REQ-ADMIN-20260615-008 (P0·허영지표 교체): 종전 "수렴 (누적)"=수렴 라운드 단조 증가
+    //   카운트는 대표 verbatim "누적 추세 봐서 뭐해, 일은 늘어날 건데" 정면 위반(허영지표).
+    //   → actionable "수렴까지 남은 것" 으로 교체. 실측 SSOT(summary[repo].status)만 사용:
+    //   아직 수렴 못 한 active repo 수 = "수렴까지 남은 서비스"(0이면 전부 수렴=목표 달성).
+    //   phantom repo(공통/—/repo) 배제(burndown-design §1 부수발견2 정합). 거짓 채움 0·소급 0.
+    const activeRepos = Object.entries(summary)
+      .filter(([repo]) => isRealRepo(repo))
+      .filter(([, s]) => s.status === "active");
+    const remainingN = activeRepos.length;
 
     // 막힘 우선(P0·진짜 장애물) → 대기 순으로, 우선순위 높은 것부터 최대 5줄.
     const prRank = (p) => ({ P0: 0, P1: 1, P2: 2, P3: 3 }[p] ?? 4);
@@ -638,20 +752,31 @@
       .sort((a, b) => prRank(a.priority) - prRank(b.priority))
       .slice(0, 5);
 
-    const big = (v, k, cls, sub) =>
-      `<div class="db-stat ${cls}">
+    // REQ-ADMIN-20260615-010 (P1·드릴다운): stat 타일 클릭 → 요청 탭 필터 적용(콕핏화).
+    //   filter 인자 있으면 role=button·tabindex·data-db-filter 부여(클릭/Enter 위임 핸들러).
+    //   값이 0이면 비활성(클릭 무의미) — 정직(막힌 것 없는데 필터 적용 무의미).
+    const big = (v, k, cls, sub, filter) => {
+      const interactive = filter && v > 0;
+      const attrs = interactive
+        ? ` role="button" tabindex="0" data-db-filter="${escape(filter)}" title="클릭 — 요청 탭에서 ${escape(k)}만 보기"`
+        : "";
+      return `<div class="db-stat ${cls}${interactive ? " db-stat-link" : ""}"${attrs}>
          <div class="db-v">${v}</div>
          <div class="db-k">${escape(k)}</div>
          <div class="db-sub">${escape(sub)}</div>
        </div>`;
+    };
 
     const stats =
       big(blockedItems.length, "막힌 요청", "db-blocked",
-          blockedItems.length ? "열린 장애물 — 처리 필요" : "막힌 것 없음") +
+          blockedItems.length ? "열린 장애물 — 처리 필요" : "막힌 것 없음", "blocked") +
       big(waitItems.length, "내 결정 대기", "db-wait",
-          waitItems.length ? "대표 결정해야 진행" : "대기 없음") +
-      big(convergedN, "수렴 (누적)", "db-ok",
-          convergedN ? "전원 YES·2라운드 연속 라운드" : "수렴 라운드 없음");
+          waitItems.length ? "대표 결정해야 진행" : "대기 없음", "wait") +
+      // 허영지표(누적 수렴) 추방 → actionable: 아직 수렴 못 한 서비스 수(0=목표 달성).
+      big(remainingN, "수렴까지 남은 서비스", remainingN ? "db-blocked" : "db-ok",
+          remainingN
+            ? activeRepos.map(([repo]) => repoDisplay(repo)).join(" · ") + " 진행 중"
+            : "전 서비스 수렴 — 남은 것 없음");
 
     let listHtml;
     if (!listItems.length) {
@@ -664,12 +789,17 @@
           : `<span class="db-tag db-tag-blocked">막힘</span>`;
         // 막힌 이유 = blocked_reason(실측) 우선, 없으면 현재 state 라벨 근사(정직 표기).
         const reason = r.blocked_reason
-          ? safe(r.blocked_reason)
+          ? mdSafe(r.blocked_reason)   // REQ-011: 마크다운 렌더
           : `<span class="db-reason-approx">${escape(stateMeta(r.state).label)} 상태</span>`;
-        return `<div class="db-row ${wait ? "db-row-wait" : "db-row-blocked"}">
+        // REQ-010 드릴다운: 행 클릭 → 해당 요청 카드로 점프(scrollIntoView+펼침). req_id 있을 때만.
+        const rid = r.req_id || "";
+        const navAttr = rid
+          ? ` role="button" tabindex="0" data-jump-req="${escape(rid)}" title="클릭 — 이 요청 카드로 이동"`
+          : "";
+        return `<div class="db-row ${wait ? "db-row-wait" : "db-row-blocked"}${rid ? " db-row-link" : ""}"${navAttr}>
           ${tag}
           <span class="db-row-repo">${escape(repoDisplay(r.repo || "미상"))}</span>
-          <span class="db-row-title" title="${safe(r.summary || "")}">${safe(r.summary || r.req_id || "")}</span>
+          <span class="db-row-title" title="${safe(r.summary || "")}">${mdSafe(r.summary || r.req_id || "")}</span>
           <span class="db-row-reason">${reason}</span>
         </div>`;
       }).join("");
@@ -686,6 +816,23 @@
        </div>
        <div class="db-stats">${stats}</div>
        ${listHtml}`;
+
+    // REQ-010 드릴다운 — 클릭/Enter 위임(결단보드 1회 바인딩). 행→카드 점프, stat→필터 적용.
+    if (!host.dataset.drillBound) {
+      host.dataset.drillBound = "1";
+      const handle = (target) => {
+        const rowEl = target.closest("[data-jump-req]");
+        if (rowEl) { jumpToReqCard(rowEl.getAttribute("data-jump-req")); return; }
+        const statEl = target.closest("[data-db-filter]");
+        if (statEl) { applyReqFilter(statEl.getAttribute("data-db-filter")); return; }
+      };
+      host.addEventListener("click", (e) => handle(e.target));
+      host.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          if (e.target.closest("[data-jump-req],[data-db-filter]")) { e.preventDefault(); handle(e.target); }
+        }
+      });
+    }
   }
 
   // ⓪-BURNDOWN 번다운 — burndown-design.md(CADENCE) Phase A. 대표 catch: "진척 빨라서 밑으로 꺾이는 차트, 서비스별로."
@@ -792,7 +939,24 @@
        <div class="bd-pace-wrap">
          <div class="bd-pace-h">처리 박자 <span class="bd-pace-sub">일별 판정 건수(실측 mtime) · 우상향 = 판정 활발 · 잔량 시계열은 전이 시각 도입 후(Phase B)</span></div>
          ${paceHtml}
+         <!-- REQ-016 파트2: 번다운 처리박자는 일별 추세(데이터 성격상 줌 무의미·burndown-design Phase A).
+              시간 단위(1/2/3/6h) 확대·드래그 탐색은 '활동 추이' 차트에 일관 제공 → 명시 cross-link(발견성). -->
+         <button type="button" class="bd-zoom-link" data-open-timeline aria-label="활동 추이 시간 줌 차트 열기">
+           시간 단위로 확대해 보기 → 활동 추이 펼치기 🔍
+         </button>
        </div>`;
+
+    // REQ-016: '시간 단위로 확대' → conv-timeline-fold(시간 줌 차트) 열고 스크롤(발견성 동선).
+    const zoomLink = host.querySelector("[data-open-timeline]");
+    if (zoomLink) {
+      zoomLink.addEventListener("click", () => {
+        const fold = el("conv-timeline-fold");
+        if (fold) {
+          fold.open = true;
+          try { fold.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (_) { fold.scrollIntoView(); }
+        }
+      });
+    }
   }
 
   // ① 한눈에 — 열린/진행/수렴/최근 활동
@@ -1612,8 +1776,8 @@
           <code>${escape(r.alias || r.round_id)}</code>
           <span class="ac-repo">${escape(repoDisplay(r.repo || ""))}</span>
         </div>
-        <div class="ac-req">${safe(r.request_refs || "대상 요청 미지정")}</div>
-        <div class="ac-meta">패널: ${safe(r.panel || "-")}${r.tier ? " · " + safe(r.tier) : ""}</div>
+        <div class="ac-req">${mdSafe(r.request_refs || "대상 요청 미지정")}</div>
+        <div class="ac-meta">패널: ${mdSafe(r.panel || "-")}${r.tier ? " · " + mdSafe(r.tier) : ""}</div>
       </div>`;
     }).join("")}</div>`;
   }
@@ -1660,8 +1824,11 @@
       const q = el("conv-req-search").value.trim().toLowerCase();
       const rf = sel.value;
       const by = sortEl ? sortEl.value : "priority";
+      // REQ-010: 결단보드 stat 클릭이 세팅한 상태 필터(막힘/결정대기). 검색·repo 필터와 AND.
+      const sf = state.reqStateFilter || "";
       const filtered = reqs.filter((r) => {
         if (rf && r.repo !== rf) return false;
+        if (sf && classifyBlocked(r) !== sf) return false;
         if (!q) return true;
         // 검색 대상에 narrative·priority·push_status·owner 추가(통합 검색)
         // 라운드2 P1-3: owner(담당자)는 33셀 표시되나 검색 미인덱스였음 → 담당자 검색 가능화.
@@ -1670,6 +1837,18 @@
           .join(" ").toLowerCase().includes(q);
       });
       el("conv-req-count").textContent = `${filtered.length} / ${reqs.length}`;
+      // REQ-010: 활성 상태 필터 칩(해제 버튼) — 사용자가 필터 걸린 줄 인지 + 한 번에 해제.
+      const fchip = el("conv-req-filterchip");
+      if (fchip) {
+        if (sf) {
+          const lbl = sf === "blocked" ? "막힌 요청" : "내 결정 대기";
+          fchip.innerHTML = `<span class="rq-fchip">${escape(lbl)}만 표시 <button type="button" class="rq-fchip-x" aria-label="필터 해제">✕ 전체</button></span>`;
+          fchip.hidden = false;
+        } else {
+          fchip.innerHTML = "";
+          fchip.hidden = true;
+        }
+      }
 
       // repo로 그룹화 (정렬: HOME, PM320, 그외, 미분류)
       const groups = new Map();
@@ -1709,6 +1888,16 @@
     el("conv-req-search").addEventListener("input", draw);
     sel.addEventListener("change", draw);
     if (sortEl) sortEl.addEventListener("change", draw);
+    // REQ-010: 결단보드 stat 클릭이 외부에서 draw 를 재실행할 수 있게 등록(상태필터 반영).
+    state.redrawReqCards = draw;
+    // REQ-010: 활성 상태필터 칩의 '✕ 전체' 클릭 → 필터 해제 후 재그림(위임 1회).
+    const fchip = el("conv-req-filterchip");
+    if (fchip && !fchip.dataset.bound) {
+      fchip.dataset.bound = "1";
+      fchip.addEventListener("click", (e) => {
+        if (e.target.closest(".rq-fchip-x")) { state.reqStateFilter = ""; draw(); }
+      });
+    }
     draw();
   }
 
@@ -1782,15 +1971,16 @@
     }
 
     // ── narrative 맥락 (있을 때만 — [2단계] 인용블록은 펼침 후에만. 부수 정보·작은 글씨 muted) ──
+    //   REQ-011: mdSafe = raw **굵게**·`코드` 마크다운 렌더(narrative 가 마크다운 최다 필드).
     const narrHtml = (r.narrative || "").trim()
-      ? `<div class="rq-narrative">${safe(r.narrative)}</div>` : "";
+      ? `<div class="rq-narrative">${mdSafe(r.narrative)}</div>` : "";
     // ── [2단계] 라이브배지 묶음(push 반영 + mq 미편입) — 펼침 후에만 노출(1줄 행에서 제외). ──
     const liveBadges = (mqHtml || pushHtml)
       ? `<div class="rq-livebadges">${mqHtml}${pushHtml}</div>` : "";
 
-    // ── blocked 경고 본문 (P0·교착·보류) ──
+    // ── blocked 경고 본문 (P0·교착·보류) ── REQ-011: 마크다운 렌더
     const blockedHtml = blocked
-      ? `<div class="rq-blocked-note">⚠ ${safe(r.blocked_reason || "교착·대기 상태")}</div>` : "";
+      ? `<div class="rq-blocked-note">⚠ ${mdSafe(r.blocked_reason || "교착·대기 상태")}</div>` : "";
 
     // ── latest_verdict 미니 패널 (있을 때만 — 6/45만 비-null) ──
     const lv = r.latest_verdict;
@@ -1815,11 +2005,11 @@
       ? `<div class="rq-related"><div class="rq-related-h">관련 라운드 ${related.length}건</div>${
           related.map((rd) => `<div class="rq-related-row"><code>${escape(rd.alias || rd.round_id)}</code>
             <span class="badge ${stateMeta(rd.state).cls}">${escape(stateMeta(rd.state).label)}</span>
-            <span class="sub">${safe(rd.note || rd.request_refs || "")}</span></div>`).join("")
+            <span class="sub">${mdSafe(rd.note || rd.request_refs || "")}</span></div>`).join("")
         }</div>`
       : `<div class="rq-related sub">연결된 라운드 기록 없음</div>`;
     const evidHtml = (r.close_evidence || "").trim()
-      ? `<div class="rq-evid"><span class="rq-evid-k">종결 근거</span> ${safe(r.close_evidence)}</div>`
+      ? `<div class="rq-evid"><span class="rq-evid-k">종결 근거</span> ${mdSafe(r.close_evidence)}</div>`
       : (evidMissing
           ? `<div class="rq-evid conv-evid-missing">⚠️ 종결 처리됐으나 근거 공란 — 유실 의심</div>`
           : "");
@@ -1830,13 +2020,15 @@
     // [2단계] 기본 = 1줄 행. 상태점(색 = stateMeta.cls·title로 라벨) + priority(막힘/P0 가시 — 작은 칩)
     //   + req_id + 제목(말줄임 1줄) + 진척% + 라운드N. 인용·라이브배지·상세는 펼침(.rq-body)에서.
     const stageDot = `<span class="rq-dot ${escape(m.cls)}" title="${stageLbl}" aria-label="상태 ${stageLbl}"></span>`;
-    return `<details class="rq-card rq-card-row ${stCls}${closed ? " rq-closed" : ""}">
+    // REQ-010 드릴다운 타겟: 카드 id=rqcard-<req_id> (결단보드 행 클릭 점프 대상).
+    const cardId = rid ? ` id="rqcard-${escape(rid)}"` : "";
+    return `<details class="rq-card rq-card-row ${stCls}${closed ? " rq-closed" : ""}"${cardId}>
       <summary class="rq-summary">
         <span class="rq-line">
           ${stageDot}
           ${prioHtml}
           <span class="rq-id"><code>${escape(rid)}</code></span>
-          <span class="rq-title" title="${safe(r.summary || "")}">${safe(r.summary || "(요약 없음)")}</span>
+          <span class="rq-title" title="${safe(r.summary || "")}">${mdSafe(r.summary || "(요약 없음)")}</span>
           <span class="rq-line-meta">${trackMini}${rcMini}</span>
         </span>
       </summary>
@@ -1871,9 +2063,9 @@
       <tr>
         <td><code>${escape(r.round_id)}</code>${r.alias ? ` <span class="sub">(${escape(r.alias)})</span>` : ""}</td>
         <td>${escape(repoDisplay(r.repo))}</td>
-        <td>${safe(r.request_refs || "")}</td>
-        <td>${safe(r.panel || "")}</td>
-        <td>${safe(r.tier || "")}</td>
+        <td>${mdSafe(r.request_refs || "")}</td>
+        <td>${mdSafe(r.panel || "")}</td>
+        <td>${mdSafe(r.tier || "")}</td>
         <td><span class="badge ${stateMeta(r.state).cls}">${escape(stateMeta(r.state).label)}</span></td>
       </tr>`).join("");
   }
@@ -1886,18 +2078,19 @@
     const p0 = Array.isArray(v.p0_items) ? v.p0_items : [];
     const p1 = Array.isArray(v.p1_items) ? v.p1_items : [];
     if (!v.headline && !imp.length && !p0.length && !p1.length) return "";
+    // REQ-011: 판정 본문(headline/P0/신규P1/개선사항)도 raw 마크다운(**굵게**·`코드`) 렌더.
     const parts = [];
     if (v.headline) {
-      parts.push(`<p class="vd-headline">${safe(v.headline)}</p>`);
+      parts.push(`<p class="vd-headline">${mdSafe(v.headline)}</p>`);
     }
     if (p0.length) {
       parts.push(`<div class="vd-block vd-p0"><span class="vd-label">P0</span><ul>${
-        p0.map((s) => `<li>${safe(s)}</li>`).join("")
+        p0.map((s) => `<li>${mdSafe(s)}</li>`).join("")
       }</ul></div>`);
     }
     if (p1.length) {
       parts.push(`<div class="vd-block vd-p1"><span class="vd-label">신규 P1</span><ul>${
-        p1.map((s) => `<li>${safe(s)}</li>`).join("")
+        p1.map((s) => `<li>${mdSafe(s)}</li>`).join("")
       }</ul></div>`);
     }
     if (imp.length) {
@@ -1906,7 +2099,7 @@
           const st = it && it.state ? it.state : "미상";
           const done = st === "해소";
           return `<li class="vd-imp-item ${done ? "vd-done" : "vd-open"}">${
-            safe(it && it.text)
+            mdSafe(it && it.text)
           } <span class="vd-state">${escape(st)}</span></li>`;
         }).join("")
       }</ul></div>`);
@@ -1928,7 +2121,7 @@
       <tr class="conv-verdict-row${reasoning ? " has-reasoning" : ""}">
         <td><code>${safe(v.file)}</code></td>
         <td>${escape(v.round_id || "")}</td>
-        <td>${safe(v.panel || "")}</td>
+        <td>${mdSafe(v.panel || "")}</td>
         <td><span class="badge ${verdictClass(v.verdict)}">${escape(verdictLabel(v.verdict))}</span></td>
         <td>${numOrUnknown(v.p0_count)}</td>
         <td>${numOrUnknown(v.new_p1_count)}</td>
@@ -1998,12 +2191,11 @@
         `<p class="hint">convergence.json 로드 실패: ${escape(e.message)}. 'python3 scripts/admin/build_convergence.py' 로 생성하세요.</p>`;
       return;
     }
-    // N2: 헤더 시각을 수렴 데이터(convergence.json) 빌드 시각으로 갱신.
-    // 디폴트 랜딩이 수렴 탭이므로 헤더는 convergence.json 기준이 정합 (레거시 data.json 시각 오인 방지).
-    if (conv.generated_at) {
-      el("generated-at").textContent =
-        "데이터 생성: " + String(conv.generated_at).slice(0, 19).replace("T", " ");
-    }
+    // REQ-006: convergence.json 빌드 시각을 state 보관 → 수렴 탭 활성 시 헤더에 반영.
+    //   탭별 freshness(updateHeaderFreshness)가 단일 출처로 헤더를 그림(직접 setText 제거).
+    state.convGeneratedAt = conv.generated_at || "";
+    const activeTab = document.querySelector(".tab.active");
+    if (!activeTab || activeTab.dataset.tab === CONV_TAB) updateHeaderFreshness(CONV_TAB);
     renderConvDecisionBoard(conv);
     renderConvFreshness(conv);
     renderConvBurndown(conv);
@@ -2030,15 +2222,12 @@
         `<tr><td colspan="6">data.json 로드 실패: ${escape(e.message)}. file:// 환경에서는 CORS 제한이 있습니다. 'python3 -m http.server' 로 띄우세요.</td></tr>`;
       return;
     }
-    // 헤더 시각 = 디폴트 랜딩(수렴 탭)의 데이터 기준. 실제 값은 renderConvergence()가
-    // convergence.json generated_at 으로 덮어씀 (N2: data.json=레거시 May 4 표기 오인 방지).
-    // data.json 은 fallback (convergence.json 로드 실패 시).
-    el("generated-at").textContent =
-      "데이터 생성: " + (state.data.generated_at || "").slice(0, 19).replace("T", " ");
+    // REQ-006: 헤더 '데이터 생성' 시각은 탭별 소스 기준(updateHeaderFreshness)이 단일 출처로
+    //   그림 — 여기서 직접 setText 하지 않음(전 탭 공통 단일값 위장 제거). build-version 은 유지.
     el("build-version").textContent =
       "data.json schema v" + (state.data.schema_version || "?");
 
-    setupTabs();
+    setupTabs();   // 내부 activateTab → updateHeaderFreshness 로 현재 탭 freshness 반영
     renderRequests();
     renderTimeline();
     renderAgents();

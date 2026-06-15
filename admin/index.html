@@ -125,9 +125,16 @@
            한 SVG에 중첩 → 정보위계 평탄화(§1.1) → 목적별 분리. 활동량(activity)은 번다운(상태)보다 하위 정보위계 →
            details 로 접어 above-fold 양보 (대표 catch: 활동만 잔뜩 보이고 막힘이 안 보인다). 펼치면 종전 차트 그대로.
            A(단위시간 변동)+B(누적 추세)는 같은 시간축 공유(줌/팬 연동, 인터랙션은 A에). C(서비스별)는 전체 기간 small multiples. -->
+      <!-- REQ-ADMIN-20260615-016 (P1·대표 의제 REQ-004 시간 줌): 시간단위 줌 차트가 이미 구현·
+           동작(1/2/3/6시간 적응형 버킷·휠 줌·드래그 팬·핀치)하나 details 기본 닫힘으로 묻혀 대표
+           미발견. 조니 보강 = 무차별 펼침 아닌 정보위계 우선 → details 위계는 유지(활동량은 상태보다
+           하위)하되 summary 를 '시간 줌 가능' 명시 진입점으로 강화 + 줌 affordance 배지 노출(발견성↑). -->
       <details id="conv-timeline-fold" class="conv-fold">
-        <summary>활동 추이 펼치기 <span class="conv-fold-sub">단위시간 변동 막대 · 누적 추세 라인 (활동량 = 상태보다 하위 정보)</span></summary>
-        <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열 차트"></div>
+        <summary>활동 추이 — 시간대별 줌·탐색
+          <span class="conv-fold-zoom" aria-hidden="true">🔍 휠 확대 · 드래그 이동</span>
+          <span class="conv-fold-sub">날짜 → 시간 단위까지 확대(1/2/3/6시간 적응) · 단위시간 변동 막대 + 누적 추세 라인</span>
+        </summary>
+        <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열 차트 — 휠로 시간 단위 확대, 드래그로 시간대 이동"></div>
       </details>
 
       <!-- ⓪-a2 [2단계 통합] repo 1행 요약 테이블 — 진단: 같은 6개 서비스를 4번(상태 스냅바·라운드 수렴
@@ -181,6 +188,8 @@
         </select>
         <span class="count" id="conv-req-count" aria-live="polite"></span>
       </div>
+      <!-- REQ-010 드릴다운: 결단보드 stat 클릭 시 활성화되는 상태 필터 칩(해제 버튼 포함) -->
+      <div id="conv-req-filterchip" class="conv-req-filterchip" aria-live="polite" hidden></div>
       <div id="conv-req-cards" class="conv-req-cards" aria-live="polite"></div>
 
       <!-- ⑤ 데이터 무결성 / 원시 데이터 (접힘) -->
