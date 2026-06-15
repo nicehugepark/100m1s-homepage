@@ -1,45 +1,45 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-15T06:55:32.025731+09:00",
+  "generated_at": "2026-06-15T09:21:25.311865+09:00",
   "summary": {
     "ADMIN": {
-      "status": "idle",
-      "status_label": "진행 라운드 없음",
+      "status": "active",
+      "status_label": "진행 중 — 진짜 열린 라운드 3건",
       "open_requests": 1,
       "total_requests": 1,
-      "open_rounds": 0,
+      "open_rounds": 3,
       "milestone_rounds": 0,
       "superseded_rounds": 0,
       "converged_rounds": 0,
-      "total_rounds": 0,
-      "latest_round": null,
-      "latest_state": null
+      "total_rounds": 3,
+      "latest_round": "RND-ADMIN-003",
+      "latest_state": "미수렴"
     },
     "BYBIAS": {
       "status": "active",
-      "status_label": "진행 중 — 진짜 열린 라운드 9건 · 대체된 옛 라운드 1건",
+      "status_label": "진행 중 — 진짜 열린 라운드 11건 · 대체된 옛 라운드 1건",
       "open_requests": 5,
       "total_requests": 10,
-      "open_rounds": 9,
+      "open_rounds": 11,
       "milestone_rounds": 0,
       "superseded_rounds": 1,
-      "converged_rounds": 5,
-      "total_rounds": 17,
-      "latest_round": "RND-BYBIAS-063",
+      "converged_rounds": 7,
+      "total_rounds": 21,
+      "latest_round": "RND-BYBIAS-067",
       "latest_state": "수렴"
     },
     "HOME": {
-      "status": "active",
-      "status_label": "진행 중 — 진짜 열린 라운드 1건 · 대체된 옛 라운드 3건",
+      "status": "converged",
+      "status_label": "수렴 완료 — 진짜 열린 라운드 0건 · 옛 라운드 3건은 대체됨(이력)",
       "open_requests": 4,
       "total_requests": 6,
-      "open_rounds": 1,
+      "open_rounds": 0,
       "milestone_rounds": 3,
       "superseded_rounds": 3,
-      "converged_rounds": 3,
+      "converged_rounds": 4,
       "total_rounds": 10,
       "latest_round": "RND-HOME-008",
-      "latest_state": "미수렴"
+      "latest_state": "수렴"
     },
     "INFRA": {
       "status": "idle",
@@ -82,6 +82,35 @@
     }
   },
   "trend": {
+    "ADMIN": [
+      {
+        "round_id": "RND-ADMIN-001",
+        "alias": "R1",
+        "state": "미수렴",
+        "quality_score": 6.0,
+        "quality_n": 1,
+        "defect_sum": 11,
+        "verdict_count": 5
+      },
+      {
+        "round_id": "RND-ADMIN-002",
+        "alias": "R2",
+        "state": "미수렴",
+        "quality_score": 6.8,
+        "quality_n": 1,
+        "defect_sum": 5,
+        "verdict_count": 5
+      },
+      {
+        "round_id": "RND-ADMIN-003",
+        "alias": "R3",
+        "state": "미수렴",
+        "quality_score": 7.0,
+        "quality_n": 1,
+        "defect_sum": 5,
+        "verdict_count": 5
+      }
+    ],
     "BYBIAS": [
       {
         "round_id": "RND-BYBIAS-047",
@@ -235,6 +264,42 @@
         "quality_n": 1,
         "defect_sum": 0,
         "verdict_count": 4
+      },
+      {
+        "round_id": "RND-BYBIAS-064",
+        "alias": "R64",
+        "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 78,
+        "verdict_count": 2
+      },
+      {
+        "round_id": "RND-BYBIAS-065",
+        "alias": "R65",
+        "state": "미수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 2,
+        "verdict_count": 2
+      },
+      {
+        "round_id": "RND-BYBIAS-066",
+        "alias": "R66",
+        "state": "수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 1,
+        "verdict_count": 2
+      },
+      {
+        "round_id": "RND-BYBIAS-067",
+        "alias": "R67",
+        "state": "수렴",
+        "quality_score": null,
+        "quality_n": 0,
+        "defect_sum": 0,
+        "verdict_count": 2
       }
     ],
     "HOME": [
@@ -322,11 +387,11 @@
       {
         "round_id": "RND-HOME-008",
         "alias": "서브페이지 nav",
-        "state": "미수렴",
+        "state": "수렴",
         "quality_score": null,
         "quality_n": 0,
         "defect_sum": 3,
-        "verdict_count": 1
+        "verdict_count": 3
       }
     ],
     "PM320": [
@@ -469,114 +534,6 @@
   },
   "activity_timeline": [
     {
-      "ts": "2026-06-14T16:38:02.079195+09:00",
-      "type": "round",
-      "repo": "BYBIAS",
-      "label": "RND-BYBIAS-055 (R55)"
-    },
-    {
-      "ts": "2026-06-14T17:01:47.691770+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r56-손님 패널.md"
-    },
-    {
-      "ts": "2026-06-14T17:04:11.545865+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r56-2nd-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T17:04:11.545865+09:00",
-      "type": "round",
-      "repo": "BYBIAS",
-      "label": "RND-BYBIAS-056 (R56)"
-    },
-    {
-      "ts": "2026-06-14T17:15:43.714058+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r57-2nd-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T17:16:16.594316+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r57-손님 패널.md"
-    },
-    {
-      "ts": "2026-06-14T17:16:16.594316+09:00",
-      "type": "round",
-      "repo": "BYBIAS",
-      "label": "RND-BYBIAS-057 (R57)"
-    },
-    {
-      "ts": "2026-06-14T17:25:02.377238+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r58-2nd-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T17:25:02.377238+09:00",
-      "type": "round",
-      "repo": "BYBIAS",
-      "label": "RND-BYBIAS-058 (R58)"
-    },
-    {
-      "ts": "2026-06-14T19:59:36.774526+09:00",
-      "type": "verdict",
-      "repo": "PM320",
-      "label": "pm320-mcap-r59.md"
-    },
-    {
-      "ts": "2026-06-14T19:59:36.774526+09:00",
-      "type": "round",
-      "repo": "PM320",
-      "label": "RND-PM320-059 (R59 시총)"
-    },
-    {
-      "ts": "2026-06-14T20:01:34.553174+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "(내부코드)-rnd-admin-001-시스템 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T20:09:11.148640+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r59-kpop-fan-번역 심사.md"
-    },
-    {
-      "ts": "2026-06-14T20:10:49.010338+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "(내부코드)-rnd-admin-001-design.md"
-    },
-    {
-      "ts": "2026-06-14T20:16:29.110477+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r59-2nd-총괄 심사 패널.md"
-    },
-    {
-      "ts": "2026-06-14T20:17:59.463200+09:00",
-      "type": "verdict",
-      "repo": "공통",
-      "label": "(내부코드)-rnd-admin-001-정직성 심사.md"
-    },
-    {
-      "ts": "2026-06-14T20:20:06.696182+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r59-fable-design-critic.md"
-    },
-    {
-      "ts": "2026-06-14T20:20:22.908033+09:00",
-      "type": "verdict",
-      "repo": "BYBIAS",
-      "label": "r59-투자 심사-investor.md"
-    },
-    {
       "ts": "2026-06-14T20:20:47.330050+09:00",
       "type": "verdict",
       "repo": "BYBIAS",
@@ -597,14 +554,20 @@
     {
       "ts": "2026-06-14T20:22:14.780376+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-001-손님 패널.md"
     },
     {
       "ts": "2026-06-14T20:38:04.036291+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-001-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T20:38:04.036291+09:00",
+      "type": "round",
+      "repo": "ADMIN",
+      "label": "RND-ADMIN-001 (R1)"
     },
     {
       "ts": "2026-06-14T20:43:36.820557+09:00",
@@ -639,32 +602,38 @@
     {
       "ts": "2026-06-14T21:09:57.851644+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-002-정직성 심사.md"
     },
     {
       "ts": "2026-06-14T21:10:17.147748+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-002-시스템 심사 패널.md"
     },
     {
       "ts": "2026-06-14T21:15:33.557544+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-002-design.md"
     },
     {
       "ts": "2026-06-14T21:17:23.082729+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-002-손님 패널.md"
     },
     {
       "ts": "2026-06-14T21:22:50.557173+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-002-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T21:22:50.557173+09:00",
+      "type": "round",
+      "repo": "ADMIN",
+      "label": "RND-ADMIN-002 (R2)"
     },
     {
       "ts": "2026-06-14T22:12:04.630392+09:00",
@@ -703,12 +672,6 @@
       "label": "rnd-home-008-subpage-nav-design.md"
     },
     {
-      "ts": "2026-06-14T22:25:14.243108+09:00",
-      "type": "round",
-      "repo": "HOME",
-      "label": "RND-HOME-008 (서브페이지 nav)"
-    },
-    {
       "ts": "2026-06-14T22:36:29.068001+09:00",
       "type": "verdict",
       "repo": "BYBIAS",
@@ -741,32 +704,38 @@
     {
       "ts": "2026-06-14T23:37:34.808917+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-003-정직성 심사.md"
     },
     {
       "ts": "2026-06-14T23:37:58.291868+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-003-시스템 심사 패널.md"
     },
     {
       "ts": "2026-06-14T23:43:07.301650+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-003-design.md"
     },
     {
       "ts": "2026-06-14T23:44:26.826543+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-003-손님 패널.md"
     },
     {
       "ts": "2026-06-14T23:52:07.389143+09:00",
       "type": "verdict",
-      "repo": "공통",
+      "repo": "ADMIN",
       "label": "(내부코드)-rnd-admin-003-2nd-총괄 심사 패널.md"
+    },
+    {
+      "ts": "2026-06-14T23:52:07.389143+09:00",
+      "type": "round",
+      "repo": "ADMIN",
+      "label": "RND-ADMIN-003 (R3)"
     },
     {
       "ts": "2026-06-15T06:37:36.218176+09:00",
@@ -787,22 +756,118 @@
       "label": "r63-bybias-guest-pool.md"
     },
     {
-      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "ts": "2026-06-15T06:57:06.076610+09:00",
       "type": "verdict",
       "repo": "BYBIAS",
       "label": "r63-2nd-총괄 심사 패널.md"
     },
     {
-      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "ts": "2026-06-15T06:57:06.076610+09:00",
       "type": "round",
       "repo": "BYBIAS",
       "label": "RND-BYBIAS-063 (R63)"
+    },
+    {
+      "ts": "2026-06-15T07:18:35.610203+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r64-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-15T07:28:10.958612+09:00",
+      "type": "verdict",
+      "repo": "HOME",
+      "label": "rnd-home-008-subpage-nav-design-r2.md"
+    },
+    {
+      "ts": "2026-06-15T07:34:27.245827+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r65-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-15T07:37:53.820466+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r64-tech-cynic.md"
+    },
+    {
+      "ts": "2026-06-15T07:37:53.820466+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-064 (R64)"
+    },
+    {
+      "ts": "2026-06-15T07:38:32.399894+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r65-tech-cynic.md"
+    },
+    {
+      "ts": "2026-06-15T07:38:32.399894+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-065 (R65)"
+    },
+    {
+      "ts": "2026-06-15T07:46:07.014404+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r66-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-15T07:51:45.972762+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r67-kpop-fan-번역 심사.md"
+    },
+    {
+      "ts": "2026-06-15T07:54:59.138308+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r66-tech-cynic.md"
+    },
+    {
+      "ts": "2026-06-15T07:54:59.138308+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-066 (R66)"
+    },
+    {
+      "ts": "2026-06-15T07:55:29.066824+09:00",
+      "type": "verdict",
+      "repo": "BYBIAS",
+      "label": "r67-tech-cynic.md"
+    },
+    {
+      "ts": "2026-06-15T07:55:29.066824+09:00",
+      "type": "round",
+      "repo": "BYBIAS",
+      "label": "RND-BYBIAS-067 (R67)"
+    },
+    {
+      "ts": "2026-06-15T08:52:05.174297+09:00",
+      "type": "verdict",
+      "repo": "공통",
+      "label": "r68-kpop-fan-번역 심사.md"
     },
     {
       "ts": "2026-06-15T08:53:00+09:00",
       "type": "request",
       "repo": "PM320",
       "label": "\"뉴스 해석 한줄 과하다 / 뉴스 대부분 사실 노이지 / 시장지수(국채·원유·환율) 사라짐\" (08:53)"
+    },
+    {
+      "ts": "2026-06-15T08:53:53.201333+09:00",
+      "type": "verdict",
+      "repo": "HOME",
+      "label": "rnd-home-008-subpage-nav-design-r3.md"
+    },
+    {
+      "ts": "2026-06-15T08:53:53.201333+09:00",
+      "type": "round",
+      "repo": "HOME",
+      "label": "RND-HOME-008 (서브페이지 nav)"
     },
     {
       "ts": "2026-06-15T09:24:00+09:00",
@@ -2202,9 +2267,9 @@
     },
     {
       "ts": "2026-06-14T20:01:34.553174+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-001-시스템 심사 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-001",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2222,9 +2287,9 @@
     },
     {
       "ts": "2026-06-14T20:10:49.010338+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-001-design.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-001",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2242,9 +2307,9 @@
     },
     {
       "ts": "2026-06-14T20:17:59.463200+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-001-정직성 심사.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-001",
+      "repo": "ADMIN",
       "state": "조건부",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2302,9 +2367,9 @@
     },
     {
       "ts": "2026-06-14T20:22:14.780376+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-001-손님 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-001",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2312,12 +2377,22 @@
     },
     {
       "ts": "2026-06-14T20:38:04.036291+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-001-2nd-총괄 심사 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-001",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-14T20:38:04.036291+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-001 (R1)",
+      "repo": "ADMIN",
+      "state": "미수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
       "is_approx": false
     },
     {
@@ -2372,9 +2447,9 @@
     },
     {
       "ts": "2026-06-14T21:09:57.851644+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-002-정직성 심사.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-002",
+      "repo": "ADMIN",
       "state": "YES",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2382,9 +2457,9 @@
     },
     {
       "ts": "2026-06-14T21:10:17.147748+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-002-시스템 심사 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-002",
+      "repo": "ADMIN",
       "state": "YES",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2392,9 +2467,9 @@
     },
     {
       "ts": "2026-06-14T21:15:33.557544+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-002-design.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-002",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2402,9 +2477,9 @@
     },
     {
       "ts": "2026-06-14T21:17:23.082729+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-002-손님 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-002",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2412,12 +2487,22 @@
     },
     {
       "ts": "2026-06-14T21:22:50.557173+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-002-2nd-총괄 심사 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-002",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-14T21:22:50.557173+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-002 (R2)",
+      "repo": "ADMIN",
+      "state": "미수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
       "is_approx": false
     },
     {
@@ -2481,16 +2566,6 @@
       "is_approx": false
     },
     {
-      "ts": "2026-06-14T22:25:14.243108+09:00",
-      "entity_type": "round",
-      "entity_id": "RND-HOME-008 (서브페이지 nav)",
-      "repo": "HOME",
-      "state": "미수렴",
-      "kind": "round_snapshot",
-      "is_snapshot": true,
-      "is_approx": false
-    },
-    {
       "ts": "2026-06-14T22:36:29.068001+09:00",
       "entity_type": "round",
       "entity_id": "RND-BYBIAS-062",
@@ -2542,9 +2617,9 @@
     },
     {
       "ts": "2026-06-14T23:37:34.808917+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-003-정직성 심사.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-003",
+      "repo": "ADMIN",
       "state": "조건부",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2552,9 +2627,9 @@
     },
     {
       "ts": "2026-06-14T23:37:58.291868+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-003-시스템 심사 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-003",
+      "repo": "ADMIN",
       "state": "YES",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2562,9 +2637,9 @@
     },
     {
       "ts": "2026-06-14T23:43:07.301650+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-003-design.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-003",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2572,9 +2647,9 @@
     },
     {
       "ts": "2026-06-14T23:44:26.826543+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-003-손님 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-003",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
@@ -2582,12 +2657,22 @@
     },
     {
       "ts": "2026-06-14T23:52:07.389143+09:00",
-      "entity_type": "verdict",
-      "entity_id": "(내부코드)-rnd-admin-003-2nd-총괄 심사 패널.md",
-      "repo": "공통",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-003",
+      "repo": "ADMIN",
       "state": "NO",
       "kind": "verdict_emitted",
       "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-14T23:52:07.389143+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-ADMIN-003 (R3)",
+      "repo": "ADMIN",
+      "state": "미수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
       "is_approx": false
     },
     {
@@ -2621,7 +2706,7 @@
       "is_approx": false
     },
     {
-      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "ts": "2026-06-15T06:57:06.076610+09:00",
       "entity_type": "round",
       "entity_id": "RND-BYBIAS-063",
       "repo": "BYBIAS",
@@ -2631,13 +2716,153 @@
       "is_approx": false
     },
     {
-      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "ts": "2026-06-15T06:57:06.076610+09:00",
       "entity_type": "round",
       "entity_id": "RND-BYBIAS-063 (R63)",
       "repo": "BYBIAS",
       "state": "수렴",
       "kind": "round_snapshot",
       "is_snapshot": true,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:18:35.610203+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-064",
+      "repo": "BYBIAS",
+      "state": "NO",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:28:10.958612+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-HOME-008",
+      "repo": "HOME",
+      "state": "YES",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:34:27.245827+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-065",
+      "repo": "BYBIAS",
+      "state": "NO",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:37:53.820466+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-064",
+      "repo": "BYBIAS",
+      "state": "NO",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:37:53.820466+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-064 (R64)",
+      "repo": "BYBIAS",
+      "state": "미수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:38:32.399894+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-065",
+      "repo": "BYBIAS",
+      "state": "NO",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:38:32.399894+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-065 (R65)",
+      "repo": "BYBIAS",
+      "state": "미수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:46:07.014404+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-066",
+      "repo": "BYBIAS",
+      "state": "YES",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:51:45.972762+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-067",
+      "repo": "BYBIAS",
+      "state": "YES",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:54:59.138308+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-066",
+      "repo": "BYBIAS",
+      "state": "YES",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:54:59.138308+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-066 (R66)",
+      "repo": "BYBIAS",
+      "state": "수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:55:29.066824+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-067",
+      "repo": "BYBIAS",
+      "state": "YES",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T07:55:29.066824+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-BYBIAS-067 (R67)",
+      "repo": "BYBIAS",
+      "state": "수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T08:52:05.174297+09:00",
+      "entity_type": "verdict",
+      "entity_id": "r68-kpop-fan-번역 심사.md",
+      "repo": "공통",
+      "state": "NO",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
       "is_approx": false
     },
     {
@@ -2649,6 +2874,26 @@
       "kind": "request_captured",
       "is_snapshot": true,
       "is_approx": true
+    },
+    {
+      "ts": "2026-06-15T08:53:53.201333+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-HOME-008",
+      "repo": "HOME",
+      "state": "YES",
+      "kind": "verdict_emitted",
+      "is_snapshot": false,
+      "is_approx": false
+    },
+    {
+      "ts": "2026-06-15T08:53:53.201333+09:00",
+      "entity_type": "round",
+      "entity_id": "RND-HOME-008 (서브페이지 nav)",
+      "repo": "HOME",
+      "state": "수렴",
+      "kind": "round_snapshot",
+      "is_snapshot": true,
+      "is_approx": false
     },
     {
       "ts": "2026-06-15T09:24:00+09:00",
@@ -2893,13 +3138,13 @@
   ],
   "state_timeline_coverage": {
     "verdict": {
-      "available": 137,
-      "total": 137,
+      "available": 148,
+      "total": 148,
       "approx": false
     },
     "round": {
-      "available": 32,
-      "total": 42,
+      "available": 39,
+      "total": 49,
       "approx": false
     },
     "request": {
@@ -2911,8 +3156,8 @@
   },
   "freshness": {
     "last_activity_ts": "2026-06-15T18:38:00+09:00",
-    "generated_at": "2026-06-15T06:55:32.025731+09:00",
-    "stale_minutes": -703
+    "generated_at": "2026-06-15T09:21:25.311865+09:00",
+    "stale_minutes": -557
   },
   "integrity_warnings": [
     "verdict admin-rejudge-총괄 심사 패널.md request_id=REQ-HOME-admin-convergence REQUEST-LEDGER 미존재",
@@ -2941,7 +3186,7 @@
     "verdict r57-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r57-손님 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
     "verdict r58-2nd-총괄 심사 패널.md request_id=Q-20260605-108 REQUEST-LEDGER 미존재",
-    "round_id 미매핑 verdict 53건 (frontmatter 미적용·점진 마이그레이션 백로그)",
+    "round_id 미매핑 verdict 39건 (frontmatter 미적용·점진 마이그레이션 백로그)",
     "ROUND-LOG 비정상 칸 수 라운드 2건 (graceful 패딩·drop 0): RND-BYBIAS-051(7칸), RND-BYBIAS-052(7칸) — 표준 8칸 정렬 권고(tier/verdict 칸 누락)"
   ],
   "requests": [
@@ -3039,7 +3284,7 @@
       "mq_only": false,
       "round_count": 5,
       "latest_round_id": "RND-HOME-008",
-      "latest_round_state": "미수렴",
+      "latest_round_state": "수렴",
       "latest_verdict": {
         "verdict": "NO",
         "quality_score": null,
@@ -3586,7 +3831,7 @@
       "captured": "🔍",
       "state": "종결",
       "state_raw": "✅ 종결",
-      "owner": "(비공개) rev2(10:04) + R47 심사단-r47-투자 심사 전속 발사",
+      "owner": "DEC-001 rev2(10:04) + R47 심사단-r47-투자 심사 전속 발사",
       "provenance": "— / —",
       "close_evidence": "전 패널 강제 철회·역할별 전속 재배치: 사업 질문(돈 못 버는 Top1·심사관 제휴)·전환 KPI 수치·수익화 blocker P0 승격권 = **투자 심사·투자자+YC Partner 전속**. 디자인 패널 사업 질문 부과 철회. R47 투자 심사 패널 NO 착지로 전속 동작 실증(트래킹 P0 발굴) + AGENT.md 영구화 A 이관",
       "narrative": null,
@@ -3680,13 +3925,18 @@
       "state_raw": "🔨 구현중",
       "owner": "dev-w4 9언어 빌드 트랙(bulk-fix·번역 완성도 게이트)",
       "provenance": "REQ-BYBIAS-20260613-002 / —",
-      "close_evidence": "lead 실측 ko vs ja 구조 동일(섹션 6=6·스텝 73≈72·콘텐츠 채움 OK) 단 ja 한글 잔존 2570자(비가시 주석 + 가시 누락 의심). 14 hung 근본 = 코스 단건 t() 폭주(코드)→bulk-fix 18:03 해소·9언어 19:04 빌드 완료(ja 가게명 grep 0). 게이트 외국문자 잔존 4건 진단·surgical 배포 대기 ⚠️미종결. **R59 ja ko-parity 실측 NO·P0 3(stays 섹션 증발·venue h2→div·sec-c7 spot 0)·신규P1 7·미수렴·직전 lead \"구조 동일\" 주장 반박 확정(stays 증발 실측)** — R57·R58 false-convergence 정정. streak 0.",
+      "close_evidence": "lead 실측 ko vs ja 구조 동일(섹션 6=6·스텝 73≈72·콘텐츠 채움 OK) 단 ja 한글 잔존 2570자(비가시 주석 + 가시 누락 의심). 14 hung 근본 = 코스 단건 t() 폭주(코드)→bulk-fix 18:03 해소·9언어 19:04 빌드 완료(ja 가게명 grep 0). 게이트 외국문자 잔존 4건 진단·surgical 배포 대기 ⚠️미종결. **R59 ja ko-parity 실측 NO·P0 3(stays 섹션 증발·venue h2→div·sec-c7 spot 0)·신규P1 7·미수렴·직전 lead \"구조 동일\" 주장 반박 확정(stays 증발 실측)** — R57·R58 false-convergence 정정. streak 0. **R64/R65 ja 메인 동적JS·속성 미번역 전수 판정**: R64 NO(jbar/fav 언어게이트 l:\"ko\" 하드코딩+인라인JS 9종 P0 ~35건·P1 ~24건 적발)→fix 배포→R65 NO(R64 P0 전부 해소·나라칩 COUNTRIES 배열 한글 라벨 P1 1건 잔존·makeChip 키·라벨 미분리 구조). 나라칩 P1 fix 진행중. streak 0. **🟢 ja 메인 번역완전성 수렴 확정(R66+R67 2연속 YES·jbar/fav/동적JS/속성/나라칩 전부 일본어·가시 한글 0·endonym 정정·(내부코드) 안전)**: R66 YES(COUNTRY_LABELS 18개 ja 라벨·회귀 0)→R67 YES(endonym 정정·가시 한글 0건·R64~R66 해소 전수 회귀 없음) 2라운드 연속 충족. ja 메인 번역완전성 의제 수렴 종료.",
       "narrative": null,
       "mq_only": false,
-      "round_count": 0,
-      "latest_round_id": null,
-      "latest_round_state": null,
-      "latest_verdict": null,
+      "round_count": 4,
+      "latest_round_id": "RND-BYBIAS-067",
+      "latest_round_state": "수렴",
+      "latest_verdict": {
+        "verdict": "YES",
+        "quality_score": null,
+        "p0_count": 0,
+        "new_p1_count": 0
+      },
       "progress_pct": 55,
       "priority": "P0",
       "blocked": false,
@@ -3750,19 +4000,24 @@
       "repo": "ADMIN",
       "summary": "(본 작업) 어드민 V1 통합 이슈 트래커 — 3 SSOT(REQUEST-LEDGER+ROUND-LOG+MASTER-QUEUE) 통합·1요청1이슈·상태정확 + 찾기UX(검색·4 facet 필터·정렬·막힌 것 강조) + 비주얼(distinctive·production-grade·4모드 AA) + 동적확장(서비스 하드코딩 0·HOME·ADMIN 1급). 대규모 전담 서비스 격상 (2026-06-14)",
       "captured": "🆕",
-      "state": "구현중",
-      "state_raw": "🔨 구현중",
-      "owner": "RND-AD(비공개) (1심 스태프엔지니어·디자인·정직성·손님풀 → 2심 총괄 심사 패널)",
+      "state": "unknown",
+      "state_raw": "⚖️ **판정중·🔴 미수렴**(R1~R3 총괄 심사 패널 2심 전부 NO·streak 0)",
+      "owner": "**RND-ADMIN-001(NO·JDG-014) → 002(NO·JDG-022) → 003(NO·JDG-027·최신)** (각 1심 4축 시스템 심사 패널·design·정직성 심사·손님 패널 → 2심 총괄 심사 패널 공식)",
       "provenance": "— / —",
-      "close_evidence": "정본 REQ-002 생성 + 본 행 등록(docs-management). V1=기능+찾기UX+비주얼베이스+동적서비스 / V2=칸반+풀상세. ⚠️미구현(정적빌드 기반 유지·RDB 서버 유료단계 후)",
+      "close_evidence": "정본 REQ-002 생성 + 본 행 등록(docs-management). V1=기능+찾기UX+비주얼베이스+동적서비스 / V2=칸반+풀상세. **R1~R3 추세 단조 개선**(P0 1→0→0·NO 3→2→2): R1 parse_rounds silent drop(P0)·R2 스택바 6상태→4색 거짓동일시(dist 0)·R3 스택바 좁은세그 채움색 거의 동색(narrow 변별자 부재) + 잔존 P1군(sanitize doc_code regex false-PASS·수렴막대 unknown 미번역·progress ordinal·ByBias→ByVias free-text 미변환). fix 후 R4 발사 대기 → 수렴까지 자율 반복((내부코드) 거짓 종결 금지). ⚠️미구현(정적빌드 기반 유지·RDB 서버 유료단계 후)",
       "narrative": null,
       "mq_only": false,
-      "round_count": 0,
-      "latest_round_id": null,
-      "latest_round_state": null,
-      "latest_verdict": null,
-      "progress_pct": 55,
-      "priority": null,
+      "round_count": 3,
+      "latest_round_id": "RND-ADMIN-003",
+      "latest_round_state": "미수렴",
+      "latest_verdict": {
+        "verdict": "NO",
+        "quality_score": 7.0,
+        "p0_count": 0,
+        "new_p1_count": 5
+      },
+      "progress_pct": 0,
+      "priority": "P0",
       "blocked": false,
       "blocked_reason": null,
       "push_status": "unknown"
@@ -4348,11 +4603,11 @@
       "request_refs": "Q-160 연장 — 서브페이지 nav 통일(Products▾ 드롭다운 + 죽은 News 제거) 배포 후 IA 일관성 수렴 측정",
       "panel": "design(1심)",
       "tier": "1심",
-      "state": "미수렴",
-      "state_raw": "✔️ 판정완료·🔴 미수렴",
-      "verdict_links": "rnd-home-008-subpage-nav-design.md(NO·P0 2·신규P1 1)",
+      "state": "수렴",
+      "state_raw": "🟢 **수렴 확정** (R2+R3 2연속 YES·회귀0)",
+      "verdict_links": "R1(NO·P0 2·신규P1 1)·R2(YES·JDG-005)·R3(YES·JDG-002·byte-identical 회귀0)",
       "note": "홈 r7 수렴 baseline·서브페이지(pm320·lecture·incorporation·privacy·terms) nav 일관성 + 죽은링크0 + 4모드 시각 · 🔴`/stock` 404 = 의도(제3안 카테고리 미생성·결함 아님) · bybias 제외(B세션). P0-1 fix 착지(pm320·lecture ByBias href 정합·push보류) · incorporation P0-2(nav)/P1(다크) = 재작성 사이클 이관(어필리에이트 마이그레이션·noindex) · 카톡 표현 제거 동반",
-      "ts": "2026-06-14T22:25:14.243108+09:00"
+      "ts": "2026-06-15T08:53:53.201333+09:00"
     },
     {
       "round_id": "RND-HOME-어드민-1 (어드민 R1)",
@@ -4379,6 +4634,45 @@
       "verdict_links": "admin-converge-총괄 심사 패널.md(YES·(내부코드))",
       "note": "총괄 심사 패널 **YES·P0 0·신규 P1 0**. N1(범례 6항 dual-encoding 해독)·N2(헤더 라이브 생성시각 정직 표기) 양 건 실측 해소. prev=JDG-001(YES) → **JDG-001 YES + JDG-005 YES = 2라운드 연속·P0/신규P1 0 = 🟢 수렴 확정**. byte-identity(live↔`33d460adf`)·4모드 hOverflow 0·sanitize 내부에이전트명 0. 본체 \"JDG-001 YES → 본 YES = 2라운드 연속 = 🟢 수렴 확정\" 명시",
       "ts": null
+    },
+    {
+      "round_id": "RND-ADMIN-001",
+      "alias": "R1",
+      "repo": "ADMIN",
+      "request_refs": "REQ-ADMIN-20260614-001 (어드민 V1 통합 이슈 트래커 — 3 SSOT 통합·찾기UX·비주얼·동적확장)",
+      "panel": "시스템 심사 패널·design·정직성 심사·손님 패널(1심) + **총괄 심사 패널 2심(공식)**",
+      "tier": "1심+2심",
+      "state": "미수렴",
+      "state_raw": "✔️ 판정완료·🔴 미수렴",
+      "verdict_links": "**2nd-총괄 심사 패널.md(NO·공식·JDG-014·P0 1)** · 1심 시스템 심사 패널(NO·JDG-003·P0 1·P1 4)·design(NO·JDG-015·P1 2)·정직성 심사(조건부·JDG-017·P1 1)·손님 패널(NO·JDG-007·P1 2)",
+      "note": "**총괄 심사 패널 2심 = R1 공식 NO·streak 0**. CONFIRMED P0 1: parse_rounds silent drop(7칸 행 RND-BYBIAS-051·052 에러·경고 없이 소실 → summary.total_rounds까지 오염·대표 catch '몇 중 얼마 진행' 직격). 1심 4축 분포 NO 3·조건부 1. 1심 흡수 P1군(진행률 2벌·svc-card .m-k 4모드 중간끊김·빈 7탭 안내 부재·blocked 거짓 교착) → fix 후 R2",
+      "ts": "2026-06-14T20:38:04.036291+09:00"
+    },
+    {
+      "round_id": "RND-ADMIN-002",
+      "alias": "R2",
+      "repo": "ADMIN",
+      "request_refs": "REQ-ADMIN-20260614-001 (R1 P0/P1 fix 후 재판정·blocked 종결가드·parse_rounds graceful)",
+      "panel": "시스템 심사 패널·design·정직성 심사·손님 패널(1심) + **총괄 심사 패널 2심(공식)**",
+      "tier": "1심+2심",
+      "state": "미수렴",
+      "state_raw": "✔️ 판정완료·🔴 미수렴",
+      "verdict_links": "**2nd-총괄 심사 패널.md(NO·공식·JDG-022·P1 1)** · 1심 정직성 심사(YES·JDG-018·9.0)·시스템 심사 패널(YES·JDG-019·8.0)·design(NO·JDG-020·P1 2)·손님 패널(NO·JDG-021·P1 1)",
+      "note": "**총괄 심사 패널 2심 = R2 공식 NO·streak 0**(YES 2·NO 2 → 전 패널 YES 불성립). R1 P0 해소 확정(R051·052 라이브 복원+summary 14 정정+silent→fail-loud). **신규 본질 P1**: 상태 스냅샷 스택바 6상태→4색 거짓 동일시(배포≡종결·구현중≡보류·dist 0·design+손님 패널 교차적발). 1심 흡수(다크 --dm AA-normal 미달 2회차·progress ordinal·검색 owner 미인덱스·priority 칩 cross-card 46%) → fix 후 R3",
+      "ts": "2026-06-14T21:22:50.557173+09:00"
+    },
+    {
+      "round_id": "RND-ADMIN-003",
+      "alias": "R3",
+      "repo": "ADMIN",
+      "request_refs": "REQ-ADMIN-20260614-001 (R2 색충돌 6색 fix·다크 --dm·priority 칩·owner 검색·수렴막대 신설 후 재판정)",
+      "panel": "시스템 심사 패널·design·정직성 심사·손님 패널(1심) + **총괄 심사 패널 2심(공식)**",
+      "tier": "1심+2심",
+      "state": "미수렴",
+      "state_raw": "✔️ 판정완료·🔴 미수렴 (최신)",
+      "verdict_links": "**2nd-총괄 심사 패널.md(NO·공식·JDG-027·P1 1)** · 1심 시스템 심사 패널(YES·JDG-024·8.3)·정직성 심사(조건부·JDG-023·8.2)·design(NO·JDG-025·9.0)·손님 패널(NO·JDG-026·P1 1)",
+      "note": "**총괄 심사 패널 2심 = R3 공식 NO·streak 0**(YES 1·조건부 1·NO 2). **현 ADMIN 최신 라운드**. R2 게이트 색충돌 6색 레전드/넓은세그 해소 확정(dist 0→71~81). **신규 본질 P1**: 스택바 좁은세그(<12%·라벨숨김) 배포 vs 종결 채움색 dist 14(light)/21(dark) 거의 동색(narrow 변별자 부재). 1심 흡수(수렴막대 'unknown' 영문 미번역·sanitize doc_code regex false-PASS 내부코드 노출·progress ordinal 승계·ByBias→ByVias free-text 31필드 미변환). 추세 단조 개선(P0 1→0→0·NO 3→2→2·전 패널 점수↑) → fix 후 R4",
+      "ts": "2026-06-14T23:52:07.389143+09:00"
     },
     {
       "round_id": "RND-BYBIAS-047",
@@ -4599,7 +4893,59 @@
       "state_raw": "✔️ 판정완료·🟢 **GO**(비-streak 대상)",
       "verdict_links": "**r63-branding-critic.md(GO·JDG-002)** · **r63-kpop-fan-번역 심사.md(GO·JDG-001)** · **r63-bybias-guest-pool.md(GO·JDG-003)** · **r63-2nd-총괄 심사 패널.md(2심 별도 에이전트 작성 중)**",
       "note": "**질문 EN 고정 GO 확정**: 콜앤리스폰스('Where are you?'→'By vias.') 통째 EN 고정 — 1심 3인 만장일치 GO. 라이브 적용 완료. 근거: 콜앤리스폰스 분리불가 단위·via/bias 말장난 짝맞춤·자동번역 버그 구조 차단(`Where to?` 오역 실측)·Nike/Apple 글로벌 선례·팬 6/6 EN 고정 지지. 조건: ja/zh-cn/zh-tw 현지어 sub-line 동반 의무(구현 P0)·ko 선택적 `어디야?` 병기 허용. 대표 요청→판정 라운드 편입(역질문 금지 원칙). P0 0. verdict 4파일(총괄 심사 패널 2심 작성 중).",
-      "ts": "2026-06-15T06:53:29.440984+09:00"
+      "ts": "2026-06-15T06:57:06.076610+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-064",
+      "alias": "R64",
+      "repo": "BYBIAS",
+      "request_refs": "**ja 메인 미번역 전수 판정** — REQ-BYBIAS-20260613-008 (대표 \"테크충 뭐하냐\" 직무지적)",
+      "panel": "1심 2인(tech-cynic·kpop-fan-번역 심사)",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "**r64-tech-cynic.md(NO·JDG-006)** · **r64-kpop-fan-번역 심사.md(NO·JDG-004)**",
+      "note": "**NO**: jbar/fav `window.__JB={l:\"ko\"}`·`window.__FAV={l:\"ko\"}` 하드코딩으로 ja 100% 한글구동 + 인라인 JS(TKO/hotweek/toast/empty/hero-spot) 한글 전층 + aria/placeholder/title 미번역. build_lang 텍스트노드만 처리·속성/JS 미처리 구조적 결함. P0 ~35건·P1 ~24건. fix 배포 후 R65 발사. streak 0.",
+      "ts": "2026-06-15T07:37:53.820466+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-065",
+      "alias": "R65",
+      "repo": "BYBIAS",
+      "request_refs": "**ja 메인 미번역 재판정** — REQ-BYBIAS-20260613-008",
+      "panel": "1심 2인(tech-cynic·kpop-fan-번역 심사)",
+      "tier": "1심-풀패널",
+      "state": "미수렴",
+      "state_raw": "🔴 미수렴",
+      "verdict_links": "**r65-tech-cynic.md(NO·JDG-007)** · **r65-kpop-fan-번역 심사.md(NO·JDG-005)**",
+      "note": "**NO**: R64 P0 전부(jbar/fav 언어게이트 + 인라인 JS 9종) 해소 확인. **잔존 P1 1건** = 나라칩 라벨 COUNTRIES 배열 18개 한글(매칭 키·표시 라벨 미분리·makeChip(k,k,cnt) 구조). fix 진행중. P0 0·신규P1 1. streak 0.",
+      "ts": "2026-06-15T07:38:32.399894+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-066",
+      "alias": "R66",
+      "repo": "BYBIAS",
+      "request_refs": "**ja 메인 번역완전성 수렴 재판정** — REQ-BYBIAS-20260613-008",
+      "panel": "1심 2인(tech-cynic·kpop-fan-번역 심사)",
+      "tier": "1심-재판정",
+      "state": "수렴",
+      "state_raw": "✔️ 판정완료·🟢 streak 1",
+      "verdict_links": "**r66-tech-cynic.md(YES·JDG-008)** · **r66-kpop-fan-번역 심사.md(YES·JDG-r66-kpop-fan-번역 심사)**",
+      "note": "**YES**: 나라칩 18개 ja 라벨 해소(COUNTRY_LABELS 표시 라벨·매칭키 분리)·R64/R65 해소 8건 회귀 0·가시 P0 0. kpop-fan-번역 심사 신규 P1 1건(언어 스위처 ko 라벨 `한국어`)은 R67에서 endonym 정정(국제 관례·결함 아님). P0 0·신규P1 0(정정). streak 1.",
+      "ts": "2026-06-15T07:54:59.138308+09:00"
+    },
+    {
+      "round_id": "RND-BYBIAS-067",
+      "alias": "R67",
+      "repo": "BYBIAS",
+      "request_refs": "**ja 메인 번역완전성 수렴 confirm** — REQ-BYBIAS-20260613-008",
+      "panel": "1심 2인(tech-cynic·kpop-fan-번역 심사)",
+      "tier": "1심-수렴confirm",
+      "state": "수렴",
+      "state_raw": "✔️ 판정완료·🟢 **YES·streak 2 → 🟢 ja 메인 번역완전성 수렴 확정**",
+      "verdict_links": "**r67-tech-cynic.md(YES·JDG-009)** · **r67-kpop-fan-번역 심사.md(YES·JDG-r67-kpop-fan-번역 심사)**",
+      "note": "**수렴 확정**: R66+R67 2라운드 연속 YES·P0 0·신규P1 0. jbar/fav/JS/속성/나라칩/동적텍스트 전 계층 일본어 유지 라이브 독립 측정 2회 (cache-bust). 가시 한글 잔존 = 언어 스위처 ko 라벨 `한국어` 1건(endonym·정상). 1회성 아님(R66+R67 라이브 grep 입증·(내부코드) 안전). streak 2. REQ-BYBIAS-20260613-008 ja 메인 번역완전성 의제 **수렴 종료**.",
+      "ts": "2026-06-15T07:55:29.066824+09:00"
     }
   ],
   "verdicts": [
@@ -4715,8 +5061,8 @@
       "file": "(내부코드)-rnd-admin-001-시스템 심사 패널.md",
       "ts": "2026-06-14T20:01:34.553174+09:00",
       "doc_id": "(내부코드)",
-      "vrd_id": "VRD-RND-AD(비공개)-시스템 심사 패널",
-      "round_id": null,
+      "vrd_id": "VRD-RND-ADMIN-001-시스템 심사 패널",
+      "round_id": "RND-ADMIN-001",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "시스템 심사 패널",
@@ -4765,7 +5111,7 @@
       "ts": "2026-06-14T20:22:14.780376+09:00",
       "doc_id": "",
       "vrd_id": "",
-      "round_id": null,
+      "round_id": "RND-ADMIN-001",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "손님 패널",
@@ -4782,8 +5128,8 @@
       "file": "(내부코드)-rnd-admin-001-2nd-총괄 심사 패널.md",
       "ts": "2026-06-14T20:38:04.036291+09:00",
       "doc_id": "(내부코드)",
-      "vrd_id": "VRD-RND-AD(비공개)-총괄 심사 패널",
-      "round_id": null,
+      "vrd_id": "VRD-RND-ADMIN-001-총괄 심사 패널",
+      "round_id": "RND-ADMIN-001",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "총괄 심사 패널",
@@ -4813,8 +5159,8 @@
       "file": "(내부코드)-rnd-admin-001-design.md",
       "ts": "2026-06-14T20:10:49.010338+09:00",
       "doc_id": "(내부코드)",
-      "vrd_id": "VRD-RND-AD(비공개)-design",
-      "round_id": null,
+      "vrd_id": "VRD-RND-ADMIN-001-design",
+      "round_id": "RND-ADMIN-001",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "design",
@@ -4852,8 +5198,8 @@
       "file": "(내부코드)-rnd-admin-001-정직성 심사.md",
       "ts": "2026-06-14T20:17:59.463200+09:00",
       "doc_id": "(내부코드)",
-      "vrd_id": "VRD-RND-AD(비공개)-정직성 심사",
-      "round_id": null,
+      "vrd_id": "VRD-RND-ADMIN-001-정직성 심사",
+      "round_id": "RND-ADMIN-001",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "정직성 심사",
@@ -4876,7 +5222,7 @@
       "ts": "2026-06-14T21:09:57.851644+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-002-정직성 심사",
-      "round_id": null,
+      "round_id": "RND-ADMIN-002",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "정직성 심사",
@@ -4899,7 +5245,7 @@
       "ts": "2026-06-14T21:10:17.147748+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-002-시스템 심사 패널",
-      "round_id": null,
+      "round_id": "RND-ADMIN-002",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "시스템 심사 패널",
@@ -4941,7 +5287,7 @@
       "ts": "2026-06-14T21:15:33.557544+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-002-design",
-      "round_id": null,
+      "round_id": "RND-ADMIN-002",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "design",
@@ -4992,7 +5338,7 @@
       "ts": "2026-06-14T21:17:23.082729+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-002-손님 패널",
-      "round_id": null,
+      "round_id": "RND-ADMIN-002",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "손님 패널",
@@ -5031,7 +5377,7 @@
       "ts": "2026-06-14T21:22:50.557173+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-002-총괄 심사 패널",
-      "round_id": null,
+      "round_id": "RND-ADMIN-002",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "총괄 심사 패널",
@@ -5062,7 +5408,7 @@
       "ts": "2026-06-14T23:37:34.808917+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-003-정직성 심사",
-      "round_id": null,
+      "round_id": "RND-ADMIN-003",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "정직성 심사",
@@ -5085,7 +5431,7 @@
       "ts": "2026-06-14T23:37:58.291868+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-003-시스템 심사 패널",
-      "round_id": null,
+      "round_id": "RND-ADMIN-003",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "시스템 심사 패널",
@@ -5140,7 +5486,7 @@
       "ts": "2026-06-14T23:43:07.301650+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-003-design",
-      "round_id": null,
+      "round_id": "RND-ADMIN-003",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "design",
@@ -5191,7 +5537,7 @@
       "ts": "2026-06-14T23:44:26.826543+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-003-손님 패널",
-      "round_id": null,
+      "round_id": "RND-ADMIN-003",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "손님 패널",
@@ -5222,7 +5568,7 @@
       "ts": "2026-06-14T23:52:07.389143+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-ADMIN-003-총괄 심사 패널",
-      "round_id": null,
+      "round_id": "RND-ADMIN-003",
       "round_alias": null,
       "request_id": "REQ-ADMIN-20260614-001",
       "panel": "총괄 심사 패널",
@@ -8679,7 +9025,7 @@
     },
     {
       "file": "r63-2nd-총괄 심사 패널.md",
-      "ts": "2026-06-15T06:53:29.440984+09:00",
+      "ts": "2026-06-15T06:57:06.076610+09:00",
       "doc_id": "(내부코드)",
       "vrd_id": "VRD-RND-BYBIAS-063-총괄 심사 패널",
       "round_id": "RND-BYBIAS-063",
@@ -8814,6 +9160,404 @@
       "p1_items": []
     },
     {
+      "file": "r64-kpop-fan-번역 심사.md",
+      "ts": "2026-06-15T07:18:35.610203+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-064-kpop-fan-번역 심사",
+      "round_id": "RND-BYBIAS-064",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 8,
+      "new_p1_count": 11,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0-1] input placeholder '아티스트 · 나라 · 도시 검색' → ja 번역 의무: 'アーティスト · 国 · 都市で検索'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-2] hero-spot .hs-eye '가장 임박한 일정' → 'もっとも近いスケジュール'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-3] hotweek-h '다가오는 14일' → '今後14日間'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-4] hotweek unit '건' → '件'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-5] TKO e0/e1/e2 '오늘 티켓팅 오픈'/'티켓팅 오픈 임박'/'티켓팅 오픈 중' → '本日チケット発売開始'/'チケット発売まもなく'/'チケット発売中'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-6] TKO m '🇰🇷 대한민국 서울 · 2026-07-10' → '🇰🇷 韓国 ソウル · 2026-07-10'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-7] share toast '링크가 복사됐어요' → 'リンクをコピーしました'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0-8] empty msg '검색·필터에 맞는 일정이 없어요. 다른 나라를 골라보거나 검색어를 지워보세요.' → ja 번역",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-1] aria-label '이 가이드 공유하기' → 'このガイドをシェアする'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-2] aria-label 'ByVias 소개' → 'ByViasについて'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-3] aria-label '가장 임박한 일정' → 'もっとも近いスケジュール'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-4] aria-label '다가오는 14일' → '今後14日間'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-5] aria-label '아티스트·나라·도시로 일정 검색' → 'アーティスト・国・都市でスケジュールを検索'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-6] aria-label '검색어 지우기' → '検索をクリア'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-7] aria-label '나라별 거르기' → '国でフィルター'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-8] title 11건 — 엠카운트다운/뮤직뱅크/인기가요/열린음악회/서울라이브아이돌페스티벌/주간아이돌점프/쇼챔피언/라이브아이돌합동공연/더쇼/쇼음악중심/대한민국대표팀 → ja 번역 또는 영어+원어 병기",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-9] img alt '공연장 무드' → 'コンサート会場の雰囲気'",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1-10] countEl 결과 요약 '개' 단위 → '件'",
+          "state": "미해소"
+        },
+        {
+          "text": "[별건-버그] 언어 스위처 ko 링크 라벨 '日本語' → '한국어'로 수정 (잘못된 라벨 복사)",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r64-tech-cynic.md",
+      "ts": "2026-06-15T07:37:53.820466+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-064-tech-cynic",
+      "round_id": "RND-BYBIAS-064",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "tech-cynic",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 35,
+      "new_p1_count": 24,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0] window.__JB={l:\"ko\"} 하드코딩 → jbar 언어게이트 한글 구동 (ja 100% 노출)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] window.__FAV={l:\"ko\"} 하드코딩 → fav-filter 언어게이트 한글 구동 (ja 100% 노출)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] 인라인 JS TKO 배열 한글 텍스트 전층 미번역 (e0/e1/e2/m)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] hotweek innerHTML 한글 ('다가오는 14일'/'건')",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] share toast('링크가 복사됐어요') 한글",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] empty.innerHTML 한글 안내 문구 전문",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] hero-spot hs-eye '가장 임박한 일정' 동적 노출 한글",
+          "state": "미해소"
+        },
+        {
+          "text": "[P0] countEl '개' 단위 한글 (검색 결과 요약)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1] aria-label 한글 7건 (공유하기/소개/임박일정/14일/검색/지우기/나라필터)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1] title 속성 한글 11건 (뮤직쇼 11종 명칭)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1] img alt '공연장 무드' 한글",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1] input placeholder '아티스트 · 나라 · 도시 검색' 한글 (가시 P0 동급)",
+          "state": "미해소"
+        },
+        {
+          "text": "[P1] COUNTRIES 배열 한글 키 → 나라칩 라벨 한글 노출 (ja 팬 필터 기능 훼손)",
+          "state": "미해소"
+        },
+        {
+          "text": "[별건-버그] 언어 스위처 ja→ko 링크 라벨 '日本語' 오표기 (→'한국어'로 수정 필요)",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r65-kpop-fan-번역 심사.md",
+      "ts": "2026-06-15T07:34:27.245827+09:00",
+      "doc_id": "(내부코드) 심사",
+      "vrd_id": "VRD-RND-BYBIAS-065-kpop-fan-번역 심사",
+      "round_id": "RND-BYBIAS-065",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 1,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0-1] input placeholder '아티스트 · 나라 · 도시 검색' → 'アーティスト · 国 · 都市で検索'",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-2] hero-spot .hs-eye '가장 임박한 일정' → 'もっとも近いスケジュール'",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-3] hotweek-h '다가오는 14일' → '今後14日間'",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-4] hotweek unit '건' → '件'",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-5] TKO e0/e1/e2 티켓팅 문구 → ja 번역",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-6] TKO m '대한민국 서울' → '韓国 ソウル'",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-7] share toast '링크가 복사됐어요' → 'リンクをコピーしました'",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-8] empty msg → ja 번역 '検索・絞り込みに一致する日程がありません…'",
+          "state": "해소"
+        },
+        {
+          "text": "[잔존-P1-신규] 나라 칩 라벨 COUNTRIES 배열 = 한글('대한민국','일본' 등) — ja 팬이 나라 칩을 고를 때 일본어로 표시돼야 함. JS hf-chips populate 시 makeChip(k,k) 호출이 한글 키를 라벨로 그대로 노출",
+          "state": "잔존"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r65-tech-cynic.md",
+      "ts": "2026-06-15T07:38:32.399894+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-065-tech-cynic",
+      "round_id": "RND-BYBIAS-065",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "tech-cynic",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 1,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P0-R64] window.__JB={l:\"ko\"} 하드코딩 → jbar 언어게이트 한글 구동",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] window.__FAV={l:\"ko\"} 하드코딩 → fav-filter 한글 구동",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] 인라인 JS TKO 배열 한글 전층 (e0/e1/e2/m)",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] hotweek innerHTML 한글 ('다가오는 14일'/'건')",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] share toast 한글",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] empty.innerHTML 한글",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] hero-spot hs-eye 한글 동적 노출",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] countEl '개' 한글 단위",
+          "state": "해소"
+        },
+        {
+          "text": "[P0-R64] input placeholder 한글",
+          "state": "해소"
+        },
+        {
+          "text": "[잔존-P1-신규] COUNTRIES 배열 한글 키 → 나라칩 라벨 18개 한글 노출 — makeChip(k,k,cnt) 라벨=키 한글 그대로. 매칭 키(SSOT)와 표시 라벨 미분리",
+          "state": "잔존"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r66-kpop-fan-번역 심사.md",
+      "ts": "2026-06-15T07:46:07.014404+09:00",
+      "doc_id": "(내부코드) 심사",
+      "vrd_id": "VRD-RND-BYBIAS-066-kpop-fan-번역 심사",
+      "round_id": "RND-BYBIAS-066",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 1,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[P1-잔존] 나라 칩 라벨 한글 → COUNTRY_LABELS 맵으로 ja 번역",
+          "state": "해소"
+        },
+        {
+          "text": "[P1-신규] 언어 스위처 ko 링크 라벨 'Korean' — ja/zh 페이지에서 '한국어'(한글) 잔존, en만 로케일 번역됨",
+          "state": "신규"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r66-tech-cynic.md",
+      "ts": "2026-06-15T07:54:59.138308+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-066-tech-cynic",
+      "round_id": "RND-BYBIAS-066",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "tech-cynic",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[R65-P1 해소] 나라칩 18개 ja 라벨 — COUNTRY_LABELS 맵 적용(표시 라벨/매칭키 분리)",
+          "state": "해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r67-kpop-fan-번역 심사.md",
+      "ts": "2026-06-15T07:51:45.972762+09:00",
+      "doc_id": "(내부코드) 심사",
+      "vrd_id": "VRD-RND-BYBIAS-067-kpop-fan-번역 심사",
+      "round_id": "RND-BYBIAS-067",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "[R66-P1 정정] 언어 스위처 ko 라벨 '한국어' = endonym(자국어 표기·국제 관례), P1 아님 — R66 과대 정정 확정",
+          "state": "정정완료"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r67-tech-cynic.md",
+      "ts": "2026-06-15T07:55:29.066824+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-BYBIAS-067-tech-cynic",
+      "round_id": "RND-BYBIAS-067",
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "tech-cynic",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": "YES — 2라운드 연속 YES, 수렴 조건 충족",
+      "improvements": [
+        {
+          "text": "[R66-P1 정정] 언어 스위처 ko 라벨 '한국어' = endonym(자국어 표기·국제 관례) — P1 아님, 정정 확정",
+          "state": "정정완료"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "r68-kpop-fan-번역 심사.md",
+      "ts": "2026-06-15T08:52:05.174297+09:00",
+      "doc_id": "(내부코드) 심사",
+      "vrd_id": "VRD-RND-BYBIAS-068-kpop-fan-번역 심사",
+      "round_id": null,
+      "round_alias": null,
+      "request_id": "REQ-BYBIAS-20260613-008",
+      "panel": "kpop-fan-번역 심사",
+      "verdict": "NO",
+      "quality_score": null,
+      "p0_count": 2,
+      "new_p1_count": 4,
+      "headline": null,
+      "improvements": [],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
       "file": "r7-home-menu-confirm-총괄 심사 패널.md",
       "ts": "2026-06-14T03:56:06.326462+09:00",
       "doc_id": "(내부코드)",
@@ -8835,6 +9579,68 @@
         {
           "text": "③ 디테일 축 미세 잔존(R6 동일·severity 무변): '예정'(주식 용어·투자 팁·교육) 행 cursor:pointer — 데스크탑·모바일 공통. 단 markup 정직성은 개선(모바일 aria-disabled=true + onclick=return false 추가). cursor:default/not-allowed가 완전 정직. P0/P1 미달 · 파생요청 미발사(R6 판정 동일 처리).",
           "state": "취향"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "rnd-home-008-subpage-nav-design-r2.md",
+      "ts": "2026-06-15T07:28:10.958612+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-HOME-008-design-R2",
+      "round_id": "RND-HOME-008",
+      "round_alias": null,
+      "request_id": "Q-160",
+      "panel": "design",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "R1 P0-1 (ByBias 죽은 도메인 회귀) = 해소. pm320·lecture·incorporation 3페이지 ByBias href 전부 `https://(비공개).github.io/100m1s-byvias/`(HTTP 200·홈과 동일 SSOT)로 정정. 죽은 `100m1s-bybias`(repo 미존재·404) 등장수 3페이지 전부 0건. 데스크탑 드롭다운 + 모바일 드로어 양쪽 ByBias 링크 모두 200. '죽은 링크 0건' 측정 항목 충족.",
+          "state": "해소"
+        },
+        {
+          "text": "R1 P0-2 (incorporation nav 미통일 + 죽은 News 거짓동선) = 해소. incorporation 데스크탑 nav = top-level [About / Products▾ / Contact]·nav-trigger(aria-haspopup=true) 존재·드롭다운 5링크(주식 라인 PM320 LIVE/오늘의 추천·백테스트 LIVE/주식 강의/투자 팁 예정 + 기타 라인 ByBias BETA) = 홈 baseline 동치. 모바일 = #menu-toggle 드로어 + #drawer-products-toggle 아코디언 실펼침(하위 5링크 h=56px ≥HIG 44pt). News 라벨/링크 데스크탑·모바일·footer 3곳 전부 0건(news.html 등장수=0). 통일 작업이 R1에서 누락했던 incorporation을 완전 포함.",
+          "state": "해소"
+        },
+        {
+          "text": "R1 신규P1 (incorporation 다크모드 미대응) = 해소. prefers-color-scheme:dark 블록 신설(index baseline 토큰 정합) — body color rgb(240,243,248)(밝은 텍스트·R1은 rgb(26,29,38) 어두운 텍스트 고정이었음)·--bg #0E1116·--am #E8C063(밝은 amber)·header/nav-dropdown/mobile-drawer 다크 override. tx vs bg 대비 약 16:1(AAA)·모바일 드로어 bg rgb(26,31,39) vs 링크 rgb(240,243,248) 약 14:1. 정보 손실 0·다크모드 제1원칙 충족.",
+          "state": "해소"
+        },
+        {
+          "text": "[신규 P2·부수·nav 범위 밖] incorporation 페이지 헤더의 빨간 경고 칩 '내부 실무 문서 · 외부 공개 아님'이 좁은 칩 폭 안에서 '외부 공 / 개 아님'으로 어색하게 줄바꿈(라이트·다크 공통, 모바일 390px에서 두드러짐). nav IA 수렴 게이트와 무관·1초 인지 저해는 아니나 텍스트 래핑 다듬기 권고(칩 white-space 또는 문구 단축). 본 라운드 NO 사유 아님.",
+          "state": "미해소"
+        }
+      ],
+      "p0_items": [],
+      "p1_items": []
+    },
+    {
+      "file": "rnd-home-008-subpage-nav-design-r3.md",
+      "ts": "2026-06-15T08:53:53.201333+09:00",
+      "doc_id": "(내부코드)",
+      "vrd_id": "VRD-RND-HOME-008-design-R3",
+      "round_id": "RND-HOME-008",
+      "round_alias": null,
+      "request_id": "Q-160",
+      "panel": "design",
+      "verdict": "YES",
+      "quality_score": null,
+      "p0_count": 0,
+      "new_p1_count": 0,
+      "headline": null,
+      "improvements": [
+        {
+          "text": "R3 = 회귀 검증 라운드(무수정 회귀). R2 정본 4종(index 64dc35f1…·pm320 c81ee05a…·lecture 876315d1…·incorporation cdb33dee…) 대비 현 라이브 sha256 3회 fetch 전부 byte-identical(회귀 0). last-modified 4페이지 동일 배포(2026-06-14T23:41 GMT). R2에서 해소된 P0-1(ByBias 죽은 도메인)·P0-2(incorporation nav 미통일+죽은 News)·신규P1(incorporation 다크 미대응)이 byte-identical로 전부 유지. 신규 결함 0건.",
+          "state": "해소"
+        },
+        {
+          "text": "[R2 인계 P2·부수·nav 범위 밖·회귀 추적] incorporation 헤더 경고 칩 '내부 실무 문서 · 외부 공개 아님' 텍스트 라이브 verbatim 존속(byte-identical). 좁은 칩 폭 줄바꿈 다듬기 권고는 R2와 동일하게 nav IA 수렴 게이트와 무관·NO 사유 아님. 수렴 확정과 별개로 후속 다듬기 잔존.",
+          "state": "미해소"
         }
       ],
       "p0_items": [],
@@ -8874,7 +9680,7 @@
   ],
   "trend_mapping": {
     "verdicts_mapped_to_round": 16,
-    "verdicts_total": 137,
+    "verdicts_total": 148,
     "note": "권위=ROUND-LOG verdict_links + 비모호 회차 alias. 모호/미참조는 미매핑(거짓 귀속 금지)."
   }
 }
