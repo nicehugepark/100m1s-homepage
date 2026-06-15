@@ -258,6 +258,26 @@ if (typeof window !== 'undefined' && !window.__koreaHolidaysLoading && !window.K
 //   US 열. 출처 표시명은 발화 주체 명확 귀속(법무 §3) "트럼프(트루스 소셜)" 원형 유지(약어 미적용).
 const _WIRE_US_SOURCE_RE = /\b(SEC|Federal Reserve|White House|Fed)\b|백악관|연방준비제도|트루스 소셜/i;
 const _WIRE_SOURCE_ABBR = { 'Federal Reserve': 'Fed', 'White House': '백악관', '금융위원회': '금융위' };
+
+// 대표 2026-06-15 (news-sort-time-desc-impact-pin) — 미장 뉴스 칩 시간 역순(최신 위) 정렬 +
+//   심각 임팩트만 24h 최상위 pin. 백엔드 build_us_digest._sort_chips_time_desc_impact_pin 과 동형.
+//   정렬 키(내림차순): [pin_flag, published_ts]. pin_flag = impact_high(백엔드 명시) AND
+//   now-published_ts ≤ 24h. published_ts(epoch 초) = 백엔드 news_chips 보존분 + wire 칩 carry분.
+//   매칭 실패/시각 부재 = published_ts 0 → 맨 아래(보수). Array.sort 는 동률 시 순서 보존 보장
+//   안 되므로 index tie-break 로 stable 화(입력 순서 유지 — dedup 전 백엔드 정렬 결과 존중).
+function _sortUsChipsTimeDesc(chips) {
+  if (!Array.isArray(chips) || chips.length <= 1) return chips || [];
+  const nowTs = Date.now() / 1000;
+  const PIN_WINDOW = 24 * 3600;
+  const meta = chips.map((c, i) => {
+    const ts = (c && typeof c.published_ts === 'number' && isFinite(c.published_ts)) ? c.published_ts : 0;
+    const pinned = (c && c.impact_high === true && ts > 0 && (nowTs - ts) <= PIN_WINDOW) ? 1 : 0;
+    return { c, i, ts, pinned };
+  });
+  meta.sort((a, b) => (b.pinned - a.pinned) || (b.ts - a.ts) || (a.i - b.i));
+  return meta.map(m => m.c);
+}
+
 function _splitWireNews(wire) {
   const out = { us: [], kr: [] };
   if (!wire || !Array.isArray(wire.items)) return out;
@@ -277,6 +297,12 @@ function _splitWireNews(wire) {
     //   scripts/wire_collector/interpret_wire.py KO_FIELDS 병합분 (US 3기관만, schema validation
     //   PASS만 데이터에 실림). 필드별 타입 가드 — 미달 필드는 carry 0 → 해당 요소 무렌더 (graceful,
     //   FLR-AGT-002 빈 칸·"—" 색칠 금지). body_fetched 는 false 명시분만 carry (보수 표기 트리거).
+    // 시간 역순 정렬 키 (대표 2026-06-15 news-sort-time-desc-impact-pin) — wire item 의
+    //   published_at(ISO KST, data-loader 필수 검증) → epoch 초로 carry. 백엔드 news_chips
+    //   published_ts(epoch 초)와 동일 단위 → 미장 칩 + wire 칩 통합 시간 역순 정렬 가능.
+    //   파싱 실패 시 0(맨 아래) — 시각 조작 금지(없는 시각 날조 0).
+    const _wts = Date.parse(it.published_at);
+    chip.published_ts = Number.isFinite(_wts) ? _wts / 1000 : 0;
     if (typeof it.ko_title === 'string' && it.ko_title.trim()) chip.ko_title = it.ko_title.trim();
     if (typeof it.causal_summary === 'string' && it.causal_summary.trim()) chip.causal_summary = it.causal_summary.trim();
     if (typeof it.causal_chain === 'string' && it.causal_chain.indexOf('→') >= 0) chip.causal_chain = it.causal_chain.trim();
@@ -785,6 +811,13 @@ function _buildNightlyUsHtml(us, viewDate, ctx) {
         _usChipSrc.push(w);
       }
     }
+    // 대표 2026-06-15 (news-sort-time-desc-impact-pin) — 미장 칩(백엔드 published_ts 보존)
+    //   + wire 칩(published_ts carry) 통합 시간 역순 + 심각 임팩트 24h pin. 백엔드 정렬은
+    //   news_chips 단독 → wire 합류분이 뒤에 append 되며 시간순 깨짐 → 합류 후 여기서 재정렬.
+    //   pin 판정 = 백엔드가 명시한 impact_high 플래그만(단일 SSOT, frontend 재판정 0 — 과탐 방지).
+    //   wire 칩은 impact_high 부재 → pin 비대상이나 시간 역순엔 정상 합류. published_ts 없으면
+    //   0(맨 아래) — 시각 날조 0. 24h pin 윈도우(경과 고임팩트는 시간순 복귀).
+    _usChipSrc = _sortUsChipsTimeDesc(_usChipSrc);
   }
   if (_usChipSrc.length > 0) {
     // R43 — 의미 dedup 양 변형 공통 전제 (국내 칩과 동일 _dedupSimilarMacro, 미장 포함).
