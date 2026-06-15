@@ -1061,34 +1061,56 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
   try {
     if (!Array.isArray(runningPicks) || runningPicks.length === 0) return '';
     const _krw = (n) => (n == null || !Number.isFinite(n)) ? '—' : (n.toLocaleString('ko-KR') + '원');
+    // RND-PM320-062 (2026-06-15, advisory DOC-20260615-JDG-030) — D-n(만기까지 캘린더 일수).
+    //   _collectRunningPicks 가 만기 경과분(expiry < today) 이미 배제 → dn ≥ 0.
+    const _today = new Date(); _today.setHours(0, 0, 0, 0);
+    const _dleft = (exp) => {
+      if (!exp) return null;
+      const e = new Date(exp + 'T00:00:00');
+      if (!Number.isFinite(e.getTime())) return null;
+      return Math.max(0, Math.round((e - _today) / 86400000));
+    };
+    // 손익%(가드4·FLR-AGT-002) — current_price 실측 성공(현재가 수집됨)일 때만 노출.
+    //   current_price == null 인데 current_pnl_pct 0.0 = 현재가 수집 실패 폴백 → 가짜 0% 차단(생략).
+    //   이익=--up(적)·손실=--down(청)·보합=--dm(중립). 즉흥 hex 0(가격 토큰 재사용)·폴백 색칠 0.
+    const _pnl = (pk) => {
+      const v = pk && pk.current_pnl_pct;
+      if (!pk || pk.current_price == null || typeof v !== 'number' || !Number.isFinite(v)) return '';
+      const cls = v > 0 ? 'cal-pre-prev-pick-holding-pnl--up' : (v < 0 ? 'cal-pre-prev-pick-holding-pnl--down' : 'cal-pre-prev-pick-holding-pnl--flat');
+      return ` · <span class="cal-pre-prev-pick-holding-pnl ${cls}">${v > 0 ? '+' : ''}${v.toFixed(1)}%</span>`;
+    };
     // 교차검증(FLR-AGT-002): 각 픽은 자기 일자 스냅샷의 running + 만기 미경과로 개별 검증됨(정직).
-    //   summary.running 은 매일 1회 빌드 스냅샷이라 당일 신규 픽보다 뒤처질 수 있음(stale-newer).
-    //   → fan-out 카운트 ≥ summary 면 per-pick 신뢰(fan-out 이 더 최신·개별 검증). fan-out < summary
-    //     면 우리가 일부 보유 픽을 놓친 것(summary 가 더 많이 앎) → per-pick 리스트 대신 count 만 표시
-    //     (놓친 픽을 누락한 채 "전부"인 척 차단). summary 부재 시 = per-pick 신뢰(개별 검증으로 충분).
+    //   fan-out 카운트 ≥ summary 면 per-pick 신뢰. fan-out < summary 면 count 만 표시(누락 차단).
     const trustList = (typeof summaryRunning !== 'number') || (runningPicks.length >= summaryRunning);
     const others = runningPicks.filter(p => p.code !== headlineCode);
     if (others.length === 0) return '';
-    // wave1 fix ③ (2026-06-11, R24 P2) — 히어로 "하루 단 한 종목" vs "외 N종 보유 중" 표면 충돌 해소.
-    //   취지 설명 1줄: 추천은 하루 1픽, 각 픽은 만기까지 보유 → 기간이 겹치면 보유가 누적된다.
-    //   만기 일수는 전략 파라미터(가변)라 숫자 미표기(D+N 하드코딩 금지, 과장 0).
+    // advisory — 만기 임박순 정렬(D-n 작은 순·매매 결단 직결).
+    others.sort((a, b) => String((a.pk && a.pk.expiry_date) || '9').localeCompare(String((b.pk && b.pk.expiry_date) || '9')));
+    // 가드1(프레이밍) — "보유" 단어 제거 → "추적 중인 픽 N"(유사투자자문 회색지대 회피·숫자 1초 인지).
+    const _label = `추적 중인 픽 ${others.length}`;
+    // wave1 fix ③ (2026-06-11, R24 P2) — "하루 1픽 누적 보유" 취지 보조설명 1줄.
     const noteHtml = `<div class="cal-pre-prev-pick-holdings-note">추천은 하루 1종목 — 각 픽을 만기까지 보유해 기간이 겹치면 여러 종목을 함께 보유합니다</div>`;
+    // 가드1+3(면책·적시성) — 진입가는 추천 시점 기준·매매 권유 아님.
+    const discHtml = `<div class="cal-pre-prev-pick-holdings-note">추천 시점 진입가 기준 · 매매 권유 아님</div>`;
     if (!trustList) {
-      return `<div class="cal-pre-prev-pick-holdings cal-pre-prev-pick-holdings--countonly">`
-        + `<span class="cal-pre-prev-pick-holdings-label">외 ${others.length}종 보유 중</span>`
-        + noteHtml
-        + `</div>`;
+      return `<details class="cal-pre-prev-pick-holdings cal-pre-prev-pick-holdings--countonly">`
+        + `<summary class="cal-pre-prev-pick-holdings-label">${_label}</summary>`
+        + noteHtml + discHtml
+        + `</details>`;
     }
-    const rows = others.map(p =>
-      `<div class="cal-pre-prev-pick-holding-row"${p.code ? ` data-prev-pick-code="${escapeHtml(p.code)}"` : ''}>`
-      + `<span class="cal-pre-prev-pick-holding-name">${escapeHtml(p.name || '—')}</span>`
-      + `<span class="cal-pre-prev-pick-holding-meta">진입가 ${escapeHtml(_krw(p.pk.entry_price))} · 만기 ${escapeHtml(p.pk.expiry_date || '—')}</span>`
-      + `</div>`).join('');
-    return `<div class="cal-pre-prev-pick-holdings" role="group" aria-label="외 ${others.length}종 보유 중">`
-      + `<div class="cal-pre-prev-pick-holdings-label">외 ${others.length}종 보유 중</div>`
-      + rows
-      + noteHtml
-      + `</div>`;
+    const rows = others.map(p => {
+      const dn = _dleft(p.pk && p.pk.expiry_date);
+      const dTxt = (dn == null) ? '' : ` · D-${dn}`;
+      return `<div class="cal-pre-prev-pick-holding-row"${p.code ? ` data-prev-pick-code="${escapeHtml(p.code)}"` : ''}>`
+        + `<span class="cal-pre-prev-pick-holding-name">${escapeHtml(p.name || '—')}</span>`
+        + `<span class="cal-pre-prev-pick-holding-meta">진입가 ${escapeHtml(_krw(p.pk && p.pk.entry_price))}${_pnl(p.pk)}${dTxt}</span>`
+        + `</div>`;
+    }).join('');
+    // 가드2(위계) — <details> 기본 접힘 + summary 에 "추적 중인 픽 N" 상시 노출(toppick 위계 침범 0).
+    return `<details class="cal-pre-prev-pick-holdings" role="group" aria-label="${_label}">`
+      + `<summary class="cal-pre-prev-pick-holdings-label">${_label}</summary>`
+      + rows + noteHtml + discHtml
+      + `</details>`;
   } catch (_) { return ''; }
 }
 
