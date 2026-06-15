@@ -28,7 +28,7 @@
     if(e.key==='Escape'&&drw.classList.contains('open')){toggle(false);btn.focus();}
   });
 
-  /* 간극 해소 (대표 2026-06-14) — Products 접이식(accordion). 탭하면 주식 라인·ByBias 하위 펼침(드로어 유지) */
+  /* 간극 해소 (대표 2026-06-14) — Products 접이식(accordion). 탭하면 주식 라인·ByVias 하위 펼침(드로어 유지) */
   var grpBtn=document.getElementById('drawer-products-toggle');
   if(grpBtn){
     grpBtn.addEventListener('click',function(){
