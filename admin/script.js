@@ -2241,6 +2241,200 @@
     }).join("");
   }
 
+  // ──────────────────────────────────────────────────────────────────────────
+  // ⑥ 루프뷰 (track_graph 파생 — read-only) — DOC-20260616-REQ-001 V2
+  //   요청 1건의 인과 체인: 요청 노드 → 회차순 라운드 노드(node_status별 시각 구분) →
+  //   각 라운드의 판정(verdicts[]). track_graph(백엔드 build_track_graph)가 SSOT —
+  //   프론트는 추측/합성 0. 거짓 충실성(FLR-AGT-002):
+  //     - track_graph 미보유 요청(단발 라운드)은 트랙 목록에서 '단발/루프 없음'으로 정직 안내.
+  //     - link_inferred 가 null/false 인 노드 간엔 인과선을 그리지 않음(연결 불명 점선 마커만).
+  //     - count/score 가 null 이면 '?'(numOrUnknown) — 0 색칠 금지.
+  //     - '활동 중' 가짜 애니메이션·폴백 색칠 없음.
+  // node_status → 라벨/클래스 (백엔드 _track_node_status: converged|open|superseded|milestone).
+  const NODE_STATUS_META = {
+    converged:  { label: "수렴",   cls: "tg-converged" },
+    open:       { label: "열림",   cls: "tg-open" },
+    superseded: { label: "대체됨", cls: "tg-superseded" },
+    milestone:  { label: "경유",   cls: "tg-milestone" },
+  };
+  function nodeStatusMeta(s) {
+    return NODE_STATUS_META[s] || { label: "미상", cls: "tg-unknown" };
+  }
+  // 현재 선택된 트랙 req_id (폴링 재렌더 시 선택 유지). null = 첫 트랙 자동 선택.
+  let convLoopSelected = null;
+
+  // 트랙 1개 → 세로 인과 체인 HTML.
+  function renderTrackChain(track) {
+    if (!track) {
+      return `<p class="hint">표시할 트랙이 없습니다.</p>`;
+    }
+    const reqStateM = stateMeta(track.req_state);
+    // 뿌리 요청 노드.
+    const head = `
+      <div class="tg-chain-head">
+        <div class="tg-req-node">
+          <span class="tg-req-tag">요청</span>
+          <span class="badge ${escape(reqStateM.cls)}" title="요청 상태">${escape(reqStateM.label)}</span>
+          <code class="tg-req-id">${safe(track.req_id || "(미상)")}</code>
+          <span class="tg-req-repo">${escape(repoDisplay(track.repo))}</span>
+        </div>
+        <div class="tg-req-summary">${mdSafe(track.summary || "(요약 없음)")}</div>
+        <div class="tg-req-meta">
+          <span title="이 요청에 묶인 라운드 수">라운드 ${escape(track.round_count)}회</span>
+          <span class="tg-sep">·</span>
+          <span class="${track.open_rounds ? "tg-meta-open" : ""}" title="아직 열린(미수렴·진행중) 라운드">열림 ${escape(track.open_rounds)}</span>
+          <span class="tg-sep">·</span>
+          <span class="${track.converged ? "tg-meta-converged" : "tg-meta-notconverged"}" title="최신 라운드가 수렴이고 열린 라운드 0">${track.converged ? "수렴 완료" : "미수렴"}</span>
+          ${track.owner ? `<span class="tg-sep">·</span><span title="담당">${safe(track.owner)}</span>` : ""}
+        </div>
+        ${track.close_evidence ? `<div class="tg-req-evidence" title="종결 근거">근거: ${mdSafe(track.close_evidence)}</div>` : ""}
+      </div>`;
+
+    // 라운드 노드들 (회차순).
+    const nodes = (track.nodes || []).map((n, i) => {
+      const sm = nodeStatusMeta(n.node_status);
+      // 직전 노드와의 연결선: link_inferred === true 일 때만 실선 인과(↓). false/null 은 점선
+      //   '연결 불명'(거짓 인과선 0·FLR-AGT-002). 첫 노드(i===0)는 연결선 없음(요청에서 내려옴).
+      let connector = "";
+      if (i > 0) {
+        if (n.link_inferred === true) {
+          connector = `<div class="tg-connector tg-conn-causal" title="이전 회차 미수렴 → 다음 회차 (인과 연결 실측)" aria-label="이전 회차에서 이어짐">↓</div>`;
+        } else {
+          connector = `<div class="tg-connector tg-conn-unknown" title="회차 점프 또는 직전 수렴 후 추가 — 인과 연결 불명(추정 안 함)" aria-label="연결 불명">⋮</div>`;
+        }
+      }
+      // 판정 목록 (verdicts[]).
+      const verdicts = (n.verdicts || []).map((v) => {
+        const qs = v.quality_score == null
+          ? "" : `<span class="tg-v-q" title="품질점수(4축 평균·0~10)">품질 ${escape(v.quality_score)}</span>`;
+        const p0 = `<span class="tg-v-defect" title="P0 결함 수">P0 ${numOrUnknown(v.p0_count)}</span>`;
+        const p1 = `<span class="tg-v-defect" title="신규 P1 결함 수">신규P1 ${numOrUnknown(v.new_p1_count)}</span>`;
+        return `
+          <div class="tg-verdict">
+            <div class="tg-v-top">
+              <span class="badge ${verdictClass(v.verdict)}">${escape(verdictLabel(v.verdict))}</span>
+              <span class="tg-v-panel">${mdSafe(v.panel || "(패널 미상)")}</span>
+            </div>
+            <div class="tg-v-metrics">${qs}${p0}${p1}</div>
+            ${v.headline ? `<div class="tg-v-headline">${mdSafe(v.headline)}</div>` : ""}
+          </div>`;
+      }).join("");
+      const verdictsBlock = verdicts
+        ? `<div class="tg-verdicts">${verdicts}</div>`
+        : `<div class="tg-verdicts tg-verdicts-empty"><p class="hint">이 라운드에 기록된 판정이 없습니다.</p></div>`;
+
+      return `
+        ${connector}
+        <div class="tg-node ${escape(sm.cls)}">
+          <div class="tg-node-head">
+            <span class="tg-node-status">${escape(sm.label)}</span>
+            <code class="tg-node-id">${escape(n.round_id || "")}</code>
+            ${n.alias ? `<span class="tg-node-alias">${safe(n.alias)}</span>` : ""}
+            ${n.tier ? `<span class="tg-node-tier" title="심급/패널 tier">${mdSafe(n.tier)}</span>` : ""}
+            ${n.ts ? `<span class="tg-node-ts" title="라운드 시각">${escape(n.ts)}</span>` : ""}
+          </div>
+          ${n.state_raw && stateMeta(n.state).label !== n.state_raw
+            ? `<div class="tg-node-stateraw" title="원본 state 표기">${mdSafe(n.state_raw)}</div>` : ""}
+          ${verdictsBlock}
+        </div>`;
+    }).join("");
+
+    const nodesBlock = nodes
+      ? `<div class="tg-chain-nodes">${nodes}</div>`
+      : `<div class="tg-chain-nodes"><p class="hint">이 트랙에 라운드 노드가 없습니다.</p></div>`;
+
+    return `<div class="tg-chain">${head}${nodesBlock}</div>`;
+  }
+
+  // 루프뷰 전체 — 트랙 목록(선택) + 선택 트랙 체인 + 단발 요청 정직 안내.
+  function renderConvLoopView(conv) {
+    const host = el("conv-loopview");
+    if (!host) return;
+    const tracks = conv.track_graph || [];
+    const reqs = conv.requests || [];
+    // 단발(루프 없음) = track_graph 미포함 요청 수. 거짓 충실성: 빈 화면 금지·정직 카운트.
+    const singleN = Math.max(0, reqs.length - tracks.length);
+
+    if (!tracks.length) {
+      host.innerHTML = `
+        <div class="tg-empty">
+          <p class="hint">표시할 루프(2회 이상 라운드를 거친 요청)가 없습니다.</p>
+          ${singleN ? `<p class="hint">요청 ${singleN}건은 단발 라운드(루프 없음)입니다. 회차가 누적되면 여기에 인과 체인으로 나타납니다.</p>` : ""}
+        </div>`;
+      return;
+    }
+
+    // 선택 트랙 결정 — 보관된 선택 유지, 없으면 첫 트랙(정렬상 가장 열린/미종결).
+    let sel = tracks.find((t) => t.req_id === convLoopSelected);
+    if (!sel) { sel = tracks[0]; convLoopSelected = sel.req_id; }
+
+    // 트랙 목록 칩 — repo·요약 앞부분·회차·열림·수렴 상태.
+    const list = tracks.map((t) => {
+      const active = t.req_id === sel.req_id ? " active" : "";
+      const statusCls = t.converged ? "tg-li-converged" : (t.open_rounds ? "tg-li-open" : "tg-li-milestone");
+      const statusTxt = t.converged ? "수렴" : (t.open_rounds ? `열림 ${t.open_rounds}` : "진행");
+      return `
+        <button class="tg-li${active} ${statusCls}" type="button" role="tab"
+                aria-selected="${t.req_id === sel.req_id}" data-reqid="${escape(t.req_id || "")}">
+          <span class="tg-li-repo">${escape(repoDisplay(t.repo))}</span>
+          <span class="tg-li-status">${escape(statusTxt)}</span>
+          <span class="tg-li-summary">${safe(t.summary || t.req_id || "(요약 없음)")}</span>
+          <span class="tg-li-rounds" title="라운드 회차 수">${escape(t.round_count)}회</span>
+        </button>`;
+    }).join("");
+
+    host.innerHTML = `
+      <div class="tg-layout">
+        <aside class="tg-list" role="tablist" aria-label="요청 트랙 목록">
+          <div class="tg-list-head">루프 트랙 <span class="tg-list-count">${tracks.length}건</span></div>
+          ${list}
+          ${singleN ? `<div class="tg-single-note" title="2회 미만 라운드라 인과 체인이 없는 요청">단발 라운드 ${singleN}건은 루프가 없어 목록에서 제외됩니다(전체추이 탭의 '요청별 진행 상태'에서 확인).</div>` : ""}
+        </aside>
+        <div class="tg-detail" id="conv-loop-detail" aria-live="polite">
+          ${renderTrackChain(sel)}
+        </div>
+      </div>`;
+
+    // 트랙 선택 핸들러 — 클릭 시 보관 선택 갱신 + 상세만 재렌더(목록 active 토글).
+    host.querySelectorAll(".tg-li").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const rid = btn.dataset.reqid;
+        convLoopSelected = rid;
+        const t = tracks.find((x) => x.req_id === rid);
+        const detail = el("conv-loop-detail");
+        if (detail) detail.innerHTML = renderTrackChain(t);
+        host.querySelectorAll(".tg-li").forEach((b) => {
+          const on = b.dataset.reqid === rid;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", String(on));
+        });
+      });
+    });
+  }
+
+  // 서브 토글 (전체추이 ↔ 루프뷰) — 한 번만 바인딩(setup), show/hide 만 전환.
+  let convSubToggleBound = false;
+  function setupConvSubToggle() {
+    if (convSubToggleBound) return;
+    convSubToggleBound = true;
+    const btnOverview = el("conv-view-overview");
+    const btnLoop = el("conv-view-loop");
+    const paneOverview = el("conv-overview");
+    const paneLoop = el("conv-loopview");
+    if (!btnOverview || !btnLoop || !paneOverview || !paneLoop) return;
+    function show(view) {
+      const isLoop = view === "loop";
+      paneOverview.hidden = isLoop;
+      paneLoop.hidden = !isLoop;
+      btnOverview.classList.toggle("active", !isLoop);
+      btnLoop.classList.toggle("active", isLoop);
+      btnOverview.setAttribute("aria-selected", String(!isLoop));
+      btnLoop.setAttribute("aria-selected", String(isLoop));
+    }
+    btnOverview.addEventListener("click", () => show("overview"));
+    btnLoop.addEventListener("click", () => show("loop"));
+  }
+
   // sql.js 인-브라우저 SQLite — 사용자가 명시적으로 클릭할 때만 lazy 로드(WASM ~1.5MB).
   // 매 admin 진입 시 WASM 강제 로드는 과설계 → on-demand. 기본 렌더는 convergence.json.
   let sqlDbPromise = null;
@@ -2292,6 +2486,9 @@
     });
   }
 
+  // 마지막 렌더된 convergence.json 의 generated_at — 폴링 시 변경 감지(불필요 재렌더 회피).
+  let convLastGeneratedAt = null;
+
   async function renderConvergence() {
     let conv;
     try {
@@ -2303,6 +2500,7 @@
         `<p class="hint">convergence.json 로드 실패: ${escape(e.message)}. 'python3 scripts/admin/build_convergence.py' 로 생성하세요.</p>`;
       return;
     }
+    convLastGeneratedAt = conv.generated_at || "";
     // REQ-006: convergence.json 빌드 시각을 state 보관 → 수렴 탭 활성 시 헤더에 반영.
     //   탭별 freshness(updateHeaderFreshness)가 단일 출처로 헤더를 그림(직접 setText 제거).
     state.convGeneratedAt = conv.generated_at || "";
@@ -2321,7 +2519,49 @@
     renderConvIntegrity(conv);
     renderConvRounds(conv);
     renderConvVerdicts(conv);
+    renderConvLoopView(conv);      // ⑥ 루프뷰(track_graph 인과 체인) — DOC-20260616-REQ-001 V2
+    setupConvSubToggle();          // 전체추이 ↔ 루프뷰 토글(1회 바인딩)
     setupConvSql();
+    return conv;
+  }
+
+  // ⑥ 폴링 — convergence.json 을 주기적으로 재fetch, generated_at 변경 시에만 재렌더
+  //   (파이프라인/판정이 새 데이터를 쓰면 보고 있던 루프뷰·전체추이가 자동 갱신).
+  //   거짓 충실성(FLR-AGT-002): 동일 빌드면 재렌더 안 함(가짜 '활동 중' 깜빡임 0).
+  //   탭/문서가 숨김(background)이면 skip(불필요 fetch 절약), 보일 때 1회 즉시 동기화.
+  const CONV_POLL_MS = 45000; // 30~60초 범위 — 어드민 내부 도구, 과도 폴링 불요.
+  async function pollConvergence() {
+    if (document.hidden) return;
+    try {
+      const res = await fetch("./convergence.json", { cache: "no-store" });
+      if (!res.ok) return;
+      const conv = await res.json();
+      const gen = conv.generated_at || "";
+      if (gen && gen === convLastGeneratedAt) return; // 변경 없음 → 재렌더 skip
+      convLastGeneratedAt = gen;
+      state.convGeneratedAt = gen;
+      const activeTab = document.querySelector(".tab.active");
+      if (!activeTab || activeTab.dataset.tab === CONV_TAB) updateHeaderFreshness(CONV_TAB);
+      renderConvDecisionBoard(conv);
+      renderConvFreshness(conv);
+      renderConvBurndown(conv);
+      renderConvTimeline(conv);
+      renderConvRepoSummary(conv);
+      renderConvTransitions(conv);
+      renderConvGlance(conv);
+      renderConvTrend(conv);
+      renderConvActive(conv);
+      renderConvRequests(conv);
+      renderConvIntegrity(conv);
+      renderConvRounds(conv);
+      renderConvVerdicts(conv);
+      renderConvLoopView(conv);   // 보고 있던 트랙(convLoopSelected) 유지하며 갱신
+    } catch (_e) { /* 폴링 실패는 조용히 무시 — 다음 주기 재시도 */ }
+  }
+  function startConvPolling() {
+    setInterval(pollConvergence, CONV_POLL_MS);
+    // 탭이 다시 보일 때 즉시 1회 동기화(background 동안 놓친 갱신 반영).
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) pollConvergence(); });
   }
 
   async function load() {
@@ -2348,6 +2588,7 @@
     renderPeople();
     renderAudit();
     renderConvergence();
+    startConvPolling();   // ⑥ 45초 폴링 — convergence.json 변경 시 자동 갱신(DOC-20260616-REQ-001 V2)
   }
 
   document.addEventListener("DOMContentLoaded", load);

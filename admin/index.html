@@ -105,6 +105,21 @@
     <section id="tab-convergence" class="panel active" role="tabpanel" aria-labelledby="t-convergence">
       <p class="hint">내 요청이 빠지지 않고 도는지 · 회차가 쌓일수록 품질이 수렴하는지 한눈에. 데이터: convergence.json (read-only 파생물)</p>
 
+      <!-- ⑥ 서브 뷰 토글 (전체추이 ↔ 루프뷰) — DOC-20260616-REQ-001 V2.
+           전체추이 = 종전 대시보드(결단보드·번다운·추이·요청카드). 루프뷰 = 요청 1건의 인과 체인
+           (요청→라운드 노드→각 라운드 판정)을 세로로. 데이터: convergence.json track_graph(파생·read-only).
+           track_graph 미보유 요청(단발 라운드 57건)은 루프뷰 트랙 목록에서 '루프 없음/단발'로 정직 안내. -->
+      <div class="conv-subtoggle" role="tablist" aria-label="수렴 뷰 모드">
+        <button id="conv-view-overview" class="conv-subtoggle-btn active" role="tab" aria-selected="true" type="button" data-view="overview">전체추이</button>
+        <button id="conv-view-loop" class="conv-subtoggle-btn" role="tab" aria-selected="false" type="button" data-view="loop">루프뷰</button>
+      </div>
+
+      <!-- ⑥ 루프뷰 컨테이너 (기본 숨김 — 전체추이가 첫 화면). 토글 시 show/hide. -->
+      <div id="conv-loopview" class="conv-loopview" aria-label="요청별 수렴 루프 인과 체인" hidden></div>
+
+      <!-- ⓪~⑤ 전체추이 래퍼 — 종전 대시보드 전체. 루프뷰 토글 시 통째 숨김. -->
+      <div id="conv-overview">
+
       <!-- ⓪-DECISION 결단 보드 — 화면에서 가장 크고 가장 위 (대표 catch: "활동만 보이고 뭐가 막혔는지 모르겠다").
            어드민이 activity가 아니라 *상태(무엇이 막혔나·내가 뭘 결정해야 하나)*를 답하는 단 하나의 요소.
            큰 숫자 3개(막힌 요청·내 결정 대기·최근 수렴) + 그 아래 막힘/대기 항목만 최대 5줄.
@@ -231,6 +246,8 @@
           <div id="conv-sql-result" class="table-wrap"></div>
         </div>
       </details>
+
+      </div><!-- /#conv-overview -->
     </section>
   </main>
 
