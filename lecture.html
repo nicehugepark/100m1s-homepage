@@ -116,6 +116,14 @@ header {
 }
 .nav-dropdown .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
 .nav-dropdown .dd-tag.soon { color: var(--dm); background: var(--bg2); }
+/* 비활성 항목(투자 팁 예정)은 클릭 불가 → 커서도 정직하게 default (FLR-AGT-002 동형 P2) */
+.nav-dropdown a[aria-disabled="true"] { cursor: default; opacity: 0.62; }
+.nav-dropdown a[aria-disabled="true"]:hover { background: none; color: var(--tx); }
+/* PM320 하위(오늘의 추천·백테스트) = 형제 아님, 한 단 들여써 위계 정직화(#1 IA 안1) */
+.nav-dropdown a.dd-child { padding-left: 24px; font-weight: 500; position: relative; }
+.nav-dropdown a.dd-child::before {
+  content: '↳'; position: absolute; left: 10px; color: var(--dm); font-size: 11px; font-weight: 400;
+}
 /* ── 모바일 드로어: Products 접이식(accordion) ── */
 .drawer-group { border-bottom: 1px solid var(--bd); }
 .drawer-group-toggle {
@@ -135,6 +143,10 @@ header {
   font-size: 14px; font-weight: 600; color: var(--tx2); border-bottom: none;
 }
 .drawer-sub a:hover, .drawer-sub a.active { color: var(--am); }
+.drawer-sub a[aria-disabled="true"] { cursor: default; opacity: 0.6; }
+.drawer-sub a[aria-disabled="true"]:hover { color: var(--tx2); }
+.drawer-sub a.dd-child { padding-left: 18px; font-weight: 500; position: relative; }
+.drawer-sub a.dd-child::before { content: '↳'; position: absolute; left: 0; color: var(--dm); font-size: 12px; }
 .drawer-sub a .dd-tag {
   font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px;
   color: var(--am); background: var(--am4); margin-left: auto;
@@ -308,13 +320,12 @@ footer {
         <button type="button" class="nav-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dd-products">Products
           <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
+        <!-- IA 안1(#1 대표 catch): 도메인 그룹 라벨 제거 → 성숙도 1축. 오추백 = PM320 하위(dd-child) 강등 -->
         <div class="nav-dropdown" id="nav-dd-products" role="menu">
-          <div class="dd-group-label">주식 라인</div>
           <a href="/pm320.html" role="menuitem">PM320 <span class="dd-sub">오후 3시 20분</span> <span class="dd-tag">LIVE</span></a>
-          <a href="/pm320.html#cal-content" role="menuitem">오늘의 추천 · 백테스트 <span class="dd-tag">LIVE</span></a>
+          <a href="/pm320.html#cal-content" class="dd-child" role="menuitem">오늘의 추천 · 백테스트 <span class="dd-tag">LIVE</span></a>
           <a href="/lecture.html" class="active" role="menuitem" aria-current="page">주식 강의 <span class="dd-sub">초보 실전 매매</span></a>
           <a href="/pm320.html" role="menuitem" aria-disabled="true" tabindex="-1" onclick="return false">투자 팁 <span class="dd-tag soon">예정</span></a>
-          <div class="dd-group-label">기타 라인</div>
           <a href="https://nicehugepark.github.io/100m1s-byvias/" target="_blank" rel="noopener" role="menuitem">ByVias <span class="dd-sub">원정 타이밍</span> <span class="dd-tag beta">BETA</span></a>
         </div>
       </span>
@@ -334,9 +345,9 @@ footer {
     <div class="drawer-sub" id="drawer-products-sub">
       <div class="drawer-sub-inner">
         <a href="/pm320.html">PM320<span class="dd-tag">LIVE</span></a>
-        <a href="/pm320.html#cal-content">오늘의 추천 · 백테스트<span class="dd-tag">LIVE</span></a>
+        <a href="/pm320.html#cal-content" class="dd-child">오늘의 추천 · 백테스트<span class="dd-tag">LIVE</span></a>
         <a href="/lecture.html" class="active" aria-current="page">주식 강의</a>
-        <a href="/pm320.html" aria-disabled="true" onclick="return false">투자 팁<span class="dd-tag soon">예정</span></a>
+        <a href="/pm320.html" aria-disabled="true" tabindex="-1" onclick="return false">투자 팁<span class="dd-tag soon">예정</span></a>
         <a href="https://nicehugepark.github.io/100m1s-byvias/" target="_blank" rel="noopener">ByVias<span class="dd-tag beta">BETA</span></a>
       </div>
     </div>
