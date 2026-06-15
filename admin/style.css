@@ -449,6 +449,46 @@ footer {
   border-top: 1px solid var(--bd); line-height: 1.5;
 }
 
+/* ── REQ-010 드릴다운: 클릭 가능한 결단보드 stat·row + 점프 하이라이트 ── */
+.db-stat-link { cursor: pointer; transition: background .12s, transform .08s; }
+.db-stat-link:hover { background: var(--sf); }
+.db-stat-link:active { transform: scale(.985); }
+.db-stat-link::after {
+  content: "›"; position: absolute; top: 7px; right: 9px;
+  font-size: 15px; color: var(--dm); line-height: 1; font-weight: 700;
+}
+.db-row-link { cursor: pointer; border-radius: 5px; transition: background .12s; }
+.db-row-link:hover { background: var(--bg2); }
+.db-stat-link:focus-visible, .db-row-link:focus-visible {
+  outline: 2px solid var(--am2); outline-offset: 2px;
+}
+/* 점프 도착 카드 하이라이트 — 잠시 황동 글로우(1.8s 후 해제, JS) */
+.rq-jump-hl {
+  animation: rqJumpPulse 1.8s ease-out;
+  scroll-margin-top: 64px; /* sticky 헤더 가림 방지 */
+}
+@keyframes rqJumpPulse {
+  0%   { box-shadow: 0 0 0 3px var(--am2), 0 0 14px var(--am4); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rq-jump-hl { animation: none; box-shadow: 0 0 0 2px var(--am2); }
+}
+/* 활성 상태필터 칩 + 해제 버튼 */
+.conv-req-filterchip { margin: 0 0 9px; }
+.rq-fchip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--tx2); background: var(--am4);
+  border: 1px solid var(--am2); border-radius: 14px; padding: 4px 6px 4px 11px;
+}
+.rq-fchip-x {
+  font-family: var(--display); font-size: 11px; font-weight: 700;
+  color: var(--tx); background: var(--sf); border: 1px solid var(--bd);
+  border-radius: 11px; padding: 3px 9px; cursor: pointer; min-height: 26px;
+}
+.rq-fchip-x:hover { background: var(--bg2); }
+.rq-fchip-x:focus-visible { outline: 2px solid var(--am2); outline-offset: 1px; }
+
 /* ════════ ⓪-BURNDOWN 번다운 — 핵심 차트 (above-fold) ════════ */
 .conv-burndown {
   background: var(--sf); border: 1px solid var(--bd);
@@ -486,6 +526,15 @@ footer {
 .bd-pace-wrap { border-top: 1px solid var(--bd); padding-top: 12px; }
 .bd-pace-h { font-family: var(--display); font-size: 12.5px; font-weight: 700; color: var(--tx); margin-bottom: 8px; }
 .bd-pace-sub { font-family: var(--body); font-size: 10.5px; font-weight: 400; color: var(--dm); }
+/* REQ-016: 번다운 → 활동 추이(시간 줌) cross-link 버튼 — 발견성 동선 */
+.bd-zoom-link {
+  margin-top: 10px; width: 100%; min-height: 38px; cursor: pointer;
+  font-family: var(--body); font-size: 12px; font-weight: 600; color: var(--am);
+  background: var(--am4); border: 1px dashed var(--am2); border-radius: var(--radius-sm);
+  padding: 8px 12px; text-align: center; transition: background .12s;
+}
+.bd-zoom-link:hover { background: var(--am3, var(--am4)); border-style: solid; }
+.bd-zoom-link:focus-visible { outline: 2px solid var(--am2); outline-offset: 2px; }
 .bd-pace-svg { width: 100%; height: 64px; display: block; overflow: visible; }
 .bd-pace-axis {
   display: flex; justify-content: space-between; align-items: center;
@@ -504,8 +553,11 @@ footer {
 .conv-fold > summary {
   cursor: pointer; padding: 12px 16px; list-style: none;
   font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--tx2);
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px;
 }
+/* REQ-016: 제목 텍스트가 배지에 눌려 세로로 접히지 않게 — 제목 우선 폭 확보(모바일). */
+.conv-fold > summary > .conv-fold-zoom { margin-left: auto; }
+.conv-fold > summary > .conv-fold-sub { flex: 1 0 100%; margin-left: 22px; }
 .conv-fold > summary:hover { color: var(--tx); background: var(--bg2); }
 .conv-fold > summary::-webkit-details-marker { display: none; }
 .conv-fold > summary::before {
@@ -513,6 +565,12 @@ footer {
 }
 .conv-fold[open] > summary::before { transform: rotate(90deg); }
 .conv-fold-sub { font-family: var(--body); font-size: 11px; font-weight: 400; color: var(--dm); }
+/* REQ-016: 시간 줌 발견성 affordance 배지 — summary 에 '확대·드래그 가능' 명시(정보위계 유지) */
+.conv-fold-zoom {
+  font-family: var(--body); font-size: 10.5px; font-weight: 600; color: var(--am);
+  background: var(--am4); border: 1px solid var(--am2); border-radius: 11px;
+  padding: 2px 9px; margin-left: 8px; white-space: nowrap; display: inline-block;
+}
 .conv-fold[open] > summary { border-bottom: 1px solid var(--bd); }
 .conv-fold > #conv-timeline { padding: 4px 12px 12px; }
 /* [2단계] 상태 추이(전이 타임라인)도 details 접기로 이동 — 같은 fold 스킨. 내부 패딩만 분리. */
@@ -1132,6 +1190,10 @@ footer {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .rq-card[open] .rq-narrative { -webkit-line-clamp: unset; }
+/* REQ-011: 자유 텍스트 내 렌더된 마크다운 — 굵게는 본문보다 진한 잉크, 코드는 단축 hex */
+.rq-narrative strong, .rq-blocked-note strong, .rq-evid strong,
+.vd-headline strong, .vd-block strong { color: var(--tx); font-weight: 700; }
+.md-code { font-size: 10.5px; cursor: help; }
 
 /* 계측 진행 트랙 — progress_pct (회차 마커 박힌 트랙) */
 .rq-track-wrap { display: flex; align-items: center; gap: 9px; }
@@ -1486,14 +1548,31 @@ footer {
   .rs-num { font-size: 13px; }
   .rs-head-row .rs-repo, .rs-head-row .rs-num, .rs-head-row .rs-bar { font-size: 9px; letter-spacing: 0; }
 
-  /* [2단계] 요청 1줄 행 — 390px: 진척 트랙 더 짧게 + 제목이 우선 영역 확보. 펼침 배지/::after 정렬. */
-  .rq-summary { padding: 8px 50px 8px 12px; }
-  .rq-summary::after { right: 10px; }
-  .rq-card[open] .rq-summary::after { top: 11px; }
+  /* REQ-ADMIN-20260615-009 (P1·모바일 제목 우선): 390px 에서 1줄 7요소 욱여넣기로 제목이
+     평균 8~18%(rq-line 298px 에 dot·칩·ID·진척·라운드칩이 고정폭 점유)만 표시되던 문제 →
+     rq-line 을 2줄로 재배치. 1줄 = 제목 전폭(2줄까지 허용·위계 회복), 2줄 = 부수 메타(상태점·
+     우선순위칩·ID·진척%·라운드칩) 작게. 제목이 화면의 주인공이 되어 '편함' 착지(대수술 의도 완성).
+     데스크탑(≥720)은 1줄 유지(회귀 0 — 본 규칙은 ≤640 미디어쿼리 내부에서만). */
+  .rq-summary { padding: 9px 46px 9px 12px; }
+  .rq-summary::after { right: 10px; top: 12px; transform: none; }
+  .rq-card[open] .rq-summary::after { top: 12px; }
   .rq-pct-track { width: 34px; }
   .rq-pct-n { min-width: 28px; font-size: 10.5px; }
-  .rq-line { gap: 6px; }
-  .rq-line-meta { gap: 6px; }
+  .rq-line {
+    flex-wrap: wrap; row-gap: 6px; column-gap: 7px; align-items: center;
+  }
+  /* 1줄: 제목 전폭·굵게·최대 2줄 말줄임(위계 회복) */
+  .rq-line .rq-title {
+    order: -1; flex: 1 0 100%; min-width: 100%;
+    white-space: normal; font-size: 13.5px; font-weight: 700; line-height: 1.32;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  /* 2줄: 부수 메타 — 상태점·우선순위칩·ID·진척·라운드칩 작게 한 줄 */
+  .rq-line .rq-dot { order: 0; }
+  .rq-line .rq-prio { order: 1; }
+  .rq-line .rq-id { order: 2; font-size: 10px; }
+  .rq-line-meta { order: 3; margin-left: auto; gap: 7px; }
+  .rq-card[open] .rq-line .rq-title { -webkit-line-clamp: unset; }
 
   /* 결단 보드 — 모바일 390px 우선. 큰 숫자 3개는 가로 유지(한눈 비교가 핵심)·폰트만 축소. */
   .conv-decision-board { padding: 15px 14px 13px; }
