@@ -35,11 +35,30 @@
     [/togusa/gi, "투자분석"],     // 토구사(주식투자팀)
     [/tachikoma/gi, "AI 시스템"], // 타치코마(오케스트레이터)
     [/hugepark/gi, "운영자"],
-    [/\bjony\b/gi, "총괄 심사 패널"],
-    [/\bpixel\b/gi, "디자인 심사 패널"],
-    [/\bguestpool\b/gi, "손님 패널"],
-    [/\bhonesty\b/gi, "정직성 심사"],
-    [/\bcritic\b/gi, "비평 패널"],
+    [/(?<![A-Za-z0-9])jony(?![A-Za-z0-9])/gi, "총괄 심사 패널"],
+    [/(?<![A-Za-z0-9])pixel(?![A-Za-z0-9])/gi, "디자인 심사 패널"],
+    [/(?<![A-Za-z0-9])guestpool(?![A-Za-z0-9])/gi, "손님 패널"],
+    [/(?<![A-Za-z0-9])honesty(?![A-Za-z0-9])/gi, "정직성 심사"],
+    [/(?<![A-Za-z0-9])critic(?![A-Za-z0-9])/gi, "비평 패널"],
+    // 🔴 백엔드 build_convergence.py PERSONA_GENERALIZE/SANITIZE_PERSONA_RE 와 양 layer 동기
+    //   (REQ-ADMIN-20260615-018·FLR-20260406-TEC-001 동형 = 한쪽만 등재·변종 누락 봉쇄).
+    //   신축 CADENCE(데이터 계측)·MERIDIAN(시스템 심사) 패널 슬러그가 프론트 백스톱에 누락 →
+    //   라이브 DOM cadence 31건·meridian 4건 누출(R6 honesty·meridian P1). 앞 경계
+    //   (?<![A-Za-z0-9])는 '_'·구두점·한글을 경계 인정(MEASUREMENT_honesty·_jury_·meridian의
+    //   회피 봉쇄), 끝 경계 (?![A-Za-z0-9])는 staffing/service 오손상 0. romanized + 한글 표기.
+    [/(?<![A-Za-z0-9])staff-engineer(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
+    [/(?<![A-Za-z0-9])meridian(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
+    [/(?<![A-Za-z0-9])staff(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
+    [/(?<![A-Za-z0-9])cadence(?![A-Za-z0-9])/gi, "데이터 계측 패널"],
+    [/(?<![A-Za-z0-9])translator(?![A-Za-z0-9])/gi, "번역 심사"],
+    [/(?<![A-Za-z0-9])jury(?![A-Za-z0-9])/gi, "심사단"],
+    [/(?<![A-Za-z0-9])vc(?![A-Za-z0-9])/gi, "투자 심사"],
+    [/메리디언/g, "시스템 심사 패널"],
+    [/케이던스/g, "데이터 계측 패널"],
+    // ByBias → ByVias 리브랜딩 (REQ-ADMIN-20260615-020·REQ-003 흡수·백엔드 mask_text 동기).
+    //   free-text mixed-case 'ByBias'만 (라이브 83건) — 대문자 식별자 'BYBIAS'(summary 키·
+    //   필터 value·req_id)는 case-sensitive 불일치로 자연 배제(repoDisplay 가 표시단 변환).
+    [/ByBias/g, "ByVias"],
     // doc_id 패턴 — build_convergence.py SANITIZE_DOC_CODE_RE 와 매칭 범위 1:1 포팅(양 layer
     // 동기화 의무, FLR-20260406-TEC-001 동형 = 한쪽만 fix·변종 누락 봉쇄). 기존 협소 패턴
     // (FLR|DOC 접두 + 날짜형/[A-Z]+ tail만)이 무-날짜 단형(JDG-001/REQ-031/DSN-001/FLR-005)·
@@ -2041,7 +2060,7 @@
         ${blockedHtml}
         <div class="rq-track-wrap">${track}${rcHtml ? `<span style="flex:none">${rcHtml}</span>` : ""}</div>
         ${lvHtml}
-        ${r.owner ? `<div class="rq-owner"><span class="rq-evid-k">담당</span> ${safe(r.owner)}</div>` : ""}
+        ${r.owner ? `<div class="rq-owner"><span class="rq-evid-k">담당</span> ${mdSafe(r.owner)}</div>` : ""}
         ${evidHtml}
         ${relatedHtml}
       </div>
