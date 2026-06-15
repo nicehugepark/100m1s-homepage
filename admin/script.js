@@ -210,19 +210,67 @@
     }
   }
 
+  // RND-ADMIN-008 P0-B (조니·design·guestpool): data.json 빈 스텁이면 그 소스를 읽는
+  //   7탭(요청·사이클·에이전트·릴리스·FLR·참여자·audit)이 백지 dead-end (8탭 중 1탭만 동작 =
+  //   "라벨은 잔뜩, 콘텐츠는 1탭" 거짓 풍요). 미연결 탭을 nav에서 비활성('준비 중') 처리해
+  //   거짓 풍요 제거 + 클릭 dead-end 0. data.json 채워지면(Phase 2) 자동 재활성(데이터 구동·하드코딩 0).
+  const DATA_JSON_TABS = ["requests", "timeline", "agents", "releases", "flr", "people", "audit"];
+  // data.json 이 실데이터를 담았는지 — records/agents/releases/audit.rows 중 하나라도 비어있지 않으면 '채워짐'.
+  function dataJsonHasContent() {
+    const d = state.data || {};
+    const audit = d.audit || {};
+    return (
+      (Array.isArray(d.records) && d.records.length > 0) ||
+      (Array.isArray(d.agents) && d.agents.length > 0) ||
+      (Array.isArray(d.releases) && d.releases.length > 0) ||
+      (Array.isArray(audit.rows) && audit.rows.length > 0)
+    );
+  }
+  // 미연결 탭 비활성화 — 버튼 자체를 disabled + aria-disabled + '준비 중' 배지. 활성 탭이
+  //   비활성 대상이면 수렴 탭으로 강제 이동(빈 화면 랜딩 0). 채워진 상태면 무동작(전 탭 정상).
+  function applyTabAvailability() {
+    if (dataJsonHasContent()) return;  // 데이터 있으면 8탭 전부 정상
+    let activeWasDisabled = false;
+    for (const name of DATA_JSON_TABS) {
+      const tab = document.querySelector(`.tab[data-tab="${name}"]`);
+      if (!tab) continue;
+      tab.classList.add("tab-soon");
+      tab.setAttribute("aria-disabled", "true");
+      tab.setAttribute("tabindex", "-1");
+      tab.setAttribute("title", "Phase 2 예정 — 이 탭의 데이터(data.json)는 아직 연결되지 않았습니다");
+      if (!tab.querySelector(".tab-soon-badge")) {
+        const badge = document.createElement("span");
+        badge.className = "tab-soon-badge";
+        badge.setAttribute("aria-hidden", "true");
+        badge.textContent = "준비 중";
+        tab.appendChild(badge);
+      }
+      if (tab.classList.contains("active")) activeWasDisabled = true;
+    }
+    if (activeWasDisabled) activateTab(CONV_TAB);  // 빈 탭 랜딩 방지 — 수렴 탭으로
+  }
+
   function setupTabs() {
     document.querySelectorAll(".tab").forEach((t) => {
       t.addEventListener("click", () => {
+        // 미연결(준비 중) 탭은 활성화 차단 — dead-end 진입 0.
+        if (t.getAttribute("aria-disabled") === "true") return;
         activateTab(t.dataset.tab);
         // 해시 동기화 — 새로고침·공유 시 같은 탭 복원 (#convergence 등)
         if (history.replaceState) history.replaceState(null, "", "#" + t.dataset.tab);
         else location.hash = t.dataset.tab;
       });
     });
+    // 미연결 탭 비활성화 (data.json 빈 스텁 시) — 초기 탭 결정 전에 적용.
+    applyTabAvailability();
     // 초기 탭: URL 해시(#convergence 등) 우선, 없으면 디폴트(HTML active=수렴) 유지.
     // 조니 P1-B — 여는 즉시 수렴 뷰가 첫 화면. 해시 딥링크도 지원.
+    //   단 해시가 비활성(준비 중) 탭을 가리키면 무시(빈 화면 딥링크 0).
     const hash = (location.hash || "").replace(/^#/, "");
-    if (hash) activateTab(hash);
+    if (hash) {
+      const hashTab = document.querySelector(`.tab[data-tab="${hash}"]`);
+      if (hashTab && hashTab.getAttribute("aria-disabled") !== "true") activateTab(hash);
+    }
 
     // [2단계] 탭 nav 가로 오버플로우 끝 페이드 — 좌/우 잔량 있을 때만 해당 끝 페이드(audit 잘림 해소).
     //   끝까지 스크롤 시 마지막 탭 완전 노출(상시 페이드가 audit 가리는 문제 회피). 1px 여유 = 라운딩 가드.
@@ -883,8 +931,11 @@
   //     ① 서비스별 현재 잔량(open) 막대 — summary[repo].open_requests 스냅샷 (시계열 아님 명시).
   //     ② 처리 박자 라인 — state_transitions 의 verdict_emitted(실측 mtime·is_approx=false)를 일별 close 이벤트 근사.
   //        우상향 = 판정 활발(처리 빠름). 진짜 잔량 우하향선은 Phase B(전이 시각 도입 후).
-  //   phantom repo(공통/—/repo/UNKNOWN/null) 분모 배제 (설계 §1 부수발견2).
-  const PHANTOM_REPO_TOKENS = new Set(["공통", "—", "-", "repo", "UNKNOWN", "unknown", "미상", ""]);
+  //   phantom repo(—/repo/UNKNOWN/null) 분모 배제 (설계 §1 부수발견2).
+  //   ⚠️ '공통'은 phantom 아님 — 백엔드 compute_summary(_PHANTOM_REPO_TOKENS)가 정상 버킷으로 보존(open 2).
+  //   프론트가 '공통'을 추가 배제하면 번다운 분모(26)가 glance/표/헤더(28)와 발산(RND-ADMIN-008 P1-ii).
+  //   백엔드 SSOT와 1:1 정합 위해 '공통'·'미상' 제외(미상은 backend 'UNKNOWN'과 별 토큰이라 무영향).
+  const PHANTOM_REPO_TOKENS = new Set(["—", "-", "repo", "UNKNOWN", "unknown", ""]);
   function isRealRepo(repo) {
     return !PHANTOM_REPO_TOKENS.has(String(repo == null ? "" : repo).trim());
   }

@@ -184,6 +184,17 @@ a:hover { text-decoration: underline; }
   background: var(--am); border-radius: 2px 2px 0 0;
   box-shadow: 0 0 8px var(--am2);
 }
+/* RND-ADMIN-008 P0-B — 미연결(준비 중) 탭: data.json 빈 스텁이면 7탭이 dead-end → 비활성 표기.
+   클릭 차단(JS) + 시각적으로 '아직 아님' 명시(흐림 + '준비 중' 배지). 거짓 풍요 제거. */
+.tab.tab-soon {
+  color: var(--dm); cursor: not-allowed; opacity: .55;
+}
+.tab.tab-soon:hover { color: var(--dm); }
+.tab-soon-badge {
+  display: inline-block; margin-left: 5px; padding: 1px 5px;
+  font-family: var(--display); font-size: 9.5px; font-weight: 600; letter-spacing: .2px;
+  color: var(--tx2); background: var(--bd); border-radius: 4px; vertical-align: middle;
+}
 
 main { padding: 20px 22px 40px; max-width: 1440px; margin: 0 auto; }
 .panel { display: none; }
@@ -1524,8 +1535,16 @@ footer {
   .topbar { padding: 11px 14px; flex-direction: column; align-items: flex-start; gap: 7px; }
   .topbar::after { display: none; }
   .topbar h1 { font-size: 15px; }
-  .tabs { padding: 0 6px; }
-  .tab { padding: 9px 11px; font-size: 12px; }
+  /* RND-ADMIN-008 P1-iii (모바일 정밀도): ① 터치타깃 ≥44px (직전 ~33px<44 미달) ②
+     마지막 탭(audit) at-rest 클립 해소 — 끝까지 스크롤 시 완전 노출되도록 트레일링 여백 +
+     scroll-padding (가로 스크롤 시 audit 잘림 0). 페이드 마스크(28px)와 별개 물리 여백. */
+  .tabs { padding: 0 6px; scroll-padding-right: 16px; }
+  .tab {
+    padding: 11px 11px; font-size: 12px;
+    min-height: 44px; display: inline-flex; align-items: center;
+  }
+  /* 마지막 탭 뒤 가상 여백 — 가로 스크롤 끝에서 audit 우측이 페이드/모서리에 안 잘리게. */
+  .tabs::after { content: ""; flex: 0 0 8px; }
   main { padding: 14px; }
   .toolbar input[type=search] { min-width: 0; width: 100%; }
   .grid { min-width: 0; font-size: 12px; }
