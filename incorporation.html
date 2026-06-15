@@ -133,7 +133,7 @@ header {
 }
 .nav-dropdown .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
 .nav-dropdown .dd-tag.soon { color: var(--dm); background: var(--bg2); }
-/* 비활성 항목(투자 팁 예정)은 클릭 불가 → 커서도 정직하게 default (FLR-AGT-002 동형 P2) */
+/* 비활성 항목(투자 팁 예정)은 클릭 불가 → 커서도 정직하게 default */
 .nav-dropdown a[aria-disabled="true"] { cursor: default; opacity: 0.62; }
 .nav-dropdown a[aria-disabled="true"]:hover { background: none; color: var(--tx); }
 /* PM320 하위(오늘의 추천·백테스트) = 형제 아님, 한 단 들여써 위계 정직화(#1 IA 안1) */
@@ -986,8 +986,8 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
           </thead>
           <tbody>
             <tr><td class="num">M1</td><td>파트너 링크 코드 인젝션 (위젯·직접 링크)</td><td><span class="badge prog">진행</span></td><td>847 detail 페이지 인젝션 완료</td></tr>
-            <tr><td class="num">M2</td><td><strong>도메인 화이트리스트 등록·승인</strong> (파트너 대시보드)</td><td><span class="badge crit">🔴 미완</span></td><td>DOC-20260611-FLR-002</td></tr>
-            <tr><td class="num">M3</td><td>링크 변환 라이브 실측 3종 (콘솔 무에러·앵커 리라이트·CORS 통과)</td><td><span class="badge wait">대기</span></td><td>FLR 게이트</td></tr>
+            <tr><td class="num">M2</td><td><strong>도메인 화이트리스트 등록·승인</strong> (파트너 대시보드)</td><td><span class="badge crit">🔴 미완</span></td><td>내부 운영 사고 기록</td></tr>
+            <tr><td class="num">M3</td><td>링크 변환 라이브 실측 3종 (콘솔 무에러·앵커 리라이트·CORS 통과)</td><td><span class="badge wait">대기</span></td><td>운영 게이트</td></tr>
             <tr><td class="num">M4</td><td><code>rel="sponsored nofollow"</code> 전 외부 파트너 링크 적용</td><td><span class="badge wait">대기</span></td><td>검색엔진 가이드·전상법</td></tr>
             <tr><td class="num">M5</td><td>제휴 표시(disclosure) 문구 노출 ("제휴 링크 포함")</td><td><span class="badge wait">대기</span></td><td>신뢰·법무</td></tr>
             <tr><td class="num">M6</td><td>도메인 컷오버 시 7곳 등록 도메인 동시 변경</td><td><span class="badge wait">대기</span></td><td>도메인 컷오버 Layer 2</td></tr>
@@ -998,7 +998,7 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
 
       <h3>3-2. 핵심 리스크 — 죽은 수익 사일런트 데드</h3>
       <div class="callout warn">
-        <span class="callout-title">DOC-20260611-FLR-002 (FLR-AGT-002 동형)</span>
+        <span class="callout-title">내부 운영 사고 기록 (제휴 링크 변환 차단으로 수익 추적 누락)</span>
         Travelpayouts Drive 위젯이 CORS 차단으로 링크 변환이 <strong>전면 미작동</strong> → 클릭 추적 0건 = 수수료 미발생. 코드는 박혔으나 외부 대시보드 도메인 승인이 누락된 상태였습니다. "콘솔 노이즈 무음화"로 처리했다면 죽은 수익이 영원히 은폐될 뻔했습니다.
       </div>
       <div class="callout tip">
