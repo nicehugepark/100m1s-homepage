@@ -3307,6 +3307,64 @@ a.cal-macro-chip.nightly-us-newschip {
 }
 .cal-pm320-wr-disclaimer-ico { flex-shrink: 0; margin-top: 2px; color: var(--neu-tx-aa, #525F78); }
 .cal-pm320-wr-disclaimer b { font-weight: 700; color: var(--tx2); }
+/* R63 P1-2 (조니 2심, 2026-06-16) — 승률 trio 직하 손익 비대칭 1줄. 거짓 정밀성·꼬리리스크 차단.
+   trio 와 한 묶음(margin-top 작게)으로 단독 크롭 시에도 함께 보이게. 중립 슬레이트 박스 + ⚠ 아이콘.
+   최대 단일 손실 숫자만 --neg(한국식 하락 파랑)로 강조 — 비대칭 시각화. 색 토큰만 사용(다크 자동 AA). */
+.cal-pm320-wr-asym {
+  margin-top: 6px;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: var(--neu-bg);
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--neu-tx-aa, #525F78);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.cal-pm320-wr-asym-ico { flex-shrink: 0; margin-top: 1px; color: var(--neg); }
+.cal-pm320-wr-asym b { font-weight: 800; color: var(--tx2); }
+.cal-pm320-wr-asym b.cal-pm320-wr-asym-loss { color: var(--neg); }
+.cal-pm320-wr-asym-ratio { font-weight: 700; color: var(--neu-tx-aa, #525F78); white-space: nowrap; }
+/* R63 P1-5 (조니 2심) — eyebrow 옆 "기록 동결" 칩. 진짜 해자(사후 불변)를 첫 방문자가 읽게.
+   작은 중립 슬레이트 칩 + 자물쇠. 위계는 보조(eyebrow 보다 약함) — 강조 아닌 신뢰 표명. */
+.cal-pm320-wr-frozen {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--neu-bg);
+  border: 1px solid var(--bd);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--neu-tx-aa, #525F78);
+  white-space: nowrap;
+}
+.cal-pm320-wr-frozen-ico { flex-shrink: 0; color: var(--neu-tx-aa, #525F78); }
+/* R63 P1-4 (조니 2심) — "N회차 추천" 누적 빈도 칩 (전수표 행 + 픽 카드 head). 작전 미끼 차단·정직성.
+   반복 티커임을 cross-card 로 알리는 보조 마커 — 중립 슬레이트(주의 환기, 긍정 강조 아님). */
+.cal-pm320-freq-chip {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--neu-bg);
+  border: 1px solid var(--bd);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: var(--neu-tx-aa, #525F78);
+  white-space: nowrap;
+  vertical-align: middle;
+}
 /* 승률 카드 보조 맥락 1줄. */
 .cal-pm320-wr-context {
   margin-top: 6px;
