@@ -260,6 +260,12 @@ header {
   transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out), visibility 0.2s;
   z-index: 120;
 }
+/* hover 브리지: 트리거(아래끝)와 드롭다운(top:100%+10px) 사이 10px 투명 갭을 메워
+   커서가 메뉴 항목으로 내려갈 때 :hover 가 끊겨 메뉴가 닫히는 문제 방지(대표 catch 2026-06-15).
+   드롭다운이 열린 상태(pointer-events:auto)에서만 활성 → 닫힘 시 갭은 클릭 통과(레이아웃 무영향). */
+.nav-dropdown::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px; background: transparent;
+}
 /* hover + focus-within 양쪽으로 열림(터치 키보드 접근성) */
 .nav-item:hover .nav-dropdown, .nav-item:focus-within .nav-dropdown {
   opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
