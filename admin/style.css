@@ -423,6 +423,9 @@ footer {
 .db-stat .db-k {
   font-family: var(--display); font-size: 13px; font-weight: 700;
   color: var(--tx); margin-top: 6px;
+  /* RND-ADMIN-009 P1-③(design): "수렴까지 남은 서비스"가 모바일 좁은 타일(390/3≈110px)에서
+     2행 줄바꿈 시 '서/비스' 중간글자 분절. keep-all = 한국어는 어절(공백) 경계서만 줄바꿈. */
+  word-break: keep-all; overflow-wrap: break-word;
 }
 .db-stat .db-sub { font-size: 11px; color: var(--dm); margin-top: 2px; line-height: 1.4; }
 
@@ -873,6 +876,8 @@ footer {
   font-family: var(--mono); font-size: 10.5px; font-weight: 600;
   color: var(--dm); text-transform: uppercase; letter-spacing: .3px;
 }
+/* RND-ADMIN-009 P1-②(a): '막힘' 헤더 부기 '(보류 포함)' — 결단보드 '처리 필요'와 변별. */
+.rs-head-row .rs-col-note { display: block; font-size: 8.5px; font-weight: 500; opacity: .72; text-transform: none; letter-spacing: 0; }
 .rs-repo { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--tx); min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rs-num { font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; text-align: right; }

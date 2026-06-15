@@ -529,6 +529,9 @@
     "보류":   { label: "보류",      pct: 25,  cls: "conv-hold" },
     // 📦 대체됨 — 옛 라운드가 후속 수렴 체인이 해소(이력 보존·stuck 아님). 보존 의무 (c).
     "대체됨":  { label: "📦 대체됨",  pct: null, cls: "conv-superseded" },
+    // 승계 — 🔄/✔️ 후속 요청에 승계·편입된 닫힘(RND-ADMIN-009 P1-①). 라운드 '대체됨'의
+    //   요청판(이력 보존·열림 아님). 같은 conv-superseded 색 토큰 재사용(닫힘 계열 일관).
+    "승계":   { label: "↪ 승계됨",   pct: 100, cls: "conv-superseded" },
   };
   function stateMeta(s) {
     if (STATE_META[s]) return STATE_META[s];
@@ -560,12 +563,15 @@
   //   repoSummary↔번다운↔결단보드 3컴포넌트만 summary.open_requests 통일하고 glance·카드헤더
   //   2곳을 미마이그레이션한 half-applied 의 완전판(전 컴포넌트 단일 출처·부분 통일 금지).
   //   ⚠️ 백엔드 closed 정의 변경 시 본 상수 동기 의무(양 layer 발산 봉쇄·FLR-20260406-TEC-001 동형).
-  const CLOSED_STATES = ["배포", "종결", "수렴"];
+  //   RND-ADMIN-009 P1-①: 백엔드가 '승계'(🔄 승계·✔️ 편입 = 후속요청 흡수 닫힘) 를
+  //   CLOSED_REQUEST_STATES 에 추가 → 본 상수도 동기('승계' 누락 시 glance/카드헤더 open 재집계가
+  //   백엔드 summary.open_requests 와 발산: 라이브 glance open=32 vs 백엔드 27 동시 노출 = 재발).
+  const CLOSED_STATES = ["배포", "종결", "수렴", "승계"];
   function isOpenState(s) { return !CLOSED_STATES.includes(s); }
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
 
-  const STATE_ORDER = ["포착", "판정중", "구현중", "배포", "종결", "수렴", "보류"];
+  const STATE_ORDER = ["포착", "판정중", "구현중", "배포", "종결", "수렴", "승계", "보류"];
   function stateRank(s) { const i = STATE_ORDER.indexOf(s); return i < 0 ? STATE_ORDER.length : i; }
 
   // ⓪-a2 [2단계 통합] repo 1행 요약 테이블 — 진단: 같은 6개 서비스를 4번(상태 스냅바·라운드 수렴
@@ -668,26 +674,26 @@
         ? `<span class="rs-conv rs-has">${a.converged}</span>`
         : `<span class="rs-conv rs-zero">0</span>`;
       const openTxt = typeof a.open === "number" ? a.open : "?";
-      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열림 ${openTxt}·막힘 ${a.blocked}·수렴 ${a.converged}">
+      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열린 요청 ${openTxt}·막힘(보류 포함) ${a.blocked}·수렴 라운드 ${a.converged}">
         <span class="rs-repo" role="cell">${escape(repoDisplay(repo))}</span>
         <span class="rs-num rs-open" role="cell" title="열린(미종결) 요청 — 백엔드 집계값">${openTxt}</span>
-        <span class="rs-num" role="cell" title="막힌(blocked) 요청">${blockedCell}</span>
-        <span class="rs-num" role="cell" title="수렴한 라운드">${convCell}</span>
+        <span class="rs-num" role="cell" title="막힌 요청 — 보류·결정대기 포함(blocked union)">${blockedCell}</span>
+        <span class="rs-num" role="cell" title="수렴한 판정 라운드(요청 아님)">${convCell}</span>
         <span class="rs-bar" role="cell" aria-label="${escape(repoDisplay(repo))} 요청 상태 구성">${miniBar(a)}</span>
       </div>`;
     }).join("");
 
     host.innerHTML =
       `<div class="tl-head">서비스별 요약
-        <span class="tl-sub">repo당 1줄 — 열림·막힘·수렴 한눈 + 미니 막대(요청 상태 100% 구성). 합계: 열림 ${tot.open} · 막힘 ${tot.blocked} · 수렴 ${tot.converged}. 시간별 전이는 아래 ‘상태 추이 펼치기’.</span>
+        <span class="tl-sub">repo당 1줄 — 열린 요청·막힘(보류 포함)·수렴 라운드 한눈 + 미니 막대(요청 상태 100% 구성). 합계: 열린 요청 ${tot.open} · 막힘 ${tot.blocked} · 수렴 라운드 ${tot.converged}. 시간별 전이는 아래 ‘상태 추이 펼치기’.</span>
       </div>
       <div class="sb-legend" role="group" aria-label="상태 범례">${legend}</div>
       <div class="rs-table" role="table" aria-label="서비스별 1행 요약">
         <div class="rs-row rs-head-row" role="row">
           <span class="rs-repo" role="columnheader">서비스</span>
-          <span class="rs-num" role="columnheader">열린 수</span>
-          <span class="rs-num" role="columnheader">막힘 수</span>
-          <span class="rs-num" role="columnheader">수렴 수</span>
+          <span class="rs-num" role="columnheader" title="열린(미종결) 요청 수">열린 요청</span>
+          <span class="rs-num" role="columnheader" title="막힌 요청 — 보류·결정대기 포함(blocked union). 결단보드 '처리 필요'는 그중 진짜 장애물 subset">막힘<span class="rs-col-note">(보류 포함)</span></span>
+          <span class="rs-num" role="columnheader" title="수렴한 판정 라운드 수(요청 아님)">수렴 라운드</span>
           <span class="rs-bar" role="columnheader">상태 분포</span>
         </div>
         ${rows}
@@ -847,8 +853,11 @@
     //   값이 0이면 비활성(클릭 무의미) — 정직(막힌 것 없는데 필터 적용 무의미).
     const big = (v, k, cls, sub, filter) => {
       const interactive = filter && v > 0;
+      // RND-ADMIN-009 P1-②(c·guestpool P1-B): 종전 툴팁 "요청 탭에서 …만 보기"는 거짓 안내
+      //   — 실제 동작은 disabled '요청 탭' 이동이 아니라 아래 요청 목록(#conv-req-cards)을
+      //   인라인 필터+스크롤(applyReqFilter). 실동작과 일치하게 정정.
       const attrs = interactive
-        ? ` role="button" tabindex="0" data-db-filter="${escape(filter)}" title="클릭 — 요청 탭에서 ${escape(k)}만 보기"`
+        ? ` role="button" tabindex="0" data-db-filter="${escape(filter)}" title="클릭 — 아래 요청 목록을 '${escape(k)}'만 필터"`
         : "";
       return `<div class="db-stat ${cls}${interactive ? " db-stat-link" : ""}"${attrs}>
          <div class="db-v">${v}</div>
@@ -857,9 +866,13 @@
        </div>`;
     };
 
+    // RND-ADMIN-009 P1-②(a·만장일치): 결단보드 "막힌 요청"=진짜 장애물 subset(classifyBlocked
+    //   ==='blocked', 보류·결정대기 제외)인데 서비스별요약 "막힘 수"=blocked union(보류 포함).
+    //   같은 '막힘' 단어가 다른 값(2 vs 6) → 운영자 핵심 스캔("막힌 거 몇이야?")에 상반된 답.
+    //   라벨 변별: 보드='처리 필요(진짜 막힘)' / 요약='막힘(보류 포함)'(L689) — 같은 단어 두 정의 제거.
     const stats =
-      big(blockedItems.length, "막힌 요청", "db-blocked",
-          blockedItems.length ? "열린 장애물 — 처리 필요" : "막힌 것 없음", "blocked") +
+      big(blockedItems.length, "처리 필요", "db-blocked",
+          blockedItems.length ? "진짜 장애물 — 지금 처리" : "막힌 것 없음", "blocked") +
       big(waitItems.length, "내 결정 대기", "db-wait",
           waitItems.length ? "대표 결정해야 진행" : "대기 없음", "wait") +
       // 허영지표(누적 수렴) 추방 → actionable: 아직 수렴 못 한 서비스 수(0=목표 달성).
@@ -894,8 +907,9 @@
         </div>`;
       }).join("");
       const more = (blockedItems.length + waitItems.length) - listItems.length;
+      // RND-ADMIN-009 P1-②(c): disabled '요청 탭'이 아니라 아래 요청 목록에서 전체 표시(실동작 일치).
       const moreHtml = more > 0
-        ? `<div class="db-more">+ ${more}건 더 (요청 탭에서 전체 보기)</div>` : "";
+        ? `<div class="db-more">+ ${more}건 더 (아래 요청 목록에서 전체 보기)</div>` : "";
       listHtml = `<div class="db-list" role="list">${rows}</div>${moreHtml}`;
     }
 
@@ -1079,8 +1093,8 @@
         <div class="g-sub">심사 중</div>
       </div>
       <div class="glance-card glance-ok">
-        <div class="g-v">${settled}</div><div class="g-k">수렴·종결</div>
-        <div class="g-sub">전체 ${total}건 중</div>
+        <div class="g-v">${settled}</div><div class="g-k">수렴·종결 요청</div>
+        <div class="g-sub">전체 ${total} 요청 중</div>
       </div>
       <div class="glance-card glance-wide">
         <div class="g-k">최근 활동</div>
