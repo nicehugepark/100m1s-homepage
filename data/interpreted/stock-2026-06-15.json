@@ -1,6 +1,6 @@
 {
   "date": "2026-06-15",
-  "generated_at": "2026-06-15T09:46:28.369841",
+  "generated_at": "2026-06-15T10:05:24.891693",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -16,16 +16,16 @@
       "summary": "고금리·공급과잉·지정학 리스크 → 비철금속 실적 악화 → 목표가 하향·약세"
     },
     {
+      "title": "AI솔루션",
+      "summary": "AI 산업안전·로봇 솔루션 상용화 본격화 → 로보틱스·엣지 인프라 섹터 수혜 확산"
+    },
+    {
       "title": "엔터위기",
       "summary": "고금리·콘텐츠 약세 → 엔터·미디어사 현금흐름 악화 → 신용등급 강등·회생절차"
     },
     {
-      "title": "반도체AI",
-      "summary": "AI 반도체 전력부품 3대 기술 완성 → 삼성전자·전기 목표가 연이어 상향 → 반도체 섹터 강세 지속"
-    },
-    {
-      "title": "이란휴전",
-      "summary": "미-이란 종전 협상 체결 → 중동 재건 수요 급증 → 건설·인프라 섹터 급등"
+      "title": "AI반도체확대",
+      "summary": "애플·삼성 AI 투자 가속 → 반도체 기판·부품·인프라 공급망 동시 확대"
     },
     {
       "title": "스페이스X상장",
@@ -36,12 +36,12 @@
       "summary": "외국인 관광객 급증 → 국내 소비·관광 부진 반전 → 유통·숙박 섹터 반등"
     },
     {
-      "title": "SpaceX상장",
-      "summary": "SpaceX IPO 상장(2조달러+) → 글로벌 우주산업 과열·배정 경쟁 → 미래에셋 배정 실패·증권사 신뢰 리스크"
-    },
-    {
       "title": "우주상장",
       "summary": "스페이스X 상장(2조달러 기업가치) → 우주·AI 기술 투자 확대 → 반도체·기술섹터 강세"
+    },
+    {
+      "title": "우주산업공급",
+      "summary": "스페이스X 공모 무산 후 우주산업 공급망 관심 집중 → 부품·검사장비 수혜주 확산"
     }
   ],
   "narratives": [],
@@ -52,12 +52,12 @@
       "code": "403870",
       "name": "HPSP",
       "rank": 1,
-      "trade_amount": 473186000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "trade_amount": 648827000000,
+      "change_pct": 8.25,
+      "close_price": 77400,
+      "open_price": 71900,
+      "high_price": 77500,
+      "low_price": 67500,
       "industry": "특수 목적용 기계 제조업",
       "sector": "고압 수소 어닐링 장비",
       "themes": [
@@ -97,7 +97,10 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-06-09",
+        "2026-06-12"
+      ],
       "news": [
         {
           "title": "10일 코스닥 시장 공매도 금액 상위 종목. 주성엔지니어링, HPSP 등",
@@ -181,15 +184,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 9.17,
+      "index_multiple_eligible": true,
       "range_240d": {
-        "high": 75600,
+        "high": 77500,
         "high_date": "2026-06-15",
-        "high_pct": -5.42,
+        "high_pct": -0.13,
         "low": 24300,
         "low_date": "2025-07-23",
-        "low_pct": 194.24,
-        "current": 71500
+        "low_pct": 218.52,
+        "current": 77400
       },
       "daily_20": [
         {
@@ -328,13 +333,58 @@
         {
           "date": "2026-06-15",
           "o": 71900,
-          "h": 75600,
+          "h": 77500,
           "l": 67500,
-          "c": 74000
+          "c": 77400
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-06-08) 대비 +60%↑",
+              "base_price": 47150,
+              "threshold": 75440,
+              "current": 77400,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-16",
+          "period_end": "2026-06-17",
+          "start": "2026-06-16",
+          "end": "2026-06-17",
+          "view_date": "2026-06-15",
+          "next_trading_day": "2026-06-16",
+          "next_trading_day_for_predicted": "2026-06-16",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        }
+      ],
+      "intraday": {
+        "step_min": 5,
+        "open": 71900,
+        "base": 71900,
+        "prices": [
+          71900,
+          69700,
+          70400,
+          71300,
+          71300,
+          73300,
+          74000,
+          75100,
+          74150,
+          75400,
+          76300,
+          76300,
+          77400
+        ]
+      },
       "togusa_verdict": "strong_bull",
       "theme_leader": true,
       "hugepark_grade": "적극"
@@ -343,9 +393,9 @@
       "code": "089030",
       "name": "테크윙",
       "rank": 2,
-      "trade_amount": 244488000000,
-      "change_pct": 9.34,
-      "close_price": 71400,
+      "trade_amount": 262129000000,
+      "change_pct": 6.58,
+      "close_price": 69600,
       "open_price": 67700,
       "high_price": 74000,
       "low_price": 66600,
@@ -459,17 +509,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 7.85,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 7.31,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 74000,
         "high_date": "2026-06-15",
-        "high_pct": -3.51,
+        "high_pct": -5.95,
         "low": 26050,
         "low_date": "2025-08-04",
-        "low_pct": 174.09,
-        "current": 71400
+        "low_pct": 167.18,
+        "current": 69600
       },
       "daily_20": [
         {
@@ -610,7 +660,7 @@
           "o": 67700,
           "h": 74000,
           "l": 66600,
-          "c": 71400
+          "c": 69600
         }
       ],
       "intraday": {
@@ -626,7 +676,11 @@
           69200,
           69800,
           70600,
-          71100
+          70500,
+          70500,
+          69700,
+          69500,
+          69600
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -637,11 +691,11 @@
       "code": "204320",
       "name": "HL만도",
       "rank": 3,
-      "trade_amount": 115318000000,
-      "change_pct": 3.85,
-      "close_price": 67500,
+      "trade_amount": 139087000000,
+      "change_pct": 5.38,
+      "close_price": 68500,
       "open_price": 62500,
-      "high_price": 69000,
+      "high_price": 69300,
       "low_price": 60600,
       "industry": "자동차 신품 부품 제조업",
       "sector": "제동장치, 조향장치, 현가장치",
@@ -765,17 +819,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 5.49,
-      "index_multiple_current": 0.7,
+      "index_change_pct": 5.8,
+      "index_multiple_current": 0.93,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 75800,
         "high_date": "2026-01-21",
-        "high_pct": -10.95,
+        "high_pct": -9.63,
         "low": 32150,
         "low_date": "2025-10-13",
-        "low_pct": 109.95,
-        "current": 67500
+        "low_pct": 113.06,
+        "current": 68500
       },
       "daily_20": [
         {
@@ -914,9 +968,9 @@
         {
           "date": "2026-06-15",
           "o": 62500,
-          "h": 69000,
+          "h": 69300,
           "l": 60600,
-          "c": 67500
+          "c": 68500
         }
       ],
       "intraday": {
@@ -932,7 +986,11 @@
           67500,
           68800,
           67300,
-          67500
+          67700,
+          67900,
+          68900,
+          68700,
+          68500
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -943,9 +1001,9 @@
       "code": "093370",
       "name": "후성",
       "rank": 4,
-      "trade_amount": 103573000000,
-      "change_pct": 5.47,
-      "close_price": 20050,
+      "trade_amount": 113807000000,
+      "change_pct": 4.68,
+      "close_price": 19900,
       "open_price": 19010,
       "high_price": 20950,
       "low_price": 18950,
@@ -986,17 +1044,17 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 5.49,
-      "index_multiple_current": 1.0,
+      "index_change_pct": 5.8,
+      "index_multiple_current": 0.81,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 20950,
         "high_date": "2026-06-15",
-        "high_pct": -4.3,
+        "high_pct": -5.01,
         "low": 4550,
         "low_date": "2025-08-04",
-        "low_pct": 340.66,
-        "current": 20050
+        "low_pct": 337.36,
+        "current": 19900
       },
       "daily_20": [
         {
@@ -1137,7 +1195,7 @@
           "o": 19010,
           "h": 20950,
           "l": 18950,
-          "c": 20050
+          "c": 19900
         }
       ],
       "status_badges": [
@@ -1165,8 +1223,8 @@
               "desc": "최근 15일 최고가(2026-06-12)",
               "base_price": 20050,
               "threshold": 20050,
-              "current": 20050,
-              "triggered": true
+              "current": 19900,
+              "triggered": false
             }
           ],
           "reason_text": "후성 보통주가 2026-06-12 종가가 5일 전일 종가보다 60% 이상 상승하여 투자경고종목으로 지정될 가능성이 있어 2026-06-15 당일 투자주의종목으로 지정 예고됨. 최초 판단일은 2026-06-15이며 요건 미해당 시 2026-06-26까지 하루씩 순연하여 판단함.",
@@ -1195,7 +1253,11 @@
           19700,
           19920,
           19970,
-          20050
+          19980,
+          19820,
+          19900,
+          19890,
+          19900
         ]
       },
       "credit_risk": true,
@@ -1208,7 +1270,7 @@
       "code": "004310",
       "name": "현대약품",
       "rank": 6,
-      "trade_amount": 6150000000,
+      "trade_amount": 6302000000,
       "change_pct": 29.84,
       "close_price": 7440,
       "open_price": 6940,
@@ -1234,8 +1296,8 @@
       "bullish_dates": [],
       "news": [],
       "fallback": true,
-      "index_change_pct": 5.49,
-      "index_multiple_current": 5.44,
+      "index_change_pct": 5.8,
+      "index_multiple_current": 5.14,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 15960,
@@ -1397,8 +1459,8 @@
           "summary": "현대약품 상한가 (29.84%)",
           "cur_prc": 7440,
           "flu_rt": 29.84,
-          "trde_qty": 849623,
-          "trde_prica_calc": 6150000000,
+          "trde_qty": 870164,
+          "trde_prica_calc": 6302000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1427,6 +1489,10 @@
           7440,
           7440,
           7440,
+          7440,
+          7440,
+          7440,
+          7440,
           7440
         ]
       },
@@ -1440,7 +1506,7 @@
       "code": "004870",
       "name": "티웨이홀딩스",
       "rank": 8,
-      "trade_amount": 4916000000,
+      "trade_amount": 4978000000,
       "change_pct": 29.75,
       "close_price": 362,
       "open_price": 287,
@@ -1494,8 +1560,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 5.49,
-      "index_multiple_current": 5.16,
+      "index_change_pct": 5.8,
+      "index_multiple_current": 5.13,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 780,
@@ -1645,7 +1711,7 @@
           "o": 287,
           "h": 362,
           "l": 280,
-          "c": 358
+          "c": 362
         }
       ],
       "status_badges": [
@@ -1657,8 +1723,8 @@
           "summary": "티웨이홀딩스 상한가 (29.75%)",
           "cur_prc": 362,
           "flu_rt": 29.75,
-          "trde_qty": 14121384,
-          "trde_prica_calc": 4916000000,
+          "trde_qty": 14337654,
+          "trde_prica_calc": 4978000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1687,7 +1753,11 @@
           362,
           344,
           352,
-          356
+          362,
+          362,
+          362,
+          362,
+          362
         ]
       },
       "credit_risk": true,
@@ -1702,7 +1772,7 @@
       "code": "067290",
       "name": "JW신약",
       "rank": 9,
-      "trade_amount": 2394000000,
+      "trade_amount": 2412000000,
       "change_pct": 29.94,
       "close_price": 1775,
       "open_price": 1775,
@@ -1745,8 +1815,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 25.16,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 33.27,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 2670,
@@ -1908,8 +1978,8 @@
           "summary": "JW신약 상한가 (29.94%)",
           "cur_prc": 1775,
           "flu_rt": 29.94,
-          "trde_qty": 1348777,
-          "trde_prica_calc": 2394000000,
+          "trde_qty": 1359061,
+          "trde_prica_calc": 2412000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -1938,6 +2008,9 @@
           1775,
           1775,
           1775,
+          1775,
+          1775,
+          1775,
           1775
         ]
       },
@@ -1949,7 +2022,7 @@
       "code": "317240",
       "name": "TS트릴리온",
       "rank": 10,
-      "trade_amount": 889000000,
+      "trade_amount": 900000000,
       "change_pct": 29.96,
       "close_price": 1206,
       "open_price": 1147,
@@ -2056,8 +2129,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 25.18,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 33.29,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 3120,
@@ -2219,8 +2292,8 @@
           "summary": "TS트릴리온 상한가 (29.96%)",
           "cur_prc": 1206,
           "flu_rt": 29.96,
-          "trde_qty": 738593,
-          "trde_prica_calc": 889000000,
+          "trde_qty": 748405,
+          "trde_prica_calc": 900000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2248,6 +2321,11 @@
           1206,
           1206,
           1206,
+          1206,
+          1206,
+          1206,
+          1206,
+          1206,
           1206
         ]
       },
@@ -2261,7 +2339,7 @@
       "code": "079650",
       "name": "서산",
       "rank": 11,
-      "trade_amount": 880000000,
+      "trade_amount": 885000000,
       "change_pct": 29.88,
       "close_price": 2195,
       "open_price": 2195,
@@ -2377,8 +2455,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 25.11,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 33.2,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 2195,
@@ -2596,8 +2674,8 @@
           "summary": "서산 상한가 (29.88%)",
           "cur_prc": 2195,
           "flu_rt": 29.88,
-          "trde_qty": 401109,
-          "trde_prica_calc": 880000000,
+          "trde_qty": 403337,
+          "trde_prica_calc": 885000000,
           "consecutive_count": 2,
           "estimated": false,
           "effect_badges": [
@@ -2626,6 +2704,9 @@
           2195,
           2195,
           2195,
+          2195,
+          2195,
+          2195,
           2195
         ]
       },
@@ -2639,7 +2720,7 @@
       "code": "087260",
       "name": "모바일어플라이언스",
       "rank": 12,
-      "trade_amount": 612000000,
+      "trade_amount": 621000000,
       "change_pct": 29.85,
       "close_price": 609,
       "open_price": 469,
@@ -2748,8 +2829,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 25.08,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 33.17,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 2560,
@@ -2911,8 +2992,8 @@
           "summary": "모바일어플라이언스 상한가 (29.85%)",
           "cur_prc": 609,
           "flu_rt": 29.85,
-          "trde_qty": 1072393,
-          "trde_prica_calc": 612000000,
+          "trde_qty": 1085832,
+          "trde_prica_calc": 621000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -2940,6 +3021,11 @@
           609,
           609,
           609,
+          609,
+          609,
+          609,
+          609,
+          609,
           609
         ]
       },
@@ -2953,7 +3039,7 @@
       "code": "240600",
       "name": "유진테크놀로지",
       "rank": 13,
-      "trade_amount": 313000000,
+      "trade_amount": 331000000,
       "change_pct": 29.86,
       "close_price": 2740,
       "open_price": 2120,
@@ -2972,8 +3058,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.19,
-      "index_multiple_current": 25.09,
+      "index_change_pct": 0.9,
+      "index_multiple_current": 33.18,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 6000,
@@ -3135,8 +3221,8 @@
           "summary": "유진테크놀로지 상한가 (29.86%)",
           "cur_prc": 2740,
           "flu_rt": 29.86,
-          "trde_qty": 117309,
-          "trde_prica_calc": 313000000,
+          "trde_qty": 123867,
+          "trde_prica_calc": 331000000,
           "consecutive_count": 1,
           "estimated": false,
           "effect_badges": [
@@ -3163,6 +3249,9 @@
           2330,
           2360,
           2615,
+          2740,
+          2740,
+          2740,
           2740,
           2740,
           2740
