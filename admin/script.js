@@ -102,6 +102,25 @@
     // 조니 P1-B — 여는 즉시 수렴 뷰가 첫 화면. 해시 딥링크도 지원.
     const hash = (location.hash || "").replace(/^#/, "");
     if (hash) activateTab(hash);
+
+    // [2단계] 탭 nav 가로 오버플로우 끝 페이드 — 좌/우 잔량 있을 때만 해당 끝 페이드(audit 잘림 해소).
+    //   끝까지 스크롤 시 마지막 탭 완전 노출(상시 페이드가 audit 가리는 문제 회피). 1px 여유 = 라운딩 가드.
+    const nav = document.querySelector(".tabs");
+    if (nav) {
+      const updateFade = () => {
+        const maxScroll = nav.scrollWidth - nav.clientWidth;
+        nav.classList.toggle("tabs-fade-l", nav.scrollLeft > 1);
+        nav.classList.toggle("tabs-fade-r", nav.scrollLeft < maxScroll - 1);
+      };
+      nav.addEventListener("scroll", updateFade, { passive: true });
+      window.addEventListener("resize", updateFade);
+      // 활성 탭이 화면 밖이면 보이게 스크롤(딥링크로 audit 진입 시 등).
+      const active = nav.querySelector(".tab.active");
+      if (active && active.scrollIntoView) {
+        try { active.scrollIntoView({ inline: "nearest", block: "nearest" }); } catch (_) {}
+      }
+      updateFade();
+    }
   }
 
   function renderRequests() {
@@ -365,37 +384,58 @@
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
 
-  // ⓪-a2 상태 스냅샷 스택바 — 서비스(repo)별 요청이 '지금 어느 상태에 몇 건'.
-  //   누적 라인(위)=활동 속도 추세 / 본 스택바=현재 상태 분포 → 둘은 다른 축(서사 분리, §정보위계).
-  //   진행 파이프라인 순서(포착→판정중→구현중→배포→종결)로 세그먼트 정렬 + 보류는 끝(정지).
-  //   색=STATE_META.cls 재사용(거짓 채움 0). 100% 가로 스택 → repo 간 '상태 구성' 직관 비교.
-  //   데이터=requests[].state 프론트 집계(백엔드 보강 불요). 모바일=세로 적층(CSS).
   const STATE_ORDER = ["포착", "판정중", "구현중", "배포", "종결", "수렴", "보류"];
   function stateRank(s) { const i = STATE_ORDER.indexOf(s); return i < 0 ? STATE_ORDER.length : i; }
-  function renderConvStatebar(conv) {
-    const host = el("conv-statebar");
+
+  // ⓪-a2 [2단계 통합] repo 1행 요약 테이블 — 진단: 같은 6개 서비스를 4번(상태 스냅바·라운드 수렴
+  //   스택바·전이 타임라인·svc 스트립) 그려 쌍둥이 중복. → repo당 1줄(repo명·열린 수·막힘 수·수렴 수
+  //   ·미니 스택바 1개)로 통합. 4개 차트를 repo당 1줄로 압축(§정보위계 평탄화 해소·above-fold 절약).
+  //   데이터 출처(거짓 채움 0·FLR-AGT-002):
+  //     - 열린 수 = requests[].state 가 열림(!CLOSED_STATES) 카운트.
+  //     - 막힘 수 = requests[].blocked === true 카운트(P0·교착·보류 대기).
+  //     - 수렴 수 = rounds[].state === "수렴" 카운트(요청 상태엔 수렴 라벨 없음 → 라운드에서·기존 roundbar 출처 동일).
+  //     - 미니 스택바 = requests[].state 100% 구성(색+패턴 이중 인코딩 = 기존 sb-seg 재사용·색맹 안전 유지).
+  //   summary 키(동적 발견)와 requests/rounds 양쪽 repo 합집합으로 행 생성(하드코딩 0·N개 확장 안전).
+  function renderConvRepoSummary(conv) {
+    const host = el("conv-repo-summary");
     if (!host) return;
     const reqs = conv.requests || [];
-    if (!reqs.length) {
-      host.innerHTML = `<div class="tl-head">상태 스냅샷</div>`
-        + `<p class="hint">표시할 요청이 없습니다.</p>`;
+    const rounds = conv.rounds || [];
+    const summary = conv.summary || {};
+    if (!reqs.length && !rounds.length && !Object.keys(summary).length) {
+      host.innerHTML = `<div class="tl-head">서비스별 요약</div>`
+        + `<p class="hint">표시할 서비스가 없습니다.</p>`;
       return;
     }
-    // repo → { state → count }, repo 합계. repo 정렬은 svc-strip과 동일(진행 많은 순 근사 = 합계 큰 순).
-    const byRepo = {};
+    // repo → 집계 누산기. 요청 상태 분포(stateCounts) + 열림/막힘 + 수렴 라운드.
+    const acc = {};
+    const ensure = (repo) => (acc[repo] = acc[repo] || {
+      stateCounts: {}, open: 0, blocked: 0, converged: 0, totalReq: 0, totalRounds: 0,
+    });
     const stateSet = new Set();
     reqs.forEach((r) => {
       const repo = (r.repo && String(r.repo).trim()) || "미상";
       const st = (r.state && String(r.state).trim()) || "미상";
-      (byRepo[repo] = byRepo[repo] || {})[st] = (byRepo[repo][st] || 0) + 1;
+      const a = ensure(repo);
+      a.stateCounts[st] = (a.stateCounts[st] || 0) + 1;
+      a.totalReq += 1;
+      if (isOpenState(st)) a.open += 1;
+      if (r.blocked === true) a.blocked += 1;
       stateSet.add(st);
     });
-    const repos = Object.keys(byRepo).sort((a, b) => {
-      const ta = Object.values(byRepo[a]).reduce((x, y) => x + y, 0);
-      const tb = Object.values(byRepo[b]).reduce((x, y) => x + y, 0);
-      return tb - ta || a.localeCompare(b);
+    rounds.forEach((r) => {
+      const repo = (r.repo && String(r.repo).trim()) || "미상";
+      const a = ensure(repo);
+      a.totalRounds += 1;
+      if ((r.state && String(r.state).trim()) === "수렴") a.converged += 1;
     });
-    // 등장한 상태를 파이프라인 순서로 — 범례 + 세그먼트 정렬 공통.
+    // summary 에만 있고 requests/rounds 엔 없는 repo도 행 보존(동적 발견 정합).
+    Object.keys(summary).forEach((repo) => ensure(repo));
+
+    // 정렬: 막힘 많은 순(대표 관심사 = "어디가 막혔나") → 열림 많은 순 → 이름순.
+    const repos = Object.keys(acc).sort((a, b) =>
+      acc[b].blocked - acc[a].blocked || acc[b].open - acc[a].open || a.localeCompare(b));
+    // 미니 스택바 세그먼트 = 등장 상태를 파이프라인 순서로(범례 공통).
     const states = [...stateSet].sort((a, b) => stateRank(a) - stateRank(b) || a.localeCompare(b));
     // 범례 — 색(stateMeta.cls) + 라벨 병기(다크모드 제1원칙: 색만으로 의미 전달 금지).
     const legend = states.map((s) => {
@@ -403,104 +443,59 @@
       return `<span class="sb-leg"><i class="sb-leg-sw ${escape(m.cls)}"></i>`
         + `<span class="sb-leg-k">${escape(m.label)}</span></span>`;
     }).join("");
-    // repo별 1행 = 라벨 + 100% 스택바. 세그먼트 = 상태(width=비율), 호버 title=상태·건수.
-    const rows = repos.map((repo) => {
-      const counts = byRepo[repo];
-      const total = Object.values(counts).reduce((x, y) => x + y, 0) || 1;
-      const segs = states.filter((s) => counts[s]).map((s) => {
-        const n = counts[s];
+
+    // 전체 합계(헤더 요약 — 한눈 총량).
+    const tot = repos.reduce((o, repo) => {
+      const a = acc[repo];
+      o.open += a.open; o.blocked += a.blocked; o.converged += a.converged;
+      return o;
+    }, { open: 0, blocked: 0, converged: 0 });
+
+    const miniBar = (a) => {
+      const total = a.totalReq || 1;
+      if (!a.totalReq) return `<span class="rs-mini rs-mini-empty" title="요청 없음"></span>`;
+      const segs = states.filter((s) => a.stateCounts[s]).map((s) => {
+        const n = a.stateCounts[s];
         const m = stateMeta(s);
         const pct = (n / total) * 100;
-        // 좁은 칸(<12%)은 라벨 어중간 잘림이 오히려 인지 방해(힉의 법칙) → 숫자만, 라벨은 CSS로 숨김.
-        // 전체 정보는 호버 title + aria-label 로 보존(정보 손실 0).
-        const narrow = pct < 12 ? " sb-seg-narrow" : "";
-        return `<span class="sb-seg ${escape(m.cls)}${narrow}" style="width:${pct.toFixed(2)}%"`
-          + ` title="${escape(repoDisplay(repo))} · ${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)"`
-          + ` aria-label="${escape(m.label)} ${n}건">`
-          + `<b class="sb-seg-n">${n}</b><span class="sb-seg-k">${escape(m.label)}</span></span>`;
+        return `<span class="sb-seg ${escape(m.cls)} sb-seg-mini" style="width:${pct.toFixed(2)}%"`
+          + ` title="${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)" aria-label="${escape(m.label)} ${n}건"></span>`;
       }).join("");
-      return `<div class="sb-row" role="group" aria-label="${escape(repoDisplay(repo))} 상태 분포 (총 ${total}건)">
-        <div class="sb-row-head"><span class="sb-repo">${escape(repoDisplay(repo))}</span><span class="sb-total">${total}</span></div>
-        <div class="sb-track">${segs}</div>
+      return `<span class="sb-track rs-mini">${segs}</span>`;
+    };
+
+    const rows = repos.map((repo) => {
+      const a = acc[repo];
+      const blockedCell = a.blocked
+        ? `<span class="rs-blocked rs-has">${a.blocked}</span>`
+        : `<span class="rs-blocked rs-zero">0</span>`;
+      const convCell = a.converged
+        ? `<span class="rs-conv rs-has">${a.converged}</span>`
+        : `<span class="rs-conv rs-zero">0</span>`;
+      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열림 ${a.open}·막힘 ${a.blocked}·수렴 ${a.converged}">
+        <span class="rs-repo" role="cell">${escape(repoDisplay(repo))}</span>
+        <span class="rs-num rs-open" role="cell" title="열린(미종결) 요청">${a.open}</span>
+        <span class="rs-num" role="cell" title="막힌(blocked) 요청">${blockedCell}</span>
+        <span class="rs-num" role="cell" title="수렴한 라운드">${convCell}</span>
+        <span class="rs-bar" role="cell" aria-label="${escape(repoDisplay(repo))} 요청 상태 구성">${miniBar(a)}</span>
       </div>`;
     }).join("");
+
     host.innerHTML =
-      `<div class="tl-head">상태 스냅샷
-        <span class="tl-sub">서비스별 요청이 지금 어느 상태에 몇 건인지 — 막대 = 100% 상태 구성 (위 라인차트는 활동 '속도' 추세, 본 막대는 현재 '상태')</span>
+      `<div class="tl-head">서비스별 요약
+        <span class="tl-sub">repo당 1줄 — 열림·막힘·수렴 한눈 + 미니 막대(요청 상태 100% 구성). 합계: 열림 ${tot.open} · 막힘 ${tot.blocked} · 수렴 ${tot.converged}. 시간별 전이는 아래 ‘상태 추이 펼치기’.</span>
       </div>
       <div class="sb-legend" role="group" aria-label="상태 범례">${legend}</div>
-      <div class="sb-rows">${rows}</div>`;
-  }
-
-  // ⓪-a3 라운드 수렴 현황 — "어느 repo/요청이 수렴됐나" 한눈 (대표 직접: "요청부터 수렴까지인데
-  //   차트에 수렴이 안 보인다"). D(상태 스냅바)는 requests[].state(포착~종결, 수렴 라벨 없음)만 그려
-  //   수렴이 영영 안 보였음 → 수렴은 rounds[].state(수렴/미수렴/판정완료/대체)에 있으므로 별 막대로 가시화.
-  //   요청 상태(위 D) vs 라운드 수렴(본 막대)은 축이 다름(§정보위계: 화면=하나의 메시지) → 형제 섹션 분리.
-  //   데이터=rounds[] 직접 집계(summary.*_rounds 분해 필드는 total과 합산 불일치 → 거짓 채움 위험으로 미사용·FLR-AGT-002).
-  //   색=STATE_META.cls 재사용(수렴=conv-ok 진녹 / 미수렴=conv-no 적 / 판정완료=conv-cand 황 / 대체됨=conv-superseded 회).
-  const ROUND_STATE_ORDER = ["수렴", "판정완료", "진행중", "판정중", "미수렴", "대체됨"];
-  function roundStateRank(s) { const i = ROUND_STATE_ORDER.indexOf(s); return i < 0 ? ROUND_STATE_ORDER.length : i; }
-  function renderConvRoundbar(conv) {
-    const host = el("conv-roundbar");
-    if (!host) return;
-    const rounds = conv.rounds || [];
-    if (!rounds.length) {
-      host.innerHTML = `<div class="tl-head">라운드 수렴 현황</div>`
-        + `<p class="hint">표시할 라운드가 없습니다.</p>`;
-      return;
-    }
-    // repo → { state → count }. 수렴 막대는 라운드 단위(요청 상태 막대와 별개 축).
-    const byRepo = {};
-    const stateSet = new Set();
-    let convergedTotal = 0, grandTotal = 0;
-    rounds.forEach((r) => {
-      const repo = (r.repo && String(r.repo).trim()) || "미상";
-      const st = (r.state && String(r.state).trim()) || "미상";
-      (byRepo[repo] = byRepo[repo] || {})[st] = (byRepo[repo][st] || 0) + 1;
-      stateSet.add(st);
-      grandTotal += 1;
-      if (st === "수렴") convergedTotal += 1;
-    });
-    const repos = Object.keys(byRepo).sort((a, b) => {
-      // 수렴 라운드 많은 repo 먼저(대표 관심사 = "어디가 수렴됐나"), 동률은 합계 큰 순.
-      const ca = byRepo[a]["수렴"] || 0, cb = byRepo[b]["수렴"] || 0;
-      const ta = Object.values(byRepo[a]).reduce((x, y) => x + y, 0);
-      const tb = Object.values(byRepo[b]).reduce((x, y) => x + y, 0);
-      return cb - ca || tb - ta || a.localeCompare(b);
-    });
-    const states = [...stateSet].sort((a, b) => roundStateRank(a) - roundStateRank(b) || a.localeCompare(b));
-    const legend = states.map((s) => {
-      const m = stateMeta(s);
-      return `<span class="sb-leg"><i class="sb-leg-sw ${escape(m.cls)}"></i>`
-        + `<span class="sb-leg-k">${escape(m.label)}</span></span>`;
-    }).join("");
-    const rows = repos.map((repo) => {
-      const counts = byRepo[repo];
-      const total = Object.values(counts).reduce((x, y) => x + y, 0) || 1;
-      const convN = counts["수렴"] || 0;
-      const segs = states.filter((s) => counts[s]).map((s) => {
-        const n = counts[s];
-        const m = stateMeta(s);
-        const pct = (n / total) * 100;
-        const narrow = pct < 12 ? " sb-seg-narrow" : "";
-        return `<span class="sb-seg ${escape(m.cls)}${narrow}" style="width:${pct.toFixed(2)}%"`
-          + ` title="${escape(repoDisplay(repo))} · ${escape(m.label)} ${n}건 (${pct.toFixed(0)}%)"`
-          + ` aria-label="${escape(m.label)} ${n}건">`
-          + `<b class="sb-seg-n">${n}</b><span class="sb-seg-k">${escape(m.label)}</span></span>`;
-      }).join("");
-      // repo 헤더에 "수렴 N/전체" 병기 — 한눈에 수렴 도달도(거짓 채움 0, 실 카운트).
-      return `<div class="sb-row" role="group" aria-label="${escape(repoDisplay(repo))} 라운드 수렴 (수렴 ${convN}/${total})">
-        <div class="sb-row-head"><span class="sb-repo">${escape(repoDisplay(repo))}</span>
-          <span class="sb-total"><b class="sb-conv-n">수렴 ${convN}</b> / ${total}</span></div>
-        <div class="sb-track">${segs}</div>
+      <div class="rs-table" role="table" aria-label="서비스별 1행 요약">
+        <div class="rs-row rs-head-row" role="row">
+          <span class="rs-repo" role="columnheader">서비스</span>
+          <span class="rs-num" role="columnheader">열린 수</span>
+          <span class="rs-num" role="columnheader">막힘 수</span>
+          <span class="rs-num" role="columnheader">수렴 수</span>
+          <span class="rs-bar" role="columnheader">상태 분포</span>
+        </div>
+        ${rows}
       </div>`;
-    }).join("");
-    host.innerHTML =
-      `<div class="tl-head">라운드 수렴 현황
-        <span class="tl-sub">요청 → 라운드 반복 → <b>수렴</b>(전 패널 YES·2라운드 연속 = 요청 종결의 관문). 위 ‘상태 스냅샷’은 요청이 어느 단계인지, 본 막대는 그 라운드가 수렴했는지 — 전체 ${grandTotal}개 라운드 중 ${convergedTotal}개 수렴.</span>
-      </div>
-      <div class="sb-legend" role="group" aria-label="라운드 수렴 범례">${legend}</div>
-      <div class="sb-rows">${rows}</div>`;
   }
 
   // ⓪-a4 상태 추이 — state_transitions(실측 ts 보유 사건만)를 시간축 위 repo별 행으로.
@@ -594,48 +589,210 @@
     }
     host.innerHTML =
       `<div class="tl-head">상태 추이
-        <span class="tl-sub">서비스별 상태가 <b>시간에 따라</b> 어떻게 바뀌었나 — 위 ‘상태 스냅샷/라운드 수렴’은 ‘지금’ 분포, 본 추이는 전이 이력. ${escape(tlFmt(t0))} ~ ${escape(tlFmt(t1))} · 총 ${trs.length}건.</span>
+        <span class="tl-sub">서비스별 상태가 <b>시간에 따라</b> 어떻게 바뀌었나 — 위 ‘서비스별 요약’은 ‘지금’ 분포, 본 추이는 전이 이력. ${escape(tlFmt(t0))} ~ ${escape(tlFmt(t1))} · 총 ${trs.length}건.</span>
       </div>
       <div class="sb-legend tr-legend" role="group" aria-label="상태·종류 범례">${stateLeg}<span class="tr-leg-div" aria-hidden="true"></span>${kindLeg}</div>
       <div class="tr-rows">${rows}</div>
       ${covLine}`;
   }
 
-  // ① 서비스(repo) 요약 스트립 — summary 키에서 동적 렌더(하드코딩 0·미션 4축).
-  // HOME·ADMIN·INFRA 등 N개로 늘어도 레이아웃 안 깨짐. status: active/converged/idle.
-  const SVC_STATUS = {
-    active:    { cls: "svc-active",    label: "진행 중" },
-    converged: { cls: "svc-converged", label: "수렴" },
-    idle:      { cls: "svc-idle",      label: "대기" },
-  };
-  function renderConvServices(conv) {
+  // [2단계] 구 renderConvServices(svc-strip)·renderConvStatebar·renderConvRoundbar 3종은
+  //   renderConvRepoSummary(repo 1행 요약 테이블)로 통합 — 같은 6개 서비스 4중 중복 제거.
+  //   svc 카드의 status/status_label(서버 산출 active/converged/idle)은 1행 요약의
+  //   열림·막힘·수렴 실측 카운트로 대체(거짓 채움 0). 전이 타임라인은 details 접기로 이동.
+
+  // ⓪-DECISION 결단 보드 — 어드민이 '상태(무엇이 막혔나·내가 뭘 결정해야 하나)'를 답하는 단 하나의 요소.
+  //   대표 catch: 화면에 활동만 잔뜩이고 막힘을 답하는 요소가 0개. → 화면에서 가장 크고 가장 위.
+  //   집계(실측·color 0): requests[].blocked + blocked_reason 로 막힘 vs 대기 분리.
+  //     - 내 결정 대기 = blocked & (사유에 '대표'/'결정 대기' 포함 또는 state=보류) → 대표가 풀어야 진행.
+  //     - 막힘 = blocked & (대기 아님) → 열린 P0 등 진짜 장애물 (대표 결정으로 안 풀림).
+  //     - 최근 수렴 = rounds[].state=수렴 (summary.converged_rounds 합과 정합 — 실측). 신호 없으면 0.
+  //   가짜 숫자·폴백 색칠 금지: 해당 신호 없으면 0/없음 표시 (FLR-AGT-002).
+  const DECISION_WAIT_RE = /대표|결정\s*대기|승인\s*대기|보류/;
+  function classifyBlocked(r) {
+    // 반환: "wait"(내 결정 대기) | "blocked"(진짜 막힘) | null(안 막힘)
+    if (!r.blocked) return null;
+    const reason = String(r.blocked_reason || "");
+    if (r.state === "보류" || DECISION_WAIT_RE.test(reason)) return "wait";
+    return "blocked";
+  }
+  function renderConvDecisionBoard(conv) {
+    const host = el("conv-decision-board");
+    if (!host) return;
+    const reqs = conv.requests || [];
+    const rounds = conv.rounds || [];
+
+    const blockedItems = [];
+    const waitItems = [];
+    reqs.forEach((r) => {
+      const cls = classifyBlocked(r);
+      if (cls === "blocked") blockedItems.push(r);
+      else if (cls === "wait") waitItems.push(r);
+    });
+    // 최근 수렴 = 수렴 라운드 수 (실측 state). summary.converged_rounds 합과 동일 출처 정합.
+    const convergedN = rounds.filter((r) => r.state === "수렴").length;
+
+    // 막힘 우선(P0·진짜 장애물) → 대기 순으로, 우선순위 높은 것부터 최대 5줄.
+    const prRank = (p) => ({ P0: 0, P1: 1, P2: 2, P3: 3 }[p] ?? 4);
+    const listItems = blockedItems.concat(waitItems)
+      .sort((a, b) => prRank(a.priority) - prRank(b.priority))
+      .slice(0, 5);
+
+    const big = (v, k, cls, sub) =>
+      `<div class="db-stat ${cls}">
+         <div class="db-v">${v}</div>
+         <div class="db-k">${escape(k)}</div>
+         <div class="db-sub">${escape(sub)}</div>
+       </div>`;
+
+    const stats =
+      big(blockedItems.length, "막힌 요청", "db-blocked",
+          blockedItems.length ? "열린 장애물 — 처리 필요" : "막힌 것 없음") +
+      big(waitItems.length, "내 결정 대기", "db-wait",
+          waitItems.length ? "대표 결정해야 진행" : "대기 없음") +
+      big(convergedN, "수렴 (누적)", "db-ok",
+          convergedN ? "전원 YES·2라운드 연속 라운드" : "수렴 라운드 없음");
+
+    let listHtml;
+    if (!listItems.length) {
+      listHtml = `<div class="db-empty">막히거나 결정 대기 중인 요청이 없습니다 — 전부 도는 중.</div>`;
+    } else {
+      const rows = listItems.map((r) => {
+        const wait = classifyBlocked(r) === "wait";
+        const tag = wait
+          ? `<span class="db-tag db-tag-wait">결정 대기</span>`
+          : `<span class="db-tag db-tag-blocked">막힘</span>`;
+        // 막힌 이유 = blocked_reason(실측) 우선, 없으면 현재 state 라벨 근사(정직 표기).
+        const reason = r.blocked_reason
+          ? safe(r.blocked_reason)
+          : `<span class="db-reason-approx">${escape(stateMeta(r.state).label)} 상태</span>`;
+        return `<div class="db-row ${wait ? "db-row-wait" : "db-row-blocked"}">
+          ${tag}
+          <span class="db-row-repo">${escape(repoDisplay(r.repo || "미상"))}</span>
+          <span class="db-row-title" title="${safe(r.summary || "")}">${safe(r.summary || r.req_id || "")}</span>
+          <span class="db-row-reason">${reason}</span>
+        </div>`;
+      }).join("");
+      const more = (blockedItems.length + waitItems.length) - listItems.length;
+      const moreHtml = more > 0
+        ? `<div class="db-more">+ ${more}건 더 (요청 탭에서 전체 보기)</div>` : "";
+      listHtml = `<div class="db-list" role="list">${rows}</div>${moreHtml}`;
+    }
+
+    host.innerHTML =
+      `<div class="db-head">
+         <h2 class="db-title">결단 보드</h2>
+         <span class="db-hint">지금 무엇이 막혔고 내가 뭘 결정해야 하나</span>
+       </div>
+       <div class="db-stats">${stats}</div>
+       ${listHtml}`;
+  }
+
+  // ⓪-BURNDOWN 번다운 — burndown-design.md(CADENCE) Phase A. 대표 catch: "진척 빨라서 밑으로 꺾이는 차트, 서비스별로."
+  //   Phase A 제약(설계 §1): 요청 전이 시각(opened_at/closed_at) SSOT 부재 → 과거 R(t) 잔량 시계열 실측 불가.
+  //   소급 합성 금지(FLR-AGT-002). 정직하게 2종:
+  //     ① 서비스별 현재 잔량(open) 막대 — summary[repo].open_requests 스냅샷 (시계열 아님 명시).
+  //     ② 처리 박자 라인 — state_transitions 의 verdict_emitted(실측 mtime·is_approx=false)를 일별 close 이벤트 근사.
+  //        우상향 = 판정 활발(처리 빠름). 진짜 잔량 우하향선은 Phase B(전이 시각 도입 후).
+  //   phantom repo(공통/—/repo/UNKNOWN/null) 분모 배제 (설계 §1 부수발견2).
+  const PHANTOM_REPO_TOKENS = new Set(["공통", "—", "-", "repo", "UNKNOWN", "unknown", "미상", ""]);
+  function isRealRepo(repo) {
+    return !PHANTOM_REPO_TOKENS.has(String(repo == null ? "" : repo).trim());
+  }
+  // 일자(KST) 키 — verdict ts(ISO+09:00) 의 날짜만. 달력일(설계 §3: 메타 트래커라 주말도 작업).
+  function dayKey(iso) {
+    if (!iso) return null;
+    const s = String(iso);
+    // ISO 문자열의 앞 10자(YYYY-MM-DD)가 이미 +09:00 로컬 날짜 — Date 재파싱 시 TZ 흔들림 회피.
+    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? m[1] + "-" + m[2] + "-" + m[3] : null;
+  }
+  function renderConvBurndown(conv) {
+    const host = el("conv-burndown");
+    if (!host) return;
     const summary = conv.summary || {};
-    // 동적 정렬: 진행 중 → 수렴 → 대기, 그 안에서 열린 요청 많은 순.
-    const statusRank = (s) => ({ active: 0, converged: 1, idle: 2 }[s] ?? 3);
-    const entries = Object.entries(summary).sort((a, b) =>
-      statusRank(a[1].status) - statusRank(b[1].status)
-      || (b[1].open_requests || 0) - (a[1].open_requests || 0)
-      || a[0].localeCompare(b[0]));
-    if (!entries.length) { el("conv-svc-strip").innerHTML = ""; return; }
-    el("conv-svc-strip").innerHTML = entries.map(([repo, s]) => {
-      const st = SVC_STATUS[s.status] || { cls: "svc-idle", label: s.status || "미상" };
-      const openR = s.open_requests ?? 0;
-      const totalR = s.total_requests ?? 0;
-      const openRounds = s.open_rounds ?? 0;
-      // 라벨: status_label(서버 산출) 그대로 — 거짓 채움 0. 길면 CSS가 줄임.
-      return `<div class="svc-card ${st.cls}" role="group" aria-label="${escape(repoDisplay(repo))} ${escape(st.label)}">
-        <div class="svc-head">
-          <span class="svc-name">${escape(repoDisplay(repo))}</span>
-          <span class="svc-status-dot" title="${escape(st.label)}"></span>
-        </div>
-        <div class="svc-label">${safe(s.status_label || st.label)}</div>
-        <div class="svc-metrics">
-          <div class="svc-metric m-open"><span class="m-v">${openR}</span><span class="m-k">열린 요청</span></div>
-          <div class="svc-metric"><span class="m-v">${totalR}</span><span class="m-k">전체</span></div>
-          <div class="svc-metric"><span class="m-v">${openRounds}</span><span class="m-k">열린 라운드</span></div>
-        </div>
-      </div>`;
-    }).join("");
+    const trans = conv.state_transitions || [];
+
+    // ── ① 현재 잔량 스냅샷 (서비스별 open_requests, phantom 제외) ──
+    const snap = Object.entries(summary)
+      .filter(([repo]) => isRealRepo(repo))
+      .map(([repo, s]) => ({ repo, open: s.open_requests ?? 0, total: s.total_requests ?? 0 }))
+      .filter((x) => x.total > 0)
+      .sort((a, b) => b.open - a.open || a.repo.localeCompare(b.repo));
+    const maxOpen = Math.max(1, ...snap.map((x) => x.open));
+
+    const snapBars = snap.length
+      ? snap.map((x) => {
+          const pct = (x.open / maxOpen) * 100;
+          const zero = x.open === 0;
+          return `<div class="bd-snap-row" role="group" aria-label="${escape(repoDisplay(x.repo))} 미해결 ${x.open}건 / 전체 ${x.total}">
+            <span class="bd-snap-repo">${escape(repoDisplay(x.repo))}</span>
+            <span class="bd-snap-track">
+              <span class="bd-snap-fill ${zero ? "bd-snap-zero" : ""}" style="width:${zero ? 0 : Math.max(6, pct)}%"></span>
+            </span>
+            <span class="bd-snap-v">${x.open}<span class="bd-snap-tot">/${x.total}</span></span>
+          </div>`;
+        }).join("")
+      : `<div class="db-empty">집계할 서비스 잔량이 없습니다.</div>`;
+
+    // ── ② 처리 박자 라인 — verdict_emitted(실측 ts) 일별 카운트 = "며칠에 몇 건 판정났나" ──
+    //    is_approx=true(요청 captured 근사)는 분자 제외 — 거짓 속도 가드(설계 §2.2).
+    const verdictEvents = trans.filter(
+      (e) => e.kind === "verdict_emitted" && e.is_approx === false && e.ts);
+    const byDay = {};
+    verdictEvents.forEach((e) => {
+      const d = dayKey(e.ts);
+      if (d) byDay[d] = (byDay[d] || 0) + 1;
+    });
+    const days = Object.keys(byDay).sort();
+
+    let paceHtml;
+    if (days.length < 2) {
+      // 단일 일자·무데이터면 라인 못 그림 — 정직하게 스냅샷만 (가짜 추세선 금지).
+      paceHtml = `<div class="bd-pace-empty">처리 박자 추이는 2일 이상 데이터부터 표시 (현재 ${days.length}일치 실측).</div>`;
+    } else {
+      const counts = days.map((d) => byDay[d]);
+      const maxC = Math.max(1, ...counts);
+      const W = 100, H = 40; // viewBox 단위(%·반응형)
+      const stepX = days.length > 1 ? W / (days.length - 1) : 0;
+      const pts = counts.map((c, i) => {
+        const x = i * stepX;
+        const y = H - (c / maxC) * (H - 4) - 2;
+        return [x, y];
+      });
+      const linePath = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+      const dots = pts.map((p, i) =>
+        `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="1.1" fill="var(--am)">
+           <title>${escape(days[i])} · 판정 ${counts[i]}건</title></circle>`).join("");
+      const total = counts.reduce((a, b) => a + b, 0);
+      const lastN = counts[counts.length - 1];
+      paceHtml =
+        `<div class="bd-pace">
+           <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" class="bd-pace-svg" role="img"
+                aria-label="일별 판정 처리 박자 — ${days.length}일간 총 ${total}건">
+             <polyline points="${pts.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}"
+                       fill="none" stroke="var(--am)" stroke-width="0.8"
+                       stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+             ${dots}
+           </svg>
+           <div class="bd-pace-axis">
+             <span>${escape(days[0])}</span>
+             <span class="bd-pace-stat">총 ${total}건 · 최근일 ${lastN}건</span>
+             <span>${escape(days[days.length - 1])}</span>
+           </div>
+         </div>`;
+    }
+
+    host.innerHTML =
+      `<div class="bd-head">
+         <h2 class="bd-title">번다운 — 미해결 잔량</h2>
+         <span class="bd-hint">서비스별 미해결(open) 요청 · 진척 빠르면 잔량이 줄어든다</span>
+       </div>
+       <div class="bd-snap">${snapBars}</div>
+       <div class="bd-pace-wrap">
+         <div class="bd-pace-h">처리 박자 <span class="bd-pace-sub">일별 판정 건수(실측 mtime) · 우상향 = 판정 활발 · 잔량 시계열은 전이 시각 도입 후(Phase B)</span></div>
+         ${paceHtml}
+       </div>`;
   }
 
   // ① 한눈에 — 열린/진행/수렴/최근 활동
@@ -695,24 +852,50 @@
     if (h < 24) return h + "시간 " + (m % 60) + "분 전";
     return Math.floor(h / 24) + "일 전";
   }
-  // 색 + 텍스트 병기(다크모드 제1원칙). 동작중 <30분 / 느려짐 <180 / 정체 그 외 / 미상.
+  // 색 + 텍스트 병기(다크모드 제1원칙). 데이터 신선 <30분 / 느려짐 <180 / 정체 그 외 / 미상.
   function freshMeta(m) {
-    if (m == null) return { cls: "fresh-unknown", label: "활동 미상" };
-    if (m < 30)  return { cls: "fresh-live",  label: "동작 중" };
-    if (m < 180) return { cls: "fresh-warm",  label: "느려짐" };
-    return { cls: "fresh-stale", label: "정체" };
+    if (m == null) return { cls: "fresh-unknown", label: "데이터 미상" };
+    if (m < 30)  return { cls: "fresh-live",  label: "데이터 최신" };
+    if (m < 180) return { cls: "fresh-warm",  label: "데이터 지연" };
+    return { cls: "fresh-stale", label: "데이터 정체" };
   }
+  // 두 시각 간 경과(분) — to - from, 음수 가능(활동이 빌드 이후일 때).
+  function minsBetween(fromIso, toIso) {
+    if (!fromIso || !toIso) return null;
+    const a = new Date(fromIso).getTime(), b = new Date(toIso).getTime();
+    if (isNaN(a) || isNaN(b)) return null;
+    return Math.round((b - a) / 60000);
+  }
+  // [2단계] freshness 모순 해소 — 기존엔 배지 본문이 last_activity_ts(라이브 시계 기준) 로 '동작 중 방금',
+  //   같은 줄 데이터 갱신은 generated_at 기준 'N시간 전' → 동시 표기가 모순(활동 ts 가 빌드보다 미래라
+  //   minsAgo 가 0 클램프 → 항상 '방금'). 정합화: 배지 본문(liveness)은 *데이터 스냅샷 자체*의 신선도
+  //   (generated_at 경과)로 단일 기준화 — 우리가 보는 게 라이브 데이터인지를 답함. last_activity_ts 는
+  //   스냅샷 *내부* 기록이므로 '빌드 시점 기준' 상대로 정직 표기(빌드 이후면 '빌드 시점' 명시·라이브 시계 0클램프 안 함).
   function renderConvFreshness(conv) {
     const f = conv.freshness || {};
-    const actMin = minsAgo(f.last_activity_ts);
-    const genMin = minsAgo(f.generated_at || conv.generated_at);
-    const fm = freshMeta(actMin);
+    const genIso = f.generated_at || conv.generated_at;
+    const genMin = minsAgo(genIso);          // 데이터 스냅샷 경과(라이브 시계 기준) = 단일 liveness 기준
+    const fm = freshMeta(genMin);
+    // 마지막 활동을 '빌드 시점 기준'으로 — 모순 제거. delta = generated_at - last_activity_ts.
+    const actIso = f.last_activity_ts;
+    const deltaToBuild = minsBetween(actIso, genIso); // 양수 = 빌드가 활동보다 나중(정상)
+    let actDetail;
+    if (!actIso) {
+      actDetail = "마지막 활동 <b>미상</b>";
+    } else if (deltaToBuild == null) {
+      actDetail = "마지막 활동 <b>미상</b>";
+    } else if (deltaToBuild < 0) {
+      // 활동 ts 가 빌드보다 미래 — 라이브 시계로 '방금' 우기지 않고 정직하게 표기(거짓 신선 0·FLR-AGT-002).
+      actDetail = `마지막 활동 <b>빌드 이후 예약/미래 기록</b>`;
+    } else {
+      actDetail = `마지막 활동 <b>빌드 ${escape(agoText(deltaToBuild))}</b>`;
+    }
     el("conv-freshness").innerHTML =
-      `<div class="fresh-badge ${fm.cls}">
+      `<div class="fresh-badge ${fm.cls}" title="배지 = 보고 있는 데이터(convergence.json)의 신선도. 마지막 활동은 그 빌드 시점 기준 상대.">
         <span class="fresh-dot"></span>
         <span class="fresh-main">${escape(fm.label)}</span>
-        <span class="fresh-detail">마지막 활동 <b>${escape(agoText(actMin))}</b></span>
-        <span class="fresh-gen">데이터 갱신 ${escape(agoText(genMin))}</span>
+        <span class="fresh-gen">데이터 갱신 <b>${escape(agoText(genMin))}</b></span>
+        <span class="fresh-detail">${actDetail}</span>
       </div>`;
   }
 
@@ -1448,25 +1631,29 @@
     const repoLabel = (r) => (!r || r === "—") ? "미분류" : r;
 
     // 정렬 비교자 (최신/진척/우선순위). 정렬 셀렉터는 선택사항(없으면 기본=우선순위).
-    // 우선순위 정렬: blocked 먼저(교착 가시) → P0>P1>P2>P3>무 → 열림 먼저.
+    // [2단계] 막힘·보류 카드를 맨 위로 — 모든 정렬 모드 공통 최우선 키(stuckRank).
+    //   대표 관심사 = "무엇이 막혔나" → 정렬 기준 무관 교착/보류가 항상 위. blocked 또는 state=보류.
     const sortEl = el("conv-req-sort");
     const prioRank = (p) => ({ P0: 0, P1: 1, P2: 2, P3: 3 }[p] ?? 4);
+    const stuckRank = (r) => (r.blocked === true || r.state === "보류") ? 0 : 1; // 0 = 막힘/보류(위)
     function cmp(by) {
+      let inner;
       if (by === "recent") {
         // 최신: latest_round_id 회차 큰 순 → req_id 역순(근사 최신)
-        return (a, b) => roundNum(b.latest_round_id) - roundNum(a.latest_round_id)
+        inner = (a, b) => roundNum(b.latest_round_id) - roundNum(a.latest_round_id)
           || String(b.req_id || "").localeCompare(String(a.req_id || ""));
-      }
-      if (by === "progress") {
+      } else if (by === "progress") {
         // 진척: progress_pct 높은 순 (null은 뒤로)
-        return (a, b) => (b.progress_pct ?? -1) - (a.progress_pct ?? -1);
+        inner = (a, b) => (b.progress_pct ?? -1) - (a.progress_pct ?? -1);
+      } else {
+        // priority(기본): priority → 열림 → progress (막힘/보류는 stuckRank가 위로 이미 끌어올림)
+        inner = (a, b) =>
+          prioRank(a.priority) - prioRank(b.priority)
+          || (isOpenState(b.state) - isOpenState(a.state))
+          || (b.progress_pct ?? -1) - (a.progress_pct ?? -1);
       }
-      // priority(기본): blocked → priority → 열림 → progress
-      return (a, b) =>
-        (b.blocked === true) - (a.blocked === true)
-        || prioRank(a.priority) - prioRank(b.priority)
-        || (isOpenState(b.state) - isOpenState(a.state))
-        || (b.progress_pct ?? -1) - (a.progress_pct ?? -1);
+      // 막힘/보류 최우선(전 모드 공통) → 그 안에서 선택 정렬.
+      return (a, b) => (stuckRank(a) - stuckRank(b)) || inner(a, b);
     }
 
     const draw = () => {
@@ -1526,9 +1713,12 @@
   }
 
   // 개별 이슈 카드 (1요청1이슈 통합 뷰) — 백엔드 신규 11종 필드 와이어.
+  // [2단계] 위계 재편: 53장 카드가 화면 63%를 먹던 문제 → 기본은 1줄 행(상태점·doc_id·제목·진척%·라운드N),
+  //   인용블록(narrative)·라이브배지(push/mq)·타임스탬프(판정 시각)는 펼침(클릭) 후에만. 정보 제거가 아니라
+  //   접기·위계화(FLR-AGT-002 거짓 채움 0·데이터 그대로). 막힘·보류 카드는 호출부에서 맨 위 정렬.
   // 거짓 충실성 회피(FLR-AGT-002): 필드 부재 시 가짜 채우기 금지 → 표시 생략 또는 '미상'.
-  // 헤더 행 = 상태배지 + priority + 🆕미편입(mq_only) + push_status 점등 + req_id.
-  // 본문(펼침) = narrative 전문 + 담당 + 종결근거 + latest_verdict 미니패널 + 관련 라운드.
+  // 헤더 1줄 = 상태점 + priority(막힘/P0 가시) + req_id + 제목 + 진척% + 라운드N.
+  // 본문(펼침) = narrative 인용 + 라이브배지(push/mq) + 판정 시각 + 담당 + 종결근거 + latest_verdict + 관련 라운드.
   function convReqCard(r, allRounds) {
     const m = stateMeta(r.state);
     const closed = !isOpenState(r.state);
@@ -1555,6 +1745,16 @@
     // track = inner(트랙바 + 단계 라벨 + %). 호출부에서 .rq-track-wrap 로 감싸 round 칩과 정렬.
     const pct = (typeof r.progress_pct === "number") ? r.progress_pct : null;
     const stageLbl = escape(m.label);  // 상태 단계명(구현 중·배포됨 등)
+    // [2단계] 1줄 행용 컴팩트 진척 — 작은 트랙 + % 만(단계 라벨/막대 본문은 펼침에서 자세히).
+    //   pct 는 state 기반 ordinal(측정값 아님) → tooltip/aria로 '단계 환산값' 명시 유지(FLR-20260613-PRC-001).
+    const trackMini = pct == null
+      ? `<span class="rq-pct-na" title="진행률 미측정(추정 금지)">진척 미상</span>`
+      : `<span class="rq-pct-mini" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
+              aria-label="진행 단계 ${stageLbl} (단계 환산 ${pct}%, 측정값 아님)"
+              title="진행 단계 환산값(측정값 아님) — 상태 '${stageLbl}'">
+           <span class="rq-pct-track"><span class="rq-pct-fill rq-${m.cls}" style="width:${pct}%"></span></span>
+           <b class="rq-pct-n">${pct}%</b></span>`;
+    // 펼침용 상세 진척 — 단계 라벨 병기 풀 트랙(기존 보존, 본문으로 이동).
     const track = pct == null
       ? `<div class="rq-track-na" title="진행률 미측정(추정 금지)">진행률 미상</div>`
       : `<div class="rq-track" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
@@ -1568,19 +1768,25 @@
     // 라운드가 돌았으면 latest_round_state(최근 라운드 상태)를 칩에 병기(실데이터·null이면 생략).
     const rc = (typeof r.round_count === "number") ? r.round_count : null;
     const lrs = (r.latest_round_state || "").trim();
-    let rcHtml = "";
+    // 1줄 행용 컴팩트 라운드 칩 (라운드 N회) + 펼침용 상세(최근 상태 병기).
+    let rcMini = "", rcHtml = "";
     if (rc != null) {
       if (rc > 0) {
         const lrsTxt = lrs ? ` · ${escape(stateMeta(lrs).label)}` : "";
+        rcMini = `<span class="rq-rounds-mini" title="판정 라운드 ${rc}회 (최근 ${escape(r.latest_round_id || "-")}${lrsTxt})">라운드 ${rc}회</span>`;
         rcHtml = `<span class="rq-rounds-chip" title="이 요청이 거친 판정 라운드 수 / 최근 라운드 상태 (${escape(r.latest_round_id || "-")})">라운드 ${rc}회${lrsTxt}</span>`;
       } else {
+        rcMini = `<span class="rq-rounds-mini rq-rounds-none" title="아직 판정 라운드 미착수">미착수</span>`;
         rcHtml = `<span class="rq-rounds-chip" title="아직 판정 라운드 미착수">라운드 미착수</span>`;
       }
     }
 
-    // ── narrative 맥락 (있을 때만 — 부수 정보·작은 글씨 muted) ──
+    // ── narrative 맥락 (있을 때만 — [2단계] 인용블록은 펼침 후에만. 부수 정보·작은 글씨 muted) ──
     const narrHtml = (r.narrative || "").trim()
       ? `<div class="rq-narrative">${safe(r.narrative)}</div>` : "";
+    // ── [2단계] 라이브배지 묶음(push 반영 + mq 미편입) — 펼침 후에만 노출(1줄 행에서 제외). ──
+    const liveBadges = (mqHtml || pushHtml)
+      ? `<div class="rq-livebadges">${mqHtml}${pushHtml}</div>` : "";
 
     // ── blocked 경고 본문 (P0·교착·보류) ──
     const blockedHtml = blocked
@@ -1621,19 +1827,27 @@
     // 카드 상태 클래스 (좌측 액센트 스트립 색) — blocked 우선
     const stCls = blocked ? "rq-blocked" : "rq-st-" + m.cls.replace("conv-", "");
 
-    return `<details class="rq-card ${stCls}${closed ? " rq-closed" : ""}">
+    // [2단계] 기본 = 1줄 행. 상태점(색 = stateMeta.cls·title로 라벨) + priority(막힘/P0 가시 — 작은 칩)
+    //   + req_id + 제목(말줄임 1줄) + 진척% + 라운드N. 인용·라이브배지·상세는 펼침(.rq-body)에서.
+    const stageDot = `<span class="rq-dot ${escape(m.cls)}" title="${stageLbl}" aria-label="상태 ${stageLbl}"></span>`;
+    return `<details class="rq-card rq-card-row ${stCls}${closed ? " rq-closed" : ""}">
       <summary class="rq-summary">
-        <div class="rq-head">
-          <span class="badge ${m.cls}">${escape(m.label)}</span>
-          ${prioHtml}${mqHtml}${pushHtml}
+        <span class="rq-line">
+          ${stageDot}
+          ${prioHtml}
           <span class="rq-id"><code>${escape(rid)}</code></span>
-        </div>
-        <div class="rq-title">${safe(r.summary || "(요약 없음)")}</div>
-        ${narrHtml}
-        <div class="rq-track-wrap">${track}${rcHtml ? `<span style="flex:none">${rcHtml}</span>` : ""}</div>
+          <span class="rq-title" title="${safe(r.summary || "")}">${safe(r.summary || "(요약 없음)")}</span>
+          <span class="rq-line-meta">${trackMini}${rcMini}</span>
+        </span>
       </summary>
       <div class="rq-body">
+        <div class="rq-body-head">
+          <span class="badge ${m.cls}">${escape(m.label)}</span>
+          ${liveBadges}
+        </div>
+        ${narrHtml}
         ${blockedHtml}
+        <div class="rq-track-wrap">${track}${rcHtml ? `<span style="flex:none">${rcHtml}</span>` : ""}</div>
         ${lvHtml}
         ${r.owner ? `<div class="rq-owner"><span class="rq-evid-k">담당</span> ${safe(r.owner)}</div>` : ""}
         ${evidHtml}
@@ -1790,12 +2004,12 @@
       el("generated-at").textContent =
         "데이터 생성: " + String(conv.generated_at).slice(0, 19).replace("T", " ");
     }
-    renderConvServices(conv);
+    renderConvDecisionBoard(conv);
     renderConvFreshness(conv);
+    renderConvBurndown(conv);
     renderConvTimeline(conv);
-    renderConvStatebar(conv);
-    renderConvRoundbar(conv);
-    renderConvTransitions(conv);
+    renderConvRepoSummary(conv);   // [2단계] svc-strip+statebar+roundbar 4중 통합
+    renderConvTransitions(conv);   // [2단계] details 접기 안 (상태 추이)
     renderConvGlance(conv);
     renderConvTrend(conv);
     renderConvActive(conv);

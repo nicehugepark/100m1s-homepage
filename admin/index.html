@@ -105,32 +105,46 @@
     <section id="tab-convergence" class="panel active" role="tabpanel" aria-labelledby="t-convergence">
       <p class="hint">내 요청이 빠지지 않고 도는지 · 회차가 쌓일수록 품질이 수렴하는지 한눈에. 데이터: convergence.json (read-only 파생물)</p>
 
-      <!-- ⓪-a 지금 동작 중 + 활동 시계열 (진입 즉시·최상단 — 대표 "시계열 어딨어": svc 카드에 밀려 묻힘 직답) -->
+      <!-- ⓪-DECISION 결단 보드 — 화면에서 가장 크고 가장 위 (대표 catch: "활동만 보이고 뭐가 막혔는지 모르겠다").
+           어드민이 activity가 아니라 *상태(무엇이 막혔나·내가 뭘 결정해야 하나)*를 답하는 단 하나의 요소.
+           큰 숫자 3개(막힌 요청·내 결정 대기·최근 수렴) + 그 아래 막힘/대기 항목만 최대 5줄.
+           데이터=convergence.json requests[].blocked/blocked_reason/state 프론트 집계 (색칠·가짜숫자 0·없으면 0/없음). -->
+      <div id="conv-decision-board" class="conv-decision-board" aria-label="결단 보드 — 막힌 요청·내 결정 대기·수렴 현황"></div>
+
+      <!-- ⓪-a 지금 동작 중 (진입 즉시·최상단 — 대표 "시계열 어딨어": svc 카드에 밀려 묻힘 직답) -->
       <div id="conv-freshness" class="conv-freshness" aria-label="시스템 활동 신선도"></div>
 
+      <!-- ⓪-BURNDOWN 번다운 — 핵심 차트(above-fold). burndown-design.md(데이터엔지니어 CADENCE) 설계 Phase A.
+           대표 catch: "누적 추세 봐서 뭐해, 일은 늘어날 건데. 진척이 빨라서 추세가 밑으로 꺾이는 차트가 서비스별로 필요."
+           Phase A = SSOT에 요청 전이 시각(opened_at/closed_at) 부재 → 진짜 R(t) 시계열 불가(소급 합성 금지·FLR-AGT-002).
+           정직하게 2종 분리: ①서비스별 현재 잔량(open) 막대(스냅샷) ②라운드 처리 박자 라인(verdict mtime 실측 velocity).
+           phantom repo(공통/—/repo) 분모 배제(설계 §1 부수발견2). 데이터 없는 구간=색칠 0. -->
+      <div id="conv-burndown" class="conv-burndown" aria-label="번다운 — 서비스별 미해결 잔량과 처리 박자"></div>
+
       <!-- ⓪-a 활동 시계열 = 목적별 복수 차트(대표 "차트 여러개면 되지 않을까"). 단일 combo가 누적·변동·서비스 3메시지를
-           한 SVG에 중첩 → 정보위계 평탄화(§1.1) → 목적별 분리. 과부하 회피(검토 3패널 우려): 각 차트 작게·핵심만 above-fold.
-           A(단위시간 변동)+B(누적 추세)는 같은 시간축 공유(줌/팬 연동, 인터랙션은 A에). C(서비스별)는 전체 기간 small multiples.
-           D(상태 스냅샷)=아래 conv-statebar 그대로(중복 신설 0). -->
-      <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열 차트"></div>
+           한 SVG에 중첩 → 정보위계 평탄화(§1.1) → 목적별 분리. 활동량(activity)은 번다운(상태)보다 하위 정보위계 →
+           details 로 접어 above-fold 양보 (대표 catch: 활동만 잔뜩 보이고 막힘이 안 보인다). 펼치면 종전 차트 그대로.
+           A(단위시간 변동)+B(누적 추세)는 같은 시간축 공유(줌/팬 연동, 인터랙션은 A에). C(서비스별)는 전체 기간 small multiples. -->
+      <details id="conv-timeline-fold" class="conv-fold">
+        <summary>활동 추이 펼치기 <span class="conv-fold-sub">단위시간 변동 막대 · 누적 추세 라인 (활동량 = 상태보다 하위 정보)</span></summary>
+        <div id="conv-timeline" class="conv-timeline" aria-label="활동 시계열 차트"></div>
+      </details>
 
-      <!-- ⓪-a2 상태 스냅샷 — 서비스별 요청이 '지금 어느 상태에 몇 건' (대표 시계열 검토 직답).
-           누적 라인(위)=활동 속도 추세 / 본 스택바=현재 상태 분포. 둘은 다른 축(서사 분리).
-           데이터=convergence.json requests[].state 프론트 집계(백엔드 보강 불요). -->
-      <div id="conv-statebar" class="conv-statebar" aria-label="서비스별 요청 상태 분포"></div>
-
-      <!-- ⓪-a3 라운드 수렴 현황 — "어느 repo/요청이 수렴됐나" (대표 직접: "요청부터 수렴까지인데 차트에 수렴이 안 보인다").
-           위 D(상태 스냅샷)는 requests[].state(포착~종결·수렴 라벨 없음)만 그려 수렴 미가시 → 수렴은 rounds[].state에 있어 별 막대로 가시화.
-           데이터=rounds[] 직접 집계(summary.*_rounds 분해 필드는 total과 합산 불일치 → 미사용·FLR-AGT-002). -->
-      <div id="conv-roundbar" class="conv-statebar" aria-label="서비스별 라운드 수렴 현황"></div>
+      <!-- ⓪-a2 [2단계 통합] repo 1행 요약 테이블 — 진단: 같은 6개 서비스를 4번(상태 스냅바·라운드 수렴
+           스택바·전이 타임라인·svc 스트립) 그려 쌍둥이 중복 → repo당 1줄(repo명·열린 수·막힘 수·수렴 수
+           ·미니 스택바 1개)로 통합. 4개 차트를 repo당 1줄로 압축(정보위계 §1.1 평탄화 해소).
+           데이터: requests[].state/blocked + rounds[].state 프론트 집계(백엔드 보강 불요·하드코딩 0·N개 확장 안전).
+           거짓 채움 0(FLR-AGT-002): 신호 없으면 0/없음. 미니 스택바 = 요청 상태 100% 구성(색+패턴 이중 인코딩 유지). -->
+      <div id="conv-repo-summary" class="conv-repo-summary" aria-label="서비스별 1행 요약 (열린·막힘·수렴·상태분포)"></div>
 
       <!-- ⓪-a4 상태 추이 — state_transitions(실측 ts 보유 사건만)를 시간축 위 repo별 행으로.
-           위 둘(상태 스냅샷·라운드 수렴)은 '지금' 분포, 본 섹션은 '시간에 따라' 상태가 바뀐 이력(다른 축).
+           [2단계] 상세가 꼭 필요한 전이 타임라인만 details 접기로(above-fold 양보·정보 과잉 해소).
+           통합 요약(위)은 '지금' 분포, 본 섹션은 '시간에 따라' 상태가 바뀐 이력(다른 축).
            거짓 충실성 0(FLR-AGT-002): coverage(실측/전체) 헤더 노출 + ts 없는 사건 미생성(소급 추정 0). -->
-      <div id="conv-transitions" class="conv-statebar conv-transitions" aria-label="서비스별 상태 추이(시간별 전이)"></div>
-
-      <!-- ⓪ 서비스(repo)별 요약 — summary 키에서 동적 렌더(하드코딩 0, N개 확장 안전) -->
-      <div id="conv-svc-strip" class="conv-svc-strip" aria-label="서비스별 수렴 요약"></div>
+      <details id="conv-transitions-fold" class="conv-fold">
+        <summary>상태 추이(시간별 전이) 펼치기 <span class="conv-fold-sub">실측 시각 보유 사건만 · repo별 시간축 마커 (상세 = 하위 정보위계)</span></summary>
+        <div id="conv-transitions" class="conv-statebar conv-transitions" aria-label="서비스별 상태 추이(시간별 전이)"></div>
+      </details>
 
       <!-- ① 한눈에 (at-a-glance) -->
       <div id="conv-glance" class="conv-glance" aria-label="수렴 현황 한눈에"></div>

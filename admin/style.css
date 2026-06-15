@@ -147,6 +147,23 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--bd);
   background: var(--sf);
   overflow-x: auto; scrollbar-width: thin;
+  /* [2단계] 가로 오버플로우 끝 페이드 — audit 탭이 잘려 보이던 문제. 좌/우 오버플로우 잔량이
+     있을 때만 해당 끝을 부드럽게 페이드(JS가 .tabs-fade-l/r 토글) → '더 있음' 암시 +
+     끝까지 스크롤하면 마지막 탭(audit) 완전 노출(상시 페이드가 audit을 가리는 문제 회피). */
+  -webkit-mask-image: none; mask-image: none;
+  transition: -webkit-mask-image .12s, mask-image .12s;
+}
+.tabs.tabs-fade-r {
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%);
+}
+.tabs.tabs-fade-l {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 100%);
+}
+.tabs.tabs-fade-l.tabs-fade-r {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
 }
 .tab {
   background: transparent; color: var(--tx2);
@@ -352,6 +369,154 @@ footer {
 .conv-unknown { color: var(--dm); font-weight: 700; cursor: help; font-family: var(--mono); }
 .conv-warn { color: var(--ru); }
 .conv-evid-missing { color: var(--ru); font-weight: 600; }
+
+/* ════════ ⓪-DECISION 결단 보드 — 화면에서 가장 크고 가장 위 ════════
+   대표 catch: 활동만 보이고 무엇이 막혔는지 모르겠다 → 상태(막힘·결정대기·수렴)를 답하는 단 하나의 요소.
+   글자·여백·강조를 가장 크게(다른 모든 수렴 위젯보다 위계 우위). */
+.conv-decision-board {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-left: 5px solid var(--am);          /* 회사 정체성 황동 액센트(가장 위 = 가장 강조) */
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  margin: 4px 0 18px;
+  box-shadow: var(--shadow-2);               /* 다른 카드보다 한 단계 깊은 그림자 = 떠 보임 */
+}
+.db-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.db-title {
+  font-family: var(--display); font-size: 19px; font-weight: 800;
+  color: var(--tx); letter-spacing: -0.4px; margin: 0;
+}
+.db-hint { font-size: 12px; color: var(--tx2); }
+.db-stats {
+  display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+.db-stat {
+  position: relative; background: var(--bg2);
+  border: 1px solid var(--bd); border-radius: var(--radius-sm);
+  padding: 14px 16px; overflow: hidden;
+}
+.db-stat::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--bd2);
+}
+.db-stat.db-blocked::before { background: var(--ru); }
+.db-stat.db-wait::before    { background: var(--am); }
+.db-stat.db-ok::before      { background: var(--pos); }
+.db-stat .db-v {
+  font-family: var(--mono); font-size: 42px; font-weight: 700; line-height: 1;
+  font-variant-numeric: tabular-nums; letter-spacing: -1.5px; color: var(--tx);
+}
+.db-stat.db-blocked .db-v { color: var(--ru); }            /* 막힘 0이 아니면 시선 즉시 */
+.db-stat.db-wait .db-v    { color: var(--am); }
+.db-stat .db-k {
+  font-family: var(--display); font-size: 13px; font-weight: 700;
+  color: var(--tx); margin-top: 6px;
+}
+.db-stat .db-sub { font-size: 11px; color: var(--dm); margin-top: 2px; line-height: 1.4; }
+
+/* 막힘/대기 항목 리스트 (최대 5줄) */
+.db-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--bd); }
+.db-row {
+  display: grid; grid-template-columns: auto auto 1fr auto;
+  align-items: center; gap: 10px;
+  padding: 9px 2px; border-bottom: 1px solid var(--bd);
+  font-size: 13px;
+}
+.db-row:last-child { border-bottom: none; }
+.db-tag {
+  font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
+  font-family: var(--display); white-space: nowrap;
+}
+.db-tag-blocked { color: var(--ru); background: var(--neg-bg); border: 1px solid var(--neg-bd); }
+.db-tag-wait    { color: var(--am); background: var(--am4); border: 1px solid var(--am2); }
+.db-row-repo {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+  color: var(--tx2); white-space: nowrap;
+}
+.db-row-title {
+  color: var(--tx); font-weight: 600; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.db-row-reason {
+  font-size: 11.5px; color: var(--tx2); white-space: nowrap;
+  max-width: 38%; overflow: hidden; text-overflow: ellipsis;
+}
+.db-reason-approx { color: var(--dm); font-style: italic; }
+.db-more { font-size: 11.5px; color: var(--dm); padding: 8px 2px 0; }
+.db-empty {
+  font-size: 12.5px; color: var(--tx2); padding: 10px 0 2px;
+  border-top: 1px solid var(--bd); line-height: 1.5;
+}
+
+/* ════════ ⓪-BURNDOWN 번다운 — 핵심 차트 (above-fold) ════════ */
+.conv-burndown {
+  background: var(--sf); border: 1px solid var(--bd);
+  border-radius: var(--radius); padding: 16px 18px 14px; margin: 0 0 16px;
+}
+.bd-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.bd-title {
+  font-family: var(--display); font-size: 16px; font-weight: 800;
+  color: var(--tx); letter-spacing: -0.3px; margin: 0;
+}
+.bd-hint { font-size: 11.5px; color: var(--tx2); }
+/* ① 현재 잔량 막대 */
+.bd-snap { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.bd-snap-row { display: grid; grid-template-columns: 84px 1fr auto; align-items: center; gap: 10px; }
+.bd-snap-repo {
+  font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--tx2);
+  text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.bd-snap-track {
+  position: relative; height: 16px; background: var(--bg2);
+  border-radius: 4px; overflow: hidden;
+}
+.bd-snap-fill {
+  display: block; height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--am2), var(--am));
+  min-width: 2px;
+}
+.bd-snap-zero { background: transparent; }
+.bd-snap-v {
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  color: var(--tx); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.bd-snap-tot { color: var(--dm); font-size: 11px; font-weight: 400; }
+/* ② 처리 박자 라인 */
+.bd-pace-wrap { border-top: 1px solid var(--bd); padding-top: 12px; }
+.bd-pace-h { font-family: var(--display); font-size: 12.5px; font-weight: 700; color: var(--tx); margin-bottom: 8px; }
+.bd-pace-sub { font-family: var(--body); font-size: 10.5px; font-weight: 400; color: var(--dm); }
+.bd-pace-svg { width: 100%; height: 64px; display: block; overflow: visible; }
+.bd-pace-axis {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 10.5px; color: var(--tx2); margin-top: 6px; gap: 8px;
+}
+.bd-pace-stat { color: var(--am); font-weight: 700; }
+.bd-pace-empty, .bd-pace-empty {
+  font-size: 11.5px; color: var(--dm); padding: 6px 0; line-height: 1.5;
+}
+
+/* ════════ 활동 추이 접기 (details) — 활동량은 상태보다 하위 정보위계 ════════ */
+.conv-fold {
+  border: 1px solid var(--bd); border-radius: var(--radius);
+  background: var(--sf); margin: 0 0 16px; overflow: hidden;
+}
+.conv-fold > summary {
+  cursor: pointer; padding: 12px 16px; list-style: none;
+  font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--tx2);
+  display: flex; align-items: center; gap: 8px;
+}
+.conv-fold > summary:hover { color: var(--tx); background: var(--bg2); }
+.conv-fold > summary::-webkit-details-marker { display: none; }
+.conv-fold > summary::before {
+  content: "▸"; color: var(--am); font-size: 11px; transition: transform 0.15s;
+}
+.conv-fold[open] > summary::before { transform: rotate(90deg); }
+.conv-fold-sub { font-family: var(--body); font-size: 11px; font-weight: 400; color: var(--dm); }
+.conv-fold[open] > summary { border-bottom: 1px solid var(--bd); }
+.conv-fold > #conv-timeline { padding: 4px 12px 12px; }
+/* [2단계] 상태 추이(전이 타임라인)도 details 접기로 이동 — 같은 fold 스킨. 내부 패딩만 분리. */
+.conv-fold > #conv-transitions { padding: 10px 14px 14px; border: 0; box-shadow: none; background: transparent; margin: 0; }
 
 /* ════════ ① 한눈에 (at-a-glance) — 계측 다이얼 ════════ */
 .conv-glance {
@@ -616,7 +781,47 @@ footer {
 /* 대체됨 = solid 흐림 (폐기, 텍스처 없음 = 비활성) */
 .sb-seg.conv-superseded { background: var(--bg2); color: var(--dm); }
 
-/* ════════ 서비스(repo) 요약 스트립 — 동적 N개 ════════ */
+/* ════════ [2단계] 서비스별 1행 요약 테이블 — svc-strip+상태스냅바+라운드수렴바 4중 통합 ════════
+   같은 6개 서비스를 4번 그리던 쌍둥이 중복 제거 → repo당 1줄(repo명·열림·막힘·수렴·미니 스택바).
+   미니 스택바는 .sb-seg 색+패턴 인코딩 재사용(색맹 안전 그대로). 모바일=라벨 헤더 숨김·간격 축소. */
+.conv-repo-summary {
+  background: var(--sf); border: 1px solid var(--bd); border-radius: var(--radius);
+  padding: 14px 16px 14px; margin: 4px 0 10px; box-shadow: var(--shadow-1);
+}
+.rs-table { display: flex; flex-direction: column; }
+/* 행: repo | 열림 | 막힘 | 수렴 | 미니바. 숫자 3열 고정폭, 미니바 가변. */
+.rs-row {
+  display: grid;
+  grid-template-columns: minmax(78px, 1.2fr) 56px 56px 56px minmax(80px, 2fr);
+  align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--bd);
+}
+.rs-row:last-child { border-bottom: 0; }
+.rs-head-row {
+  padding: 4px 0 7px; border-bottom: 1px solid var(--bd2);
+}
+.rs-head-row .rs-repo, .rs-head-row .rs-num, .rs-head-row .rs-bar {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  color: var(--dm); text-transform: uppercase; letter-spacing: .3px;
+}
+.rs-repo { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--tx); min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rs-num { font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; text-align: right; }
+.rs-open { color: var(--tx); font-weight: 700; }
+/* 막힘·수렴 — 0이면 muted(거짓 강조 0), 있으면 의미색 강조. */
+.rs-blocked.rs-zero, .rs-conv.rs-zero { color: var(--dm); font-weight: 400; }
+.rs-blocked.rs-has { color: var(--ru); font-weight: 800; }
+.rs-conv.rs-has { color: var(--pos); font-weight: 800; }
+.rs-bar { min-width: 0; }
+/* 미니 스택바 — 본 막대(.sb-track) 축소판. 세그먼트는 .sb-seg 패턴 그대로(라벨/숫자 없이 색+패턴만). */
+.rs-mini { height: 16px; border-radius: 5px; }
+.sb-seg-mini { gap: 0; border-right-width: 1px; }
+.rs-mini-empty {
+  display: inline-block; width: 100%; height: 16px; border-radius: 5px;
+  background: var(--bg2); border: 1px dashed var(--bd2);
+}
+
+/* ════════ 서비스(repo) 요약 스트립 — 동적 N개 (구 — [2단계] 1행 테이블로 통합·미사용 보존) ════════ */
 .conv-svc-strip {
   display: grid; gap: 9px; margin: 4px 0 6px;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -765,16 +970,17 @@ footer {
 .conv-legend .conv-leg-bar i { width: 4px; background: var(--neu); border-radius: 1px 1px 0 0; display: block; }
 
 /* ════════ ④ 요청별 진행 상태 — repo 그룹 + 이슈 카드 ════════ */
-.conv-req-cards { display: flex; flex-direction: column; gap: 18px; }
+.conv-req-cards { display: flex; flex-direction: column; gap: 16px; }
 .conv-repo-head {
   font-family: var(--display); font-size: 13.5px; font-weight: 700; color: var(--tx);
-  padding: 5px 0; border-bottom: 2px solid var(--bd2); margin-bottom: 11px;
+  padding: 5px 0; border-bottom: 2px solid var(--bd2); margin-bottom: 8px;
   display: flex; align-items: baseline; gap: 9px;
   letter-spacing: -0.2px;
 }
 /* P1-3: .repo-tag 시각 배지 제거(텍스트 라벨과 repo명 중복) → 규칙도 dead, 함께 정리. */
 .conv-repo-meta { font-size: 11px; font-weight: 400; color: var(--dm); font-family: var(--mono); }
-.conv-repo-cards { display: grid; gap: 11px; grid-template-columns: 1fr; }
+/* [2단계] 1줄 행 카드 = 세로 리스트(촘촘). 2열 그리드는 1줄 행엔 불필요(읽기 흐름 끊김) → 1열 고정. */
+.conv-repo-cards { display: flex; flex-direction: column; gap: 6px; }
 
 /* ── 개별 이슈 카드 (1요청1이슈 통합 뷰) ── */
 .rq-card {
@@ -809,19 +1015,56 @@ footer {
   50% { box-shadow: 2px 0 10px 0 rgba(142,18,38,.45); }
 }
 
+/* [2단계] 기본 = 1줄 행(접힘). 펼치면 .rq-body 노출. 행 높이 콤팩트 → 53장이 화면을 안 먹음. */
 .rq-summary {
-  list-style: none; cursor: pointer; padding: 12px 14px 12px 16px;
-  display: flex; flex-direction: column; gap: 9px;
+  list-style: none; cursor: pointer; padding: 9px 58px 9px 14px;
 }
 .rq-summary::-webkit-details-marker { display: none; }
 .rq-summary::after {
-  content: "펼치기"; position: absolute; right: 14px; top: 13px;
-  font-family: var(--mono); font-size: 9.5px; color: var(--dm); font-weight: 600;
-  text-transform: uppercase; letter-spacing: .4px;
+  content: "펼치기"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: 9px; color: var(--dm); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .3px;
 }
-.rq-card[open] .rq-summary::after { content: "접기"; color: var(--am); }
+.rq-card[open] .rq-summary::after { content: "접기"; color: var(--am); top: 13px; transform: none; }
 
-/* 카드 헤더 행: 상태배지 + priority + mq_only + push_status + req_id */
+/* 1줄 행 = 상태점 + priority + doc_id + 제목(말줄임) + [진척% · 라운드N] */
+.rq-line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+/* 상태점 — 색(stateMeta.cls) = 상태. 라벨은 title/펼침 배지. 좌측 액센트 스트립과 별개의 인라인 점. */
+.rq-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--neu); }
+.rq-dot.conv-ok { background: var(--pos); }
+.rq-dot.conv-no { background: var(--ru); }
+.rq-dot.conv-cand { background: var(--am); }
+.rq-dot.conv-prog { background: var(--neu); }
+.rq-dot.conv-deploy { background: var(--tl); }
+.rq-dot.conv-seed { background: var(--am2); }
+.rq-dot.conv-hold { background: var(--bd2); border: 1px solid var(--neu); }
+.rq-dot.conv-superseded { background: var(--bd2); }
+.rq-dot:not([class*="conv-"]) { background: var(--dm); }
+/* 1줄 행 우측 메타(진척% + 라운드칩) — 우측 정렬·줄바꿈 안 함 */
+.rq-line-meta { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+/* 컴팩트 진척 — 작은 트랙 + % (단계 라벨/막대는 펼침에서 자세히) */
+.rq-pct-mini { display: inline-flex; align-items: center; gap: 5px; flex: none; }
+.rq-pct-track { width: 42px; height: 6px; background: var(--bg2); border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; }
+.rq-pct-fill { display: block; height: 100%; background: var(--neu); border-radius: 4px 0 0 4px; }
+.rq-pct-fill.rq-conv-ok { background: var(--pos); }
+.rq-pct-fill.rq-conv-no { background: var(--ru); }
+.rq-pct-fill.rq-conv-cand { background: var(--am); }
+.rq-pct-fill.rq-conv-prog { background: var(--neu); }
+.rq-pct-n { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--tx2); font-variant-numeric: tabular-nums; min-width: 30px; text-align: right; }
+.rq-pct-na { font-size: 10px; color: var(--dm); font-style: italic; }
+/* 컴팩트 라운드 칩(1줄 행) */
+.rq-rounds-mini {
+  font-family: var(--mono); font-size: 10px; color: var(--tx2);
+  padding: 1px 6px; border-radius: 4px; background: var(--bg2); border: 1px solid var(--bd);
+  white-space: nowrap; flex: none;
+}
+.rq-rounds-mini.rq-rounds-none { color: var(--dm); border-style: dashed; }
+
+/* 펼침 헤더 — 상태 라벨(텍스트 배지) + 라이브배지(push/mq). 1줄 행엔 없던 상세를 여기서. */
+.rq-body-head { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.rq-livebadges { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+/* 카드 헤더 행: 상태배지 + priority + mq_only + push_status + req_id (구 레이아웃·미사용 보존) */
 .rq-head { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; padding-right: 50px; }
 .rq-id { font-family: var(--mono); font-size: 10.5px; }
 .rq-id code { font-size: 10.5px; background: transparent; color: var(--dm); padding: 0; }
@@ -874,9 +1117,13 @@ footer {
   color: var(--dm); background: var(--bg2); border: 1px solid var(--bd);
 }
 
+/* [2단계] 제목 = 1줄 행 안에서 말줄임(1줄 고정). 펼침 헤더엔 별도 노출 안 하고 행 그대로 유지. */
 .rq-title {
-  font-size: 13px; font-weight: 600; color: var(--tx); line-height: 1.5;
+  font-size: 13px; font-weight: 600; color: var(--tx); line-height: 1.4;
+  min-width: 0; flex: 1 1 auto;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+.rq-prio, .rq-id { flex: none; }
 /* narrative 맥락 (있을 때만) — 작은 글씨 muted, 본질 정보와 위계 구분 */
 .rq-narrative {
   font-size: 11.5px; color: var(--tx2); line-height: 1.5;
@@ -1202,7 +1449,7 @@ footer {
   .conv-glance { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .conv-glance .glance-wide { grid-column: auto; }
   .conv-active-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .conv-repo-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* [2단계] .conv-repo-cards 는 1줄 행 세로 리스트(flex column) — 2열 그리드 오버라이드 제거. */
 }
 /* 데스크톱 (≥1080px) */
 @media (min-width: 1080px) {
@@ -1227,12 +1474,56 @@ footer {
   .conv-svc-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .glance-card .g-v { font-size: 26px; }
   .rq-head { padding-right: 44px; }
-  .rq-summary::after { top: 12px; right: 12px; }
   footer { padding: 11px 14px; }
+
+  /* [2단계] repo 1행 요약 — 390px: 숫자열 압축 + 미니바 최소폭 보장. 헤더 라벨은 약어로 좁힘. */
+  .conv-repo-summary { padding: 13px 13px 12px; }
+  .rs-row {
+    grid-template-columns: minmax(58px, 1fr) 38px 38px 38px minmax(64px, 1.4fr);
+    gap: 7px;
+  }
+  .rs-repo { font-size: 12px; }
+  .rs-num { font-size: 13px; }
+  .rs-head-row .rs-repo, .rs-head-row .rs-num, .rs-head-row .rs-bar { font-size: 9px; letter-spacing: 0; }
+
+  /* [2단계] 요청 1줄 행 — 390px: 진척 트랙 더 짧게 + 제목이 우선 영역 확보. 펼침 배지/::after 정렬. */
+  .rq-summary { padding: 8px 50px 8px 12px; }
+  .rq-summary::after { right: 10px; }
+  .rq-card[open] .rq-summary::after { top: 11px; }
+  .rq-pct-track { width: 34px; }
+  .rq-pct-n { min-width: 28px; font-size: 10.5px; }
+  .rq-line { gap: 6px; }
+  .rq-line-meta { gap: 6px; }
+
+  /* 결단 보드 — 모바일 390px 우선. 큰 숫자 3개는 가로 유지(한눈 비교가 핵심)·폰트만 축소. */
+  .conv-decision-board { padding: 15px 14px 13px; }
+  .db-title { font-size: 17px; }
+  .db-stats { gap: 8px; }
+  .db-stat { padding: 11px 10px; }
+  .db-stat .db-v { font-size: 30px; letter-spacing: -1px; }
+  .db-stat .db-k { font-size: 11.5px; }
+  .db-stat .db-sub { display: none; }                 /* 모바일은 큰 숫자+라벨만(서브카피 생략) */
+  /* 리스트 행: 모바일은 2줄(태그+repo+제목 / 이유) — 가로 4열은 좁아 깨짐. */
+  .db-row {
+    grid-template-columns: auto auto 1fr; gap: 7px 8px;
+    padding: 8px 1px;
+  }
+  .db-row-reason {
+    grid-column: 1 / -1; max-width: 100%; white-space: normal;
+    font-size: 11px; padding-left: 1px;
+  }
+  /* 번다운 */
+  .conv-burndown { padding: 14px 14px 12px; }
+  .bd-snap-row { grid-template-columns: 70px 1fr auto; gap: 8px; }
+  .bd-snap-repo { font-size: 11px; }
+  .bd-pace-svg { height: 56px; }
+  .bd-pace-axis { font-size: 10px; }
 }
 /* 초소형 (≤380px) — 서비스 스트립 1열 */
 @media (max-width: 380px) {
   .conv-svc-strip { grid-template-columns: 1fr; }
+  .db-stat .db-v { font-size: 26px; }
+  .db-stat .db-k { font-size: 10.5px; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════
