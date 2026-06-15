@@ -484,16 +484,19 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) 
     if (html) cards.push(html);
   }
   if (cards.length === 0) return '';
-  // 신선도 라벨 — 장중 "HH:MM 기준"(asof, ISO +09:00 고정 포맷 슬라이스) / 마감 "15:30 마감"(KRX 정규장 제도 시각).
+  // 신선도 라벨 — 장중 "지수 HH:MM 기준"(asof, ISO +09:00 고정 포맷 슬라이스) / 마감 "지수 15:30 마감"(KRX 정규장 제도 시각).
   //   장중인데 asof 미상이면 라벨 생략 (추정 표기 금지, FLR-AGT-002).
+  // RND-PM320-063 P1① — 다중 기준시각 혼재(헤더 카드갱신·캔들 픽공개·지수·글로벌이 한 화면에서 "HH:MM 기준"
+  //   으로만 병렬 노출 → 1초 인지 실패) 해소: 본 블록 라벨에 "지수" 자격어를 prefix 해 어느 데이터의 시각인지
+  //   즉시 식별(우측 정렬 독립 블록 .kr-indices-asof → 폭 변동이 카드 레이아웃 무영향).
   let asofLabel = '';
   if (anyOpen) {
-    if (latestOpenAsof) asofLabel = `${latestOpenAsof.slice(11, 16)} 기준`;
+    if (latestOpenAsof) asofLabel = `지수 ${latestOpenAsof.slice(11, 16)} 기준`;
   } else if (anyPrevOpenCard) {
-    // Q-20260613-158 ③ — 휴장 최신 뷰: 어느 영업일 마감인지 날짜 명시 ("6/12 (금) 15:30 마감")
-    asofLabel = `${_fmtDateDow(closedLatestPrevOpen)} 15:30 마감`.trim();
+    // Q-20260613-158 ③ — 휴장 최신 뷰: 어느 영업일 마감인지 날짜 명시 ("지수 6/12 (금) 15:30 마감")
+    asofLabel = `지수 ${_fmtDateDow(closedLatestPrevOpen)} 15:30 마감`.trim();
   } else {
-    asofLabel = '15:30 마감';
+    asofLabel = '지수 15:30 마감';
   }
   const asofHtml = asofLabel ? `<div class="kr-indices-asof">${escapeHtml(asofLabel)}</div>` : '';
   return `<div class="kr-indices-block">${asofHtml}<div class="nightly-us-cards kr-indices-cards">${cards.join('')}</div></div>`;
