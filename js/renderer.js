@@ -390,6 +390,26 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) 
       candle = { o: candles[0].o, h: hi, l: lo, c: e.value };
     }
     const spark = candles.map(c => c.c);
+    // feat/market-context ③ (대표 catch 2026-06-14 "코스피·코스닥 당일캔들·스파크·일봉캔들 모양이 서로
+    //   불일치 — 신뢰 불가") — 미니 일봉(daily_expanded)은 promote 산출이라 마지막 봉이 *전 영업일* 종가까지뿐.
+    //   당일캔들·스파크는 candles_10m(오늘 장중)에서 파생 → 같은 카드 안에서 일봉 차트만 "오늘 급등"이 빠져
+    //   3표현이 단절(FLR-AGT-002 — 표현 간 시점 불일치). 처방: 당일 진행봉(candle = 10분봉 파생 OHLC)을
+    //   daily_expanded tail 에 1봉 append → 미니 일봉 마지막 봉 = 당일 = 당일캔들/스파크와 시점 정합.
+    //   색은 mini-candle.js 가 OHLC(c>o)로 자체 판정(시가대비 정책 무변경, 대표 21:32 색 SSOT 유지).
+    //   중복 가드: daily_expanded 마지막 봉 date 가 이미 당일이면(주말·마감 후 cron 합류분) append 생략.
+    //   candle 부재(장 시작 전 10분봉 0건) 시 합류 0 → 종전 동작(전 영업일까지 일봉) 유지.
+    let dailyMerged;
+    if (Array.isArray(e.daily_expanded) && e.daily_expanded.length >= 1) {
+      const last = e.daily_expanded[e.daily_expanded.length - 1];
+      const lastIsToday = last && last.date === e.trade_date;
+      if (candle && /^\d{4}-\d{2}-\d{2}$/.test(e.trade_date) && !lastIsToday) {
+        dailyMerged = e.daily_expanded.concat([{
+          date: e.trade_date, o: candle.o, h: candle.h, l: candle.l, c: candle.c,
+        }]);
+      } else {
+        dailyMerged = e.daily_expanded;
+      }
+    }
     const isOpen = e.session === 'open';
     if (isOpen) {
       anyOpen = true;
@@ -424,8 +444,10 @@ function _buildKrIndexCardsHtml(kr, viewDate, isPastDate, closedLatestPrevOpen) 
       // Q-20260613-161 2단 — 일봉 240봉(promote 산출). index-card.js L197-205: daily_expanded
       //   존재 시 미니 일봉(tail 20봉 derive) + 확대 차트 trigger 활성(종목카드 동급). 배열·≥1봉
       //   아니면 미부착(graceful — 셀 미렌더). 구 cron stale JSON(필드 부재) 시 종전 동작 유지.
-      daily_expanded: (Array.isArray(e.daily_expanded) && e.daily_expanded.length >= 1)
-        ? e.daily_expanded : undefined,
+      //   feat/market-context ③ — dailyMerged(당일 진행봉 합류분) 전달 → 미니 일봉이 당일캔들·스파크와
+      //   시점 정합(전 영업일 종가에서 끊기던 단절 해소). 합류 불가 시 dailyMerged = 원본 또는 undefined.
+      daily_expanded: (Array.isArray(dailyMerged) && dailyMerged.length >= 1)
+        ? dailyMerged : undefined,
       session_open: isOpen,
     }, null, tradeDateLabel, {
       krVariant: true,
@@ -509,7 +531,13 @@ function _freshUsFutures(us, closedLatest) {
     const f = us.futures.futures.find(x => x && w.re.test(x.name || ''));
     if (!f || typeof f.point !== 'number' || !isFinite(f.point)
       || typeof f.change_pct !== 'number' || !isFinite(f.change_pct)) continue;
-    out.push({ label: w.label, point: f.point, change_pct: f.change_pct });
+    // feat/market-context ④ (대표 catch 2026-06-14 "선물·환율·유가가 숫자+%만 → 신뢰 불가, 시장지수
+    //   스파크라인 스타일로 미니 추이 추가") — us-indices futures 의 spark[](장중 분봉 추이, 실측 41점)을
+    //   함께 운반. 유효 숫자 ≥2점만 통과(buildSparkline 최소 요건), 부재/부족 시 spark 미부착(graceful —
+    //   해당 선물은 숫자만, FLR-AGT-002 — 없는 추이 그리지 않음). 색은 등락률(change_pct) 부호 파생.
+    const sp = Array.isArray(f.spark)
+      ? f.spark.filter(v => typeof v === 'number' && isFinite(v)) : [];
+    out.push({ label: w.label, point: f.point, change_pct: f.change_pct, spark: sp.length >= 2 ? sp : null });
   }
   return out.length > 0 ? { items: out, ts: t } : null;
 }
@@ -544,9 +572,14 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
   //   (미10년물 금리 = "±N.Nbp"). 색 방향(up/down)은 항상 pct 부호에서 파생 — 금리↑(+bp)=up=빨강.
   // valueHtml(선택): 지정 시 value/delta 영역을 이 안전 HTML 로 대체(선물 묶음 1줄 압축 — 종목별
   //   색 span 포함). 지정 시 pct/deltaText 무시(delta 칸 없음 — value 안에 색·부호 내장).
-  const _push = (label, value, pct, ts, deltaText, valueHtml) => {
-    items.push({ label, value, pct, deltaText, valueHtml });
-    if (newestTs == null || ts > newestTs) newestTs = ts;
+  // noteText(선택): 항목별 시점 각주(미10년물 = "M/D 마감"). 항목 자체가 시점을 운반할 때 사용
+  //   (asof 가 섹션 newestTs 와 다른 항목 — 시점 혼동 차단, FLR-AGT-002).
+  // skipNewest(선택): true 시 이 항목 ts 를 섹션 asofNote(newestTs) 산출에서 제외 (미10년물처럼
+  //   24h 갱신이 아닌 항목의 오래된 ts 가 24h 지표의 신선 라벨을 오염시키지 않도록 — 항목 noteText 가
+  //   자체 시점 운반). Q-20260613-165 ② 데이마켓 ust10y 가드 (대표 catch 2026-06-14 "장중에도 안 보임").
+  const _push = (label, value, pct, ts, deltaText, valueHtml, noteText, skipNewest) => {
+    items.push({ label, value, pct, deltaText, valueHtml, noteText });
+    if (!skipNewest && (newestTs == null || ts > newestTs)) newestTs = ts;
   };
   // 미 선물 3종 (S&P500·나스닥100·다우) — Q-20260613-166 (조니 어필 양보 — S&P·다우 복원).
   //   조건 ① 단일 운반체: glb-stat 1곳뿐(페어 카드 0). 조건 ②: 3종을 1 항목(1줄 압축)으로 묶어
@@ -559,8 +592,16 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
       const fdir = f.change_pct > 0 ? 'up' : (f.change_pct < 0 ? 'down' : 'flat');
       const farrow = fdir === 'up' ? '▲' : (fdir === 'down' ? '▼' : '·');
       const fpct = `${f.change_pct >= 0 ? '+' : ''}${f.change_pct.toFixed(1)}%`;
+      // feat/market-context ④ — 선물 미니 추이(시장지수 스파크라인 스타일 재사용). base = spark 첫 값
+      //   (장중 시작 대비 기준선), dir = 등락률 부호 색(선물↑=호재=빨강, 기존 정책). spark 부재(graceful)
+      //   시 미니차트 셀 생략 — 숫자만(없는 추이 그리지 않음, FLR-AGT-002). buildSparkline 부재 시도 ''.
+      let fSparkHtml = '';
+      if (f.spark && f.spark.length >= 2 && typeof buildSparkline === 'function') {
+        fSparkHtml = `<span class="glb-fut-spark">${buildSparkline(f.spark, f.spark[0], fdir)}</span>`;
+      }
       return `<span class="glb-fut-item">`
         + `<span class="glb-fut-nm">${escapeHtml(f.label)}</span>`
+        + fSparkHtml
         + `<span class="glb-fut-chg ${fdir}"><span aria-hidden="true">${farrow}</span>${escapeHtml(fpct)}</span>`
         + `</span>`;
     }).join('<span class="glb-fut-sep" aria-hidden="true">·</span>');
@@ -579,15 +620,28 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
     }
     // Q-20260613-165 ② (대표 12:50 승인) — 미10년물 금리(ust10y). 종전 ZN=F 선물(역방향
     //   가격) 제외 확정을 yield(^TNX) 직접으로 되살림: value = yield(%) 그 자체("4.49%"),
-    //   delta = change_bp(bp). 금리↑=악재 → pct 부호에 change_bp 주입 시 +bp=up=빨강
-    //   (원/달러·WTI 동형 색). bar_asof 60분 stale 가드 동일. graceful (값/bp 결손 시 무렌더).
+    //   delta = change_bp(bp). 금리↑=악재 → pct 부호에 change_bp 주입 시 +bp=up=빨강 (원/달러·WTI 동형 색).
+    //   🔴 데이마켓 가드 (대표 catch 2026-06-14 "장중에도 미10년물이 안 보임 — 데이마켓이라 더 중요"):
+    //   ^TNX 는 CBOE yield 지수라 **미국 정규장 시간에만 봉 생성**(실측: 봉 분포 21:20~03:55 KST 6.6h,
+    //   주말·미장 마감 후엔 새 봉 0). usdkrw(KRW=X)·wti(CL=F)는 24h 거래라 bar_asof 가 한국 장중에도
+    //   갱신되지만, ust10y 는 "마지막 미장 마감 yield" 가 한국 데이마켓 시간대의 유효 최신값이다.
+    //   → 60분 가드 적용 시 평일 장중 무조건 stale 무렌더(=대표가 본 증상). 처방: ust10y 전용 가드 =
+    //   7일(미장 휴장 갭 = 마감~다음개장 ~13h + 주말 2일 + 연휴 커버), 항목 자체 noteText("M/D 마감")로
+    //   시점 명시(FLR-AGT-002 — 시점 정직). 7일+ = 수집 사망 → 무렌더(빈자리가 정직). skipNewest=true 로
+    //   ust10y 의 오래된 ts 가 섹션 asofNote(24h 지표 신선 라벨)를 오염시키지 않게 분리.
     const u = macro.indicators.ust10y;
     if (u && typeof u.value === 'number' && isFinite(u.value)
       && typeof u.change_bp === 'number' && isFinite(u.change_bp)) {
-      const ts = _freshTs(u.bar_asof);
-      if (ts != null) {
+      const ut = (typeof u.bar_asof === 'string' && u.bar_asof) ? Date.parse(u.bar_asof) : NaN;
+      // ust10y 전용: 7일 가드(미장 휴장 갭) + 미래 5분 skew. 60분 가드(_freshTs) 미적용.
+      const UST_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+      const uAge = isFinite(ut) ? (nowMs - ut) : NaN;
+      if (isFinite(ut) && uAge >= -5 * 60 * 1000 && uAge <= UST_MAX_AGE_MS) {
         const bpText = `${u.change_bp >= 0 ? '+' : ''}${u.change_bp.toFixed(1)}bp`;
-        _push(u.label, `${_fmt2(u.value)}%`, u.change_bp, ts, bpText);
+        // 항목 시점 각주 = 마지막 봉 날짜 "M/D 마감" (60분+ 경과 시만 — 갓 갱신된 미장 개장 중엔 생략).
+        const uKstIso = new Date(ut + 9 * 3600 * 1000).toISOString();
+        const uNote = (uAge > STALE_MS) ? `${_fmtDateDow(uKstIso.slice(0, 10))} 마감` : '';
+        _push(u.label, `${_fmt2(u.value)}%`, u.change_bp, ut, bpText, undefined, uNote, true);
       }
     }
   }
@@ -605,8 +659,12 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
     const arrow = dir === 'up' ? '▲' : (dir === 'down' ? '▼' : '·');
     // deltaText 지정(미10년물 bp) 시 그대로, 미지정 시 "±N.NN%" (원/달러·WTI).
     const deltaText = it.deltaText || `${it.pct >= 0 ? '+' : ''}${it.pct.toFixed(2)}%`;
+    // noteText(미10년물 "M/D 마감") — 항목 자체 시점 각주(라벨 옆 작게). 시점이 섹션 asof 와 다른
+    //   항목의 정직성 운반(FLR-AGT-002). 미지정 시 출력 0(원/달러·WTI 무회귀).
+    const noteHtml = it.noteText
+      ? `<span class="glb-stat-note">${escapeHtml(it.noteText)}</span>` : '';
     return `<div class="glb-stat">`
-      + `<span class="glb-stat-label">${escapeHtml(it.label)}</span>`
+      + `<span class="glb-stat-label">${escapeHtml(it.label)}${noteHtml}</span>`
       + `<span class="glb-stat-value">${escapeHtml(it.value)}</span>`
       + `<span class="glb-stat-delta ${dir}"><span aria-hidden="true">${arrow}</span>${escapeHtml(deltaText)}</span>`
       + `</div>`;
