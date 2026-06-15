@@ -4252,6 +4252,32 @@ function renderCalExpandContent(date, data) {
     `;
   }
 
+  // [상시 미청산 뷰] RND-PM320-062 (advisory DOC-20260615-JDG-030) — OPEN·POST 오늘 뷰에서 픽 카드 직하
+  //   async 주입(PRE_MARKET 호출 L1496 과 별개 경로·#pm320-prepick-portal 미관여·중복0). 함수 재사용·시그니처
+  //   불변. R18/R23(장전 portal fold) 비훼손. 단독 카드·과거일 뷰 제외(현재형 "추적 중" 정합).
+  if (!_isSingleCardMode) {
+    (async () => {
+      try {
+        const _isPast = (typeof date === 'string' && typeof _pm320TodayKstISO === 'function' && date < _pm320TodayKstISO());
+        if (_isPast) return;
+        const _running = await _collectRunningPicks(date, 8);
+        if (!_running || !_running.length) return;
+        let _headlineCode = '';
+        for (const s of todayStocks) {
+          const pk = s && s.interp && s.interp.pm320_pick;
+          if (pk && pk.is_pick === true) { _headlineCode = s.code || s.ticker || ''; break; }
+        }
+        const _summaryRunning = (data && data.pm320Summary && typeof data.pm320Summary.running === 'number') ? data.pm320Summary.running : undefined;
+        const _html = _buildRunningHoldingsHtml(_running, _headlineCode, _summaryRunning);
+        if (!_html) return;
+        const _recEl = document.querySelector('#cal-content .cal-pm320-today-rec');
+        if (_recEl && document.body.contains(_recEl)) {
+          _recEl.insertAdjacentHTML('afterend', _html);
+        }
+      } catch (_) { /* graceful — 미청산 뷰 생략 */ }
+    })();
+  }
+
   // PM320 정보 위계 개편 (대표 2026-06-10 A안) — 야간 미국증시 섹션 접힘 상태 + localStorage 복원.
   //   innerHTML 으로 새로 그려졌으므로 매 렌더 재적용(getElementById('nightly-us')). 부재 시 graceful no-op.
   if (typeof _applySectionCollapse === 'function') {
