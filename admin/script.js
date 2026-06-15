@@ -50,6 +50,24 @@
     [/(?<![A-Za-z0-9])meridian(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
     [/(?<![A-Za-z0-9])staff(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
     [/(?<![A-Za-z0-9])cadence(?![A-Za-z0-9])/gi, "데이터 계측 패널"],
+    // REQ-ADMIN-20260615-022 (P1-B·meridian/조니 2심 적발): 패널 슬러그 'legal'이 3 layer
+    //   (PERSONA_GENERALIZE·SANITIZE_PERSONA_RE·프론트 SANITIZE_RULES) 어디에도 미등재 →
+    //   BYBIAS r53/r54 패널 라벨 '패널: legal(critical)' 라이브 DOM 13건 누출. 백엔드 dev가
+    //   PERSONA_GENERALIZE+SANITIZE_PERSONA_RE 등재(roster-derived 게이트로 자동 강제), 본 프론트
+    //   백스톱은 양 layer 동기(FLR-20260406-TEC-001 동형·한쪽만 fix 봉쇄). 🔴 case-sensitive(소문자
+    //   only·/i 제거): doc_id 'LEGAL-…'·'-LEGAL-'(대문자 토큰)을 자연 배제해야 doc_id 룰이 '내부코드'로
+    //   처리(시뮬레이션 확인: /gi 면 'LEGAL-20260614-001'→'법무 패널-…' 오손상). 끝 경계 (?![A-Za-z0-9-])
+    //   에 하이픈 포함 → 소문자 'legal-001' 형 식별자도 배제, 'legalize'/'illegal' 오손상 0. 앞 경계
+    //   (?<![A-Za-z0-9])로 '_legal'·콜론/공백 경계 인정. 패널 슬러그는 항상 소문자 'legal(critical)' 형.
+    [/(?<![A-Za-z0-9])legal(?![A-Za-z0-9-])/g, "법무 패널"],
+    // RND-ADMIN-007 R8 (roster 게이트 적발·legal 동형): PM320 판정 패널 슬러그
+    //   'marketreliability'(RND-PM320-063)·'pickresult'(RND-PM320-064)가 3 layer 미등재 →
+    //   백엔드 build_convergence.py PERSONA_GENERALIZE+SANITIZE_PERSONA_RE 등재(roster-derived
+    //   게이트로 자동 강제), 본 프론트 백스톱 양 layer 동기(FLR-20260406-TEC-001 동형·한쪽만
+    //   fix 봉쇄). coined slug 단독 토큰(소문자, 정상 산문 부분문자열 부재 → 과치환 0)이라
+    //   /gi 표준 분기(cadence 동형) — legal 의 case-sensitive 특례(LEGAL- doc_id 충돌)는 불요.
+    [/(?<![A-Za-z0-9])marketreliability(?![A-Za-z0-9])/gi, "시장 신뢰성 패널"],
+    [/(?<![A-Za-z0-9])pickresult(?![A-Za-z0-9])/gi, "픽 결과 패널"],
     [/(?<![A-Za-z0-9])translator(?![A-Za-z0-9])/gi, "번역 심사"],
     [/(?<![A-Za-z0-9])jury(?![A-Za-z0-9])/gi, "심사단"],
     [/(?<![A-Za-z0-9])vc(?![A-Za-z0-9])/gi, "투자 심사"],
@@ -484,12 +502,17 @@
   };
   function pushMeta(s) { return PUSH_META[s] || PUSH_META.unknown; }
   // REQ-ADMIN-20260615-007 (P0·open/closed SSOT 통일): 종전 프론트 정의 ["종결","수렴","배포"]가
-  //   백엔드 build_convergence.py compute_summary 의 closed_req={"종결"}(배포=열림)과 발산 →
-  //   PM320 summary.open vs 프론트 재집계 동시 노출 모순(R5 cadence P0-2 적발). 프론트는 open
-  //   정의를 독립 결정하지 않고 백엔드 현 SSOT(closed_req={"종결"})에 1:1 정합(독립 결정 금지).
-  //   배포=아직 종결 아님(라이브 반영됐으나 잔존 가능)→ 백엔드와 동일하게 '열림' 취급.
-  //   ⚠️ 백엔드 정의 변경 시(예 burndown-design 정본 {배포·종결} 채택) 본 상수도 동기 의무.
-  const CLOSED_STATES = ["종결"];
+  //   백엔드 build_convergence.py compute_summary 의 open 정의(배포·수렴·종결=closed)와 정합.
+  //   REQ-ADMIN-20260615-021 (P1-A·cadence/조니 2심 적발): 종전 CLOSED_STATES=["종결"]이 백엔드
+  //   summary.open_requests(배포·수렴·종결 closed)와 발산 → glance(L988)·카드그룹헤더(L1892)가
+  //   isOpenState 로 독립 재집계 시 PM320 open=8 vs repoSummary/번다운(백엔드 SSOT)=3 동시 노출.
+  //   라이브 cross-check(2026-06-15): summary.open_requests PM320=3·BYBIAS=5 = 3종 closed 계산값
+  //   확정 → 본 상수를 백엔드 실 동작에 1:1 동기(["배포","종결","수렴"])하여 같은 화면 모든
+  //   컴포넌트(glance·카드헤더·정렬·repoSummary·번다운) open 단일값 보장. R6 REQ-007 fix가
+  //   repoSummary↔번다운↔결단보드 3컴포넌트만 summary.open_requests 통일하고 glance·카드헤더
+  //   2곳을 미마이그레이션한 half-applied 의 완전판(전 컴포넌트 단일 출처·부분 통일 금지).
+  //   ⚠️ 백엔드 closed 정의 변경 시 본 상수 동기 의무(양 layer 발산 봉쇄·FLR-20260406-TEC-001 동형).
+  const CLOSED_STATES = ["배포", "종결", "수렴"];
   function isOpenState(s) { return !CLOSED_STATES.includes(s); }
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
