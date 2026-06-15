@@ -40,7 +40,15 @@
     [/\bguestpool\b/gi, "손님 패널"],
     [/\bhonesty\b/gi, "정직성 심사"],
     [/\bcritic\b/gi, "비평 패널"],
-    [/\b(?:FLR|DOC)-(?:\d{8}-[A-Z]+|[A-Z]+)-\d+\b/g, "내부코드"], // doc_id 패턴
+    // doc_id 패턴 — build_convergence.py SANITIZE_DOC_CODE_RE 와 매칭 범위 1:1 포팅(양 layer
+    // 동기화 의무, FLR-20260406-TEC-001 동형 = 한쪽만 fix·변종 누락 봉쇄). 기존 협소 패턴
+    // (FLR|DOC 접두 + 날짜형/[A-Z]+ tail만)이 무-날짜 단형(JDG-001/REQ-031/DSN-001/FLR-005)·
+    // 32종 TYPE·카테고리형(FLR-AGT-002)을 누락 → 백엔드 확장과 발산(판정단 적발). repo-scope
+    // 식별자(REQ-BYBIAS-…/RND-HOME-…/PM320)는 화이트리스트 접두 불일치 또는 둘째 토큰 비숫자로
+    // 자연 배제(과마스킹 0). 끝 경계 = (?!\d) (백엔드 주석: \b는 한글 조사 경계 미성립 + 숫자
+    // 연장 FLR-AGT-0021 오인 방지). _DOC_CODE_TYPES = repo-scope 슬롯(HOME/BYBIAS/PM320/INFRA/
+    // SWEEP/VRD/RND/Q) 제외, REQ는 REQ-\d 숫자 직후만(REQ-BYBIAS는 자연 배제).
+    [/\b(?:DOC|FLR|DSN|REQ|JDG|MIN|RPT|DEC|LEGAL|SPEC|AGT|AUDIT|QA|BRS|EDU|TEC|PRC|DAT|STRAT|RULE|REPORT|OPT|PLAN|DES|BEN|PLN|HANDOFF|REVIEW|GUIDE|EXP|ADR|MTG)-(?:\d{8}(?:-[A-Za-z]+)*-(?:\d+|[A-Za-z][\w-]*)|(?:AGT|DAT|TEC|CRON|PRC)-\d{1,4}|\d{1,4})(?!\d)/g, "내부코드"], // doc_id 패턴 (백엔드 SANITIZE_DOC_CODE_RE 1:1)
     [/[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/g, "(이메일)"],
     [/(\/Users\/|~\/company\/)\S*/g, "(내부경로)"],
   ];
@@ -240,14 +248,20 @@
     ).join("");
   }
 
+  // audit state 토큰(active/idle/zombie/unknown) → 표시 라벨(한국어 고정).
+  // CSS 클래스(.dot.zombie 등)는 영문 토큰을 그대로 쓰므로 클래스 인자엔 미적용 —
+  // 표시 텍스트만 한글화(회사 전 화면 한국어 룰). 미정의 토큰은 stateMeta 경유 '미상'.
+  const AUDIT_STATE_LABEL = { active: "활동", idle: "유휴", zombie: "좀비", unknown: "미상" };
+  function auditStateLabel(s) { return AUDIT_STATE_LABEL[s] || stateMeta(s).label; }
+
   function renderAudit() {
     const audit = state.data.audit || { rows: [], counts: {}, thresholds: {} };
     const cards = Object.entries(audit.counts || {})
       .map(([k, v]) =>
-        `<div class="card"><div class="k">${escape(k)}</div><div class="v">${v}</div></div>`
+        `<div class="card"><div class="k">${escape(auditStateLabel(k))}</div><div class="v">${v}</div></div>`
       ).join("");
     const th = audit.thresholds || {};
-    const thHint = `임계값: idle ≥${th.idle_h ?? "?"}h · zombie ≥${th.zombie_h ?? "?"}h`;
+    const thHint = `임계값: 유휴 ≥${th.idle_h ?? "?"}h · 좀비 ≥${th.zombie_h ?? "?"}h`;
     el("audit-summary").innerHTML = `
       <div class="summary-cards">${cards}</div>
       <p class="hint">${thHint}</p>
@@ -264,14 +278,14 @@
     el("audit-grid").innerHTML = rows.map((r) => {
       const last = (r.last_seen || r.last_record_date || "").slice(0, 10);
       const idleTxt = r.idle_h != null
-        ? `idle ${r.idle_h}h · last ${last || "-"}`
+        ? `유휴 ${r.idle_h}h · 최근 ${last || "-"}`
         : "records 미흔적";
       return `
-        <div class="audit-card" role="group" aria-label="${escape(r.name)} ${escape(r.state)}">
+        <div class="audit-card" role="group" aria-label="${escape(r.name)} ${escape(auditStateLabel(r.state))}">
           <span class="dot ${escape(r.state)}" aria-hidden="true"></span>
           <div class="info">
             <span class="name">${escape(r.name)}</span>
-            <span class="sub">${badge(r.state, r.state)} · ${escape(idleTxt)}</span>
+            <span class="sub">${badge(auditStateLabel(r.state), r.state)} · ${escape(idleTxt)}</span>
           </div>
         </div>`;
     }).join("");
@@ -287,6 +301,12 @@
 
   function verdictClass(v) {
     return ({ YES: "conv-ok", NO: "conv-no", "조건부": "conv-cand" })[v] || "";
+  }
+  // verdict 토큰 → 표시 라벨(한국어 고정). YES/NO/조건부는 표준 토큰 그대로,
+  // 매핑 밖(영문 'unknown'·공백·미정의 토큰)은 stateMeta 경유로 '미상' 한글화
+  // (회사 전 화면 한국어 룰 + FLR-AGT-002: 상태가 미상일 뿐 거짓 채움 아님).
+  function verdictLabel(v) {
+    return ({ YES: "YES", NO: "NO", "조건부": "조건부" })[v] || stateMeta(v).label;
   }
 
   // null = unknown(파싱 불가). 거짓 0 금지 — '?' 로 명시.
@@ -1576,7 +1596,7 @@
       const p1bad = lv.new_p1_count > 0 ? " lv-bad" : "";
       lvHtml = `<div class="rq-lv">
         <span class="rq-lv-k">최근 판정</span>
-        <span class="badge ${vCls}">${escape(lv.verdict || "미상")}</span>
+        <span class="badge ${vCls}">${escape(verdictLabel(lv.verdict))}</span>
         <span class="rq-lv-metric">품질 <b>${escape(qs)}</b></span>
         <span class="rq-lv-metric${p0bad}">P0 <b>${numOrUnknown(lv.p0_count)}</b></span>
         <span class="rq-lv-metric${p1bad}">신규P1 <b>${numOrUnknown(lv.new_p1_count)}</b></span>
@@ -1695,7 +1715,7 @@
         <td><code>${safe(v.file)}</code></td>
         <td>${escape(v.round_id || "")}</td>
         <td>${safe(v.panel || "")}</td>
-        <td><span class="badge ${verdictClass(v.verdict)}">${escape(v.verdict)}</span></td>
+        <td><span class="badge ${verdictClass(v.verdict)}">${escape(verdictLabel(v.verdict))}</span></td>
         <td>${numOrUnknown(v.p0_count)}</td>
         <td>${numOrUnknown(v.new_p1_count)}</td>
       </tr>${reasoning}`;
