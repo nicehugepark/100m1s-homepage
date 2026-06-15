@@ -887,9 +887,12 @@
     } else {
       const rows = listItems.map((r) => {
         const wait = classifyBlocked(r) === "wait";
+        // RND-ADMIN-010 P1-1(조니 2심 채택): 행 배지 bare "막힘"이 subset(이 행은 blockedItems
+        //   =classifyBlocked==='blocked')인데 요약 헤더 "막힘(보류 포함)"은 union(6) → 같은 단어 두 값.
+        //   subset 라벨을 결단보드 타일 "처리 필요"와 단일화(L874). union="막힘(보류 포함)"만 잔존.
         const tag = wait
           ? `<span class="db-tag db-tag-wait">결정 대기</span>`
-          : `<span class="db-tag db-tag-blocked">막힘</span>`;
+          : `<span class="db-tag db-tag-blocked" title="진짜 장애물 — 결단보드 '처리 필요' 집계와 동일 subset(보류·결정대기 제외)">처리 필요</span>`;
         // 막힌 이유 = blocked_reason(실측) 우선, 없으면 현재 state 라벨 근사(정직 표기).
         const reason = r.blocked_reason
           ? mdSafe(r.blocked_reason)   // REQ-011: 마크다운 렌더
@@ -1980,10 +1983,12 @@
         const openN = items.filter((r) => isOpenState(r.state)).length;
         const blockedN = items.filter((r) => r.blocked === true).length;
         const cards = items.map((r) => convReqCard(r, rounds)).join("");
-        // repo 그룹 헤더 — repo 라벨(텍스트 1회) + 건수/열림/교착(있을 때).
+        // repo 그룹 헤더 — repo 라벨(텍스트 1회) + 건수/열림/막힘(있을 때).
         // P1-3: 시각 배지(repo-tag)와 텍스트 라벨이 같은 repo명을 2회 출력 → 'HOMEHOME' 중복.
         //       텍스트 라벨 1회만 유지(스크린리더 중복도 해소). 색상 위계는 .conv-repo-head 자체로.
-        const blockedMeta = blockedN ? ` · <span style="color:var(--ru);font-weight:600">교착 ${blockedN}</span>` : "";
+        // RND-ADMIN-010 P1-1(조니 2심 채택): "교착"=blockedN(r.blocked===true union)인데 같은 union을
+        //   요약 헤더는 "막힘(보류 포함)"으로 부름 → 3번째 동의어 제거. 단어 통일 + 동치 툴팁 부여.
+        const blockedMeta = blockedN ? ` · <span style="color:var(--ru);font-weight:600" title="막힘(보류 포함) — blocked union(보류·결정대기 포함). 결단보드 '처리 필요'는 그중 진짜 장애물 subset">막힘(보류 포함) ${blockedN}</span>` : "";
         return `<div class="conv-repo-group">
           <div class="conv-repo-head">${escape(repoDisplay(repoLabel(key)))}
             <span class="conv-repo-meta">${items.length}건 · 열림 ${openN}${blockedMeta}</span></div>

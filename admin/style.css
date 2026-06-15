@@ -432,7 +432,9 @@ footer {
 /* 막힘/대기 항목 리스트 (최대 5줄) */
 .db-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--bd); }
 .db-row {
-  display: grid; grid-template-columns: auto auto 1fr auto;
+  /* RND-ADMIN-010 P1-2(조니 2심 채택): 1열을 auto(태그 폭 따라감)에서 64px 고정 트랙으로.
+     태그("처리 필요"/"결정 대기") 폭 차이로 repo 코드(2열) 좌측이 20.8px 톱니치던 것 → 단일 기준점. */
+  display: grid; grid-template-columns: 64px auto 1fr auto;
   align-items: center; gap: 10px;
   padding: 9px 2px; border-bottom: 1px solid var(--bd);
   font-size: 13px;
@@ -441,6 +443,7 @@ footer {
 .db-tag {
   font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
   font-family: var(--display); white-space: nowrap;
+  text-align: center;            /* 고정폭 트랙 안에서 라벨 가운데 정렬 */
 }
 .db-tag-blocked { color: var(--ru); background: var(--neg-bg); border: 1px solid var(--neg-bd); }
 .db-tag-wait    { color: var(--am); background: var(--am4); border: 1px solid var(--am2); }
@@ -1608,7 +1611,8 @@ footer {
   .db-stat .db-sub { display: none; }                 /* 모바일은 큰 숫자+라벨만(서브카피 생략) */
   /* 리스트 행: 모바일은 2줄(태그+repo+제목 / 이유) — 가로 4열은 좁아 깨짐. */
   .db-row {
-    grid-template-columns: auto auto 1fr; gap: 7px 8px;
+    /* RND-ADMIN-010 P1-2: 모바일도 1열 고정폭(데스크톱과 동일 root) — repo 좌측 단일 기준점. */
+    grid-template-columns: 64px auto 1fr; gap: 7px 8px;
     padding: 8px 1px;
   }
   .db-row-reason {
