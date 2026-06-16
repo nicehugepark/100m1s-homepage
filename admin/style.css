@@ -561,6 +561,42 @@ footer {
 .bd-pace-empty, .bd-pace-empty {
   font-size: 11.5px; color: var(--dm); padding: 6px 0; line-height: 1.5;
 }
+/* ③ 🔴 누적 번다운 곡선 — 대표 요구 "누적 요청 N · 해결 M · 잔량 N−M" */
+.bd-curve-wrap { margin-bottom: 16px; }
+.bd-curve-h { font-family: var(--display); font-size: 12.5px; font-weight: 700; color: var(--tx); margin-bottom: 8px; }
+.bd-curve-sub { font-family: var(--body); font-size: 10.5px; font-weight: 400; color: var(--dm); }
+.bd-curve-svg {
+  width: 100%; height: 132px; display: block; overflow: visible;
+  background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--radius-sm);
+  padding: 2px;
+}
+.bd-curve-legend {
+  display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px;
+  font-family: var(--mono); font-size: 10.5px;
+}
+.bd-lg { white-space: nowrap; }
+.bd-lg-open { color: var(--dm); }
+.bd-lg-closed { color: var(--pos); font-weight: 700; }
+.bd-lg-rem { color: var(--am); font-weight: 700; }
+.bd-curve-axis {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--mono); font-size: 10.5px; color: var(--tx2); margin-top: 6px; gap: 8px;
+}
+.bd-curve-dir {
+  color: var(--am); font-weight: 700; text-align: center; flex: 1;
+  font-variant-numeric: tabular-nums;
+}
+.bd-curve-trust {
+  margin-top: 8px; font-family: var(--body); font-size: 10.5px; color: var(--dm);
+  line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+.bd-curve-approx-note { color: var(--tx2); }
+.bd-curve-omitted {
+  margin-top: 6px; padding: 6px 9px; font-size: 10.5px; line-height: 1.45;
+  color: var(--tx2); background: var(--bg2); border-left: 2px solid var(--bd2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.bd-curve-empty { font-size: 11.5px; color: var(--dm); padding: 10px 0; line-height: 1.5; }
 
 /* ════════ 활동 추이 접기 (details) — 활동량은 상태보다 하위 정보위계 ════════ */
 .conv-fold {
@@ -1342,6 +1378,25 @@ footer {
   .fresh-live .fresh-dot { animation: fresh-pulse 2s ease-in-out infinite; }
 }
 @keyframes fresh-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+/* [3단계] stale 경고 배너 — 30분 초과 시 '라이브 아님' 명시(거짓 신선 0·FLR-AGT-002).
+   색 + 텍스트 병기(다크모드 제1원칙: 색만으로 의미 전달 금지). danger=빨강(180분+)·warn=주황(30~180분).
+   결단보드 위 최상단 슬롯 — 평상시(신선) 비어 margin 0(레이아웃 영향 0), 채울 때만 .fresh-alert 자체 margin. */
+.conv-stale-banner:empty { display: none; }
+.fresh-alert {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 9px 14px; margin: 0 0 8px; border-radius: var(--radius);
+  border: 1px solid; font-size: 12.5px; line-height: 1.5;
+}
+.fresh-alert-icon { flex: none; font-weight: 700; line-height: 1.5; }
+.fresh-alert-msg b { font-family: var(--mono); font-weight: 700; }
+.fresh-alert-danger {
+  color: var(--ru); border-color: var(--neg-bd); background: var(--neg-bg);
+}
+.fresh-alert-warn {
+  color: var(--am); border-color: var(--am);
+  background: color-mix(in srgb, var(--am) 8%, var(--sf));
+}
 
 /* ⓪-c 활동 시계열 = 목적별 복수 차트(A 단위시간변동 · B 누적추세 · C 서비스별).
    대표 "차트 여러개면 되지 않을까" — 단일 combo의 3메시지 중첩을 목적별로 분리.

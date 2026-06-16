@@ -947,7 +947,7 @@
   //   소급 합성 금지(FLR-AGT-002). 정직하게 2종:
   //     ① 서비스별 현재 잔량(open) 막대 — summary[repo].open_requests 스냅샷 (시계열 아님 명시).
   //     ② 처리 박자 라인 — state_transitions 의 verdict_emitted(실측 mtime·is_approx=false)를 일별 close 이벤트 근사.
-  //        우상향 = 판정 활발(처리 빠름). 진짜 잔량 우하향선은 Phase B(전이 시각 도입 후).
+  //        우상향 = 판정 활발(처리 빠름). 잔량 시계열은 위 '누적 추이' 곡선 참조(이미 잔량 번다운 그림).
   //   phantom repo(—/repo/UNKNOWN/null) 분모 배제 (설계 §1 부수발견2).
   //   ⚠️ '공통'은 phantom 아님 — 백엔드 compute_summary(_PHANTOM_REPO_TOKENS)가 정상 버킷으로 보존(open 2).
   //   프론트가 '공통'을 추가 배제하면 번다운 분모(26)가 glance/표/헤더(28)와 발산(RND-ADMIN-008 P1-ii).
@@ -963,6 +963,13 @@
     // ISO 문자열의 앞 10자(YYYY-MM-DD)가 이미 +09:00 로컬 날짜 — Date 재파싱 시 TZ 흔들림 회피.
     const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
     return m ? m[1] + "-" + m[2] + "-" + m[3] : null;
+  }
+  // 시간단위 라벨 — ISO(+09:00) → "06-15 14시" (날짜+정시). TZ 재파싱 없이 문자열 절단
+  //   (ISO 앞부분이 이미 KST 로컬). 번다운 곡선 축·점 툴팁용.
+  function tsLabel(iso) {
+    if (!iso) return "";
+    const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2})/);
+    return m ? `${m[2]}-${m[3]} ${m[4]}시` : String(iso).slice(0, 16);
   }
   function renderConvBurndown(conv) {
     const host = el("conv-burndown");
@@ -1040,14 +1047,97 @@
          </div>`;
     }
 
+    // ── ③ 🔴 누적 번다운 곡선 — 대표 요구 "누적 요청 N · 해결 M · 잔량 N−M" ──
+    //    각 시간단위 시점의 누적요청·누적해결·잔량 3선. 잔량선이 핵심(우하향=해결 추월).
+    //    근사(git_approx·묶음 commit)는 곡선 하단 신뢰도 바 + 흐림 영역으로 정직 표기.
+    //    못 내는 건(opened/close 시각 미상)은 곡선 밖 주석 — 거짓 위치로 안 찍음(FLR-AGT-002).
+    const series = conv.burndown_series || {};
+    const sp = Array.isArray(series.points) ? series.points : [];
+    let curveHtml;
+    if (sp.length < 2) {
+      curveHtml = `<div class="bd-curve-empty">누적 추이는 시각 추적 가능한 전이 2개 이상부터 표시 (현재 ${sp.length}개 시점).</div>`;
+    } else {
+      const W = 100, H = 46, padTop = 3, padBot = 4;
+      const maxY = Math.max(1, ...sp.map((p) => p.cumulative_opened));
+      const n = sp.length;
+      const xAt = (i) => (n > 1 ? (i / (n - 1)) * W : 0);
+      const yAt = (v) => H - padBot - (v / maxY) * (H - padTop - padBot);
+      const lineFor = (key) =>
+        sp.map((p, i) => `${i ? "L" : "M"}${xAt(i).toFixed(1)} ${yAt(p[key]).toFixed(1)}`).join(" ");
+      const ptsFor = (key) =>
+        sp.map((p, i) => `${xAt(i).toFixed(1)},${yAt(p[key]).toFixed(1)}`).join(" ");
+      // 잔량 영역(0~remaining) — 채움으로 '쌓인 일감' 부피감. 0 baseline 까지.
+      const remArea =
+        `M${xAt(0).toFixed(1)} ${yAt(0).toFixed(1)} ` +
+        sp.map((p, i) => `L${xAt(i).toFixed(1)} ${yAt(p.remaining).toFixed(1)}`).join(" ") +
+        ` L${xAt(n - 1).toFixed(1)} ${yAt(0).toFixed(1)} Z`;
+      const dotTitle = (p) =>
+        `${tsLabel(p.ts)} · 요청 ${p.cumulative_opened} · 해결 ${p.cumulative_closed} · 잔량 ${p.remaining}` +
+        (p.approx_closed_cum ? ` (해결 중 근사 ${p.approx_closed_cum})` : "");
+      const dots = sp.map((p, i) =>
+        `<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(p.remaining).toFixed(1)}" r="1.0" fill="var(--am)"><title>${escape(dotTitle(p))}</title></circle>`).join("");
+      const first = sp[0], last = sp[sp.length - 1];
+      // 잔량 방향(우하향=해결이 요청 추월 = 대표가 보고싶은 "꺾임"). 정직 라벨.
+      const remDelta = last.remaining - first.remaining;
+      const dirLabel = remDelta < 0
+        ? `잔량 ${first.remaining}→${last.remaining} (↓ ${-remDelta} 감소 — 해결이 요청을 추월)`
+        : remDelta > 0
+          ? `잔량 ${first.remaining}→${last.remaining} (↑ ${remDelta} 증가 — 요청 유입이 더 빠름)`
+          : `잔량 ${first.remaining} (변동 없음)`;
+      // 근사 신뢰도 — close 중 measured(실측 verdict mtime) vs git_approx 비율.
+      const totC = series.total_closed || 0;
+      const measured = series.measured_close_n || 0;
+      const approx = series.approx_close_n || 0;
+      const measuredPct = totC ? Math.round((measured / totC) * 100) : 0;
+      curveHtml =
+        `<div class="bd-curve">
+           <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" class="bd-curve-svg" role="img"
+                aria-label="누적 번다운 — 시점별 누적 요청/해결/잔량 ${n}개 시점">
+             <path d="${remArea}" fill="var(--am)" fill-opacity="0.10" stroke="none"/>
+             <polyline points="${ptsFor("cumulative_opened")}" fill="none" stroke="var(--dm)"
+                       stroke-width="0.7" stroke-dasharray="2 1.4" vector-effect="non-scaling-stroke"/>
+             <polyline points="${ptsFor("cumulative_closed")}" fill="none" stroke="var(--pos)"
+                       stroke-width="0.9" vector-effect="non-scaling-stroke"/>
+             <polyline points="${ptsFor("remaining")}" fill="none" stroke="var(--am)"
+                       stroke-width="1.1" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+             ${dots}
+           </svg>
+           <div class="bd-curve-legend">
+             <span class="bd-lg bd-lg-open">⋯ 누적 요청</span>
+             <span class="bd-lg bd-lg-closed">— 누적 해결</span>
+             <span class="bd-lg bd-lg-rem">▬ 잔량(요청−해결)</span>
+           </div>
+           <div class="bd-curve-axis">
+             <span>${escape(tsLabel(first.ts))}</span>
+             <span class="bd-curve-dir">${escape(dirLabel)}</span>
+             <span>${escape(tsLabel(last.ts))}</span>
+           </div>
+           <div class="bd-curve-trust">
+             시각 출처: 실측(verdict) ${measured}건 · 근사(git 등재 시점) ${approx}건${totC ? ` (실측 ${measuredPct}%)` : ""}
+             ${approx ? `<span class="bd-curve-approx-note" title="LEDGER 묶음 commit으로 여러 요청이 한 시점에 동시 닫힘 — close 시각은 '기록 시점' 근사">· 근사는 묶음 배포로 같은 시점에 몰릴 수 있음</span>` : ""}
+           </div>
+           ${(series.unknown_close_n || series.opened_unknown_n)
+             ? `<div class="bd-curve-omitted">곡선 밖(시각 미상, 거짓 위치로 안 찍음): ${
+                 [series.unknown_close_n ? `해결됐으나 close 시각 미상 +${series.unknown_close_n}건` : "",
+                  series.opened_unknown_n ? `요청 시각 미상 +${series.opened_unknown_n}건` : ""]
+                   .filter(Boolean).join(" · ")
+               }</div>`
+             : ""}
+         </div>`;
+    }
+
     host.innerHTML =
       `<div class="bd-head">
          <h2 class="bd-title">번다운 — 미해결 잔량</h2>
          <span class="bd-hint">서비스별 미해결(open) 요청 · 진척 빠르면 잔량이 줄어든다</span>
        </div>
+       <div class="bd-curve-wrap">
+         <div class="bd-curve-h">누적 추이 <span class="bd-curve-sub">시간단위 · 누적 요청·해결·잔량 (잔량 우하향 = 해결이 요청을 추월)</span></div>
+         ${curveHtml}
+       </div>
        <div class="bd-snap">${snapBars}</div>
        <div class="bd-pace-wrap">
-         <div class="bd-pace-h">처리 박자 <span class="bd-pace-sub">일별 판정 건수(실측 mtime) · 우상향 = 판정 활발 · 잔량 시계열은 전이 시각 도입 후(Phase B)</span></div>
+         <div class="bd-pace-h">처리 박자 <span class="bd-pace-sub">일별 판정 건수(실측 mtime) · 우상향 = 판정 활발 · 잔량 시계열은 위 '누적 추이' 곡선 참조</span></div>
          ${paceHtml}
          <!-- REQ-016 파트2: 번다운 처리박자는 일별 추세(데이터 성격상 줌 무의미·burndown-design Phase A).
               시간 단위(1/2/3/6h) 확대·드래그 탐색은 '활동 추이' 차트에 일관 제공 → 명시 cross-link(발견성). -->
@@ -1163,6 +1253,25 @@
       actDetail = `마지막 활동 <b>빌드 이후 예약/미래 기록</b>`;
     } else {
       actDetail = `마지막 활동 <b>빌드 ${escape(agoText(deltaToBuild))}</b>`;
+    }
+    // [3단계] stale 경고 배너 — 데이터 생성 후 30분 초과 시 최상단(결단보드 위) 명시 고지
+    //   (거짓 신선 0·FLR-AGT-002). 배지(작은 점·텍스트)만으론 '오래된 데이터를 라이브로 착각'을
+    //   못 막는다(대표: 어드민이 자기 신선도를 거짓말하지 않게 — 신뢰의 첫 조건). genMin 은
+    //   minsAgo(라이브 시계 − generated_at) = 매 렌더/폴링 재계산되는 실시간 경과(빌드 박제
+    //   stale_minutes 정적값 미사용). 30~180분=주황 '지연', 180분+=빨강 '정체'(freshMeta 임계와
+    //   정합). 색 + 텍스트 병기(다크모드 제1원칙). 평상시(신선)엔 배너 슬롯 비움(레이아웃 영향 0).
+    const bannerEl = el("conv-stale-banner");
+    if (bannerEl) {
+      if (genMin != null && genMin >= 30) {
+        const danger = genMin >= 180; // stale = 빨강, warm = 주황
+        bannerEl.innerHTML =
+          `<div class="fresh-alert ${danger ? "fresh-alert-danger" : "fresh-alert-warn"}" role="alert">
+            <span class="fresh-alert-icon" aria-hidden="true">${danger ? "■" : "▲"}</span>
+            <span class="fresh-alert-msg">데이터가 <b>${escape(agoText(genMin))}</b> 생성됐습니다 — ${danger ? "정체(180분 초과)" : "갱신 지연(30분 초과)"}. 표시 값은 마지막 빌드 스냅샷이며 라이브가 아닙니다.</span>
+          </div>`;
+      } else {
+        bannerEl.innerHTML = "";
+      }
     }
     el("conv-freshness").innerHTML =
       `<div class="fresh-badge ${fm.cls}" title="배지 = 보고 있는 데이터(convergence.json)의 신선도. 마지막 활동은 그 빌드 시점 기준 상대.">
