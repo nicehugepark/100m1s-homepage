@@ -1,9 +1,15 @@
 """
 키움 'v1' 조건검색 스크레이퍼 (D축 cutover 2026-06-17, 종전 '500억이상')
 
-매 10분 (KST 10:00~21:50) 키움 조건검색('v1')을 호출하여
+매 10분 (KST 08:00~22:00, 평일) 키움 조건검색('v1')을 호출하여
 거래대금 500억+ ∪ 당일 상한가 종목 목록을 수집·저장.
 (상한가 SoT = v1 결과목록 등락률 >= 29.79%, build_daily.LIMIT_UP_THRESHOLD)
+
+스케줄 (2026-06-17 확대):
+  - GitHub Actions(.github/workflows/kiwoom-scrape.yml): KST 08:00~22:00 / 10분 / 평일.
+  - 로컬 launchd(com.100m1s.kiwoom-scraper → kiwoom_cron.sh): 10분 fire 하나, 스크립트
+    내부 장중 가드(09:00~15:40 KST, 2026-05-30 종가 가드) 가 그 밖 시각을 SKIP →
+    로컬 경로 실수집 윈도우는 09:00~15:40 로 유지 (가드 미변경).
 
 저장 구조:
   data/kiwoom/<YYYY-MM-DD>.json  — 그날 누적 + latest snapshot
