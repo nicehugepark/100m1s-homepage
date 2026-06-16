@@ -1,8 +1,9 @@
 """
-키움 '500억이상' 조건검색 스크레이퍼
+키움 'v1' 조건검색 스크레이퍼 (D축 cutover 2026-06-17, 종전 '500억이상')
 
-매 10분 (KST 10:00~21:50) 키움 조건검색을 호출하여
-거래대금 500억+ 종목 목록을 수집·저장.
+매 10분 (KST 10:00~21:50) 키움 조건검색('v1')을 호출하여
+거래대금 500억+ ∪ 당일 상한가 종목 목록을 수집·저장.
+(상한가 SoT = v1 결과목록 등락률 >= 29.79%, build_daily.LIMIT_UP_THRESHOLD)
 
 저장 구조:
   data/kiwoom/<YYYY-MM-DD>.json  — 그날 누적 + latest snapshot
@@ -259,17 +260,30 @@ def run() -> int:
         conditions = client.condition_list()
         log(f"등록된 조건식 {len(conditions)}개")
 
+        # D축 cutover (2026-06-17): '500억이상' → 'v1' 조건식 전환.
+        # v1 = 거래대금 500억 ∪ 당일 상한가 를 한 번에 반환 (상한가 SoT가
+        # v1 결과목록 등락률 >= 29.79% 로 통일됨, build_daily.LIMIT_UP_THRESHOLD).
+        # CNSRLST 는 flat [seq, name] 리스트만 반환 (폴더 계층 없음) → 이름 매칭.
+        # 정확 일치('v1') 우선 + 폴백 부분 매칭. 짧은 토큰 'v1' 의 우연 포함
+        # 오탐 회피 (FLR-20260409-TEC-001 사명 부분문자열 오탐 교훈).
+        target_name_query = "v1"
         target_seq = None
         target_name = None
         for seq, name in conditions:
-            if "500억" in name:
+            if str(name).strip() == target_name_query:
                 target_seq = seq
                 target_name = name
                 break
+        if not target_seq:
+            for seq, name in conditions:
+                if target_name_query in str(name):
+                    target_seq = seq
+                    target_name = name
+                    break
 
         if not target_seq:
             available = [n for _, n in conditions]
-            log(f"❌ '500억' 조건검색 미등록 (등록된: {available})")
+            log(f"❌ '{target_name_query}' 조건검색 미등록 (등록된: {available})")
             return 5
 
         log(f"조건검색 실행: [{target_seq}] {target_name}")
