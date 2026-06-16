@@ -1,6 +1,6 @@
 {
   "date": "2026-06-16",
-  "generated_at": "2026-06-16T13:35:20.063089",
+  "generated_at": "2026-06-16T13:36:15.389487",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -792,9 +792,9 @@
           74400
         ]
       },
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "strong_bull",
       "theme_leader": true,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "적극"
     },
     {
       "code": "004310",
@@ -2126,7 +2126,7 @@
           56800
         ]
       },
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -4289,7 +4289,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "013360",
@@ -4584,8 +4587,17 @@
       "low_price": 2140,
       "industry": "구조용 금속제품, 탱크 및 증기발생기 제조업",
       "sector": "Wind-Tower",
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "풍력에너지"
+      ],
+      "theme_paths": [
+        {
+          "name": "풍력에너지",
+          "path": [
+            "풍력에너지"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -4597,16 +4609,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03768726645478440",
           "source": "이데일리",
           "published_at": "2026-06-04T02:16:01",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "동국S&C가 316억원 규모 공급계약을 체결했다. 풍력 타워(Wind-Tower)가 핵심 본업인 종목으로 본업 수주는 직접 수혜에 해당하나, 당일 거래대금이 2억원에 그치며 시장 반응이 미약해 종가는 1,815원(-3.66%)으로 오히려 약세 마감했다(52주 고가 3,090원 대비 -41.3%).",
+          "macro_event": "동국S&C 316억원 규모 공급계약 체결 (본업 풍력 타워 직접 수주)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.35,
+          "newzy_virality": 0.15,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.27,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -4791,7 +4803,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "014910",
