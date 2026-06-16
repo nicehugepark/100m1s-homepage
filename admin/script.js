@@ -50,6 +50,24 @@
     [/(?<![A-Za-z0-9])meridian(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
     [/(?<![A-Za-z0-9])staff(?![A-Za-z0-9])/gi, "시스템 심사 패널"],
     [/(?<![A-Za-z0-9])cadence(?![A-Za-z0-9])/gi, "데이터 계측 패널"],
+    // REQ-ADMIN-20260615-022 (P1-B·meridian/조니 2심 적발): 패널 슬러그 'legal'이 3 layer
+    //   (PERSONA_GENERALIZE·SANITIZE_PERSONA_RE·프론트 SANITIZE_RULES) 어디에도 미등재 →
+    //   BYBIAS r53/r54 패널 라벨 '패널: legal(critical)' 라이브 DOM 13건 누출. 백엔드 dev가
+    //   PERSONA_GENERALIZE+SANITIZE_PERSONA_RE 등재(roster-derived 게이트로 자동 강제), 본 프론트
+    //   백스톱은 양 layer 동기(FLR-20260406-TEC-001 동형·한쪽만 fix 봉쇄). 🔴 case-sensitive(소문자
+    //   only·/i 제거): doc_id 'LEGAL-…'·'-LEGAL-'(대문자 토큰)을 자연 배제해야 doc_id 룰이 '내부코드'로
+    //   처리(시뮬레이션 확인: /gi 면 'LEGAL-20260614-001'→'법무 패널-…' 오손상). 끝 경계 (?![A-Za-z0-9-])
+    //   에 하이픈 포함 → 소문자 'legal-001' 형 식별자도 배제, 'legalize'/'illegal' 오손상 0. 앞 경계
+    //   (?<![A-Za-z0-9])로 '_legal'·콜론/공백 경계 인정. 패널 슬러그는 항상 소문자 'legal(critical)' 형.
+    [/(?<![A-Za-z0-9])legal(?![A-Za-z0-9-])/g, "법무 패널"],
+    // RND-ADMIN-007 R8 (roster 게이트 적발·legal 동형): PM320 판정 패널 슬러그
+    //   'marketreliability'(RND-PM320-063)·'pickresult'(RND-PM320-064)가 3 layer 미등재 →
+    //   백엔드 build_convergence.py PERSONA_GENERALIZE+SANITIZE_PERSONA_RE 등재(roster-derived
+    //   게이트로 자동 강제), 본 프론트 백스톱 양 layer 동기(FLR-20260406-TEC-001 동형·한쪽만
+    //   fix 봉쇄). coined slug 단독 토큰(소문자, 정상 산문 부분문자열 부재 → 과치환 0)이라
+    //   /gi 표준 분기(cadence 동형) — legal 의 case-sensitive 특례(LEGAL- doc_id 충돌)는 불요.
+    [/(?<![A-Za-z0-9])marketreliability(?![A-Za-z0-9])/gi, "시장 신뢰성 패널"],
+    [/(?<![A-Za-z0-9])pickresult(?![A-Za-z0-9])/gi, "픽 결과 패널"],
     [/(?<![A-Za-z0-9])translator(?![A-Za-z0-9])/gi, "번역 심사"],
     [/(?<![A-Za-z0-9])jury(?![A-Za-z0-9])/gi, "심사단"],
     [/(?<![A-Za-z0-9])vc(?![A-Za-z0-9])/gi, "투자 심사"],
@@ -192,19 +210,67 @@
     }
   }
 
+  // RND-ADMIN-008 P0-B (조니·design·guestpool): data.json 빈 스텁이면 그 소스를 읽는
+  //   7탭(요청·사이클·에이전트·릴리스·FLR·참여자·audit)이 백지 dead-end (8탭 중 1탭만 동작 =
+  //   "라벨은 잔뜩, 콘텐츠는 1탭" 거짓 풍요). 미연결 탭을 nav에서 비활성('준비 중') 처리해
+  //   거짓 풍요 제거 + 클릭 dead-end 0. data.json 채워지면(Phase 2) 자동 재활성(데이터 구동·하드코딩 0).
+  const DATA_JSON_TABS = ["requests", "timeline", "agents", "releases", "flr", "people", "audit"];
+  // data.json 이 실데이터를 담았는지 — records/agents/releases/audit.rows 중 하나라도 비어있지 않으면 '채워짐'.
+  function dataJsonHasContent() {
+    const d = state.data || {};
+    const audit = d.audit || {};
+    return (
+      (Array.isArray(d.records) && d.records.length > 0) ||
+      (Array.isArray(d.agents) && d.agents.length > 0) ||
+      (Array.isArray(d.releases) && d.releases.length > 0) ||
+      (Array.isArray(audit.rows) && audit.rows.length > 0)
+    );
+  }
+  // 미연결 탭 비활성화 — 버튼 자체를 disabled + aria-disabled + '준비 중' 배지. 활성 탭이
+  //   비활성 대상이면 수렴 탭으로 강제 이동(빈 화면 랜딩 0). 채워진 상태면 무동작(전 탭 정상).
+  function applyTabAvailability() {
+    if (dataJsonHasContent()) return;  // 데이터 있으면 8탭 전부 정상
+    let activeWasDisabled = false;
+    for (const name of DATA_JSON_TABS) {
+      const tab = document.querySelector(`.tab[data-tab="${name}"]`);
+      if (!tab) continue;
+      tab.classList.add("tab-soon");
+      tab.setAttribute("aria-disabled", "true");
+      tab.setAttribute("tabindex", "-1");
+      tab.setAttribute("title", "Phase 2 예정 — 이 탭의 데이터(data.json)는 아직 연결되지 않았습니다");
+      if (!tab.querySelector(".tab-soon-badge")) {
+        const badge = document.createElement("span");
+        badge.className = "tab-soon-badge";
+        badge.setAttribute("aria-hidden", "true");
+        badge.textContent = "준비 중";
+        tab.appendChild(badge);
+      }
+      if (tab.classList.contains("active")) activeWasDisabled = true;
+    }
+    if (activeWasDisabled) activateTab(CONV_TAB);  // 빈 탭 랜딩 방지 — 수렴 탭으로
+  }
+
   function setupTabs() {
     document.querySelectorAll(".tab").forEach((t) => {
       t.addEventListener("click", () => {
+        // 미연결(준비 중) 탭은 활성화 차단 — dead-end 진입 0.
+        if (t.getAttribute("aria-disabled") === "true") return;
         activateTab(t.dataset.tab);
         // 해시 동기화 — 새로고침·공유 시 같은 탭 복원 (#convergence 등)
         if (history.replaceState) history.replaceState(null, "", "#" + t.dataset.tab);
         else location.hash = t.dataset.tab;
       });
     });
+    // 미연결 탭 비활성화 (data.json 빈 스텁 시) — 초기 탭 결정 전에 적용.
+    applyTabAvailability();
     // 초기 탭: URL 해시(#convergence 등) 우선, 없으면 디폴트(HTML active=수렴) 유지.
     // 조니 P1-B — 여는 즉시 수렴 뷰가 첫 화면. 해시 딥링크도 지원.
+    //   단 해시가 비활성(준비 중) 탭을 가리키면 무시(빈 화면 딥링크 0).
     const hash = (location.hash || "").replace(/^#/, "");
-    if (hash) activateTab(hash);
+    if (hash) {
+      const hashTab = document.querySelector(`.tab[data-tab="${hash}"]`);
+      if (hashTab && hashTab.getAttribute("aria-disabled") !== "true") activateTab(hash);
+    }
 
     // [2단계] 탭 nav 가로 오버플로우 끝 페이드 — 좌/우 잔량 있을 때만 해당 끝 페이드(audit 잘림 해소).
     //   끝까지 스크롤 시 마지막 탭 완전 노출(상시 페이드가 audit 가리는 문제 회피). 1px 여유 = 라운딩 가드.
@@ -463,6 +529,9 @@
     "보류":   { label: "보류",      pct: 25,  cls: "conv-hold" },
     // 📦 대체됨 — 옛 라운드가 후속 수렴 체인이 해소(이력 보존·stuck 아님). 보존 의무 (c).
     "대체됨":  { label: "📦 대체됨",  pct: null, cls: "conv-superseded" },
+    // 승계 — 🔄/✔️ 후속 요청에 승계·편입된 닫힘(RND-ADMIN-009 P1-①). 라운드 '대체됨'의
+    //   요청판(이력 보존·열림 아님). 같은 conv-superseded 색 토큰 재사용(닫힘 계열 일관).
+    "승계":   { label: "↪ 승계됨",   pct: 100, cls: "conv-superseded" },
   };
   function stateMeta(s) {
     if (STATE_META[s]) return STATE_META[s];
@@ -484,17 +553,25 @@
   };
   function pushMeta(s) { return PUSH_META[s] || PUSH_META.unknown; }
   // REQ-ADMIN-20260615-007 (P0·open/closed SSOT 통일): 종전 프론트 정의 ["종결","수렴","배포"]가
-  //   백엔드 build_convergence.py compute_summary 의 closed_req={"종결"}(배포=열림)과 발산 →
-  //   PM320 summary.open vs 프론트 재집계 동시 노출 모순(R5 cadence P0-2 적발). 프론트는 open
-  //   정의를 독립 결정하지 않고 백엔드 현 SSOT(closed_req={"종결"})에 1:1 정합(독립 결정 금지).
-  //   배포=아직 종결 아님(라이브 반영됐으나 잔존 가능)→ 백엔드와 동일하게 '열림' 취급.
-  //   ⚠️ 백엔드 정의 변경 시(예 burndown-design 정본 {배포·종결} 채택) 본 상수도 동기 의무.
-  const CLOSED_STATES = ["종결"];
+  //   백엔드 build_convergence.py compute_summary 의 open 정의(배포·수렴·종결=closed)와 정합.
+  //   REQ-ADMIN-20260615-021 (P1-A·cadence/조니 2심 적발): 종전 CLOSED_STATES=["종결"]이 백엔드
+  //   summary.open_requests(배포·수렴·종결 closed)와 발산 → glance(L988)·카드그룹헤더(L1892)가
+  //   isOpenState 로 독립 재집계 시 PM320 open=8 vs repoSummary/번다운(백엔드 SSOT)=3 동시 노출.
+  //   라이브 cross-check(2026-06-15): summary.open_requests PM320=3·BYBIAS=5 = 3종 closed 계산값
+  //   확정 → 본 상수를 백엔드 실 동작에 1:1 동기(["배포","종결","수렴"])하여 같은 화면 모든
+  //   컴포넌트(glance·카드헤더·정렬·repoSummary·번다운) open 단일값 보장. R6 REQ-007 fix가
+  //   repoSummary↔번다운↔결단보드 3컴포넌트만 summary.open_requests 통일하고 glance·카드헤더
+  //   2곳을 미마이그레이션한 half-applied 의 완전판(전 컴포넌트 단일 출처·부분 통일 금지).
+  //   ⚠️ 백엔드 closed 정의 변경 시 본 상수 동기 의무(양 layer 발산 봉쇄·FLR-20260406-TEC-001 동형).
+  //   RND-ADMIN-009 P1-①: 백엔드가 '승계'(🔄 승계·✔️ 편입 = 후속요청 흡수 닫힘) 를
+  //   CLOSED_REQUEST_STATES 에 추가 → 본 상수도 동기('승계' 누락 시 glance/카드헤더 open 재집계가
+  //   백엔드 summary.open_requests 와 발산: 라이브 glance open=32 vs 백엔드 27 동시 노출 = 재발).
+  const CLOSED_STATES = ["배포", "종결", "수렴", "승계"];
   function isOpenState(s) { return !CLOSED_STATES.includes(s); }
   // 진행·심사 중 라운드 state (지금 활동/카운트용)
   const ACTIVE_ROUND_STATES = ["진행중", "판정중", "구현중", "판정완료", "미수렴"];
 
-  const STATE_ORDER = ["포착", "판정중", "구현중", "배포", "종결", "수렴", "보류"];
+  const STATE_ORDER = ["포착", "판정중", "구현중", "배포", "종결", "수렴", "승계", "보류"];
   function stateRank(s) { const i = STATE_ORDER.indexOf(s); return i < 0 ? STATE_ORDER.length : i; }
 
   // ⓪-a2 [2단계 통합] repo 1행 요약 테이블 — 진단: 같은 6개 서비스를 4번(상태 스냅바·라운드 수렴
@@ -597,26 +674,26 @@
         ? `<span class="rs-conv rs-has">${a.converged}</span>`
         : `<span class="rs-conv rs-zero">0</span>`;
       const openTxt = typeof a.open === "number" ? a.open : "?";
-      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열림 ${openTxt}·막힘 ${a.blocked}·수렴 ${a.converged}">
+      return `<div class="rs-row" role="row" aria-label="${escape(repoDisplay(repo))} — 열린 요청 ${openTxt}·막힘(보류 포함) ${a.blocked}·수렴 라운드 ${a.converged}">
         <span class="rs-repo" role="cell">${escape(repoDisplay(repo))}</span>
         <span class="rs-num rs-open" role="cell" title="열린(미종결) 요청 — 백엔드 집계값">${openTxt}</span>
-        <span class="rs-num" role="cell" title="막힌(blocked) 요청">${blockedCell}</span>
-        <span class="rs-num" role="cell" title="수렴한 라운드">${convCell}</span>
+        <span class="rs-num" role="cell" title="막힌 요청 — 보류·결정대기 포함(blocked union)">${blockedCell}</span>
+        <span class="rs-num" role="cell" title="수렴한 판정 라운드(요청 아님)">${convCell}</span>
         <span class="rs-bar" role="cell" aria-label="${escape(repoDisplay(repo))} 요청 상태 구성">${miniBar(a)}</span>
       </div>`;
     }).join("");
 
     host.innerHTML =
       `<div class="tl-head">서비스별 요약
-        <span class="tl-sub">repo당 1줄 — 열림·막힘·수렴 한눈 + 미니 막대(요청 상태 100% 구성). 합계: 열림 ${tot.open} · 막힘 ${tot.blocked} · 수렴 ${tot.converged}. 시간별 전이는 아래 ‘상태 추이 펼치기’.</span>
+        <span class="tl-sub">repo당 1줄 — 열린 요청·막힘(보류 포함)·수렴 라운드 한눈 + 미니 막대(요청 상태 100% 구성). 합계: 열린 요청 ${tot.open} · 막힘 ${tot.blocked} · 수렴 라운드 ${tot.converged}. 시간별 전이는 아래 ‘상태 추이 펼치기’.</span>
       </div>
       <div class="sb-legend" role="group" aria-label="상태 범례">${legend}</div>
       <div class="rs-table" role="table" aria-label="서비스별 1행 요약">
         <div class="rs-row rs-head-row" role="row">
           <span class="rs-repo" role="columnheader">서비스</span>
-          <span class="rs-num" role="columnheader">열린 수</span>
-          <span class="rs-num" role="columnheader">막힘 수</span>
-          <span class="rs-num" role="columnheader">수렴 수</span>
+          <span class="rs-num" role="columnheader" title="열린(미종결) 요청 수">열린 요청</span>
+          <span class="rs-num" role="columnheader" title="막힌 요청 — 보류·결정대기 포함(blocked union). 결단보드 '처리 필요'는 그중 진짜 장애물 subset">막힘<span class="rs-col-note">(보류 포함)</span></span>
+          <span class="rs-num" role="columnheader" title="수렴한 판정 라운드 수(요청 아님)">수렴 라운드</span>
           <span class="rs-bar" role="columnheader">상태 분포</span>
         </div>
         ${rows}
@@ -776,8 +853,11 @@
     //   값이 0이면 비활성(클릭 무의미) — 정직(막힌 것 없는데 필터 적용 무의미).
     const big = (v, k, cls, sub, filter) => {
       const interactive = filter && v > 0;
+      // RND-ADMIN-009 P1-②(c·guestpool P1-B): 종전 툴팁 "요청 탭에서 …만 보기"는 거짓 안내
+      //   — 실제 동작은 disabled '요청 탭' 이동이 아니라 아래 요청 목록(#conv-req-cards)을
+      //   인라인 필터+스크롤(applyReqFilter). 실동작과 일치하게 정정.
       const attrs = interactive
-        ? ` role="button" tabindex="0" data-db-filter="${escape(filter)}" title="클릭 — 요청 탭에서 ${escape(k)}만 보기"`
+        ? ` role="button" tabindex="0" data-db-filter="${escape(filter)}" title="클릭 — 아래 요청 목록을 '${escape(k)}'만 필터"`
         : "";
       return `<div class="db-stat ${cls}${interactive ? " db-stat-link" : ""}"${attrs}>
          <div class="db-v">${v}</div>
@@ -786,9 +866,13 @@
        </div>`;
     };
 
+    // RND-ADMIN-009 P1-②(a·만장일치): 결단보드 "막힌 요청"=진짜 장애물 subset(classifyBlocked
+    //   ==='blocked', 보류·결정대기 제외)인데 서비스별요약 "막힘 수"=blocked union(보류 포함).
+    //   같은 '막힘' 단어가 다른 값(2 vs 6) → 운영자 핵심 스캔("막힌 거 몇이야?")에 상반된 답.
+    //   라벨 변별: 보드='처리 필요(진짜 막힘)' / 요약='막힘(보류 포함)'(L689) — 같은 단어 두 정의 제거.
     const stats =
-      big(blockedItems.length, "막힌 요청", "db-blocked",
-          blockedItems.length ? "열린 장애물 — 처리 필요" : "막힌 것 없음", "blocked") +
+      big(blockedItems.length, "처리 필요", "db-blocked",
+          blockedItems.length ? "진짜 장애물 — 지금 처리" : "막힌 것 없음", "blocked") +
       big(waitItems.length, "내 결정 대기", "db-wait",
           waitItems.length ? "대표 결정해야 진행" : "대기 없음", "wait") +
       // 허영지표(누적 수렴) 추방 → actionable: 아직 수렴 못 한 서비스 수(0=목표 달성).
@@ -803,9 +887,12 @@
     } else {
       const rows = listItems.map((r) => {
         const wait = classifyBlocked(r) === "wait";
+        // RND-ADMIN-010 P1-1(조니 2심 채택): 행 배지 bare "막힘"이 subset(이 행은 blockedItems
+        //   =classifyBlocked==='blocked')인데 요약 헤더 "막힘(보류 포함)"은 union(6) → 같은 단어 두 값.
+        //   subset 라벨을 결단보드 타일 "처리 필요"와 단일화(L874). union="막힘(보류 포함)"만 잔존.
         const tag = wait
           ? `<span class="db-tag db-tag-wait">결정 대기</span>`
-          : `<span class="db-tag db-tag-blocked">막힘</span>`;
+          : `<span class="db-tag db-tag-blocked" title="진짜 장애물 — 결단보드 '처리 필요' 집계와 동일 subset(보류·결정대기 제외)">처리 필요</span>`;
         // 막힌 이유 = blocked_reason(실측) 우선, 없으면 현재 state 라벨 근사(정직 표기).
         const reason = r.blocked_reason
           ? mdSafe(r.blocked_reason)   // REQ-011: 마크다운 렌더
@@ -823,8 +910,9 @@
         </div>`;
       }).join("");
       const more = (blockedItems.length + waitItems.length) - listItems.length;
+      // RND-ADMIN-009 P1-②(c): disabled '요청 탭'이 아니라 아래 요청 목록에서 전체 표시(실동작 일치).
       const moreHtml = more > 0
-        ? `<div class="db-more">+ ${more}건 더 (요청 탭에서 전체 보기)</div>` : "";
+        ? `<div class="db-more">+ ${more}건 더 (아래 요청 목록에서 전체 보기)</div>` : "";
       listHtml = `<div class="db-list" role="list">${rows}</div>${moreHtml}`;
     }
 
@@ -860,8 +948,11 @@
   //     ① 서비스별 현재 잔량(open) 막대 — summary[repo].open_requests 스냅샷 (시계열 아님 명시).
   //     ② 처리 박자 라인 — state_transitions 의 verdict_emitted(실측 mtime·is_approx=false)를 일별 close 이벤트 근사.
   //        우상향 = 판정 활발(처리 빠름). 진짜 잔량 우하향선은 Phase B(전이 시각 도입 후).
-  //   phantom repo(공통/—/repo/UNKNOWN/null) 분모 배제 (설계 §1 부수발견2).
-  const PHANTOM_REPO_TOKENS = new Set(["공통", "—", "-", "repo", "UNKNOWN", "unknown", "미상", ""]);
+  //   phantom repo(—/repo/UNKNOWN/null) 분모 배제 (설계 §1 부수발견2).
+  //   ⚠️ '공통'은 phantom 아님 — 백엔드 compute_summary(_PHANTOM_REPO_TOKENS)가 정상 버킷으로 보존(open 2).
+  //   프론트가 '공통'을 추가 배제하면 번다운 분모(26)가 glance/표/헤더(28)와 발산(RND-ADMIN-008 P1-ii).
+  //   백엔드 SSOT와 1:1 정합 위해 '공통'·'미상' 제외(미상은 backend 'UNKNOWN'과 별 토큰이라 무영향).
+  const PHANTOM_REPO_TOKENS = new Set(["—", "-", "repo", "UNKNOWN", "unknown", ""]);
   function isRealRepo(repo) {
     return !PHANTOM_REPO_TOKENS.has(String(repo == null ? "" : repo).trim());
   }
@@ -1005,8 +1096,8 @@
         <div class="g-sub">심사 중</div>
       </div>
       <div class="glance-card glance-ok">
-        <div class="g-v">${settled}</div><div class="g-k">수렴·종결</div>
-        <div class="g-sub">전체 ${total}건 중</div>
+        <div class="g-v">${settled}</div><div class="g-k">수렴·종결 요청</div>
+        <div class="g-sub">전체 ${total} 요청 중</div>
       </div>
       <div class="glance-card glance-wide">
         <div class="g-k">최근 활동</div>
@@ -1316,9 +1407,20 @@
       : viewHrs <= 60 ? 1 : viewHrs <= 96 ? 2 : viewHrs <= 200 ? 3 : 6;
     const barStepMs = barHrs * 3600000;
     const buckets = {}; // bucketStartMs → count(전 시리즈 합 = 그 시간대 '실제' 밀도)
-    tl.forEach((e) => { const b = Math.floor(e.t / barStepMs) * barStepMs; buckets[b] = (buckets[b] || 0) + 1; });
+    // 대표 catch(번다운 시간단위): "요청이 몇 개이고 그래서 몇 개 해결됐는지" 정보 부재.
+    //   → 버킷 합과 함께 유형 분해(요청 발생 / 판정 처리)를 동시 집계. 데이터=activity_timeline e.type
+    //   (verdict=판정 실측 mtime / request=요청 포착). 합성 0(FLR-AGT-002): 이미 그 버킷에 든 이벤트만 셈.
+    //   ※ '해결수'를 직접 박지 않고 '판정(처리)'으로 정직 라벨 — 요청 close 전이 시각은 SSOT 부재
+    //     (burndown-design §2.2). 판정 처리 = "그 시간대에 몇 건이 판정나 처리됐나"의 실측 근사.
+    const typed = {}; // bucketStartMs → { request, verdict, round }
+    tl.forEach((e) => {
+      const b = Math.floor(e.t / barStepMs) * barStepMs;
+      buckets[b] = (buckets[b] || 0) + 1;
+      if (!typed[b]) typed[b] = { request: 0, verdict: 0, round: 0 };
+      if (e.type === "request" || e.type === "verdict" || e.type === "round") typed[b][e.type] += 1;
+    });
     let max = 0; for (const b in buckets) max = Math.max(max, buckets[b]);
-    return { buckets, barStepMs, barStepH: barHrs, max };
+    return { buckets, typed, barStepMs, barStepH: barHrs, max };
   }
 
   // ── A: 단위시간당 변동 (막대 단독, full 높이) ──
@@ -1334,9 +1436,18 @@
     const plotH = baseY - PADT;
     const xOf = (t) => ((t - v0) / span) * VBW;
 
-    const { buckets, barStepMs, barStepH, max } = tlBarBuckets(tl, v0, v1);
+    const { buckets, typed, barStepMs, barStepH, max } = tlBarBuckets(tl, v0, v1);
     const barMax = max || 1;
     const yOf = (c) => baseY - (c / barMax) * plotH;
+    // 막대 title/crosshair에 쓸 유형 분해 라벨 — "요청 R · 판정 V"(0이면 생략, 거짓 채움 0).
+    const breakdownTxt = (b) => {
+      const tb = typed[b]; if (!tb) return "";
+      const parts = [];
+      if (tb.request) parts.push("요청 " + tb.request);
+      if (tb.verdict) parts.push("판정 " + tb.verdict);
+      if (tb.round) parts.push("라운드 " + tb.round);
+      return parts.length ? " (" + parts.join(" · ") + ")" : "";
+    };
 
     // 그리드 — 시간 세로선 + 시각라벨 + Y 가로눈금(4단계).
     let gridSvg = tlTimeGrid(v0, v1, VBW, PADT, baseY, VBH - 7);
@@ -1355,7 +1466,7 @@
       const c = buckets[b]; if (!c) continue; // 거짓 채움 0
       const x = xOf(b) + barPad, w = Math.max(barW - barPad * 2, 1);
       const y = yOf(c), h = baseY - y;
-      barsSvg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" class="tlb-bar" data-bucket="${b}" data-count="${c}"><title>${tlFmt(b)}~ ${barStepH}시간 · ${c}건</title></rect>`;
+      barsSvg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" class="tlb-bar" data-bucket="${b}" data-count="${c}"><title>${tlFmt(b)}~ ${barStepH}시간 · ${c}건${breakdownTxt(b)}</title></rect>`;
     }
 
     host.querySelector(".tlb-grid").innerHTML = gridSvg;
@@ -1366,8 +1477,8 @@
     if (yax) yax.innerHTML = yTicks.filter((v) => v > 0).map((v) =>
       `<span style="top:${((yOf(v)) / VBH * 100).toFixed(1)}%">${v}</span>`).join("");
 
-    // crosshair용 박제.
-    tlState._drawBars = { buckets, barStepMs, barStepH, barMax, yOf, xOf, baseY, PADT, VBW, VBH };
+    // crosshair용 박제. typed(유형 분해)도 보존 — 크로스헤어 툴팁이 요청/판정 건수 표시(대표 catch).
+    tlState._drawBars = { buckets, typed, barStepMs, barStepH, barMax, yOf, xOf, baseY, PADT, VBW, VBH };
 
     // 축/범위 라벨 + 전체보기 버튼.
     const [f0, f1] = tlState.full;
@@ -1712,10 +1823,21 @@
         if (cumV != null) cc += `<circle cx="${xc.toFixed(1)}" cy="${dc.yOf(cumV).toFixed(1)}" r="3" class="tl-crossdot tl-crossdot-cum"/>`;
         cursorC.innerHTML = cc;
       }
-      // 툴팁 — 시각 + 구간 건수(주) + 누적(보조).
+      // 툴팁 — 시각 + 구간 건수(주) + 유형 분해(요청/판정) + 누적(보조).
+      //   대표 catch(번다운 시간단위): 시간단위에 "요청 몇 개·해결 몇 개" 정보 부재 → 이 구간의
+      //   요청 발생 / 판정 처리를 분해 표기(실측·합성 0). '해결'은 판정(처리)로 정직 라벨
+      //   (요청 close 전이 시각 SSOT 부재 — burndown-design §2.2). 0인 유형은 줄 생략(거짓 채움 0).
+      const tb = (db.typed && db.typed[bk]) || null;
+      let breakRows = "";
+      if (tb) {
+        if (tb.request) breakRows += `<div class="tl-tip-row"><i class="tl-tip-sw-req"></i><span>요청 발생</span><b>${tb.request}건</b></div>`;
+        if (tb.verdict) breakRows += `<div class="tl-tip-row"><i class="tl-tip-sw-vrd"></i><span>판정 처리</span><b>${tb.verdict}건</b></div>`;
+        if (tb.round) breakRows += `<div class="tl-tip-row"><i class="tl-tip-sw-rnd"></i><span>라운드</span><b>${tb.round}건</b></div>`;
+      }
       tip.innerHTML =
         `<div class="tl-tip-time">${tlFmt(bk)}~ ${db.barStepH}시간</div>`
         + `<div class="tl-tip-row tl-tip-main"><i class="tl-tip-sw-bar"></i><span>이 구간 활동</span><b>${bc}건</b></div>`
+        + breakRows
         + (cumV != null ? `<div class="tl-tip-row"><i class="tl-tip-sw-cum"></i><span>그때까지 누적</span><b>${cumV}건</b></div>` : "");
       tip.hidden = false;
       const wrap = host.querySelector(".tl-wrap-bars");
@@ -1892,10 +2014,12 @@
         const openN = items.filter((r) => isOpenState(r.state)).length;
         const blockedN = items.filter((r) => r.blocked === true).length;
         const cards = items.map((r) => convReqCard(r, rounds)).join("");
-        // repo 그룹 헤더 — repo 라벨(텍스트 1회) + 건수/열림/교착(있을 때).
+        // repo 그룹 헤더 — repo 라벨(텍스트 1회) + 건수/열림/막힘(있을 때).
         // P1-3: 시각 배지(repo-tag)와 텍스트 라벨이 같은 repo명을 2회 출력 → 'HOMEHOME' 중복.
         //       텍스트 라벨 1회만 유지(스크린리더 중복도 해소). 색상 위계는 .conv-repo-head 자체로.
-        const blockedMeta = blockedN ? ` · <span style="color:var(--ru);font-weight:600">교착 ${blockedN}</span>` : "";
+        // RND-ADMIN-010 P1-1(조니 2심 채택): "교착"=blockedN(r.blocked===true union)인데 같은 union을
+        //   요약 헤더는 "막힘(보류 포함)"으로 부름 → 3번째 동의어 제거. 단어 통일 + 동치 툴팁 부여.
+        const blockedMeta = blockedN ? ` · <span style="color:var(--ru);font-weight:600" title="막힘(보류 포함) — blocked union(보류·결정대기 포함). 결단보드 '처리 필요'는 그중 진짜 장애물 subset">막힘(보류 포함) ${blockedN}</span>` : "";
         return `<div class="conv-repo-group">
           <div class="conv-repo-head">${escape(repoDisplay(repoLabel(key)))}
             <span class="conv-repo-meta">${items.length}건 · 열림 ${openN}${blockedMeta}</span></div>
@@ -2148,6 +2272,200 @@
     }).join("");
   }
 
+  // ──────────────────────────────────────────────────────────────────────────
+  // ⑥ 루프뷰 (track_graph 파생 — read-only) — DOC-20260616-REQ-001 V2
+  //   요청 1건의 인과 체인: 요청 노드 → 회차순 라운드 노드(node_status별 시각 구분) →
+  //   각 라운드의 판정(verdicts[]). track_graph(백엔드 build_track_graph)가 SSOT —
+  //   프론트는 추측/합성 0. 거짓 충실성(FLR-AGT-002):
+  //     - track_graph 미보유 요청(단발 라운드)은 트랙 목록에서 '단발/루프 없음'으로 정직 안내.
+  //     - link_inferred 가 null/false 인 노드 간엔 인과선을 그리지 않음(연결 불명 점선 마커만).
+  //     - count/score 가 null 이면 '?'(numOrUnknown) — 0 색칠 금지.
+  //     - '활동 중' 가짜 애니메이션·폴백 색칠 없음.
+  // node_status → 라벨/클래스 (백엔드 _track_node_status: converged|open|superseded|milestone).
+  const NODE_STATUS_META = {
+    converged:  { label: "수렴",   cls: "tg-converged" },
+    open:       { label: "열림",   cls: "tg-open" },
+    superseded: { label: "대체됨", cls: "tg-superseded" },
+    milestone:  { label: "경유",   cls: "tg-milestone" },
+  };
+  function nodeStatusMeta(s) {
+    return NODE_STATUS_META[s] || { label: "미상", cls: "tg-unknown" };
+  }
+  // 현재 선택된 트랙 req_id (폴링 재렌더 시 선택 유지). null = 첫 트랙 자동 선택.
+  let convLoopSelected = null;
+
+  // 트랙 1개 → 세로 인과 체인 HTML.
+  function renderTrackChain(track) {
+    if (!track) {
+      return `<p class="hint">표시할 트랙이 없습니다.</p>`;
+    }
+    const reqStateM = stateMeta(track.req_state);
+    // 뿌리 요청 노드.
+    const head = `
+      <div class="tg-chain-head">
+        <div class="tg-req-node">
+          <span class="tg-req-tag">요청</span>
+          <span class="badge ${escape(reqStateM.cls)}" title="요청 상태">${escape(reqStateM.label)}</span>
+          <code class="tg-req-id">${safe(track.req_id || "(미상)")}</code>
+          <span class="tg-req-repo">${escape(repoDisplay(track.repo))}</span>
+        </div>
+        <div class="tg-req-summary">${mdSafe(track.summary || "(요약 없음)")}</div>
+        <div class="tg-req-meta">
+          <span title="이 요청에 묶인 라운드 수">라운드 ${escape(track.round_count)}회</span>
+          <span class="tg-sep">·</span>
+          <span class="${track.open_rounds ? "tg-meta-open" : ""}" title="아직 열린(미수렴·진행중) 라운드">열림 ${escape(track.open_rounds)}</span>
+          <span class="tg-sep">·</span>
+          <span class="${track.converged ? "tg-meta-converged" : "tg-meta-notconverged"}" title="최신 라운드가 수렴이고 열린 라운드 0">${track.converged ? "수렴 완료" : "미수렴"}</span>
+          ${track.owner ? `<span class="tg-sep">·</span><span title="담당">${safe(track.owner)}</span>` : ""}
+        </div>
+        ${track.close_evidence ? `<div class="tg-req-evidence" title="종결 근거">근거: ${mdSafe(track.close_evidence)}</div>` : ""}
+      </div>`;
+
+    // 라운드 노드들 (회차순).
+    const nodes = (track.nodes || []).map((n, i) => {
+      const sm = nodeStatusMeta(n.node_status);
+      // 직전 노드와의 연결선: link_inferred === true 일 때만 실선 인과(↓). false/null 은 점선
+      //   '연결 불명'(거짓 인과선 0·FLR-AGT-002). 첫 노드(i===0)는 연결선 없음(요청에서 내려옴).
+      let connector = "";
+      if (i > 0) {
+        if (n.link_inferred === true) {
+          connector = `<div class="tg-connector tg-conn-causal" title="이전 회차 미수렴 → 다음 회차 (인과 연결 실측)" aria-label="이전 회차에서 이어짐">↓</div>`;
+        } else {
+          connector = `<div class="tg-connector tg-conn-unknown" title="회차 점프 또는 직전 수렴 후 추가 — 인과 연결 불명(추정 안 함)" aria-label="연결 불명">⋮</div>`;
+        }
+      }
+      // 판정 목록 (verdicts[]).
+      const verdicts = (n.verdicts || []).map((v) => {
+        const qs = v.quality_score == null
+          ? "" : `<span class="tg-v-q" title="품질점수(4축 평균·0~10)">품질 ${escape(v.quality_score)}</span>`;
+        const p0 = `<span class="tg-v-defect" title="P0 결함 수">P0 ${numOrUnknown(v.p0_count)}</span>`;
+        const p1 = `<span class="tg-v-defect" title="신규 P1 결함 수">신규P1 ${numOrUnknown(v.new_p1_count)}</span>`;
+        return `
+          <div class="tg-verdict">
+            <div class="tg-v-top">
+              <span class="badge ${verdictClass(v.verdict)}">${escape(verdictLabel(v.verdict))}</span>
+              <span class="tg-v-panel">${mdSafe(v.panel || "(패널 미상)")}</span>
+            </div>
+            <div class="tg-v-metrics">${qs}${p0}${p1}</div>
+            ${v.headline ? `<div class="tg-v-headline">${mdSafe(v.headline)}</div>` : ""}
+          </div>`;
+      }).join("");
+      const verdictsBlock = verdicts
+        ? `<div class="tg-verdicts">${verdicts}</div>`
+        : `<div class="tg-verdicts tg-verdicts-empty"><p class="hint">이 라운드에 기록된 판정이 없습니다.</p></div>`;
+
+      return `
+        ${connector}
+        <div class="tg-node ${escape(sm.cls)}">
+          <div class="tg-node-head">
+            <span class="tg-node-status">${escape(sm.label)}</span>
+            <code class="tg-node-id">${escape(n.round_id || "")}</code>
+            ${n.alias ? `<span class="tg-node-alias">${safe(n.alias)}</span>` : ""}
+            ${n.tier ? `<span class="tg-node-tier" title="심급/패널 tier">${mdSafe(n.tier)}</span>` : ""}
+            ${n.ts ? `<span class="tg-node-ts" title="라운드 시각">${escape(n.ts)}</span>` : ""}
+          </div>
+          ${n.state_raw && stateMeta(n.state).label !== n.state_raw
+            ? `<div class="tg-node-stateraw" title="원본 state 표기">${mdSafe(n.state_raw)}</div>` : ""}
+          ${verdictsBlock}
+        </div>`;
+    }).join("");
+
+    const nodesBlock = nodes
+      ? `<div class="tg-chain-nodes">${nodes}</div>`
+      : `<div class="tg-chain-nodes"><p class="hint">이 트랙에 라운드 노드가 없습니다.</p></div>`;
+
+    return `<div class="tg-chain">${head}${nodesBlock}</div>`;
+  }
+
+  // 루프뷰 전체 — 트랙 목록(선택) + 선택 트랙 체인 + 단발 요청 정직 안내.
+  function renderConvLoopView(conv) {
+    const host = el("conv-loopview");
+    if (!host) return;
+    const tracks = conv.track_graph || [];
+    const reqs = conv.requests || [];
+    // 단발(루프 없음) = track_graph 미포함 요청 수. 거짓 충실성: 빈 화면 금지·정직 카운트.
+    const singleN = Math.max(0, reqs.length - tracks.length);
+
+    if (!tracks.length) {
+      host.innerHTML = `
+        <div class="tg-empty">
+          <p class="hint">표시할 루프(2회 이상 라운드를 거친 요청)가 없습니다.</p>
+          ${singleN ? `<p class="hint">요청 ${singleN}건은 단발 라운드(루프 없음)입니다. 회차가 누적되면 여기에 인과 체인으로 나타납니다.</p>` : ""}
+        </div>`;
+      return;
+    }
+
+    // 선택 트랙 결정 — 보관된 선택 유지, 없으면 첫 트랙(정렬상 가장 열린/미종결).
+    let sel = tracks.find((t) => t.req_id === convLoopSelected);
+    if (!sel) { sel = tracks[0]; convLoopSelected = sel.req_id; }
+
+    // 트랙 목록 칩 — repo·요약 앞부분·회차·열림·수렴 상태.
+    const list = tracks.map((t) => {
+      const active = t.req_id === sel.req_id ? " active" : "";
+      const statusCls = t.converged ? "tg-li-converged" : (t.open_rounds ? "tg-li-open" : "tg-li-milestone");
+      const statusTxt = t.converged ? "수렴" : (t.open_rounds ? `열림 ${t.open_rounds}` : "진행");
+      return `
+        <button class="tg-li${active} ${statusCls}" type="button" role="tab"
+                aria-selected="${t.req_id === sel.req_id}" data-reqid="${escape(t.req_id || "")}">
+          <span class="tg-li-repo">${escape(repoDisplay(t.repo))}</span>
+          <span class="tg-li-status">${escape(statusTxt)}</span>
+          <span class="tg-li-summary">${safe(t.summary || t.req_id || "(요약 없음)")}</span>
+          <span class="tg-li-rounds" title="라운드 회차 수">${escape(t.round_count)}회</span>
+        </button>`;
+    }).join("");
+
+    host.innerHTML = `
+      <div class="tg-layout">
+        <aside class="tg-list" role="tablist" aria-label="요청 트랙 목록">
+          <div class="tg-list-head">루프 트랙 <span class="tg-list-count">${tracks.length}건</span></div>
+          ${list}
+          ${singleN ? `<div class="tg-single-note" title="2회 미만 라운드라 인과 체인이 없는 요청">단발 라운드 ${singleN}건은 루프가 없어 목록에서 제외됩니다(전체추이 탭의 '요청별 진행 상태'에서 확인).</div>` : ""}
+        </aside>
+        <div class="tg-detail" id="conv-loop-detail" aria-live="polite">
+          ${renderTrackChain(sel)}
+        </div>
+      </div>`;
+
+    // 트랙 선택 핸들러 — 클릭 시 보관 선택 갱신 + 상세만 재렌더(목록 active 토글).
+    host.querySelectorAll(".tg-li").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const rid = btn.dataset.reqid;
+        convLoopSelected = rid;
+        const t = tracks.find((x) => x.req_id === rid);
+        const detail = el("conv-loop-detail");
+        if (detail) detail.innerHTML = renderTrackChain(t);
+        host.querySelectorAll(".tg-li").forEach((b) => {
+          const on = b.dataset.reqid === rid;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-selected", String(on));
+        });
+      });
+    });
+  }
+
+  // 서브 토글 (전체추이 ↔ 루프뷰) — 한 번만 바인딩(setup), show/hide 만 전환.
+  let convSubToggleBound = false;
+  function setupConvSubToggle() {
+    if (convSubToggleBound) return;
+    convSubToggleBound = true;
+    const btnOverview = el("conv-view-overview");
+    const btnLoop = el("conv-view-loop");
+    const paneOverview = el("conv-overview");
+    const paneLoop = el("conv-loopview");
+    if (!btnOverview || !btnLoop || !paneOverview || !paneLoop) return;
+    function show(view) {
+      const isLoop = view === "loop";
+      paneOverview.hidden = isLoop;
+      paneLoop.hidden = !isLoop;
+      btnOverview.classList.toggle("active", !isLoop);
+      btnLoop.classList.toggle("active", isLoop);
+      btnOverview.setAttribute("aria-selected", String(!isLoop));
+      btnLoop.setAttribute("aria-selected", String(isLoop));
+    }
+    btnOverview.addEventListener("click", () => show("overview"));
+    btnLoop.addEventListener("click", () => show("loop"));
+  }
+
   // sql.js 인-브라우저 SQLite — 사용자가 명시적으로 클릭할 때만 lazy 로드(WASM ~1.5MB).
   // 매 admin 진입 시 WASM 강제 로드는 과설계 → on-demand. 기본 렌더는 convergence.json.
   let sqlDbPromise = null;
@@ -2199,6 +2517,9 @@
     });
   }
 
+  // 마지막 렌더된 convergence.json 의 generated_at — 폴링 시 변경 감지(불필요 재렌더 회피).
+  let convLastGeneratedAt = null;
+
   async function renderConvergence() {
     let conv;
     try {
@@ -2210,6 +2531,7 @@
         `<p class="hint">convergence.json 로드 실패: ${escape(e.message)}. 'python3 scripts/admin/build_convergence.py' 로 생성하세요.</p>`;
       return;
     }
+    convLastGeneratedAt = conv.generated_at || "";
     // REQ-006: convergence.json 빌드 시각을 state 보관 → 수렴 탭 활성 시 헤더에 반영.
     //   탭별 freshness(updateHeaderFreshness)가 단일 출처로 헤더를 그림(직접 setText 제거).
     state.convGeneratedAt = conv.generated_at || "";
@@ -2228,7 +2550,49 @@
     renderConvIntegrity(conv);
     renderConvRounds(conv);
     renderConvVerdicts(conv);
+    renderConvLoopView(conv);      // ⑥ 루프뷰(track_graph 인과 체인) — DOC-20260616-REQ-001 V2
+    setupConvSubToggle();          // 전체추이 ↔ 루프뷰 토글(1회 바인딩)
     setupConvSql();
+    return conv;
+  }
+
+  // ⑥ 폴링 — convergence.json 을 주기적으로 재fetch, generated_at 변경 시에만 재렌더
+  //   (파이프라인/판정이 새 데이터를 쓰면 보고 있던 루프뷰·전체추이가 자동 갱신).
+  //   거짓 충실성(FLR-AGT-002): 동일 빌드면 재렌더 안 함(가짜 '활동 중' 깜빡임 0).
+  //   탭/문서가 숨김(background)이면 skip(불필요 fetch 절약), 보일 때 1회 즉시 동기화.
+  const CONV_POLL_MS = 45000; // 30~60초 범위 — 어드민 내부 도구, 과도 폴링 불요.
+  async function pollConvergence() {
+    if (document.hidden) return;
+    try {
+      const res = await fetch("./convergence.json", { cache: "no-store" });
+      if (!res.ok) return;
+      const conv = await res.json();
+      const gen = conv.generated_at || "";
+      if (gen && gen === convLastGeneratedAt) return; // 변경 없음 → 재렌더 skip
+      convLastGeneratedAt = gen;
+      state.convGeneratedAt = gen;
+      const activeTab = document.querySelector(".tab.active");
+      if (!activeTab || activeTab.dataset.tab === CONV_TAB) updateHeaderFreshness(CONV_TAB);
+      renderConvDecisionBoard(conv);
+      renderConvFreshness(conv);
+      renderConvBurndown(conv);
+      renderConvTimeline(conv);
+      renderConvRepoSummary(conv);
+      renderConvTransitions(conv);
+      renderConvGlance(conv);
+      renderConvTrend(conv);
+      renderConvActive(conv);
+      renderConvRequests(conv);
+      renderConvIntegrity(conv);
+      renderConvRounds(conv);
+      renderConvVerdicts(conv);
+      renderConvLoopView(conv);   // 보고 있던 트랙(convLoopSelected) 유지하며 갱신
+    } catch (_e) { /* 폴링 실패는 조용히 무시 — 다음 주기 재시도 */ }
+  }
+  function startConvPolling() {
+    setInterval(pollConvergence, CONV_POLL_MS);
+    // 탭이 다시 보일 때 즉시 1회 동기화(background 동안 놓친 갱신 반영).
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) pollConvergence(); });
   }
 
   async function load() {
@@ -2255,6 +2619,7 @@
     renderPeople();
     renderAudit();
     renderConvergence();
+    startConvPolling();   // ⑥ 45초 폴링 — convergence.json 변경 시 자동 갱신(DOC-20260616-REQ-001 V2)
   }
 
   document.addEventListener("DOMContentLoaded", load);

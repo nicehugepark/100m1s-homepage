@@ -184,6 +184,17 @@ a:hover { text-decoration: underline; }
   background: var(--am); border-radius: 2px 2px 0 0;
   box-shadow: 0 0 8px var(--am2);
 }
+/* RND-ADMIN-008 P0-B — 미연결(준비 중) 탭: data.json 빈 스텁이면 7탭이 dead-end → 비활성 표기.
+   클릭 차단(JS) + 시각적으로 '아직 아님' 명시(흐림 + '준비 중' 배지). 거짓 풍요 제거. */
+.tab.tab-soon {
+  color: var(--dm); cursor: not-allowed; opacity: .55;
+}
+.tab.tab-soon:hover { color: var(--dm); }
+.tab-soon-badge {
+  display: inline-block; margin-left: 5px; padding: 1px 5px;
+  font-family: var(--display); font-size: 9.5px; font-weight: 600; letter-spacing: .2px;
+  color: var(--tx2); background: var(--bd); border-radius: 4px; vertical-align: middle;
+}
 
 main { padding: 20px 22px 40px; max-width: 1440px; margin: 0 auto; }
 .panel { display: none; }
@@ -412,13 +423,18 @@ footer {
 .db-stat .db-k {
   font-family: var(--display); font-size: 13px; font-weight: 700;
   color: var(--tx); margin-top: 6px;
+  /* RND-ADMIN-009 P1-③(design): "수렴까지 남은 서비스"가 모바일 좁은 타일(390/3≈110px)에서
+     2행 줄바꿈 시 '서/비스' 중간글자 분절. keep-all = 한국어는 어절(공백) 경계서만 줄바꿈. */
+  word-break: keep-all; overflow-wrap: break-word;
 }
 .db-stat .db-sub { font-size: 11px; color: var(--dm); margin-top: 2px; line-height: 1.4; }
 
 /* 막힘/대기 항목 리스트 (최대 5줄) */
 .db-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--bd); }
 .db-row {
-  display: grid; grid-template-columns: auto auto 1fr auto;
+  /* RND-ADMIN-010 P1-2(조니 2심 채택): 1열을 auto(태그 폭 따라감)에서 64px 고정 트랙으로.
+     태그("처리 필요"/"결정 대기") 폭 차이로 repo 코드(2열) 좌측이 20.8px 톱니치던 것 → 단일 기준점. */
+  display: grid; grid-template-columns: 64px auto 1fr auto;
   align-items: center; gap: 10px;
   padding: 9px 2px; border-bottom: 1px solid var(--bd);
   font-size: 13px;
@@ -427,6 +443,7 @@ footer {
 .db-tag {
   font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
   font-family: var(--display); white-space: nowrap;
+  text-align: center;            /* 고정폭 트랙 안에서 라벨 가운데 정렬 */
 }
 .db-tag-blocked { color: var(--ru); background: var(--neg-bg); border: 1px solid var(--neg-bd); }
 .db-tag-wait    { color: var(--am); background: var(--am4); border: 1px solid var(--am2); }
@@ -575,6 +592,9 @@ footer {
 .conv-fold > #conv-timeline { padding: 4px 12px 12px; }
 /* [2단계] 상태 추이(전이 타임라인)도 details 접기로 이동 — 같은 fold 스킨. 내부 패딩만 분리. */
 .conv-fold > #conv-transitions { padding: 10px 14px 14px; border: 0; box-shadow: none; background: transparent; margin: 0; }
+/* 대표 catch(전체추이): repo 1행 요약 표도 fold 안으로 — 카드 chrome 제거(중첩 테두리 방지),
+   fold 스킨만(전이 타임라인과 동형). 표 내부 레이아웃(.rs-table/.rs-row)은 불변. */
+.conv-fold > #conv-repo-summary { border: 0; box-shadow: none; background: transparent; margin: 0; padding: 8px 14px 14px; }
 
 /* ════════ ① 한눈에 (at-a-glance) — 계측 다이얼 ════════ */
 .conv-glance {
@@ -862,6 +882,8 @@ footer {
   font-family: var(--mono); font-size: 10.5px; font-weight: 600;
   color: var(--dm); text-transform: uppercase; letter-spacing: .3px;
 }
+/* RND-ADMIN-009 P1-②(a): '막힘' 헤더 부기 '(보류 포함)' — 결단보드 '처리 필요'와 변별. */
+.rs-head-row .rs-col-note { display: block; font-size: 8.5px; font-weight: 500; opacity: .72; text-transform: none; letter-spacing: 0; }
 .rs-repo { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--tx); min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rs-num { font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; text-align: right; }
@@ -1411,6 +1433,10 @@ footer {
 .tl-tip-main span, .tl-tip-main b { opacity: 1; }
 .tl-tip-sw-bar { background: var(--am); }
 .tl-tip-sw-cum { background: var(--neu); }
+/* 유형 분해 스와치 — TL_TYPE 정합(요청=루비·판정=녹·라운드=황동). 색+텍스트 라벨 병기(다크모드 제1원칙). */
+.tl-tip-sw-req { background: var(--ru); }
+.tl-tip-sw-vrd { background: var(--pos); }
+.tl-tip-sw-rnd { background: var(--am2); }
 
 /* 전체보기 버튼 (A 카드 head 우상단) */
 .tl-reset {
@@ -1524,8 +1550,16 @@ footer {
   .topbar { padding: 11px 14px; flex-direction: column; align-items: flex-start; gap: 7px; }
   .topbar::after { display: none; }
   .topbar h1 { font-size: 15px; }
-  .tabs { padding: 0 6px; }
-  .tab { padding: 9px 11px; font-size: 12px; }
+  /* RND-ADMIN-008 P1-iii (모바일 정밀도): ① 터치타깃 ≥44px (직전 ~33px<44 미달) ②
+     마지막 탭(audit) at-rest 클립 해소 — 끝까지 스크롤 시 완전 노출되도록 트레일링 여백 +
+     scroll-padding (가로 스크롤 시 audit 잘림 0). 페이드 마스크(28px)와 별개 물리 여백. */
+  .tabs { padding: 0 6px; scroll-padding-right: 16px; }
+  .tab {
+    padding: 11px 11px; font-size: 12px;
+    min-height: 44px; display: inline-flex; align-items: center;
+  }
+  /* 마지막 탭 뒤 가상 여백 — 가로 스크롤 끝에서 audit 우측이 페이드/모서리에 안 잘리게. */
+  .tabs::after { content: ""; flex: 0 0 8px; }
   main { padding: 14px; }
   .toolbar input[type=search] { min-width: 0; width: 100%; }
   .grid { min-width: 0; font-size: 12px; }
@@ -1584,7 +1618,8 @@ footer {
   .db-stat .db-sub { display: none; }                 /* 모바일은 큰 숫자+라벨만(서브카피 생략) */
   /* 리스트 행: 모바일은 2줄(태그+repo+제목 / 이유) — 가로 4열은 좁아 깨짐. */
   .db-row {
-    grid-template-columns: auto auto 1fr; gap: 7px 8px;
+    /* RND-ADMIN-010 P1-2: 모바일도 1열 고정폭(데스크톱과 동일 root) — repo 좌측 단일 기준점. */
+    grid-template-columns: 64px auto 1fr; gap: 7px 8px;
     padding: 8px 1px;
   }
   .db-row-reason {
@@ -1651,3 +1686,167 @@ footer {
 }
 .vd-imp-item.vd-done .vd-state { color: var(--pos); background: var(--pos-bg); }
 .vd-imp-item.vd-open .vd-state { color: var(--neg); background: var(--neg-bg); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   ⑥ 루프뷰 (track_graph 인과 체인) — DOC-20260616-REQ-001 V2
+   요청→라운드 노드(node_status별 색)→판정. 색은 전부 CSS 변수(--pos/--neg/--neu/--am
+   + -bg/-bd) 기반 → prefers-color-scheme:dark 블록이 변수만 재정의하므로 다크 자동 대응
+   (별도 다크 오버라이드 불요·정보 손실 0·다크모드 제1원칙). 모바일 560px 세로 전환.
+   ──────────────────────────────────────────────────────────────────────── */
+
+/* 서브 토글 (전체추이 ↔ 루프뷰) */
+.conv-subtoggle {
+  display: inline-flex; gap: 0; margin: 0 0 16px; padding: 3px;
+  background: var(--sf2, var(--bg)); border: 1px solid var(--bd); border-radius: var(--radius);
+}
+.conv-subtoggle-btn {
+  font-family: var(--display); font-size: 13px; font-weight: 600; color: var(--dm);
+  padding: 6px 16px; min-height: 32px; border: none; background: transparent;
+  border-radius: var(--radius-sm); cursor: pointer; transition: color .14s, background .14s;
+}
+.conv-subtoggle-btn:hover { color: var(--tx); }
+.conv-subtoggle-btn.active { color: var(--tx); background: var(--sf); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+
+/* 루프뷰 레이아웃 — 좌 트랙 목록 + 우 상세 체인 */
+.conv-loopview { margin-top: 4px; }
+.tg-layout { display: grid; grid-template-columns: 300px 1fr; gap: 18px; align-items: start; }
+
+/* 트랙 목록 (좌측) */
+.tg-list {
+  display: flex; flex-direction: column; gap: 6px;
+  position: sticky; top: 12px; max-height: calc(100vh - 40px); overflow-y: auto;
+  padding-right: 4px;
+}
+.tg-list-head {
+  font-family: var(--display); font-size: 12px; font-weight: 700; color: var(--dm);
+  text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px;
+}
+.tg-list-count { color: var(--am); font-weight: 700; }
+.tg-li {
+  display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;
+  gap: 2px 8px; text-align: left; width: 100%;
+  padding: 9px 11px; border: 1px solid var(--bd); border-left: 3px solid var(--neu-bd);
+  border-radius: var(--radius-sm); background: var(--sf); cursor: pointer;
+  transition: border-color .14s, background .14s; color: var(--tx);
+}
+.tg-li:hover { background: var(--bg); border-left-color: var(--am2); }
+.tg-li.active { border-color: var(--am2); border-left-color: var(--am); background: var(--bg); }
+.tg-li-converged { border-left-color: var(--pos-bd); }
+.tg-li-open { border-left-color: var(--neg-bd); }
+.tg-li-milestone { border-left-color: var(--neu-bd); }
+.tg-li-repo { font-family: var(--display); font-size: 11px; font-weight: 700; color: var(--am); }
+.tg-li-status {
+  justify-self: end; font-family: var(--mono); font-size: 10px; font-weight: 700;
+  color: var(--dm); white-space: nowrap;
+}
+.tg-li-converged .tg-li-status { color: var(--pos); }
+.tg-li-open .tg-li-status { color: var(--neg); }
+.tg-li-summary {
+  grid-column: 1 / -1; font-size: 12px; line-height: 1.4; color: var(--tx);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.tg-li-rounds {
+  grid-column: 1 / -1; justify-self: start; font-family: var(--mono);
+  font-size: 10px; color: var(--dm);
+}
+.tg-single-note {
+  margin-top: 8px; padding: 8px 10px; font-size: 11px; line-height: 1.5; color: var(--dm);
+  background: var(--bg); border: 1px dashed var(--bd); border-radius: var(--radius-sm);
+}
+
+/* 상세 체인 (우측) */
+.tg-detail { min-width: 0; }
+.tg-chain { display: flex; flex-direction: column; }
+
+/* 요청 노드(루트) */
+.tg-chain-head {
+  border: 1px solid var(--bd); border-radius: var(--radius); background: var(--sf);
+  padding: 14px 16px; position: relative;
+}
+.tg-req-node { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; }
+.tg-req-tag {
+  font-family: var(--display); font-size: 10px; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--bg); background: var(--am);
+  padding: 2px 8px; border-radius: 4px;
+}
+.tg-req-id { font-family: var(--mono); font-size: 12px; color: var(--tx); }
+.tg-req-repo { font-family: var(--display); font-size: 12px; font-weight: 700; color: var(--am); }
+.tg-req-summary { font-size: 14px; line-height: 1.55; color: var(--tx); margin: 4px 0 8px; }
+.tg-req-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  font-family: var(--mono); font-size: 11px; color: var(--dm);
+}
+.tg-req-meta .tg-sep { color: var(--bd); }
+.tg-meta-open { color: var(--neg); font-weight: 700; }
+.tg-meta-converged { color: var(--pos); font-weight: 700; }
+.tg-meta-notconverged { color: var(--neu); font-weight: 700; }
+.tg-req-evidence {
+  margin-top: 8px; padding-top: 8px; border-top: 1px dotted var(--bd);
+  font-size: 12px; line-height: 1.5; color: var(--tx2);
+}
+
+/* 라운드 노드 체인 */
+.tg-chain-nodes { display: flex; flex-direction: column; padding-left: 18px; }
+
+/* 연결선 — 인과(실선↓) vs 불명(점선⋮). 거짓 인과선 0(FLR-AGT-002). */
+.tg-connector {
+  align-self: flex-start; margin-left: 12px; height: 22px; width: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; line-height: 1;
+}
+.tg-conn-causal { color: var(--am); }
+.tg-conn-unknown { color: var(--dm); opacity: .6; }
+
+.tg-node {
+  border: 1px solid var(--bd); border-left: 3px solid var(--neu-bd);
+  border-radius: var(--radius-sm); background: var(--sf); padding: 11px 13px;
+}
+.tg-node.tg-converged { border-left-color: var(--pos-bd); }
+.tg-node.tg-open { border-left-color: var(--neg-bd); }
+.tg-node.tg-superseded { border-left-color: var(--neu-bd); opacity: .82; }
+.tg-node.tg-milestone { border-left-color: var(--am2); }
+.tg-node.tg-unknown { border-left-color: var(--bd); }
+.tg-node-head { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.tg-node-status {
+  font-family: var(--display); font-size: 10px; font-weight: 700; letter-spacing: .4px;
+  padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+  color: var(--neu); background: var(--neu-bg); border: 1px solid var(--neu-bd);
+}
+.tg-converged .tg-node-status { color: var(--pos); background: var(--pos-bg); border-color: var(--pos-bd); }
+.tg-open .tg-node-status { color: var(--neg); background: var(--neg-bg); border-color: var(--neg-bd); }
+.tg-milestone .tg-node-status { color: var(--am); background: var(--am3); border-color: var(--am2); }
+.tg-node-id { font-family: var(--mono); font-size: 11px; color: var(--tx); }
+.tg-node-alias { font-size: 11px; color: var(--dm); }
+.tg-node-tier {
+  font-family: var(--mono); font-size: 10px; color: var(--dm);
+  padding: 1px 6px; background: var(--bg); border-radius: 3px;
+}
+.tg-node-ts { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--dm); }
+.tg-node-stateraw { font-size: 11px; color: var(--dm); margin-top: 3px; }
+
+/* 판정 (verdicts[]) */
+.tg-verdicts { display: flex; flex-direction: column; gap: 6px; margin-top: 9px; }
+.tg-verdicts-empty { margin-top: 6px; }
+.tg-verdicts-empty .hint { margin: 0; font-size: 11px; }
+.tg-verdict {
+  border: 1px solid var(--bd); border-radius: var(--radius-sm);
+  background: var(--bg); padding: 7px 10px;
+}
+.tg-v-top { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.tg-v-panel { font-size: 12px; font-weight: 600; color: var(--tx); }
+.tg-v-metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.tg-v-q { font-family: var(--mono); font-size: 10.5px; color: var(--pos); font-weight: 700; }
+.tg-v-defect { font-family: var(--mono); font-size: 10.5px; color: var(--dm); }
+.tg-v-headline { font-size: 12px; line-height: 1.5; color: var(--tx2); margin-top: 4px; }
+
+.tg-empty { padding: 24px 0; }
+
+/* 모바일 — 좌우 그리드 → 세로 적층, 목록 sticky 해제 */
+@media (max-width: 560px) {
+  .tg-layout { grid-template-columns: 1fr; gap: 14px; }
+  .tg-list { position: static; max-height: none; overflow: visible; padding-right: 0; }
+  .tg-chain-nodes { padding-left: 8px; }
+  .tg-node-ts { margin-left: 0; width: 100%; }
+  .conv-subtoggle { display: flex; width: 100%; }
+  .conv-subtoggle-btn { flex: 1; }
+}

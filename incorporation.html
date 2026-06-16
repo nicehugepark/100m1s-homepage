@@ -133,7 +133,7 @@ header {
 }
 .nav-dropdown .dd-tag.beta { background: transparent; border: 1px solid var(--am3); }
 .nav-dropdown .dd-tag.soon { color: var(--dm); background: var(--bg2); }
-/* 비활성 항목(투자 팁 예정)은 클릭 불가 → 커서도 정직하게 default (FLR-AGT-002 동형 P2) */
+/* 비활성 항목(투자 팁 예정)은 클릭 불가 → 커서도 정직하게 default */
 .nav-dropdown a[aria-disabled="true"] { cursor: default; opacity: 0.62; }
 .nav-dropdown a[aria-disabled="true"]:hover { background: none; color: var(--tx); }
 /* PM320 하위(오늘의 추천·백테스트) = 형제 아님, 한 단 들여써 위계 정직화(#1 IA 안1) */
@@ -888,22 +888,28 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
         온라인 신청 자체는 <strong>30분 이내</strong>, 발급까지 <strong>2~3 영업일</strong>. 등록면허세·수수료 <strong>0원</strong>(개인사업자 등록은 무료) — 자본금·설립등기가 필요한 법인과 본질적으로 다릅니다.
       </div>
 
-      <h3>1-2. 업종코드 후보 (파트너·콘텐츠 운영 기준)</h3>
+      <h3>1-2. 업종코드 후보 (주업종 + 부업종 운영 기준)</h3>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>업태</th><th>종목 (예시)</th><th>업종코드 (예시)</th><th>적용 사업</th></tr>
+            <tr><th>구분</th><th>업종 (활동)</th><th>업종코드 (예시)</th><th>과세</th><th>비고</th></tr>
           </thead>
           <tbody>
-            <tr><td>정보통신업</td><td>포털·기타 인터넷 정보매개 서비스업</td><td class="num">642004</td><td>파트너 사이트·데이터 포털</td></tr>
-            <tr><td>광고업</td><td>온라인·모바일 광고 대행</td><td class="num">743002</td><td>파트너 수수료(광고 매개)</td></tr>
-            <tr><td>서비스업</td><td>데이터 처리·호스팅</td><td class="num">749609</td><td>데이터 포털 운영</td></tr>
+            <tr><td><strong>주업종</strong></td><td>소프트웨어 개발·공급</td><td class="num">642100</td><td>과세</td><td>대표 본업</td></tr>
+            <tr><td>부업종</td><td>정보매개(포털·디지털콘텐츠)</td><td class="num">642004</td><td>과세</td><td>어필리에이트 — byvias·PM320</td></tr>
+            <tr><td>부업종</td><td>광고 대행(온라인·모바일)</td><td class="num">743002</td><td>과세</td><td>어필리에이트 광고 매개 — <span class="warn">642004 vs 743002 귀속 세무사 확정</span></td></tr>
+            <tr><td>부업종</td><td>유튜브(인터넷 영상 콘텐츠 제작)</td><td class="num">940306</td><td><span class="ok">면세</span></td><td>면세사업자 매출 — 과세분과 분리 신고</td></tr>
+            <tr><td>부업종</td><td>전자상거래 소매</td><td class="num">525101</td><td>과세</td><td>+ <span class="warn">통신판매업 신고</span>(별건 의무, 섹션 3)</td></tr>
+            <tr><td>부업종</td><td>강연(인적용역)</td><td class="num">940903</td><td>과세</td><td>일시·소액은 기타소득 가능(등록 불요)</td></tr>
+            <tr><td>부업종</td><td>집필·저술(인적용역)</td><td class="num">940100</td><td>과세</td><td>일시·소액은 기타소득 가능(등록 불요)</td></tr>
+            <tr><td>부업종</td><td>부동산 임대</td><td class="num">701201</td><td>과세</td><td>임대소득 발생 시</td></tr>
+            <tr><td>부업종</td><td>부동산 매매업</td><td class="num">703011</td><td>과세</td><td><span class="warn">비교과세·사업성 판정 세무사 확정</span></td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout warn">
-        <span class="callout-title">검증 보류 항목</span>
-        업종코드는 <strong>후보</strong>입니다. 파트너 수수료의 정확한 업종 귀속(정보매개 vs 광고대행)은 <strong>세무사 1회 확인 후 확정</strong>합니다(추정 신고 금지). 통신판매업 신고 의무는 별건으로 섹션 3에서 다룹니다.
+        <span class="callout-title">검증 보류 항목 (세무사 확정 대상)</span>
+        업종코드는 모두 <strong>6자리 후보</strong>이며 실매출 활동만 등록합니다(추정 신고 금지). <strong>① 어필리에이트 귀속</strong>(정보매개 642004 vs 광고대행 743002) <strong>② 전자상거래 통신판매업 신고</strong>(별건 의무, 섹션 3) <strong>③ 부동산 매매업 사업성·비교과세</strong> <strong>④ 간이/일반 과세유형</strong>은 <strong>세무사 1회 확인 후 확정</strong>합니다. 유사투자자문(66192)은 현재 무료 운영으로 해당 업종 미영위 — 등록하지 않습니다.
       </div>
 
       <h3>1-3. 현황 체크리스트 (추적)</h3>
@@ -986,8 +992,8 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
           </thead>
           <tbody>
             <tr><td class="num">M1</td><td>파트너 링크 코드 인젝션 (위젯·직접 링크)</td><td><span class="badge prog">진행</span></td><td>847 detail 페이지 인젝션 완료</td></tr>
-            <tr><td class="num">M2</td><td><strong>도메인 화이트리스트 등록·승인</strong> (파트너 대시보드)</td><td><span class="badge crit">🔴 미완</span></td><td>DOC-20260611-FLR-002</td></tr>
-            <tr><td class="num">M3</td><td>링크 변환 라이브 실측 3종 (콘솔 무에러·앵커 리라이트·CORS 통과)</td><td><span class="badge wait">대기</span></td><td>FLR 게이트</td></tr>
+            <tr><td class="num">M2</td><td><strong>도메인 화이트리스트 등록·승인</strong> (파트너 대시보드)</td><td><span class="badge crit">🔴 미완</span></td><td>내부 운영 사고 기록</td></tr>
+            <tr><td class="num">M3</td><td>링크 변환 라이브 실측 3종 (콘솔 무에러·앵커 리라이트·CORS 통과)</td><td><span class="badge wait">대기</span></td><td>운영 게이트</td></tr>
             <tr><td class="num">M4</td><td><code>rel="sponsored nofollow"</code> 전 외부 파트너 링크 적용</td><td><span class="badge wait">대기</span></td><td>검색엔진 가이드·전상법</td></tr>
             <tr><td class="num">M5</td><td>제휴 표시(disclosure) 문구 노출 ("제휴 링크 포함")</td><td><span class="badge wait">대기</span></td><td>신뢰·법무</td></tr>
             <tr><td class="num">M6</td><td>도메인 컷오버 시 7곳 등록 도메인 동시 변경</td><td><span class="badge wait">대기</span></td><td>도메인 컷오버 Layer 2</td></tr>
@@ -998,7 +1004,7 @@ footer .copyright { color: var(--dm2); opacity: 0.6; }
 
       <h3>3-2. 핵심 리스크 — 죽은 수익 사일런트 데드</h3>
       <div class="callout warn">
-        <span class="callout-title">DOC-20260611-FLR-002 (FLR-AGT-002 동형)</span>
+        <span class="callout-title">내부 운영 사고 기록 (제휴 링크 변환 차단으로 수익 추적 누락)</span>
         Travelpayouts Drive 위젯이 CORS 차단으로 링크 변환이 <strong>전면 미작동</strong> → 클릭 추적 0건 = 수수료 미발생. 코드는 박혔으나 외부 대시보드 도메인 승인이 누락된 상태였습니다. "콘솔 노이즈 무음화"로 처리했다면 죽은 수익이 영원히 은폐될 뻔했습니다.
       </div>
       <div class="callout tip">

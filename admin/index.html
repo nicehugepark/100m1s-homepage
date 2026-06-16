@@ -13,7 +13,7 @@
     <h1>100M1S admin <span class="phase">Phase 1</span></h1>
     <div class="meta">
       <span id="generated-at" aria-live="polite" title="convergence.json 빌드(데이터 생성) 시각">데이터 생성: -</span>
-      <span class="warn" role="note">외부 노출 X · 인덱싱 차단</span>
+      <span class="warn" role="note" title="URL을 아는 사람만 접근하는 비공개 내부 도구 — 검색엔진 인덱싱은 차단되나 URL 직접 접근은 막지 않음(인증 없음)">URL 비공개 · 검색 미노출 (인증 없음)</span>
     </div>
   </header>
 
@@ -105,11 +105,31 @@
     <section id="tab-convergence" class="panel active" role="tabpanel" aria-labelledby="t-convergence">
       <p class="hint">내 요청이 빠지지 않고 도는지 · 회차가 쌓일수록 품질이 수렴하는지 한눈에. 데이터: convergence.json (read-only 파생물)</p>
 
+      <!-- ⑥ 서브 뷰 토글 (전체추이 ↔ 루프뷰) — DOC-20260616-REQ-001 V2.
+           전체추이 = 종전 대시보드(결단보드·번다운·추이·요청카드). 루프뷰 = 요청 1건의 인과 체인
+           (요청→라운드 노드→각 라운드 판정)을 세로로. 데이터: convergence.json track_graph(파생·read-only).
+           track_graph 미보유 요청(단발 라운드 57건)은 루프뷰 트랙 목록에서 '루프 없음/단발'로 정직 안내. -->
+      <div class="conv-subtoggle" role="tablist" aria-label="수렴 뷰 모드">
+        <button id="conv-view-overview" class="conv-subtoggle-btn active" role="tab" aria-selected="true" type="button" data-view="overview">전체추이</button>
+        <button id="conv-view-loop" class="conv-subtoggle-btn" role="tab" aria-selected="false" type="button" data-view="loop">루프뷰</button>
+      </div>
+
+      <!-- ⑥ 루프뷰 컨테이너 (기본 숨김 — 전체추이가 첫 화면). 토글 시 show/hide. -->
+      <div id="conv-loopview" class="conv-loopview" aria-label="요청별 수렴 루프 인과 체인" hidden></div>
+
+      <!-- ⓪~⑤ 전체추이 래퍼 — 종전 대시보드 전체. 루프뷰 토글 시 통째 숨김. -->
+      <div id="conv-overview">
+
       <!-- ⓪-DECISION 결단 보드 — 화면에서 가장 크고 가장 위 (대표 catch: "활동만 보이고 뭐가 막혔는지 모르겠다").
            어드민이 activity가 아니라 *상태(무엇이 막혔나·내가 뭘 결정해야 하나)*를 답하는 단 하나의 요소.
            큰 숫자 3개(막힌 요청·내 결정 대기·최근 수렴) + 그 아래 막힘/대기 항목만 최대 5줄.
            데이터=convergence.json requests[].blocked/blocked_reason/state 프론트 집계 (색칠·가짜숫자 0·없으면 0/없음). -->
       <div id="conv-decision-board" class="conv-decision-board" aria-label="결단 보드 — 막힌 요청·내 결정 대기·수렴 현황"></div>
+
+      <!-- ① 한눈에 (at-a-glance) — 대표 catch(전체추이 직관성): 상단 한 화면에 "몇 개 열렸나"(한눈에)
+           + "어디서 막혔나"(결단보드)가 동시에 읽혀야. 종전엔 한눈에가 dense 표 아래(7번째)로 밀려
+           묻힘 → 결단보드 바로 아래로 승격(정보위계 — 핵심 요약을 above-fold 최상단에). -->
+      <div id="conv-glance" class="conv-glance" aria-label="수렴 현황 한눈에"></div>
 
       <!-- ⓪-a 지금 동작 중 (진입 즉시·최상단 — 대표 "시계열 어딨어": svc 카드에 밀려 묻힘 직답) -->
       <div id="conv-freshness" class="conv-freshness" aria-label="시스템 활동 신선도"></div>
@@ -142,7 +162,13 @@
            ·미니 스택바 1개)로 통합. 4개 차트를 repo당 1줄로 압축(정보위계 §1.1 평탄화 해소).
            데이터: requests[].state/blocked + rounds[].state 프론트 집계(백엔드 보강 불요·하드코딩 0·N개 확장 안전).
            거짓 채움 0(FLR-AGT-002): 신호 없으면 0/없음. 미니 스택바 = 요청 상태 100% 구성(색+패턴 이중 인코딩 유지). -->
-      <div id="conv-repo-summary" class="conv-repo-summary" aria-label="서비스별 1행 요약 (열린·막힘·수렴·상태분포)"></div>
+      <!-- 대표 catch(전체추이 직관성): 표·숫자 과다 → 정보위계. 상단은 "몇 개 열렸고 어디서 막혔나"
+           (결단보드+한눈에)만, repo당 1줄 상세 표는 details로 접어 above-fold 양보(데이터 제거 아님·
+           1클릭 보존, [[project_pm320_identity_data_portal]] "직관성=위계화"). 타임라인·상태추이 fold와 동형. -->
+      <details id="conv-repo-summary-fold" class="conv-fold">
+        <summary>서비스별 상세 — repo당 열림·막힘·수렴 <span class="conv-fold-sub">서비스마다 1줄(열린·막힌·수렴 수 + 요청 상태 구성 막대) · 합계는 위 ‘한눈에’ (상세 = 하위 정보위계)</span></summary>
+        <div id="conv-repo-summary" class="conv-repo-summary" aria-label="서비스별 1행 요약 (열린·막힘·수렴·상태분포)"></div>
+      </details>
 
       <!-- ⓪-a4 상태 추이 — state_transitions(실측 ts 보유 사건만)를 시간축 위 repo별 행으로.
            [2단계] 상세가 꼭 필요한 전이 타임라인만 details 접기로(above-fold 양보·정보 과잉 해소).
@@ -152,9 +178,6 @@
         <summary>상태 추이(시간별 전이) 펼치기 <span class="conv-fold-sub">실측 시각 보유 사건만 · repo별 시간축 마커 (상세 = 하위 정보위계)</span></summary>
         <div id="conv-transitions" class="conv-statebar conv-transitions" aria-label="서비스별 상태 추이(시간별 전이)"></div>
       </details>
-
-      <!-- ① 한눈에 (at-a-glance) -->
-      <div id="conv-glance" class="conv-glance" aria-label="수렴 현황 한눈에"></div>
 
       <!-- ② 품질 수렴 추이 (회차별) -->
       <h2 class="conv-h">품질 수렴 추이 <span class="conv-h-sub">막대 높이 = 품질점수(0~10·4축 평균·높을수록 좋음) · 막대 색 = 라운드 상태 · 결함합(P0+신규P1)은 막대 아래</span></h2>
@@ -231,6 +254,8 @@
           <div id="conv-sql-result" class="table-wrap"></div>
         </div>
       </details>
+
+      </div><!-- /#conv-overview -->
     </section>
   </main>
 
