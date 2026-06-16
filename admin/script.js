@@ -1407,9 +1407,20 @@
       : viewHrs <= 60 ? 1 : viewHrs <= 96 ? 2 : viewHrs <= 200 ? 3 : 6;
     const barStepMs = barHrs * 3600000;
     const buckets = {}; // bucketStartMs → count(전 시리즈 합 = 그 시간대 '실제' 밀도)
-    tl.forEach((e) => { const b = Math.floor(e.t / barStepMs) * barStepMs; buckets[b] = (buckets[b] || 0) + 1; });
+    // 대표 catch(번다운 시간단위): "요청이 몇 개이고 그래서 몇 개 해결됐는지" 정보 부재.
+    //   → 버킷 합과 함께 유형 분해(요청 발생 / 판정 처리)를 동시 집계. 데이터=activity_timeline e.type
+    //   (verdict=판정 실측 mtime / request=요청 포착). 합성 0(FLR-AGT-002): 이미 그 버킷에 든 이벤트만 셈.
+    //   ※ '해결수'를 직접 박지 않고 '판정(처리)'으로 정직 라벨 — 요청 close 전이 시각은 SSOT 부재
+    //     (burndown-design §2.2). 판정 처리 = "그 시간대에 몇 건이 판정나 처리됐나"의 실측 근사.
+    const typed = {}; // bucketStartMs → { request, verdict, round }
+    tl.forEach((e) => {
+      const b = Math.floor(e.t / barStepMs) * barStepMs;
+      buckets[b] = (buckets[b] || 0) + 1;
+      if (!typed[b]) typed[b] = { request: 0, verdict: 0, round: 0 };
+      if (e.type === "request" || e.type === "verdict" || e.type === "round") typed[b][e.type] += 1;
+    });
     let max = 0; for (const b in buckets) max = Math.max(max, buckets[b]);
-    return { buckets, barStepMs, barStepH: barHrs, max };
+    return { buckets, typed, barStepMs, barStepH: barHrs, max };
   }
 
   // ── A: 단위시간당 변동 (막대 단독, full 높이) ──
@@ -1425,9 +1436,18 @@
     const plotH = baseY - PADT;
     const xOf = (t) => ((t - v0) / span) * VBW;
 
-    const { buckets, barStepMs, barStepH, max } = tlBarBuckets(tl, v0, v1);
+    const { buckets, typed, barStepMs, barStepH, max } = tlBarBuckets(tl, v0, v1);
     const barMax = max || 1;
     const yOf = (c) => baseY - (c / barMax) * plotH;
+    // 막대 title/crosshair에 쓸 유형 분해 라벨 — "요청 R · 판정 V"(0이면 생략, 거짓 채움 0).
+    const breakdownTxt = (b) => {
+      const tb = typed[b]; if (!tb) return "";
+      const parts = [];
+      if (tb.request) parts.push("요청 " + tb.request);
+      if (tb.verdict) parts.push("판정 " + tb.verdict);
+      if (tb.round) parts.push("라운드 " + tb.round);
+      return parts.length ? " (" + parts.join(" · ") + ")" : "";
+    };
 
     // 그리드 — 시간 세로선 + 시각라벨 + Y 가로눈금(4단계).
     let gridSvg = tlTimeGrid(v0, v1, VBW, PADT, baseY, VBH - 7);
@@ -1446,7 +1466,7 @@
       const c = buckets[b]; if (!c) continue; // 거짓 채움 0
       const x = xOf(b) + barPad, w = Math.max(barW - barPad * 2, 1);
       const y = yOf(c), h = baseY - y;
-      barsSvg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" class="tlb-bar" data-bucket="${b}" data-count="${c}"><title>${tlFmt(b)}~ ${barStepH}시간 · ${c}건</title></rect>`;
+      barsSvg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" class="tlb-bar" data-bucket="${b}" data-count="${c}"><title>${tlFmt(b)}~ ${barStepH}시간 · ${c}건${breakdownTxt(b)}</title></rect>`;
     }
 
     host.querySelector(".tlb-grid").innerHTML = gridSvg;
@@ -1457,8 +1477,8 @@
     if (yax) yax.innerHTML = yTicks.filter((v) => v > 0).map((v) =>
       `<span style="top:${((yOf(v)) / VBH * 100).toFixed(1)}%">${v}</span>`).join("");
 
-    // crosshair용 박제.
-    tlState._drawBars = { buckets, barStepMs, barStepH, barMax, yOf, xOf, baseY, PADT, VBW, VBH };
+    // crosshair용 박제. typed(유형 분해)도 보존 — 크로스헤어 툴팁이 요청/판정 건수 표시(대표 catch).
+    tlState._drawBars = { buckets, typed, barStepMs, barStepH, barMax, yOf, xOf, baseY, PADT, VBW, VBH };
 
     // 축/범위 라벨 + 전체보기 버튼.
     const [f0, f1] = tlState.full;
@@ -1803,10 +1823,21 @@
         if (cumV != null) cc += `<circle cx="${xc.toFixed(1)}" cy="${dc.yOf(cumV).toFixed(1)}" r="3" class="tl-crossdot tl-crossdot-cum"/>`;
         cursorC.innerHTML = cc;
       }
-      // 툴팁 — 시각 + 구간 건수(주) + 누적(보조).
+      // 툴팁 — 시각 + 구간 건수(주) + 유형 분해(요청/판정) + 누적(보조).
+      //   대표 catch(번다운 시간단위): 시간단위에 "요청 몇 개·해결 몇 개" 정보 부재 → 이 구간의
+      //   요청 발생 / 판정 처리를 분해 표기(실측·합성 0). '해결'은 판정(처리)로 정직 라벨
+      //   (요청 close 전이 시각 SSOT 부재 — burndown-design §2.2). 0인 유형은 줄 생략(거짓 채움 0).
+      const tb = (db.typed && db.typed[bk]) || null;
+      let breakRows = "";
+      if (tb) {
+        if (tb.request) breakRows += `<div class="tl-tip-row"><i class="tl-tip-sw-req"></i><span>요청 발생</span><b>${tb.request}건</b></div>`;
+        if (tb.verdict) breakRows += `<div class="tl-tip-row"><i class="tl-tip-sw-vrd"></i><span>판정 처리</span><b>${tb.verdict}건</b></div>`;
+        if (tb.round) breakRows += `<div class="tl-tip-row"><i class="tl-tip-sw-rnd"></i><span>라운드</span><b>${tb.round}건</b></div>`;
+      }
       tip.innerHTML =
         `<div class="tl-tip-time">${tlFmt(bk)}~ ${db.barStepH}시간</div>`
         + `<div class="tl-tip-row tl-tip-main"><i class="tl-tip-sw-bar"></i><span>이 구간 활동</span><b>${bc}건</b></div>`
+        + breakRows
         + (cumV != null ? `<div class="tl-tip-row"><i class="tl-tip-sw-cum"></i><span>그때까지 누적</span><b>${cumV}건</b></div>` : "");
       tip.hidden = false;
       const wrap = host.querySelector(".tl-wrap-bars");

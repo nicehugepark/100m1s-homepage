@@ -592,6 +592,9 @@ footer {
 .conv-fold > #conv-timeline { padding: 4px 12px 12px; }
 /* [2단계] 상태 추이(전이 타임라인)도 details 접기로 이동 — 같은 fold 스킨. 내부 패딩만 분리. */
 .conv-fold > #conv-transitions { padding: 10px 14px 14px; border: 0; box-shadow: none; background: transparent; margin: 0; }
+/* 대표 catch(전체추이): repo 1행 요약 표도 fold 안으로 — 카드 chrome 제거(중첩 테두리 방지),
+   fold 스킨만(전이 타임라인과 동형). 표 내부 레이아웃(.rs-table/.rs-row)은 불변. */
+.conv-fold > #conv-repo-summary { border: 0; box-shadow: none; background: transparent; margin: 0; padding: 8px 14px 14px; }
 
 /* ════════ ① 한눈에 (at-a-glance) — 계측 다이얼 ════════ */
 .conv-glance {
@@ -1430,6 +1433,10 @@ footer {
 .tl-tip-main span, .tl-tip-main b { opacity: 1; }
 .tl-tip-sw-bar { background: var(--am); }
 .tl-tip-sw-cum { background: var(--neu); }
+/* 유형 분해 스와치 — TL_TYPE 정합(요청=루비·판정=녹·라운드=황동). 색+텍스트 라벨 병기(다크모드 제1원칙). */
+.tl-tip-sw-req { background: var(--ru); }
+.tl-tip-sw-vrd { background: var(--pos); }
+.tl-tip-sw-rnd { background: var(--am2); }
 
 /* 전체보기 버튼 (A 카드 head 우상단) */
 .tl-reset {
