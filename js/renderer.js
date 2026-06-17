@@ -637,15 +637,32 @@ function _buildGlobalStatsHtml(us, macro, closedLatest) {
     _push('미 선물', '', 0, _usFut.ts, '', `<span class="glb-fut-row">${futHtml}</span>`);
   }
   // 원/달러 · WTI 선물 — macro_indicators.json (항목별 bar_asof 신선도 축, 부분 산출 가용 항목만)
+  //   🔴 대표 catch 2026-06-17 ("원유(WTI)가 보일 때/안 보일 때가 있다 — 항상 표시하라") — 종전 60분
+  //   stale 가드(_freshTs)는 한국 데이마켓 시간대(미장 마감 후~다음 개장)에 WTI(CL=F)·원/달러(KRW=X)를
+  //   상시 stale 무렌더로 떨어뜨렸다. 실측(2026-06-17 21:57): wti.bar_asof 13:56(8h 전)·usdkrw 14:07
+  //   (7h 전) → 둘 다 무렌더, 미10년물(7일 가드)만 생존. 처방 = ust10y(L661~) 와 동형 정직 패턴으로 전환:
+  //   ① 60분 가드 폐기 → 7일 가드(파이프라인 갱신 지연·미장 휴장 갭 커버) ② 60분+ 경과 시 항목 자체
+  //   noteText("M/D HH:MM 기준")로 시점 명시(FLR-AGT-002 — 8h 전 값을 "현재"로 위장 차단) ③ skipNewest=true
+  //   로 오래된 ts 가 섹션 신선 라벨(24h 지표)을 오염시키지 않게 분리. 7일+ = 수집 사망 → 무렌더(빈자리가 정직).
   if (macro && macro.indicators) {
+    const MACRO_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
     for (const key of ['usdkrw', 'wti']) {
       const e = macro.indicators[key];
       if (!e) continue;
-      const ts = _freshTs(e.bar_asof);
-      if (ts == null) continue;
       if (typeof e.value !== 'number' || !isFinite(e.value)) continue;
       if (typeof e.change_pct !== 'number' || !isFinite(e.change_pct)) continue;
-      _push(e.label, _fmt2(e.value), e.change_pct, ts);
+      const mt = (typeof e.bar_asof === 'string' && e.bar_asof) ? Date.parse(e.bar_asof) : NaN;
+      if (!isFinite(mt)) continue;
+      const mAge = nowMs - mt;
+      // 7일 가드 + 미래 5분 skew. 한도 밖(미래 skew·7일 초과 수집 사망) 시 무렌더(빈자리 정직).
+      if (mAge < -5 * 60 * 1000 || mAge > MACRO_MAX_AGE_MS) continue;
+      // 60분+ 경과 시만 시점 각주("M/D HH:MM 기준") — 갓 갱신된 신선 데이터(≤60분)는 섹션 asof 로 충분.
+      const mKstIso = new Date(mt + 9 * 3600 * 1000).toISOString();
+      const mNote = (mAge > STALE_MS)
+        ? `${parseInt(mKstIso.slice(5, 7), 10)}/${parseInt(mKstIso.slice(8, 10), 10)} ${mKstIso.slice(11, 16)} 기준`
+        : '';
+      // 신선(≤60분)일 때만 섹션 newestTs 에 합류(skipNewest=false), stale 항목은 자체 noteText 운반 → skipNewest.
+      _push(e.label, _fmt2(e.value), e.change_pct, mt, undefined, undefined, mNote, mAge > STALE_MS);
     }
     // Q-20260613-165 ② (대표 12:50 승인) — 미10년물 금리(ust10y). 종전 ZN=F 선물(역방향
     //   가격) 제외 확정을 yield(^TNX) 직접으로 되살림: value = yield(%) 그 자체("4.49%"),
