@@ -913,11 +913,15 @@ a.cal-credit-row:hover,
 .cal-threshold { font-size:12px; padding:1px 0; color:var(--tx2); }
 .cal-threshold.triggered { color:var(--neg); font-weight:600; }
 .cal-threshold.safe { color:var(--pos); }
-/* 장중 스파크라인 미완(빈 상태) — 완전 회색 박스 대신 점선 베이스라인으로 "수집 중" 표시 (design ss_8976vzxzf) */
+/* 장중 스파크라인 미완(빈 상태) — 완전 회색 박스 대신 점선 베이스라인으로 "수집 중" 표시 (design ss_8976vzxzf)
+   e599f327a 에서 solid 1px 수평선으로 구현됐으나 design 의도는 점선(dashed). repeating-linear-gradient로 수정. */
 .cal-spark-empty {
   width:60px; height:32px; flex-shrink:0; border-radius:3px;
-  background: linear-gradient(transparent 49.5%, var(--g05) 49.5%, var(--g05) 50.5%, transparent 50.5%);
-  background-size: 5px 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--g40) 0px, var(--g40) 3px,
+    transparent 3px, transparent 6px
+  ) 0 calc(50% - 0.5px) / 100% 2px no-repeat;
   opacity: 0.5;
 }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:12px; font-weight:700; letter-spacing:0.3px; background:var(--am4); color:var(--am); border:1px solid var(--am3); vertical-align:middle; }
@@ -2490,14 +2494,16 @@ a.cal-macro-chip.nightly-us-newschip {
 .cal-share-btn:active { transform: scale(0.94); }
 .cal-share-btn svg { display: block; }
 /* R28 P1④ — 공유 버튼 시각 26~28px 유지, 터치 영역만 44×44 투명 오버레이 확장.
-   R44 #4 — 중심 정렬 오버레이가 카드(overflow:hidden) 상/우 경계 밖으로 나가 클립
-   → 실효 hit ≈ 28×36. 카드 코너(-4px ≈ 버튼 inset)에 anchor 해 존을 카드 내부로 (시각 불변 — 투명).
+   R44 #4 — overflow:hidden 클립 문제 — ::after top/right 음수값이 카드 밖으로 나가 클립됨.
    R46 P1-1 (조니 단정 "share 28×28 동시 44px") — 32 cap 해제, 실효 44×44 복원.
-   하단 (?) 팁과의 중첩 띠는 stacking 으로 해소: share(z-index 2) > tip ::before(z-index 1)
-   — 중첩 영역만 share 우선, 팁의 중심·하부 존은 보존 (1심 '충돌 0 우선'을 z-order 로 대체). */
+   design 최종 검증 결함: top:-4px right:-4px 방식은 overflow:hidden에서 실효 hi ≈ 22×22.
+   → 버튼 중심(translate -50%,-50%) anchor 방식으로 교체: 카드 내부 방향으로만 확장 (클립 없음).
+   하단 (?) 팁과의 중첩 띠는 stacking 으로 해소: share(z-index 2) > tip ::before(z-index 1). */
 .cal-share-btn::after {
   content: '';
-  position: absolute; top: -4px; right: -4px;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   width: 44px; height: 44px;
 }
 @media (max-width: 640px) {
