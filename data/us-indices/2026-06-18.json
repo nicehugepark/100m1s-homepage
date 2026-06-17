@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26309.05,
-      "change_pct": -0.26,
+      "point": 26281.21,
+      "change_pct": -0.36,
       "candle": {
         "o": 26493.21,
         "h": 26509.4,
         "l": 26261.39,
-        "c": 26309.05
+        "c": 26281.21
       },
       "range_240d": {
         "low": 20393.13,
@@ -2040,7 +2040,7 @@
           "o": 26493.21,
           "h": 26509.4,
           "l": 26261.39,
-          "c": 26309.05
+          "c": 26281.21
         }
       ],
       "spark": [
@@ -2063,7 +2063,9 @@
         26312.98,
         26353.19,
         26307.58,
-        26309.05
+        26298.32,
+        26275.15,
+        26281.21
       ],
       "news": {
         "summary": "AI 기업 약점 노출 가운데 Meta 구독 모델 전환 시도. 웨어러블·중국 AI 스타트업 IPO 흐름으로 성장주 투자 지속 중.",
@@ -2087,13 +2089,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7501.41,
-      "change_pct": -0.13,
+      "point": 7498.67,
+      "change_pct": -0.17,
       "candle": {
         "o": 7524.5,
         "h": 7532.17,
         "l": 7489.94,
-        "c": 7501.41
+        "c": 7498.67
       },
       "range_240d": {
         "low": 6225.52,
@@ -4124,7 +4126,7 @@
           "o": 7524.5,
           "h": 7532.17,
           "l": 7489.94,
-          "c": 7501.41
+          "c": 7498.67
         }
       ],
       "spark": [
@@ -4147,7 +4149,9 @@
         7504.32,
         7512.05,
         7501.51,
-        7501.41
+        7502.53,
+        7498.17,
+        7498.67
       ],
       "news": {
         "summary": "이란 협상 체결로 유가 급락·시장 반등. 미국 물가(CPI 4.2% 고착)·연준 금리 경로 불확실성·호르무즈 공급망 정상화 지연으로 중기 경기 둔화 우려 심화 중.",
@@ -4171,13 +4175,13 @@
     },
     {
       "name": "DOW",
-      "point": 52114.61,
-      "change_pct": 0.22,
+      "point": 52092.22,
+      "change_pct": 0.18,
       "candle": {
         "o": 51937.56,
         "h": 52281.19,
         "l": 51937.56,
-        "c": 52114.61
+        "c": 52092.22
       },
       "range_240d": {
         "low": 43588.58,
@@ -6208,7 +6212,7 @@
           "o": 51937.56,
           "h": 52281.19,
           "l": 51937.56,
-          "c": 52114.61
+          "c": 52092.22
         }
       ],
       "spark": [
@@ -6231,7 +6235,9 @@
         52124.77,
         52162.13,
         52109.69,
-        52114.61
+        52153.27,
+        52095.32,
+        52092.22
       ],
       "news": {
         "summary": "중동 긴장 완화로 에너지·금융주 회복 신호. 연준 새 의장 커뮤니케이션 정책 변화·글로벌 무역 불균형 논의 복잡성 증대. 대형주 경영진 교체 활발.",
@@ -6256,83 +6262,87 @@
   ],
   "news_chips": [
     {
-      "summary": "영국 5월 인플레이션이 전월과 동일 수준 유지, 영란 금리 동결 가능성 강화",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/u-k-inflation-remains-unexpectedly-flat-before-bank-of-england-meeting-c127a480",
-      "published_ts": 1781681760.0,
-      "impact_high": true
-    },
-    {
-      "summary": "미국-이란 합의에 따라 호르무즈 해협 봉쇄 해제, 이란 탱커 3척이 월 500만 배럴 원유 공급 개시",
+      "summary": "미-이란 합의 직후 이란 유조선 3척이 미 해군 봉쇄를 처음 이탈, 약 500만 배럴 원유 운송",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html",
       "published_ts": 1781680985.0,
       "impact_high": true
     },
     {
-      "summary": "한국은행이 중동 분쟁 완화 후에도 에너지비 파급으로 물가 상승 지속 우려 제시",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/bank-of-korea-warns-inflation-may-stay-elevated-despite-middle-east-truce-93d64fe7",
-      "published_ts": 1781678820.0,
+      "summary": "영국 5월 연간 인플레이션이 2.8%로 유지되며, 영란은이 목요일 금리 동결 가능성 높아",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/06/17/inflation-uk-cpi-interest-rates-bank-of-england.html",
+      "published_ts": 1781678499.0,
       "impact_high": true
     },
     {
-      "summary": "연준 의장 Warsh의 첫 회의에서 금리 인상 기조와 직면, 트럼프 정부의 금리 인하 약속과 불일치",
-      "source": "WSJ",
+      "summary": "Fed 신임 의장 Warsh가 금리 인상론이 주류인 가운데 첫 정책회의에 참석, 기존 인상 주장과 현재 통화 방향성 불일치",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf",
       "published_ts": 1781658000.0,
       "impact_high": true
     },
     {
-      "summary": "유가 강세에도 불구하고 미국 5월 소매판매가 예상을 초과 증가, 소비자 탄력성 유지",
-      "source": "WSJ",
+      "summary": "5월 대기 주택 판매 지수가 3.8% 상승해 경제학자 예상(1%)을 대폭 초과, 주택 시장 기저 수요 회복 신호",
+      "source": "WSJ경제",
+      "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9",
+      "published_ts": 1781705400.0,
+      "impact_high": false
+    },
+    {
+      "summary": "5월 미국 소매 판매 성장률이 예상을 초과했으며, 유가 상승에도 소비자 지출 탄력 지속",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438",
       "published_ts": 1781701500.0,
       "impact_high": false
     },
     {
-      "summary": "AI 칩이 원자재처럼 선물 거래 시장 진입, 공급망 구조 변화 신호",
-      "source": "한경",
-      "url": "https://www.hankyung.com/article/2026061726151",
-      "published_ts": 1781685979.0,
+      "summary": "SpaceX 공모주가 상장 후 3거래일 내 약 50% 상승하며 시가총액이 아마존을 추월, 우주산업 실적주로 평가",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/finance/banking/financial-services-roundup-market-talk-1e1d2067?mod=rss_markets_main",
+      "published_ts": 1781695740.0,
       "impact_high": false
     },
     {
-      "summary": "SpaceX가 상장 초기 주가 50% 급등하며 시가총액으로 아마존 추월",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/stocks/spacex-stock-has-climbed-about-50-the-flippers-are-kicking-themselves-b968032c?mod=rss_markets_main",
-      "published_ts": 1781644200.0,
-      "impact_high": false
-    },
-    {
-      "summary": "이란 석유 공급 회복 전망에 유가가 4거래일 연속 하락, 호르무즈 해협 정상화 신호",
-      "source": "WSJ",
+      "summary": "미-이란 합의 이행으로 유가 4거래일 연속 하락, 시장이 중동 원유 공급 재개를 조기 회복 시나리오로 평가",
+      "source": "WSJ세계",
       "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0",
       "published_ts": 1781637720.0,
       "impact_high": false
     },
     {
-      "summary": "미국 5월 주택착공이 15.4% 급감하며 경제학자 전망을 크게 하회, 부동산 부진 심화",
-      "source": "WSJ",
+      "summary": "5월 미국 신규 주택 착공이 15.4% 급감해 경제학자 예상(2.4% 감소)을 크게 밑돌며 부동산 시장 약세 지속",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963",
       "published_ts": 1781614140.0,
       "impact_high": false
     },
     {
-      "summary": "일본중앙은행이 금리를 1%로 인상하며 31년 만의 최고 수준 달성, 에너지 인플레 압박 대응",
-      "source": "WSJ",
+      "summary": "일본 중앙은행이 에너지 비용 상승의 인플레이션 압력에 대응해 정책금리를 31년 만에 최고 수준인 1%로 인상",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/central-banking/bank-of-japan-lifts-rates-to-31-year-high-a19871eb",
       "published_ts": 1781591880.0,
       "impact_high": true
+    },
+    {
+      "summary": "호르무즈 해협 통행 재개가 수주 소요될 것으로 예상되며, 에너지 공급 정상화 영향이 수개월 지속될 가능성",
+      "source": "WSJ세계",
+      "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70",
+      "published_ts": 1781546280.0,
+      "impact_high": true
     }
   ],
-  "_article_sig": "c0b2c7d2df075e59744f753898b3d772a7d7780b1cced0c6f28b423b715136de",
+  "_article_sig": "f7a342373a2abde3841d611b28e9bf506071ff63d32619aa73d4b52a3709a7e0",
   "built_at_kst": "2026-06-16T07:01:49.104509+09:00",
   "regular_open": true,
   "_futures_news": {
     "S&P500": {
-      "summary": "연준 금리 인상 논의 강화. Warsh 의장 FOMC 첫 회의에서 고금리 기조 재확인. 소비자 강세(소매 판매·pending 상승)에도 하우징 급락(-15.4%)으로 경기 변동성 가중. 유가 하락 수혜에도 금리 부담 지속.",
+      "summary": "연준의장 Warsh 첫 회의서 금리 인상 논의 대두. 주택 착공 -15.4% 약세에도 소매 가속·소비 탄력. 호르무즈 유가 공급 회복 기대로 유가 4연락, PPI 상회로 물가 부담 지속.",
       "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf"
+        },
         {
           "name": "WSJ",
           "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
@@ -6344,25 +6354,25 @@
       ]
     },
     "DOW": {
-      "summary": "소비자 강세(소매 판매·pending)·유가 하락 수혜로 경기순환주 지지 신호 vs. 건설 부진(-15.4%)·환율 약세·금융주 구조조정으로 약세 우려 엇갈림. 경기 변동성 가중 조짐.",
+      "summary": "독일 투자심리 급등(중동 분쟁 종료 기대)·경기 민감주 우위. 금융 M&A 추진(유니크레딧-코메르츠방크) vs 독일 정부 저항. 중국 박리다매 확산·글로벌 위안화 강화 신호.",
       "sources": [
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9"
+          "url": "https://www.wsj.com/economy/central-banking/german-investor-confidence-jumps-on-hopes-of-end-to-middle-east-conflict-99babb7f"
         },
         {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/finance/currencies/asia-currency-ai-energy-8d4f4cb4"
+          "name": "한경국제",
+          "url": "https://www.hankyung.com/article/2026061726161"
         }
       ]
     },
     "NASDAQ": {
-      "summary": "연준 금리 인상 논의 강화. Warsh 의장 FOMC 첫 회의에서 고금리 기조 재확인. 소비자 강세(소매 판매·pending 상승)에도 하우징 급락(-15.4%)으로 경기 변동성 가중. 유가 하락 수혜에도 금리 부담 지속.",
+      "summary": "연준의장 Warsh 첫 회의서 금리 인상 논의 대두. 주택 착공 -15.4% 약세에도 소매 가속·소비 탄력. 호르무즈 유가 공급 회복 기대로 유가 4연락, PPI 상회로 물가 부담 지속.",
       "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf"
+        },
         {
           "name": "WSJ",
           "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
@@ -6375,18 +6385,16 @@
     }
   },
   "futures": {
-    "as_of_kst": "2026-06-18T00:00:08.274459+09:00",
+    "as_of_kst": "2026-06-18T00:10:03.996243+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7574.5,
-        "change_pct": -0.17,
+        "point": 7573.25,
+        "change_pct": -0.18,
         "spark": [
           7581.25,
-          7589.5,
-          7586.25,
           7586.0,
           7586.5,
           7588.75,
@@ -6424,21 +6432,23 @@
           7584.0,
           7576.25,
           7582.5,
-          7574.5
+          7572.5,
+          7574.5,
+          7573.25
         ],
         "candle": {
           "o": 7581.25,
           "h": 7612.5,
           "l": 7560.5,
-          "c": 7574.5
+          "c": 7573.25
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 20.91,
-          "high_change_pct": -0.65
+          "low_change_pct": 20.89,
+          "high_change_pct": -0.66
         },
         "daily_expanded": [
           {
@@ -8462,14 +8472,18 @@
             "o": 7581.25,
             "h": 7612.5,
             "l": 7560.5,
-            "c": 7574.5,
-            "v": 522624
+            "c": 7573.25,
+            "v": 556594
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "연준 금리 인상 논의 강화. Warsh 의장 FOMC 첫 회의에서 고금리 기조 재확인. 소비자 강세(소매 판매·pending 상승)에도 하우징 급락(-15.4%)으로 경기 변동성 가중. 유가 하락 수혜에도 금리 부담 지속.",
+          "summary": "연준의장 Warsh 첫 회의서 금리 인상 논의 대두. 주택 착공 -15.4% 약세에도 소매 가속·소비 탄력. 호르무즈 유가 공급 회복 기대로 유가 4연락, PPI 상회로 물가 부담 지속.",
           "sources": [
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf"
+            },
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
@@ -8484,12 +8498,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30366.5,
-        "change_pct": 0.17,
+        "point": 30368.0,
+        "change_pct": 0.18,
         "spark": [
           30306.5,
-          30437.5,
-          30423.5,
           30410.0,
           30416.0,
           30433.0,
@@ -8527,21 +8539,23 @@
           30433.5,
           30370.75,
           30426.25,
-          30366.5
+          30359.25,
+          30383.25,
+          30368.0
         ],
         "candle": {
           "o": 30306.5,
           "h": 30584.5,
           "l": 30284.75,
-          "c": 30366.5
+          "c": 30368.0
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 32.7,
-          "high_change_pct": -1.13
+          "low_change_pct": 32.71,
+          "high_change_pct": -1.12
         },
         "daily_expanded": [
           {
@@ -10565,14 +10579,18 @@
             "o": 30306.5,
             "h": 30584.5,
             "l": 30284.75,
-            "c": 30366.5,
-            "v": 237342
+            "c": 30368.0,
+            "v": 246677
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "연준 금리 인상 논의 강화. Warsh 의장 FOMC 첫 회의에서 고금리 기조 재확인. 소비자 강세(소매 판매·pending 상승)에도 하우징 급락(-15.4%)으로 경기 변동성 가중. 유가 하락 수혜에도 금리 부담 지속.",
+          "summary": "연준의장 Warsh 첫 회의서 금리 인상 논의 대두. 주택 착공 -15.4% 약세에도 소매 가속·소비 탄력. 호르무즈 유가 공급 회복 기대로 유가 4연락, PPI 상회로 물가 부담 지속.",
           "sources": [
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf"
+            },
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
@@ -10587,12 +10605,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52551.0,
-        "change_pct": 0.15,
+        "point": 52568.0,
+        "change_pct": 0.19,
         "spark": [
           52408.0,
-          52446.0,
-          52430.0,
           52433.0,
           52433.0,
           52447.0,
@@ -10630,20 +10646,22 @@
           52616.0,
           52571.0,
           52618.0,
-          52551.0
+          52555.0,
+          52598.0,
+          52568.0
         ],
         "candle": {
           "o": 52408.0,
           "h": 52734.0,
           "l": 52397.0,
-          "c": 52551.0
+          "c": 52565.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52551.0,
+          "high": 52565.0,
           "low_date": "2025-08-01",
           "high_date": "2026-06-17",
-          "low_change_pct": 20.23,
+          "low_change_pct": 20.26,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12668,30 +12686,26 @@
             "o": 52408.0,
             "h": 52734.0,
             "l": 52397.0,
-            "c": 52551.0,
-            "v": 46100
+            "c": 52565.0,
+            "v": 48767
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "소비자 강세(소매 판매·pending)·유가 하락 수혜로 경기순환주 지지 신호 vs. 건설 부진(-15.4%)·환율 약세·금융주 구조조정으로 약세 우려 엇갈림. 경기 변동성 가중 조짐.",
+          "summary": "독일 투자심리 급등(중동 분쟁 종료 기대)·경기 민감주 우위. 금융 M&A 추진(유니크레딧-코메르츠방크) vs 독일 정부 저항. 중국 박리다매 확산·글로벌 위안화 강화 신호.",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9"
+              "url": "https://www.wsj.com/economy/central-banking/german-investor-confidence-jumps-on-hopes-of-end-to-middle-east-conflict-99babb7f"
             },
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/currencies/asia-currency-ai-energy-8d4f4cb4"
+              "name": "한경국제",
+              "url": "https://www.hankyung.com/article/2026061726161"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-18T00:01:41.709716+09:00"
+  "intraday_refreshed_kst": "2026-06-18T00:11:25.617364+09:00"
 }
