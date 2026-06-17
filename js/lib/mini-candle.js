@@ -33,10 +33,10 @@
       const yHi = y(d.h), yLo = y(d.l);
       const yOpen = y(d.o), yClose = y(d.c);
       const yBodyTop = Math.min(yOpen, yClose);
-      const bodyH = Math.max(0.8, Math.abs(yClose - yOpen));
+      const bodyH = Math.max(1.5, Math.abs(yClose - yOpen));  // min 1.5px — 0.8px는 비Retina에서 안 보임 (design ss_9358kzog8)
       const wick = `<line x1="${xc.toFixed(1)}" y1="${yHi.toFixed(1)}" x2="${xc.toFixed(1)}" y2="${yLo.toFixed(1)}" stroke="${color}" stroke-width="1"/>`;
       const body = isFlat
-        ? `<line x1="${xBody.toFixed(1)}" y1="${yOpen.toFixed(1)}" x2="${(xBody + bodyW).toFixed(1)}" y2="${yOpen.toFixed(1)}" stroke="${color}" stroke-width="1.2"/>`
+        ? `<line x1="${xBody.toFixed(1)}" y1="${yOpen.toFixed(1)}" x2="${(xBody + bodyW).toFixed(1)}" y2="${yOpen.toFixed(1)}" stroke="${color}" stroke-width="1.5"/>`
         : `<rect x="${xBody.toFixed(1)}" y="${yBodyTop.toFixed(1)}" width="${bodyW.toFixed(1)}" height="${bodyH.toFixed(1)}" fill="${color}"/>`;
       const pct = d.o > 0 ? (((d.c - d.o) / d.o) * 100).toFixed(1) : '0.0';
       const tip = `${d.date}\n시 ${d.o.toLocaleString()} / 고 ${d.h.toLocaleString()}\n저 ${d.l.toLocaleString()} / 종 ${d.c.toLocaleString()} (${pct >= 0 ? '+' : ''}${pct}%)`;
