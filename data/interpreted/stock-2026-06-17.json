@@ -1,6 +1,6 @@
 {
   "date": "2026-06-17",
-  "generated_at": "2026-06-17T14:45:36.429496",
+  "generated_at": "2026-06-17T14:46:25.812399",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -42,19 +42,22 @@
       "sector": null,
       "themes": [
         "바이오",
-        "AI"
+        "GLP-1 비만치료제",
+        "비만약 테마주"
       ],
       "theme_paths": [
         {
-          "name": "바이오",
+          "name": "GLP-1 비만치료제",
           "path": [
-            "바이오"
+            "바이오",
+            "GLP-1 비만치료제"
           ]
         },
         {
-          "name": "AI",
+          "name": "비만약 테마주",
           "path": [
-            "AI"
+            "바이오",
+            "비만약 테마주"
           ]
         }
       ],
@@ -88,16 +91,16 @@
           "url": "https://www.etoday.co.kr/news/view/2594493",
           "source": "이투데이",
           "published_at": "2026-06-17T05:37:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "디앤디파마텍 펩타이드 신약 개발 소식 부각 → 경구용 펩타이드(GLP-1 계열) 신약 파이프라인 기대감으로 본업 바이오 모멘텀 집중 → 매수세 유입 → 당일 종가 107,700원(+17.58%)·장중 고가 116,600원으로 52주 신고가 부근 터치, 거래대금 5,325억원 대량 거래.",
+          "macro_event": "펩타이드 신약 개발 모멘텀 부각",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.55,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.49,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -1673,36 +1676,14 @@
       "sector": null,
       "themes": [
         "건설",
-        "전쟁재건",
-        "중동 지정학",
-        "트럼프 중동정책"
+        "부동산 재개발"
       ],
       "theme_paths": [
         {
-          "name": "건설",
+          "name": "부동산 재개발",
           "path": [
-            "건설"
-          ]
-        },
-        {
-          "name": "전쟁재건",
-          "path": [
-            "전쟁",
-            "전쟁재건"
-          ]
-        },
-        {
-          "name": "중동 지정학",
-          "path": [
-            "전쟁",
-            "중동 지정학"
-          ]
-        },
-        {
-          "name": "트럼프 중동정책",
-          "path": [
-            "트럼프",
-            "트럼프 중동정책"
+            "건설",
+            "부동산 재개발"
           ]
         }
       ],
@@ -1735,16 +1716,16 @@
           "url": "https://www.newsis.com/view/NISX20260617_0003672688",
           "source": "뉴시스",
           "published_at": "2026-06-17T05:36:32",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "수도권 재건축 정비사업 본격화 → DL이앤씨 목동6단지(2173가구·공사비 1조2868억원) 단독입찰 우선협상자 선정, 27일 총회 시 올해 첫 정비사업 실적 가시화 → 한강·안양천 리버뷰 116% 특화설계·이주비 LTV 100% 등 파격 조건으로 수주 모멘텀 부각. 다만 호재성 르포에도 당일 종가 84,900원(-5.03%)으로 하락, 장중 시가 95,100→저가 84,500 급락하며 차익실현·건설업종 약세가 우위(거래대금 1,046억원).",
+          "macro_event": "서울 목동신시가지6단지 재건축 시공사 선정 국면 — DL이앤씨 단독입찰 우선협상자, 27일 시공사 선정 총회 예정(공사비 1조2868억원)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.5,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.46,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -1975,9 +1956,9 @@
           85100
         ]
       },
-      "togusa_verdict": "weak_bear",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "관찰"
     },
     {
       "code": "010690",
@@ -3133,7 +3114,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "290650",
