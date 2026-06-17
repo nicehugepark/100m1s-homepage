@@ -2828,33 +2828,9 @@ function renderCalExpandContent(date, data) {
   //   진입가 SSOT = 매매 row와 동일(authClose 우선, _buildPm320RecRow 와 같은 식, 추정 0).
   const _buildPm320TodayRecCard = (pk, code, name, authClose, isPast, nxtSnap, pickIt, freqChip) => {
     if (!pk || !pk.is_pick) return '';
-    // R49 #2 (다관점 판정 #7 — 초보·고인물 관점, 2026-06-14) — "왜 이 종목" 선정 이유 1줄.
-    //   pickIt(거래대금 순위·테마·연속선정 join 완료된 종목 객체)에서 *실재 데이터만* 평문 조합.
-    //   전략 임계값/내부 산식은 노출 0 — 검증 가능한 관찰값(순위·테마명·연속선정 일수)만 (FLR-AGT-002).
-    //   가용 조각이 0이면 줄 자체를 생략(가짜 생성 금지). 조각은 ·(middot) 로 연결, 최대 3개.
-    const _whyHtml = (() => {
-      if (!pickIt) return '';
-      const bits = [];
-      // ① 거래대금 순위 — rank 가 숫자일 때만 (장 마감 10분 전 자금 쏠림 = PM320 1차 관문).
-      if (typeof pickIt.rank === 'number' && pickIt.rank > 0) {
-        const amtV = pickIt.amount ? ` ${escapeHtml(fmtTradeAmount(pickIt.amount))}` : '';
-        bits.push(`거래대금 ${pickIt.rank}위${amtV}`);
-      }
-      // ② 테마 — 실재 테마명 1개 (themes[].name, 가짜 0). 다중이면 첫 1개 + "외 N".
-      const _themes = Array.isArray(pickIt.themes)
-        ? pickIt.themes.map((t) => (t && typeof t === 'object' ? t.name : t)).filter((n) => typeof n === 'string' && n.trim())
-        : [];
-      if (_themes.length === 1) bits.push(`${escapeHtml(_themes[0])} 테마`);
-      else if (_themes.length > 1) bits.push(`${escapeHtml(_themes[0])} 테마 외 ${_themes.length - 1}`);
-      // ③ 연속선정 — interp.pick_count >= 2 (DSN §3.6.3 "연속선정+N" 동일 정의 SSOT).
-      const _pc = pickIt.interp && typeof pickIt.interp.pick_count === 'number' ? pickIt.interp.pick_count : 0;
-      if (_pc >= 2) bits.push(`연속선정 ${_pc}일째`);
-      if (!bits.length) return '';
-      return `<div class="cal-pm320-today-rec-why" role="note">`
-        + `<span class="cal-pm320-today-rec-why-k">왜 이 종목</span>`
-        + `<span class="cal-pm320-today-rec-why-v">${bits.slice(0, 3).join(' · ')}</span>`
-        + `</div>`;
-    })();
+    // R49 #2 "왜 이 종목" 선정근거 1줄(거래대금 1위·테마 외 N·연속선정) 제거 (대표 catch 2026-06-17).
+    //   거래대금/테마 정보는 풀 종목카드(상세 보기)에 이미 존재 → 추천 카드 상단 중복 노출 정리.
+    //   이전 D 미완분(pm320-remove-why-chip) 통합. 소비처(_whyHtml) 도 함께 제거.
     // 대표 20:51 지적 — 익절가는 물타기 체결 시 평단 하락으로 바뀌므로 단일 단정 금지.
     //   풀 카드의 "물타기 시: X원"과 동일 SSOT — R44 #2: lib/pm320-recompute.js 단일 함수
     //   (watering_weight 데이터 파라미터, 종전 2배 가정 하드코딩 폐기). 저장값/재계산 분기 동일.
@@ -2903,7 +2879,6 @@ function renderCalExpandContent(date, data) {
         ${codeV ? `<span class="cal-pm320-today-rec-code">${escapeHtml(codeV)}</span>` : ''}
         ${freqChip || ''}
       </div>
-      ${_whyHtml}
       <div class="cal-pm320-today-rec-grid">
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k" title="매수 기준가 — 추천일 KRX 정규장 종가(15:30)">매수</span><span class="cal-pm320-today-rec-v">${escapeHtml(buyV)}</span></div>
         <div class="cal-pm320-today-rec-cell"><span class="cal-pm320-today-rec-k" title="익절 — 목표가에 도달하면 이익을 보고 매도하는 가격">익절${tpAfterV ? '<span class="cal-pm320-today-rec-k-cond">(조건부)</span>' : ''}</span><span class="cal-pm320-today-rec-v cal-pm320-today-rec-v--up">${escapeHtml(tpV)}</span>${tpAfterV ? `<span class="cal-pm320-today-rec-v-sub">물타기 후 익절가 ${escapeHtml(tpAfterV)}</span>` : ''}</div>
@@ -4368,6 +4343,16 @@ function renderCalExpandContent(date, data) {
         if (!_html) return;
         const _recEl = document.querySelector('#cal-content .cal-pm320-today-rec');
         if (_recEl && document.body.contains(_recEl)) {
+          // 멱등 가드 (대표 catch 2026-06-17 — 추적픽 박스 2중 렌더) — renderCalExpandContent 가
+          //   동일 today 뷰에서 재호출되면(데이터 갱신·셀 재클릭 L1251 경로) 이 async IIFE 가 매번 재실행돼
+          //   insertAdjacentHTML('afterend') 로 .cal-pre-prev-pick-holdings 가 누적된다. _recEl 직후
+          //   기존 추적픽 박스가 있으면 먼저 제거 후 1개만 주입(중복 0, portal 경로 L1515 와 동형 정합).
+          let _sib = _recEl.nextElementSibling;
+          while (_sib && _sib.classList && _sib.classList.contains('cal-pre-prev-pick-holdings')) {
+            const _next = _sib.nextElementSibling;
+            _sib.remove();
+            _sib = _next;
+          }
           _recEl.insertAdjacentHTML('afterend', _html);
         }
       } catch (_) { /* graceful — 미청산 뷰 생략 */ }
