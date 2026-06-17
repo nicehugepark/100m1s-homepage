@@ -641,6 +641,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
   /* REQ-pm320-ux-cycle #3 — 모바일 카드 head 폭 부족, 당일 분봉 sparkline 숨기고
      20영업일 일봉(매매 결단에 더 직결)만 노출. design-lead 권고 */
   .cal-feature-sparkline { display: none; }
+  /* 2026-06-17 대표 catch (트랙A) — 단, 데이터 없는 종목의 점선 placeholder 는 모바일에서도
+     노출(데이터 부재를 명시적으로 보여줌 — 빈 칸 회피). 폭만 candles20 head 정합 위해 축소. */
+  .cal-feature-sparkline.cal-spark-empty { display: inline-block; width: 48px; }
 }
 /* REQ-pm320-ux-cycle #3 — 20영업일 일봉 캔들 (sparkline 우측). */
 /* REQ-004 v181: position relative — staleLabel을 absolute overlay로 layout 침범 회피 */
@@ -1009,7 +1012,9 @@ a.cal-credit-row:hover,
     var(--g40) 0px, var(--g40) 3px,
     transparent 3px, transparent 6px
   ) 0 calc(50% - 0.5px) / 100% 2px no-repeat;
-  opacity: 0.5;
+  /* 2026-06-17 대표 catch (트랙A) — 데이터 없는 종목의 빈 추이 칸이 비어 보임.
+     점선 placeholder 가시성 상향(0.5→0.65). 다크모드는 --g40 이 --dk-g40 으로 자동 스왑. */
+  opacity: 0.65;
 }
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:12px; font-weight:700; letter-spacing:0.3px; background:var(--am4); color:var(--am); border:1px solid var(--am3); vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:12px; color:var(--tx2); text-decoration:none; cursor:pointer; }
@@ -2601,19 +2606,24 @@ a.cal-macro-chip.nightly-us-newschip {
 /* R28 P1④ — 공유 버튼 시각 26~28px 유지, 터치 영역만 44×44 투명 오버레이 확장.
    R44 #4 — overflow:hidden 클립 문제 — ::after top/right 음수값이 카드 밖으로 나가 클립됨.
    R46 P1-1 (조니 단정 "share 28×28 동시 44px") — 32 cap 해제, 실효 44×44 복원.
-   design 최종 검증 결함: top:-4px right:-4px 방식은 overflow:hidden에서 실효 hi ≈ 22×22.
-   → 버튼 중심(translate -50%,-50%) anchor 방식으로 교체: 카드 내부 방향으로만 확장 (클립 없음).
+   2026-06-17 대표 catch (트랙A) — 중심(translate -50%,-50%) anchor 방식도 버튼이 카드
+   우상단 코너에 붙어 있어 overflow:hidden 에서 코너 3~4px 클립(실효 ≈ 40×41) → WCAG 44 미달.
+   → 코너 anchor 로 교체: 버튼 우상단을 오버레이 우상단에 고정하고 좌·하(카드 내부) 방향으로만
+   44px 확장. 카드 경계를 넘지 않으므로 클립 0, 실효 44×44 보장.
    하단 (?) 팁과의 중첩 띠는 stacking 으로 해소: share(z-index 2) > tip ::before(z-index 1). */
 .cal-share-btn::after {
   content: '';
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+  /* 버튼(26px)을 오버레이(44px) 우상단에 정렬 → 18px 만큼 좌·하로만 확장 (카드 안쪽). */
+  top: calc(50% - 13px);
+  right: calc(50% - 13px);
   width: 44px; height: 44px;
 }
 @media (max-width: 640px) {
   .cal-share-btn { top: 4px; right: 4px; width: 28px; height: 28px; }
   .cal-share-btn svg { width: 15px; height: 15px; }
+  /* 모바일 버튼 28px → 오버레이 우상단 정렬 offset = 14px. */
+  .cal-share-btn::after { top: calc(50% - 14px); right: calc(50% - 14px); }
 }
 
 /* 카드 강조 (해시 진입 시 1.5~2초 글로우) */
