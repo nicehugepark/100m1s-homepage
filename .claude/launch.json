@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8898"],
       "port": 8898
+    },
+    {
+      "name": "cadence-live-admin",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8785", "--directory", "/tmp/live_admin"],
+      "port": 8785
     }
   ]
 }
