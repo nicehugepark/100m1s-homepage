@@ -1707,6 +1707,15 @@ a.cal-credit-row:hover,
   z-index: 51; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .theme-trend-tooltip.show { opacity: 1; }
+/* lut-tooltip — theme-trend-tooltip SoT */
+.lut-tooltip {
+  position: absolute; pointer-events: none;
+  background: var(--tx); color: #fff; font-size: 12px; font-weight: 700;
+  padding: 6px 12px; border-radius: 8px; white-space: nowrap;
+  opacity: 0; transition: opacity 0.12s;
+  z-index: 51; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.lut-tooltip.show { opacity: 1; }
 /* 5/8 fix (qa D10 WCAG 2.5.5): min-height 36 → 44 (44x44 터치 타깃 충족) */
 .theme-trend-legend-item { min-height: 44px; padding: 10px 12px; border-radius: 999px; transition: color 0.15s, opacity 0.15s; }
 .theme-trend-legend-item.dimmed { color: var(--dm); opacity: 0.5; }
