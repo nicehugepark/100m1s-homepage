@@ -1,6 +1,6 @@
 {
   "date": "2026-06-17",
-  "generated_at": "2026-06-17T13:15:23.980711",
+  "generated_at": "2026-06-17T13:16:39.149652",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -36,8 +36,24 @@
       "low_price": 92000,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "바이오",
+        "AI"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        },
+        {
+          "name": "AI",
+          "path": [
+            "AI"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -52,16 +68,16 @@
           "url": "https://www.mk.co.kr/news/it/12076156",
           "source": "매경",
           "published_at": "2026-06-17T01:40:55",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "LG AI연구원과 차세대 펩타이드 신약 공동개발 본계약 체결 → 디앤디파마텍의 펩타이드 신약 개발 역량에 LG의 AI 단백질 설계 기술 결합으로 경구 치료제 개발 가속 기대 → 본업(펩타이드 신약) 모멘텀 직접 부각 → 매수세 집중 → 당일 종가 113,400원(+23.80%)·장중 고가 116,600원으로 52주 신고가 수준까지 급등(거래대금 3,849억원).",
+          "macro_event": "LG AI연구원-디앤디파마텍 차세대 펩타이드 경구 신약 AI 공동개발 본계약 체결(2026-06-16)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.8,
+          "newzy_virality": 0.75,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.78,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -276,9 +292,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
-      "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "088350",
@@ -1561,9 +1577,9 @@
           86900
         ]
       },
-      "togusa_verdict": "weak_bear",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "관찰"
     },
     {
       "code": "010690",
@@ -2362,7 +2378,10 @@
       "news": [],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "298000",
