@@ -5651,6 +5651,7 @@ async function initLimitUpTrend() {
         '<div class="lut-wrap">' +
           '<div class="lut-yaxis-col">' + yAxisSvg + '</div>' +
           '<div class="lut-scroll">' + chartSvg + '</div>' +
+          '<div class="lut-tooltip" id="lut-tooltip"></div>' +
         '</div>' +
         '<div class="lut-detail" id="lut-detail" hidden></div>' +
       '</div>';
@@ -5739,6 +5740,31 @@ async function initLimitUpTrend() {
       html += '</tbody></table>';
       detail.innerHTML = html;
     };
+    // hover 툴팁 — theme-trend-tooltip 패턴 SoT (desktop only)
+    const lutTooltip = document.getElementById('lut-tooltip');
+    const lutWrap = container.querySelector('.lut-wrap');
+    if (!isMobile && lutTooltip && lutWrap) {
+      container.querySelector('.lut-scroll').addEventListener('mousemove', function(e) {
+        const hit = e.target.closest('.lut-dot-touch, .lut-dot-hit');
+        if (!hit) { lutTooltip.classList.remove('show'); return; }
+        const date = hit.getAttribute('data-date');
+        const it = itemMap.get(date);
+        const mm = date ? parseInt(date.slice(5, 7), 10) : 0;
+        const dd = date ? parseInt(date.slice(8, 10), 10) : 0;
+        lutTooltip.textContent = mm + '/' + dd + ' 상한가 ' + (it ? it.count : 0) + '건';
+        lutTooltip.classList.add('show');
+        const wrapRect = lutWrap.getBoundingClientRect();
+        let left = e.clientX - wrapRect.left + 12;
+        const ttWidth = lutTooltip.offsetWidth || 120;
+        if (left + ttWidth > wrapRect.width) left = e.clientX - wrapRect.left - ttWidth - 12;
+        lutTooltip.style.left = left + 'px';
+        lutTooltip.style.top = (e.clientY - wrapRect.top - 28) + 'px';
+      });
+      container.querySelector('.lut-scroll').addEventListener('mouseleave', function() {
+        lutTooltip.classList.remove('show');
+      });
+    }
+
     container.addEventListener('click', e => {
       // R28 P1④ — 시각 dot 은 pointer-events:none 강등, 탭/클릭 대상 = .lut-dot-touch(44px) + 열 hit rect.
       const target = e.target.closest('.lut-dot-touch, .lut-dot-hit');
