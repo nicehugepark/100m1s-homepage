@@ -4890,7 +4890,7 @@ async function initThemeTrend() {
         const polyPts = points.map(p => p.x + ',' + p.y).join(' ');
         const strokeW = isMobile ? 2 : 1.2;
         const dotR = isMobile ? 3.5 : 2;
-        const hitR = isMobile ? 16 : 12;
+        const hitR = isMobile ? 22 : 12; /* 모바일 터치 타겟 44px(r=22) — 상한가 lut-dot-touch r=22 패턴 정합 */
         svg += '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="' + strokeW + '" stroke-linecap="round" stroke-linejoin="round" opacity="0.8" data-theme-idx="' + ti + '"/>';
         points.forEach(p => {
           svg += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + hitR + '" fill="transparent" stroke="none" data-theme="' + escapeHtml(theme.name) + '" data-amount="' + p.amount + '" data-date="' + p.date + '" data-theme-idx="' + ti + '" data-color="' + color + '" class="tt-hit" style="cursor:pointer"/>';

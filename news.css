@@ -1449,8 +1449,8 @@ a.cal-credit-row:hover,
   overflow-x: auto;
 }
 .theme-tree-row {
-  display: flex; align-items: center; height: 36px; cursor: pointer;
-  border-radius: 6px; padding: 0 8px; transition: background 0.12s;
+  display: flex; align-items: center; min-height: 44px; cursor: pointer;
+  border-radius: 6px; padding: 4px 8px; transition: background 0.12s;
   user-select: none;
 }
 .theme-tree-row:hover { background: rgba(255,255,255,0.04); }
