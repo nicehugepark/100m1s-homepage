@@ -1000,7 +1000,13 @@ a.cal-credit-row:hover,
 .cal-threshold { font-size:12px; padding:1px 0; color:var(--tx2); }
 .cal-threshold.triggered { color:var(--neg); font-weight:600; }
 .cal-threshold.safe { color:var(--pos); }
-.cal-spark-empty { width:80px; height:32px; background: var(--g04); border-radius:4px; flex-shrink:0; }
+/* 장중 스파크라인 미완(빈 상태) — 완전 회색 박스 대신 점선 베이스라인으로 "수집 중" 표시 (design ss_8976vzxzf) */
+.cal-spark-empty {
+  width:60px; height:32px; flex-shrink:0; border-radius:3px;
+  background: linear-gradient(transparent 49.5%, var(--g05) 49.5%, var(--g05) 50.5%, transparent 50.5%);
+  background-size: 5px 100%;
+  opacity: 0.5;
+}
 .cal-disc-cb-warn { display:inline-block; padding:1px 5px; border-radius:3px; font-size:12px; font-weight:700; letter-spacing:0.3px; background:var(--am4); color:var(--am); border:1px solid var(--am3); vertical-align:middle; }
 .cal-disc-item { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:12px; color:var(--tx2); text-decoration:none; cursor:pointer; }
 .cal-disc-item:hover { color:var(--tx); }
