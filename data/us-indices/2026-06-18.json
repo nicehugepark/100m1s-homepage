@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26371.29,
-      "change_pct": -0.02,
+      "point": 26368.37,
+      "change_pct": -0.03,
       "candle": {
         "o": 26493.21,
         "h": 26509.4,
         "l": 26261.39,
-        "c": 26371.29
+        "c": 26368.37
       },
       "range_240d": {
         "low": 20393.13,
@@ -2040,13 +2040,11 @@
           "o": 26493.21,
           "h": 26509.4,
           "l": 26261.39,
-          "c": 26371.29
+          "c": 26368.37
         }
       ],
       "spark": [
         26493.21,
-        26436.29,
-        26504.66,
         26459.16,
         26460.62,
         26359.85,
@@ -2084,7 +2082,9 @@
         26400.71,
         26388.57,
         26371.29,
-        26371.29
+        26364.04,
+        26366.24,
+        26368.37
       ],
       "news": {
         "summary": "AI 기업 약점 노출 가운데 Meta 구독 모델 전환 시도. 웨어러블·중국 AI 스타트업 IPO 흐름으로 성장주 투자 지속 중.",
@@ -2108,13 +2108,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7511.31,
-      "change_pct": -0.0,
+      "point": 7510.78,
+      "change_pct": -0.01,
       "candle": {
         "o": 7524.5,
         "h": 7532.17,
         "l": 7489.94,
-        "c": 7511.31
+        "c": 7510.78
       },
       "range_240d": {
         "low": 6225.52,
@@ -4145,13 +4145,11 @@
           "o": 7524.5,
           "h": 7532.17,
           "l": 7489.94,
-          "c": 7511.31
+          "c": 7510.78
         }
       ],
       "spark": [
         7524.5,
-        7514.74,
-        7526.56,
         7523.41,
         7524.59,
         7509.68,
@@ -4189,7 +4187,9 @@
         7516.25,
         7513.15,
         7511.23,
-        7511.31
+        7510.78,
+        7510.79,
+        7510.78
       ],
       "news": {
         "summary": "이란 협상 체결로 유가 급락·시장 반등. 미국 물가(CPI 4.2% 고착)·연준 금리 경로 불확실성·호르무즈 공급망 정상화 지연으로 중기 경기 둔화 우려 심화 중.",
@@ -4213,13 +4213,13 @@
     },
     {
       "name": "DOW",
-      "point": 52198.86,
+      "point": 52195.55,
       "change_pct": 0.38,
       "candle": {
         "o": 51937.56,
         "h": 52281.19,
         "l": 51937.56,
-        "c": 52198.86
+        "c": 52195.55
       },
       "range_240d": {
         "low": 43588.58,
@@ -6250,13 +6250,11 @@
           "o": 51937.56,
           "h": 52281.19,
           "l": 51937.56,
-          "c": 52198.86
+          "c": 52195.55
         }
       ],
       "spark": [
         51937.56,
-        52073.89,
-        52118.47,
         52180.5,
         52198.1,
         52190.17,
@@ -6294,7 +6292,9 @@
         52195.07,
         52187.36,
         52198.12,
-        52198.86
+        52202.65,
+        52197.02,
+        52195.55
       ],
       "news": {
         "summary": "중동 긴장 완화로 에너지·금융주 회복 신호. 연준 새 의장 커뮤니케이션 정책 변화·글로벌 무역 불균형 논의 복잡성 증대. 대형주 경영진 교체 활발.",
@@ -6319,99 +6319,82 @@
   ],
   "news_chips": [
     {
-      "summary": "워시 연준의장이 금리 인상 여론 속에서 첫 회의 주재, 기존 인하 입장과 충돌 심화",
+      "summary": "5월 영국 인플레이션이 2.8% 수준 유지로 영중앙은행의 금리 인하 관측 강화",
       "source": "WSJ",
-      "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main",
-      "published_ts": 1781682357.0,
+      "url": "https://www.wsj.com/economy/central-banking/u-k-inflation-remains-unexpectedly-flat-before-bank-of-england-meeting-c127a480",
+      "published_ts": 1781681760.0,
       "impact_high": true
     },
     {
-      "summary": "이란 유조선 3척이 5개월 만에 미국 해군 봉쇄를 탈출, 중동 분쟁 완화 신호 → 유가 공급 회복 기대",
+      "summary": "중동 분쟁 종료 협상에 따라 아이란 유조선 3척이 미 해군 봉쇄를 벗어나며 호르무즈 공급 회복 신호",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html",
       "published_ts": 1781680985.0,
       "impact_high": true
     },
     {
-      "summary": "한국은행이 중동 분쟁 해소에도 에너지 수입가격 상승으로 국내 물가 고물가 장기화 경고",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/central-banking/bank-of-korea-warns-inflation-may-stay-elevated-despite-middle-east-truce-93d64fe7",
-      "published_ts": 1781678820.0,
+      "summary": "연준의장 Warsh의 첫 금리 결정 회의 진행 중, 기존 금리 인하 입장과 달리 연준 내 금리 인상 논의가 강화됨",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf",
+      "published_ts": 1781658000.0,
       "impact_high": true
     },
     {
-      "summary": "영국 5월 인플레이션이 2.8%로 예상과 달리 정체, 영중앙은행 금리 인상 전망 약화",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/06/17/inflation-uk-cpi-interest-rates-bank-of-england.html",
-      "published_ts": 1781678499.0,
-      "impact_high": true
-    },
-    {
-      "summary": "미국 5월 미매각 주택 계약이 예상 초과 증가(3.8%), 부동산 회복세 신호 지속",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9",
-      "published_ts": 1781705400.0,
+      "summary": "트럼프 정부의 이란 협상 초안 공개로 경제 제재 완화 범위와 핵 협상 세부 쟁점 부각",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/world/middle-east/an-annotated-analysis-of-a-u-s-draft-of-the-iran-deal-6a9ec49f",
+      "published_ts": 1781706660.0,
       "impact_high": false
     },
     {
-      "summary": "미국 5월 소매판매가 예상 초과 가속, 유가 상승에도 소비자 지출력 탄력성 유지",
-      "source": "WSJ경제",
+      "summary": "5월 미국 소매 판매가 예상을 상회하며, 높은 유가에도 소비자 구매력 견고함 입증",
+      "source": "WSJ",
       "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438",
       "published_ts": 1781701500.0,
       "impact_high": false
     },
     {
-      "summary": "유가가 4일 연속 하락, 중동 분쟁 완화로 석유 공급 회복 시나리오 형성 → 에너지 인플레 압박 완화 기대",
-      "source": "WSJ세계",
+      "summary": "중국이 위안화 국제화를 통해 외부 경제 충격 완충 능력 강화 중",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/economy/central-banking/china-moves-to-boost-the-use-of-yuan-globally-edc2d7e1",
+      "published_ts": 1781670960.0,
+      "impact_high": false
+    },
+    {
+      "summary": "AI 투자 열풍으로 결합채권 시장 거래량이 팬데믹 이후 최고 수준 기록",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/finance/investing/the-ai-booms-hunt-for-cash-hits-a-new-corner-of-the-bond-market-0ea6f36b?mod=rss_markets_main",
+      "published_ts": 1781661600.0,
+      "impact_high": false
+    },
+    {
+      "summary": "호르무즈 해협 유가 공급 회복 기대로 유가가 4일 연속 하락 마감",
+      "source": "WSJ",
       "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0",
       "published_ts": 1781637720.0,
       "impact_high": false
     },
     {
-      "summary": "미국 5월 주택착공이 15.4% 급락, 경제 둔화 신호로 부동산 수요 약화 심화",
-      "source": "WSJ경제",
+      "summary": "5월 미국 주택 착공이 15.4% 급락하며 경제 약세 신호 발생",
+      "source": "WSJ",
       "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963",
       "published_ts": 1781614140.0,
       "impact_high": false
     },
     {
-      "summary": "퀄컴이 AI 칩 시장 성장 속 스마트폰 부진을 상쇄하는 밸류 투자처로 평가, 반도체 수요 분산 진행",
+      "summary": "독일 투자자신심이 중동 분쟁 종료 기대로 급등, 에너지 가격 안정 전망 주도",
       "source": "WSJ",
-      "url": "https://www.wsj.com/tech/qualcomm-is-a-rare-ai-chip-value-play-3e09f70b?mod=rss_markets_main",
-      "published_ts": 1781602200.0,
-      "impact_high": false
-    },
-    {
-      "summary": "각국 중앙은행이 런던·뉴욕 대신 국내에 금 보관하는 추세 강화, 지정학적 우려 반영된 자산 방어 전환",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/global/central-banks-are-rethinking-where-they-store-their-gold-916b79d8",
-      "published_ts": 1781601780.0,
-      "impact_high": false
+      "url": "https://www.wsj.com/economy/central-banking/german-investor-confidence-jumps-on-hopes-of-end-to-middle-east-conflict-99babb7f",
+      "published_ts": 1781604540.0,
+      "impact_high": true
     }
   ],
-  "_article_sig": "861e150a09901bb89cfd4765b410238f37edb5f973c2b21a83039d60626ba0dc",
+  "_article_sig": "6bb950bd8c525c5bff885590dec3fff6e175a38f829624adcfdf3d457ab6f692",
   "built_at_kst": "2026-06-16T07:01:49.104509+09:00",
   "regular_open": true,
   "_futures_news": {
-    "S&P500": {
-      "summary": "연준 금리 결정(Warsh 첫 의사록)에서 인상 우위 신호. 이란 석유 공급 정상화 기대에 에너지 인플레 완화 경로 개시. 미국 소비는 소매 매출 가속화 강세, 주택 착공 -15.4% 폭락으로 혼조. 글로벌 매크로 불확실성 속 위험자산 선호도 재점검.",
-      "sources": [
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main"
-        },
-        {
-          "name": "CNBC",
-          "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438"
-        }
-      ]
-    },
     "NASDAQ": {
-      "summary": "OpenAI·Anthropic IPO 준비 가속화에 빅테크 자본 조달 열풍 지속. AI convertible 채권 발행량 COVID 팬데믹 이후 최고 수준. 반도체 밸류 매력 심화(Qualcomm 데이터센터·자동차 전환 평가), 성장주 선호도 강화.",
+      "summary": "AI 자금 조달 가열에 따른 기술주 강세 지속. OpenAI·Anthropic 등 AI 대형사 기업공개 준비 본격화되고 전환사채 시장이 팬데믹 이후 최고 거래량 기록하면서 빅테크 펀딩 붐 확대. 반도체 쪽도 AI 칩 수요에 질리스닥100 선물 동조 강화.",
       "sources": [
         {
           "name": "WSJ",
@@ -6427,37 +6410,52 @@
         }
       ]
     },
-    "DOW": {
-      "summary": "유가 급락 신호에 경기민감주 강세 기대. 보험업 혼조(Medicare 위기 완화 vs State Farm 구조조정 논란). 국제 성장 둔화(영국 GDP -0.1%, 한국 인플레 경고) 속 에너지 인플레 완화가 광범위 경기 회복 변수.",
+    "S&P500": {
+      "summary": "FOMC 회의 금리 결정 확정 단계 진입으로 매크로 불확실성 고조. Warsh 연준 의장이 기존 인상론에서 금리 변곡점 직면하며 정책 방향성 재점검 시점. 미국 경기 신호 엇갈림(주택 착공 -15.4% 급감 vs 소비자 판매 가속)과 에너지 가격 압력(이란 핵합의 유가 급락), 수입 인플레(PPI +1.1%) 양립으로 스태그플레이션 우려 재점화.",
       "sources": [
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
+          "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main"
         },
         {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/finance/stocks/the-medicare-crisis-for-insurers-is-over-the-easy-gains-are-too-04ae6b36?mod=rss_markets_main"
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf"
+        },
+        {
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
+        }
+      ]
+    },
+    "DOW": {
+      "summary": "경기민감 자산 약세 가시화. 주택 착공 15% 급락과 유가 동반 하락(Hormuz strait 협상 성과)이 전통 산업·금융주 수익성 압박 신호. 금융권도 보험·증권사 구조조정(State Farm AI 도입, Robinhood 10% 감원) 단행하며 인력 효율화 움직임 가속.",
+      "sources": [
+        {
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
         },
         {
           "name": "WSJ",
           "url": "https://www.wsj.com/finance/state-farms-ai-plan-for-sales-agents-sparks-uproar-a-real-slap-in-the-face-6453e2cb?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/business/robinhood-markets-to-cut-10-of-workforce-in-restructuring-15900954?mod=rss_markets_main"
         }
       ]
     }
   },
   "futures": {
-    "as_of_kst": "2026-06-18T01:50:02.951437+09:00",
+    "as_of_kst": "2026-06-18T02:00:04.924570+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7587.75,
-        "change_pct": 0.01,
+        "point": 7582.5,
+        "change_pct": -0.06,
         "spark": [
           7581.25,
-          7595.75,
-          7589.5,
           7586.25,
           7598.0,
           7594.0,
@@ -6495,21 +6493,23 @@
           7590.25,
           7586.0,
           7588.0,
-          7587.75
+          7584.75,
+          7583.25,
+          7582.5
         ],
         "candle": {
           "o": 7581.25,
           "h": 7612.5,
           "l": 7560.5,
-          "c": 7587.75
+          "c": 7583.0
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 21.12,
-          "high_change_pct": -0.47
+          "low_change_pct": 21.05,
+          "high_change_pct": -0.53
         },
         "daily_expanded": [
           {
@@ -8533,25 +8533,25 @@
             "o": 7581.25,
             "h": 7612.5,
             "l": 7560.5,
-            "c": 7587.75,
-            "v": 737605
+            "c": 7583.0,
+            "v": 751642
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "연준 금리 결정(Warsh 첫 의사록)에서 인상 우위 신호. 이란 석유 공급 정상화 기대에 에너지 인플레 완화 경로 개시. 미국 소비는 소매 매출 가속화 강세, 주택 착공 -15.4% 폭락으로 혼조. 글로벌 매크로 불확실성 속 위험자산 선호도 재점검.",
+          "summary": "FOMC 회의 금리 결정 확정 단계 진입으로 매크로 불확실성 고조. Warsh 연준 의장이 기존 인상론에서 금리 변곡점 직면하며 정책 방향성 재점검 시점. 미국 경기 신호 엇갈림(주택 착공 -15.4% 급감 vs 소비자 판매 가속)과 에너지 가격 압력(이란 핵합의 유가 급락), 수입 인플레(PPI +1.1%) 양립으로 스태그플레이션 우려 재점화.",
           "sources": [
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main"
             },
             {
-              "name": "CNBC",
-              "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf"
             },
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
             }
           ]
         }
@@ -8559,12 +8559,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30459.0,
-        "change_pct": 0.48,
+        "point": 30406.75,
+        "change_pct": 0.31,
         "spark": [
           30306.5,
-          30441.25,
-          30409.5,
           30519.75,
           30452.25,
           30472.25,
@@ -8602,21 +8600,23 @@
           30440.0,
           30458.75,
           30429.75,
-          30459.0
+          30406.25,
+          30398.5,
+          30406.75
         ],
         "candle": {
           "o": 30306.5,
           "h": 30584.5,
           "l": 30284.75,
-          "c": 30459.0
+          "c": 30405.75
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 33.1,
-          "high_change_pct": -0.83
+          "low_change_pct": 32.87,
+          "high_change_pct": -1.0
         },
         "daily_expanded": [
           {
@@ -10640,13 +10640,13 @@
             "o": 30306.5,
             "h": 30584.5,
             "l": 30284.75,
-            "c": 30459.0,
-            "v": 306449
+            "c": 30405.75,
+            "v": 312019
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "OpenAI·Anthropic IPO 준비 가속화에 빅테크 자본 조달 열풍 지속. AI convertible 채권 발행량 COVID 팬데믹 이후 최고 수준. 반도체 밸류 매력 심화(Qualcomm 데이터센터·자동차 전환 평가), 성장주 선호도 강화.",
+          "summary": "AI 자금 조달 가열에 따른 기술주 강세 지속. OpenAI·Anthropic 등 AI 대형사 기업공개 준비 본격화되고 전환사채 시장이 팬데믹 이후 최고 거래량 기록하면서 빅테크 펀딩 붐 확대. 반도체 쪽도 AI 칩 수요에 질리스닥100 선물 동조 강화.",
           "sources": [
             {
               "name": "WSJ",
@@ -10666,12 +10666,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52650.0,
+        "point": 52651.0,
         "change_pct": 0.34,
         "spark": [
           52408.0,
-          52437.0,
-          52514.0,
           52522.0,
           52568.0,
           52623.0,
@@ -10709,20 +10707,22 @@
           52662.0,
           52639.0,
           52650.0,
-          52650.0
+          52641.0,
+          52651.0,
+          52651.0
         ],
         "candle": {
           "o": 52408.0,
           "h": 52734.0,
           "l": 52397.0,
-          "c": 52650.0
+          "c": 52652.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52650.0,
+          "high": 52652.0,
           "low_date": "2025-08-01",
           "high_date": "2026-06-17",
-          "low_change_pct": 20.45,
+          "low_change_pct": 20.46,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12747,30 +12747,30 @@
             "o": 52408.0,
             "h": 52734.0,
             "l": 52397.0,
-            "c": 52650.0,
-            "v": 61220
+            "c": 52652.0,
+            "v": 61776
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "유가 급락 신호에 경기민감주 강세 기대. 보험업 혼조(Medicare 위기 완화 vs State Farm 구조조정 논란). 국제 성장 둔화(영국 GDP -0.1%, 한국 인플레 경고) 속 에너지 인플레 완화가 광범위 경기 회복 변수.",
+          "summary": "경기민감 자산 약세 가시화. 주택 착공 15% 급락과 유가 동반 하락(Hormuz strait 협상 성과)이 전통 산업·금융주 수익성 압박 신호. 금융권도 보험·증권사 구조조정(State Farm AI 도입, Robinhood 10% 감원) 단행하며 인력 효율화 움직임 가속.",
           "sources": [
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/stocks/the-medicare-crisis-for-insurers-is-over-the-easy-gains-are-too-04ae6b36?mod=rss_markets_main"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
             },
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/finance/state-farms-ai-plan-for-sales-agents-sparks-uproar-a-real-slap-in-the-face-6453e2cb?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/business/robinhood-markets-to-cut-10-of-workforce-in-restructuring-15900954?mod=rss_markets_main"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-18T01:50:06.735796+09:00"
+  "intraday_refreshed_kst": "2026-06-18T02:01:20.382382+09:00"
 }
