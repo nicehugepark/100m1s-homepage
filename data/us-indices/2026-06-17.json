@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26371.61,
-      "change_pct": -0.02,
+      "point": 26424.9,
+      "change_pct": 0.18,
       "candle": {
         "o": 26493.21,
         "h": 26509.4,
         "l": 26329.97,
-        "c": 26371.61
+        "c": 26424.9
       },
       "range_240d": {
         "low": 20393.13,
@@ -2040,7 +2040,7 @@
           "o": 26493.21,
           "h": 26509.4,
           "l": 26329.97,
-          "c": 26371.61
+          "c": 26424.9
         }
       ],
       "spark": [
@@ -2053,7 +2053,9 @@
         26359.85,
         26355.58,
         26366.68,
-        26371.61
+        26416.51,
+        26428.65,
+        26424.9
       ],
       "news": {
         "summary": "AI 기업 약점 노출 가운데 Meta 구독 모델 전환 시도. 웨어러블·중국 AI 스타트업 IPO 흐름으로 성장주 투자 지속 중.",
@@ -2077,13 +2079,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7517.47,
-      "change_pct": 0.08,
+      "point": 7523.99,
+      "change_pct": 0.17,
       "candle": {
         "o": 7524.5,
         "h": 7529.18,
         "l": 7507.33,
-        "c": 7517.47
+        "c": 7523.99
       },
       "range_240d": {
         "low": 6225.52,
@@ -4114,7 +4116,7 @@
           "o": 7524.5,
           "h": 7529.18,
           "l": 7507.33,
-          "c": 7517.47
+          "c": 7523.99
         }
       ],
       "spark": [
@@ -4127,7 +4129,9 @@
         7509.68,
         7514.4,
         7517.64,
-        7517.47
+        7522.76,
+        7524.56,
+        7523.99
       ],
       "news": {
         "summary": "이란 협상 체결로 유가 급락·시장 반등. 미국 물가(CPI 4.2% 고착)·연준 금리 경로 불확실성·호르무즈 공급망 정상화 지연으로 중기 경기 둔화 우려 심화 중.",
@@ -4151,13 +4155,13 @@
     },
     {
       "name": "DOW",
-      "point": 52258.44,
-      "change_pct": 0.5,
+      "point": 52239.72,
+      "change_pct": 0.46,
       "candle": {
         "o": 51937.56,
         "h": 52269.16,
         "l": 51937.56,
-        "c": 52258.44
+        "c": 52239.72
       },
       "range_240d": {
         "low": 43588.58,
@@ -6188,7 +6192,7 @@
           "o": 51937.56,
           "h": 52269.16,
           "l": 51937.56,
-          "c": 52258.44
+          "c": 52239.72
         }
       ],
       "spark": [
@@ -6201,7 +6205,9 @@
         52190.17,
         52230.24,
         52260.75,
-        52258.44
+        52244.52,
+        52244.01,
+        52239.72
       ],
       "news": {
         "summary": "중동 긴장 완화로 에너지·금융주 회복 신호. 연준 새 의장 커뮤니케이션 정책 변화·글로벌 무역 불균형 논의 복잡성 증대. 대형주 경영진 교체 활발.",
@@ -6226,137 +6232,143 @@
   ],
   "news_chips": [
     {
-      "summary": "5월 미국 생산자물가가 0.7% 예상을 웃돌며 1.1% 상승하여 인플레이션 장기화 우려 재현",
+      "summary": "연준이 금리 결정을 앞두고 기술주가 강세를 보이면서 시장 기대가 부각되고 있다",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main",
+      "published_ts": 1781682357.0,
+      "impact_high": true
+    },
+    {
+      "summary": "이란 유조선 3척이 미 해군 봉쇄를 탈출하면서 석유 공급 우려 완화 신호가 유가 하락을 촉발했다",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html",
       "published_ts": 1781680985.0,
       "impact_high": true
     },
     {
-      "summary": "한국은행이 중동 분쟁 여파로 인한 높은 에너지 가격이 향후 물가 상승 리스크라고 경고",
-      "source": "WSJ",
+      "summary": "한국은행이 중동 에너지 비용 상승으로 인한 인플레이션이 장기간 높은 수준을 유지할 것으로 경고했다",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/central-banking/bank-of-korea-warns-inflation-may-stay-elevated-despite-middle-east-truce-93d64fe7",
       "published_ts": 1781678820.0,
       "impact_high": true
     },
     {
-      "summary": "연준이 금리 인상 기조로 전환하며 신임 의장 워시의 금리 인하 주장과 배치되어 통화정책 리스크 증대",
+      "summary": "새 연준 의장이 기존 금리 인하 입장과 달리 금리 인상 논의에 직면하면서 통화정책 전환 신호가 나타났다",
+      "source": "WSJ경제",
+      "url": "https://www.wsj.com/economy/central-banking/trump-picked-warsh-to-cut-rates-his-committee-is-talking-about-hikes-3814bcaf",
+      "published_ts": 1781658000.0,
+      "impact_high": true
+    },
+    {
+      "summary": "미국 소매 판매 증가세가 5월에 예상을 상회하면서 높은 휘발유 가격에도 소비 강도가 유지되고 있다",
+      "source": "WSJ경제",
+      "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438",
+      "published_ts": 1781701500.0,
+      "impact_high": false
+    },
+    {
+      "summary": "AI 붐으로 인한 자금 수요가 전환사채 시장까지 확산되면서 팬데믹 이후 최고 거래량을 기록했다",
       "source": "WSJ",
       "url": "https://www.wsj.com/finance/banking/financial-services-roundup-market-talk-1e1d2067?mod=rss_markets_main",
       "published_ts": 1781695740.0,
       "impact_high": false
     },
     {
-      "summary": "AI 산업 자금 조달 열기로 신종 전환사채 시장 거래량이 코로나 팬데믹 이후 최고 수준 도달",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/banking/financial-services-roundup-market-talk-1e1d2067?mod=rss_markets_main",
-      "published_ts": 1781695740.0,
-      "impact_high": false
-    },
-    {
-      "summary": "우주 기업 스페이스X가 상장 후 초기 거래에서 주가 50% 상승하며 기술주 투자심리 부양",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/banking/financial-services-roundup-market-talk-1e1d2067?mod=rss_markets_main",
-      "published_ts": 1781695740.0,
-      "impact_high": false
-    },
-    {
-      "summary": "중국이 지정학적 위험 대비 위안화 국제화 인프라 확충으로 달러 의존도 감축 전략 가속화",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/china-moves-to-boost-the-use-of-yuan-globally-edc2d7e1",
-      "published_ts": 1781670960.0,
-      "impact_high": false
-    },
-    {
-      "summary": "미국-이란 합의로 호르무즈 해협 봉쇄 해제되며 유가가 4거래일 연속 하락하고 원유 공급망 재개 신호",
-      "source": "WSJ",
+      "summary": "미국-이란 거래 합의로 중동 석유 공급 회복 가능성이 높아지면서 유가가 4일 연속 하락했다",
+      "source": "WSJ세계",
       "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0",
       "published_ts": 1781637720.0,
       "impact_high": false
     },
     {
-      "summary": "5월 미국 신규 주택착공이 15.4% 급락하며 건설 경기 약세와 경기 둔화 신호 강화",
-      "source": "WSJ",
+      "summary": "미국 주택 착공이 5월에 예상을 크게 밑돌면서 부동산 경기 약세가 심화되고 있다",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963",
       "published_ts": 1781614140.0,
       "impact_high": false
     },
     {
-      "summary": "일본중앙은행이 31년 만에 기준금리를 1%로 인상하며 엔화 강세와 동아시아 환율 변동성 확대",
-      "source": "WSJ",
+      "summary": "일본 중앙은행이 31년 만에 정책금리를 1%로 인상하며 에너지 가격 상승에 따른 인플레이션 억제에 나섰다",
+      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/central-banking/bank-of-japan-lifts-rates-to-31-year-high-a19871eb",
       "published_ts": 1781591880.0,
       "impact_high": true
     },
     {
-      "summary": "호르무즈 해협 정상화에 수주 이상 소요되며 원유 공급망 불안 지속으로 유가 변동성 심화 예상",
-      "source": "WSJ",
+      "summary": "호르무즈 해협 정상화에 수주가 소요될 전망이면서 유가 및 글로벌 공급망 영향이 수개월 지속될 것으로 예상된다",
+      "source": "WSJ세계",
       "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70",
       "published_ts": 1781546280.0,
       "impact_high": true
     }
   ],
-  "_article_sig": "43503a108013ad071d43e4f74b74367e93555180cb5d4c48c625f1941fe2341f",
+  "_article_sig": "6f13fcbaa93a0a98c41296e24d0536357ae1b24550abcdb1eae935f65e6871b6",
   "built_at_kst": "2026-06-16T07:01:49.104509+09:00",
   "regular_open": true,
   "_futures_news": {
-    "S&P500": {
-      "summary": "FOMC 회의 개시 중 금리 방향성 불확실성 심화. Kevin Warsh 연준 의장 인상 입장vs 위원회 인하 기대치 괴리 확대. 소비자 내수 탄력(5월 소매판매 예상 상회) vs 주택건설 급락(-15.4%) 경제 이중신호. 글로벌 에너지 위기 진정 신호—이란 핵 협상 체결로 유가 4일 연속 하락, 인플레 진정 기대 반면 이미 높아진 에너지 가격 구조적 압박 지속.",
+    "NASDAQ": {
+      "summary": "빅테크 강세와 우주·AI 성장주 동조. SpaceX 50% 급등, AI 펀딩 열풍 지속(convertible bond 최고 규모), AI칩 선물화 등 성장 모멘텀 강화 중.",
       "sources": [
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438"
+          "url": "https://www.wsj.com/finance/stocks/spacex-stock-has-climbed-about-50-the-flippers-are-kicking-themselves-b968032c?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/investing/the-ai-booms-hunt-for-cash-hits-a-new-corner-of-the-bond-market-0ea6f36b?mod=rss_markets_main"
+        },
+        {
+          "name": "한경국제",
+          "url": "https://www.hankyung.com/article/2026061726151"
+        }
+      ]
+    },
+    "S&P500": {
+      "summary": "FOMC 회의 진행 중 유가 급락(이란 석유 공급 정상화로 4일 연속 하락)과 소비 강세(소매 판매 가속) 공존. 주택 착공 급감(-15.4%)으로 부동산 약화, 물가 신호 혼재(PPI 상승 vs 유가 하락 방향).",
+      "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main"
         },
         {
           "name": "WSJ",
           "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
         },
         {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html"
         }
       ]
     },
     "DOW": {
-      "summary": "유럽 대형 금융 M&A 전개 불구 정치 리스크 심화—UniCredit의 Commerzbank 인수 독일 정부 정면 반발로 거래 좌절 신호. 보험주 수익성 회복(Medicare 위기 진정)도 이미 장기화 신호. 경기 둔화 우려 속 산업재·금융 블루칩 선물 약세 견고. 호르무즈 해협 개통 지연(수주 단위)으로 국제 공급망 정상화 장기화 전망.",
+      "summary": "에너지 가격 정상화로 경기 부담 완화 신호. 유가 4일 연속 하락(이란 석유 공급 풀림), 독일 투자심리 상승(중동 전쟁 종료 기대), Hormuz 해운 재개로 공급망 정상화 전망. 금융 M&A 진전(UniCredit-Commerzbank).",
       "sources": [
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70"
-        }
-      ]
-    },
-    "NASDAQ": {
-      "summary": "FOMC 회의 개시 중 금리 방향성 불확실성 심화. Kevin Warsh 연준 의장 인상 입장vs 위원회 인하 기대치 괴리 확대. 소비자 내수 탄력(5월 소매판매 예상 상회) vs 주택건설 급락(-15.4%) 경제 이중신호. 글로벌 에너지 위기 진정 신호—이란 핵 협상 체결로 유가 4일 연속 하락, 인플레 진정 기대 반면 이미 높아진 에너지 가격 구조적 압박 지속.",
-      "sources": [
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438"
+          "url": "https://www.wsj.com/world/middle-east/the-trump-iran-deal-allows-tehran-to-immediately-sell-oil-37a1ebe5"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
+          "url": "https://www.wsj.com/economy/central-banking/german-investor-confidence-jumps-on-hopes-of-end-to-middle-east-conflict-99babb7f"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
+          "url": "https://www.wsj.com/finance/banking/europes-biggest-banking-deal-in-years-is-getting-closer-a10ec4bc?mod=rss_markets_main"
         }
       ]
     }
   },
   "futures": {
-    "as_of_kst": "2026-06-17T23:10:08.068654+09:00",
+    "as_of_kst": "2026-06-17T23:20:06.291302+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7580.25,
-        "change_pct": -0.09,
+        "point": 7589.75,
+        "change_pct": 0.03,
         "spark": [
           7581.25,
-          7593.75,
-          7591.0,
           7592.5,
           7594.5,
           7595.75,
@@ -6394,21 +6406,23 @@
           7596.0,
           7581.0,
           7587.0,
-          7580.25
+          7589.25,
+          7594.75,
+          7589.75
         ],
         "candle": {
           "o": 7581.25,
           "h": 7612.5,
-          "l": 7579.75,
-          "c": 7580.25
+          "l": 7578.5,
+          "c": 7589.75
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 21.0,
-          "high_change_pct": -0.57
+          "low_change_pct": 21.15,
+          "high_change_pct": -0.45
         },
         "daily_expanded": [
           {
@@ -8431,26 +8445,26 @@
             "date": "2026-06-17",
             "o": 7581.25,
             "h": 7612.5,
-            "l": 7579.75,
-            "c": 7580.25,
-            "v": 314559
+            "l": 7578.5,
+            "c": 7589.75,
+            "v": 355688
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "FOMC 회의 개시 중 금리 방향성 불확실성 심화. Kevin Warsh 연준 의장 인상 입장vs 위원회 인하 기대치 괴리 확대. 소비자 내수 탄력(5월 소매판매 예상 상회) vs 주택건설 급락(-15.4%) 경제 이중신호. 글로벌 에너지 위기 진정 신호—이란 핵 협상 체결로 유가 4일 연속 하락, 인플레 진정 기대 반면 이미 높아진 에너지 가격 구조적 압박 지속.",
+          "summary": "FOMC 회의 진행 중 유가 급락(이란 석유 공급 정상화로 4일 연속 하락)과 소비 강세(소매 판매 가속) 공존. 주택 착공 급감(-15.4%)으로 부동산 약화, 물가 신호 혼재(PPI 상승 vs 유가 하락 방향).",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438"
+              "url": "https://www.wsj.com/livecoverage/fed-meeting-warsh-interest-rate-06-17-2026?mod=rss_markets_main"
             },
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
             },
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html"
             }
           ]
         }
@@ -8458,12 +8472,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30343.5,
-        "change_pct": 0.1,
+        "point": 30392.25,
+        "change_pct": 0.26,
         "spark": [
           30306.5,
-          30474.25,
-          30459.75,
           30461.75,
           30466.75,
           30478.5,
@@ -8501,21 +8513,23 @@
           30472.25,
           30347.75,
           30389.0,
-          30343.5
+          30385.25,
+          30444.25,
+          30392.25
         ],
         "candle": {
           "o": 30306.5,
           "h": 30584.5,
           "l": 30306.5,
-          "c": 30343.5
+          "c": 30392.25
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 32.6,
-          "high_change_pct": -1.2
+          "low_change_pct": 32.81,
+          "high_change_pct": -1.04
         },
         "daily_expanded": [
           {
@@ -10539,25 +10553,25 @@
             "o": 30306.5,
             "h": 30584.5,
             "l": 30306.5,
-            "c": 30343.5,
-            "v": 161969
+            "c": 30392.25,
+            "v": 180474
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "FOMC 회의 개시 중 금리 방향성 불확실성 심화. Kevin Warsh 연준 의장 인상 입장vs 위원회 인하 기대치 괴리 확대. 소비자 내수 탄력(5월 소매판매 예상 상회) vs 주택건설 급락(-15.4%) 경제 이중신호. 글로벌 에너지 위기 진정 신호—이란 핵 협상 체결로 유가 4일 연속 하락, 인플레 진정 기대 반면 이미 높아진 에너지 가격 구조적 압박 지속.",
+          "summary": "빅테크 강세와 우주·AI 성장주 동조. SpaceX 50% 급등, AI 펀딩 열풍 지속(convertible bond 최고 규모), AI칩 선물화 등 성장 모멘텀 강화 중.",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/economy/consumers/u-s-retailers-sales-growth-accelerated-last-month-90969438"
+              "url": "https://www.wsj.com/finance/stocks/spacex-stock-has-climbed-about-50-the-flippers-are-kicking-themselves-b968032c?mod=rss_markets_main"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
+              "url": "https://www.wsj.com/finance/investing/the-ai-booms-hunt-for-cash-hits-a-new-corner-of-the-bond-market-0ea6f36b?mod=rss_markets_main"
             },
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/commodities-futures/oil-futures-rise-on-likely-technical-recovery-c1a058f0"
+              "name": "한경국제",
+              "url": "https://www.hankyung.com/article/2026061726151"
             }
           ]
         }
@@ -10565,12 +10579,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52617.0,
-        "change_pct": 0.28,
+        "point": 52708.0,
+        "change_pct": 0.45,
         "spark": [
           52408.0,
-          52448.0,
-          52441.0,
           52455.0,
           52466.0,
           52465.0,
@@ -10608,20 +10620,22 @@
           52646.0,
           52636.0,
           52681.0,
-          52617.0
+          52707.0,
+          52691.0,
+          52708.0
         ],
         "candle": {
           "o": 52408.0,
-          "h": 52663.0,
+          "h": 52717.0,
           "l": 52397.0,
-          "c": 52617.0
+          "c": 52708.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52617.0,
+          "high": 52708.0,
           "low_date": "2025-08-01",
           "high_date": "2026-06-17",
-          "low_change_pct": 20.38,
+          "low_change_pct": 20.59,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12644,24 +12658,32 @@
           {
             "date": "2026-06-17",
             "o": 52408.0,
-            "h": 52663.0,
+            "h": 52717.0,
             "l": 52397.0,
-            "c": 52617.0,
-            "v": 30334
+            "c": 52708.0,
+            "v": 33472
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "유럽 대형 금융 M&A 전개 불구 정치 리스크 심화—UniCredit의 Commerzbank 인수 독일 정부 정면 반발로 거래 좌절 신호. 보험주 수익성 회복(Medicare 위기 진정)도 이미 장기화 신호. 경기 둔화 우려 속 산업재·금융 블루칩 선물 약세 견고. 호르무즈 해협 개통 지연(수주 단위)으로 국제 공급망 정상화 장기화 전망.",
+          "summary": "에너지 가격 정상화로 경기 부담 완화 신호. 유가 4일 연속 하락(이란 석유 공급 풀림), 독일 투자심리 상승(중동 전쟁 종료 기대), Hormuz 해운 재개로 공급망 정상화 전망. 금융 M&A 진전(UniCredit-Commerzbank).",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70"
+              "url": "https://www.wsj.com/world/middle-east/the-trump-iran-deal-allows-tehran-to-immediately-sell-oil-37a1ebe5"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/central-banking/german-investor-confidence-jumps-on-hopes-of-end-to-middle-east-conflict-99babb7f"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/banking/europes-biggest-banking-deal-in-years-is-getting-closer-a10ec4bc?mod=rss_markets_main"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-17T23:11:42.615834+09:00"
+  "intraday_refreshed_kst": "2026-06-17T23:21:27.237844+09:00"
 }
