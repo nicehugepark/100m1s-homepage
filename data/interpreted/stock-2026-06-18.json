@@ -1,6 +1,6 @@
 {
   "date": "2026-06-18",
-  "generated_at": "2026-06-18T13:35:44.709410",
+  "generated_at": "2026-06-18T13:45:37.930784",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -16,12 +16,12 @@
       "summary": "정부 신규원전 부지 선정 → 원전산업 활성화 기대 → 원전·설비·건설 섹터"
     },
     {
-      "title": "AI광검출기",
-      "summary": "우리로 AI 데이터센터용 광검출기 상용화 → 광통신·반도체 수요 증가 기대"
-    },
-    {
       "title": "바이오제약",
       "summary": "선바이오 기술이전 바이오시밀러 FDA 승인 → 글로벌 로열티 수입 확대 → 바이오제약 섹터 수익성 개선"
+    },
+    {
+      "title": "AI광검출기",
+      "summary": "우리로 AI 데이터센터용 광검출기 상용화 → 광통신·반도체 수요 증가 기대"
     },
     {
       "title": "신규원전",
@@ -48,14 +48,14 @@
       "code": "001820",
       "name": "삼화콘덴서",
       "rank": 1,
-      "trade_amount": 664667000000,
-      "change_pct": 26.55,
-      "close_price": 191600,
+      "trade_amount": 672005000000,
+      "change_pct": 27.15,
+      "close_price": 192500,
       "open_price": 149500,
       "high_price": 196800,
       "low_price": 147600,
-      "industry": null,
-      "sector": null,
+      "industry": "전자부품 제조업",
+      "sector": "콘덴서(축전기) 제조",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
@@ -71,14 +71,17 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 16.97,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 196800,
         "high_date": "2026-06-18",
-        "high_pct": -2.64,
+        "high_pct": -2.18,
         "low": 24950,
         "low_date": "2025-08-20",
-        "low_pct": 667.94,
-        "current": 191600
+        "low_pct": 671.54,
+        "current": 192500
       },
       "daily_20": [
         {
@@ -219,7 +222,7 @@
           "o": 149500,
           "h": 196800,
           "l": 147600,
-          "c": 191600
+          "c": 192500
         }
       ],
       "intraday": {
@@ -281,7 +284,9 @@
           192200,
           191000,
           191300,
-          191300
+          193500,
+          192900,
+          192900
         ]
       },
       "credit_risk": true,
@@ -294,16 +299,25 @@
       "code": "004310",
       "name": "현대약품",
       "rank": 2,
-      "trade_amount": 205635000000,
-      "change_pct": 10.6,
-      "close_price": 8970,
+      "trade_amount": 217788000000,
+      "change_pct": 13.56,
+      "close_price": 9210,
       "open_price": 8110,
       "high_price": 9680,
       "low_price": 8110,
-      "industry": null,
-      "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "industry": "의약품 제조업",
+      "sector": "타코실, 마이녹실, 테놀민, 미에로화이바 등",
+      "themes": [
+        "바이오"
+      ],
+      "theme_paths": [
+        {
+          "name": "바이오",
+          "path": [
+            "바이오"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-06-17",
@@ -318,14 +332,17 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 8.47,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 15960,
         "high_date": "2026-02-13",
-        "high_pct": -43.8,
+        "high_pct": -42.29,
         "low": 3380,
         "low_date": "2025-06-27",
-        "low_pct": 165.38,
-        "current": 8970
+        "low_pct": 172.49,
+        "current": 9210
       },
       "daily_20": [
         {
@@ -466,7 +483,34 @@
           "o": 8110,
           "h": 9680,
           "l": 8110,
-          "c": 8970
+          "c": 9210
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-06-11) 대비 +60%↑",
+              "base_price": 5730,
+              "threshold": 9168,
+              "current": 9210,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-19",
+          "period_end": "2026-06-22",
+          "start": "2026-06-19",
+          "end": "2026-06-22",
+          "view_date": "2026-06-18",
+          "next_trading_day": "2026-06-19",
+          "next_trading_day_for_predicted": "2026-06-19",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -528,7 +572,9 @@
           8960,
           9020,
           8980,
-          8990
+          8970,
+          9300,
+          9260
         ]
       },
       "togusa_verdict": "neutral",
@@ -539,9 +585,9 @@
       "code": "085620",
       "name": "미래에셋생명",
       "rank": 3,
-      "trade_amount": 159705000000,
-      "change_pct": 5.72,
-      "close_price": 32350,
+      "trade_amount": 161355000000,
+      "change_pct": 5.88,
+      "close_price": 32400,
       "open_price": 30700,
       "high_price": 37300,
       "low_price": 30700,
@@ -599,11 +645,11 @@
       "range_240d": {
         "high": 37300,
         "high_date": "2026-06-18",
-        "high_pct": -13.27,
+        "high_pct": -13.14,
         "low": 6020,
         "low_date": "2025-06-25",
-        "low_pct": 437.38,
-        "current": 32350
+        "low_pct": 438.21,
+        "current": 32400
       },
       "daily_20": [
         {
@@ -744,7 +790,7 @@
           "o": 30700,
           "h": 37300,
           "l": 30700,
-          "c": 32350
+          "c": 32400
         }
       ],
       "intraday": {
@@ -806,7 +852,9 @@
           32800,
           32700,
           32500,
-          32300
+          31950,
+          32400,
+          32450
         ]
       },
       "credit_risk": true,
@@ -819,9 +867,9 @@
       "code": "067290",
       "name": "JW신약",
       "rank": 4,
-      "trade_amount": 128974000000,
-      "change_pct": -2.78,
-      "close_price": 2270,
+      "trade_amount": 132682000000,
+      "change_pct": -2.57,
+      "close_price": 2275,
       "open_price": 2425,
       "high_price": 2595,
       "low_price": 2170,
@@ -872,11 +920,11 @@
       "range_240d": {
         "high": 2670,
         "high_date": "2026-02-23",
-        "high_pct": -14.98,
+        "high_pct": -14.79,
         "low": 1246,
         "low_date": "2026-06-08",
-        "low_pct": 82.18,
-        "current": 2270
+        "low_pct": 82.58,
+        "current": 2275
       },
       "daily_20": [
         {
@@ -1017,7 +1065,7 @@
           "o": 2425,
           "h": 2595,
           "l": 2170,
-          "c": 2270
+          "c": 2275
         }
       ],
       "status_badges": [
@@ -1112,7 +1160,9 @@
           2255,
           2260,
           2275,
-          2275
+          2210,
+          2285,
+          2285
         ]
       },
       "credit_risk": true,
@@ -1125,14 +1175,14 @@
       "code": "052710",
       "name": "아모텍",
       "rank": 5,
-      "trade_amount": 100659000000,
-      "change_pct": 9.18,
-      "close_price": 33300,
+      "trade_amount": 101433000000,
+      "change_pct": 8.85,
+      "close_price": 33200,
       "open_price": 30000,
       "high_price": 36250,
       "low_price": 29000,
-      "industry": null,
-      "sector": null,
+      "industry": "전자부품 제조업",
+      "sector": "칩바리스터, 아몰퍼스코어",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
@@ -1147,14 +1197,17 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -2.62,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 36250,
         "high_date": "2026-06-18",
-        "high_pct": -8.14,
+        "high_pct": -8.41,
         "low": 8240,
         "low_date": "2026-01-21",
-        "low_pct": 304.13,
-        "current": 33300
+        "low_pct": 302.91,
+        "current": 33200
       },
       "daily_20": [
         {
@@ -1295,7 +1348,7 @@
           "o": 30000,
           "h": 36250,
           "l": 29000,
-          "c": 33300
+          "c": 33200
         }
       ],
       "intraday": {
@@ -1357,7 +1410,9 @@
           33850,
           33100,
           33200,
-          33250
+          33600,
+          33300,
+          33350
         ]
       },
       "credit_risk": true,
@@ -1370,14 +1425,14 @@
       "code": "298000",
       "name": "효성화학",
       "rank": 6,
-      "trade_amount": 85553000000,
-      "change_pct": 18.55,
-      "close_price": 79900,
+      "trade_amount": 86549000000,
+      "change_pct": 20.18,
+      "close_price": 81000,
       "open_price": 69000,
       "high_price": 87500,
       "low_price": 68500,
-      "industry": null,
-      "sector": null,
+      "industry": "기초 화학물질 제조업",
+      "sector": "-",
       "themes": [],
       "theme_paths": [],
       "pick_count": 2,
@@ -1395,14 +1450,17 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 12.61,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 154800,
         "high_date": "2024-06-27",
-        "high_pct": -48.39,
+        "high_pct": -47.67,
         "low": 46800,
         "low_date": "2026-06-16",
-        "low_pct": 70.73,
-        "current": 79900
+        "low_pct": 73.08,
+        "current": 81000
       },
       "daily_20": [
         {
@@ -1543,7 +1601,7 @@
           "o": 69000,
           "h": 87500,
           "l": 68500,
-          "c": 79900
+          "c": 81000
         }
       ],
       "intraday": {
@@ -1605,7 +1663,9 @@
           78500,
           79500,
           79700,
-          79900
+          81700,
+          81800,
+          81000
         ]
       },
       "credit_risk": true,
@@ -1618,14 +1678,14 @@
       "code": "009470",
       "name": "삼화전기",
       "rank": 7,
-      "trade_amount": 79008000000,
+      "trade_amount": 79027000000,
       "change_pct": 30.0,
       "close_price": 42900,
       "open_price": 32600,
       "high_price": 42900,
       "low_price": 32500,
-      "industry": null,
-      "sector": null,
+      "industry": "전자부품 제조업",
+      "sector": "콘덴서 제조,판매",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
@@ -1638,6 +1698,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 18.75,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 59500,
         "high_date": "2026-02-03",
@@ -1798,8 +1861,8 @@
           "summary": "삼화전기 상한가 (30.00%)",
           "cur_prc": 42900,
           "flu_rt": 30.0,
-          "trde_qty": 1921433,
-          "trde_prica_calc": 79008000000,
+          "trde_qty": 1921878,
+          "trde_prica_calc": 79027000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -1872,6 +1935,9 @@
           42900,
           42900,
           42900,
+          42900,
+          42900,
+          42900,
           42900
         ]
       },
@@ -1883,7 +1949,7 @@
       "code": "046970",
       "name": "우리로",
       "rank": 8,
-      "trade_amount": 73652000000,
+      "trade_amount": 73682000000,
       "change_pct": 29.98,
       "close_price": 8150,
       "open_price": 6260,
@@ -2098,8 +2164,8 @@
           "summary": "우리로 상한가 (29.98%)",
           "cur_prc": 8150,
           "flu_rt": 29.98,
-          "trde_qty": 9880796,
-          "trde_prica_calc": 73652000000,
+          "trde_qty": 9884396,
+          "trde_prica_calc": 73682000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2173,6 +2239,8 @@
           8150,
           8150,
           8150,
+          8150,
+          8150,
           8150
         ]
       },
@@ -2186,16 +2254,25 @@
       "code": "052690",
       "name": "한전기술",
       "rank": 9,
-      "trade_amount": 68644000000,
+      "trade_amount": 69610000000,
       "change_pct": 0.07,
       "close_price": 135400,
       "open_price": 157300,
       "high_price": 158700,
       "low_price": 133300,
-      "industry": null,
-      "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "industry": "건축기술, 엔지니어링 및 관련 기술 서비스업",
+      "sector": "원자력발전소 설계 등",
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "건설"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -2205,6 +2282,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 0.04,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 198000,
         "high_date": "2026-04-16",
@@ -2415,7 +2495,9 @@
           135300,
           134600,
           134900,
-          135100
+          135200,
+          135500,
+          135300
         ]
       },
       "credit_risk": true,
@@ -2425,10 +2507,34 @@
       "hugepark_grade": "주의"
     },
     {
+      "code": "122640",
+      "name": "예스티",
+      "rank": 10,
+      "trade_amount": 51972000000,
+      "change_pct": null,
+      "close_price": null,
+      "open_price": null,
+      "high_price": null,
+      "low_price": null,
+      "industry": null,
+      "sector": null,
+      "themes": [],
+      "theme_paths": [],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [],
+      "news": [],
+      "fallback": true,
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
       "code": "079650",
       "name": "서산",
-      "rank": 10,
-      "trade_amount": 46939000000,
+      "rank": 11,
+      "trade_amount": 46967000000,
       "change_pct": 29.96,
       "close_price": 4815,
       "open_price": 4140,
@@ -2464,8 +2570,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": -3.22,
-      "index_multiple_current": -9.3,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -8.86,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 4815,
@@ -2652,8 +2758,8 @@
           "summary": "서산 상한가 (29.96%)",
           "cur_prc": 4815,
           "flu_rt": 29.96,
-          "trde_qty": 11515448,
-          "trde_prica_calc": 46939000000,
+          "trde_qty": 11521275,
+          "trde_prica_calc": 46967000000,
           "consecutive_count": 3,
           "effect_badges": [
             {
@@ -2727,6 +2833,7 @@
           4815,
           4815,
           4815,
+          4815,
           4815
         ]
       },
@@ -2741,17 +2848,27 @@
     {
       "code": "198440",
       "name": "강동씨앤엘",
-      "rank": 11,
-      "trade_amount": 31067000000,
+      "rank": 12,
+      "trade_amount": 31092000000,
       "change_pct": 30.0,
       "close_price": 1859,
       "open_price": 1700,
       "high_price": 1859,
       "low_price": 1531,
-      "industry": null,
-      "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "industry": "시멘트, 석회, 플라스터 및 그 제품 제조업",
+      "sector": "시멘트, 레미콘",
+      "themes": [
+        "건설자재"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설자재",
+          "path": [
+            "건설",
+            "건설자재"
+          ]
+        }
+      ],
       "pick_count": 2,
       "prev_pick": {
         "date": "2026-06-17",
@@ -2767,6 +2884,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -8.88,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 1859,
         "high_date": "2026-06-18",
@@ -2952,8 +3072,8 @@
           "summary": "강동씨앤엘 상한가 (30.00%)",
           "cur_prc": 1859,
           "flu_rt": 30.0,
-          "trde_qty": 17980208,
-          "trde_prica_calc": 31067000000,
+          "trde_qty": 17993511,
+          "trde_prica_calc": 31092000000,
           "consecutive_count": 2,
           "effect_badges": [
             {
@@ -3026,6 +3146,8 @@
           1859,
           1859,
           1859,
+          1859,
+          1859,
           1859
         ]
       },
@@ -3038,15 +3160,15 @@
     {
       "code": "011230",
       "name": "삼화전자",
-      "rank": 12,
-      "trade_amount": 13081000000,
+      "rank": 13,
+      "trade_amount": 13099000000,
       "change_pct": 29.86,
       "close_price": 3740,
       "open_price": 2940,
       "high_price": 3740,
       "low_price": 2850,
-      "industry": null,
-      "sector": null,
+      "industry": "영상 및 음향기기 제조업",
+      "sector": "전자부품(페라이트 코어,SMPS,편향요크(DY),고압변성기(FBT)용코어) 제조,판매",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
@@ -3061,6 +3183,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 18.66,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 6400,
         "high_date": "2025-07-02",
@@ -3246,8 +3371,8 @@
           "summary": "삼화전자 상한가 (29.86%)",
           "cur_prc": 3740,
           "flu_rt": 29.86,
-          "trde_qty": 3677372,
-          "trde_prica_calc": 13081000000,
+          "trde_qty": 3682002,
+          "trde_prica_calc": 13099000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -3320,6 +3445,8 @@
           3740,
           3740,
           3740,
+          3740,
+          3740,
           3740
         ]
       },
@@ -3332,17 +3459,26 @@
     {
       "code": "091590",
       "name": "남화토건",
-      "rank": 13,
-      "trade_amount": 8312000000,
+      "rank": 14,
+      "trade_amount": 8314000000,
       "change_pct": 29.99,
       "close_price": 4595,
       "open_price": 3565,
       "high_price": 4595,
       "low_price": 3485,
-      "industry": null,
-      "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "industry": "건물 건설업",
+      "sector": "건축공사, 토목공사",
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "건설"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -3352,6 +3488,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -8.87,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 5250,
         "high_date": "2025-07-31",
@@ -3512,8 +3651,8 @@
           "summary": "남화토건 상한가 (29.99%)",
           "cur_prc": 4595,
           "flu_rt": 29.99,
-          "trde_qty": 1858586,
-          "trde_prica_calc": 8312000000,
+          "trde_qty": 1858965,
+          "trde_prica_calc": 8314000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -3584,6 +3723,8 @@
           4595,
           4595,
           4595,
+          4595,
+          4595,
           4595
         ]
       },
@@ -3596,8 +3737,8 @@
     {
       "code": "320000",
       "name": "한울반도체",
-      "rank": 14,
-      "trade_amount": 7476000000,
+      "rank": 15,
+      "trade_amount": 7481000000,
       "change_pct": 29.95,
       "close_price": 13710,
       "open_price": 11600,
@@ -3610,7 +3751,8 @@
         "AI데이터센터",
         "전기차",
         "반도체",
-        "AI"
+        "AI",
+        "전기차·하이브리드·PBV 성장축"
       ],
       "theme_paths": [
         {
@@ -3628,9 +3770,10 @@
           ]
         },
         {
-          "name": "전기차",
+          "name": "전기차·하이브리드·PBV 성장축",
           "path": [
-            "전기차"
+            "전기차",
+            "전기차·하이브리드·PBV 성장축"
           ]
         }
       ],
@@ -3650,15 +3793,15 @@
           "title": "한울반도체, 글로벌 MLCC 1위 日무라타와 맞손 \"고성능 MLCC 제조공정용 마운터 설비\"",
           "url": "https://www.fnnews.com/news/202606181025519655",
           "source": "파이낸셜뉴스",
-          "published_at": "2026-06-18T13:30:06.725735",
-          "causal_chain": "AI 서버·데이터센터·전기차 확산 → 고신뢰성 MLCC 수요 급증(고신뢰성 MLCC 시장 연 10~30% 성장 전망) → MLCC 외관검사·전기특성검사·마운터 등 후공정 검사·실장 장비 수요 확대 → MLCC 검사·자동화 설비 본업을 영위하는 한울반도체가 글로벌 1위 무라타와 마운터 설비 MOU를 체결하며 본업 모멘텀이 직접 부각 → 매수세 집중되며 시초가 11,600원에서 고가이자 종가 13,710원까지 직행, 당일 +29.95% 상한가 마감(거래대금 74억원).",
-          "macro_event": "AI 서버·데이터센터·전기차 고성장에 따른 고신뢰성 MLCC 수요 급증",
+          "published_at": "2026-06-18T13:40:06.559025",
+          "causal_chain": "AI 서버·데이터센터 및 전기차 산업 고성장 → 고신뢰성 MLCC 수요 급증(차량당 1만~1.8만개) → 글로벌 MLCC 1위 무라타와의 기술협력 MOU → 한울반도체의 마운터·검사 장비 수주 확대 기대 → 매수세 집중 → 당일 상한가(+29.95%)·거래대금 75억원",
+          "macro_event": "AI 서버·데이터센터 MLCC 수요 급증 (10~30% 고성장 전망)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": 0.7,
-          "newzy_virality": 0.5,
+          "newzy_magnitude": 0.75,
+          "newzy_virality": 0.65,
           "newzy_tradability": null,
-          "newzy_score": 0.62,
+          "newzy_score": 0.71,
           "newzy_verdict": null,
           "article_type": "호재"
         }
@@ -3824,8 +3967,8 @@
           "summary": "한울반도체 상한가 (29.95%)",
           "cur_prc": 13710,
           "flu_rt": 29.95,
-          "trde_qty": 572380,
-          "trde_prica_calc": 7476000000,
+          "trde_qty": 572752,
+          "trde_prica_calc": 7481000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -3899,6 +4042,7 @@
           13710,
           13710,
           13710,
+          13710,
           13710
         ]
       },
@@ -3911,17 +4055,26 @@
     {
       "code": "189860",
       "name": "서전기전",
-      "rank": 15,
+      "rank": 16,
       "trade_amount": 6264000000,
       "change_pct": 29.98,
       "close_price": 6720,
       "open_price": 5940,
       "high_price": 6720,
       "low_price": 5640,
-      "industry": null,
-      "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "industry": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
+      "sector": "수배전반, 전력기기, 전기공사",
+      "themes": [
+        "전력설비"
+      ],
+      "theme_paths": [
+        {
+          "name": "전력설비",
+          "path": [
+            "전력설비"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -3931,6 +4084,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -8.87,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 11500,
         "high_date": "2026-05-06",
@@ -4091,7 +4247,7 @@
           "summary": "서전기전 상한가 (29.98%)",
           "cur_prc": 6720,
           "flu_rt": 29.98,
-          "trde_qty": 946023,
+          "trde_qty": 946124,
           "trde_prica_calc": 6264000000,
           "consecutive_count": 1,
           "effect_badges": [
@@ -4165,6 +4321,9 @@
           6720,
           6720,
           6720,
+          6720,
+          6720,
+          6720,
           6720
         ]
       },
@@ -4175,19 +4334,325 @@
       "hugepark_grade": "주의"
     },
     {
+      "code": "067370",
+      "name": "선바이오",
+      "rank": 17,
+      "trade_amount": 5752000000,
+      "change_pct": 29.88,
+      "close_price": 7390,
+      "open_price": 6200,
+      "high_price": 7390,
+      "low_price": 6120,
+      "industry": null,
+      "sector": null,
+      "themes": [
+        "바이오",
+        "FDA 허가"
+      ],
+      "theme_paths": [
+        {
+          "name": "FDA 허가",
+          "path": [
+            "바이오",
+            "FDA 허가"
+          ]
+        }
+      ],
+      "pick_count": 1,
+      "prev_pick": null,
+      "bullish_today": true,
+      "bullish_streak": 1,
+      "bullish_dates": [
+        "2026-06-18"
+      ],
+      "news": [
+        {
+          "title": "선바이오, 기술이전 바이오시밀러 美 FDA 승인…로열티 수입 확대 기대",
+          "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04116406645483032",
+          "source": "이데일리",
+          "published_at": "2026-06-18T02:40:09",
+          "causal_chain": "선바이오가 기술이전한 바이오시밀러가 미국 FDA 승인을 획득 → 향후 로열티 수입 확대 기대가 본업(바이오) 모멘텀으로 직결 → 매수세 집중되며 시초가 6,200원에서 고가 7,390원까지 직행, 당일 종가 7,390원(+29.88%) 상한가 마감(거래대금 46억원).",
+          "macro_event": "기술이전 바이오시밀러 미국 FDA 승인 → 로열티 수입 확대 기대",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": 0.8,
+          "newzy_virality": 0.4,
+          "newzy_tradability": null,
+          "newzy_score": 0.64,
+          "newzy_verdict": null,
+          "article_type": "호재"
+        }
+      ],
+      "fallback": false,
+      "range_240d": {
+        "high": 8500,
+        "high_date": "2026-04-28",
+        "high_pct": -13.06,
+        "low": 4840,
+        "low_date": "2026-03-04",
+        "low_pct": 52.69,
+        "current": 7390
+      },
+      "daily_20": [
+        {
+          "date": "2026-05-20",
+          "o": 6930,
+          "h": 6930,
+          "l": 6540,
+          "c": 6540
+        },
+        {
+          "date": "2026-05-21",
+          "o": 6540,
+          "h": 7000,
+          "l": 6400,
+          "c": 6400
+        },
+        {
+          "date": "2026-05-22",
+          "o": 6400,
+          "h": 6790,
+          "l": 6330,
+          "c": 6660
+        },
+        {
+          "date": "2026-05-26",
+          "o": 6660,
+          "h": 6720,
+          "l": 6100,
+          "c": 6130
+        },
+        {
+          "date": "2026-05-27",
+          "o": 6130,
+          "h": 6290,
+          "l": 6050,
+          "c": 6140
+        },
+        {
+          "date": "2026-05-28",
+          "o": 6140,
+          "h": 6270,
+          "l": 5980,
+          "c": 6270
+        },
+        {
+          "date": "2026-05-29",
+          "o": 6270,
+          "h": 6600,
+          "l": 5710,
+          "c": 6190
+        },
+        {
+          "date": "2026-06-01",
+          "o": 6180,
+          "h": 6700,
+          "l": 5620,
+          "c": 6590
+        },
+        {
+          "date": "2026-06-02",
+          "o": 6590,
+          "h": 6780,
+          "l": 6250,
+          "c": 6580
+        },
+        {
+          "date": "2026-06-04",
+          "o": 6500,
+          "h": 6690,
+          "l": 6120,
+          "c": 6650
+        },
+        {
+          "date": "2026-06-05",
+          "o": 6610,
+          "h": 6610,
+          "l": 6210,
+          "c": 6210
+        },
+        {
+          "date": "2026-06-08",
+          "o": 6160,
+          "h": 6160,
+          "l": 5460,
+          "c": 5660
+        },
+        {
+          "date": "2026-06-09",
+          "o": 5670,
+          "h": 6050,
+          "l": 5570,
+          "c": 6030
+        },
+        {
+          "date": "2026-06-10",
+          "o": 6250,
+          "h": 6250,
+          "l": 5670,
+          "c": 5990
+        },
+        {
+          "date": "2026-06-11",
+          "o": 5800,
+          "h": 6000,
+          "l": 5510,
+          "c": 5810
+        },
+        {
+          "date": "2026-06-12",
+          "o": 5810,
+          "h": 6090,
+          "l": 5550,
+          "c": 5810
+        },
+        {
+          "date": "2026-06-15",
+          "o": 5810,
+          "h": 5980,
+          "l": 5640,
+          "c": 5980
+        },
+        {
+          "date": "2026-06-16",
+          "o": 5920,
+          "h": 5940,
+          "l": 5570,
+          "c": 5680
+        },
+        {
+          "date": "2026-06-17",
+          "o": 5680,
+          "h": 5730,
+          "l": 5610,
+          "c": 5690
+        },
+        {
+          "date": "2026-06-18",
+          "o": 6200,
+          "h": 7390,
+          "l": 6120,
+          "c": 7390
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "v1_condition",
+          "view_date": "2026-06-18",
+          "summary": "선바이오 상한가 (29.88%)",
+          "cur_prc": 7390,
+          "flu_rt": 29.88,
+          "trde_qty": 815929,
+          "trde_prica_calc": 5752000000,
+          "consecutive_count": 1,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-19"
+        }
+      ],
+      "intraday": {
+        "step_min": 5,
+        "open": 6200,
+        "base": 6200,
+        "prices": [
+          6200,
+          6120,
+          6500,
+          6360,
+          6300,
+          6370,
+          6420,
+          6750,
+          6820,
+          6960,
+          6840,
+          6860,
+          6710,
+          6630,
+          6810,
+          6860,
+          6960,
+          7110,
+          7100,
+          7340,
+          7310,
+          7180,
+          7250,
+          7230,
+          7150,
+          7190,
+          7280,
+          7230,
+          7180,
+          7300,
+          7180,
+          7150,
+          7170,
+          7160,
+          7210,
+          7290,
+          7380,
+          7350,
+          7230,
+          7380,
+          7380,
+          7370,
+          7300,
+          7380,
+          7390,
+          7390,
+          7030,
+          7190,
+          7140,
+          7150,
+          7140,
+          7160,
+          7300,
+          7320,
+          7380,
+          7370,
+          7380
+        ]
+      },
+      "credit_risk": true,
+      "credit_reason": "회사한도초과",
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
+    },
+    {
       "code": "046390",
       "name": "삼화네트웍스",
-      "rank": 16,
-      "trade_amount": 4285000000,
+      "rank": 18,
+      "trade_amount": 4287000000,
       "change_pct": 30.0,
       "close_price": 1950,
       "open_price": 1500,
       "high_price": 1950,
       "low_price": 1465,
-      "industry": null,
-      "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "industry": "영화, 비디오물, 방송프로그램 제작 및 배급업",
+      "sector": "영상 콘텐츠",
+      "themes": [
+        "엔터테인먼트"
+      ],
+      "theme_paths": [
+        {
+          "name": "엔터테인먼트",
+          "path": [
+            "엔터테인먼트"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -4197,6 +4662,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -8.88,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 4642,
         "high_date": "2025-08-20",
@@ -4357,8 +4825,8 @@
           "summary": "삼화네트웍스 상한가 (30.00%)",
           "cur_prc": 1950,
           "flu_rt": 30.0,
-          "trde_qty": 2311117,
-          "trde_prica_calc": 4285000000,
+          "trde_qty": 2312222,
+          "trde_prica_calc": 4287000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -4431,6 +4899,8 @@
           1950,
           1950,
           1950,
+          1950,
+          1950,
           1950
         ]
       },
@@ -4443,15 +4913,15 @@
     {
       "code": "024890",
       "name": "대원화성",
-      "rank": 17,
+      "rank": 19,
       "trade_amount": 1666000000,
       "change_pct": 29.98,
       "close_price": 3945,
       "open_price": 3035,
       "high_price": 3945,
       "low_price": 2905,
-      "industry": null,
-      "sector": null,
+      "industry": "플라스틱제품 제조업",
+      "sector": "합성피혁,벽지,DMF(폐용수)정제,방수투습원단,화공약 임가공,제조,도매,수출입",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
@@ -4463,6 +4933,9 @@
       ],
       "news": [],
       "fallback": true,
+      "index_change_pct": 1.6,
+      "index_multiple_current": 18.74,
+      "index_multiple_eligible": true,
       "range_240d": {
         "high": 5105,
         "high_date": "2025-07-30",
@@ -4623,7 +5096,7 @@
           "summary": "대원화성 상한가 (29.98%)",
           "cur_prc": 3945,
           "flu_rt": 29.98,
-          "trde_qty": 433799,
+          "trde_qty": 433985,
           "trde_prica_calc": 1666000000,
           "consecutive_count": 1,
           "effect_badges": [
@@ -4693,6 +5166,8 @@
           3945,
           3945,
           3945,
+          3945,
+          3945,
           3945
         ]
       },
@@ -4705,15 +5180,15 @@
     {
       "code": "096250",
       "name": "와이즈넛",
-      "rank": 18,
-      "trade_amount": 1288000000,
+      "rank": 20,
+      "trade_amount": 1289000000,
       "change_pct": 29.91,
       "close_price": 7470,
       "open_price": 7470,
       "high_price": 7470,
       "low_price": 7470,
-      "industry": null,
-      "sector": null,
+      "industry": "소프트웨어 개발 및 공급업",
+      "sector": "검색엔진, 챗봇, 클라우드서비스",
       "themes": [],
       "theme_paths": [],
       "pick_count": 1,
@@ -4740,6 +5215,9 @@
         }
       ],
       "fallback": true,
+      "index_change_pct": -3.38,
+      "index_multiple_current": -8.85,
+      "index_multiple_eligible": false,
       "range_240d": {
         "high": 17600,
         "high_date": "2025-06-25",
@@ -4900,8 +5378,8 @@
           "summary": "와이즈넛 상한가 (29.91%)",
           "cur_prc": 7470,
           "flu_rt": 29.91,
-          "trde_qty": 172472,
-          "trde_prica_calc": 1288000000,
+          "trde_qty": 172579,
+          "trde_prica_calc": 1289000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -4921,6 +5399,8 @@
         "open": 7470,
         "base": 7470,
         "prices": [
+          7470,
+          7470,
           7470,
           7470,
           7470,
