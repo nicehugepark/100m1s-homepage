@@ -3,12 +3,10 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26468.29,
-      "change_pct": 1.72,
+      "point": 26448.21,
+      "change_pct": 1.64,
       "spark": [
         26420.69,
-        26335.75,
-        26302.47,
         26367.25,
         26381.55,
         26301.37,
@@ -46,13 +44,15 @@
         26436.96,
         26446.78,
         26466.89,
-        26468.29
+        26445.77,
+        26448.21,
+        26448.21
       ],
       "candle": {
         "o": 26420.69,
-        "h": 26468.45,
+        "h": 26471.36,
         "l": 26190.15,
-        "c": 26468.29
+        "c": 26448.21
       },
       "range_240d": {
         "low": 19912.53,
@@ -2074,9 +2074,9 @@
         {
           "date": "2026-06-18",
           "o": 26420.69,
-          "h": 26468.45,
+          "h": 26471.36,
           "l": 26190.15,
-          "c": 26468.29
+          "c": 26448.21
         }
       ],
       "news": {
@@ -2097,12 +2097,10 @@
     },
     {
       "name": "S&P500",
-      "point": 7509.86,
-      "change_pct": 1.21,
+      "point": 7506.35,
+      "change_pct": 1.16,
       "spark": [
         7487.36,
-        7488.4,
-        7478.15,
         7490.62,
         7494.41,
         7482.17,
@@ -2140,13 +2138,15 @@
         7504.99,
         7505.94,
         7509.7,
-        7509.86
+        7505.4,
+        7505.53,
+        7506.35
       ],
       "candle": {
         "o": 7487.36,
         "h": 7511.07,
         "l": 7468.32,
-        "c": 7509.86
+        "c": 7506.35
       },
       "range_240d": {
         "low": 6092.16,
@@ -4170,7 +4170,7 @@
           "o": 7487.36,
           "h": 7511.07,
           "l": 7468.32,
-          "c": 7509.86
+          "c": 7506.35
         }
       ],
       "news": {
@@ -4195,12 +4195,10 @@
     },
     {
       "name": "DOW",
-      "point": 51762.09,
-      "change_pct": 0.52,
+      "point": 51709.72,
+      "change_pct": 0.42,
       "spark": [
         51571.85,
-        51708.96,
-        51660.83,
         51686.0,
         51727.4,
         51700.13,
@@ -4238,13 +4236,15 @@
         51718.39,
         51732.41,
         51764.05,
-        51762.09
+        51718.61,
+        51709.78,
+        51709.72
       ],
       "candle": {
         "o": 51571.85,
         "h": 51949.26,
         "l": 51571.85,
-        "c": 51762.09
+        "c": 51709.72
       },
       "range_240d": {
         "low": 42982.43,
@@ -6268,7 +6268,7 @@
           "o": 51571.85,
           "h": 51949.26,
           "l": 51571.85,
-          "c": 51762.09
+          "c": 51709.72
         }
       ],
       "news": {
@@ -6294,145 +6294,143 @@
   ],
   "news_chips": [
     {
-      "summary": "호르무즈 해협의 정상 물동량 회복에는 수주일이 필요하며 이후 수개월간 글로벌 에너지·운송 시장에 연쇄 파급이 예상된다.",
-      "source": "WSJ세계",
-      "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70",
-      "published_ts": 1781800260.0,
-      "impact_high": true
-    },
-    {
-      "summary": "영국 중앙은행이 기준금리 3.75%를 동결하고 호르무즈 해협 개통 신호에 신중한 입장을 나타냈다.",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/central-banking/boe-leaves-rates-unchanged-signals-caution-on-hormuz-opening-f144dd3f",
-      "published_ts": 1781787180.0,
-      "impact_high": true
-    },
-    {
-      "summary": "미국 신규 실업수당 청구 건수가 226,000건으로 감소하며 노동시장 안정세를 지속했다.",
-      "source": "WSJ경제",
+      "summary": "미국 신규 실업수당 청구가 22만6000건으로 감소했으나 평균 실직 기간은 오히려 연장",
+      "source": "WSJ",
       "url": "https://www.wsj.com/economy/jobs/u-s-jobless-claims-fell-last-week-ceec6b9f",
       "published_ts": 1781787180.0,
       "impact_high": true
     },
     {
-      "summary": "대만 중앙은행이 기준금리를 9분기 연속 동결하며 중동 분쟁 이후 인플레이션 압력이 완화되고 있다고 평가했다.",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/central-banking/taiwan-central-bank-leaves-key-interest-rates-unchanged-f0610f25",
-      "published_ts": 1781775960.0,
+      "summary": "영국 중앙은행이 기준금리를 3.75%에서 동결, 호르무즈 해협 재개 관찰 속 인플레이션 추이 주시",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/06/18/inflation-interest-rates-uk-bank-of-england-iran-deal.html",
+      "published_ts": 1781783356.0,
       "impact_high": true
     },
     {
-      "summary": "인도네시아 중앙은행이 루피아화 약세와 지정학적 인플레이션 압력에 대응해 기준금리를 추가 인상했다.",
-      "source": "WSJ경제",
+      "summary": "인도네시아 중앙은행이 루피아 방어 위해 기준금리 인상, 중동 지정학적 불확실성과 에너지 충격에 대응",
+      "source": "WSJ",
       "url": "https://www.wsj.com/economy/central-banking/bank-indonesia-raises-rates-again-to-defend-rupiah-f2c00951",
       "published_ts": 1781773620.0,
       "impact_high": true
     },
     {
-      "summary": "필리핀 중앙은행이 중동 분쟁으로 유발된 인플레이션 진정을 위해 기준금리를 인상했다.",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/central-banking/philippine-central-bank-hikes-rates-amid-inflation-risks-d417e275",
-      "published_ts": 1781773320.0,
-      "impact_high": true
-    },
-    {
-      "summary": "이란 거래 타결에 따라 유가가 전쟁 이전 수준으로 회복되면서 미국 휘발유 평균 가격이 갤론당 4달러 아래로 내려갔다.",
+      "summary": "미국-이란 평화협상 체결로 유가가 전쟁 이전 수준으로 회귀하자 미국증시 상승세 지속",
       "source": "WSJ",
       "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-06-18-2026?mod=rss_markets_main",
       "published_ts": 1781770478.0,
       "impact_high": true
     },
     {
-      "summary": "케빈 워시 신임 연방준비제도 의장의 첫 회의에서 금리 정책 기조는 기존 방침을 유지했다.",
+      "summary": "케빈 워시 연준 의장의 첫 FOMC 회의에서 금리 기조 유지된 가운데 향후 정책 방향 재점검",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html",
       "published_ts": 1781740293.0,
       "impact_high": true
     },
     {
-      "summary": "국제에너지기구(IEA)는 이란 평화거래 지속 시 글로벌 원유 공급이 수요 성장을 크게 초과할 가능성을 전망했다.",
-      "source": "WSJ세계",
+      "summary": "AI 스타트업 Baseten이 OpenAI·Anthropic 대안의 저비용 인프라로 15억 달러 후속 펀딩 유치",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/tech/ai/the-13-billion-ai-startup-betting-on-cheaper-alternatives-to-openai-anthropic-b9679603?mod=rss_markets_main",
+      "published_ts": 1781776800.0,
+      "impact_high": false
+    },
+    {
+      "summary": "미국 5월 기존주택판매 선행지수가 3.8% 상승하며 주택시장 회복 신호 지속",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9",
+      "published_ts": 1781705400.0,
+      "impact_high": false
+    },
+    {
+      "summary": "호르무즈 해협 폐쇄 4개월간 글로벌 경제 충격이 제한적이었던 이유는 유가 비축 충분과 AI 투자 호조",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/economy/global/five-things-the-hormuz-crisis-taught-us-about-the-global-economy-c9bd6b45",
+      "published_ts": 1781703480.0,
+      "impact_high": false
+    },
+    {
+      "summary": "국제에너지기구(IEA)가 호르무즈 해협 정상화 시 원유 공급이 수요를 크게 초과할 수 있다고 경고",
+      "source": "WSJ",
       "url": "https://www.wsj.com/business/energy-oil/oil-supply-to-rebound-strongly-after-gulf-shock-but-recovery-will-take-months-iea-says-a0ccae8b",
       "published_ts": 1781688060.0,
       "impact_high": true
     },
     {
-      "summary": "이란 유조선 3척이 수개월 만에 미국의 해상 봉쇄를 탈출했으며 호르무즈 해협 재개통을 주시하고 있다.",
+      "summary": "미국 해군의 4개월 봉쇄를 탈출한 이란 유조선 3척이 원유 500만 배럴 운송 개시",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/iranian-tankers-oil-shipment-us-iran-deal-strait-of-hormuz-.html",
       "published_ts": 1781680985.0,
       "impact_high": true
     }
   ],
-  "_article_sig": "e7ce39b9483a2648e4a15aa0b8fdc58b3c62b224ad15107531229ac55a7f0e3a",
+  "_article_sig": "a4bd2482f3e1725541074d41bc9fcbda76135f9b0ee37f55dabd541bacde4bf6",
   "built_at_kst": "2026-06-06T16:40:40.768982+09:00",
   "_futures_news": {
+    "NASDAQ": {
+      "summary": "AI 펀딩 열풍 지속, Baseten $13B 평가 추가 자금 조달. 규제 리스크 부각(CME vs Kalshi), OpenAI/Anthropic IPO 은행 팀 분리 준비. 럭셔리 소비 부진($8B 판매 슬라이드) 기술 소비심리 약세 신호.",
+      "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/tech/ai/the-13-billion-ai-startup-betting-on-cheaper-alternatives-to-openai-anthropic-b9679603?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/regulation/cme-sues-u-s-regulator-to-stop-kalshi-from-offering-popular-perp-futures-f96e97fe?mod=rss_markets_main"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/banking/the-ipo-onslaught-is-forcing-bankers-to-pick-teams-50fab052?mod=rss_markets_main"
+        }
+      ]
+    },
     "S&P500": {
-      "summary": "이란 평화거래 체결로 에너지 공급 안정화 신호 → 인플레이션 압력 완화 기대. 연준 신임 의장 첫 FOMC에서 금리 현상 유지 기조, 글로벌 중앙은행들도 보수적 통화정책 → 글로벌 인플레이션 우려 완화 신호. 다만 노동 시장 약화(구직 기간 장기화), 주택 착공 15.4% 급락으로 경기 둔화 신호 가중.",
+      "summary": "연준 의장 Warsh 첫 회의 금리 현상 유지, 글로벌 중앙은행 금리 인상 기조 지속 신호. 이란 협상 → 호르무즈 해협 재개 임박, 유가 안정화·인플레 둔화 전망. 신규 실업수당 감소(226K) 고용 강세 유지, 주택시작 급감(-15.4%)과 모순 신호 확대.",
       "sources": [
         {
           "name": "CNBC",
           "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html"
         },
         {
-          "name": "WSJ세계",
-          "url": "https://www.wsj.com/world/trump-defends-iran-deal-says-he-wants-to-avoid-economic-catastrophe-cdf41846"
+          "name": "WSJ",
+          "url": "https://www.wsj.com/economy/global/five-things-the-hormuz-crisis-taught-us-about-the-global-economy-c9bd6b45"
         },
         {
-          "name": "WSJ경제",
+          "name": "WSJ",
           "url": "https://www.wsj.com/economy/jobs/u-s-jobless-claims-fell-last-week-ceec6b9f"
         }
       ]
     },
     "DOW": {
-      "summary": "호르무즈 해협 폐쇄 해제로 에너지 공급 정상화 → 유가 전쟁 전 수준 회복. 에너지·산업재 부문 수익성 개선 기대 가운데 노동 시장 견조 신호(실업수당 감소) 병행. 다만 주택 착공 15.4% 급락으로 건설 부문 경기 둔화 신호 강화.",
+      "summary": "이란 협상 체결 → 호르무즈 해협 재개 시점, 유가 선전 전 수준 근처·가솔린 $4 미만 진입. 고용 강세(실업수당 226K) vs 주택 약세(-15.4%) 경기민감 분화 심화. 인도네시아·필리핀 중앙은행 금리 인상, 글로벌 인플레 둔화에도 불구 지정학 프리미엄 반영.",
       "sources": [
-        {
-          "name": "WSJ세계",
-          "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70"
-        },
         {
           "name": "WSJ",
           "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-06-18-2026?mod=rss_markets_main"
         },
         {
-          "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
-        }
-      ]
-    },
-    "NASDAQ": {
-      "summary": "AI 투자 부양 열풍에 빅테크 매수세 유입 → 기술주 earnings 강세 견인. Qualcomm 등 AI칩 수혜주 재평가 움직임 활발. 다만 막대한 AI capex 누적으로 향후 수익성 영향 가능성 우려, OpenAI·Anthropic IPO 준비로 기술 펀딩 생태 양극화 신호.",
-      "sources": [
-        {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/turbocharged-earnings-are-pushing-stocks-higher-theres-a-catch-100839c9?mod=rss_markets_main"
+          "url": "https://www.wsj.com/finance/commodities-futures/us-gas-prices-charts-bfe10437?mod=rss_markets_main"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/tech/qualcomm-is-a-rare-ai-chip-value-play-3e09f70b?mod=rss_markets_main"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/tech/ai/the-13-billion-ai-startup-betting-on-cheaper-alternatives-to-openai-anthropic-b9679603?mod=rss_markets_main"
+          "url": "https://www.wsj.com/economy/central-banking/bank-indonesia-raises-rates-again-to-defend-rupiah-f2c00951"
         }
       ]
     }
   },
   "regular_open": true,
   "futures": {
-    "as_of_kst": "2026-06-19T02:20:07.964922+09:00",
+    "as_of_kst": "2026-06-19T02:30:08.025509+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7572.25,
-        "change_pct": 1.06,
+        "point": 7578.0,
+        "change_pct": 1.14,
         "spark": [
           7512.5,
-          7545.75,
-          7554.5,
           7545.25,
           7558.25,
           7561.25,
@@ -6470,21 +6468,23 @@
           7569.75,
           7572.0,
           7573.25,
-          7572.25
+          7577.25,
+          7572.25,
+          7578.0
         ],
         "candle": {
           "o": 7512.5,
           "h": 7581.5,
           "l": 7504.25,
-          "c": 7572.0
+          "c": 7578.0
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 20.87,
-          "high_change_pct": -0.68
+          "low_change_pct": 20.97,
+          "high_change_pct": -0.6
         },
         "daily_expanded": [
           {
@@ -8508,24 +8508,24 @@
             "o": 7512.5,
             "h": 7581.5,
             "l": 7504.25,
-            "c": 7572.0,
-            "v": 950163
+            "c": 7578.0,
+            "v": 965329
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "이란 평화거래 체결로 에너지 공급 안정화 신호 → 인플레이션 압력 완화 기대. 연준 신임 의장 첫 FOMC에서 금리 현상 유지 기조, 글로벌 중앙은행들도 보수적 통화정책 → 글로벌 인플레이션 우려 완화 신호. 다만 노동 시장 약화(구직 기간 장기화), 주택 착공 15.4% 급락으로 경기 둔화 신호 가중.",
+          "summary": "연준 의장 Warsh 첫 회의 금리 현상 유지, 글로벌 중앙은행 금리 인상 기조 지속 신호. 이란 협상 → 호르무즈 해협 재개 임박, 유가 안정화·인플레 둔화 전망. 신규 실업수당 감소(226K) 고용 강세 유지, 주택시작 급감(-15.4%)과 모순 신호 확대.",
           "sources": [
             {
               "name": "CNBC",
               "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html"
             },
             {
-              "name": "WSJ세계",
-              "url": "https://www.wsj.com/world/trump-defends-iran-deal-says-he-wants-to-avoid-economic-catastrophe-cdf41846"
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/global/five-things-the-hormuz-crisis-taught-us-about-the-global-economy-c9bd6b45"
             },
             {
-              "name": "WSJ경제",
+              "name": "WSJ",
               "url": "https://www.wsj.com/economy/jobs/u-s-jobless-claims-fell-last-week-ceec6b9f"
             }
           ]
@@ -8534,12 +8534,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30707.25,
-        "change_pct": 2.36,
+        "point": 30728.25,
+        "change_pct": 2.43,
         "spark": [
           30142.5,
-          30514.75,
-          30563.75,
           30523.0,
           30600.0,
           30623.25,
@@ -8577,21 +8575,23 @@
           30698.5,
           30708.25,
           30712.5,
-          30707.25
+          30725.5,
+          30705.25,
+          30728.25
         ],
         "candle": {
           "o": 30142.5,
-          "h": 30725.25,
+          "h": 30734.75,
           "l": 30096.0,
-          "c": 30707.25
+          "c": 30728.0
         },
         "range_240d": {
           "low": 22883.75,
-          "high": 30712.75,
+          "high": 30728.0,
           "low_date": "2025-08-01",
-          "high_date": "2026-06-02",
-          "low_change_pct": 34.19,
-          "high_change_pct": -0.02
+          "high_date": "2026-06-18",
+          "low_change_pct": 34.28,
+          "high_change_pct": 0.0
         },
         "daily_expanded": [
           {
@@ -10613,27 +10613,27 @@
           {
             "date": "2026-06-18",
             "o": 30142.5,
-            "h": 30725.25,
+            "h": 30734.75,
             "l": 30096.0,
-            "c": 30707.25,
-            "v": 415703
+            "c": 30728.0,
+            "v": 421615
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "AI 투자 부양 열풍에 빅테크 매수세 유입 → 기술주 earnings 강세 견인. Qualcomm 등 AI칩 수혜주 재평가 움직임 활발. 다만 막대한 AI capex 누적으로 향후 수익성 영향 가능성 우려, OpenAI·Anthropic IPO 준비로 기술 펀딩 생태 양극화 신호.",
+          "summary": "AI 펀딩 열풍 지속, Baseten $13B 평가 추가 자금 조달. 규제 리스크 부각(CME vs Kalshi), OpenAI/Anthropic IPO 은행 팀 분리 준비. 럭셔리 소비 부진($8B 판매 슬라이드) 기술 소비심리 약세 신호.",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/finance/turbocharged-earnings-are-pushing-stocks-higher-theres-a-catch-100839c9?mod=rss_markets_main"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/tech/qualcomm-is-a-rare-ai-chip-value-play-3e09f70b?mod=rss_markets_main"
-            },
-            {
-              "name": "WSJ",
               "url": "https://www.wsj.com/tech/ai/the-13-billion-ai-startup-betting-on-cheaper-alternatives-to-openai-anthropic-b9679603?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/regulation/cme-sues-u-s-regulator-to-stop-kalshi-from-offering-popular-perp-futures-f96e97fe?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/banking/the-ipo-onslaught-is-forcing-bankers-to-pick-teams-50fab052?mod=rss_markets_main"
             }
           ]
         }
@@ -10641,12 +10641,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52133.0,
-        "change_pct": 0.36,
+        "point": 52175.0,
+        "change_pct": 0.44,
         "spark": [
           52060.0,
-          52114.0,
-          52117.0,
           52066.0,
           52104.0,
           52136.0,
@@ -10684,20 +10682,22 @@
           52095.0,
           52134.0,
           52148.0,
-          52133.0
+          52177.0,
+          52133.0,
+          52175.0
         ],
         "candle": {
           "o": 52060.0,
           "h": 52378.0,
           "l": 52005.0,
-          "c": 52133.0
+          "c": 52182.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52133.0,
+          "high": 52182.0,
           "low_date": "2025-08-01",
           "high_date": "2026-06-18",
-          "low_change_pct": 19.27,
+          "low_change_pct": 19.38,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12722,30 +12722,30 @@
             "o": 52060.0,
             "h": 52378.0,
             "l": 52005.0,
-            "c": 52133.0,
-            "v": 65226
+            "c": 52182.0,
+            "v": 66339
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "호르무즈 해협 폐쇄 해제로 에너지 공급 정상화 → 유가 전쟁 전 수준 회복. 에너지·산업재 부문 수익성 개선 기대 가운데 노동 시장 견조 신호(실업수당 감소) 병행. 다만 주택 착공 15.4% 급락으로 건설 부문 경기 둔화 신호 강화.",
+          "summary": "이란 협상 체결 → 호르무즈 해협 재개 시점, 유가 선전 전 수준 근처·가솔린 $4 미만 진입. 고용 강세(실업수당 226K) vs 주택 약세(-15.4%) 경기민감 분화 심화. 인도네시아·필리핀 중앙은행 금리 인상, 글로벌 인플레 둔화에도 불구 지정학 프리미엄 반영.",
           "sources": [
-            {
-              "name": "WSJ세계",
-              "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70"
-            },
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-06-18-2026?mod=rss_markets_main"
             },
             {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/housing/u-s-housing-starts-fell-sharply-in-may-c67f7963"
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/commodities-futures/us-gas-prices-charts-bfe10437?mod=rss_markets_main"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/central-banking/bank-indonesia-raises-rates-again-to-defend-rupiah-f2c00951"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-19T02:20:11.490157+09:00"
+  "intraday_refreshed_kst": "2026-06-19T02:31:24.637658+09:00"
 }
