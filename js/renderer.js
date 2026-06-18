@@ -5013,7 +5013,8 @@ async function initThemeTrend() {
     // 대표 catch (5/8 04:58): 거래대금 추이는 트렌드 차트 — 장 개시 여부/휴장 무관 항상 표시.
     // 종전 a3555362(5/8 04:48) PRE_MARKET 분기는 잘못된 적용 → rollback (대표 정합).
     // PRE_MARKET 분기는 일자별 카드성 데이터(테마트리 initThemeTree)에만 유지.
-    const res = await fetch('/data/themes/theme-trend.json');
+    // 2026-06-18 캐시버스터 — 장중 같은 날 재갱신(테마 거래대금 추이)도 깨도록 ts 기반 (renderer L1290 동형 패턴).
+    const res = await fetch(`/data/themes/theme-trend.json?v=r${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) return;
     const data = await res.json();
     const container = document.getElementById('theme-trend');
@@ -5518,7 +5519,8 @@ async function initThemeTrend() {
 // ───── REQ-pm320-ux-cycle #2 — 상한가 종목 추이 (theme-trend 직하) ─────
 async function initLimitUpTrend() {
   try {
-    const res = await fetch('/data/limit-up-trend.json');
+    // 2026-06-18 stale fix — 장중 상한가 종목 추가분(같은 날 재갱신) 미반영 사고. ts 기반 캐시버스터 + no-store (renderer L1290 동형).
+    const res = await fetch(`/data/limit-up-trend.json?v=r${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) return;
     const data = await res.json();
     const container = document.getElementById('limit-up-trend');

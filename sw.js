@@ -1,10 +1,11 @@
-const CACHE_NAME = 'news-v332';
+const CACHE_NAME = 'news-v333';
 const DATA_PATTERNS = [
   /\/data\/interpreted\//,
   /\/data\/themes\//,
   /\/data\/kiwoom\//,
   /\/data\/calendar\//,
   /\/data\/pm320_history\//,  // DOC-20260603-DSN-001 — PM320 추천/결과 data fetch path
+  /\/data\/limit-up-trend\.json/,  // 2026-06-18 상한가 추이 stale fix — /themes/ 하위 아니라 별도 매칭 필요 (network-first 적용)
 ];
 const STATIC_ASSETS = [
   '/pm320.html',  // Q-20260605-104 — PM320 본 페이지 (News 이전 후 주 진입점)
