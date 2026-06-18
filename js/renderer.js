@@ -2909,6 +2909,7 @@ function renderCalExpandContent(date, data) {
       ${codeV ? `<button class="cal-pm320-today-rec-more" type="button" data-rec-jump="${escapeHtml(codeV)}" aria-expanded="false" aria-label="${escapeHtml(nameV)} 추천 카드 상세 보기">상세 보기 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-1px"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></button>` : ''}
       <div class="cal-pm320-today-rec-foot" role="note">
         <span class="cal-pm320-today-rec-disclaimer">투자 권유가 아닌 정보 제공입니다 — 투자 판단과 책임은 본인에게 있습니다</span>
+        <span class="cal-pm320-today-rec-disclaimer">코스피100 종목은 후보에서 제외됩니다</span>
         <span class="cal-pm320-today-rec-brand" aria-hidden="true">PM320 · 100m1s.com</span>
       </div>
     </div>`;
@@ -3016,7 +3017,7 @@ function renderCalExpandContent(date, data) {
   // pick_count >= 2: 카드 chip "연속선정+N" 표시와 동일 정의 (DSN §3.6.3 단일 출처, cycle20 P1).
   // 이전 정의 (prev_pick != null) 은 어제 1회 등장 종목까지 포함 → 헤더 N종 vs 카드 chip 노출 종목수 mismatch.
   const streakCount = todayStocks.filter(i => (i.interp?.pick_count || 0) >= 2).length;
-  const streakSuffix = streakCount > 0 ? ` · 연속선정 ${streakCount}종` : '';
+  const streakSuffix = streakCount > 0 ? ` · 후보연속 ${streakCount}종` : '';
   const sourceSuffix = '';
   // REQ-033 — 마지막 업데이트 시각 (SPEC-001 §I.4). build_daily.py generated_at 표시.
   // 시간대 정합 (개발팀 비판): naive ISO("YYYY-MM-DDTHH:MM:SS.fff") 직접 substring 추출 — Date 파싱 시 브라우저 timezone 의존성 회피. KST 가정 명시.
