@@ -1370,10 +1370,12 @@ a.cal-credit-row:hover,
   min-width: 0;
   box-sizing: border-box;
   margin-top: 8px;
-  padding: 8px 12px 9px;
-  border: 1px solid var(--bd);
+  margin-bottom: 12px; /* #1 간격 — 추천픽 margin-bottom:12px 동일 리듬 (디자인팀 2026-06-18) */
+  padding: 10px 14px 11px; /* #2 무게감 — 패딩 보강 */
+  border: 1px solid var(--am3); /* #2 무게감 — 황금계열 border (추천픽 --am3 동일 토큰, 위계 정합) */
   border-radius: 12px;
-  background: var(--sf);
+  background: var(--am4); /* #2 무게감 — 황금계열 1단계 상향 (추천픽 --am4 동일 토큰, 추천이 --am4+글로우로 더 강조) */
+  box-shadow: 0 1px 2px rgba(180, 130, 20, 0.04); /* #2 무게감 — 추천픽(0.08) 절반 글로우 */
 }
 /* 레이아웃 정렬 fix (대표 catch 2026-06-17) — 오늘 뷰에서 추적픽 박스가 추천 카드(.cal-pm320-today-rec)
    직후 형제로 주입될 때, 추천 카드는 full-width 인데 추적픽은 max-width:360px 라 좌측 정렬·폭 불일치가

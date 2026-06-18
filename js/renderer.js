@@ -3279,11 +3279,11 @@ function renderCalExpandContent(date, data) {
       const pc = st.pick_count;
       // REQ-059 명명 재정정 — "연속선정" (REQ-039 "거래대금"이 맥락 부족 → "연속선정+N"으로 정정).
       const pickMeta = (pp && pc >= 2)
-        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">연속선정+${pc}</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
+        ? `<div class="cal-pick-meta"><div class="cal-disc-item"><span class="cal-disc-cat streak">후보연속+${pc}</span><span class="cal-disc-summary">전일 순위 #${pp.rank} · ${fmtTradeAmount(pp.trade_amount)} · ${(pp.change_pct||0)>=0?'+':''}${(pp.change_pct||0).toFixed(2)}%</span></div></div>`
         : '';
       // 종목명 우측 거래대금 연속 선정 배지 (헤더): 2+ → "연속선정+N", 1이면 비표시
       const pickBadge = pc != null && pc >= 2
-        ? `<span class="cal-streak-badge">연속선정+${pc}</span>`
+        ? `<span class="cal-streak-badge">후보연속+${pc}</span>`
         : '';
       // REQ-039 — 강세 배지 (헤더, 종목명 우측, pickBadge 옆).
       // REQ-048 본질: data-loader.js가 entry → interp 합성 시 bullish 필드 패스스루 (REQ-048 data-loader 정정).
@@ -3775,7 +3775,7 @@ function renderCalExpandContent(date, data) {
     const compactPC = it.interp?.pick_count;
     // REQ-059 표기 재정정 — "연속선정+N" (REQ-039 "거래대금"이 맥락 부족).
     const compactBadge = compactPC != null && compactPC >= 2
-      ? `<span class="cal-streak-badge">연속선정+${compactPC}</span>`
+      ? `<span class="cal-streak-badge">후보연속+${compactPC}</span>`
       : '';
     // REQ-048 — no-interp 카드 (와이제이링크 등)에도 강세 배지 노출.
     // it.interp 부재 케이스: it.bullish_today/streak 직접 참조 (entry 루트 패스스루).
