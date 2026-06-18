@@ -1375,6 +1375,14 @@ a.cal-credit-row:hover,
   border-radius: 12px;
   background: var(--sf);
 }
+/* 레이아웃 정렬 fix (대표 catch 2026-06-17) — 오늘 뷰에서 추적픽 박스가 추천 카드(.cal-pm320-today-rec)
+   직후 형제로 주입될 때, 추천 카드는 full-width 인데 추적픽은 max-width:360px 라 좌측 정렬·폭 불일치가
+   생긴다. 추천 카드 직후일 때만 full-width 로 폭을 맞추고, 카드의 margin-bottom:12px 가 이미 간격을 주므로
+   중복 top 여백(8px)을 0 으로 정리(이중 간격·어긋남 제거). PRE_MARKET portal 경로(360px 제약)는 비훼손. */
+.cal-pm320-today-rec + .cal-pre-prev-pick-holdings {
+  max-width: none;
+  margin-top: 0;
+}
 .cal-pre-prev-pick-holdings-label {
   font-size: 12px; /* R25 P1① — 11px 텍스트 플로어 위반 fix (12px+ 의무) */
   font-weight: 700;
@@ -3020,19 +3028,8 @@ a.cal-macro-chip.nightly-us-newschip {
   font-size: 11px; font-weight: 700; letter-spacing: 0.1px;
   color: var(--am); white-space: nowrap; flex-shrink: 0;
 }
-/* R49 #2 (다관점 판정 #7 — 초보·고인물, 2026-06-14) — "왜 이 종목" 선정 이유 1줄.
-   헤드 직하·grid 위. 라벨(약한 amber)·본문(tx2) 한 줄, 줄바꿈 허용. 실재 데이터만(FLR-AGT-002). */
-.cal-pm320-today-rec-why {
-  margin: 6px 0 0;
-  display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
-  font-size: 12px; line-height: 1.45; word-break: keep-all; overflow-wrap: break-word;
-}
-.cal-pm320-today-rec-why-k {
-  flex-shrink: 0;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
-  color: var(--am); white-space: nowrap;
-}
-.cal-pm320-today-rec-why-v { font-weight: 600; color: var(--tx2); }
+/* R49 #2 "왜 이 종목" 칩 제거 (대표 catch 2026-06-17) — JS 소비처(_whyHtml)·템플릿 제거에 맞춰
+   .cal-pm320-today-rec-why* 룰 동반 삭제(dead CSS 0). 거래대금/테마는 풀 종목카드에 잔존. */
 /* R49 #3 (다관점 판정 #7 — 초보, 2026-06-14) — grid 용어(익절·물타기·만기) 인라인 미니 정의 1줄.
    툴팁(?) 의존 없이 항상 보임. 절제 — 가장 작은 보조 텍스트(11px)·muted 토큰. 카드당 1회. */
 .cal-pm320-today-rec-terms {
