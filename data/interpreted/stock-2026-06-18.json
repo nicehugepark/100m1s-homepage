@@ -1,6 +1,6 @@
 {
   "date": "2026-06-18",
-  "generated_at": "2026-06-18T10:45:29.546668",
+  "generated_at": "2026-06-18T10:46:47.722391",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -745,7 +745,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "052710",
@@ -1226,7 +1229,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -1464,7 +1467,10 @@
       "bullish_streak": 0,
       "bullish_dates": [],
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "011230",
@@ -1739,8 +1745,33 @@
       "low_price": 11560,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체 후공정 장비",
+        "AI데이터센터",
+        "전기차"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체",
+            "반도체 후공정 장비"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "전기차",
+          "path": [
+            "전기차"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -1758,64 +1789,64 @@
           "url": "https://www.fnnews.com/news/202606181025519655",
           "source": "파이낸셜뉴스",
           "published_at": "2026-06-18T10:40:05.026793",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 서버·데이터센터·전기차 확대 → 고신뢰성 MLCC 수요 급증 → 한울반도체(MLCC 외관·전기특성 검사·마운터 등 후공정 장비 기술기업)가 글로벌 MLCC 1위 무라타와 '고성능 MLCC 제조공정용 마운터 설비' MOU 체결 → 본업인 MLCC 후공정 검사·공정장비 모멘텀 부각 → 매수세 집중되며 당일 시가 11,600원에서 고가 13,710원으로 직행, 종가 13,710원(+29.95%) 상한가·거래대금 73억원.",
+          "macro_event": "AI 서버·데이터센터 고신뢰성 MLCC 수요 급증(연 10~30% 고성장)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.56,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         },
         {
           "title": "한울반도체, '글로벌 MLCC 1위' 일본 무라타와 MOU",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03781846645483032",
           "source": "이데일리",
           "published_at": "2026-06-18T01:37:11",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 서버·데이터센터·전기차 확대 → 고신뢰성 MLCC 수요 급증 → 한울반도체(MLCC 외관·전기특성 검사·마운터 등 후공정 장비 기술기업)가 글로벌 MLCC 1위 무라타와 '고성능 MLCC 제조공정용 마운터 설비' MOU 체결 → 본업인 MLCC 후공정 검사·공정장비 모멘텀 부각 → 매수세 집중되며 당일 시가 11,600원에서 고가 13,710원으로 직행, 종가 13,710원(+29.95%) 상한가·거래대금 73억원.",
+          "macro_event": "AI 서버·데이터센터 고신뢰성 MLCC 수요 급증(연 10~30% 고성장)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.56,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         },
         {
           "title": "한울반도체, 글로벌 1위 日무라타와 고성능 MLCC 제조공정 장비 MOU",
           "url": "https://view.asiae.co.kr/article/2026061810353162815",
           "source": "아시아경제",
           "published_at": "2026-06-18T01:35:30",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 서버·데이터센터·전기차 확대 → 고신뢰성 MLCC 수요 급증 → 한울반도체(MLCC 외관·전기특성 검사·마운터 등 후공정 장비 기술기업)가 글로벌 MLCC 1위 무라타와 '고성능 MLCC 제조공정용 마운터 설비' MOU 체결 → 본업인 MLCC 후공정 검사·공정장비 모멘텀 부각 → 매수세 집중되며 당일 시가 11,600원에서 고가 13,710원으로 직행, 종가 13,710원(+29.95%) 상한가·거래대금 73억원.",
+          "macro_event": "AI 서버·데이터센터 고신뢰성 MLCC 수요 급증(연 10~30% 고성장)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.56,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         },
         {
           "title": "한울반도체, 日 무라타와 ‘MLCC 제조공정용 마운터 설비’ MOU 체결",
           "url": "https://www.sedaily.com/article/20057242",
           "source": "서울경제",
           "published_at": "2026-06-18T01:33:33",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 서버·데이터센터·전기차 확대 → 고신뢰성 MLCC 수요 급증 → 한울반도체(MLCC 외관·전기특성 검사·마운터 등 후공정 장비 기술기업)가 글로벌 MLCC 1위 무라타와 '고성능 MLCC 제조공정용 마운터 설비' MOU 체결 → 본업인 MLCC 후공정 검사·공정장비 모멘텀 부각 → 매수세 집중되며 당일 시가 11,600원에서 고가 13,710원으로 직행, 종가 13,710원(+29.95%) 상한가·거래대금 73억원.",
+          "macro_event": "AI 서버·데이터센터 고신뢰성 MLCC 수요 급증(연 10~30% 고성장)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.56,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -2024,9 +2055,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "189860",
