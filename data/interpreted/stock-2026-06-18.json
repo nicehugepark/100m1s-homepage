@@ -1,6 +1,6 @@
 {
   "date": "2026-06-18",
-  "generated_at": "2026-06-18T10:15:20.870537",
+  "generated_at": "2026-06-18T10:16:12.098659",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -225,8 +225,26 @@
       "low_price": 30700,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "보험",
+        "금융",
+        "저PBR"
+      ],
+      "theme_paths": [
+        {
+          "name": "보험",
+          "path": [
+            "금융",
+            "보험"
+          ]
+        },
+        {
+          "name": "저PBR",
+          "path": [
+            "저PBR"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -244,16 +262,16 @@
           "url": "https://www.etoday.co.kr/news/view/2594838",
           "source": "이투데이",
           "published_at": "2026-06-18T01:06:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "미래에셋생명의 자기주식 취득 결정과 대주주 지분 확대가 부각 → 주주가치 제고·밸류업(저PBR 재평가) 기대로 보험·금융주 매수세 집중 → 당일 시가 30,700원에서 고가 37,300원까지 직행, 종가 35,950원(+17.48%)·거래대금 901억원으로 강세 마감.",
+          "macro_event": "자사주 취득 결정 + 대주주 지분 확대 → 주주환원·지배구조 강화 기대",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.5,
+          "newzy_virality": 0.3,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.42,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -432,9 +450,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
-      "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "067290",
@@ -698,7 +716,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -906,9 +924,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bear",
       "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "주의"
     },
     {
       "code": "052710",
@@ -932,7 +950,10 @@
       "news": [],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "011230",
