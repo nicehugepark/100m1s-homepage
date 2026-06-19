@@ -1,6 +1,6 @@
 {
   "date": "2026-06-19",
-  "generated_at": "2026-06-19T10:55:29.337198",
+  "generated_at": "2026-06-19T10:57:03.976003",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -2076,8 +2076,26 @@
       "low_price": 2780,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "케이블",
+        "반도체",
+        "반도체소부장"
+      ],
+      "theme_paths": [
+        {
+          "name": "케이블",
+          "path": [
+            "케이블"
+          ]
+        },
+        {
+          "name": "반도체소부장",
+          "path": [
+            "반도체",
+            "반도체소부장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -2089,16 +2107,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02919206645483360",
           "source": "이데일리",
           "published_at": "2026-06-18T23:15:41",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "글로벌 반도체 장비 투자 확대(인텔 장비 밸류체인) → 장비 구동부에 쓰이는 케이블 보호장치(G-클린체인) 수요 발생 → 씨피시스템이 자사 본업 제품으로 인텔 장비 밸류체인에 직접 진입하며 신규 납품처 확보 모멘텀 부각 → 매수세 집중되며 당일 종가 3,195원, 상한가(+29.88%) 마감.",
+          "macro_event": "인텔 반도체 장비 밸류체인 진입 — 장비용 케이블 보호장치(G-클린체인) 공급",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.35,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.5,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -2307,9 +2325,9 @@
           3195
         ]
       },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "204270",
@@ -2323,8 +2341,27 @@
       "low_price": 21000,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체소부장",
+        "AI 인프라"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체소부장",
+          "path": [
+            "반도체",
+            "반도체소부장"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -2336,32 +2373,32 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02965126645483360",
           "source": "이데일리",
           "published_at": "2026-06-18T23:23:02",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터·고성능 칩 패키징 수요 확대 → 미세화·고집적 차세대 패키징 기판(TGV 유리기판) 필요성 부각 → 제이앤티씨가 세계 최초로 두께 2.0mmT 고난이도 TGV 유리기판 개발 성공 → 차세대 반도체 패키징 소재 본업 모멘텀 직결로 매수세 집중 → 시초가부터 점상한가(시=고=저=종 21,000원, +29.95%) 마감(거래대금 14억원).",
+          "macro_event": "AI·HPC 칩 고성능 패키징 수요 확대 → 차세대 TGV 유리기판 상용화 경쟁",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.52,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         },
         {
           "title": "제이앤티씨, 세계 최초 유리두께 2.0mmT 고난이도 TGV 유리기판 개발 성공",
           "url": "https://view.asiae.co.kr/article/2026061908202498016",
           "source": "아시아경제",
           "published_at": "2026-06-18T23:20:25",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터·고성능 칩 패키징 수요 확대 → 미세화·고집적 차세대 패키징 기판(TGV 유리기판) 필요성 부각 → 제이앤티씨가 세계 최초로 두께 2.0mmT 고난이도 TGV 유리기판 개발 성공 → 차세대 반도체 패키징 소재 본업 모멘텀 직결로 매수세 집중 → 시초가부터 점상한가(시=고=저=종 21,000원, +29.95%) 마감(거래대금 14억원).",
+          "macro_event": "AI·HPC 칩 고성능 패키징 수요 확대 → 차세대 TGV 유리기판 상용화 경쟁",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.52,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -2572,9 +2609,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "056090",
