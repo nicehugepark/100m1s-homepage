@@ -1,6 +1,6 @@
 {
   "date": "2026-06-19",
-  "generated_at": "2026-06-19T09:55:31.943792",
+  "generated_at": "2026-06-19T10:05:12.684214",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -24,9 +24,9 @@
       "code": "080220",
       "name": "제주반도체",
       "rank": 1,
-      "trade_amount": 376094000000,
-      "change_pct": 6.03,
-      "close_price": 124800,
+      "trade_amount": 395648000000,
+      "change_pct": 4.08,
+      "close_price": 122500,
       "open_price": 122400,
       "high_price": 128800,
       "low_price": 120000,
@@ -48,11 +48,11 @@
       "range_240d": {
         "high": 137100,
         "high_date": "2026-05-22",
-        "high_pct": -8.97,
+        "high_pct": -10.65,
         "low": 13380,
         "low_date": "2025-08-20",
-        "low_pct": 832.74,
-        "current": 124800
+        "low_pct": 815.55,
+        "current": 122500
       },
       "daily_20": [
         {
@@ -193,7 +193,7 @@
           "o": 122400,
           "h": 128800,
           "l": 120000,
-          "c": 124800
+          "c": 122500
         }
       ],
       "intraday": {
@@ -211,7 +211,9 @@
           121700,
           122400,
           125100,
-          125000
+          122900,
+          122700,
+          122300
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -222,9 +224,9 @@
       "code": "009155",
       "name": "삼성전기우",
       "rank": 2,
-      "trade_amount": 110179000000,
-      "change_pct": 13.36,
-      "close_price": 823000,
+      "trade_amount": 115746000000,
+      "change_pct": 14.05,
+      "close_price": 828000,
       "open_price": 758000,
       "high_price": 845000,
       "low_price": 756000,
@@ -246,11 +248,11 @@
       "range_240d": {
         "high": 845000,
         "high_date": "2026-06-19",
-        "high_pct": -2.6,
+        "high_pct": -2.01,
         "low": 60000,
         "low_date": "2025-06-30",
-        "low_pct": 1271.67,
-        "current": 823000
+        "low_pct": 1280.0,
+        "current": 828000
       },
       "daily_20": [
         {
@@ -391,7 +393,7 @@
           "o": 758000,
           "h": 845000,
           "l": 756000,
-          "c": 823000
+          "c": 828000
         }
       ],
       "intraday": {
@@ -409,7 +411,9 @@
           843000,
           833000,
           821000,
-          822000
+          826000,
+          829000,
+          830000
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -420,12 +424,12 @@
       "code": "046970",
       "name": "우리로",
       "rank": 3,
-      "trade_amount": 67756000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "trade_amount": 79186000000,
+      "change_pct": 4.05,
+      "close_price": 8480,
+      "open_price": 8990,
+      "high_price": 9020,
+      "low_price": 7330,
       "industry": null,
       "sector": null,
       "themes": [
@@ -458,7 +462,9 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-06-18"
+      ],
       "news": [
         {
           "title": "우리로, AI 데이터센터용 광검출기 상용화 본격 시동",
@@ -481,11 +487,11 @@
       "range_240d": {
         "high": 16200,
         "high_date": "2026-04-17",
-        "high_pct": -49.69,
+        "high_pct": -47.65,
         "low": 1206,
         "low_date": "2025-11-05",
-        "low_pct": 575.79,
-        "current": 8150
+        "low_pct": 603.15,
+        "current": 8480
       },
       "daily_20": [
         {
@@ -626,7 +632,7 @@
           "o": 8990,
           "h": 9020,
           "l": 7330,
-          "c": 8800
+          "c": 8480
         }
       ],
       "status_badges": [
@@ -649,6 +655,15 @@
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260618000665",
           "disclosure_title": "[투자주의]투자경고종목 지정예고",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-06-18)",
+              "base_price": 8150,
+              "threshold": 8150,
+              "current": 8480,
+              "triggered": true
+            }
+          ],
           "reason_text": "우리로 보통주가 투자경고종목으로 지정될 가능성이 있어 2026-06-19 당일 투자주의종목으로 지정됩니다. 2026년 06월 18일 종가의 최근 1년간 초과 주가상승률이 200% 이상이면서 불건전 매매관여 요건에 해당할 경우 투자경고종목으로 지정되며, 지정 판단은 2026-06-19부터 2026-07-02까지 1일씩 순연하며 진행됩니다.",
           "prev_stage": null,
           "effect_badges": [
@@ -662,8 +677,28 @@
           ]
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 8990,
+        "base": 8990,
+        "prices": [
+          8990,
+          7840,
+          7480,
+          7550,
+          7500,
+          7650,
+          7570,
+          7410,
+          7930,
+          8420,
+          8830,
+          8440,
+          8490
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
