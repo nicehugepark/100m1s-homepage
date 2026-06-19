@@ -1,6 +1,6 @@
 {
   "date": "2026-06-19",
-  "generated_at": "2026-06-19T10:45:20.551292",
+  "generated_at": "2026-06-19T10:46:22.769036",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -432,9 +432,9 @@
           825000
         ]
       },
-      "togusa_verdict": "weak_bear",
+      "togusa_verdict": "neutral",
       "theme_leader": false,
-      "hugepark_grade": "주의"
+      "hugepark_grade": "관찰"
     },
     {
       "code": "046970",
@@ -723,7 +723,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -1244,7 +1244,12 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "투자경고",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "320000",
@@ -1259,13 +1264,19 @@
       "industry": null,
       "sector": null,
       "themes": [
+        "MLCC",
         "반도체 후공정 장비",
         "AI데이터센터",
         "전기차",
-        "반도체",
-        "AI"
+        "반도체"
       ],
       "theme_paths": [
+        {
+          "name": "MLCC",
+          "path": [
+            "MLCC"
+          ]
+        },
         {
           "name": "반도체 후공정 장비",
           "path": [
@@ -1309,16 +1320,16 @@
           "url": "https://www.fnnews.com/news/202606181025519655",
           "source": "파이낸셜뉴스",
           "published_at": "2026-06-19T10:30:03.351729",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 서버·데이터센터 트래픽 및 전기차 전장 시스템 확대(차량 1대당 1만~1만8천개 MLCC) → AI 서버·전장용 고신뢰성 MLCC 시장이 연 10~30% 고성장 → MLCC 제조공정용 마운터·검사장비 수요 확대 → 한울반도체 본업(반도체 후공정 검사·마운터 설비)이 글로벌 1위 무라타와의 MOU로 직접 수혜 부각 → 매수세 집중되며 당일 시가=고가 17,820원으로 직행, 종가 17,820원(+29.98%) 상한가·52주 신고가 갱신(거래대금 169억원).",
+          "macro_event": "AI 서버·데이터센터·전기차 전장 확대로 고신뢰성 MLCC 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.8,
+          "newzy_virality": 0.6,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.72,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -1499,7 +1510,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "000890",
@@ -1702,7 +1716,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "011080",
@@ -1906,7 +1923,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "413630",
@@ -2106,7 +2126,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "204270",
@@ -2306,7 +2329,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "056090",
@@ -2508,7 +2534,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     }
   ]
 }
