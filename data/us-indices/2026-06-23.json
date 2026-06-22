@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26212.81,
-      "change_pct": -1.15,
+      "point": 26176.23,
+      "change_pct": -1.29,
       "candle": {
         "o": 26486.02,
         "h": 26557.95,
         "l": 26156.46,
-        "c": 26212.81
+        "c": 26176.23
       },
       "range_240d": {
         "low": 20418.46,
@@ -2033,13 +2033,11 @@
           "o": 26486.02,
           "h": 26557.95,
           "l": 26156.46,
-          "c": 26212.81
+          "c": 26176.23
         }
       ],
       "spark": [
         26486.02,
-        26515.67,
-        26497.18,
         26547.58,
         26519.45,
         26544.52,
@@ -2077,7 +2075,9 @@
         26205.43,
         26218.02,
         26212.34,
-        26212.81
+        26213.47,
+        26176.88,
+        26176.23
       ],
       "news": {
         "summary": "AI 투자 열풍 속 기술주 강세 지속. Intel-Apple 제휴 추진, OpenAI·Anthropic IPO 착수 단계, Qualcomm 반도체 밸류 플레이 부상. 다만 AI 인프라 투자 비용 후행 리스크 부각.",
@@ -2101,13 +2101,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7478.63,
-      "change_pct": -0.29,
+      "point": 7471.36,
+      "change_pct": -0.39,
       "candle": {
         "o": 7500.44,
         "h": 7530.01,
         "l": 7461.04,
-        "c": 7478.63
+        "c": 7471.36
       },
       "range_240d": {
         "low": 6225.52,
@@ -4131,13 +4131,11 @@
           "o": 7500.44,
           "h": 7530.01,
           "l": 7461.04,
-          "c": 7478.63
+          "c": 7471.36
         }
       ],
       "spark": [
         7500.44,
-        7524.9,
-        7520.83,
         7528.13,
         7525.08,
         7528.28,
@@ -4175,7 +4173,9 @@
         7478.19,
         7479.58,
         7478.09,
-        7478.63
+        7477.45,
+        7471.46,
+        7471.36
       ],
       "news": {
         "summary": "Warsh 연준 의장 첫 FOMC서 금리 정책 기조 유지, AI 붐이 인플레·경기에 미칠 영향 평가 중. 5월 주택착공 15.4% 급락으로 경기 둔화 신호 부각, 호르무즈 재개방 후 공급망 정상화까지 수개월 소요 예상.",
@@ -4199,13 +4199,13 @@
     },
     {
       "name": "DOW",
-      "point": 51769.53,
-      "change_pct": 0.4,
+      "point": 51726.52,
+      "change_pct": 0.31,
       "candle": {
         "o": 51555.19,
         "h": 51887.85,
         "l": 51555.19,
-        "c": 51769.53
+        "c": 51726.52
       },
       "range_240d": {
         "low": 43588.58,
@@ -6229,13 +6229,11 @@
           "o": 51555.19,
           "h": 51887.85,
           "l": 51555.19,
-          "c": 51769.53
+          "c": 51726.52
         }
       ],
       "spark": [
         51555.19,
-        51868.04,
-        51839.4,
         51843.83,
         51832.87,
         51881.54,
@@ -6273,7 +6271,9 @@
         51768.97,
         51765.47,
         51765.24,
-        51769.53
+        51739.06,
+        51726.1,
+        51726.52
       ],
       "news": {
         "summary": "경기 민감 산업 약세 신호. 주택 공급 부족 고착, 금융권 M&A 호조(UniCredit-Commerzbank, Deluxe-Celero), 중국 수출 홍수로 무역 긴장 심화. 호르무즈 재개방으로 에너지 공급 정상화 시작도 수개월 소요 예상, 경기 영향 지속.",
@@ -6298,136 +6298,119 @@
   ],
   "news_chips": [
     {
-      "summary": "미국이 이란 제재 해제로 국제 원유 시장 진출 허용, 유가 하락 압력 가중",
+      "summary": "카타르 LNG 시설 폭발로 13명 사망, 중동 에너지 공급 재개 와중 장기 영향 우려",
       "source": "WSJ",
-      "url": "https://www.wsj.com/world/middle-east/vance-says-iran-agreed-to-allow-nuclear-inspectors-back-in-209db17c",
-      "published_ts": 1782145680.0,
+      "url": "https://www.wsj.com/business/energy-oil/explosion-at-qatar-gas-plant-leaves-dozens-injured-18-missing-8ae33c9b",
+      "published_ts": 1782139320.0,
       "impact_high": true
     },
     {
-      "summary": "캐나다 5월 소비자물가가 29개월 만에 최고 수준 상승, 중앙은행의 추가 금리 인상 압박 심화",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/canada-inflation-heats-up-to-3-2-in-may-9c623b37",
-      "published_ts": 1782141300.0,
-      "impact_high": true
-    },
-    {
-      "summary": "AI 메모리칩 수요 급증으로 SK하이닉스가 삼성을 제치고 한국 시총 1위 기업으로 부상",
+      "summary": "미국 정부 이란산 원유 거래 한시 허용으로 에너지 공급 증가에 유가 약세 압박 지속",
       "source": "WSJ",
       "url": "https://www.wsj.com/finance/banking/morgan-stanley-weighs-expansion-to-dallas-with-1-33-billion-office-building-deal-84119d18?mod=rss_markets_main",
       "published_ts": 1782147360.0,
       "impact_high": false
     },
     {
-      "summary": "통화정책 거장 그린스펀 전 연준 의장이 100세로 별세, 19년간 경제 주도한 유산 남김",
+      "summary": "유로존 6월 소비자 신뢰도 소폭 개선되었으나 3년 저점 대비 여전히 약세 수준 지속",
       "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/alan-greenspan-fed-chair-dies-100-eeacb8eb",
-      "published_ts": 1782128100.0,
+      "url": "https://www.wsj.com/economy/central-banking/eurozone-consumer-confidence-picks-up-slightly-13a72855",
+      "published_ts": 1782140400.0,
       "impact_high": false
     },
     {
-      "summary": "중국이 미국의 군사 연계 기업 제재 확대에 보복 조치, 수십 개 미국 기업에 수출입 제한 부과",
+      "summary": "AI 반도체 수요 급등에 SK하이닉스가 삼성전자 제쳐 한국 시가총액 최고 기업 위치 확보",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/tech/sk-hynix-tops-samsung-to-become-south-koreas-most-valuable-company-279419a0",
+      "published_ts": 1782121620.0,
+      "impact_high": false
+    },
+    {
+      "summary": "중국이 미국의 군사 관련 기업 제재 확대에 대해 미국 기업 수십 개에 보복성 제한 조치",
       "source": "WSJ",
       "url": "https://www.wsj.com/world/china/china-slaps-restrictions-on-dozens-of-u-s-companies-bd337a1c",
       "published_ts": 1782114360.0,
       "impact_high": false
     },
     {
-      "summary": "연준 의장 Kevin Warsh의 첫 통화정책 회의에서 금리 기조 현상 유지 결정, 인상 시그널 약화",
+      "summary": "AI 투자 자금 대량 유입이 주식 시장 과평가 신호로 평가되며 구조적 리스크 경고 제기",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/finance/stocks/all-the-money-flooding-into-ai-is-a-giant-warning-sign-6e08e3ea?mod=rss_markets_main",
+      "published_ts": 1782034200.0,
+      "impact_high": true
+    },
+    {
+      "summary": "호르무즈 해협 재개에도 에너지 공급망 정상화까지 수개월 소요 예상, 거시 충격 잔존",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/06/19/hormuz-relief-may-not-ease-the-economic-toll-thats-already-baked-in-analysts-warn.html",
+      "published_ts": 1781856514.0,
+      "impact_high": true
+    },
+    {
+      "summary": "연준 의장 교체 후 첫 금리 결정 회의에서 기준금리 현 수준 유지 기조 확인",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html",
       "published_ts": 1781810275.0,
       "impact_high": true
     },
     {
-      "summary": "영란은행이 인플레이션 불확실성 속에서 기준금리를 3.75%에 유지, 추가 인상 연기 신호",
+      "summary": "영국 중앙은행 기준금리 3.75% 유지, 이란 협상 진전에도 불구하고 경계 기조 유지",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/18/inflation-interest-rates-uk-bank-of-england-iran-deal.html",
       "published_ts": 1781783356.0,
       "impact_high": true
     },
     {
-      "summary": "AI 투자 확대로 기업 실적이 호조인 반면, 대규모 자본 지출이 추후 수익성 압박 요인으로 작용",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/turbocharged-earnings-are-pushing-stocks-higher-theres-a-catch-100839c9?mod=rss_markets_main",
-      "published_ts": 1781775000.0,
-      "impact_high": false
-    },
-    {
-      "summary": "5월 미국 계약 예정 주택판매가 예상치를 크게 상회, 주택시장 회복 신호 점화",
+      "summary": "5월 미국 주택판매 계약 지수 예상 초과 상승, 부동산 시장 회복 신호 포착",
       "source": "WSJ",
       "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9",
       "published_ts": 1781705400.0,
       "impact_high": false
-    },
-    {
-      "summary": "호르무즈 해협 재개통으로 단기 에너지 공급 위기 완화되었으나 경제 회복에는 수개월 소요 전망",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/global/five-things-the-hormuz-crisis-taught-us-about-the-global-economy-c9bd6b45",
-      "published_ts": 1781703480.0,
-      "impact_high": false
     }
   ],
-  "_article_sig": "509926c5ae60e73ad485b07d20c4ef91280054ac036c4ff16df34fd9bab6ff0e",
+  "_article_sig": "be8be5e0af4931e8fc017fcd9430adbeddf0660b3ac5994d74d2cc07007b3092",
   "built_at_kst": "2026-06-20T07:02:55.651495+09:00",
   "regular_open": true,
   "_futures_news": {
-    "NASDAQ": {
-      "summary": "메모리칩 수급 주도권 교체 신호. SK하이닉스 삼성 전자 추월로 AI 붐 수혜 가시화 중. 애플의 메모리 구입력 약화에도 반도체 수요 과열 신호 심화.",
-      "sources": [
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/tech/sk-hynix-tops-samsung-to-become-south-koreas-most-valuable-company-279419a0"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/tech/why-apples-war-chest-cant-win-the-memory-war-cb997d02?mod=rss_markets_main"
-        }
-      ]
-    },
     "S&P500": {
-      "summary": "연준 정책 안정화 신호 + 에너지 공급 정상화 복합 작용. Kevin Warsh 연준 의장 첫 회의에서 금리 유지 기조 확인. Iran 원유 제재 해제로 7월 말까지 한시적 공급 정상화 진행 중. 캐나다 물가 3.2% 상승에 중앙은행 금리 경로 모호성 가중.",
+      "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
       "sources": [
         {
-          "name": "CNBC",
-          "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/economy/central-banking/canada-inflation-heats-up-to-3-2-in-may-9c623b37"
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
         }
       ]
     },
     "DOW": {
-      "summary": "Iran 대화 진전에 따른 낙관·에너지 가격 하락 복합 신호. 다우 상승하며 유가 동반 하락 중. Morgan Stanley 달러스 확장(13.3억달러) 금융 산업 재배치 신호. 영국 연준 금리 인상 보류로 글로벌 경기민감 약세 신호.",
+      "summary": "Iran 협상 완화로 Dow 상승 신호. 주택가격 상승 추세·금융 채용 둔화로 경기민감주 양극화.",
       "sources": [
         {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/finance/banking/morgan-stanley-weighs-expansion-to-dallas-with-1-33-billion-office-building-deal-84119d18?mod=rss_markets_main"
-        },
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9"
+        }
+      ]
+    },
+    "NASDAQ": {
+      "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
+      "sources": [
         {
-          "name": "CNBC",
-          "url": "https://www.cnbc.com/2026/06/18/inflation-interest-rates-uk-bank-of-england-iran-deal.html"
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
         }
       ]
     }
   },
   "futures": {
-    "as_of_kst": "2026-06-23T02:00:05.455775+09:00",
+    "as_of_kst": "2026-06-23T02:10:03.601826+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7545.5,
+        "point": 7545.75,
         "change_pct": -0.33,
         "spark": [
           7543.25,
-          7578.5,
           7592.0,
           7587.25,
           7596.25,
@@ -6466,21 +6449,22 @@
           7539.75,
           7546.25,
           7547.5,
-          7545.5
+          7546.0,
+          7545.75
         ],
         "candle": {
           "o": 7543.25,
           "h": 7599.25,
           "l": 7513.0,
-          "c": 7545.5
+          "c": 7546.25
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 20.45,
-          "high_change_pct": -1.03
+          "low_change_pct": 20.46,
+          "high_change_pct": -1.02
         },
         "daily_expanded": [
           {
@@ -8496,25 +8480,17 @@
             "o": 7543.25,
             "h": 7599.25,
             "l": 7513.0,
-            "c": 7545.5,
-            "v": 1079577
+            "c": 7546.25,
+            "v": 1098783
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "연준 정책 안정화 신호 + 에너지 공급 정상화 복합 작용. Kevin Warsh 연준 의장 첫 회의에서 금리 유지 기조 확인. Iran 원유 제재 해제로 7월 말까지 한시적 공급 정상화 진행 중. 캐나다 물가 3.2% 상승에 중앙은행 금리 경로 모호성 가중.",
+          "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
           "sources": [
             {
-              "name": "CNBC",
-              "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/economy/central-banking/canada-inflation-heats-up-to-3-2-in-may-9c623b37"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
             }
           ]
         }
@@ -8522,12 +8498,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30573.75,
-        "change_pct": -0.48,
+        "point": 30591.0,
+        "change_pct": -0.42,
         "spark": [
           30577.0,
-          30790.0,
-          30880.0,
           30852.5,
           30937.0,
           30923.0,
@@ -8565,21 +8539,23 @@
           30544.0,
           30577.5,
           30592.0,
-          30573.75
+          30589.0,
+          30590.75,
+          30591.0
         ],
         "candle": {
           "o": 30577.0,
           "h": 30968.0,
           "l": 30337.5,
-          "c": 30573.75
+          "c": 30591.0
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 33.6,
-          "high_change_pct": -0.45
+          "low_change_pct": 33.68,
+          "high_change_pct": -0.4
         },
         "daily_expanded": [
           {
@@ -10595,21 +10571,17 @@
             "o": 30577.0,
             "h": 30968.0,
             "l": 30337.5,
-            "c": 30573.75,
-            "v": 507053
+            "c": 30591.0,
+            "v": 513897
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "메모리칩 수급 주도권 교체 신호. SK하이닉스 삼성 전자 추월로 AI 붐 수혜 가시화 중. 애플의 메모리 구입력 약화에도 반도체 수요 과열 신호 심화.",
+          "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
           "sources": [
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/tech/sk-hynix-tops-samsung-to-become-south-koreas-most-valuable-company-279419a0"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/tech/why-apples-war-chest-cant-win-the-memory-war-cb997d02?mod=rss_markets_main"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
             }
           ]
         }
@@ -10617,11 +10589,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52169.0,
-        "change_pct": 0.31,
+        "point": 52141.0,
+        "change_pct": 0.26,
         "spark": [
           51870.0,
-          52189.0,
           52269.0,
           52240.0,
           52256.0,
@@ -10660,20 +10631,21 @@
           52147.0,
           52172.0,
           52169.0,
-          52169.0
+          52167.0,
+          52141.0
         ],
         "candle": {
           "o": 51870.0,
           "h": 52305.0,
           "l": 51712.0,
-          "c": 52169.0
+          "c": 52172.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52169.0,
+          "high": 52172.0,
           "low_date": "2025-08-01",
           "high_date": "2026-06-22",
-          "low_change_pct": 19.35,
+          "low_change_pct": 19.36,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12690,26 +12662,22 @@
             "o": 51870.0,
             "h": 52305.0,
             "l": 51712.0,
-            "c": 52169.0,
-            "v": 71949
+            "c": 52172.0,
+            "v": 72823
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "Iran 대화 진전에 따른 낙관·에너지 가격 하락 복합 신호. 다우 상승하며 유가 동반 하락 중. Morgan Stanley 달러스 확장(13.3억달러) 금융 산업 재배치 신호. 영국 연준 금리 인상 보류로 글로벌 경기민감 약세 신호.",
+          "summary": "Iran 협상 완화로 Dow 상승 신호. 주택가격 상승 추세·금융 채용 둔화로 경기민감주 양극화.",
           "sources": [
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/finance/banking/morgan-stanley-weighs-expansion-to-dallas-with-1-33-billion-office-building-deal-84119d18?mod=rss_markets_main"
-            },
-            {
-              "name": "CNBC",
-              "url": "https://www.cnbc.com/2026/06/18/inflation-interest-rates-uk-bank-of-england-iran-deal.html"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-23T02:01:12.551828+09:00"
+  "intraday_refreshed_kst": "2026-06-23T02:12:12.814717+09:00"
 }
