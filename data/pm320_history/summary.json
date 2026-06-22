@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T06:55:23+09:00",
+  "generated_at": "2026-06-23T07:38:43+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
   "last_settled_date": "2026-06-22",
@@ -20,9 +20,9 @@
   "worst_mdd_pct": -4.0103,
   "avg_mdd_pct": null,
   "_mdd_basis": "계좌 MDD = 백테스트 balance_history 기준 누적 잔고 최대낙폭.",
-  "total_return_pct": 43.9835,
-  "total_pnl": 4398354.22,
-  "final_balance": 14398354.22,
+  "total_return_pct": 11.0107,
+  "total_pnl": 1101065.82,
+  "final_balance": 11101065.82,
   "branch_counts": {
     "1위픽": 19,
     "2위픽": 19,
@@ -51,20 +51,6 @@
         "_live": true
       },
       {
-        "date": "2026-06-19",
-        "code": "067290",
-        "name": "JW신약",
-        "entry_price": 2335,
-        "exit_date": "2026-06-22",
-        "exit_class": "D+1 익절",
-        "ret_pct": 3.2,
-        "pnl": 29289.38,
-        "balance_after": 11012806.73,
-        "watered": false,
-        "settlement_order": 2,
-        "_live": true
-      },
-      {
         "date": "2026-06-16",
         "code": "475150",
         "name": "SK이터닉스",
@@ -72,10 +58,10 @@
         "exit_date": "2026-06-17",
         "exit_class": "D+1 익절",
         "ret_pct": 3.2,
-        "pnl": 2154749.97,
-        "balance_after": 13109055.83,
+        "pnl": 58578.77,
+        "balance_after": 11042096.12,
         "watered": true,
-        "settlement_order": 3,
+        "settlement_order": 2,
         "_live": true
       },
       {
@@ -86,8 +72,22 @@
         "exit_date": "2026-06-18",
         "exit_class": "D+1 익절",
         "ret_pct": 3.2,
-        "pnl": 1289298.39,
-        "balance_after": 14398354.22,
+        "pnl": 29445.59,
+        "balance_after": 11071541.71,
+        "watered": false,
+        "settlement_order": 3,
+        "_live": true
+      },
+      {
+        "date": "2026-06-19",
+        "code": "067290",
+        "name": "JW신약",
+        "entry_price": 2335,
+        "exit_date": "2026-06-22",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 29524.11,
+        "balance_after": 11101065.82,
         "watered": false,
         "settlement_order": 4,
         "_live": true
@@ -855,21 +855,21 @@
       },
       {
         "date": "2026-06-17",
-        "balance": 13109055.83,
+        "balance": 11042096.12,
         "name": "SK이터닉스"
       },
       {
         "date": "2026-06-18",
-        "balance": 14398354.22,
+        "balance": 11071541.71,
         "name": "디앤디파마텍"
       },
       {
         "date": "2026-06-22",
-        "balance": 11012806.73,
+        "balance": 11101065.82,
         "name": "JW신약"
       }
     ]
   },
   "_backtest_baseline_running": 0,
-  "_live_tail_appended": 2
+  "_live_tail_appended": 4
 }
