@@ -1,6 +1,6 @@
 {
   "date": "2026-06-19",
-  "generated_at": "2026-06-22T11:12:17+09:00",
+  "generated_at": "2026-06-22T11:22:13+09:00",
   "picked_code": "067290",
   "stocks": [
     {
@@ -196,12 +196,19 @@
         "take_profit_target_price": 2492,
         "take_profit_after_watering_price": 2413,
         "expiry_date": "2026-06-24",
-        "current_state": "running",
-        "current_pnl_pct": 0.0,
-        "current_mdd_pct": 0.0,
-        "current_mdd_peak_pct": 0.0,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
+        "current_mdd_pct": null,
+        "current_mdd_peak_pct": null,
         "d_offset": 1,
-        "result": null
+        "result": {
+          "final_price": 2492,
+          "final_pnl_pct": 3.2,
+          "watered": false,
+          "result_date": "2026-06-22",
+          "mdd_pct": 0.0,
+          "mdd_peak_pct": -12.069
+        }
       }
     },
     {
@@ -344,7 +351,7 @@
     "virtual_count": 14,
     "skip_count": 0,
     "total_cards": 15,
-    "expired_count": 5,
-    "running_count": 10
+    "expired_count": 6,
+    "running_count": 9
   }
 }
