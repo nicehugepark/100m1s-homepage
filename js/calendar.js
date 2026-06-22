@@ -123,7 +123,12 @@ function calHasData(date) {
   if (!calIndex || !calIndex.days) return false;
   const entry = calIndex.days[date];
   if (!entry) return false;
-  return (entry.stock_count ?? 0) >= 1 && (entry.news_count ?? 0) >= 1;
+  // PM320 핵심 약속 = 일일 픽. 픽(stock_count>=1)만 있으면 클릭 가능.
+  // 종전 news_count>=1 동시 요구는 cron news 가 없는 거래일(예 6/9~6/14, 뉴스
+  // 수집 이전이라 published 0)을 클릭 불가로 차단 → 픽은 정상 존재하는데 캘린더
+  // 비활성 (false-fidelity 동형). news_count 는 day entry 에 표시용으로 유지하되
+  // 클릭 게이트 판정에서는 제외 (DSN-arch-frontend §calendar 정합).
+  return (entry.stock_count ?? 0) >= 1;
 }
 
 // 비거래일이면 테마트리(일자별 카드성)만 숨김 — Q-20260613-158 ③ 확장 (대표 09:24 catch verbatim
