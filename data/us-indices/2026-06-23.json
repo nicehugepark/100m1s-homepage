@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26197.21,
-      "change_pct": -1.21,
+      "point": 26220.46,
+      "change_pct": -1.12,
       "candle": {
         "o": 26486.02,
         "h": 26557.95,
         "l": 26156.46,
-        "c": 26197.21
+        "c": 26220.46
       },
       "range_240d": {
         "low": 20418.46,
@@ -2033,13 +2033,11 @@
           "o": 26486.02,
           "h": 26557.95,
           "l": 26156.46,
-          "c": 26197.21
+          "c": 26220.46
         }
       ],
       "spark": [
         26486.02,
-        26345.2,
-        26296.85,
         26302.61,
         26242.91,
         26232.38,
@@ -2076,8 +2074,10 @@
         26214.27,
         26207.95,
         26197.79,
-        26191.19,
-        26197.21
+        26197.21,
+        26193.0,
+        26217.6,
+        26220.46
       ],
       "news": {
         "summary": "AI 투자 열풍 속 기술주 강세 지속. Intel-Apple 제휴 추진, OpenAI·Anthropic IPO 착수 단계, Qualcomm 반도체 밸류 플레이 부상. 다만 AI 인프라 투자 비용 후행 리스크 부각.",
@@ -2101,13 +2101,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7474.28,
-      "change_pct": -0.35,
+      "point": 7477.37,
+      "change_pct": -0.31,
       "candle": {
         "o": 7500.44,
         "h": 7530.01,
         "l": 7461.04,
-        "c": 7474.28
+        "c": 7477.37
       },
       "range_240d": {
         "low": 6225.52,
@@ -4131,13 +4131,11 @@
           "o": 7500.44,
           "h": 7530.01,
           "l": 7461.04,
-          "c": 7474.28
+          "c": 7477.37
         }
       ],
       "spark": [
         7500.44,
-        7495.25,
-        7484.8,
         7484.13,
         7474.43,
         7476.96,
@@ -4175,7 +4173,9 @@
         7475.81,
         7473.58,
         7473.33,
-        7474.28
+        7472.48,
+        7476.56,
+        7477.37
       ],
       "news": {
         "summary": "Warsh 연준 의장 첫 FOMC서 금리 정책 기조 유지, AI 붐이 인플레·경기에 미칠 영향 평가 중. 5월 주택착공 15.4% 급락으로 경기 둔화 신호 부각, 호르무즈 재개방 후 공급망 정상화까지 수개월 소요 예상.",
@@ -4199,13 +4199,13 @@
     },
     {
       "name": "DOW",
-      "point": 51705.94,
-      "change_pct": 0.27,
+      "point": 51713.54,
+      "change_pct": 0.29,
       "candle": {
         "o": 51555.19,
         "h": 51887.85,
         "l": 51555.19,
-        "c": 51705.94
+        "c": 51713.54
       },
       "range_240d": {
         "low": 43588.58,
@@ -6229,13 +6229,11 @@
           "o": 51555.19,
           "h": 51887.85,
           "l": 51555.19,
-          "c": 51705.94
+          "c": 51713.54
         }
       ],
       "spark": [
         51555.19,
-        51739.73,
-        51707.96,
         51686.39,
         51683.99,
         51709.41,
@@ -6273,7 +6271,9 @@
         51724.66,
         51705.31,
         51703.08,
-        51705.94
+        51713.3,
+        51709.92,
+        51713.54
       ],
       "news": {
         "summary": "경기 민감 산업 약세 신호. 주택 공급 부족 고착, 금융권 M&A 호조(UniCredit-Commerzbank, Deluxe-Celero), 중국 수출 홍수로 무역 긴장 심화. 호르무즈 재개방으로 에너지 공급 정상화 시작도 수개월 소요 예상, 경기 영향 지속.",
@@ -6298,121 +6298,131 @@
   ],
   "news_chips": [
     {
-      "summary": "카타르 LNG 시설 폭발로 13명 사망, 중동 에너지 공급 재개 와중 장기 영향 우려",
+      "summary": "캐나다 5월 소비자물가 3.2% 기록해 29개월 최고, 휘발유 가격 급등이 인플레 고착화 우려 증폭",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/economy/central-banking/canada-inflation-heats-up-to-3-2-in-may-9c623b37",
+      "published_ts": 1782141300.0,
+      "impact_high": true
+    },
+    {
+      "summary": "미국이 이란 원유 판매 제재를 8월21일까지 한시 면제하면서 호르무즈 해협 재개항 추진 → 유가 하락, 중동 지정학 리스크 완화",
+      "source": "한경",
+      "url": "https://www.hankyung.com/article/2026062214847",
+      "published_ts": 1782140067.0,
+      "impact_high": true
+    },
+    {
+      "summary": "카타르 라스라판 LNG 플랜트 폭발로 13명 사망, 호르무즈 해협 재개항 동시 진행 속 에너지 공급 변동성 확대",
       "source": "WSJ",
       "url": "https://www.wsj.com/business/energy-oil/explosion-at-qatar-gas-plant-leaves-dozens-injured-18-missing-8ae33c9b",
       "published_ts": 1782139320.0,
       "impact_high": true
     },
     {
-      "summary": "미국 정부 이란산 원유 거래 한시 허용으로 에너지 공급 증가에 유가 약세 압박 지속",
+      "summary": "19년간 미 연준 의장을 역임한 그린스펀 별세(향년 100세), 금융위기 대응과 금리 정책의 역사적 평가 엇갈림",
       "source": "WSJ",
-      "url": "https://www.wsj.com/finance/banking/morgan-stanley-weighs-expansion-to-dallas-with-1-33-billion-office-building-deal-84119d18?mod=rss_markets_main",
-      "published_ts": 1782147360.0,
+      "url": "https://www.wsj.com/economy/central-banking/alan-greenspan-fed-chair-dies-100-eeacb8eb",
+      "published_ts": 1782128100.0,
       "impact_high": false
     },
     {
-      "summary": "유로존 6월 소비자 신뢰도 소폭 개선되었으나 3년 저점 대비 여전히 약세 수준 지속",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/eurozone-consumer-confidence-picks-up-slightly-13a72855",
-      "published_ts": 1782140400.0,
-      "impact_high": false
-    },
-    {
-      "summary": "AI 반도체 수요 급등에 SK하이닉스가 삼성전자 제쳐 한국 시가총액 최고 기업 위치 확보",
+      "summary": "AI 메모리칩 수요 급증으로 SK하이닉스가 삼성전자를 제쳐 한국 최고 시총 기업 등극",
       "source": "WSJ",
       "url": "https://www.wsj.com/tech/sk-hynix-tops-samsung-to-become-south-koreas-most-valuable-company-279419a0",
       "published_ts": 1782121620.0,
       "impact_high": false
     },
     {
-      "summary": "중국이 미국의 군사 관련 기업 제재 확대에 대해 미국 기업 수십 개에 보복성 제한 조치",
+      "summary": "이란 협상 진전 호재로 Dow 지수 상승하고 유가 내렸으나, 기술주 Nasdaq은 0.3% 약세 마감",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-06-22-2026?mod=rss_markets_main",
+      "published_ts": 1782115731.0,
+      "impact_high": false
+    },
+    {
+      "summary": "미국의 군사 관련 기업 제재 확대에 중국이 미국 기업 수십 개에 보복 제재 조치, 미중 기술 갈등 심화",
       "source": "WSJ",
       "url": "https://www.wsj.com/world/china/china-slaps-restrictions-on-dozens-of-u-s-companies-bd337a1c",
       "published_ts": 1782114360.0,
       "impact_high": false
     },
     {
-      "summary": "AI 투자 자금 대량 유입이 주식 시장 과평가 신호로 평가되며 구조적 리스크 경고 제기",
+      "summary": "AI 기업으로의 자금 대량 유입이 주식시장 고평가 경고 신호로 인식, 기관투자자 수익 실현 개시",
       "source": "WSJ",
       "url": "https://www.wsj.com/finance/stocks/all-the-money-flooding-into-ai-is-a-giant-warning-sign-6e08e3ea?mod=rss_markets_main",
       "published_ts": 1782034200.0,
       "impact_high": true
     },
     {
-      "summary": "호르무즈 해협 재개에도 에너지 공급망 정상화까지 수개월 소요 예상, 거시 충격 잔존",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/06/19/hormuz-relief-may-not-ease-the-economic-toll-thats-already-baked-in-analysts-warn.html",
-      "published_ts": 1781856514.0,
+      "summary": "AI 메모리칩 부족으로 애플의 반도체 대량구매 협상력 약화, 업계 공급망 구도 재편 신호",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/tech/why-apples-war-chest-cant-win-the-memory-war-cb997d02?mod=rss_markets_main",
+      "published_ts": 1781827200.0,
       "impact_high": true
     },
     {
-      "summary": "연준 의장 교체 후 첫 금리 결정 회의에서 기준금리 현 수준 유지 기조 확인",
+      "summary": "연준 워시 의장이 첫 공개시장위원회에서 기준금리 현 수준 유지 기조 공식화, 경제 관망 자세 지속",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html",
       "published_ts": 1781810275.0,
       "impact_high": true
-    },
-    {
-      "summary": "영국 중앙은행 기준금리 3.75% 유지, 이란 협상 진전에도 불구하고 경계 기조 유지",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/06/18/inflation-interest-rates-uk-bank-of-england-iran-deal.html",
-      "published_ts": 1781783356.0,
-      "impact_high": true
-    },
-    {
-      "summary": "5월 미국 주택판매 계약 지수 예상 초과 상승, 부동산 시장 회복 신호 포착",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9",
-      "published_ts": 1781705400.0,
-      "impact_high": false
     }
   ],
-  "_article_sig": "be8be5e0af4931e8fc017fcd9430adbeddf0660b3ac5994d74d2cc07007b3092",
+  "_article_sig": "4d8b95a48f3f33ebc9e3d8eceef2daba4415f7348c07b9a74369fcfb70a01a79",
   "built_at_kst": "2026-06-20T07:02:55.651495+09:00",
   "regular_open": true,
   "_futures_news": {
-    "S&P500": {
-      "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
+    "NASDAQ": {
+      "summary": "메모리칩 수요 AI 드라이브 심화. SK Hynix 삼성 제치고 한국 최대 시총 기업 등극에 반도체 강세 지속. 다만 Apple 메모리 전쟁 약세 신호 심화 가운데 빅테크 매수세 지속성 의문.",
       "sources": [
         {
+          "name": "WSJ세계",
+          "url": "https://www.wsj.com/world/asia/stock-market-ai-chips-taiwan-korea-01b7d385"
+        },
+        {
+          "name": "WSJ세계",
+          "url": "https://www.wsj.com/tech/sk-hynix-tops-samsung-to-become-south-koreas-most-valuable-company-279419a0"
+        }
+      ]
+    },
+    "S&P500": {
+      "summary": "이란 핵 사찰 동의·원유 판매 허용에 유가 하락 → 인플레 압박 약화 신호 구체화. Hormuz 해협 재개통 신호로 공급망 정상화 기대. Fed 의장 Warsh 기존 금리 기조 유지 가운데 매크로 거인 Greenspan 19년 시대 마감.",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html"
+        },
+        {
           "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
+          "url": "https://www.wsj.com/economy/central-banking/alan-greenspan-fed-chair-dies-100-eeacb8eb"
         }
       ]
     },
     "DOW": {
-      "summary": "Iran 협상 완화로 Dow 상승 신호. 주택가격 상승 추세·금융 채용 둔화로 경기민감주 양극화.",
+      "summary": "Morgan Stanley Dallas 13억 규모 사옥 거래 → 금융 중심 이동 신호 강화. Iran 제재 해제에 따른 경기 회복 기대 구체화. 영국 首相 사직(7년간 총리 6명 교체)에 정치 불안정 연쇄 영향 우려.",
       "sources": [
         {
-          "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9"
-        }
-      ]
-    },
-    "NASDAQ": {
-      "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
-      "sources": [
+          "name": "WSJ세계",
+          "url": "https://www.wsj.com/world/middle-east/vance-says-iran-agreed-to-allow-nuclear-inspectors-back-in-209db17c"
+        },
         {
-          "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
+          "name": "WSJ세계",
+          "url": "https://www.wsj.com/world/uk/u-k-prime-minister-keir-starmer-quits-amid-rebellion-d5ede8d4"
         }
       ]
     }
   },
   "futures": {
-    "as_of_kst": "2026-06-23T02:40:08.648766+09:00",
+    "as_of_kst": "2026-06-23T02:50:06.618023+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7542.5,
-        "change_pct": -0.37,
+        "point": 7541.25,
+        "change_pct": -0.39,
         "spark": [
           7543.25,
-          7571.5,
-          7561.25,
           7550.75,
           7550.5,
           7541.0,
@@ -6450,21 +6460,23 @@
           7545.25,
           7543.25,
           7541.0,
-          7542.5
+          7540.5,
+          7539.25,
+          7541.25
         ],
         "candle": {
           "o": 7543.25,
           "h": 7599.25,
           "l": 7513.0,
-          "c": 7542.5
+          "c": 7541.25
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 20.4,
-          "high_change_pct": -1.07
+          "low_change_pct": 20.38,
+          "high_change_pct": -1.08
         },
         "daily_expanded": [
           {
@@ -8480,17 +8492,21 @@
             "o": 7543.25,
             "h": 7599.25,
             "l": 7513.0,
-            "c": 7542.5,
-            "v": 1135838
+            "c": 7541.25,
+            "v": 1150042
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
+          "summary": "이란 핵 사찰 동의·원유 판매 허용에 유가 하락 → 인플레 압박 약화 신호 구체화. Hormuz 해협 재개통 신호로 공급망 정상화 기대. Fed 의장 Warsh 기존 금리 기조 유지 가운데 매크로 거인 Greenspan 19년 시대 마감.",
           "sources": [
             {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/06/17/here-are-the-five-big-takeaways-from-kevin-warshs-first-meeting-as-fed-chairman.html"
+            },
+            {
               "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
+              "url": "https://www.wsj.com/economy/central-banking/alan-greenspan-fed-chair-dies-100-eeacb8eb"
             }
           ]
         }
@@ -8498,12 +8514,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30592.25,
-        "change_pct": -0.42,
+        "point": 30594.25,
+        "change_pct": -0.41,
         "spark": [
           30577.0,
-          30804.25,
-          30756.5,
           30692.0,
           30695.25,
           30626.0,
@@ -8541,13 +8555,15 @@
           30600.75,
           30597.75,
           30585.75,
-          30592.25
+          30589.0,
+          30580.5,
+          30594.25
         ],
         "candle": {
           "o": 30577.0,
           "h": 30968.0,
           "l": 30337.5,
-          "c": 30592.25
+          "c": 30594.25
         },
         "range_240d": {
           "low": 22883.75,
@@ -10571,17 +10587,21 @@
             "o": 30577.0,
             "h": 30968.0,
             "l": 30337.5,
-            "c": 30592.25,
-            "v": 527209
+            "c": 30594.25,
+            "v": 531429
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "Iran 협상 진전(원유제재 면제·호르무즈 재개)으로 유가 하락·경제 충격 완화. 주택시장 affordability crisis 심화·구조적 공급부족 문제. AI 펀딩 열풍 거품론 대두.",
+          "summary": "메모리칩 수요 AI 드라이브 심화. SK Hynix 삼성 제치고 한국 최대 시총 기업 등극에 반도체 강세 지속. 다만 Apple 메모리 전쟁 약세 신호 심화 가운데 빅테크 매수세 지속성 의문.",
           "sources": [
             {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
+              "name": "WSJ세계",
+              "url": "https://www.wsj.com/world/asia/stock-market-ai-chips-taiwan-korea-01b7d385"
+            },
+            {
+              "name": "WSJ세계",
+              "url": "https://www.wsj.com/tech/sk-hynix-tops-samsung-to-become-south-koreas-most-valuable-company-279419a0"
             }
           ]
         }
@@ -10589,11 +10609,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52118.0,
-        "change_pct": 0.21,
+        "point": 52111.0,
+        "change_pct": 0.2,
         "spark": [
           51870.0,
-          52187.0,
           52140.0,
           52103.0,
           52091.0,
@@ -10632,20 +10651,21 @@
           52139.0,
           52123.0,
           52105.0,
-          52118.0
+          52103.0,
+          52111.0
         ],
         "candle": {
           "o": 51870.0,
           "h": 52305.0,
           "l": 51712.0,
-          "c": 52118.0
+          "c": 52104.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52118.0,
+          "high": 52104.0,
           "low_date": "2025-08-01",
           "high_date": "2026-06-22",
-          "low_change_pct": 19.24,
+          "low_change_pct": 19.2,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12662,22 +12682,26 @@
             "o": 51870.0,
             "h": 52305.0,
             "l": 51712.0,
-            "c": 52118.0,
-            "v": 74356
+            "c": 52104.0,
+            "v": 75078
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "Iran 협상 완화로 Dow 상승 신호. 주택가격 상승 추세·금융 채용 둔화로 경기민감주 양극화.",
+          "summary": "Morgan Stanley Dallas 13억 규모 사옥 거래 → 금융 중심 이동 신호 강화. Iran 제재 해제에 따른 경기 회복 기대 구체화. 영국 首相 사직(7년간 총리 6명 교체)에 정치 불안정 연쇄 영향 우려.",
           "sources": [
             {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/housing/u-s-pending-home-sales-rises-more-than-expected-in-may-65a116c9"
+              "name": "WSJ세계",
+              "url": "https://www.wsj.com/world/middle-east/vance-says-iran-agreed-to-allow-nuclear-inspectors-back-in-209db17c"
+            },
+            {
+              "name": "WSJ세계",
+              "url": "https://www.wsj.com/world/uk/u-k-prime-minister-keir-starmer-quits-amid-rebellion-d5ede8d4"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-23T02:40:12.288619+09:00"
+  "intraday_refreshed_kst": "2026-06-23T02:51:40.088253+09:00"
 }
