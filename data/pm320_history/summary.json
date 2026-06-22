@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-23T00:24:36+09:00",
+  "generated_at": "2026-06-23T06:55:23+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
   "last_settled_date": "2026-06-22",
-  "total_picks": 45,
-  "settled": 43,
+  "total_picks": 47,
+  "settled": 45,
   "running": 2,
-  "take_profit": 41,
+  "take_profit": 43,
   "expired_loss": 2,
   "expired_gain": 0,
-  "win_rate": 95.3,
+  "win_rate": 95.6,
   "_basis": "검증 백테스트 timeline 기준 (보유중 제외). 승률 = 익절 / 청산완료. 원화 잔고·손익은 초기 시드 1천만원 기준.",
   "_source": "backtest_ssot",
   "start_balance": 10000000,
@@ -20,9 +20,9 @@
   "worst_mdd_pct": -4.0103,
   "avg_mdd_pct": null,
   "_mdd_basis": "계좌 MDD = 백테스트 balance_history 기준 누적 잔고 최대낙폭.",
-  "total_return_pct": 10.1281,
-  "total_pnl": 1012806.73,
-  "final_balance": 11012806.73,
+  "total_return_pct": 43.9835,
+  "total_pnl": 4398354.22,
+  "final_balance": 14398354.22,
   "branch_counts": {
     "1위픽": 19,
     "2위픽": 19,
@@ -62,6 +62,34 @@
         "balance_after": 11012806.73,
         "watered": false,
         "settlement_order": 2,
+        "_live": true
+      },
+      {
+        "date": "2026-06-16",
+        "code": "475150",
+        "name": "SK이터닉스",
+        "entry_price": 55800,
+        "exit_date": "2026-06-17",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 2154749.97,
+        "balance_after": 13109055.83,
+        "watered": true,
+        "settlement_order": 3,
+        "_live": true
+      },
+      {
+        "date": "2026-06-17",
+        "code": "347850",
+        "name": "디앤디파마텍",
+        "entry_price": 108100,
+        "exit_date": "2026-06-18",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 1289298.39,
+        "balance_after": 14398354.22,
+        "watered": false,
+        "settlement_order": 4,
         "_live": true
       },
       {
@@ -824,6 +852,16 @@
         "date": "2026-06-15",
         "balance": 10983517.35,
         "name": "고영"
+      },
+      {
+        "date": "2026-06-17",
+        "balance": 13109055.83,
+        "name": "SK이터닉스"
+      },
+      {
+        "date": "2026-06-18",
+        "balance": 14398354.22,
+        "name": "디앤디파마텍"
       },
       {
         "date": "2026-06-22",
