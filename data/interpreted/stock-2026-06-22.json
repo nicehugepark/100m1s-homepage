@@ -1,6 +1,6 @@
 {
   "date": "2026-06-22",
-  "generated_at": "2026-06-22T09:15:13.389024",
+  "generated_at": "2026-06-22T09:16:25.772746",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -194,7 +194,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "320000",
@@ -212,8 +215,7 @@
         "MLCC",
         "반도체 후공정 장비",
         "AI데이터센터",
-        "전기차",
-        "반도체"
+        "전기차"
       ],
       "theme_paths": [
         {
@@ -259,16 +261,16 @@
           "url": "https://www.fnnews.com/news/202606220826181054",
           "source": "파이낸셜뉴스",
           "published_at": "2026-06-22T09:10:02.640019",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 서버·EV·자율주행 확산으로 핵심 수동부품 MLCC 수요가 구조적으로 증가 → 글로벌 MLCC 제조사 생산능력 확대·공정 고도화 투자 본격화 → MLCC 후공정 설비·초정밀 검사장비를 본업으로 하는 한울반도체에 직접 수혜. 중기부 국책과제 단독 선정으로 AI 6면 검사장비 성능 고도화(검사속도 분당 7000→1.3만개, 불량검출 95→98%)와 글로벌 MLCC 제조사 공급 협의 확대가 부각되며 매수세 집중 → 직전 영업일(2026-06-19) 종가 17,820원 상한가(+29.98%)·52주 신고가 갱신·거래대금 181억원 기록.",
+          "macro_event": "AI 서버·전기차·자율주행 성장으로 MLCC 수요 구조적 증가 (글로벌 시장 2025년 41조→2030년 96조 전망)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.65,
+          "newzy_virality": 0.55,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.61,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -424,7 +426,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "045520",
@@ -438,8 +443,42 @@
       "low_price": 3200,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "MLCC",
+        "AI 인프라",
+        "AI데이터센터",
+        "AI",
+        "반도체소부장"
+      ],
+      "theme_paths": [
+        {
+          "name": "MLCC",
+          "path": [
+            "MLCC"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        },
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "반도체소부장",
+          "path": [
+            "반도체",
+            "반도체소부장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -454,16 +493,16 @@
           "url": "https://www.fnnews.com/news/202606220837400092",
           "source": "파이낸셜뉴스",
           "published_at": "2026-06-22T09:10:02.640028",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터 증설 본격화로 공조시스템·고성능 필터·수처리 필터 수요가 가파르게 증가 → 크린앤사이언스가 가전용 필터(가정용 공기청정기 점유율 70%)를 넘어 AI 하드웨어 핵심 부품인 고사양 MLCC 양산용 '산업용 수처리 필터'를 개발하며 AI 인프라 핵심 공정 소재로 체질 개선 → 본업(필터) 자체가 AI·MLCC 매크로에 직결되는 직접 수혜로 부각되며 매수세 집중, 시가 3,200원에서 고가이자 종가인 3,955원까지 직행해 당일 상한가(+29.89%) 마감(거래대금 8억원).",
+          "macro_event": "AI 데이터센터 증설 본격화 → 공조·고성능 필터 수요 급증",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.55,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.49,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -655,9 +694,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "034940",
@@ -859,7 +898,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "002070",
