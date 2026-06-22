@@ -1,6 +1,6 @@
 {
   "date": "2026-06-22",
-  "generated_at": "2026-06-22T15:35:46.733496",
+  "generated_at": "2026-06-22T21:05:43.849466",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -32,7 +32,7 @@
       "code": "080220",
       "name": "제주반도체",
       "rank": 1,
-      "trade_amount": 1417995000000,
+      "trade_amount": 1433793000000,
       "change_pct": 17.24,
       "close_price": 134000,
       "open_price": 112000,
@@ -328,7 +328,7 @@
       "code": "009155",
       "name": "삼성전기우",
       "rank": 2,
-      "trade_amount": 466649000000,
+      "trade_amount": 469959000000,
       "change_pct": 17.92,
       "close_price": 954000,
       "open_price": 800000,
@@ -609,7 +609,7 @@
       "code": "067310",
       "name": "하나마이크론",
       "rank": 3,
-      "trade_amount": 392489000000,
+      "trade_amount": 399081000000,
       "change_pct": 15.92,
       "close_price": 56800,
       "open_price": 47800,
@@ -879,7 +879,7 @@
       "code": "320000",
       "name": "한울반도체",
       "rank": 4,
-      "trade_amount": 204999000000,
+      "trade_amount": 205079000000,
       "change_pct": 29.91,
       "close_price": 23150,
       "open_price": 17890,
@@ -956,6 +956,21 @@
         }
       ],
       "fallback": false,
+      "disclosures": [
+        {
+          "title": "한울반도체(보통주)가 2026-06-22 종가가 3일 전일 종가보다 100% 이상, 5일 전일 종가보다 60% 이상 상승하여 2026-06-23 1일간 투자주의종목으로 지정되며, 향후 투자경고종목 지정 가능성이 예고되었습니다. 투자경고 지정여부는 2026-06-23부터 2026-07-06까지 순연하며 판단합니다.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000750",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-06-23",
+          "period_end": "2026-06-23",
+          "condition": "2026-06-22 종가가 3일 전일 종가보다 100% 이상 또는 5일 전일 종가보다 60% 이상 상승",
+          "regulation_period": "투자경고 지정여부 판단: 2026-06-23~2026-07-06"
+        }
+      ],
       "range_240d": {
         "high": 23150,
         "high_date": "2026-06-22",
@@ -1109,29 +1124,35 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-06-15) 대비 +60%↑",
-              "base_price": 10990,
-              "threshold": 17584,
-              "current": 23150,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-06-23",
-          "period_end": "2026-06-24",
+          "label": "투자경고 예고",
+          "severity": "warning",
           "start": "2026-06-23",
-          "end": "2026-06-24",
+          "end": "2026-06-23",
+          "summary": "한울반도체(보통주)가 2026-06-22 종가가 3일 전일 종가보다 100% 이상, 5일 전일 종가보다 60% 이상 상승하여 2026-06-23 당일 투자주의종목으로 지정되며, 향후 투자경고종목 지정 가능성이 예고되었습니다. 투자경고 지정여부는 2026-06-23부터 2026-07-06까지 순연하며 판단합니다.",
+          "condition": "2026-06-22 종가가 3일 전일 종가보다 100% 이상 또는 5일 전일 종가보다 60% 이상 상승",
+          "regulation": "투자경고 지정여부 판단: 2026-06-23~2026-07-06",
           "view_date": "2026-06-22",
           "next_trading_day": "2026-06-23",
-          "next_trading_day_for_predicted": "2026-06-23",
-          "next_trading_day_source": "verified",
           "single_price": false,
-          "effect_badges": []
+          "source": "disclosure",
+          "entry_threshold_price": 17584,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-07-07",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "한울반도체(보통주)가 2026-06-22 종가가 3일 전일 종가보다 100% 이상, 5일 전일 종가보다 60% 이상 상승하여 2026-06-23 당일 투자주의종목으로 지정되며, 향후 투자경고종목 지정 가능성이 예고되었습니다. 투자경고 지정여부는 2026-06-23부터 2026-07-06까지 순연하며 판단합니다.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000750",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
         },
         {
           "label": "상한가",
@@ -1141,8 +1162,8 @@
           "summary": "한울반도체 상한가 (29.91%)",
           "cur_prc": 23150,
           "flu_rt": 29.91,
-          "trde_qty": 9376257,
-          "trde_prica_calc": 204999000000,
+          "trde_qty": 9379724,
+          "trde_prica_calc": 205079000000,
           "consecutive_count": 3,
           "effect_badges": [
             {
@@ -1251,7 +1272,7 @@
       "code": "004710",
       "name": "한솔테크닉스",
       "rank": 5,
-      "trade_amount": 188638000000,
+      "trade_amount": 189680000000,
       "change_pct": 18.2,
       "close_price": 15460,
       "open_price": 12870,
@@ -1524,7 +1545,8 @@
           15400,
           15490,
           15450,
-          15430
+          15430,
+          15460
         ]
       },
       "togusa_verdict": "weak_bull",
@@ -1537,7 +1559,7 @@
       "code": "319660",
       "name": "피에스케이",
       "rank": 6,
-      "trade_amount": 179833000000,
+      "trade_amount": 179841000000,
       "change_pct": 9.21,
       "close_price": 180200,
       "open_price": 161800,
@@ -1801,7 +1823,7 @@
       "code": "014950",
       "name": "삼익제약",
       "rank": 7,
-      "trade_amount": 171545000000,
+      "trade_amount": 172177000000,
       "change_pct": 6.54,
       "close_price": 8960,
       "open_price": 8670,
@@ -2089,7 +2111,7 @@
       "code": "067290",
       "name": "JW신약",
       "rank": 8,
-      "trade_amount": 142397000000,
+      "trade_amount": 142974000000,
       "change_pct": 16.92,
       "close_price": 2730,
       "open_price": 2480,
@@ -2141,6 +2163,19 @@
         }
       ],
       "fallback": false,
+      "disclosures": [
+        {
+          "title": "JW신약(KR7067290007)이 2026-06-23 단기과열종목 지정예고 대상에 올랐습니다. 예고일부터 10거래일 이내 ①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 주가변동성 평균이 직전 40거래일 평균의 150% 이상 3요건을 모두 충족하고 당일 종가가 직전 거래일 및 지정예고일 전일 종가 대비 상승하면 그 다음 매매거래일부터 단기과열종목(3거래일 30분 단위 단일가매매)으로 지정될 수 있습니다.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000836",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-06-23",
+          "condition": "예고일부터 10거래일 이내 어느 특정일에 주가상승률(40일 평균 130%↑)·거래회전율(40일 평균 600%↑)·주가변동성(40일 평균 150%↑) 3요건 모두 충족 및 당일 종가가 직전 거래일·지정예고일 전일 종가 대비 상승"
+        }
+      ],
       "range_240d": {
         "high": 2930,
         "high_date": "2026-06-22",
@@ -2292,6 +2327,26 @@
           "c": 2730
         }
       ],
+      "status_badges": [
+        {
+          "label": "단기과열 예고",
+          "severity": "hot",
+          "start": "2026-06-23",
+          "summary": "JW신약(KR7067290007)이 2026-06-23 단기과열종목 지정예고 대상에 올랐습니다. 예고일부터 10거래일 이내 ①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 주가변동성 평균이 직전 40거래일 평균의 150% 이상 3요건을 모두 충족하고 당일 종가가 직전 거래일 및 지정예고일 전일 종가 대비 상승하면 그 다음 매매거래일부터 단기과열종목(3거래일 30분 단위 단일가매매)으로 지정될 수 있습니다.",
+          "condition": "예고일부터 10거래일 이내 어느 특정일에 주가상승률(40일 평균 130%↑)·거래회전율(40일 평균 600%↑)·주가변동성(40일 평균 150%↑) 3요건 모두 충족 및 당일 종가가 직전 거래일·지정예고일 전일 종가 대비 상승",
+          "view_date": "2026-06-22",
+          "next_trading_day": "2026-06-23",
+          "single_price": false,
+          "source": "disclosure",
+          "end": "2026-07-07",
+          "reason_text": "JW신약(KR7067290007)이 2026-06-23 단기과열종목 지정예고 대상에 올랐습니다. 예고일부터 10거래일 이내 ①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 주가변동성 평균이 직전 40거래일 평균의 150% 이상 3요건을 모두 충족하고 당일 종가가 직전 거래일 및 지정예고일 전일 종가 대비 상승하면 그 다음 매매거래일부터 단기과열종목(3거래일 30분 단위 단일가매매)으로 지정될 수 있습니다.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 6/23 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000836",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
+        }
+      ],
       "intraday": {
         "step_min": 5,
         "open": 2480,
@@ -2386,7 +2441,7 @@
       "code": "000890",
       "name": "보해양조",
       "rank": 9,
-      "trade_amount": 106592000000,
+      "trade_amount": 107879000000,
       "change_pct": 9.86,
       "close_price": 2340,
       "open_price": 2750,
@@ -2421,6 +2476,33 @@
       ],
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "보해양조(KR7000890004)가 2026-06-23 단기과열종목 지정예고되었으며, 예고일부터 10거래일 이내 특정일에 ①주가상승률(직전 40거래일 종가 평균의 130% 이상) ②거래회전율(직전 40거래일 평균의 600% 이상) ③주가변동성(직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 해당일 종가가 직전 거래일·지정예고일 전일 종가 대비 상승하면 그 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됩니다. 시가총액 상위 100위 이내 종목은 지정 대상에서 제외될 수 있습니다.",
+          "category": "단기과열",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000634",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "(예고)단기과열종목 지정예고",
+          "period_start": "2026-06-23",
+          "condition": "①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 주가변동성 평균이 직전 40거래일 평균의 150% 이상 모두 충족 및 종가 상승",
+          "regulation_period": "지정예고일(2026-06-23)부터 10거래일 이내"
+        },
+        {
+          "title": "보해양조(보통주)가 2026-06-22 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-06-23 1일간 투자주의종목으로 지정되며, 향후 투자경고종목 지정 가능성이 예고되었습니다. 투자경고 지정여부 판단은 2026-06-23부터 2026-07-06까지 순연하며 진행됩니다.",
+          "category": "투자경고",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000602",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]투자경고종목 지정예고",
+          "period_start": "2026-06-23",
+          "period_end": "2026-06-23",
+          "condition": "2026-06-22 종가가 5일 전일 종가보다 60% 이상 상승",
+          "regulation_period": "2026-06-23~2026-07-06"
+        }
+      ],
       "range_240d": {
         "high": 2765,
         "high_date": "2026-06-22",
@@ -2574,29 +2656,53 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-06-15) 대비 +60%↑",
-              "base_price": 1419,
-              "threshold": 2270,
-              "current": 2340,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-06-23",
-          "period_end": "2026-06-24",
+          "label": "단기과열 예고",
+          "severity": "hot",
           "start": "2026-06-23",
-          "end": "2026-06-24",
+          "summary": "보해양조(KR7000890004)가 2026-06-23 단기과열종목 지정예고되었으며, 예고일부터 10거래일 이내 특정일에 ①주가상승률(직전 40거래일 종가 평균의 130% 이상) ②거래회전율(직전 40거래일 평균의 600% 이상) ③주가변동성(직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 해당일 종가가 직전 거래일·지정예고일 전일 종가 대비 상승하면 그 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됩니다. 시가총액 상위 100위 이내 종목은 지정 대상에서 제외될 수 있습니다.",
+          "condition": "①당일 종가가 직전 40거래일 종가 평균의 130% 이상 ②최근 2거래일 거래회전율 평균이 직전 40거래일 평균의 600% 이상 ③최근 2거래일 주가변동성 평균이 직전 40거래일 평균의 150% 이상 모두 충족 및 종가 상승",
+          "regulation": "지정예고일(2026-06-23)부터 10거래일 이내",
           "view_date": "2026-06-22",
           "next_trading_day": "2026-06-23",
-          "next_trading_day_for_predicted": "2026-06-23",
-          "next_trading_day_source": "verified",
           "single_price": false,
-          "effect_badges": []
+          "source": "disclosure",
+          "reason_text": "보해양조(KR7000890004)가 2026-06-23 단기과열종목 지정예고되었으며, 예고일부터 10거래일 이내 특정일에 ①주가상승률(직전 40거래일 종가 평균의 130% 이상) ②거래회전율(직전 40거래일 평균의 600% 이상) ③주가변동성(직전 40거래일 평균의 150% 이상) 3가지 요건을 모두 충족하고 해당일 종가가 직전 거래일·지정예고일 전일 종가 대비 상승하면 그 다음 매매거래일부터 단기과열종목으로 지정되어 3거래일간 30분 단위 단일가매매가 적용됩니다. 시가총액 상위 100위 이내 종목은 지정 대상에서 제외될 수 있습니다.",
+          "prev_stage": null,
+          "short_overheat_reason_text": "단기과열 예고 — 6/23 지정 가능",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000634",
+          "disclosure_title": "(예고)단기과열종목 지정예고"
+        },
+        {
+          "label": "투자경고 예고",
+          "severity": "warning",
+          "start": "2026-06-23",
+          "end": "2026-06-23",
+          "summary": "보해양조(보통주)가 2026-06-22 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-06-23 당일 투자주의종목으로 지정되며, 향후 투자경고종목 지정 가능성이 예고되었습니다. 투자경고 지정여부 판단은 2026-06-23부터 2026-07-06까지 순연하며 진행됩니다.",
+          "condition": "2026-06-22 종가가 5일 전일 종가보다 60% 이상 상승",
+          "regulation": "2026-06-23~2026-07-06",
+          "view_date": "2026-06-22",
+          "next_trading_day": "2026-06-23",
+          "single_price": false,
+          "source": "disclosure",
+          "entry_threshold_price": 2270,
+          "entry_threshold_via": "warn_surge_5d_60pct",
+          "entry_threshold_and_condition": "KOSPI 동기간 상승률 5배 동시 충족 시",
+          "entry_window_end": "2026-07-07",
+          "entry_threshold_assumption": "KOSPI 횡보 가정",
+          "reason_text": "보해양조(보통주)가 2026-06-22 종가가 5일 전일 종가보다 60% 이상 상승하여 2026-06-23 당일 투자주의종목으로 지정되며, 향후 투자경고종목 지정 가능성이 예고되었습니다. 투자경고 지정여부 판단은 2026-06-23부터 2026-07-06까지 순연하며 진행됩니다.",
+          "prev_stage": null,
+          "effect_badges": [
+            {
+              "effect": "credit-block",
+              "when": "tomorrow",
+              "severity": "warning",
+              "source_label": "투자경고 예고",
+              "source_kind": "disclosure"
+            }
+          ],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000602",
+          "disclosure_title": "[투자주의]투자경고종목 지정예고"
         }
       ],
       "intraday": {
@@ -2679,7 +2785,8 @@
           2535,
           2360,
           2425,
-          2280
+          2280,
+          2340
         ]
       },
       "credit_risk": true,
@@ -2694,7 +2801,7 @@
       "code": "198440",
       "name": "강동씨앤엘",
       "rank": 10,
-      "trade_amount": 91127000000,
+      "trade_amount": 91683000000,
       "change_pct": -12.22,
       "close_price": 2120,
       "open_price": 2830,
@@ -2729,6 +2836,17 @@
       ],
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "강동씨앤엘이 한국거래소의 현저한 시황변동 조회공시 요구(2026-06-19)에 대해, 코스닥시장 공시규정 제6조 제1항 등 해당사항 유무를 검토한 결과 별도 공시할 중요한 정보가 없다고 2026-06-22 답변했습니다.",
+          "category": "조회공시",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000669",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "조회공시요구(현저한시황변동)에대한답변(중요정보 없음)"
+        }
+      ],
       "index_change_pct": 0.19,
       "index_multiple_current": -64.32,
       "index_multiple_eligible": false,
@@ -3006,7 +3124,7 @@
       "code": "204270",
       "name": "제이앤티씨",
       "rank": 11,
-      "trade_amount": 85287000000,
+      "trade_amount": 85297000000,
       "change_pct": 8.81,
       "close_price": 22850,
       "open_price": 22500,
@@ -3333,7 +3451,7 @@
       "code": "293490",
       "name": "카카오게임즈",
       "rank": 12,
-      "trade_amount": 71774000000,
+      "trade_amount": 71782000000,
       "change_pct": 13.96,
       "close_price": 10040,
       "open_price": 11450,
@@ -3405,6 +3523,22 @@
           "newzy_score": 0.49,
           "newzy_verdict": null,
           "article_type": "공시"
+        },
+        {
+          "title": "[오늘의 주요공시] NXC·카카오게임즈·동양이엔피 등",
+          "url": "https://www.etoday.co.kr/news/view/2596042",
+          "source": "이투데이",
+          "published_at": "2026-06-22T07:34:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
         }
       ],
       "fallback": false,
@@ -3651,7 +3785,7 @@
       "code": "475430",
       "name": "키스트론",
       "rank": 13,
-      "trade_amount": 41012000000,
+      "trade_amount": 41082000000,
       "change_pct": 30.0,
       "close_price": 6110,
       "open_price": 4760,
@@ -3873,8 +4007,8 @@
           "summary": "키스트론 상한가 (30.00%)",
           "cur_prc": 6110,
           "flu_rt": 30.0,
-          "trde_qty": 7253255,
-          "trde_prica_calc": 41012000000,
+          "trde_qty": 7264787,
+          "trde_prica_calc": 41082000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -3981,7 +4115,7 @@
       "code": "079650",
       "name": "서산",
       "rank": 14,
-      "trade_amount": 28011000000,
+      "trade_amount": 28018000000,
       "change_pct": 29.8,
       "close_price": 6250,
       "open_price": 5430,
@@ -4035,6 +4169,28 @@
         }
       ],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "서산(보통주)이 2026-06-22 종가가 3일 전일 종가보다 45% 이상 상승하여 2026-06-23 투자위험종목 지정예고되었습니다. 지정예고일부터 10거래일 이내에 초단기급등 3개 요건(① 3일 전날 대비 45% 이상 상승 ② 당일 포함 최근 15일 종가 중 최고가 ③ 3일 전날 기준 주가상승률이 종합주가지수 상승률의 5배 이상)에 모두 해당하면 그 다음 날 투자위험종목 지정 및 매매거래가 정지될 수 있으며, 최초 판단일은 2026-06-23로 미해당 시 2026-07-06까지 순연 판단합니다.",
+          "category": "투자위험",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000748",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "투자위험종목 지정예고"
+        },
+        {
+          "title": "서산(보통주)이 현재 투자위험예고 종목으로, 향후 투자위험종목으로 지정될 경우 지정일에 매매거래가 정지될 수 있어 2026-06-23 매매거래정지가 예고되었습니다(근거: 시장감시규정 제5조의3 및 시행세칙 제3조의6).",
+          "category": "거래정지",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000746",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "매매거래정지 예고",
+          "period_start": "2026-06-23",
+          "condition": "투자위험종목으로 지정될 경우 지정일에 매매거래 정지"
+        }
+      ],
       "index_change_pct": 0.19,
       "index_multiple_current": 156.84,
       "index_multiple_eligible": true,
@@ -4191,29 +4347,34 @@
       ],
       "status_badges": [
         {
-          "label": "투자주의 근접",
-          "severity": "caution",
-          "source": "predicted",
-          "thresholds": [
-            {
-              "desc": "5일 전(2026-06-12) 대비 +60%↑",
-              "base_price": 1690,
-              "threshold": 2704,
-              "current": 6250,
-              "triggered": true
-            }
-          ],
-          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
-          "period_start": "2026-06-23",
-          "period_end": "2026-06-24",
-          "start": "2026-06-23",
-          "end": "2026-06-24",
+          "label": "투자위험 예고",
+          "severity": "danger",
+          "summary": "서산(보통주)이 2026-06-22 종가가 3일 전일 종가보다 45% 이상 상승하여 2026-06-23 투자위험종목 지정예고되었습니다. 지정예고일부터 10거래일 이내에 초단기급등 3개 요건(① 3일 전날 대비 45% 이상 상승 ② 당일 포함 최근 15일 종가 중 최고가 ③ 3일 전날 기준 주가상승률이 종합주가지수 상승률의 5배 이상)에 모두 해당하면 그 다음 날 투자위험종목 지정 및 매매거래가 정지될 수 있으며, 최초 판단일은 2026-06-23로 미해당 시 2026-07-06까지 순연 판단합니다.",
           "view_date": "2026-06-22",
           "next_trading_day": "2026-06-23",
-          "next_trading_day_for_predicted": "2026-06-23",
-          "next_trading_day_source": "verified",
           "single_price": false,
-          "effect_badges": []
+          "source": "disclosure",
+          "reason_text": "서산(보통주)이 2026-06-22 종가가 3일 전일 종가보다 45% 이상 상승하여 2026-06-23 투자위험종목 지정예고되었습니다. 지정예고일부터 10거래일 이내에 초단기급등 3개 요건(① 3일 전날 대비 45% 이상 상승 ② 당일 포함 최근 15일 종가 중 최고가 ③ 3일 전날 기준 주가상승률이 종합주가지수 상승률의 5배 이상)에 모두 해당하면 그 다음 날 투자위험종목 지정 및 매매거래가 정지될 수 있으며, 최초 판단일은 2026-06-23로 미해당 시 2026-07-06까지 순연 판단합니다.",
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000748",
+          "disclosure_title": "투자위험종목 지정예고"
+        },
+        {
+          "label": "거래정지 예고",
+          "severity": "danger",
+          "start": "2026-06-23",
+          "summary": "서산(보통주)이 현재 투자위험예고 종목으로, 향후 투자위험종목으로 지정될 경우 지정일에 매매거래가 정지될 수 있어 2026-06-23 매매거래정지가 예고되었습니다(근거: 시장감시규정 제5조의3 및 시행세칙 제3조의6).",
+          "condition": "투자위험종목으로 지정될 경우 지정일에 매매거래 정지",
+          "view_date": "2026-06-22",
+          "next_trading_day": "2026-06-23",
+          "single_price": false,
+          "source": "disclosure",
+          "reason_text": "서산(보통주)이 현재 투자위험예고 종목으로, 향후 투자위험종목으로 지정될 경우 지정일에 매매거래가 정지될 수 있어 2026-06-23 매매거래정지가 예고되었습니다(근거: 시장감시규정 제5조의3 및 시행세칙 제3조의6).",
+          "prev_stage": null,
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000746",
+          "disclosure_title": "매매거래정지 예고"
         },
         {
           "label": "상한가",
@@ -4223,8 +4384,8 @@
           "summary": "서산 상한가 (29.80%)",
           "cur_prc": 6250,
           "flu_rt": 29.8,
-          "trde_qty": 4932162,
-          "trde_prica_calc": 28011000000,
+          "trde_qty": 4933338,
+          "trde_prica_calc": 28018000000,
           "consecutive_count": 4,
           "effect_badges": [
             {
@@ -4332,7 +4493,7 @@
       "code": "026940",
       "name": "부국철강",
       "rank": 15,
-      "trade_amount": 22372000000,
+      "trade_amount": 22408000000,
       "change_pct": 29.89,
       "close_price": 2890,
       "open_price": 2155,
@@ -4349,8 +4510,25 @@
       "bullish_dates": [
         "2026-06-22"
       ],
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "[급등락주 짚어보기] 중동 긴장 완화·주주환원 정책에 부국철강ㆍ비비안ㆍ듀오백 등 11종목 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2596047",
+          "source": "이투데이",
+          "published_at": "2026-06-22T07:54:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        }
+      ],
+      "fallback": false,
       "range_240d": {
         "high": 3445,
         "high_date": "2026-04-28",
@@ -4511,8 +4689,8 @@
           "summary": "부국철강 상한가 (29.89%)",
           "cur_prc": 2890,
           "flu_rt": 29.89,
-          "trde_qty": 8246618,
-          "trde_prica_calc": 22372000000,
+          "trde_qty": 8259324,
+          "trde_prica_calc": 22408000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -4621,7 +4799,7 @@
       "code": "071670",
       "name": "에이테크솔루션",
       "rank": 16,
-      "trade_amount": 6030000000,
+      "trade_amount": 6085000000,
       "change_pct": 29.93,
       "close_price": 7510,
       "open_price": 5770,
@@ -4800,8 +4978,8 @@
           "summary": "에이테크솔루션 상한가 (29.93%)",
           "cur_prc": 7510,
           "flu_rt": 29.93,
-          "trde_qty": 849821,
-          "trde_prica_calc": 6030000000,
+          "trde_qty": 857183,
+          "trde_prica_calc": 6085000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -4906,7 +5084,7 @@
       "code": "446070",
       "name": "유니드비티플러스",
       "rank": 17,
-      "trade_amount": 2083000000,
+      "trade_amount": 2088000000,
       "change_pct": 29.96,
       "close_price": 2950,
       "open_price": 2270,
@@ -4925,6 +5103,21 @@
       ],
       "news": [],
       "fallback": true,
+      "disclosures": [
+        {
+          "title": "유니드비티플러스(종가 2,950원)가 상한가잔량 상위종목 사유로 2026-06-23 1일간(당일) 투자주의종목으로 지정됩니다. 상한가 미체결 매수호가 상위 10개 계좌의 잔량점유율이 94.12%로 지정요건(90% 이상)을 충족했습니다.",
+          "category": "투자주의",
+          "sentiment": 0,
+          "url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000605",
+          "is_cb": false,
+          "source": "KIND",
+          "raw_title": "[투자주의]상한가잔량 상위종목",
+          "period_start": "2026-06-23",
+          "period_end": "2026-06-23",
+          "condition": "상한가 미체결 매수호가 상위 10개 계좌 잔량점유율 94.12% (지정요건 90% 이상 충족)",
+          "regulation_period": "2026-06-23 1일간"
+        }
+      ],
       "range_240d": {
         "high": 4550,
         "high_date": "2025-07-11",
@@ -5078,6 +5271,22 @@
       ],
       "status_badges": [
         {
+          "label": "투자주의",
+          "severity": "caution",
+          "start": "2026-06-23",
+          "end": "2026-06-23",
+          "summary": "유니드비티플러스(종가 2,950원)가 상한가잔량 상위종목 사유로 2026-06-23 당일(당일) 투자주의종목으로 지정됩니다. 상한가 미체결 매수호가 상위 10개 계좌의 잔량점유율이 94.12%로 지정요건(90% 이상)을 충족했습니다.",
+          "condition": "상한가 미체결 매수호가 상위 10개 계좌 잔량점유율 94.12% (지정요건 90% 이상 충족)",
+          "regulation": "2026-06-23 1일간",
+          "view_date": "2026-06-22",
+          "next_trading_day": "2026-06-23",
+          "single_price": false,
+          "source": "disclosure",
+          "effect_badges": [],
+          "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260622000605",
+          "disclosure_title": "[투자주의]상한가잔량 상위종목"
+        },
+        {
           "label": "상한가",
           "severity": "hot",
           "source": "v1_condition",
@@ -5085,8 +5294,8 @@
           "summary": "유니드비티플러스 상한가 (29.96%)",
           "cur_prc": 2950,
           "flu_rt": 29.96,
-          "trde_qty": 731782,
-          "trde_prica_calc": 2083000000,
+          "trde_qty": 733721,
+          "trde_prica_calc": 2088000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -5168,7 +5377,7 @@
       "code": "045520",
       "name": "크린앤사이언스",
       "rank": 18,
-      "trade_amount": 1736000000,
+      "trade_amount": 1786000000,
       "change_pct": 29.89,
       "close_price": 3955,
       "open_price": 3200,
@@ -5399,8 +5608,8 @@
           "summary": "크린앤사이언스 상한가 (29.89%)",
           "cur_prc": 3955,
           "flu_rt": 29.89,
-          "trde_qty": 449473,
-          "trde_prica_calc": 1736000000,
+          "trde_qty": 462232,
+          "trde_prica_calc": 1786000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -5677,7 +5886,7 @@
           "summary": "조아제약 상한가 (29.98%)",
           "cur_prc": 659,
           "flu_rt": 29.98,
-          "trde_qty": 442194,
+          "trde_qty": 443057,
           "trde_prica_calc": 283000000,
           "consecutive_count": 1,
           "effect_badges": [
@@ -5786,8 +5995,25 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "bullish_dates": [],
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "[급등락주 짚어보기] 중동 긴장 완화·주주환원 정책에 부국철강ㆍ비비안ㆍ듀오백 등 11종목 '上'",
+          "url": "https://www.etoday.co.kr/news/view/2596047",
+          "source": "이투데이",
+          "published_at": "2026-06-22T07:54:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        }
+      ],
+      "fallback": false,
       "range_240d": {
         "high": 41369,
         "high_date": "2025-06-09",
@@ -5948,7 +6174,7 @@
           "summary": "비비안 상한가 (30.00%)",
           "cur_prc": 8450,
           "flu_rt": 30.0,
-          "trde_qty": 19876,
+          "trde_qty": 19877,
           "trde_prica_calc": 168000000,
           "consecutive_count": 1,
           "effect_badges": [
