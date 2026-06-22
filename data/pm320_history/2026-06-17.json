@@ -1,6 +1,6 @@
 {
   "date": "2026-06-17",
-  "generated_at": "2026-06-22T11:21:50+09:00",
+  "generated_at": "2026-06-22T11:31:49+09:00",
   "picked_code": "347850",
   "stocks": [
     {
@@ -255,13 +255,20 @@
         "watering_weight": "첫 매수와 동일 수량(1배)",
         "take_profit_target_price": 15831,
         "take_profit_after_watering_price": 15324,
-        "expiry_date": "2026-06-22",
-        "current_state": "running",
-        "current_pnl_pct": 0.0,
-        "current_mdd_pct": 0.0,
-        "current_mdd_peak_pct": 0.0,
+        "expiry_date": "2026-06-25",
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
+        "current_mdd_pct": null,
+        "current_mdd_peak_pct": null,
         "d_offset": 3,
-        "result": null
+        "result": {
+          "final_price": 15308,
+          "final_pnl_pct": 3.2,
+          "watered": true,
+          "result_date": "2026-06-22",
+          "mdd_pct": -16.672,
+          "mdd_peak_pct": -21.772
+        }
       }
     },
     {
@@ -493,7 +500,7 @@
     "virtual_count": 20,
     "skip_count": 0,
     "total_cards": 21,
-    "expired_count": 9,
-    "running_count": 12
+    "expired_count": 10,
+    "running_count": 11
   }
 }
