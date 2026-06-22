@@ -3903,20 +3903,21 @@ function renderCalExpandContent(date, data) {
     const mddLabel = (typeof s.account_mdd_pct === 'number') ? '계좌 MDD' : '장중 최대낙폭';
     const detail = (s.backtest_detail && typeof s.backtest_detail === 'object') ? s.backtest_detail : null;
     const rowsRaw = (detail && Array.isArray(detail.table)) ? detail.table : [];
-    // R43 P0-1② (조니 2심 확정) — 전수표 청산 순서 정렬 (settlement_order = 백테스트 청산 이벤트 순번).
-    //   graceful fallback 의무: settlement_order 가 전 행 부재(구버전 파이프라인 cron 재생성)면
-    //   종전과 동일한 진입일 정렬로 폴백 — 화면 무파손 (FLR-AGT-002 추정 0).
-    const _hasSettleOrder = rowsRaw.some((r) => r && typeof r.settlement_order === 'number');
-    const rows = _hasSettleOrder
-      ? [...rowsRaw].sort((a, b) => {
-        const ad = String((a && (a.exit_date || a.date)) || '');
-        const bd = String((b && (b.exit_date || b.date)) || '');
-        if (ad !== bd) return ad.localeCompare(bd);
-        const ao = (a && typeof a.settlement_order === 'number') ? a.settlement_order : 1000000;
-        const bo = (b && typeof b.settlement_order === 'number') ? b.settlement_order : 1000000;
-        return ao - bo;
-      })
-      : [...rowsRaw].sort((a, b) => String((a && a.date) || '').localeCompare(String((b && b.date) || '')));
+    // 전수표 시간순 정렬 = 청산일(exit_date) 오름차순 1차 + 진입일(date) 오름차순 2차 tiebreak.
+    //   (2026-06-22 대표 라이브 catch "순서 엉망" — 진입/청산 어느 기준으로도 정렬 안 됨)
+    //   근거: 잔고흐름(equity_curve)이 청산일 단조증가(라이브 실측 4/10→6/22)이므로 전수표 행 순서를
+    //   청산 순서에 맞추면 그래프와 1:1 정합. 동일 청산일 내에서는 먼저 진입한 행이 위로(진입일 tiebreak).
+    //   종전 settlement_order tiebreak 폐기 — 라이브 데이터 오염(JW신약 exit 6/22인데 so=1, 최신 청산이
+    //   순번 1)으로 동일 청산일 행 순서를 뒤틀어 "엉망"의 직접 원인. exit_date/date 는 전 행 존재(42/42 실측)
+    //   라 결정적·graceful (부재 시 '' → 안정 정렬, FLR-AGT-002 추정 0).
+    const rows = [...rowsRaw].sort((a, b) => {
+      const ax = String((a && (a.exit_date || a.date)) || '');
+      const bx = String((b && (b.exit_date || b.date)) || '');
+      if (ax !== bx) return ax.localeCompare(bx);
+      const ad = String((a && a.date) || '');
+      const bd = String((b && b.date) || '');
+      return ad.localeCompare(bd);
+    });
     const curve = (detail && Array.isArray(detail.equity_curve)) ? detail.equity_curve : [];
     const fmtBtPct = (v) => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}%` : '-');
     const fmtBtWon = (v) => (typeof v === 'number' ? Math.round(v).toLocaleString('ko-KR') : '-');
@@ -3962,9 +3963,10 @@ function renderCalExpandContent(date, data) {
           ? exitClass.replace('익절', '물타기 익절')
           : (r.watered === true ? `${exitClass} · 물타기` : exitClass);
         const rowDate = r.date || '-';
-        // R63 P1-4 — 반복 티커 누적 빈도 칩 (전수표 종목 셀). 같은 종목 행 전부 동일 '총 N회차' 표기.
-        const _freqChip = _pickFreqChip(r.code, r.name);
-        return `<tr><td>${escapeHtml(rowDate)}</td><td>${escapeHtml(r.exit_date || '-')}</td><td>${escapeHtml(r.name || r.code || '')}${_freqChip}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
+        // "N회차 추천" 칩 제거 (2026-06-22 대표 지시 — 의미 불명·불필요). 빈도 SSOT(_pm320PickFreq)·
+        //   헬퍼(_pickFreqChip)는 데이터 필드로 보존하되 전수표/픽 카드 양쪽 표시만 제거 (한쪽 누락
+        //   회피 FLR-20260428-TEC-001). 종전: 종목 셀 옆 '${n}회차 추천' 칩 (R63 P1-4, 조니 2심).
+        return `<tr><td>${escapeHtml(rowDate)}</td><td>${escapeHtml(r.exit_date || '-')}</td><td>${escapeHtml(r.name || r.code || '')}</td><td>${escapeHtml(exitLabel)}</td><td class="cal-pm320-bt-num${retCls}">${escapeHtml(fmtBtPct(ret))}</td><td class="cal-pm320-bt-num">${escapeHtml(fmtBtWon(r.balance_after))}</td></tr>`;
       }).join('')}</tbody></table></div>` : '';
     // R43 P2⑨ — 전수표 하단 용어 범례 (물타기·만기청산·D+N).
     const legendHtml = rows.length
@@ -4261,9 +4263,10 @@ function renderCalExpandContent(date, data) {
       const _todayR = `${_nowR.getFullYear()}-${String(_nowR.getMonth() + 1).padStart(2, '0')}-${String(_nowR.getDate()).padStart(2, '0')}`;
       const _isPastR = !!(date && date < _todayR);
       // R48 라이더-1 — _nxtSnap(표시 날짜 NXT roster 스냅샷, _resolveNxtSnapshot 산출) 전달: D+0 NXT 캡션 게이트.
+      // "N회차 추천" 칩 제거 (2026-06-22 대표 지시) — 픽 카드 헤더 칩도 전수표와 동시 제거 (한쪽 누락
+      //   회피 FLR-20260428-TEC-001). 시그니처는 유지(freqChip 인자 → 빈 문자열, 카드 무회귀).
       _pm320TodayRecHtml = _buildPm320TodayRecCard(
-        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR, _nxtSnap, _pickIt,
-        _pickFreqChip(_pickIt.code || '', _pickIt.name || ''));
+        _pk, _pickIt.code || '', _pickIt.name || '', _authClose, _isPastR, _nxtSnap, _pickIt, '');
     }
   }
   // Q-20260606-113 (대표 verbatim "국내장 종목은 토요일에는 안보이게 해야지") — 주말·휴장일 국내장 카드 비노출.
