@@ -1,6 +1,6 @@
 {
   "date": "2026-06-22",
-  "generated_at": "2026-06-22T10:25:36.680663",
+  "generated_at": "2026-06-22T10:35:21.743043",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -24,9 +24,9 @@
       "code": "080220",
       "name": "제주반도체",
       "rank": 1,
-      "trade_amount": 566856000000,
-      "change_pct": 13.65,
-      "close_price": 129900,
+      "trade_amount": 608482000000,
+      "change_pct": 12.16,
+      "close_price": 128200,
       "open_price": 112000,
       "high_price": 132700,
       "low_price": 110700,
@@ -58,16 +58,33 @@
         "2026-05-21",
         "2026-06-22"
       ],
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "[특징주] 제주반도체, 반도체 수출 호조 속 12% 급등",
+          "url": "https://www.etoday.co.kr/news/view/2595861",
+          "source": "이투데이",
+          "published_at": "2026-06-22T01:27:00",
+          "causal_chain": "",
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        }
+      ],
+      "fallback": false,
       "range_240d": {
         "high": 137100,
         "high_date": "2026-05-22",
-        "high_pct": -5.25,
+        "high_pct": -6.49,
         "low": 13380,
         "low_date": "2025-08-20",
-        "low_pct": 870.85,
-        "current": 129900
+        "low_pct": 858.15,
+        "current": 128200
       },
       "daily_20": [
         {
@@ -208,7 +225,7 @@
           "o": 112000,
           "h": 132700,
           "l": 110700,
-          "c": 129900
+          "c": 128200
         }
       ],
       "intraday": {
@@ -232,7 +249,9 @@
           130500,
           132600,
           130200,
-          129600
+          128900,
+          129700,
+          128300
         ]
       },
       "togusa_verdict": "strong_bull",
@@ -245,9 +264,9 @@
       "code": "067310",
       "name": "하나마이크론",
       "rank": 2,
-      "trade_amount": 211502000000,
-      "change_pct": 8.78,
-      "close_price": 53300,
+      "trade_amount": 217849000000,
+      "change_pct": 9.8,
+      "close_price": 53800,
       "open_price": 47800,
       "high_price": 57000,
       "low_price": 47450,
@@ -275,11 +294,11 @@
       "range_240d": {
         "high": 58500,
         "high_date": "2026-05-21",
-        "high_pct": -8.89,
+        "high_pct": -8.03,
         "low": 10400,
         "low_date": "2025-07-23",
-        "low_pct": 412.5,
-        "current": 53300
+        "low_pct": 417.31,
+        "current": 53800
       },
       "daily_20": [
         {
@@ -420,7 +439,7 @@
           "o": 47800,
           "h": 57000,
           "l": 47450,
-          "c": 53300
+          "c": 53800
         }
       ],
       "intraday": {
@@ -444,7 +463,9 @@
           53300,
           53300,
           53300,
-          53200
+          53300,
+          53900,
+          53900
         ]
       },
       "togusa_verdict": "neutral",
@@ -455,11 +476,11 @@
       "code": "009155",
       "name": "삼성전기우",
       "rank": 3,
-      "trade_amount": 149822000000,
-      "change_pct": 14.46,
-      "close_price": 926000,
+      "trade_amount": 202772000000,
+      "change_pct": 24.23,
+      "close_price": 1005000,
       "open_price": 800000,
-      "high_price": 948000,
+      "high_price": 1005000,
       "low_price": 760000,
       "industry": null,
       "sector": null,
@@ -492,13 +513,13 @@
       "news": [],
       "fallback": true,
       "range_240d": {
-        "high": 948000,
+        "high": 1005000,
         "high_date": "2026-06-22",
-        "high_pct": -2.32,
+        "high_pct": 0.0,
         "low": 60000,
         "low_date": "2025-06-30",
-        "low_pct": 1443.33,
-        "current": 926000
+        "low_pct": 1575.0,
+        "current": 1005000
       },
       "daily_20": [
         {
@@ -637,9 +658,36 @@
         {
           "date": "2026-06-22",
           "o": 800000,
-          "h": 948000,
+          "h": 1005000,
           "l": 760000,
-          "c": 926000
+          "c": 1005000
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-06-15) 대비 +60%↑",
+              "base_price": 627000,
+              "threshold": 1003200,
+              "current": 1005000,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-23",
+          "period_end": "2026-06-24",
+          "start": "2026-06-23",
+          "end": "2026-06-24",
+          "view_date": "2026-06-22",
+          "next_trading_day": "2026-06-23",
+          "next_trading_day_for_predicted": "2026-06-23",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
         }
       ],
       "intraday": {
@@ -663,7 +711,9 @@
           915000,
           906000,
           924000,
-          925000
+          950000,
+          992000,
+          997000
         ]
       },
       "togusa_verdict": "neutral",
@@ -676,9 +726,9 @@
       "code": "320000",
       "name": "한울반도체",
       "rank": 4,
-      "trade_amount": 149634000000,
-      "change_pct": 25.98,
-      "close_price": 22450,
+      "trade_amount": 154254000000,
+      "change_pct": 24.86,
+      "close_price": 22250,
       "open_price": 17890,
       "high_price": 23150,
       "low_price": 17820,
@@ -756,11 +806,11 @@
       "range_240d": {
         "high": 23150,
         "high_date": "2026-06-22",
-        "high_pct": -3.02,
+        "high_pct": -3.89,
         "low": 7080,
         "low_date": "2026-04-06",
-        "low_pct": 217.09,
-        "current": 22450
+        "low_pct": 214.27,
+        "current": 22250
       },
       "daily_20": [
         {
@@ -901,7 +951,7 @@
           "o": 17890,
           "h": 23150,
           "l": 17820,
-          "c": 22450
+          "c": 22250
         }
       ],
       "status_badges": [
@@ -914,7 +964,7 @@
               "desc": "5일 전(2026-06-15) 대비 +60%↑",
               "base_price": 10990,
               "threshold": 17584,
-              "current": 22450,
+              "current": 22250,
               "triggered": true
             }
           ],
@@ -952,7 +1002,9 @@
           23150,
           22600,
           22500,
-          22500
+          22450,
+          22350,
+          22300
         ]
       },
       "credit_risk": true,
@@ -965,9 +1017,9 @@
       "code": "319660",
       "name": "피에스케이",
       "rank": 5,
-      "trade_amount": 115585000000,
-      "change_pct": 11.45,
-      "close_price": 183900,
+      "trade_amount": 119427000000,
+      "change_pct": 11.21,
+      "close_price": 183500,
       "open_price": 161800,
       "high_price": 196500,
       "low_price": 161800,
@@ -989,11 +1041,11 @@
       "range_240d": {
         "high": 196500,
         "high_date": "2026-06-22",
-        "high_pct": -6.41,
+        "high_pct": -6.62,
         "low": 18100,
         "low_date": "2025-07-10",
-        "low_pct": 916.02,
-        "current": 183900
+        "low_pct": 913.81,
+        "current": 183500
       },
       "daily_20": [
         {
@@ -1134,7 +1186,7 @@
           "o": 161800,
           "h": 196500,
           "l": 161800,
-          "c": 183900
+          "c": 183500
         }
       ],
       "intraday": {
@@ -1158,7 +1210,9 @@
           183900,
           181900,
           182500,
-          183100
+          182300,
+          184800,
+          183200
         ]
       },
       "togusa_verdict": "weak_bear",
@@ -1169,9 +1223,9 @@
       "code": "067290",
       "name": "JW신약",
       "rank": 6,
-      "trade_amount": 58008000000,
-      "change_pct": 13.28,
-      "close_price": 2645,
+      "trade_amount": 59210000000,
+      "change_pct": 12.21,
+      "close_price": 2620,
       "open_price": 2480,
       "high_price": 2860,
       "low_price": 2420,
@@ -1223,11 +1277,11 @@
       "range_240d": {
         "high": 2860,
         "high_date": "2026-06-22",
-        "high_pct": -7.52,
+        "high_pct": -8.39,
         "low": 1246,
         "low_date": "2026-06-08",
-        "low_pct": 112.28,
-        "current": 2645
+        "low_pct": 110.27,
+        "current": 2620
       },
       "daily_20": [
         {
@@ -1368,7 +1422,7 @@
           "o": 2480,
           "h": 2860,
           "l": 2420,
-          "c": 2645
+          "c": 2620
         }
       ],
       "intraday": {
@@ -1392,7 +1446,9 @@
           2610,
           2620,
           2660,
-          2650
+          2625,
+          2615,
+          2625
         ]
       },
       "credit_risk": true,
@@ -1405,7 +1461,7 @@
       "code": "000890",
       "name": "보해양조",
       "rank": 7,
-      "trade_amount": 29124000000,
+      "trade_amount": 29231000000,
       "change_pct": 29.81,
       "close_price": 2765,
       "open_price": 2750,
@@ -1625,8 +1681,8 @@
           "summary": "보해양조 상한가 (29.81%)",
           "cur_prc": 2765,
           "flu_rt": 29.81,
-          "trde_qty": 11629628,
-          "trde_prica_calc": 29124000000,
+          "trde_qty": 11668473,
+          "trde_prica_calc": 29231000000,
           "consecutive_count": 2,
           "effect_badges": [
             {
@@ -1662,6 +1718,8 @@
           2765,
           2765,
           2765,
+          2765,
+          2765,
           2765
         ]
       },
@@ -1677,7 +1735,7 @@
       "code": "079650",
       "name": "서산",
       "rank": 8,
-      "trade_amount": 22179000000,
+      "trade_amount": 22194000000,
       "change_pct": 29.8,
       "close_price": 6250,
       "open_price": 5430,
@@ -1731,8 +1789,8 @@
         }
       ],
       "fallback": true,
-      "index_change_pct": -0.58,
-      "index_multiple_current": -51.38,
+      "index_change_pct": -0.69,
+      "index_multiple_current": -43.19,
       "index_multiple_eligible": false,
       "range_240d": {
         "high": 6250,
@@ -1919,8 +1977,8 @@
           "summary": "서산 상한가 (29.80%)",
           "cur_prc": 6250,
           "flu_rt": 29.8,
-          "trde_qty": 3998050,
-          "trde_prica_calc": 22179000000,
+          "trde_qty": 4000504,
+          "trde_prica_calc": 22194000000,
           "consecutive_count": 4,
           "effect_badges": [
             {
@@ -1956,6 +2014,8 @@
           6250,
           6250,
           6250,
+          6250,
+          6250,
           6250
         ]
       },
@@ -1969,7 +2029,7 @@
       "code": "045520",
       "name": "크린앤사이언스",
       "rank": 9,
-      "trade_amount": 1558000000,
+      "trade_amount": 1570000000,
       "change_pct": 29.89,
       "close_price": 3955,
       "open_price": 3200,
@@ -2200,8 +2260,8 @@
           "summary": "크린앤사이언스 상한가 (29.89%)",
           "cur_prc": 3955,
           "flu_rt": 29.89,
-          "trde_qty": 404628,
-          "trde_prica_calc": 1558000000,
+          "trde_qty": 407607,
+          "trde_prica_calc": 1570000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2237,6 +2297,7 @@
           3955,
           3955,
           3955,
+          3955,
           3955
         ]
       },
@@ -2250,7 +2311,7 @@
       "code": "034940",
       "name": "조아제약",
       "rank": 10,
-      "trade_amount": 250000000,
+      "trade_amount": 256000000,
       "change_pct": 29.98,
       "close_price": 659,
       "open_price": 507,
@@ -2429,8 +2490,8 @@
           "summary": "조아제약 상한가 (29.98%)",
           "cur_prc": 659,
           "flu_rt": 29.98,
-          "trde_qty": 392524,
-          "trde_prica_calc": 250000000,
+          "trde_qty": 401278,
+          "trde_prica_calc": 256000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2465,6 +2526,8 @@
           659,
           659,
           659,
+          659,
+          659,
           659
         ]
       },
@@ -2478,7 +2541,7 @@
       "code": "002070",
       "name": "비비안",
       "rank": 11,
-      "trade_amount": 144000000,
+      "trade_amount": 148000000,
       "change_pct": 30.0,
       "close_price": 8450,
       "open_price": 8450,
@@ -2655,8 +2718,8 @@
           "summary": "비비안 상한가 (30.00%)",
           "cur_prc": 8450,
           "flu_rt": 30.0,
-          "trde_qty": 17018,
-          "trde_prica_calc": 144000000,
+          "trde_qty": 17521,
+          "trde_prica_calc": 148000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2676,6 +2739,8 @@
         "open": 8450,
         "base": 8450,
         "prices": [
+          8450,
+          8450,
           8450,
           8450,
           8450,
