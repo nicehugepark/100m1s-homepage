@@ -1,9 +1,69 @@
 {
+  "generated_at": "2026-06-23T00:24:36+09:00",
+  "since": "2026-04-08",
+  "first_pick_date": "2026-04-08",
+  "last_settled_date": "2026-06-22",
+  "total_picks": 45,
+  "settled": 43,
+  "running": 2,
+  "take_profit": 41,
+  "expired_loss": 2,
+  "expired_gain": 0,
+  "win_rate": 95.3,
+  "_basis": "검증 백테스트 timeline 기준 (보유중 제외). 승률 = 익절 / 청산완료. 원화 잔고·손익은 초기 시드 1천만원 기준.",
+  "_source": "backtest_ssot",
+  "start_balance": 10000000,
+  "source_start_balance": 12000000.0,
+  "balance_scale": 0.83333333,
+  "take_profit_target_pct": 3.2,
   "account_mdd_pct": -4.0103,
   "worst_mdd_pct": -4.0103,
+  "avg_mdd_pct": null,
+  "_mdd_basis": "계좌 MDD = 백테스트 balance_history 기준 누적 잔고 최대낙폭.",
+  "total_return_pct": 10.1281,
+  "total_pnl": 1012806.73,
+  "final_balance": 11012806.73,
+  "branch_counts": {
+    "1위픽": 19,
+    "2위픽": 19,
+    "보류": 2,
+    "단독픽": 3
+  },
+  "same_day_afterhours_exits": 1,
+  "profile_id": "gate1000_bear3000_or_rank5_water1x_d6",
+  "condition": "음봉 AND (거래대금 >= 3천억 OR 최근 10영업일 거래대금 rank<=5)",
   "backtest_detail": {
+    "source": "projects/pm320/research/backtest-3d-3.2pct/adhoc_20260611_bear3000_or_rank5_singleton/unified_select_gate1000_bear3000_or_rank5_singleton_water1x_d6_to_0611_current_results.json",
     "as_of": "2026-06-22",
     "table": [
+      {
+        "date": "2026-06-12",
+        "code": "098460",
+        "name": "고영",
+        "entry_price": 39150,
+        "exit_date": "2026-06-15",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 29211.49,
+        "balance_after": 10983517.35,
+        "watered": false,
+        "settlement_order": 1,
+        "_live": true
+      },
+      {
+        "date": "2026-06-19",
+        "code": "067290",
+        "name": "JW신약",
+        "entry_price": 2335,
+        "exit_date": "2026-06-22",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 29289.38,
+        "balance_after": 11012806.73,
+        "watered": false,
+        "settlement_order": 2,
+        "_live": true
+      },
       {
         "date": "2026-04-08",
         "code": "010170",
@@ -15,7 +75,8 @@
         "pnl": 26666.67,
         "balance_after": 10026666.67,
         "watered": false,
-        "settlement_order": 2
+        "same_day_afterhours": false,
+        "_settle_seq": 2
       },
       {
         "date": "2026-04-09",
@@ -28,7 +89,8 @@
         "pnl": 26666.67,
         "balance_after": 10053333.33,
         "watered": false,
-        "settlement_order": 3
+        "same_day_afterhours": false,
+        "_settle_seq": 3
       },
       {
         "date": "2026-04-10",
@@ -41,7 +103,8 @@
         "pnl": 26808.89,
         "balance_after": 10080142.22,
         "watered": false,
-        "settlement_order": 5
+        "same_day_afterhours": false,
+        "_settle_seq": 5
       },
       {
         "date": "2026-04-13",
@@ -54,7 +117,8 @@
         "pnl": 26880.38,
         "balance_after": 10107022.6,
         "watered": false,
-        "settlement_order": 7
+        "same_day_afterhours": false,
+        "_settle_seq": 7
       },
       {
         "date": "2026-04-14",
@@ -67,7 +131,8 @@
         "pnl": 53904.12,
         "balance_after": 10160926.73,
         "watered": true,
-        "settlement_order": 9
+        "same_day_afterhours": false,
+        "_settle_seq": 9
       },
       {
         "date": "2026-04-15",
@@ -80,7 +145,8 @@
         "pnl": 27095.81,
         "balance_after": 10188022.53,
         "watered": false,
-        "settlement_order": 11
+        "same_day_afterhours": false,
+        "_settle_seq": 11
       },
       {
         "date": "2026-04-17",
@@ -93,7 +159,8 @@
         "pnl": 54336.12,
         "balance_after": 10242358.65,
         "watered": true,
-        "settlement_order": 14
+        "same_day_afterhours": false,
+        "_settle_seq": 14
       },
       {
         "date": "2026-04-20",
@@ -106,7 +173,8 @@
         "pnl": 27312.96,
         "balance_after": 10269671.6,
         "watered": false,
-        "settlement_order": 17
+        "same_day_afterhours": false,
+        "_settle_seq": 17
       },
       {
         "date": "2026-04-21",
@@ -119,7 +187,8 @@
         "pnl": 27312.96,
         "balance_after": 10296984.56,
         "watered": false,
-        "settlement_order": 20
+        "same_day_afterhours": false,
+        "_settle_seq": 20
       },
       {
         "date": "2026-04-22",
@@ -132,7 +201,8 @@
         "pnl": 54771.58,
         "balance_after": 10351756.14,
         "watered": true,
-        "settlement_order": 21
+        "same_day_afterhours": false,
+        "_settle_seq": 21
       },
       {
         "date": "2026-04-23",
@@ -145,7 +215,8 @@
         "pnl": 27385.79,
         "balance_after": 10379141.93,
         "watered": false,
-        "settlement_order": 22
+        "same_day_afterhours": false,
+        "_settle_seq": 22
       },
       {
         "date": "2026-04-16",
@@ -158,7 +229,8 @@
         "pnl": -64606.69,
         "balance_after": 10314535.24,
         "watered": true,
-        "settlement_order": 23
+        "same_day_afterhours": false,
+        "_settle_seq": 23
       },
       {
         "date": "2026-04-24",
@@ -171,7 +243,8 @@
         "pnl": 27505.43,
         "balance_after": 10342040.67,
         "watered": false,
-        "settlement_order": 25
+        "same_day_afterhours": false,
+        "_settle_seq": 25
       },
       {
         "date": "2026-04-27",
@@ -184,7 +257,8 @@
         "pnl": 55157.55,
         "balance_after": 10397198.22,
         "watered": true,
-        "settlement_order": 28
+        "same_day_afterhours": false,
+        "_settle_seq": 28
       },
       {
         "date": "2026-04-28",
@@ -197,7 +271,8 @@
         "pnl": 55157.55,
         "balance_after": 10452355.77,
         "watered": true,
-        "settlement_order": 30
+        "same_day_afterhours": false,
+        "_settle_seq": 30
       },
       {
         "date": "2026-04-29",
@@ -210,7 +285,8 @@
         "pnl": 27725.86,
         "balance_after": 10480081.63,
         "watered": false,
-        "settlement_order": 31
+        "same_day_afterhours": false,
+        "_settle_seq": 31
       },
       {
         "date": "2026-04-30",
@@ -223,7 +299,8 @@
         "pnl": 27946.88,
         "balance_after": 10508028.52,
         "watered": false,
-        "settlement_order": 33
+        "same_day_afterhours": false,
+        "_settle_seq": 33
       },
       {
         "date": "2026-05-04",
@@ -236,7 +313,8 @@
         "pnl": 28021.41,
         "balance_after": 10536049.93,
         "watered": false,
-        "settlement_order": 35
+        "same_day_afterhours": false,
+        "_settle_seq": 35
       },
       {
         "date": "2026-05-06",
@@ -249,7 +327,8 @@
         "pnl": 56192.27,
         "balance_after": 10592242.19,
         "watered": true,
-        "settlement_order": 38
+        "same_day_afterhours": false,
+        "_settle_seq": 38
       },
       {
         "date": "2026-05-08",
@@ -262,7 +341,8 @@
         "pnl": 28245.98,
         "balance_after": 10620488.17,
         "watered": false,
-        "settlement_order": 40
+        "same_day_afterhours": false,
+        "_settle_seq": 40
       },
       {
         "date": "2026-05-11",
@@ -275,7 +355,8 @@
         "pnl": 28321.3,
         "balance_after": 10648809.47,
         "watered": false,
-        "settlement_order": 42
+        "same_day_afterhours": false,
+        "_settle_seq": 42
       },
       {
         "date": "2026-05-07",
@@ -288,7 +369,8 @@
         "pnl": 28096.13,
         "balance_after": 10676905.61,
         "watered": false,
-        "settlement_order": 43
+        "same_day_afterhours": false,
+        "_settle_seq": 43
       },
       {
         "date": "2026-05-12",
@@ -301,7 +383,8 @@
         "pnl": 28471.75,
         "balance_after": 10705377.35,
         "watered": false,
-        "settlement_order": 45
+        "same_day_afterhours": false,
+        "_settle_seq": 45
       },
       {
         "date": "2026-05-13",
@@ -314,7 +397,8 @@
         "pnl": 28547.67,
         "balance_after": 10733925.03,
         "watered": false,
-        "settlement_order": 47
+        "same_day_afterhours": false,
+        "_settle_seq": 47
       },
       {
         "date": "2026-05-14",
@@ -327,7 +411,8 @@
         "pnl": 28623.8,
         "balance_after": 10762548.83,
         "watered": false,
-        "settlement_order": 49
+        "same_day_afterhours": false,
+        "_settle_seq": 49
       },
       {
         "date": "2026-05-18",
@@ -340,7 +425,8 @@
         "pnl": 28700.13,
         "balance_after": 10791248.96,
         "watered": false,
-        "settlement_order": 52
+        "same_day_afterhours": false,
+        "_settle_seq": 52
       },
       {
         "date": "2026-05-20",
@@ -353,7 +439,8 @@
         "pnl": 28776.67,
         "balance_after": 10820025.62,
         "watered": false,
-        "settlement_order": 55
+        "same_day_afterhours": false,
+        "_settle_seq": 55
       },
       {
         "date": "2026-05-15",
@@ -366,7 +453,8 @@
         "pnl": 57400.26,
         "balance_after": 10877425.88,
         "watered": true,
-        "settlement_order": 56
+        "same_day_afterhours": false,
+        "_settle_seq": 56
       },
       {
         "date": "2026-05-21",
@@ -379,7 +467,8 @@
         "pnl": 58012.94,
         "balance_after": 10935438.82,
         "watered": true,
-        "settlement_order": 58
+        "same_day_afterhours": false,
+        "_settle_seq": 58
       },
       {
         "date": "2026-05-19",
@@ -392,7 +481,8 @@
         "pnl": 57553.33,
         "balance_after": 10992992.14,
         "watered": true,
-        "settlement_order": 59
+        "same_day_afterhours": false,
+        "_settle_seq": 59
       },
       {
         "date": "2026-05-22",
@@ -405,7 +495,8 @@
         "pnl": 29314.64,
         "balance_after": 11022306.79,
         "watered": false,
-        "settlement_order": 61
+        "same_day_afterhours": false,
+        "_settle_seq": 61
       },
       {
         "date": "2026-05-26",
@@ -418,7 +509,8 @@
         "pnl": 29392.82,
         "balance_after": 11051699.61,
         "watered": false,
-        "settlement_order": 63
+        "same_day_afterhours": false,
+        "_settle_seq": 63
       },
       {
         "date": "2026-05-27",
@@ -431,7 +523,8 @@
         "pnl": 29471.2,
         "balance_after": 11081170.81,
         "watered": false,
-        "settlement_order": 65
+        "same_day_afterhours": false,
+        "_settle_seq": 65
       },
       {
         "date": "2026-05-29",
@@ -444,7 +537,8 @@
         "pnl": 59099.58,
         "balance_after": 11140270.38,
         "watered": true,
-        "settlement_order": 68
+        "same_day_afterhours": false,
+        "_settle_seq": 68
       },
       {
         "date": "2026-06-01",
@@ -457,7 +551,8 @@
         "pnl": 29707.39,
         "balance_after": 11169977.78,
         "watered": false,
-        "settlement_order": 70
+        "same_day_afterhours": false,
+        "_settle_seq": 70
       },
       {
         "date": "2026-06-05",
@@ -470,7 +565,8 @@
         "pnl": 59573.22,
         "balance_after": 11229550.99,
         "watered": true,
-        "settlement_order": 73
+        "same_day_afterhours": false,
+        "_settle_seq": 73
       },
       {
         "date": "2026-05-28",
@@ -483,7 +579,8 @@
         "pnl": -450339.13,
         "balance_after": 10779211.86,
         "watered": true,
-        "settlement_order": 74
+        "same_day_afterhours": false,
+        "_settle_seq": 74
       },
       {
         "date": "2026-06-09",
@@ -496,7 +593,8 @@
         "pnl": 28744.57,
         "balance_after": 10807956.42,
         "watered": false,
-        "settlement_order": 76
+        "same_day_afterhours": false,
+        "_settle_seq": 76
       },
       {
         "date": "2026-06-10",
@@ -509,7 +607,8 @@
         "pnl": 57642.43,
         "balance_after": 10865598.85,
         "watered": true,
-        "settlement_order": 78
+        "same_day_afterhours": false,
+        "_settle_seq": 78
       },
       {
         "date": "2026-06-04",
@@ -522,7 +621,8 @@
         "pnl": 59573.22,
         "balance_after": 10925172.07,
         "watered": true,
-        "settlement_order": 79
+        "same_day_afterhours": false,
+        "_settle_seq": 79
       },
       {
         "date": "2026-06-11",
@@ -535,194 +635,203 @@
         "pnl": 29133.79,
         "balance_after": 10954305.86,
         "watered": false,
-        "settlement_order": 81
-      },
-      {
-        "date": "2026-06-19",
-        "code": "067290",
-        "name": "JW신약",
-        "entry_price": 2335,
-        "exit_date": "2026-06-22",
-        "exit_class": "D+1 익절",
-        "ret_pct": 3.2,
-        "pnl": 29211.49,
-        "balance_after": 10983517.35,
-        "watered": false,
-        "settlement_order": 1
+        "same_day_afterhours": true,
+        "_settle_seq": 81
       }
     ],
     "equity_curve": [
       {
         "date": "2026-04-10",
         "balance": 10053333.33,
-        "name": "대우건설"
+        "name": "대우건설",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-13",
         "balance": 10080142.22,
-        "name": "신성이엔지"
+        "name": "신성이엔지",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-14",
         "balance": 10107022.6,
-        "name": "쏠리드"
+        "name": "쏠리드",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-15",
         "balance": 10160926.73,
-        "name": "남선알미늄"
+        "name": "남선알미늄",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-16",
         "balance": 10188022.53,
-        "name": "대한전선"
+        "name": "대한전선",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-20",
         "balance": 10242358.65,
-        "name": "우리로"
+        "name": "우리로",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-22",
         "balance": 10269671.6,
-        "name": "이수페타시스"
+        "name": "이수페타시스",
+        "exit_class": "D+2 익절"
       },
       {
         "date": "2026-04-24",
         "balance": 10314535.24,
-        "name": "신성이엔지"
+        "name": "신성이엔지",
+        "exit_class": "D+6 만기청산"
       },
       {
         "date": "2026-04-27",
         "balance": 10342040.67,
-        "name": "대한전선"
+        "name": "대한전선",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-04-29",
         "balance": 10397198.22,
-        "name": "고영"
+        "name": "고영",
+        "exit_class": "D+2 익절"
       },
       {
         "date": "2026-04-30",
         "balance": 10480081.63,
-        "name": "대한전선"
+        "name": "대한전선",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-04",
         "balance": 10508028.52,
-        "name": "대한전선"
+        "name": "대한전선",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-06",
         "balance": 10536049.93,
-        "name": "산일전기"
+        "name": "산일전기",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-08",
         "balance": 10592242.19,
-        "name": "대한전선"
+        "name": "대한전선",
+        "exit_class": "D+2 익절"
       },
       {
         "date": "2026-05-11",
         "balance": 10620488.17,
-        "name": "레인보우로보틱스"
+        "name": "레인보우로보틱스",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-12",
         "balance": 10676905.61,
-        "name": "서진시스템"
+        "name": "서진시스템",
+        "exit_class": "D+3 익절"
       },
       {
         "date": "2026-05-13",
         "balance": 10705377.35,
-        "name": "휴림로봇"
+        "name": "휴림로봇",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-14",
         "balance": 10733925.03,
-        "name": "계양전기"
+        "name": "계양전기",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-15",
         "balance": 10762548.83,
-        "name": "제주반도체"
+        "name": "제주반도체",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-19",
         "balance": 10791248.96,
-        "name": "제주반도체"
+        "name": "제주반도체",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-21",
         "balance": 10877425.88,
-        "name": "하나마이크론"
+        "name": "하나마이크론",
+        "exit_class": "D+4 익절"
       },
       {
         "date": "2026-05-22",
         "balance": 10992992.14,
-        "name": "켄코아에어로스페이스"
+        "name": "켄코아에어로스페이스",
+        "exit_class": "D+3 익절"
       },
       {
         "date": "2026-05-26",
         "balance": 11022306.79,
-        "name": "SFA반도체"
+        "name": "SFA반도체",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-27",
         "balance": 11051699.61,
-        "name": "주성엔지니어링"
+        "name": "주성엔지니어링",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-05-28",
         "balance": 11081170.81,
-        "name": "현대오토에버"
+        "name": "현대오토에버",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-06-01",
         "balance": 11140270.38,
-        "name": "현대오토에버"
+        "name": "현대오토에버",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-06-02",
         "balance": 11169977.78,
-        "name": "LG씨엔에스"
+        "name": "LG씨엔에스",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-06-08",
         "balance": 10779211.86,
-        "name": "디앤디파마텍"
+        "name": "디앤디파마텍",
+        "exit_class": "D+6 만기청산"
       },
       {
         "date": "2026-06-10",
         "balance": 10807956.42,
-        "name": "테크윙"
+        "name": "테크윙",
+        "exit_class": "D+1 익절"
       },
       {
         "date": "2026-06-11",
         "balance": 10954305.86,
-        "name": "원익IPS"
+        "name": "원익IPS",
+        "exit_class": "D0 장외 익절"
+      },
+      {
+        "date": "2026-06-15",
+        "balance": 10983517.35,
+        "name": "고영"
       },
       {
         "date": "2026-06-22",
-        "balance": 10983517.35,
+        "balance": 11012806.73,
         "name": "JW신약"
       }
     ]
   },
-  "generated_at": "2026-06-22T20:11:46+09:00",
-  "since": "2026-04-08",
-  "first_pick_date": "2026-04-08",
-  "last_settled_date": "2026-06-22",
-  "total_picks": 42,
-  "settled": 42,
-  "running": 0,
-  "take_profit": 40,
-  "expired_loss": 2,
-  "expired_gain": 0,
-  "win_rate": 95.2,
-  "start_balance": 10000000,
-  "avg_mdd_pct": null,
-  "total_return_pct": 9.8352,
-  "total_pnl": 983517.35,
-  "final_balance": 10983517.35
+  "_backtest_baseline_running": 0,
+  "_live_tail_appended": 2
 }

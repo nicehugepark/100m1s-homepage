@@ -3903,20 +3903,19 @@ function renderCalExpandContent(date, data) {
     const mddLabel = (typeof s.account_mdd_pct === 'number') ? '계좌 MDD' : '장중 최대낙폭';
     const detail = (s.backtest_detail && typeof s.backtest_detail === 'object') ? s.backtest_detail : null;
     const rowsRaw = (detail && Array.isArray(detail.table)) ? detail.table : [];
-    // 전수표 시간순 정렬 = 청산일(exit_date) 오름차순 1차 + 진입일(date) 오름차순 2차 tiebreak.
-    //   (2026-06-22 대표 라이브 catch "순서 엉망" — 진입/청산 어느 기준으로도 정렬 안 됨)
-    //   근거: 잔고흐름(equity_curve)이 청산일 단조증가(라이브 실측 4/10→6/22)이므로 전수표 행 순서를
-    //   청산 순서에 맞추면 그래프와 1:1 정합. 동일 청산일 내에서는 먼저 진입한 행이 위로(진입일 tiebreak).
-    //   종전 settlement_order tiebreak 폐기 — 라이브 데이터 오염(JW신약 exit 6/22인데 so=1, 최신 청산이
-    //   순번 1)으로 동일 청산일 행 순서를 뒤틀어 "엉망"의 직접 원인. exit_date/date 는 전 행 존재(42/42 실측)
-    //   라 결정적·graceful (부재 시 '' → 안정 정렬, FLR-AGT-002 추정 0).
+    // 전수표 시간순 정렬 = 진입일(date) 오름차순 1차 + 청산일(exit_date) 오름차순 2차 tiebreak.
+    //   (2026-06-23 대표 라이브 재catch "순서 아직도 엉망" — 직전 fix(92b1977a6)가 청산일 1차였으나
+    //   전수표 leftmost 컬럼이 '진입일'이라 청산일 정렬 시 진입일 컬럼이 뒤죽박죽으로 보임.)
+    //   전수표는 진입일순이 사용자 자연 기대(leftmost=진입일). 잔고흐름(equity_curve) 그래프는 별개로
+    //   청산 누적 순서 유지 — 표와 그래프 정렬 기준 분리(대표 2026-06-23 지시). 동일 진입일 내에서는
+    //   먼저 청산된 행이 위로(청산일 tiebreak). date/exit_date 는 graceful (부재 시 '' 안정 정렬).
     const rows = [...rowsRaw].sort((a, b) => {
-      const ax = String((a && (a.exit_date || a.date)) || '');
-      const bx = String((b && (b.exit_date || b.date)) || '');
-      if (ax !== bx) return ax.localeCompare(bx);
       const ad = String((a && a.date) || '');
       const bd = String((b && b.date) || '');
-      return ad.localeCompare(bd);
+      if (ad !== bd) return ad.localeCompare(bd);
+      const ax = String((a && (a.exit_date || a.date)) || '');
+      const bx = String((b && (b.exit_date || b.date)) || '');
+      return ax.localeCompare(bx);
     });
     const curve = (detail && Array.isArray(detail.equity_curve)) ? detail.equity_curve : [];
     const fmtBtPct = (v) => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}%` : '-');
