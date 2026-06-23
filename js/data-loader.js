@@ -61,7 +61,18 @@ function _isTodayPastOpen(date) {
 function _dataBust(date) {
   const base = date.replace(/-/g, '');
   const b = (typeof window !== 'undefined' && window._pm320PickRevealBust) ? window._pm320PickRevealBust : null;
-  return b ? `${base}-${b}` : base;
+  if (b) return `${base}-${b}`;
+  // 보유픽(running) current_pnl 은 장중 10분 단위로 갱신되는데, prior-day 카드가 안정 dateHash 로 캐시되면
+  //   브라우저가 옛 카드를 서빙(보유픽 손익 stale·% 누락). 현재 시각이 장중(OPEN)이면 10분 버킷을 붙여 refetch.
+  //   (2026-06-23 대표 catch — 제주반도체 등락률 미표시·10분 준실시간 미갱신. 모든 카드 공통 — 카드 작음)
+  try {
+    const _n = new Date();
+    const _today = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
+    if (typeof getMarketState === 'function' && getMarketState(_today) === 'OPEN') {
+      return `${base}-m${String(_n.getHours()).padStart(2, '0')}${Math.floor(_n.getMinutes() / 10)}`;
+    }
+  } catch (_) { /* graceful — 기본 dateHash */ }
+  return base;
 }
 
 async function loadKiwoomDate(date) {
