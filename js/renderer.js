@@ -1123,12 +1123,14 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
       if (!Number.isFinite(e.getTime())) return null;
       return Math.max(0, Math.round((e - _today) / 86400000));
     };
-    // 손익%(가드4·FLR-AGT-002) — current_price 실측 성공(현재가 수집됨)일 때만 노출.
-    //   current_price == null 인데 current_pnl_pct 0.0 = 현재가 수집 실패 폴백 → 가짜 0% 차단(생략).
+    // 손익%(가드4·FLR-AGT-002) — 보유픽 잠정손익(current_pnl_pct, 시뮬 last close 기준)이 실측 비-0이면 노출.
+    //   current_price(실시간가) 미저장이라도 시뮬 손익은 신뢰 → 가시화 (2026-06-23 대표 "보유픽 현재 수익률 미표시" catch).
+    //   가짜 0% 폴백(current_price null AND pnl 0 = 현재가 수집 실패)만 차단 — 가드 본래 의도(허위 0% 차단) 보존.
     //   이익=--up(적)·손실=--down(청)·보합=--dm(중립). 즉흥 hex 0(가격 토큰 재사용)·폴백 색칠 0.
     const _pnl = (pk) => {
       const v = pk && pk.current_pnl_pct;
-      if (!pk || pk.current_price == null || typeof v !== 'number' || !Number.isFinite(v)) return '';
+      if (!pk || typeof v !== 'number' || !Number.isFinite(v)) return '';
+      if (pk.current_price == null && v === 0) return '';
       const cls = v > 0 ? 'cal-pre-prev-pick-holding-pnl--up' : (v < 0 ? 'cal-pre-prev-pick-holding-pnl--down' : 'cal-pre-prev-pick-holding-pnl--flat');
       return ` · <span class="cal-pre-prev-pick-holding-pnl ${cls}">${v > 0 ? '+' : ''}${v.toFixed(1)}%</span>`;
     };
@@ -1159,8 +1161,9 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
         + `<span class="cal-pre-prev-pick-holding-meta">진입가 ${escapeHtml(_krw(p.pk && p.pk.entry_price))}${_pnl(p.pk)}${dTxt}</span>`
         + `</div>`;
     }).join('');
-    // 가드2(위계) — <details> 기본 접힘 + summary 에 "추적 중인 픽 N" 상시 노출(toppick 위계 침범 0).
-    return `<details class="cal-pre-prev-pick-holdings" role="group" aria-label="${_label}">`
+    // 가드2(위계) — <details> 기본 펼침(open) + summary 에 "추적 중인 픽 N" 상시 노출.
+    //   2026-06-23 대표 "보유픽·현재 수익률 안 보임" catch — 접힘이 보유 종목·잠정손익을 숨겨 매매 판단 저해 → 기본 펼침.
+    return `<details class="cal-pre-prev-pick-holdings" open role="group" aria-label="${_label}">`
       + `<summary class="cal-pre-prev-pick-holdings-label">${_label}</summary>`
       + rows + noteHtml + discHtml
       + `</details>`;
