@@ -4384,7 +4384,10 @@ function renderCalExpandContent(date, data) {
         const _summaryRunning = (data && data.pm320Summary && typeof data.pm320Summary.running === 'number') ? data.pm320Summary.running : undefined;
         const _html = _buildRunningHoldingsHtml(_running, _headlineCode, _summaryRunning);
         if (!_html) return;
-        const _recEl = document.querySelector('#cal-content .cal-pm320-today-rec');
+        // 대표 catch 2026-06-23 — OPEN before-pick(장중 09:00~15:20)엔 today-rec 카드가 아직 없어
+        //   _recEl=null → 추적픽 위젯이 안 떴다. pending 카드(.cal-pm320-pending, "15:20 공개" 안내)를 폴백 앵커로.
+        const _recEl = document.querySelector('#cal-content .cal-pm320-today-rec')
+          || document.querySelector('#cal-content .cal-pm320-pending');
         if (_recEl && document.body.contains(_recEl)) {
           // 멱등 가드 (대표 catch 2026-06-17 — 추적픽 박스 2중 렌더) — renderCalExpandContent 가
           //   동일 today 뷰에서 재호출되면(데이터 갱신·셀 재클릭 L1251 경로) 이 async IIFE 가 매번 재실행돼
