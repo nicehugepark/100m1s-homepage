@@ -3903,20 +3903,40 @@ function renderCalExpandContent(date, data) {
     const mddLabel = (typeof s.account_mdd_pct === 'number') ? '계좌 MDD' : '장중 최대낙폭';
     const detail = (s.backtest_detail && typeof s.backtest_detail === 'object') ? s.backtest_detail : null;
     const rowsRaw = (detail && Array.isArray(detail.table)) ? detail.table : [];
-    // 전수표 시간순 정렬 = 진입일(date) 오름차순 1차 + 청산일(exit_date) 오름차순 2차 tiebreak.
-    //   (2026-06-23 대표 라이브 재catch "순서 아직도 엉망" — 직전 fix(92b1977a6)가 청산일 1차였으나
-    //   전수표 leftmost 컬럼이 '진입일'이라 청산일 정렬 시 진입일 컬럼이 뒤죽박죽으로 보임.)
-    //   전수표는 진입일순이 사용자 자연 기대(leftmost=진입일). 잔고흐름(equity_curve) 그래프는 별개로
-    //   청산 누적 순서 유지 — 표와 그래프 정렬 기준 분리(대표 2026-06-23 지시). 동일 진입일 내에서는
-    //   먼저 청산된 행이 위로(청산일 tiebreak). date/exit_date 는 graceful (부재 시 '' 안정 정렬).
-    const rows = [...rowsRaw].sort((a, b) => {
-      const ad = String((a && a.date) || '');
-      const bd = String((b && b.date) || '');
-      if (ad !== bd) return ad.localeCompare(bd);
-      const ax = String((a && (a.exit_date || a.date)) || '');
-      const bx = String((b && (b.exit_date || b.date)) || '');
-      return ax.localeCompare(bx);
-    });
+    // 전수표 정렬 = 잔고 chain 순서 복원 (balance_after - pnl = 직전 잔고, 이어붙임).
+    //   (2026-06-23 대표 catch "손실 2회인데 잔고 감소 8회 — 익절이 감소로 보임".)
+    //   ROOT: balance_after 는 청산 chain 순서로 실현되는데, 표를 청산일/진입일로 정렬하면 같은
+    //   청산일 내 여러 거래의 chain 순서가 어긋나 +익절도 잔고 감소로 표시됨(가짜 등락). base 행엔
+    //   settlement_order 가 없어 못 씀 → balance_before=balance_after-pnl 로 chain 복원(검증: 45행
+    //   복원, 잔고 감소 = 실손실 2건과 정확히 일치). 데이터 순서 무관 robust.
+    const _r2 = (x) => Math.round(x * 100) / 100;
+    const _chainSort = (src) => {
+      const valid = src.filter((r) => r && typeof r.balance_after === 'number' && typeof r.pnl === 'number');
+      const others = src.filter((r) => !(r && typeof r.balance_after === 'number' && typeof r.pnl === 'number'));
+      if (valid.length < 2) return src.slice();
+      let cur = null;
+      for (const r of valid) {
+        const bb = _r2(r.balance_after - r.pnl);
+        let anchor = true;
+        for (const r2 of valid) { if (r2 !== r && _r2(r2.balance_after) === bb) { anchor = false; break; } }
+        if (anchor) { cur = bb; break; }
+      }
+      if (cur === null) cur = _r2(valid[0].balance_after - valid[0].pnl);
+      const used = new Set();
+      const chain = [];
+      for (let k = 0; k < valid.length; k++) {
+        let found = -1;
+        for (let i = 0; i < valid.length; i++) {
+          if (used.has(i)) continue;
+          if (Math.abs(_r2(valid[i].balance_after - valid[i].pnl) - cur) < 1.0) { found = i; break; }
+        }
+        if (found < 0) break;
+        used.add(found); chain.push(valid[found]); cur = _r2(valid[found].balance_after);
+      }
+      valid.forEach((r, i) => { if (!used.has(i)) chain.push(r); });
+      return chain.concat(others);
+    };
+    const rows = _chainSort(rowsRaw);
     const curve = (detail && Array.isArray(detail.equity_curve)) ? detail.equity_curve : [];
     const fmtBtPct = (v) => (typeof v === 'number' ? `${v > 0 ? '+' : ''}${v.toFixed(2)}%` : '-');
     const fmtBtWon = (v) => (typeof v === 'number' ? Math.round(v).toLocaleString('ko-KR') : '-');
