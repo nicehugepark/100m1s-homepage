@@ -91,8 +91,18 @@ function _isTodayIso(iso, now) {
 
 function _cacheKey(date, now) {
   // 오늘 날짜만 세션 구간 토큰을 부착. 과거/미래는 date 단일 키.
-  if (!_isTodayIso(date, now)) return date;
-  return `${date}@${getMarketState(date, now)}`;
+  if (_isTodayIso(date, now)) return `${date}@${getMarketState(date, now)}`;
+  // 과거일 카드라도 현재 장중(OPEN)이면 보유픽(running) current_pnl 이 10분마다 갱신된다.
+  //   calDayCache(localStorage 박제)가 과거일 카드를 세션 내내 고정 서빙 → _dataBust 무력화·보유픽 손익 stale.
+  //   장중엔 10분 버킷 키로 calDayCache 무효화 → refetch (2026-06-23 대표 catch). quota 초과는 write 측 graceful.
+  try {
+    const _n = now || new Date();
+    const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
+    if (typeof getMarketState === 'function' && getMarketState(_t, _n) === 'OPEN') {
+      return `${date}@m${String(_n.getHours()).padStart(2, '0')}${Math.floor(_n.getMinutes() / 10)}`;
+    }
+  } catch (_) { /* graceful — 기본 단일 키 */ }
+  return date;
 }
 
 function formatKoDate(iso) {
