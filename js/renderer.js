@@ -1121,7 +1121,15 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
       if (!exp) return null;
       const e = new Date(exp + 'T00:00:00');
       if (!Number.isFinite(e.getTime())) return null;
-      return Math.max(0, Math.round((e - _today) / 86400000));
+      // 영업일 D-n (오늘 포함~만기) — 전략: 매수일 제외 6영업일 보유 → 첫 보유일(매수 익영업일)=D-6.
+      //   캘린더 일수는 주말·휴장 포함해 보유기간(6) 초과(D-7 모순). 2026-06-23 대표 catch "영업일 기준".
+      let _d = new Date(_today.getTime()); let _n = 0; let _g = 0;
+      while (_d <= e && _g++ < 90) {
+        const _iso = `${_d.getFullYear()}-${String(_d.getMonth() + 1).padStart(2, '0')}-${String(_d.getDate()).padStart(2, '0')}`;
+        if (typeof isMarketClosed !== 'function' || !isMarketClosed(_iso)) _n++;
+        _d.setDate(_d.getDate() + 1);
+      }
+      return _n;
     };
     // 손익%(가드4·FLR-AGT-002) — 보유픽 잠정손익(current_pnl_pct, 시뮬 last close 기준)이 실측 비-0이면 노출.
     //   current_price(실시간가) 미저장이라도 시뮬 손익은 신뢰 → 가시화 (2026-06-23 대표 "보유픽 현재 수익률 미표시" catch).
