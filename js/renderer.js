@@ -1170,6 +1170,36 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
   } catch (_) { return ''; }
 }
 
+// ③ 보유픽 10분 자동 갱신 폴 (장중·새로고침 없이) — 2026-06-23 대표 catch.
+//   _collectRunningPicks 가 _cacheKey 10분 버킷으로 신선 카드 재fetch → 보유픽 row 잠정손익 in-place 갱신.
+//   idempotent(단일 interval)·OPEN 게이트·graceful. 3분 주기로 10분 버킷 경계 픽업.
+let _pm320RunningPollTimer = null;
+function _startPm320RunningPoll() {
+  if (_pm320RunningPollTimer) return;
+  const _tick = async () => {
+    try {
+      const _n = new Date();
+      const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
+      if (typeof getMarketState !== 'function' || getMarketState(_t) !== 'OPEN') return;
+      const widget = document.querySelector('.cal-pre-prev-pick-holdings');
+      if (!widget || typeof _collectRunningPicks !== 'function') return;
+      const running = await _collectRunningPicks(_t, 8);
+      for (const p of (running || [])) {
+        if (!p || !p.code) continue;
+        const row = widget.querySelector(`[data-prev-pick-code="${p.code}"]`);
+        if (!row) continue;
+        const span = row.querySelector('.cal-pre-prev-pick-holding-pnl');
+        const v = p.pk && p.pk.current_pnl_pct;
+        if (span && typeof v === 'number' && Number.isFinite(v) && !(p.pk.current_price == null && v === 0)) {
+          span.textContent = `${v > 0 ? '+' : ''}${v.toFixed(1)}%`;
+          span.className = `cal-pre-prev-pick-holding-pnl cal-pre-prev-pick-holding-pnl--${v > 0 ? 'up' : (v < 0 ? 'down' : 'flat')}`;
+        }
+      }
+    } catch (_) { /* graceful */ }
+  };
+  _pm320RunningPollTimer = setInterval(_tick, 3 * 60 * 1000);
+}
+
 function _formatCountdownToOpen(now) {
   const _now = now || new Date();
   const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 9, 0, 0, 0);
@@ -1554,6 +1584,7 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs, ma
             ? pd.pm320Summary.running : undefined;
           const _holdingsHtml = _buildRunningHoldingsHtml(_running, _headlineCode, _summaryRunning);
           if (_holdingsHtml) chipHtml = chipHtml + _holdingsHtml;
+          if (_holdingsHtml && typeof _startPm320RunningPoll === 'function') _startPm320RunningPoll();
         } catch (_) { /* graceful — 보유 리스트 생략 */ }
         // 렌더 도중 다른 시점으로 전환됐으면(여전히 PRE_MARKET inner 가 문서에 있나) 무시 (race graceful).
         if (!document.body.contains(inner)) return;
@@ -4400,6 +4431,7 @@ function renderCalExpandContent(date, data) {
             _sib = _next;
           }
           _recEl.insertAdjacentHTML('afterend', _html);
+          if (typeof _startPm320RunningPoll === 'function') _startPm320RunningPoll();
         }
       } catch (_) { /* graceful — 미청산 뷰 생략 */ }
     })();
