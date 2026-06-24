@@ -1,6 +1,6 @@
 {
   "date": "2026-06-24",
-  "generated_at": "2026-06-24T10:15:18.814929",
+  "generated_at": "2026-06-24T10:15:58.391316",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -36,8 +36,24 @@
       "low_price": 20500,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "양자",
+        "CCTV·보안"
+      ],
+      "theme_paths": [
+        {
+          "name": "양자",
+          "path": [
+            "양자"
+          ]
+        },
+        {
+          "name": "CCTV·보안",
+          "path": [
+            "CCTV·보안"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -52,16 +68,16 @@
           "url": "https://www.sedaily.com/article/20059047",
           "source": "서울경제",
           "published_at": "2026-06-23T05:18:49",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "양자컴퓨팅 대비 차세대 양자내성암호(PQC) 전환 수요 확대 → 네트워크 보안 전문기업 엑스게이트가 자체 트래픽 보안 장비 'AXGATE SSL INSIDE'만으로 자사 웹사이트 통신 구간을 PQC 체계로 전환 성공(외부 CDN 미의존, 폐쇄망 공공·국방·금융 적용 기대) + QRNG 결합 하이브리드 양자보안 추진 → 본업(VPN·FW·UTM 정보보안)과 직결된 양자보안 상용화 입증으로 매수세 집중 → 당일 종가 22,950원(+16.56%)·거래대금 661억원 동반.",
+          "macro_event": "양자내성암호(PQC)·양자보안 상용화 모멘텀",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.56,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -238,9 +254,9 @@
           23050
         ]
       },
-      "togusa_verdict": "neutral",
-      "theme_leader": false,
-      "hugepark_grade": "관찰"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "026940",
@@ -489,7 +505,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "투자경고",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "000890",
