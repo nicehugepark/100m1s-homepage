@@ -65,7 +65,9 @@ function isMarketClosed(iso) {
 // PRE_MARKET = 거래일 09:00 미만 / OPEN = 09:00~15:30 / POST_MARKET = 15:30 이후
 // HOLIDAY = isMarketClosed (주말 + KRX 휴장일)
 function getMarketState(iso, now) {
-  const _now = now || new Date();
+  // now 미명시 시 _kstNow() (해외 접속 TZ 무관 KST wall-clock). now 명시 시 호출부가 KST 보정한
+  //   값을 넘긴다는 계약(data-loader/renderer 가 _kstNow() 전달) — 여기서 재가산하지 않음(double-shift 방지).
+  const _now = now || _kstNow();
   const todayIso = iso || ymd(_now.getFullYear(), _now.getMonth() + 1, _now.getDate());
   if (isMarketClosed(todayIso)) return 'HOLIDAY';
   const hm = _now.getHours() * 60 + _now.getMinutes();
@@ -85,7 +87,7 @@ function getMarketState(iso, now) {
 //     그 과거일 기준이라 부적절) → date 단일 키 유지 = 과거 카드 캐시 무회귀 + cold load 최소화.
 //   - 구 스키마(flat date 키) 잔존 캐시는 read miss + _persistCache trim 으로 자연 폐기(1회 cold load 무해).
 function _isTodayIso(iso, now) {
-  const _now = now || new Date();
+  const _now = now || _kstNow(); // 해외 접속 TZ 무관 KST "오늘" 판정
   return iso === ymd(_now.getFullYear(), _now.getMonth() + 1, _now.getDate());
 }
 
@@ -96,7 +98,7 @@ function _cacheKey(date, now) {
     // 15:20 픽 공개 경계 — OPEN 중에도 15:20 이후엔 오늘 카드가 픽/보류로 갱신되므로 키 분리.
     //   (2026-06-23 대표 catch: 15:20~15:30 사이 @OPEN 캐시가 15:20 전 pending 을 고정 서빙 → "15:20 정각" 약속 위반)
     if (_st === 'OPEN') {
-      const _n2 = now || new Date();
+      const _n2 = now || _kstNow(); // KST wall-clock — 15:20(=920분) 경계 해외 접속 오판 봉쇄
       if (_n2.getHours() * 60 + _n2.getMinutes() >= 920) return `${date}@OPEN_PICKED`;
     }
     return `${date}@${_st}`;
@@ -105,7 +107,7 @@ function _cacheKey(date, now) {
   //   calDayCache(localStorage 박제)가 과거일 카드를 세션 내내 고정 서빙 → _dataBust 무력화·보유픽 손익 stale.
   //   장중엔 10분 버킷 키로 calDayCache 무효화 → refetch (2026-06-23 대표 catch). quota 초과는 write 측 graceful.
   try {
-    const _n = now || new Date();
+    const _n = now || _kstNow(); // KST wall-clock — 장중(OPEN) 10분 버킷 키 해외 접속 오판 봉쇄
     const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
     if (typeof getMarketState === 'function' && getMarketState(_t, _n) === 'OPEN') {
       return `${date}@m${String(_n.getHours()).padStart(2, '0')}${Math.floor(_n.getMinutes() / 10)}`;
@@ -201,7 +203,7 @@ function renderCalendar() {
 
   ymEl.textContent = `${calViewYear}년 ${calViewMonth}월`;
 
-  const today = new Date();
+  const today = _kstNow(); // 해외 접속 TZ 무관 KST "오늘" — isToday/isFuture/네비 제한 전체의 기준
   const todayY = today.getFullYear();
   const todayM = today.getMonth() + 1;
   const todayD = today.getDate();
@@ -237,7 +239,7 @@ function renderCalendar() {
     const isHol = isHoliday(date);
     const classes = ['toss-cal-cell'];
     const isClosed = isMarketClosed(date);
-    const isTodayMarketHours = isToday && !isClosed && (new Date().getHours() < 16);
+    const isTodayMarketHours = isToday && !isClosed && (today.getHours() < 16); // today=_kstNow() (KST)
     if (isFuture) classes.push('future');
     else if (!hasData && !isToday && !isTodayMarketHours) classes.push('no-data');
     else if (!hasData && isTodayMarketHours) classes.push('market-hours');
@@ -331,7 +333,7 @@ async function initCalendar() {
   holidayData = (() => { try { return JSON.parse(localStorage.getItem('holidayData') || 'null'); } catch { return null; } })();
   themesData = (() => { try { return JSON.parse(localStorage.getItem('themesData') || 'null'); } catch { return null; } })();
 
-  const now = new Date();
+  const now = _kstNow(); // 해외 접속 TZ 무관 KST "오늘" — 초기 진입 시 today 기준
   const todayStr = ymd(now.getFullYear(), now.getMonth() + 1, now.getDate());
   // URL ?cat= / ?date= 파라미터. cat 기본값 stock.
   const urlParams = new URLSearchParams(window.location.search);
@@ -432,7 +434,7 @@ async function initCalendar() {
     renderCalendar();
   });
   document.getElementById('toss-cal-next').addEventListener('click', () => {
-    const now2 = new Date();
+    const now2 = _kstNow(); // 해외 접속 TZ 무관 KST "이번 달" — 미래월 네비 제한 기준
     if (calViewYear > now2.getFullYear() ||
         (calViewYear === now2.getFullYear() && calViewMonth >= now2.getMonth() + 1)) return;
     calViewMonth++;

@@ -1,5 +1,25 @@
 /* ───── data-loader.js — 데이터 fetch/캐시 ───── */
 
+// ── KST 시각 헬퍼 (FLR-20260624-TEC: 해외 접속 시 시장-시간 로직 로컬 TZ 오판 봉쇄) ──
+//   대표가 해외(로컬 TZ ≠ KST)에서 접속 시, 시장-시간 로직(getMarketState·15:20 픽 공개·"오늘"
+//   판정·캐시 키·_dataBust·픽 공개 폴링)이 브라우저 로컬 시각(new Date().getHours() 등)으로 계산되어
+//   "아직 15:20 전"으로 오판 → 오늘 카드 fetch skip + pending 표시 → 픽 미공개.
+//   _kstNow(now): 브라우저 로컬 TZ 무관하게, 반환 Date 의 로컬 필드 메서드(getHours/getFullYear/...)가
+//   KST wall-clock 을 반환하도록 보정한 Date. (now.getTime() + (540 + getTimezoneOffset())*60000)
+//     - KST 브라우저(offset −540): 가산 0 → 무변화(무회귀).
+//     - US Eastern(offset +240): 가산 +780분 → get*() = KST wall-clock.
+//   검증: TZ=Asia/Seoul·America/New_York·America/Los_Angeles·UTC 4종에서 get*() 동일 KST 시각 확인.
+//   사용처: 시장-시간 용도의 now||new Date() / new Date() 를 _kstNow(now) / _kstNow() 로 치환.
+//   호출부 시그니처 불변(함수 내부 변환). renderer.js 기존 KST-correct 패턴(nowMs+9h+getUTC*)은
+//   _kstNow().get*() 와 동치이므로 그대로 유지(중복 교체 금지).
+//   주의: new Date(y, m, d, H, M, ...) 생성자에 _kstNow() 의 get*() 를 넘기면 로컬 TZ 로 해석되지만,
+//   비교 대상 _now 도 동일 좌표계의 가짜 시각이라 target.getTime()-_now.getTime() 차이는 KST 기준 정확.
+function _kstNow(now) {
+  const _n = now || new Date();
+  return new Date(_n.getTime() + (540 + _n.getTimezoneOffset()) * 60000);
+}
+if (typeof window !== 'undefined') { window._kstNow = _kstNow; }
+
 let themesData = null;
 let _themeTreeCache = null;
 
@@ -43,7 +63,7 @@ async function loadKiwoomIndex() {
 // 과거 viewDate (date < today)는 정상적으로 해당일 데이터 표시 (fallback 자체가 부적절).
 // timezone: 브라우저 로컬 가정 (KST 사용자 기준). 5/27 freshness 라벨 _computeFreshnessLabel과 동일 가정.
 function _isTodayPastOpen(date) {
-  const now = new Date();
+  const now = _kstNow(); // 해외 접속 TZ 무관 KST wall-clock (get*() = KST)
   const y = now.getFullYear();
   const m = String(now.getMonth() + 1).padStart(2, '0');
   const d = String(now.getDate()).padStart(2, '0');
@@ -66,9 +86,9 @@ function _dataBust(date) {
   //   브라우저가 옛 카드를 서빙(보유픽 손익 stale·% 누락). 현재 시각이 장중(OPEN)이면 10분 버킷을 붙여 refetch.
   //   (2026-06-23 대표 catch — 제주반도체 등락률 미표시·10분 준실시간 미갱신. 모든 카드 공통 — 카드 작음)
   try {
-    const _n = new Date();
+    const _n = _kstNow(); // KST wall-clock — 해외 접속 시 OPEN 오판 봉쇄
     const _today = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
-    if (typeof getMarketState === 'function' && getMarketState(_today) === 'OPEN') {
+    if (typeof getMarketState === 'function' && getMarketState(_today, _n) === 'OPEN') {
       return `${base}-m${String(_n.getHours()).padStart(2, '0')}${Math.floor(_n.getMinutes() / 10)}`;
     }
   } catch (_) { /* graceful — 기본 dateHash */ }
@@ -95,9 +115,9 @@ async function loadKiwoomDate(date) {
   //   콘솔 청정. loadCalDayData L379~387 의 _closedMarket interpreted 생략과 동형(휴장 데이터 무존재 전제).
   let _kiwoomStockSkip = false;
   try {
-    const _n = new Date();
+    const _n = _kstNow(); // KST wall-clock — 해외 접속 시 오늘/PRE_MARKET 오판 봉쇄
     const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
-    const _preMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
+    const _preMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date, _n) === 'PRE_MARKET';
     const _closed = (typeof isMarketClosed === 'function') && isMarketClosed(date);
     _kiwoomStockSkip = _preMarket || _closed;
   } catch (_) { _kiwoomStockSkip = false; }
@@ -396,9 +416,9 @@ async function loadCalDayData(date) {
   let _todayPreMarket = false;
   let _todayBeforePick = false;
   try {
-    const _n = new Date();
+    const _n = _kstNow(); // KST wall-clock — 해외 접속 시 오늘/PRE_MARKET/15:20 게이트 오판 봉쇄
     const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
-    _todayPreMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date) === 'PRE_MARKET';
+    _todayPreMarket = (date === _t) && (typeof getMarketState === 'function') && getMarketState(date, _n) === 'PRE_MARKET';
     // R44 #10 (조니 2심, 2026-06-12) — 당일 pm320_history/{date}.json 은 15:20 픽 발행 후 생성.
     //   09:00~15:20 오늘 view 의 history fetch 는 확정 404 (콘솔 빨간 에러) → 시간 가드로 생략.
     //   15:20 경계 후 첫 로드는 정상 fetch (파일 배포 지연 시 404 graceful null 기존 동작 유지).

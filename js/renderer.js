@@ -1069,7 +1069,7 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
 async function _collectRunningPicks(fromDate, maxDays) {
   try {
     if (!fromDate || typeof loadCalDayData !== 'function') return [];
-    const _now = new Date();
+    const _now = _kstNow(); // KST wall-clock — 해외 접속 시 보유픽 만기(expiry < today) 판정 오판 봉쇄
     const _todayKst = `${_now.getFullYear()}-${String(_now.getMonth() + 1).padStart(2, '0')}-${String(_now.getDate()).padStart(2, '0')}`;
     // 최근 영업일 목록 — 달력 day−1 walk + 휴장일 skip.
     //   R44 #10 (조니 2심, 2026-06-12) — 종전 getPrevTradingDate 분기는 미정의 함수(어디에도 미존재)라
@@ -1116,7 +1116,7 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
     const _krw = (n) => (n == null || !Number.isFinite(n)) ? '—' : (n.toLocaleString('ko-KR') + '원');
     // RND-PM320-062 (2026-06-15, advisory DOC-20260615-JDG-030) — D-n(만기까지 캘린더 일수).
     //   _collectRunningPicks 가 만기 경과분(expiry < today) 이미 배제 → dn ≥ 0.
-    const _today = new Date(); _today.setHours(0, 0, 0, 0);
+    const _today = _kstNow(); _today.setHours(0, 0, 0, 0); // KST wall-clock 자정 — 해외 접속 시 D-n 영업일 카운트 시작점 오판 봉쇄
     const _dleft = (exp) => {
       if (!exp) return null;
       const e = new Date(exp + 'T00:00:00');
@@ -1186,9 +1186,9 @@ function _startPm320RunningPoll() {
   if (_pm320RunningPollTimer) return;
   const _tick = async () => {
     try {
-      const _n = new Date();
+      const _n = _kstNow(); // KST wall-clock — 해외 접속 시 장중(OPEN) 폴 오판 봉쇄
       const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
-      if (typeof getMarketState !== 'function' || getMarketState(_t) !== 'OPEN') return;
+      if (typeof getMarketState !== 'function' || getMarketState(_t, _n) !== 'OPEN') return;
       const widget = document.querySelector('.cal-pre-prev-pick-holdings');
       if (!widget || typeof _collectRunningPicks !== 'function') return;
       const running = await _collectRunningPicks(_t, 8);
@@ -1209,7 +1209,8 @@ function _startPm320RunningPoll() {
 }
 
 function _formatCountdownToOpen(now) {
-  const _now = now || new Date();
+  // _kstNow() = KST wall-clock. target(생성자, 로컬 TZ 해석)과 _now 가 동일 좌표계라 diff 는 KST 기준 정확.
+  const _now = now || _kstNow();
   const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 9, 0, 0, 0);
   let diff = Math.max(0, target.getTime() - _now.getTime());
   const totalSec = Math.floor(diff / 1000);
@@ -1223,7 +1224,8 @@ function _formatCountdownToOpen(now) {
 //   장중(09:00~15:20)에 오늘 view + 픽 미생성 시 "전일 종가 기준" 안내 배너에 표시.
 //   15:20 도달 시 "00:00:00" 반환 (호출부가 타이머 종료 + 안내 문구 전환).
 function _formatCountdownToPick(now) {
-  const _now = now || new Date();
+  // _kstNow() = KST wall-clock. target(생성자, 로컬 TZ 해석)과 _now 가 동일 좌표계라 diff 는 KST 기준 정확.
+  const _now = now || _kstNow();
   const target = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate(), 15, 20, 0, 0);
   const diff = Math.max(0, target.getTime() - _now.getTime());
   const totalSec = Math.floor(diff / 1000);
@@ -1258,7 +1260,7 @@ function _wirePickCountdown() {
   //   렌더 시에도 윈도우(IN) 안이면 승격 폴링 가동 (멱등 — _startPickRevealPoll 자체 가드).
   try {
     if (document.querySelector('.cal-pm320-awaiting[data-pick-await="1"], .cal-pm320-preview-rec')
-        && _pickRevealWindowState(new Date()) === 'IN') {
+        && _pickRevealWindowState(_kstNow()) === 'IN') {
       _startPickRevealPoll();
     }
   } catch (_) { /* no-op */ }
@@ -1269,7 +1271,7 @@ function _wirePickCountdown() {
     const els = Array.from(document.querySelectorAll('.cal-pm320-pending-countdown[data-pick-cd="1"]'))
       .filter(el => document.body.contains(el));
     if (els.length === 0) { _stopPickCountdown(); return; }
-    const now = new Date();
+    const now = _kstNow(); // KST wall-clock — 해외 접속 시 15:19:30 폴링 트리거·15:20 전환 오판 봉쇄
     // fix/pick-reveal — 공개 윈도우(15:19:30~) 진입 시 픽 자동 폴링 가동 (멱등, 아래 정의).
     if (now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() >= 15 * 3600 + 19 * 60 + 30) {
       _startPickRevealPoll();
@@ -1321,7 +1323,7 @@ function _stopPickRevealPoll() {
   if (_pickRevealPollTimer) { clearTimeout(_pickRevealPollTimer); _pickRevealPollTimer = null; }
 }
 function _pickRevealWindowState(now) {
-  const _n = now || new Date();
+  const _n = now || _kstNow(); // KST wall-clock — 해외 접속 시 픽 공개 윈도우(15:19:30~15:50) 오판 봉쇄
   const sec = _n.getHours() * 3600 + _n.getMinutes() * 60 + _n.getSeconds();
   if (sec < 15 * 3600 + 19 * 60 + 30) return 'BEFORE';
   // feat/pick-preview (2026-06-12) — 윈도우 종단 15:30 → 15:50 연장.
@@ -1335,7 +1337,7 @@ function _startPickRevealPoll() {
   if (_pickRevealPollTimer || _pickRevealDone) return; // 멱등 — 1초 tick 의 반복 호출 안전
   const probe = async () => {
     _pickRevealPollTimer = null;
-    const now = new Date();
+    const now = _kstNow(); // KST wall-clock — 해외 접속 시 픽 공개 윈도우·today·preview 게이트 전체 봉쇄
     const st = _pickRevealWindowState(now);
     if (st === 'AFTER') { _stopPickRevealPoll(); return; }   // 15:30 초과 — 중단 + 기존 화면 유지
     if (st === 'BEFORE') { _pickRevealPollTimer = setTimeout(probe, _PICK_REVEAL_POLL_MS); return; }
@@ -1477,8 +1479,8 @@ function renderPreMarketEmpty(container, date, prevDate, prevData, nightlyUs, ma
       if (!cdEl || !document.body.contains(cdEl)) { _stopPreMarketTimer(); return; }
       cdEl.textContent = _formatCountdownToOpen();
       // 09:00 도달 시 자동 OPEN 전환 (한 번만)
-      const nowH = new Date();
-      if (nowH.getHours() >= 9 && getMarketState() !== 'PRE_MARKET') {
+      const nowH = _kstNow(); // KST wall-clock — 해외 접속 시 09:00 OPEN 전환 오판 봉쇄
+      if (nowH.getHours() >= 9 && getMarketState(undefined, nowH) !== 'PRE_MARKET') {
         _stopPreMarketTimer();
         // _refreshDataAsync 동등 — calendar.js의 onCalCellClick으로 재렌더
         try { onCalCellClick(date, false); } catch (_) {}
@@ -2355,8 +2357,8 @@ function renderCalExpandContent(date, data) {
   //   신선도는 헤더 freshness 라벨(점 + "HH:MM 기준")로만 정직하게 표시한다 (FLR-20260527-TEC-001 정합).
   //   PRE_MARKET (09:00 이전 + 오늘 view) 만 빈 상태 유지 — 표출할 당일 데이터가 아직 없는 정상 상태.
   try {
-    const state = (typeof getMarketState === 'function') ? getMarketState(date) : null;
-    const _now = new Date();
+    const _now = _kstNow(); // KST wall-clock — 해외 접속 시 PRE_MARKET·오늘 판정 오판 봉쇄
+    const state = (typeof getMarketState === 'function') ? getMarketState(date, _now) : null;
     const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
     if (state === 'PRE_MARKET' && date === _todayIso) {
       // 전일 거래일 = date 하루씩 뒤로 가며 첫 비휴장일
@@ -2433,7 +2435,7 @@ function renderCalExpandContent(date, data) {
       //   - 09:00~11:00 KST: 장 시작 직후 수집 진행 중 (정상 상황)
       //   - 11:00 KST 이후: 파이프라인 이상 또는 새로고침 권장
       //   - 그 외 (과거 날짜 등): 기존 메시지 유지
-      const now = new Date();
+      const now = _kstNow(); // KST wall-clock — 해외 접속 시 오늘 판정·시간대별 메시지 오판 봉쇄
       const todayIso = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       const isToday = (date === todayIso);
       const hour = now.getHours();
@@ -3091,7 +3093,7 @@ function renderCalExpandContent(date, data) {
   // R46 P1-3 (조니 단정) — "오늘의 종목: 30개" 카피 폐기. H1 "하루 단 한 종목"과 정면 충돌
   //   (종목이 30개라는 헤더가 단일픽 약속을 부정하는 인상). "분석 대상 N종목"으로 역할 정직화
   //   (후보 풀 표기). 시점 무관 라벨이라 R27 P1④ 오늘의/이날의 분기도 자연 소멸.
-  const _nowMeta = new Date();
+  const _nowMeta = _kstNow(); // KST wall-clock — 해외 접속 시 헤더 과거일 판정(휴장·뉴스 라벨) 오판 봉쇄
   const _todayMeta = `${_nowMeta.getFullYear()}-${String(_nowMeta.getMonth() + 1).padStart(2, '0')}-${String(_nowMeta.getDate()).padStart(2, '0')}`;
   // R28 P0-2 (조니 2심 확정, 2026-06-11) — 휴장일 자기모순 봉쇄. 과거 휴장일(예 6/3 지방선거,
   //   kiwoom 수집 데이터 실재) 뷰가 "이날의 종목: N개·시각 기준" 헤더 + 종목 카드 + "수집되지
@@ -3557,7 +3559,7 @@ function renderCalExpandContent(date, data) {
       // DOC-20260603-DSN-001 §2 — PM320 PICK 배지 (좌측 첫 자리 prepend, 기존 배지 0건 수정).
       const pm320Pick = st.pm320_pick || null;
       // r5 (2026-06-11) — 과거 날짜 보기 판정(배지 "오늘"→"이날의"). 아래 divider 의 시점 판정과 동일 식.
-      const _nowBadge = new Date();
+      const _nowBadge = _kstNow(); // KST wall-clock — 해외 접속 시 과거일 배지("오늘"→"이날의") 오판 봉쇄
       const _todayBadge = `${_nowBadge.getFullYear()}-${String(_nowBadge.getMonth() + 1).padStart(2, '0')}-${String(_nowBadge.getDate()).padStart(2, '0')}`;
       const _isPastBadge = !!(date && date < _todayBadge);
       const pm320PickBadge = _buildPm320PickBadge(pm320Pick, _isPastBadge);
@@ -3777,7 +3779,7 @@ function renderCalExpandContent(date, data) {
       //   날짜(예: 6/1 LG씨엔에스) 보기에서도 "오늘의 추천"으로 표시(요약 카드 headLabel·sticky 칩은
       //   이미 isPast 분기 있으나 본 divider 만 누락). date < KST 오늘이면 "이날의 추천"으로 강등
       //   (요약 카드 L1556 / picked card aria 와 동일 시점 SoT). _todayDivIso 직접 산출(스코프 독립).
-      const _todayDivIso = (() => { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`; })();
+      const _todayDivIso = (() => { const n = _kstNow(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`; })(); // KST wall-clock — 과거일 divider 라벨 오판 봉쇄
       const _isPastDiv = !!(date && date < _todayDivIso);
       const _pickDividerLabel = _isPastDiv ? '이날의 추천' : '오늘의 추천';
       const _pickDivider_full = _isPm320Pick_full
@@ -4154,7 +4156,7 @@ function renderCalExpandContent(date, data) {
   //   묻혀 무픽 날(6/2·6/8) 픽 영역이 완전 침묵으로 읽힘).
   const _pm320NoPickHtml = (() => {
     if (_isSingleCardMode || !data || data.pm320NoPick !== true || isMarketClosed(date)) return '';
-    const _nowNp = new Date();
+    const _nowNp = _kstNow(); // KST wall-clock — 해외 접속 시 무픽 안내 시점("이날은"/"오늘은") 오판 봉쇄
     const _todayNp = `${_nowNp.getFullYear()}-${String(_nowNp.getMonth() + 1).padStart(2, '0')}-${String(_nowNp.getDate()).padStart(2, '0')}`;
     const _dayWord = (date && date < _todayNp) ? '이날은' : '오늘은';
     return `<div class="cal-pm320-no-pick" role="status" aria-label="${_dayWord} 추천 없음, 기준 미달로 픽을 내지 않은 날입니다"><svg class="cal-pm320-no-pick-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6"/></svg><span><b>${_dayWord} 추천 없음 (기준 미달)</b>${_termTip('pending')} — 데이터 누락이 아니라 기준을 만족하는 종목이 없어 픽을 내지 않은 날입니다</span></div>`;
@@ -4174,7 +4176,7 @@ function renderCalExpandContent(date, data) {
     // R28 P0-2 — 휴장일 뷰에서 "수집되지 않은 날짜" 렌더 금지 (비휴장 미수집일 전용).
     if (_isHolidayView) return '';
     if (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true) return '';
-    const _nowNd = new Date();
+    const _nowNd = _kstNow(); // KST wall-clock — 해외 접속 시 "이 날짜의 데이터가 없습니다" 과거일 판정 오판 봉쇄
     const _todayNd = `${_nowNd.getFullYear()}-${String(_nowNd.getMonth() + 1).padStart(2, '0')}-${String(_nowNd.getDate()).padStart(2, '0')}`;
     if (!(date && date < _todayNd)) return '';
     return `<div class="cal-pm320-no-data" role="status" aria-label="이 날짜의 데이터가 없습니다"><svg class="cal-pm320-no-data-icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg><span><b>이 날짜의 데이터가 없습니다</b> — 픽 추적 데이터가 수집되지 않은 날짜입니다</span></div>`;
@@ -4198,7 +4200,7 @@ function renderCalExpandContent(date, data) {
       if (!pv || _isSingleCardMode) return null;
       if (pv.date !== date || !pv.code || typeof pv.entry_price !== 'number' || pv.entry_price <= 0) return null;
       if (data && data.pm320NoPick != null) return null; // 본 데이터 확정 — preview 종료
-      const _nowPv = new Date();
+      const _nowPv = _kstNow(); // KST wall-clock — 해외 접속 시 선공개(preview) 오늘 view 게이트 오판 봉쇄
       const _todayPv = `${_nowPv.getFullYear()}-${String(_nowPv.getMonth() + 1).padStart(2, '0')}-${String(_nowPv.getDate()).padStart(2, '0')}`;
       if (date !== _todayPv) return null; // 오늘 view 전용
       return pv;
@@ -4240,7 +4242,7 @@ function renderCalExpandContent(date, data) {
     if (data && data.pm320NoPick != null) return ''; // 본 데이터 확정 — 기존 path 담당
     if (typeof window !== 'undefined' && window._pm320SuppressDomesticCards === true) return '';
     if (isMarketClosed(date)) return '';
-    const _nowAw = new Date();
+    const _nowAw = _kstNow(); // KST wall-clock — 해외 접속 시 오늘 판정·15:30/16:30 대기 윈도우 오판 봉쇄
     const _todayAw = `${_nowAw.getFullYear()}-${String(_nowAw.getMonth() + 1).padStart(2, '0')}-${String(_nowAw.getDate()).padStart(2, '0')}`;
     if (date !== _todayAw) return ''; // 과거 결측일은 _pm320NoDataHtml 담당
     const _secAw = _nowAw.getHours() * 3600 + _nowAw.getMinutes() * 60 + _nowAw.getSeconds();
@@ -4261,8 +4263,8 @@ function renderCalExpandContent(date, data) {
   //   _wirePickCountdown() 가 렌더 직후 1초 tick (15:20 도달 시 "곧 갱신됩니다" 전환).
   let _pm320PendingHtml = '';
   try {
-    const _stateForBanner = (typeof getMarketState === 'function') ? getMarketState(date) : null;
-    const _nowB = new Date();
+    const _nowB = _kstNow(); // KST wall-clock — 해외 접속 시 장중(OPEN) 배너·오늘 판정 오판 봉쇄
+    const _stateForBanner = (typeof getMarketState === 'function') ? getMarketState(date, _nowB) : null;
     const _todayB = `${_nowB.getFullYear()}-${String(_nowB.getMonth() + 1).padStart(2, '0')}-${String(_nowB.getDate()).padStart(2, '0')}`;
     const _pickPending = !data || data.pm320NoPick !== false;
     // feat/pick-preview — 선공개 카드 활성 시 카운트다운 배너 억제 (공개 완료 = 카운트다운 종료).
@@ -4290,7 +4292,7 @@ function renderCalExpandContent(date, data) {
     const _cdPortal = (typeof document !== 'undefined') ? document.getElementById('pm320-prepick-portal') : null;
     if (_cdPortal && !_isSingleCardMode) {
       if (_pm320PendingHtml) {
-        const _cdP = _formatCountdownToPick(new Date());
+        const _cdP = _formatCountdownToPick(_kstNow());
         _cdPortal.innerHTML =
           `<div class="cal-pm320-portal-cd" role="status" aria-label="오늘의 추천은 오후 3시 20분에 공개됩니다">`
           + `<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`
@@ -4320,7 +4322,7 @@ function renderCalExpandContent(date, data) {
       const _authClose = (_d20 && typeof _d20.c === 'number') ? _d20.c
         : (typeof _interp?.close_price === 'number' ? _interp.close_price
           : (typeof _interp?.range_240d?.current === 'number' ? _interp.range_240d.current : null));
-      const _nowR = new Date();
+      const _nowR = _kstNow(); // KST wall-clock — 해외 접속 시 추천 카드 과거일(_isPastR) 판정 오판 봉쇄
       const _todayR = `${_nowR.getFullYear()}-${String(_nowR.getMonth() + 1).padStart(2, '0')}-${String(_nowR.getDate()).padStart(2, '0')}`;
       const _isPastR = !!(date && date < _todayR);
       // R48 라이더-1 — _nxtSnap(표시 날짜 NXT roster 스냅샷, _resolveNxtSnapshot 산출) 전달: D+0 NXT 캡션 게이트.
@@ -4909,8 +4911,8 @@ function renderPreMarketThemeSection(container, todayIso, prevIso, headerHtml, o
   const tick = () => {
     if (!cdEl || !document.body.contains(cdEl)) { _stopThemeSectionPreMarketTimer(); return; }
     cdEl.textContent = _formatCountdownToOpen();
-    const nowH = new Date();
-    if (nowH.getHours() >= 9 && (typeof getMarketState !== 'function' || getMarketState() !== 'PRE_MARKET')) {
+    const nowH = _kstNow(); // KST wall-clock — 해외 접속 시 09:00 OPEN 전환 오판 봉쇄
+    if (nowH.getHours() >= 9 && (typeof getMarketState !== 'function' || getMarketState(undefined, nowH) !== 'PRE_MARKET')) {
       _stopThemeSectionPreMarketTimer();
       // 09:00 도달 시 호출자가 알아서 다시 init할 수 있도록 reload-light 시그널만
       try { window.dispatchEvent(new CustomEvent('themeSectionPreMarketEnd')); } catch (_) {}
@@ -5098,7 +5100,7 @@ async function initThemeTrend() {
     const needsScroll = dates.length > VISIBLE_DAYS;
 
     if (themes.length === 0) {
-      const now = new Date();
+      const now = _kstNow(); // KST wall-clock — 해외 접속 시 테마 빈상태 오늘/휴장 판정 오판 봉쇄
       const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
       const closedToday = isMarketClosed(todayStr);
       const nextDate = closedToday ? getNextTradingDate(todayStr) : null;
@@ -5927,9 +5929,9 @@ async function initThemeTree(dateOverride) {
     // design-theme-tree-time-state-v1 — PRE_MARKET 시점 분기 (catch).
     // theme-tree.json date(예 5/8) + nodes(5/7) misleading 차단. 종목카드 동형.
     try {
-      const _now = new Date();
+      const _now = _kstNow(); // KST wall-clock — 해외 접속 시 테마트리 PRE_MARKET·오늘 판정 오판 봉쇄
       const _todayIso = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}`;
-      const _state = (typeof getMarketState === 'function') ? getMarketState(dateOverride || _todayIso) : null;
+      const _state = (typeof getMarketState === 'function') ? getMarketState(dateOverride || _todayIso, _now) : null;
       const _isToday = !dateOverride || dateOverride === _todayIso;
       if (_state === 'PRE_MARKET' && _isToday && !window.__themeTreeBypassPreMarket) {
         const tc = document.getElementById('theme-tree-container');
@@ -5970,7 +5972,7 @@ async function initThemeTree(dateOverride) {
     if (!data.nodes || data.nodes.length === 0) {
       const tc = document.getElementById('theme-tree-container');
       if (tc) {
-        const _n2 = new Date();
+        const _n2 = _kstNow(); // KST wall-clock — 해외 접속 시 테마트리 isLive(오늘<16시) 오판 봉쇄
         const _t2 = `${_n2.getFullYear()}-${String(_n2.getMonth()+1).padStart(2,'0')}-${String(_n2.getDate()).padStart(2,'0')}`;
         const isLive = (dateOverride === _t2 || !dateOverride) && _n2.getHours() < 16 && !isMarketClosed(_t2);
         tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '테마 데이터가 없습니다' : '테마 데이터가 없습니다'}</div>`;
@@ -6004,7 +6006,7 @@ async function initThemeTree(dateOverride) {
           // DSN-frontend §3.6.2.2 (2026-05-28) — 오늘 view + 09:00 이후 시 7일 fallback 차단.
           //   기존 동작 (어제 데이터 자동 호출) → 사용자 매매 판단 misread risk.
           //   테마트리는 종목카드와 동일 정책 cumulative — '테마 데이터가 없습니다' 표시 default.
-          const _nowLocal = new Date();
+          const _nowLocal = _kstNow(); // KST wall-clock — 해외 접속 시 오늘 09:00 이후 fallback 차단 게이트 오판 봉쇄
           const _todayLocal = _localYmd(_nowLocal);
           const _isTodayPastOpenLocal = (d0 === _todayLocal && _nowLocal.getHours() >= 9);
           const tryDate = async (d) => {
@@ -6137,7 +6139,7 @@ async function initThemeTree(dateOverride) {
     if (!data.nodes || data.nodes.length === 0) {
       const tc = document.getElementById('theme-tree-container');
       if (tc) {
-        const _n3 = new Date();
+        const _n3 = _kstNow(); // KST wall-clock — 해외 접속 시 테마트리(필터후) isLive(오늘<16시) 오판 봉쇄
         const _t3 = `${_n3.getFullYear()}-${String(_n3.getMonth()+1).padStart(2,'0')}-${String(_n3.getDate()).padStart(2,'0')}`;
         const isLive = (dateOverride === _t3) && _n3.getHours() < 16 && !isMarketClosed(_t3);
         tc.innerHTML = `<div class="cal-empty" style="padding:24px 0;">${isLive ? '테마 데이터가 없습니다' : '해당 날짜의 테마 데이터가 없습니다'}</div>`;
@@ -6245,7 +6247,7 @@ async function initThemeTree(dateOverride) {
     //   - 특정 과거 날짜 조회(dateOverride ≠ today) → 이미 그 날짜 데이터이므로 캡션 불필요(달력 컨텍스트가 날짜 제공).
     //   미장 빈상태 fix(1ff66c780)와 동형 — "어떤 날짜 데이터인지 화면에 정직히"(FLR-AGT-002 거짓 충실성 차단).
     try {
-      const _nowCap = new Date();
+      const _nowCap = _kstNow(); // KST wall-clock — 해외 접속 시 테마 캡션 오늘 view 판정 오판 봉쇄
       const _todayCap = `${_nowCap.getFullYear()}-${String(_nowCap.getMonth()+1).padStart(2,'0')}-${String(_nowCap.getDate()).padStart(2,'0')}`;
       const _isTodayView = !dateOverride || dateOverride === _todayCap;
       const _srcDate = data.source_date || data.date || null;
