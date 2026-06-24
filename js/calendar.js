@@ -91,6 +91,32 @@ function _isTodayIso(iso, now) {
   return iso === ymd(_now.getFullYear(), _now.getMonth() + 1, _now.getDate());
 }
 
+// 보유픽(running) 신선도 윈도우 — "오늘 기준 최근 N영업일 이내 과거일"만 신선도 토큰 부착 대상.
+//   근거: PM320 만기 모델 = 매수일 제외 6영업일 보유 → 진입 후 ~D+6 영업일까지 running.
+//   _collectRunningPicks fan-out(8) + 만기 여유 = 10영업일(보수적). 11영업일+ 이전 확정 청산일은
+//   불변 캐시 유지(과거 카드 캐시 이점 보존·cold load 남발 0). 윈도우 근사가 순환 의존(어느 과거일에
+//   running 픽이 있는지 _cacheKey 가 모름)을 회피 — 윈도우 안은 refetch, 밖은 불변(과대 무효화 0).
+const _FRESH_WINDOW_BDAYS = 10;
+
+// fromIso(과거일)가 todayIso 기준 최근 _FRESH_WINDOW_BDAYS 영업일 이내인지. 미래일/오늘/계산 불가는 false.
+//   isMarketClosed(holidays 미로드 시 주말 폴백)로 영업일만 카운트. 90일 가드로 무한루프 봉쇄.
+function _withinFreshWindowBdays(fromIso, todayIso) {
+  try {
+    if (!fromIso || !todayIso || fromIso >= todayIso) return false; // 미래/오늘은 today 분기에서 처리
+    let _d = new Date(todayIso + 'T00:00:00');
+    if (!Number.isFinite(_d.getTime())) return false;
+    let _bdays = 0;
+    for (let _g = 0; _g < 90; _g++) {
+      const _iso = `${_d.getFullYear()}-${String(_d.getMonth() + 1).padStart(2, '0')}-${String(_d.getDate()).padStart(2, '0')}`;
+      if (_iso <= fromIso) return _bdays <= _FRESH_WINDOW_BDAYS; // fromIso 도달 — 그 사이 영업일 수로 판정
+      if (typeof isMarketClosed !== 'function' || !isMarketClosed(_iso)) _bdays++;
+      if (_bdays > _FRESH_WINDOW_BDAYS) return false; // 윈도우 초과 — 조기 종료
+      _d.setDate(_d.getDate() - 1);
+    }
+    return false;
+  } catch (_) { return false; }
+}
+
 function _cacheKey(date, now) {
   // 오늘 날짜만 세션 구간 토큰을 부착. 과거/미래는 date 단일 키.
   if (_isTodayIso(date, now)) {
@@ -103,14 +129,30 @@ function _cacheKey(date, now) {
     }
     return `${date}@${_st}`;
   }
-  // 과거일 카드라도 현재 장중(OPEN)이면 보유픽(running) current_pnl 이 10분마다 갱신된다.
-  //   calDayCache(localStorage 박제)가 과거일 카드를 세션 내내 고정 서빙 → _dataBust 무력화·보유픽 손익 stale.
-  //   장중엔 10분 버킷 키로 calDayCache 무효화 → refetch (2026-06-23 대표 catch). quota 초과는 write 측 graceful.
+  // 과거일 카드라도 보유픽(running, 만기 전)의 current_pnl_pct 는 진입일 파일에서 MUTABLE 갱신된다
+  //   (forward 종가 기반 — 장중 10분 주기 + 장 마감 후 종가로 1회 반영). calDayCache(localStorage 박제)가
+  //   과거일 카드를 date 단일 키로 세션 내내 고정 서빙 → _dataBust 무력화·보유픽 손익 stale.
+  //   ── 2026-06-24 대표 catch (제주반도체 080220 등락률 공란, 새로고침 무효):
+  //      직전 6/23 fix 는 *현재 OPEN(장중)* 일 때만 10분 버킷으로 무효화 → POST_MARKET/PRE_MARKET 누락(부분상태).
+  //      장 마감(18:53) 후 stale 캐시(픽 당일 pnl≈0 박제)가 -14.1% 신선값을 가려 가드(_pnl current_price==null&&v===0)가 0% 숨김.
+  //      FLR-20260428-TEC-001 "한쪽 수정·다른 끝 누락" recurring 회피 — 장 상태 전 구간(OPEN/POST/PRE/HOLIDAY) 일반화.
+  //   원리: running 픽 진입일은 만기 모델(매수일 제외 6영업일 보유 = 진입 후 최대 ~D+6 영업일까지 running)상
+  //     항상 "오늘 기준 최근 N영업일 이내". 그 구간(_FRESH_WINDOW_BDAYS)만 신선도 토큰 부착(refetch),
+  //     그 이전 확정 청산일은 date 단일 키 불변 캐시 유지(cold load 남발 회피·과거 카드 캐시 이점 보존).
+  //     "어느 과거일에 running 픽이 있는지"를 _cacheKey 가 알 수 없는 순환 의존을 윈도우 근사로 회피.
+  //   토큰: 장중(OPEN)=10분 버킷(10분 주기 갱신 추종) / 장후·장전·휴장=KST 날짜 버킷(종가 반영 후 불변, 일 1회 무효화로 충분).
   try {
-    const _n = now || _kstNow(); // KST wall-clock — 장중(OPEN) 10분 버킷 키 해외 접속 오판 봉쇄
-    const _t = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
-    if (typeof getMarketState === 'function' && getMarketState(_t, _n) === 'OPEN') {
-      return `${date}@m${String(_n.getHours()).padStart(2, '0')}${Math.floor(_n.getMinutes() / 10)}`;
+    const _n = now || _kstNow(); // KST wall-clock — 윈도우/장상태/날짜 버킷 해외 접속 오판 봉쇄
+    const _tIso = `${_n.getFullYear()}-${String(_n.getMonth() + 1).padStart(2, '0')}-${String(_n.getDate()).padStart(2, '0')}`;
+    if (_withinFreshWindowBdays(date, _tIso)) {
+      const _st = (typeof getMarketState === 'function') ? getMarketState(_tIso, _n) : 'POST_MARKET';
+      if (_st === 'OPEN') {
+        // 장중 — 10분 버킷 (보유픽 current_pnl 10분 주기 갱신 추종, 기존 6/23 동작 유지)
+        return `${date}@m${String(_n.getHours()).padStart(2, '0')}${Math.floor(_n.getMinutes() / 10)}`;
+      }
+      // 장후/장전/휴장 — KST 날짜 버킷. 어제 박제 캐시가 오늘 재방문 시 자연 miss → refetch.
+      //   같은 날 내 재방문은 동일 키로 캐시 HIT (cold load 남발 0). _persistCache trim 은 date(@ 앞) 기준이라 무회귀.
+      return `${date}@d${_tIso}`;
     }
   } catch (_) { /* graceful — 기본 단일 키 */ }
   return date;
