@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 25443.13,
-      "change_pct": -0.13,
+      "point": 25375.87,
+      "change_pct": -0.4,
       "candle": {
         "o": 25713.87,
         "h": 25723.05,
         "l": 25123.43,
-        "c": 25443.13
+        "c": 25375.87
       },
       "range_240d": {
         "low": 20585.53,
@@ -2033,7 +2033,7 @@
           "o": 25713.87,
           "h": 25723.05,
           "l": 25123.43,
-          "c": 25443.13
+          "c": 25375.87
         }
       ],
       "spark": [
@@ -2072,7 +2072,9 @@
         25423.12,
         25443.84,
         25436.87,
-        25443.13
+        25385.22,
+        25373.8,
+        25375.87
       ],
       "news": {
         "summary": "반도체 강세 주도. SK하이닉스 나스닥 상장 및 삼성 제치고 한국 최고가 달성, AI 수요 호황 지속 신호. 마이크론·인텔 등 칩업체 주가 변동성 확대 중. AI 전력 경쟁(아마존·구글)·로봇업체 SPAC 거래 활성화로 기술주 성장동력 다변화.",
@@ -2088,13 +2090,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7383.0,
-      "change_pct": 0.34,
+      "point": 7369.28,
+      "change_pct": 0.15,
       "candle": {
         "o": 7404.91,
         "h": 7419.08,
         "l": 7323.5,
-        "c": 7383.0
+        "c": 7369.28
       },
       "range_240d": {
         "low": 6238.01,
@@ -4118,7 +4120,7 @@
           "o": 7404.91,
           "h": 7419.08,
           "l": 7323.5,
-          "c": 7383.0
+          "c": 7369.28
         }
       ],
       "spark": [
@@ -4156,8 +4158,10 @@
         7369.07,
         7381.02,
         7384.77,
-        7386.66,
-        7383.0
+        7383.0,
+        7372.89,
+        7370.2,
+        7369.28
       ],
       "news": {
         "summary": "매크로 리스크 복합작용. 연준 금리 기조 유지·유가 급락·주택판매 하강·고용 감원 심화로 경기 둔화 우려 고조. 이란 석유 수출 재개·호르무즈 해협 정상화로 지정학 리스크 일시 완화되나, 유럽·태국 등 글로벌 성장률 하향 조정 추세. 은행권 스트레스 테스트 통과도 저금리 기대 급감으로 상쇄.",
@@ -4181,13 +4185,13 @@
     },
     {
       "name": "DOW",
-      "point": 52271.29,
-      "change_pct": 0.81,
+      "point": 52168.79,
+      "change_pct": 0.62,
       "candle": {
         "o": 52009.02,
         "h": 52655.66,
         "l": 52009.02,
-        "c": 52271.29
+        "c": 52168.79
       },
       "range_240d": {
         "low": 43588.58,
@@ -6211,7 +6215,7 @@
           "o": 52009.02,
           "h": 52655.66,
           "l": 52009.02,
-          "c": 52271.29
+          "c": 52168.79
         }
       ],
       "spark": [
@@ -6250,7 +6254,9 @@
         52258.48,
         52267.28,
         52270.4,
-        52271.29
+        52209.01,
+        52170.13,
+        52168.79
       ],
       "news": {
         "summary": "경기민감·금융 양극화 신호. 대형은행(JP모건·뱅옵아) 스트레스 테스트 통과·배당 기대감 vs. 건설·주택경기 침체·공장감원(금융위기 수준) 악화로 상반부 전망 약화. 유가 급락으로 에너지섹터 압박, 해협 정상화 후행 효과 불확실. 건설·산업재 경기순환 신호 약세 우세.",
@@ -6274,80 +6280,76 @@
       "impact_high": true
     },
     {
-      "summary": "연준 선호 물가지수인 PCE가 5월 전년대비 4.1% 상승해 2023년 4월 이후 최고 수준에 도달",
+      "summary": "연준의 주요 인플레 지표인 PCE가 5월 연간 4.1% 상승하며 2년 반 만에 최고치 기록",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/25/pce-inflation-report-may-2026-.html",
       "published_ts": 1782394256.0,
       "impact_high": true
     },
     {
-      "summary": "미국 주간 신규실업청구가 215,000명으로 감소해 노동시장의 지속적 안정 신호 제시",
+      "summary": "미국 주간 실업수당청구가 215천 건으로 전주 대비 5.3% 감소, 노동시장 회복 신호",
       "source": "WSJ",
       "url": "https://www.wsj.com/economy/jobs/u-s-jobless-claims-fell-last-week-a62436da",
       "published_ts": 1782392940.0,
       "impact_high": true
     },
     {
-      "summary": "미국 5월 내구재 주문이 예상을 상회하는 폭으로 감소해 제조업 부진 신호",
+      "summary": "세계 무역량이 4월 증가 전환하며 중동 분쟁으로 인한 공급망 차질 회피 현상 확인",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/economy/trade/world-trade-rose-in-april-in-fresh-sign-of-resilience-7765597b",
+      "published_ts": 1782384240.0,
+      "impact_high": true
+    },
+    {
+      "summary": "JPMorgan이 Jamie Dimon 회장 후임 물색을 위해 공동회장 2인 임명, 금융그룹 경영진 구조 개편",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/finance/banking/jpmorgan-names-co-presidents-in-effort-to-find-successors-for-jamie-dimon-aafb5c27?mod=rss_markets_main",
+      "published_ts": 1782399360.0,
+      "impact_high": false
+    },
+    {
+      "summary": "미국 5월 내구재 주문이 예상을 상회하는 낙폭 기록, 기업 투자심리 약화 우려",
       "source": "WSJ",
       "url": "https://www.wsj.com/economy/may-durable-goods-orders-fall-slightly-more-than-forecast-2e42703d",
       "published_ts": 1782391800.0,
       "impact_high": false
     },
     {
-      "summary": "베네수엘라에서 규모 7.5 강진이 발생해 126년 만의 최악 피해를 기록하고 164명 이상 사망",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/world/americas/venezuela-earthquakes-caracas-damage-a5835528",
-      "published_ts": 1782371760.0,
-      "impact_high": false
-    },
-    {
-      "summary": "중동 분쟁으로 폐쇄된 호르무즈 해협의 통행이 재개되고 있으나 정상 수준 회복까지 수개월 소요 전망, 원유 공급망 지속 불안정",
+      "summary": "호르무즈 해협 통행량 회복에 수개월 소요 예상되며 공급망 정상화 지연으로 글로벌 에너지 가격 불확실성 지속",
       "source": "WSJ",
       "url": "https://www.wsj.com/business/energy-oil/how-quickly-can-the-strait-of-hormuz-get-back-up-and-running-a5380c70",
       "published_ts": 1782321180.0,
       "impact_high": false
     },
     {
-      "summary": "미국 5월 신규주택판매가 580,000채로 하락해 금리 부담에 따른 부동산 시장 약세 지속",
+      "summary": "고금리 지속으로 미국 5월 신규 주택판매가 580만 채로 4월 대비 7.3% 하락, 주택시장 약세 심화",
       "source": "WSJ",
       "url": "https://www.wsj.com/economy/housing/u-s-new-home-sales-fell-in-may-71fc2176",
       "published_ts": 1782310920.0,
       "impact_high": false
     },
     {
-      "summary": "미국 6월 제조업 고용 감소가 금융위기·팬데믹 수준에 근접해 산업 구조 조정 가속화 우려",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/06/23/factory-job-cuts-reported-around-financial-crisis-and-covid-levels-for-june-sp-says.html",
-      "published_ts": 1782232857.0,
-      "impact_high": false
-    },
-    {
-      "summary": "미국이 이란 석유 제재를 전면 완화해 이란의 글로벌 원유시장 복귀 통로 개설, 국제유가 하락 압력",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/06/23/us-iran-oil-sanction-relief-strait-of-hormuz-peace-deal-.html",
-      "published_ts": 1782226598.0,
-      "impact_high": true
-    },
-    {
-      "summary": "카타르 라스라판 가스시설에서 폭발 사고가 발생해 13명이 사망하고 LNG 수출 차질 예상, 중동 에너지 공급 재차 악화",
+      "summary": "카타르 라스라판 LNG 공장 폭발로 인한 중동 에너지 공급 정상화 지연 → 국제유가 영향 지속",
       "source": "WSJ",
       "url": "https://www.wsj.com/business/energy-oil/explosion-at-qatar-gas-plant-leaves-dozens-injured-18-missing-8ae33c9b",
       "published_ts": 1782139320.0,
       "impact_high": true
+    },
+    {
+      "summary": "미국-이란 협상으로 이란유 제재 해제 및 호르무즈 해협 통행료 협의 진행 중 에너지 공급 재개 시현",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d",
+      "published_ts": 1781968320.0,
+      "impact_high": false
     }
   ],
-  "_article_sig": "f574d6e32360e61d819ca43f622578fd0cd069c37f9ef9849f84d2a6c9ed30d8",
+  "_article_sig": "6ac27eceb696aac91ef303bc721e5d5aade80c23ac1cf8579ba49cec6c2f6061",
   "built_at_kst": "2026-06-25T07:00:40.467338+09:00",
   "regular_open": true,
   "_futures_news": {
     "NASDAQ": {
-      "summary": "AI 전력 수급 경쟁 심화(아마존·구글 주도)와 중국 슈퍼컴퓨터 미국 추월 소식이 나스닥100 약세 압력. 인텔 주가는 강세이나 반도체 공학 기술력 복귀 과제 상존.",
+      "summary": "중국 슈퍼컴퓨팅 우위 확보·AI 전력 경쟁 고조 속 반도체 투자 심화. Micron 강세도 기술주 개별 수익성 우려로 나스닥100 선물 약세 신호 이어지는 중.",
       "sources": [
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/business/energy-oil/as-ai-companies-race-for-power-amazon-and-google-have-the-lead-1d97af9a?mod=rss_markets_main"
-        },
         {
           "name": "WSJ",
           "url": "https://www.wsj.com/tech/ai/chinese-supercomputer-overtakes-u-s-as-worlds-fastest-d0f8dbff"
@@ -6355,53 +6357,47 @@
       ]
     },
     "S&P500": {
-      "summary": "PCE 물가 4.1% 상향(FED 목표 초과)으로 연준 금리 인상 압력 재부상 vs 실업 청구 215,000 양호·GDP 성장률 2.1% 상향조정 경기탄력성. 주택시장 판매 감소·내구재 주문 부진은 경기민감 약세 신호, 연준 정책 기조 재평가 필수.",
+      "summary": "PCE 물가 4.1% 고위험(연준 목표 2배) 대비 실업수당·내구재 부진으로 경기 신호 양극단 엇갈림. 호르무즈 해협 재개방·이란 유가 수출 본격화로 유가 하향 추진력 강화 중.",
       "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/economy/central-banking/feds-preferred-inflation-gauge-climbs-above-target-range-b2220751"
+        },
         {
           "name": "CNBC",
           "url": "https://www.cnbc.com/2026/06/25/pce-inflation-report-may-2026-.html"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/economy/central-banking/feds-preferred-inflation-gauge-climbs-above-target-range-b2220751"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/economy/jobs/u-s-jobless-claims-fell-last-week-a62436da"
+          "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d"
         }
       ]
     },
     "DOW": {
-      "summary": "JPMorgan 경영진 전개·대형 은행 스트레스 테스트 합격으로 금융주 안정성 부각 vs 호르무즈 협상 진전·이란 유가 제재 완화로 에너지 변동성 확대. 베네수엘라 강진(규모 7.5, 사망자 164명+) 지정학 리스크 가중·산업재 공급 불확실성 증가.",
+      "summary": "JPMorgan CEO 승계 레이스 본격화로 금융주 변수 부상. 신규주택 판매 부진(580k)·주택소유 비용 급등으로 주택시장 위기 심화 신호, 경기민감주 약세 심화 전망.",
       "sources": [
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/banking/jpmorgan-names-co-presidents-in-effort-to-find-successors-for-jamie-dimon-aafb5c27?mod=rss_markets_main"
+          "url": "https://www.wsj.com/economy/housing/u-s-new-home-sales-fell-in-may-71fc2176"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d"
-        },
-        {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/world/americas/venezuela-earthquakes-caracas-damage-a5835528"
+          "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
         }
       ]
     }
   },
   "futures": {
-    "as_of_kst": "2026-06-26T01:20:06.732033+09:00",
+    "as_of_kst": "2026-06-26T01:30:04.750927+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7450.5,
-        "change_pct": 0.3,
+        "point": 7452.0,
+        "change_pct": 0.32,
         "spark": [
           7476.25,
-          7484.0,
-          7481.75,
           7483.5,
           7481.75,
           7481.25,
@@ -6439,21 +6435,23 @@
           7438.0,
           7449.75,
           7453.5,
-          7450.5
+          7451.25,
+          7440.5,
+          7452.0
         ],
         "candle": {
           "o": 7476.25,
           "h": 7496.0,
           "l": 7390.5,
-          "c": 7450.5
+          "c": 7452.0
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 18.93,
-          "high_change_pct": -2.27
+          "low_change_pct": 18.96,
+          "high_change_pct": -2.25
         },
         "daily_expanded": [
           {
@@ -8477,25 +8475,25 @@
             "o": 7476.25,
             "h": 7496.0,
             "l": 7390.5,
-            "c": 7450.5,
-            "v": 963785
+            "c": 7452.0,
+            "v": 984384
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "PCE 물가 4.1% 상향(FED 목표 초과)으로 연준 금리 인상 압력 재부상 vs 실업 청구 215,000 양호·GDP 성장률 2.1% 상향조정 경기탄력성. 주택시장 판매 감소·내구재 주문 부진은 경기민감 약세 신호, 연준 정책 기조 재평가 필수.",
+          "summary": "PCE 물가 4.1% 고위험(연준 목표 2배) 대비 실업수당·내구재 부진으로 경기 신호 양극단 엇갈림. 호르무즈 해협 재개방·이란 유가 수출 본격화로 유가 하향 추진력 강화 중.",
           "sources": [
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/central-banking/feds-preferred-inflation-gauge-climbs-above-target-range-b2220751"
+            },
             {
               "name": "CNBC",
               "url": "https://www.cnbc.com/2026/06/25/pce-inflation-report-may-2026-.html"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/economy/central-banking/feds-preferred-inflation-gauge-climbs-above-target-range-b2220751"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/economy/jobs/u-s-jobless-claims-fell-last-week-a62436da"
+              "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d"
             }
           ]
         }
@@ -8503,12 +8501,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 29792.5,
-        "change_pct": 0.94,
+        "point": 29827.5,
+        "change_pct": 1.06,
         "spark": [
           30089.75,
-          30179.5,
-          30155.0,
           30163.5,
           30144.0,
           30141.75,
@@ -8546,21 +8542,23 @@
           29684.5,
           29790.5,
           29825.5,
-          29792.5
+          29819.75,
+          29760.75,
+          29827.5
         ],
         "candle": {
           "o": 30089.75,
           "h": 30263.75,
           "l": 29295.75,
-          "c": 29783.0
+          "c": 29831.75
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 30.15,
-          "high_change_pct": -3.03
+          "low_change_pct": 30.36,
+          "high_change_pct": -2.87
         },
         "daily_expanded": [
           {
@@ -10584,18 +10582,14 @@
             "o": 30089.75,
             "h": 30263.75,
             "l": 29295.75,
-            "c": 29783.0,
-            "v": 417927
+            "c": 29831.75,
+            "v": 430181
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "AI 전력 수급 경쟁 심화(아마존·구글 주도)와 중국 슈퍼컴퓨터 미국 추월 소식이 나스닥100 약세 압력. 인텔 주가는 강세이나 반도체 공학 기술력 복귀 과제 상존.",
+          "summary": "중국 슈퍼컴퓨팅 우위 확보·AI 전력 경쟁 고조 속 반도체 투자 심화. Micron 강세도 기술주 개별 수익성 우려로 나스닥100 선물 약세 신호 이어지는 중.",
           "sources": [
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/business/energy-oil/as-ai-companies-race-for-power-amazon-and-google-have-the-lead-1d97af9a?mod=rss_markets_main"
-            },
             {
               "name": "WSJ",
               "url": "https://www.wsj.com/tech/ai/chinese-supercomputer-overtakes-u-s-as-worlds-fastest-d0f8dbff"
@@ -10610,8 +10604,6 @@
         "change_pct": 0.8,
         "spark": [
           52381.0,
-          52410.0,
-          52417.0,
           52428.0,
           52415.0,
           52439.0,
@@ -10649,6 +10641,8 @@
           52633.0,
           52691.0,
           52702.0,
+          52698.0,
+          52636.0,
           52697.0
         ],
         "candle": {
@@ -12688,29 +12682,25 @@
             "h": 53097.0,
             "l": 52215.0,
             "c": 52697.0,
-            "v": 73094
+            "v": 74516
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "JPMorgan 경영진 전개·대형 은행 스트레스 테스트 합격으로 금융주 안정성 부각 vs 호르무즈 협상 진전·이란 유가 제재 완화로 에너지 변동성 확대. 베네수엘라 강진(규모 7.5, 사망자 164명+) 지정학 리스크 가중·산업재 공급 불확실성 증가.",
+          "summary": "JPMorgan CEO 승계 레이스 본격화로 금융주 변수 부상. 신규주택 판매 부진(580k)·주택소유 비용 급등으로 주택시장 위기 심화 신호, 경기민감주 약세 심화 전망.",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/finance/banking/jpmorgan-names-co-presidents-in-effort-to-find-successors-for-jamie-dimon-aafb5c27?mod=rss_markets_main"
+              "url": "https://www.wsj.com/economy/housing/u-s-new-home-sales-fell-in-may-71fc2176"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/business/energy-oil/iran-can-now-sell-oil-how-fast-can-it-ramp-up-ccb6e58d"
-            },
-            {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/world/americas/venezuela-earthquakes-caracas-damage-a5835528"
+              "url": "https://www.wsj.com/economy/housing/home-ownership-costs-charts-7fe04eb3"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-06-26T01:20:10.315460+09:00"
+  "intraday_refreshed_kst": "2026-06-26T01:32:10.174678+09:00"
 }
