@@ -1068,7 +1068,7 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
 //   반환: [{ code, name, date, pk }] newest-first (dedup by code). 데이터 부재/오류 시 [].
 async function _collectRunningPicks(fromDate, maxDays) {
   try {
-    if (!fromDate || typeof loadCalDayData !== 'function') return [];
+    if (!fromDate) return [];
     const _now = _kstNow(); // KST wall-clock — 해외 접속 시 보유픽 만기(expiry < today) 판정 오판 봉쇄
     const _todayKst = `${_now.getFullYear()}-${String(_now.getMonth() + 1).padStart(2, '0')}-${String(_now.getDate()).padStart(2, '0')}`;
     // 최근 영업일 목록 — 달력 day−1 walk + 휴장일 skip.
@@ -1086,20 +1086,37 @@ async function _collectRunningPicks(fromDate, maxDays) {
       d.setDate(d.getDate() - 1);
       cur = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
-    const datas = await Promise.all(dates.map(d => loadCalDayData(d).then(x => ({ d, x })).catch(() => ({ d, x: null }))));
+    // 2026-06-26 localStorage staleness 근본 해소 (대표 catch: 알테오젠 stale 반복 잔류).
+    //   이전 fix 2건(버킷 토큰·폴 캐시 무효화) 모두 "같은 날 intraday 정산" + "장후 폴 미동작" 경우를 커버 못함.
+    //   근본 원인: _collectRunningPicks 가 loadCalDayData(= calDayCache 경유) 를 쓰는 한,
+    //   localStorage 에서 복원된 stale calDayCache 가 페이지 로드 직후 캐시 HIT → 정산 상태 미반영.
+    //   해결: 보유픽 판정에 필요한 정보(pm320_pick.is_pick / current_state / expiry_date / pnl 등)는
+    //   pm320_history/{date}.json 에만 있으므로, calDayCache 를 완전 우회해 해당 파일만 직접
+    //   {cache:'no-store'} fetch. 카드 표시용 loadCalDayData 캐시는 그대로 유지(보유픽 경로만 신선).
+    //   fetch 비용: 보유픽 window 최대 8일분 파일(소수) — 허용 범위.
+    const _fetchPm320Day = async (date) => {
+      try {
+        const r = await fetch(`/data/pm320_history/${date}.json?v=r${Date.now()}`, { cache: 'no-store', credentials: 'omit' });
+        if (!r.ok) return null;
+        return r.json();
+      } catch (_) { return null; }
+    };
+    const datas = await Promise.all(dates.map(async (d) => {
+      const pm = await _fetchPm320Day(d);
+      return { d, pm };
+    }));
     const out = [];
     const seen = new Set();
-    for (const { d, x } of datas) {
-      const m = x && x.interpretedByName;
-      if (!m || typeof m.values !== 'function') continue;
-      for (const interp of m.values()) {
-        const pk = interp && interp.pm320_pick;
+    for (const { d, pm } of datas) {
+      if (!pm || !Array.isArray(pm.stocks)) continue;
+      for (const st of pm.stocks) {
+        const pk = st && st.pm320_pick;
         if (!pk || pk.is_pick !== true || pk.current_state !== 'running') continue;
         if (!pk.expiry_date || pk.expiry_date < _todayKst) continue; // 만기 지난 픽 배제(정직)
-        const code = interp.code || interp.ticker || '';
+        const code = st.code || '';
         if (code && seen.has(code)) continue;
         if (code) seen.add(code);
-        out.push({ code, name: interp.name || interp.stock_name || '', date: d, pk });
+        out.push({ code, name: st.name || st.stock_name || '', date: d, pk });
       }
     }
     out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)); // newest-first
