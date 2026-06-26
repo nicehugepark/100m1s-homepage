@@ -1181,6 +1181,11 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
 // ③ 보유픽 10분 자동 갱신 폴 (장중·새로고침 없이) — 2026-06-23 대표 catch.
 //   _collectRunningPicks 가 _cacheKey 10분 버킷으로 신선 카드 재fetch → 보유픽 row 잠정손익 in-place 갱신.
 //   idempotent(단일 interval)·OPEN 게이트·graceful. 3분 주기로 10분 버킷 경계 픽업.
+//   ── 2026-06-26 intraday 정산 갭 해소 (대표 catch: 알테오젠 stale +0.5% 잔류):
+//      (a) 폴 tick 직전 fresh window 내 과거일 calDayCache 키 삭제 → loadCalDayData 강제 refetch.
+//          장중 정산(running→taken_profit)이 같은 10분 버킷 캐시 HIT 없이 반영됨.
+//          오늘(today) 카드는 _cacheKey 가 @OPEN_PICKED/@OPEN 로 자연 분기되므로 제외.
+//      (b) tick 후 running 결과에 없는 code 행을 widget에서 제거 → 정산 픽이 새로고침 없이 사라짐.
 let _pm320RunningPollTimer = null;
 function _startPm320RunningPoll() {
   if (_pm320RunningPollTimer) return;
@@ -1191,7 +1196,33 @@ function _startPm320RunningPoll() {
       if (typeof getMarketState !== 'function' || getMarketState(_t, _n) !== 'OPEN') return;
       const widget = document.querySelector('.cal-pre-prev-pick-holdings');
       if (!widget || typeof _collectRunningPicks !== 'function') return;
+      // (a) 폴 tick 직전 fresh window 내 과거일 calDayCache 키 삭제 — 장중 intraday 정산 강제 refetch.
+      //   같은 10분 버킷 캐시가 HIT되면 running→taken_profit 정산이 반영 안 됨.
+      //   fresh window 내 과거일(오늘 제외)만 삭제, 불변 확정 과거일(창 밖)은 보존.
+      try {
+        if (typeof calDayCache === 'object' && calDayCache &&
+            typeof _withinFreshWindowBdays === 'function') {
+          const _tIso = _t;
+          Object.keys(calDayCache).forEach(k => {
+            const _dateOnly = k.split('@')[0];
+            if (_dateOnly && _dateOnly < _tIso && _withinFreshWindowBdays(_dateOnly, _tIso)) {
+              delete calDayCache[k];
+            }
+          });
+        }
+      } catch (_) { /* graceful — 캐시 삭제 실패 시에도 폴 계속 */ }
       const running = await _collectRunningPicks(_t, 8);
+      // (b) 정산된 픽 행 제거 — running 결과에 없는 code 행을 widget에서 삭제 (새로고침 불요).
+      try {
+        const liveCodes = new Set((running || []).map(p => p && p.code).filter(Boolean));
+        widget.querySelectorAll('[data-prev-pick-code]').forEach(row => {
+          const c = row.getAttribute('data-prev-pick-code');
+          if (c && !liveCodes.has(c)) row.remove();
+        });
+        // 남은 running 픽 0건 → holdings 섹션 전체 숨김 (빈 <details> 잔류 방지)
+        if (liveCodes.size === 0) widget.style.display = 'none';
+      } catch (_) { /* graceful */ }
+      // in-place pnl 갱신 (기존 동작 유지)
       for (const p of (running || [])) {
         if (!p || !p.code) continue;
         const row = widget.querySelector(`[data-prev-pick-code="${p.code}"]`);
