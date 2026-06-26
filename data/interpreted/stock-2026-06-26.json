@@ -1,6 +1,6 @@
 {
   "date": "2026-06-26",
-  "generated_at": "2026-06-26T15:25:28.704685",
+  "generated_at": "2026-06-26T15:26:20.178902",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -2446,8 +2446,19 @@
       "low_price": 4760,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체소부장"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체소부장",
+          "path": [
+            "반도체",
+            "반도체소부장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -2461,16 +2472,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04326326645485656",
           "source": "이데일리",
           "published_at": "2026-06-26T04:35:30",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "메모리 반도체 업황 회복으로 SK하이닉스 설비·소재 발주 확대 → 반도체 소부장 기업인 티이엠씨씨엔에스가 SK하이닉스와 252억원 규모 공급계약을 체결, 핵심 고객사향 직접 매출 가시화 → 신규 대형 수주 기대에 매수세 집중되며 당일 시가 4,980원에서 상한가(+30.00%, 6,500원)까지 직행, 거래대금 218억원 동반.",
+          "macro_event": "SK하이닉스와 252억원 규모 공급계약 체결 (반도체 소부장 직접 수주)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.7,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.58,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -2721,9 +2732,9 @@
           6500
         ]
       },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "091590",
