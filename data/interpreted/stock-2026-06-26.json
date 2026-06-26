@@ -1,6 +1,6 @@
 {
   "date": "2026-06-26",
-  "generated_at": "2026-06-26T09:05:27.407152",
+  "generated_at": "2026-06-26T09:15:14.897473",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -17,15 +17,484 @@
   "themes_tree": null,
   "stocks": [
     {
+      "code": "091590",
+      "name": "남화토건",
+      "rank": 1,
+      "trade_amount": 8461000000,
+      "change_pct": 21.4,
+      "close_price": 6240,
+      "open_price": 5800,
+      "high_price": 6600,
+      "low_price": 5500,
+      "industry": "건물 건설업",
+      "sector": "건축공사, 토목공사",
+      "themes": [
+        "건설"
+      ],
+      "theme_paths": [
+        {
+          "name": "건설",
+          "path": [
+            "건설"
+          ]
+        }
+      ],
+      "pick_count": 3,
+      "prev_pick": {
+        "date": "2026-06-25",
+        "rank": 16,
+        "change_pct": -14.05,
+        "trade_amount": 53728000000
+      },
+      "bullish_today": false,
+      "bullish_streak": 0,
+      "bullish_dates": [
+        "2026-06-18",
+        "2026-06-24"
+      ],
+      "news": [],
+      "fallback": true,
+      "index_change_pct": -1.79,
+      "index_multiple_current": -11.96,
+      "index_multiple_eligible": false,
+      "range_240d": {
+        "high": 7770,
+        "high_date": "2026-06-25",
+        "high_pct": -19.69,
+        "low": 3200,
+        "low_date": "2026-06-08",
+        "low_pct": 95.0,
+        "current": 6240
+      },
+      "daily_20": [
+        {
+          "date": "2026-05-29",
+          "o": 3690,
+          "h": 3695,
+          "l": 3500,
+          "c": 3530
+        },
+        {
+          "date": "2026-06-01",
+          "o": 3505,
+          "h": 3530,
+          "l": 3405,
+          "c": 3460
+        },
+        {
+          "date": "2026-06-02",
+          "o": 3480,
+          "h": 3550,
+          "l": 3300,
+          "c": 3440
+        },
+        {
+          "date": "2026-06-04",
+          "o": 3440,
+          "h": 3440,
+          "l": 3370,
+          "c": 3420
+        },
+        {
+          "date": "2026-06-05",
+          "o": 3420,
+          "h": 3425,
+          "l": 3315,
+          "c": 3390
+        },
+        {
+          "date": "2026-06-08",
+          "o": 3290,
+          "h": 3380,
+          "l": 3200,
+          "c": 3230
+        },
+        {
+          "date": "2026-06-09",
+          "o": 3230,
+          "h": 3360,
+          "l": 3230,
+          "c": 3360
+        },
+        {
+          "date": "2026-06-10",
+          "o": 3425,
+          "h": 3425,
+          "l": 3265,
+          "c": 3365
+        },
+        {
+          "date": "2026-06-11",
+          "o": 3365,
+          "h": 3700,
+          "l": 3320,
+          "c": 3530
+        },
+        {
+          "date": "2026-06-12",
+          "o": 3685,
+          "h": 3685,
+          "l": 3490,
+          "c": 3550
+        },
+        {
+          "date": "2026-06-15",
+          "o": 3625,
+          "h": 3705,
+          "l": 3455,
+          "c": 3525
+        },
+        {
+          "date": "2026-06-16",
+          "o": 3505,
+          "h": 3700,
+          "l": 3415,
+          "c": 3495
+        },
+        {
+          "date": "2026-06-17",
+          "o": 3500,
+          "h": 3635,
+          "l": 3400,
+          "c": 3535
+        },
+        {
+          "date": "2026-06-18",
+          "o": 3565,
+          "h": 4595,
+          "l": 3485,
+          "c": 4595
+        },
+        {
+          "date": "2026-06-19",
+          "o": 5210,
+          "h": 5880,
+          "l": 4595,
+          "c": 5180
+        },
+        {
+          "date": "2026-06-22",
+          "o": 4900,
+          "h": 5800,
+          "l": 4225,
+          "c": 4645
+        },
+        {
+          "date": "2026-06-23",
+          "o": 4530,
+          "h": 5370,
+          "l": 4200,
+          "c": 4600
+        },
+        {
+          "date": "2026-06-24",
+          "o": 5140,
+          "h": 5980,
+          "l": 4970,
+          "c": 5980
+        },
+        {
+          "date": "2026-06-25",
+          "o": 7230,
+          "h": 7770,
+          "l": 4640,
+          "c": 5140
+        },
+        {
+          "date": "2026-06-26",
+          "o": 5800,
+          "h": 6600,
+          "l": 5500,
+          "c": 6240
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "v1_condition",
+          "view_date": "2026-06-26",
+          "summary": "남화토건 상한가 (21.40%)",
+          "cur_prc": 6240,
+          "flu_rt": 21.4,
+          "trde_qty": 1352793,
+          "trde_prica_calc": 8461000000,
+          "consecutive_count": 1,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 1
+            }
+          ],
+          "next_trading_day": "2026-06-29"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "투자경고"
+    },
+    {
+      "code": "001210",
+      "name": "금호전기",
+      "rank": 2,
+      "trade_amount": 7698000000,
+      "change_pct": 23.85,
+      "close_price": 805,
+      "open_price": 709,
+      "high_price": 845,
+      "low_price": 690,
+      "industry": null,
+      "sector": null,
+      "themes": [
+        "LED",
+        "조명"
+      ],
+      "theme_paths": [
+        {
+          "name": "LED",
+          "path": [
+            "LED"
+          ]
+        },
+        {
+          "name": "조명",
+          "path": [
+            "조명"
+          ]
+        }
+      ],
+      "pick_count": 2,
+      "prev_pick": {
+        "date": "2026-06-25",
+        "rank": 19,
+        "change_pct": 30.0,
+        "trade_amount": 11072000000
+      },
+      "bullish_today": true,
+      "bullish_streak": 2,
+      "bullish_dates": [
+        "2026-06-25",
+        "2026-06-26"
+      ],
+      "news": [],
+      "fallback": true,
+      "range_240d": {
+        "high": 1398,
+        "high_date": "2025-07-30",
+        "high_pct": -42.42,
+        "low": 465,
+        "low_date": "2026-06-02",
+        "low_pct": 73.12,
+        "current": 805
+      },
+      "daily_20": [
+        {
+          "date": "2026-05-29",
+          "o": 650,
+          "h": 655,
+          "l": 597,
+          "c": 604
+        },
+        {
+          "date": "2026-06-01",
+          "o": 604,
+          "h": 613,
+          "l": 562,
+          "c": 565
+        },
+        {
+          "date": "2026-06-02",
+          "o": 565,
+          "h": 572,
+          "l": 465,
+          "c": 569
+        },
+        {
+          "date": "2026-06-04",
+          "o": 560,
+          "h": 565,
+          "l": 537,
+          "c": 540
+        },
+        {
+          "date": "2026-06-05",
+          "o": 540,
+          "h": 556,
+          "l": 512,
+          "c": 535
+        },
+        {
+          "date": "2026-06-08",
+          "o": 535,
+          "h": 535,
+          "l": 489,
+          "c": 492
+        },
+        {
+          "date": "2026-06-09",
+          "o": 492,
+          "h": 527,
+          "l": 492,
+          "c": 494
+        },
+        {
+          "date": "2026-06-10",
+          "o": 497,
+          "h": 499,
+          "l": 478,
+          "c": 490
+        },
+        {
+          "date": "2026-06-11",
+          "o": 499,
+          "h": 505,
+          "l": 475,
+          "c": 493
+        },
+        {
+          "date": "2026-06-12",
+          "o": 493,
+          "h": 522,
+          "l": 485,
+          "c": 502
+        },
+        {
+          "date": "2026-06-15",
+          "o": 504,
+          "h": 531,
+          "l": 504,
+          "c": 512
+        },
+        {
+          "date": "2026-06-16",
+          "o": 512,
+          "h": 530,
+          "l": 500,
+          "c": 508
+        },
+        {
+          "date": "2026-06-17",
+          "o": 515,
+          "h": 580,
+          "l": 497,
+          "c": 524
+        },
+        {
+          "date": "2026-06-18",
+          "o": 524,
+          "h": 535,
+          "l": 497,
+          "c": 504
+        },
+        {
+          "date": "2026-06-19",
+          "o": 504,
+          "h": 519,
+          "l": 489,
+          "c": 501
+        },
+        {
+          "date": "2026-06-22",
+          "o": 501,
+          "h": 531,
+          "l": 470,
+          "c": 485
+        },
+        {
+          "date": "2026-06-23",
+          "o": 485,
+          "h": 528,
+          "l": 480,
+          "c": 481
+        },
+        {
+          "date": "2026-06-24",
+          "o": 481,
+          "h": 519,
+          "l": 475,
+          "c": 500
+        },
+        {
+          "date": "2026-06-25",
+          "o": 505,
+          "h": 650,
+          "l": 497,
+          "c": 650
+        },
+        {
+          "date": "2026-06-26",
+          "o": 709,
+          "h": 845,
+          "l": 690,
+          "c": 805
+        }
+      ],
+      "status_badges": [
+        {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-06-19) 대비 +60%↑",
+              "base_price": 501,
+              "threshold": 801,
+              "current": 805,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-29",
+          "period_end": "2026-06-30",
+          "start": "2026-06-29",
+          "end": "2026-06-30",
+          "view_date": "2026-06-26",
+          "next_trading_day": "2026-06-29",
+          "next_trading_day_for_predicted": "2026-06-29",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "v1_condition",
+          "view_date": "2026-06-26",
+          "summary": "금호전기 상한가 (23.85%)",
+          "cur_prc": 805,
+          "flu_rt": 23.85,
+          "trde_qty": 9405881,
+          "trde_prica_calc": 7698000000,
+          "consecutive_count": 2,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 2
+            }
+          ],
+          "next_trading_day": "2026-06-29"
+        }
+      ],
+      "credit_risk": true,
+      "credit_reason": "신용거래 제한 종목"
+    },
+    {
       "code": "122350",
       "name": "삼기",
-      "rank": 1,
-      "trade_amount": 1398000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "rank": 3,
+      "trade_amount": 1873000000,
+      "change_pct": 29.98,
+      "close_price": 1834,
+      "open_price": 1834,
+      "high_price": 1834,
+      "low_price": 1834,
       "industry": null,
       "sector": null,
       "themes": [
@@ -73,11 +542,11 @@
       "range_240d": {
         "high": 2260,
         "high_date": "2026-01-14",
-        "high_pct": -37.57,
+        "high_pct": -18.85,
         "low": 836,
         "low_date": "2026-06-23",
-        "low_pct": 68.78,
-        "current": 1411
+        "low_pct": 119.38,
+        "current": 1834
       },
       "daily_20": [
         {
@@ -223,15 +692,40 @@
       ],
       "status_badges": [
         {
+          "label": "투자주의 근접",
+          "severity": "caution",
+          "source": "predicted",
+          "thresholds": [
+            {
+              "desc": "5일 전(2026-06-19) 대비 +60%↑",
+              "base_price": 962,
+              "threshold": 1539,
+              "current": 1834,
+              "triggered": true
+            }
+          ],
+          "regulation": "KRX 시장경보 가격 조건 충족 (거래량 미검증, 자체 추정)",
+          "period_start": "2026-06-29",
+          "period_end": "2026-06-30",
+          "start": "2026-06-29",
+          "end": "2026-06-30",
+          "view_date": "2026-06-26",
+          "next_trading_day": "2026-06-29",
+          "next_trading_day_for_predicted": "2026-06-29",
+          "next_trading_day_source": "verified",
+          "single_price": false,
+          "effect_badges": []
+        },
+        {
           "label": "상한가",
           "severity": "hot",
           "source": "v1_condition",
           "view_date": "2026-06-26",
           "summary": "삼기 상한가 (29.98%)",
-          "cur_prc": null,
+          "cur_prc": 1834,
           "flu_rt": 29.98,
-          "trde_qty": 762276,
-          "trde_prica_calc": 1398000000,
+          "trde_qty": 1021194,
+          "trde_prica_calc": 1873000000,
           "consecutive_count": 3,
           "effect_badges": [
             {
@@ -246,8 +740,18 @@
           "next_trading_day": "2026-06-29"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 1834,
+        "base": 1834,
+        "prices": [
+          1834,
+          1834,
+          1834
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
@@ -255,13 +759,13 @@
     {
       "code": "228340",
       "name": "동양파일",
-      "rank": 2,
-      "trade_amount": 1025000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "rank": 4,
+      "trade_amount": 1456000000,
+      "change_pct": 29.91,
+      "close_price": 2845,
+      "open_price": 2835,
+      "high_price": 2845,
+      "low_price": 2755,
       "industry": null,
       "sector": null,
       "themes": [
@@ -285,7 +789,9 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-06-24"
+      ],
       "news": [
         {
           "title": "[MK 골든크로스 돌파종목 : 동양파일(228340) & 비비안(002070)]",
@@ -308,11 +814,11 @@
       "range_240d": {
         "high": 3130,
         "high_date": "2026-06-25",
-        "high_pct": -30.03,
+        "high_pct": -9.11,
         "low": 1550,
         "low_date": "2025-11-27",
-        "low_pct": 41.29,
-        "current": 2190
+        "low_pct": 83.55,
+        "current": 2845
       },
       "daily_20": [
         {
@@ -463,10 +969,10 @@
           "source": "v1_condition",
           "view_date": "2026-06-26",
           "summary": "동양파일 상한가 (29.91%)",
-          "cur_prc": null,
+          "cur_prc": 2845,
           "flu_rt": 29.91,
-          "trde_qty": 360317,
-          "trde_prica_calc": 1025000000,
+          "trde_qty": 511451,
+          "trde_prica_calc": 1456000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -481,8 +987,18 @@
           "next_trading_day": "2026-06-29"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 2835,
+        "base": 2835,
+        "prices": [
+          2835,
+          2845,
+          2845
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
