@@ -2,7 +2,7 @@
   "account_mdd_pct": -4.0103,
   "worst_mdd_pct": -4.0103,
   "backtest_detail": {
-    "as_of": "2026-06-25",
+    "as_of": "2026-06-26",
     "table": [
       {
         "date": "2026-04-08",
@@ -601,6 +601,19 @@
         "balance_after": 12031680.85,
         "watered": false,
         "settlement_order": 5
+      },
+      {
+        "date": "2026-06-18",
+        "code": "001820",
+        "name": "삼화콘덴서",
+        "entry_price": 190100,
+        "exit_date": "2026-06-26",
+        "exit_class": "D+6 만기손실",
+        "ret_pct": -26.72,
+        "pnl": -17992162.28,
+        "balance_after": -7037856.42,
+        "watered": true,
+        "settlement_order": 6
       }
     ],
     "equity_curve": [
@@ -778,23 +791,28 @@
         "date": "2026-06-25",
         "balance": 12031680.85,
         "name": "소룩스"
+      },
+      {
+        "date": "2026-06-26",
+        "balance": -7037856.42,
+        "name": "삼화콘덴서"
       }
     ]
   },
-  "generated_at": "2026-06-25T20:11:47+09:00",
+  "generated_at": "2026-06-26T09:01:56+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
-  "last_settled_date": "2026-06-25",
-  "total_picks": 46,
-  "settled": 46,
+  "last_settled_date": "2026-06-26",
+  "total_picks": 47,
+  "settled": 47,
   "running": 0,
   "take_profit": 44,
-  "expired_loss": 2,
+  "expired_loss": 3,
   "expired_gain": 0,
-  "win_rate": 95.7,
+  "win_rate": 93.6,
   "start_balance": 10000000,
   "avg_mdd_pct": null,
-  "total_return_pct": 20.3168,
-  "total_pnl": 2031680.85,
-  "final_balance": 12031680.85
+  "total_return_pct": -170.3786,
+  "total_pnl": -17037856.42,
+  "final_balance": -7037856.42
 }
