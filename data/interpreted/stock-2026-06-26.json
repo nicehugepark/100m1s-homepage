@@ -1,6 +1,6 @@
 {
   "date": "2026-06-26",
-  "generated_at": "2026-06-26T09:45:17.019645",
+  "generated_at": "2026-06-26T09:46:21.628472",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -275,7 +275,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -541,9 +541,9 @@
           7350
         ]
       },
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "strong_bull",
       "theme_leader": true,
-      "hugepark_grade": "관찰"
+      "hugepark_grade": "적극"
     },
     {
       "code": "141080",
@@ -805,8 +805,27 @@
       "low_price": 5480,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "건설",
+        "반도체 팹 건설 수주",
+        "인프라 수혜"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 팹 건설 수주",
+          "path": [
+            "반도체",
+            "반도체 팹 건설 수주"
+          ]
+        },
+        {
+          "name": "인프라 수혜",
+          "path": [
+            "건설",
+            "인프라 수혜"
+          ]
+        }
+      ],
       "pick_count": 3,
       "prev_pick": {
         "date": "2026-06-25",
@@ -826,16 +845,16 @@
           "url": "https://www.etoday.co.kr/news/view/2597522",
           "source": "이투데이",
           "published_at": "2026-06-26T00:31:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "호남 지역 삼성전자·SK하이닉스 반도체 공장 건설 기대 → 건설사 신규 수주 확대 전망 → 건설업체인 금호건설로 팹 건설 수혜 매수세 집중 → 당일 시초가 강세 후 상한가(+30.00%·종가 6,630원)·52주 신고가 갱신, 거래대금 368억원.",
+          "macro_event": "호남권 삼성전자·SK하이닉스 반도체 공장 건설 기대감 확산",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.45,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.54,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -1033,9 +1052,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "091590",
@@ -1596,7 +1615,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "122350",
@@ -2141,13 +2163,23 @@
       "industry": null,
       "sector": null,
       "themes": [
+        "반도체 팹 건설 수주",
+        "인프라 수혜",
         "건설"
       ],
       "theme_paths": [
         {
-          "name": "건설",
+          "name": "반도체 팹 건설 수주",
           "path": [
-            "건설"
+            "반도체",
+            "반도체 팹 건설 수주"
+          ]
+        },
+        {
+          "name": "인프라 수혜",
+          "path": [
+            "건설",
+            "인프라 수혜"
           ]
         }
       ],
@@ -2163,8 +2195,25 @@
       "bullish_dates": [
         "2026-06-24"
       ],
-      "news": [],
-      "fallback": true,
+      "news": [
+        {
+          "title": "[특징주] 금호건설, 호남 삼전ㆍSK하닉 공장 기대에 장 초반 24%대 강세",
+          "url": "https://www.etoday.co.kr/news/view/2597522",
+          "source": "이투데이",
+          "published_at": "2026-06-26T00:31:00",
+          "causal_chain": "호남 삼성전자·SK하이닉스 공장 건설 기대 확산 → 본주 금호건설의 반도체 팹·인프라 수주 기대 재평가 → 의결권 없는 우선주(금호건설우)의 본주 대비 할인 괴리율 축소 기대 → 배당 우선권·시세차익 양면 매력 부각 → 거래대금 5억원의 얇은 수급에도 매수세 집중되며 당일 상한가(+29.87%, 종가 2만원, 시=저 1.9만/고 2만).",
+          "macro_event": "호남권 삼성전자·SK하이닉스 반도체 공장 건설 기대 → 건설사 수주 모멘텀",
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": 0.4,
+          "newzy_virality": 0.3,
+          "newzy_tradability": null,
+          "newzy_score": 0.36,
+          "newzy_verdict": null,
+          "article_type": "시세정형"
+        }
+      ],
+      "fallback": false,
       "range_240d": {
         "high": 50100,
         "high_date": "2025-12-18",
@@ -2377,11 +2426,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "neutral",
+      "togusa_verdict": "weak_bull",
       "theme_leader": false,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "관찰"
     }
   ]
 }
