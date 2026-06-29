@@ -1038,7 +1038,8 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     //   graceful(추정 0, FLR-AGT-002). 진입가 = pk.entry_price(매매 row 진입가와 동일 SoT, authClose 보정은
     //   당일 종가 의존이라 장전 시점엔 entry_price 가 SSOT). 카드 직하에 "오늘의 픽 15:20 공개" 예고 라인.
     const buyV = _krw(pk.entry_price);
-    const tpV = _krw(pk.take_profit_target_price);
+    const tpRaw = _krw(pk.take_profit_target_price);
+    const tpV = tpRaw !== '—' ? `${tpRaw} 부근` : '—';
     const expiryV = pk.expiry_date || '—';
     const gridHtml = `<div class="cal-pre-prev-pick-grid">`
       + `<div class="cal-pre-prev-pick-cell"><span class="cal-pre-prev-pick-k">진입가</span><span class="cal-pre-prev-pick-v">${escapeHtml(buyV)}</span></div>`
@@ -4262,8 +4263,8 @@ function renderCalExpandContent(date, data) {
     const _pvName = _pm320Preview.name || '';
     const _pvCode = String(_pm320Preview.code);
     const _pvBuy = _fmtKRW(_pm320Preview.entry_price);
-    const _pvTp = (typeof _pm320Preview.take_profit_target_price === 'number') ? _fmtKRW(_pm320Preview.take_profit_target_price) : '—';
-    const _pvWater = (typeof _pm320Preview.watering_target_price === 'number') ? _fmtKRW(_pm320Preview.watering_target_price) : '—';
+    const _pvTp = (typeof _pm320Preview.take_profit_target_price === 'number') ? `${_fmtKRW(_pm320Preview.take_profit_target_price)} 부근` : '—';
+    const _pvWater = (typeof _pm320Preview.watering_target_price === 'number') ? `${_fmtKRW(_pm320Preview.watering_target_price)} 부근` : '—';
     return `<div class="cal-pm320-today-rec cal-pm320-preview-rec" role="group" aria-label="오늘 PM320 추천 ${escapeHtml(_pvName)} ${escapeHtml(_pvCode)} 선공개">
       <div class="cal-pm320-today-rec-head">
         <span class="cal-pm320-today-rec-star" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
