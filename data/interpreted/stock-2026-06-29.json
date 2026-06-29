@@ -1,6 +1,6 @@
 {
   "date": "2026-06-29",
-  "generated_at": "2026-06-29T09:35:20.678213",
+  "generated_at": "2026-06-29T09:36:27.919935",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -325,7 +325,10 @@
       "news": [],
       "fallback": true,
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "126640",
@@ -858,7 +861,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰",
       "causal_chain": "",
@@ -1228,7 +1231,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "066980",
@@ -2477,8 +2483,17 @@
       "low_price": 1612,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "엔터테인먼트"
+      ],
+      "theme_paths": [
+        {
+          "name": "엔터테인먼트",
+          "path": [
+            "엔터테인먼트"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -2492,16 +2507,16 @@
           "url": "https://www.mk.co.kr/news/society/12085249",
           "source": "매경",
           "published_at": "2026-06-29T00:22:30",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "이정재·정우성이 설립한 아티스트스튜디오 컨소시엄(지담미디어·스토리아크스튜디오)이 코퍼스코리아 경영권을 인수하며 최대 290억원 규모의 전략적 투자를 단행 → 기획·제작·유통을 통합한 OSMU 콘텐츠 밸류체인에 편입되고 코퍼스코리아의 글로벌 유통망이 IP 사업 확장에 활용될 것이란 기대 → 신규 대주주 진입·사업 전환 모멘텀에 매수세 집중 → 당일 시초가부터 점상한가(시=고=저=종 1,612원, +30.00%).",
+          "macro_event": "이정재·정우성 아티스트스튜디오, 코퍼스코리아 290억원 경영권 인수·전략적 투자",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.9,
+          "newzy_virality": 0.85,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.88,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -2695,9 +2710,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     }
   ]
 }
