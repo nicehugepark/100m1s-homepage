@@ -1,6 +1,6 @@
 {
   "date": "2026-06-29",
-  "generated_at": "2026-06-29T09:05:26.096294",
+  "generated_at": "2026-06-29T09:15:21.211554",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -20,12 +20,12 @@
       "code": "001210",
       "name": "금호전기",
       "rank": 1,
-      "trade_amount": 6962000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "trade_amount": 15340000000,
+      "change_pct": 29.94,
+      "close_price": 1098,
+      "open_price": 1009,
+      "high_price": 1098,
+      "low_price": 1008,
       "industry": null,
       "sector": null,
       "themes": [
@@ -55,17 +55,20 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-06-25",
+        "2026-06-26"
+      ],
       "news": [],
       "fallback": true,
       "range_240d": {
         "high": 1398,
         "high_date": "2025-07-30",
-        "high_pct": -39.56,
+        "high_pct": -21.46,
         "low": 465,
         "low_date": "2026-06-02",
-        "low_pct": 81.72,
-        "current": 845
+        "low_pct": 136.13,
+        "current": 1098
       },
       "daily_20": [
         {
@@ -229,6 +232,15 @@
           "entry_threshold_assumption": "KOSPI 횡보 가정",
           "disclosure_url": "https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=20260626001090",
           "disclosure_title": "[투자주의]투자경고종목 지정예고",
+          "thresholds": [
+            {
+              "desc": "최근 15일 최고가(2026-06-26)",
+              "base_price": 845,
+              "threshold": 845,
+              "current": 1098,
+              "triggered": true
+            }
+          ],
           "reason_text": "금호전기(보통주)가 2026-06-26 종가가 5일 전일 종가보다 60% 이상 상승하여 투자경고종목으로 지정될 가능성이 있어 2026-06-29 당일 투자주의종목으로 지정됩니다. 지정예고일(2026-06-29)부터 10일째 되는 날(2026-07-10) 이내 특정 판단일에 ①종가 5일 전 대비 60% 이상 상승 ②당일 포함 최근 15일 종가 중 최고가 ③업종지수 상승률 5배 이상 ④시가총액 100위 이내 비해당 요건에 모두 해당하면 그 다음 날 투자경고종목으로 지정됩니다.",
           "prev_stage": "투자주의",
           "effect_badges": [
@@ -262,10 +274,10 @@
           "source": "v1_condition",
           "view_date": "2026-06-29",
           "summary": "금호전기 상한가 (29.94%)",
-          "cur_prc": null,
+          "cur_prc": 1098,
           "flu_rt": 29.94,
-          "trde_qty": 6501339,
-          "trde_prica_calc": 6962000000,
+          "trde_qty": 14209010,
+          "trde_prica_calc": 15340000000,
           "consecutive_count": 3,
           "effect_badges": [
             {
@@ -280,8 +292,18 @@
           "next_trading_day": "2026-06-30"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 1009,
+        "base": 1009,
+        "prices": [
+          1009,
+          1090,
+          1098
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bull",
       "theme_leader": true,
       "hugepark_grade": "관찰",
@@ -292,12 +314,12 @@
       "code": "002990",
       "name": "금호건설",
       "rank": 2,
-      "trade_amount": 6593000000,
-      "change_pct": 0.0,
-      "close_price": 6630,
-      "open_price": 6630,
-      "high_price": 6630,
-      "low_price": 6630,
+      "trade_amount": 7734000000,
+      "change_pct": 29.86,
+      "close_price": 8610,
+      "open_price": 8320,
+      "high_price": 8610,
+      "low_price": 8130,
       "industry": null,
       "sector": null,
       "themes": [
@@ -354,13 +376,13 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 6630,
+        "high": 8610,
         "high_date": "2026-06-29",
         "high_pct": 0.0,
         "low": 3200,
         "low_date": "2025-11-05",
-        "low_pct": 107.19,
-        "current": 6630
+        "low_pct": 169.06,
+        "current": 8610
       },
       "daily_20": [
         {
@@ -498,10 +520,10 @@
         },
         {
           "date": "2026-06-29",
-          "o": 6630,
-          "h": 6630,
-          "l": 6630,
-          "c": 6630
+          "o": 8320,
+          "h": 8610,
+          "l": 8130,
+          "c": 8610
         }
       ],
       "status_badges": [
@@ -529,7 +551,7 @@
               "desc": "최근 15일 최고가(2026-06-26)",
               "base_price": 6630,
               "threshold": 6630,
-              "current": 6630,
+              "current": 8610,
               "triggered": true
             }
           ],
@@ -566,11 +588,11 @@
           "severity": "hot",
           "source": "v1_condition",
           "view_date": "2026-06-29",
-          "summary": "금호건설 상한가 (0.00%)",
-          "cur_prc": 6630,
-          "flu_rt": 0.0,
-          "trde_qty": 781171,
-          "trde_prica_calc": 6593000000,
+          "summary": "금호건설 상한가 (29.86%)",
+          "cur_prc": 8610,
+          "flu_rt": 29.86,
+          "trde_qty": 913712,
+          "trde_prica_calc": 7734000000,
           "consecutive_count": 2,
           "effect_badges": [
             {
@@ -585,8 +607,18 @@
           "next_trading_day": "2026-06-30"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 8320,
+        "base": 8320,
+        "prices": [
+          8320,
+          8610,
+          8610
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
@@ -595,12 +627,12 @@
       "code": "228340",
       "name": "동양파일",
       "rank": 3,
-      "trade_amount": 543000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "trade_amount": 703000000,
+      "change_pct": 29.88,
+      "close_price": 3695,
+      "open_price": 3695,
+      "high_price": 3695,
+      "low_price": 3695,
       "industry": null,
       "sector": null,
       "themes": [
@@ -624,7 +656,9 @@
       },
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-06-24"
+      ],
       "news": [
         {
           "title": "[MK 골든크로스 돌파종목 : 동양파일(228340) & 비비안(002070)]",
@@ -647,11 +681,11 @@
       "range_240d": {
         "high": 3695,
         "high_date": "2026-06-29",
-        "high_pct": -23.0,
+        "high_pct": 0.0,
         "low": 1550,
         "low_date": "2025-11-27",
-        "low_pct": 83.55,
-        "current": 2845
+        "low_pct": 138.39,
+        "current": 3695
       },
       "daily_20": [
         {
@@ -833,10 +867,10 @@
           "source": "v1_condition",
           "view_date": "2026-06-29",
           "summary": "동양파일 상한가 (29.88%)",
-          "cur_prc": null,
+          "cur_prc": 3695,
           "flu_rt": 29.88,
-          "trde_qty": 146765,
-          "trde_prica_calc": 543000000,
+          "trde_qty": 190220,
+          "trde_prica_calc": 703000000,
           "consecutive_count": 2,
           "effect_badges": [
             {
@@ -851,8 +885,18 @@
           "next_trading_day": "2026-06-30"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 3695,
+        "base": 3695,
+        "prices": [
+          3695,
+          3695,
+          3695
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "투자경고",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
@@ -1123,7 +1167,7 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "우선주",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": false,
       "hugepark_grade": "관찰"
@@ -1132,12 +1176,12 @@
       "code": "121440",
       "name": "골프존홀딩스",
       "rank": 5,
-      "trade_amount": 247000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "trade_amount": 408000000,
+      "change_pct": 29.96,
+      "close_price": 5530,
+      "open_price": 5530,
+      "high_price": 5530,
+      "low_price": 5530,
       "industry": null,
       "sector": null,
       "themes": [],
@@ -1147,8 +1191,192 @@
       "bullish_today": false,
       "bullish_streak": 0,
       "bullish_dates": [],
-      "news": [],
+      "news": [
+        {
+          "title": "골프존홀딩스 최대주주, 1000억원 규모 공개매수 추진… 자진 상폐 목적",
+          "url": "https://biz.chosun.com/stock/stock_general/2026/06/28/7HLUSWM65BCV5IYQPSPCWROTMA/",
+          "source": "조선비즈",
+          "published_at": "2026-06-28T14:11:35",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        },
+        {
+          "title": "골프존 창업주, 골프존홀딩스 공개매수",
+          "url": "https://www.mk.co.kr/news/stock/12085132",
+          "source": "매경",
+          "published_at": "2026-06-28T12:00:00",
+          "causal_chain": null,
+          "macro_event": null,
+          "newzy_freshness": null,
+          "newzy_persistence": null,
+          "newzy_magnitude": null,
+          "newzy_virality": null,
+          "newzy_tradability": null,
+          "newzy_score": null,
+          "newzy_verdict": null,
+          "article_type": null
+        }
+      ],
       "fallback": true,
+      "range_240d": {
+        "high": 6560,
+        "high_date": "2025-07-11",
+        "high_pct": -15.7,
+        "low": 4090,
+        "low_date": "2026-06-25",
+        "low_pct": 35.21,
+        "current": 5530
+      },
+      "daily_20": [
+        {
+          "date": "2026-06-01",
+          "o": 4495,
+          "h": 4495,
+          "l": 4295,
+          "c": 4430
+        },
+        {
+          "date": "2026-06-02",
+          "o": 4430,
+          "h": 4440,
+          "l": 4305,
+          "c": 4420
+        },
+        {
+          "date": "2026-06-04",
+          "o": 4415,
+          "h": 4470,
+          "l": 4370,
+          "c": 4445
+        },
+        {
+          "date": "2026-06-05",
+          "o": 4445,
+          "h": 4455,
+          "l": 4300,
+          "c": 4315
+        },
+        {
+          "date": "2026-06-08",
+          "o": 4315,
+          "h": 4315,
+          "l": 4135,
+          "c": 4230
+        },
+        {
+          "date": "2026-06-09",
+          "o": 4280,
+          "h": 4795,
+          "l": 4210,
+          "c": 4720
+        },
+        {
+          "date": "2026-06-10",
+          "o": 4705,
+          "h": 4710,
+          "l": 4505,
+          "c": 4645
+        },
+        {
+          "date": "2026-06-11",
+          "o": 4620,
+          "h": 4652,
+          "l": 4515,
+          "c": 4565
+        },
+        {
+          "date": "2026-06-12",
+          "o": 4565,
+          "h": 4635,
+          "l": 4550,
+          "c": 4615
+        },
+        {
+          "date": "2026-06-15",
+          "o": 4645,
+          "h": 4695,
+          "l": 4640,
+          "c": 4660
+        },
+        {
+          "date": "2026-06-16",
+          "o": 4700,
+          "h": 4870,
+          "l": 4650,
+          "c": 4800
+        },
+        {
+          "date": "2026-06-17",
+          "o": 4795,
+          "h": 4800,
+          "l": 4690,
+          "c": 4750
+        },
+        {
+          "date": "2026-06-18",
+          "o": 4760,
+          "h": 4785,
+          "l": 4670,
+          "c": 4730
+        },
+        {
+          "date": "2026-06-19",
+          "o": 4770,
+          "h": 4770,
+          "l": 4550,
+          "c": 4565
+        },
+        {
+          "date": "2026-06-22",
+          "o": 4590,
+          "h": 4600,
+          "l": 4405,
+          "c": 4500
+        },
+        {
+          "date": "2026-06-23",
+          "o": 4500,
+          "h": 4710,
+          "l": 4380,
+          "c": 4490
+        },
+        {
+          "date": "2026-06-24",
+          "o": 4590,
+          "h": 4590,
+          "l": 4365,
+          "c": 4475
+        },
+        {
+          "date": "2026-06-25",
+          "o": 4480,
+          "h": 4520,
+          "l": 4090,
+          "c": 4255
+        },
+        {
+          "date": "2026-06-26",
+          "o": 4255,
+          "h": 4325,
+          "l": 4150,
+          "c": 4255
+        },
+        {
+          "date": "2026-06-29",
+          "o": 5530,
+          "h": 5530,
+          "l": 5530,
+          "c": 5530
+        }
+      ],
       "status_badges": [
         {
           "label": "상한가",
@@ -1156,10 +1384,10 @@
           "source": "v1_condition",
           "view_date": "2026-06-29",
           "summary": "골프존홀딩스 상한가 (29.96%)",
-          "cur_prc": null,
+          "cur_prc": 5530,
           "flu_rt": 29.96,
-          "trde_qty": 44613,
-          "trde_prica_calc": 247000000,
+          "trde_qty": 73722,
+          "trde_prica_calc": 408000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -1174,8 +1402,16 @@
           "next_trading_day": "2026-06-30"
         }
       ],
-      "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "intraday": {
+        "step_min": 5,
+        "open": 5530,
+        "base": 5530,
+        "prices": [
+          5530,
+          5530,
+          5530
+        ]
+      },
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
@@ -1184,12 +1420,12 @@
       "code": "322780",
       "name": "코퍼스코리아",
       "rank": 6,
-      "trade_amount": 36000000,
-      "change_pct": null,
-      "close_price": null,
-      "open_price": null,
-      "high_price": null,
-      "low_price": null,
+      "trade_amount": 61000000,
+      "change_pct": 30.0,
+      "close_price": 1612,
+      "open_price": 1612,
+      "high_price": 1612,
+      "low_price": 1612,
       "industry": null,
       "sector": null,
       "themes": [],
@@ -1198,9 +1434,162 @@
       "prev_pick": null,
       "bullish_today": false,
       "bullish_streak": 0,
-      "bullish_dates": [],
+      "bullish_dates": [
+        "2026-06-17"
+      ],
       "news": [],
       "fallback": true,
+      "range_240d": {
+        "high": 11000,
+        "high_date": "2025-10-16",
+        "high_pct": -85.35,
+        "low": 1213,
+        "low_date": "2026-06-26",
+        "low_pct": 32.89,
+        "current": 1612
+      },
+      "daily_20": [
+        {
+          "date": "2026-06-01",
+          "o": 2465,
+          "h": 2545,
+          "l": 2295,
+          "c": 2355
+        },
+        {
+          "date": "2026-06-02",
+          "o": 2340,
+          "h": 2455,
+          "l": 2215,
+          "c": 2240
+        },
+        {
+          "date": "2026-06-04",
+          "o": 2240,
+          "h": 2400,
+          "l": 2000,
+          "c": 2290
+        },
+        {
+          "date": "2026-06-05",
+          "o": 2345,
+          "h": 2450,
+          "l": 2255,
+          "c": 2295
+        },
+        {
+          "date": "2026-06-08",
+          "o": 1610,
+          "h": 2425,
+          "l": 1610,
+          "c": 2350
+        },
+        {
+          "date": "2026-06-09",
+          "o": 2125,
+          "h": 2350,
+          "l": 2125,
+          "c": 2295
+        },
+        {
+          "date": "2026-06-10",
+          "o": 2280,
+          "h": 2310,
+          "l": 2135,
+          "c": 2240
+        },
+        {
+          "date": "2026-06-11",
+          "o": 2225,
+          "h": 2305,
+          "l": 2090,
+          "c": 2155
+        },
+        {
+          "date": "2026-06-12",
+          "o": 2170,
+          "h": 2205,
+          "l": 2065,
+          "c": 2150
+        },
+        {
+          "date": "2026-06-15",
+          "o": 2150,
+          "h": 2185,
+          "l": 1915,
+          "c": 1951
+        },
+        {
+          "date": "2026-06-16",
+          "o": 1949,
+          "h": 2060,
+          "l": 1811,
+          "c": 1873
+        },
+        {
+          "date": "2026-06-17",
+          "o": 1871,
+          "h": 2245,
+          "l": 1871,
+          "c": 2185
+        },
+        {
+          "date": "2026-06-18",
+          "o": 2100,
+          "h": 2230,
+          "l": 1892,
+          "c": 2075
+        },
+        {
+          "date": "2026-06-19",
+          "o": 2075,
+          "h": 2230,
+          "l": 1940,
+          "c": 2225
+        },
+        {
+          "date": "2026-06-22",
+          "o": 2115,
+          "h": 2190,
+          "l": 1904,
+          "c": 1905
+        },
+        {
+          "date": "2026-06-23",
+          "o": 1838,
+          "h": 1985,
+          "l": 1720,
+          "c": 1729
+        },
+        {
+          "date": "2026-06-24",
+          "o": 1650,
+          "h": 1729,
+          "l": 1499,
+          "c": 1607
+        },
+        {
+          "date": "2026-06-25",
+          "o": 1609,
+          "h": 1690,
+          "l": 1379,
+          "c": 1379
+        },
+        {
+          "date": "2026-06-26",
+          "o": 1213,
+          "h": 1496,
+          "l": 1213,
+          "c": 1240
+        },
+        {
+          "date": "2026-06-29",
+          "o": 1612,
+          "h": 1612,
+          "l": 1612,
+          "c": 1612
+        }
+      ],
       "status_badges": [
         {
           "label": "상한가",
@@ -1208,10 +1597,10 @@
           "source": "v1_condition",
           "view_date": "2026-06-29",
           "summary": "코퍼스코리아 상한가 (30.00%)",
-          "cur_prc": null,
+          "cur_prc": 1612,
           "flu_rt": 30.0,
-          "trde_qty": 22273,
-          "trde_prica_calc": 36000000,
+          "trde_qty": 37948,
+          "trde_prica_calc": 61000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -1226,8 +1615,17 @@
           "next_trading_day": "2026-06-30"
         }
       ],
+      "intraday": {
+        "step_min": 5,
+        "open": 1612,
+        "base": 1612,
+        "prices": [
+          1612,
+          1612
+        ]
+      },
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목",
+      "credit_reason": "회사한도초과",
       "togusa_verdict": "weak_bear",
       "theme_leader": false,
       "hugepark_grade": "주의"
