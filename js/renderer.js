@@ -2946,9 +2946,9 @@ function renderCalExpandContent(date, data) {
     const _rc = pm320Recompute.targets(pk, authClose);
     const _p0 = _rc.p0, _watering = _rc.watering, _tp = _rc.tp, _tpAfter = _rc.tpAfter;
     const buyV = _fmtKRW(_p0);
-    const tpV = _tp != null ? _fmtKRW(_tp) : '—';
-    const tpAfterV = _tpAfter != null ? _fmtKRW(_tpAfter) : null;
-    const waterV = _watering != null ? _fmtKRW(_watering) : '—';
+    const tpV = _tp != null ? `${_fmtKRW(_tp)} 부근` : '—';
+    const tpAfterV = _tpAfter != null ? `${_fmtKRW(_tpAfter)} 부근` : null;
+    const waterV = _watering != null ? `${_fmtKRW(_watering)} 부근` : '—';
     const expiryV = pk.expiry_date || '—';
     const mark = _pm320ResultMark(pk);
     // mark.html 은 픽 진행중이면 "⏳ 잠정 +0.00% (D+0/+3)", 청산 완료면 결과(익절/만기). 부재 시 생략.
