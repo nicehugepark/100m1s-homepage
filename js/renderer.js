@@ -1037,7 +1037,8 @@ function _buildPrevPickChipHtml(prevInterpByName, prevDate) {
     //   (per-card SSOT 동일 키: entry_price / take_profit_target_price / expiry_date). 데이터 부재 칸은 '—'
     //   graceful(추정 0, FLR-AGT-002). 진입가 = pk.entry_price(매매 row 진입가와 동일 SoT, authClose 보정은
     //   당일 종가 의존이라 장전 시점엔 entry_price 가 SSOT). 카드 직하에 "오늘의 픽 15:20 공개" 예고 라인.
-    const buyV = _krw(pk.entry_price);
+    const buyRaw = _krw(pk.entry_price);
+    const buyV = buyRaw !== '—' ? `${buyRaw} 부근` : '—';
     const tpRaw = _krw(pk.take_profit_target_price);
     const tpV = tpRaw !== '—' ? `${tpRaw} 부근` : '—';
     const expiryV = pk.expiry_date || '—';
@@ -1184,7 +1185,7 @@ function _buildRunningHoldingsHtml(runningPicks, headlineCode, summaryRunning) {
       const dTxt = (dn == null) ? '' : ` · D-${dn}`;
       return `<div class="cal-pre-prev-pick-holding-row"${p.code ? ` data-prev-pick-code="${escapeHtml(p.code)}"` : ''}>`
         + `<span class="cal-pre-prev-pick-holding-name">${escapeHtml(p.name || '—')}</span>`
-        + `<span class="cal-pre-prev-pick-holding-meta">진입가 ${escapeHtml(_krw(p.pk && p.pk.entry_price))}${_pnl(p.pk)}${dTxt}</span>`
+        + `<span class="cal-pre-prev-pick-holding-meta">진입가 ${escapeHtml((_v => _v !== '—' ? `${_v} 부근` : '—')(_krw(p.pk && p.pk.entry_price)))}${_pnl(p.pk)}${dTxt}</span>`
         + `</div>`;
     }).join('');
     // 가드2(위계) — <details> 기본 펼침(open) + summary 에 "추적 중인 픽 N" 상시 노출.
@@ -2946,7 +2947,8 @@ function renderCalExpandContent(date, data) {
     //   (watering_weight 데이터 파라미터, 종전 2배 가정 하드코딩 폐기). 저장값/재계산 분기 동일.
     const _rc = pm320Recompute.targets(pk, authClose);
     const _p0 = _rc.p0, _watering = _rc.watering, _tp = _rc.tp, _tpAfter = _rc.tpAfter;
-    const buyV = _fmtKRW(_p0);
+    const buyVRaw = _fmtKRW(_p0);
+    const buyV = buyVRaw !== '—' ? `${buyVRaw} 부근` : '—';
     const tpV = _tp != null ? `${_fmtKRW(_tp)} 부근` : '—';
     const tpAfterV = _tpAfter != null ? `${_fmtKRW(_tpAfter)} 부근` : null;
     const waterV = _watering != null ? `${_fmtKRW(_watering)} 부근` : '—';
@@ -4262,7 +4264,8 @@ function renderCalExpandContent(date, data) {
     if (!_pm320Preview) return '';
     const _pvName = _pm320Preview.name || '';
     const _pvCode = String(_pm320Preview.code);
-    const _pvBuy = _fmtKRW(_pm320Preview.entry_price);
+    const _pvBuyRaw = _fmtKRW(_pm320Preview.entry_price);
+    const _pvBuy = _pvBuyRaw !== '—' ? `${_pvBuyRaw} 부근` : '—';
     const _pvTp = (typeof _pm320Preview.take_profit_target_price === 'number') ? `${_fmtKRW(_pm320Preview.take_profit_target_price)} 부근` : '—';
     const _pvWater = (typeof _pm320Preview.watering_target_price === 'number') ? `${_fmtKRW(_pm320Preview.watering_target_price)} 부근` : '—';
     return `<div class="cal-pm320-today-rec cal-pm320-preview-rec" role="group" aria-label="오늘 PM320 추천 ${escapeHtml(_pvName)} ${escapeHtml(_pvCode)} 선공개">
