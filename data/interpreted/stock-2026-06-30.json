@@ -1,6 +1,6 @@
 {
   "date": "2026-06-30",
-  "generated_at": "2026-06-30T13:05:38.078975",
+  "generated_at": "2026-06-30T13:15:24.740052",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -20,11 +20,11 @@
       "code": "002990",
       "name": "금호건설",
       "rank": 1,
-      "trade_amount": 280035000000,
-      "change_pct": 25.2,
-      "close_price": 10780,
+      "trade_amount": 298996000000,
+      "change_pct": 29.97,
+      "close_price": 11190,
       "open_price": 9130,
-      "high_price": 10980,
+      "high_price": 11190,
       "low_price": 7320,
       "industry": null,
       "sector": null,
@@ -105,13 +105,13 @@
       ],
       "fallback": true,
       "range_240d": {
-        "high": 10980,
+        "high": 11190,
         "high_date": "2026-06-30",
-        "high_pct": -1.82,
+        "high_pct": 0.0,
         "low": 3200,
         "low_date": "2025-11-05",
-        "low_pct": 236.88,
-        "current": 10780
+        "low_pct": 249.69,
+        "current": 11190
       },
       "daily_20": [
         {
@@ -250,9 +250,9 @@
         {
           "date": "2026-06-30",
           "o": 9130,
-          "h": 10980,
+          "h": 11190,
           "l": 7320,
-          "c": 10780
+          "c": 11190
         }
       ],
       "status_badges": [
@@ -286,6 +286,29 @@
               "source_kind": "disclosure"
             }
           ]
+        },
+        {
+          "label": "상한가",
+          "severity": "hot",
+          "source": "v1_condition",
+          "view_date": "2026-06-30",
+          "summary": "금호건설 상한가 (29.97%)",
+          "cur_prc": 11190,
+          "flu_rt": 29.97,
+          "trde_qty": 30838335,
+          "trde_prica_calc": 298996000000,
+          "consecutive_count": 3,
+          "effect_badges": [
+            {
+              "effect": "limit-up",
+              "when": "today",
+              "severity": "hot",
+              "source_label": "상한가",
+              "source_kind": "limit_up",
+              "consecutive_count": 3
+            }
+          ],
+          "next_trading_day": "2026-07-01"
         }
       ],
       "intraday": {
@@ -341,7 +364,9 @@
           10600,
           10940,
           10820,
-          10770
+          10850,
+          10780,
+          10850
         ]
       },
       "credit_risk": true,
@@ -354,7 +379,7 @@
       "code": "095610",
       "name": "테스",
       "rank": 2,
-      "trade_amount": 125145000000,
+      "trade_amount": 127084000000,
       "change_pct": 15.19,
       "close_price": 207000,
       "open_price": 189800,
@@ -578,6 +603,8 @@
           205000,
           207000,
           206500,
+          207000,
+          206000,
           206000
         ]
       },
@@ -589,9 +616,9 @@
       "code": "319660",
       "name": "피에스케이",
       "rank": 3,
-      "trade_amount": 92890000000,
-      "change_pct": 11.53,
-      "close_price": 198300,
+      "trade_amount": 94752000000,
+      "change_pct": 11.36,
+      "close_price": 198000,
       "open_price": 184200,
       "high_price": 201500,
       "low_price": 182200,
@@ -646,11 +673,11 @@
       "range_240d": {
         "high": 201500,
         "high_date": "2026-06-30",
-        "high_pct": -1.59,
+        "high_pct": -1.74,
         "low": 18100,
         "low_date": "2025-07-10",
-        "low_pct": 995.58,
-        "current": 198300
+        "low_pct": 993.92,
+        "current": 198000
       },
       "daily_20": [
         {
@@ -791,7 +818,7 @@
           "o": 184200,
           "h": 201500,
           "l": 182200,
-          "c": 198300
+          "c": 198000
         }
       ],
       "intraday": {
@@ -847,7 +874,9 @@
           197500,
           198200,
           198500,
-          198400
+          198650,
+          197900,
+          198000
         ]
       },
       "credit_risk": true,
@@ -860,9 +889,9 @@
       "code": "001210",
       "name": "금호전기",
       "rank": 4,
-      "trade_amount": 83701000000,
-      "change_pct": 12.84,
-      "close_price": 1239,
+      "trade_amount": 94056000000,
+      "change_pct": 17.03,
+      "close_price": 1285,
       "open_price": 1193,
       "high_price": 1290,
       "low_price": 909,
@@ -904,11 +933,11 @@
       "range_240d": {
         "high": 1398,
         "high_date": "2025-07-30",
-        "high_pct": -11.37,
+        "high_pct": -8.08,
         "low": 465,
         "low_date": "2026-06-02",
-        "low_pct": 166.45,
-        "current": 1239
+        "low_pct": 176.34,
+        "current": 1285
       },
       "daily_20": [
         {
@@ -1049,7 +1078,7 @@
           "o": 1193,
           "h": 1290,
           "l": 909,
-          "c": 1239
+          "c": 1285
         }
       ],
       "status_badges": [
@@ -1077,7 +1106,7 @@
               "desc": "최근 15일 최고가(2026-06-29)",
               "base_price": 1098,
               "threshold": 1098,
-              "current": 1239,
+              "current": 1285,
               "triggered": true
             }
           ],
@@ -1147,6 +1176,8 @@
           1194,
           1257,
           1242,
+          1243,
+          1229,
           1240
         ]
       },
@@ -1162,9 +1193,9 @@
       "code": "281820",
       "name": "케이씨텍",
       "rank": 5,
-      "trade_amount": 59249000000,
-      "change_pct": 25.08,
-      "close_price": 113700,
+      "trade_amount": 59977000000,
+      "change_pct": 25.63,
+      "close_price": 114200,
       "open_price": 96200,
       "high_price": 116400,
       "low_price": 94900,
@@ -1186,11 +1217,11 @@
       "range_240d": {
         "high": 116400,
         "high_date": "2026-06-30",
-        "high_pct": -2.32,
+        "high_pct": -1.89,
         "low": 26000,
         "low_date": "2025-07-23",
-        "low_pct": 337.31,
-        "current": 113700
+        "low_pct": 339.23,
+        "current": 114200
       },
       "daily_20": [
         {
@@ -1331,7 +1362,7 @@
           "o": 96200,
           "h": 116400,
           "l": 94900,
-          "c": 113700
+          "c": 114200
         }
       ],
       "intraday": {
@@ -1387,7 +1418,9 @@
           114700,
           114000,
           113900,
-          114000
+          113700,
+          113900,
+          114100
         ]
       },
       "togusa_verdict": "neutral",
@@ -1398,9 +1431,9 @@
       "code": "031980",
       "name": "피에스케이홀딩스",
       "rank": 6,
-      "trade_amount": 56669000000,
-      "change_pct": 22.27,
-      "close_price": 164700,
+      "trade_amount": 58040000000,
+      "change_pct": 22.05,
+      "close_price": 164400,
       "open_price": 138900,
       "high_price": 165000,
       "low_price": 138300,
@@ -1423,11 +1456,11 @@
       "range_240d": {
         "high": 165000,
         "high_date": "2026-06-30",
-        "high_pct": -0.18,
+        "high_pct": -0.36,
         "low": 30200,
         "low_date": "2025-08-20",
-        "low_pct": 445.36,
-        "current": 164700
+        "low_pct": 444.37,
+        "current": 164400
       },
       "daily_20": [
         {
@@ -1568,7 +1601,7 @@
           "o": 138900,
           "h": 165000,
           "l": 138300,
-          "c": 164700
+          "c": 164400
         }
       ],
       "intraday": {
@@ -1624,7 +1657,9 @@
           163700,
           164600,
           164600,
-          164600
+          164100,
+          163600,
+          163600
         ]
       },
       "credit_risk": true,
@@ -1637,9 +1672,9 @@
       "code": "000500",
       "name": "가온전선",
       "rank": 7,
-      "trade_amount": 52176000000,
-      "change_pct": 15.16,
-      "close_price": 219500,
+      "trade_amount": 52723000000,
+      "change_pct": 15.68,
+      "close_price": 220500,
       "open_price": 240000,
       "high_price": 240000,
       "low_price": 210500,
@@ -1762,11 +1797,11 @@
       "range_240d": {
         "high": 352870,
         "high_date": "2026-05-13",
-        "high_pct": -37.8,
+        "high_pct": -37.51,
         "low": 29230,
         "low_date": "2025-10-13",
-        "low_pct": 650.94,
-        "current": 219500
+        "low_pct": 654.36,
+        "current": 220500
       },
       "daily_20": [
         {
@@ -1907,7 +1942,7 @@
           "o": 240000,
           "h": 240000,
           "l": 210500,
-          "c": 219500
+          "c": 220500
         }
       ],
       "intraday": {
@@ -1963,7 +1998,9 @@
           220000,
           219500,
           220000,
-          219500
+          220000,
+          221000,
+          221000
         ]
       },
       "togusa_verdict": "neutral",
@@ -1974,7 +2011,7 @@
       "code": "025560",
       "name": "미래산업",
       "rank": 8,
-      "trade_amount": 34362000000,
+      "trade_amount": 34385000000,
       "change_pct": 29.96,
       "close_price": 60300,
       "open_price": 47000,
@@ -2157,8 +2194,8 @@
           "summary": "미래산업 상한가 (29.96%)",
           "cur_prc": 60300,
           "flu_rt": 29.96,
-          "trde_qty": 593012,
-          "trde_prica_calc": 34362000000,
+          "trde_qty": 593405,
+          "trde_prica_calc": 34385000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2225,6 +2262,8 @@
           60300,
           60300,
           60300,
+          60300,
+          60300,
           60300
         ]
       },
@@ -2238,7 +2277,7 @@
       "code": "066980",
       "name": "한성크린텍",
       "rank": 9,
-      "trade_amount": 33464000000,
+      "trade_amount": 33753000000,
       "change_pct": 29.83,
       "close_price": 2485,
       "open_price": 2050,
@@ -2443,8 +2482,8 @@
           "summary": "한성크린텍 상한가 (29.83%)",
           "cur_prc": 2485,
           "flu_rt": 29.83,
-          "trde_qty": 13965255,
-          "trde_prica_calc": 33464000000,
+          "trde_qty": 14069413,
+          "trde_prica_calc": 33753000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2512,6 +2551,7 @@
           2485,
           2485,
           2485,
+          2485,
           2485
         ]
       },
@@ -2525,7 +2565,7 @@
       "code": "011230",
       "name": "삼화전자",
       "rank": 10,
-      "trade_amount": 18712000000,
+      "trade_amount": 18726000000,
       "change_pct": 29.88,
       "close_price": 3195,
       "open_price": 2500,
@@ -2562,8 +2602,8 @@
       ],
       "news": [],
       "fallback": true,
-      "index_change_pct": 1.28,
-      "index_multiple_current": 23.34,
+      "index_change_pct": 1.68,
+      "index_multiple_current": 17.79,
       "index_multiple_eligible": true,
       "range_240d": {
         "high": 5850,
@@ -2725,8 +2765,8 @@
           "summary": "삼화전자 상한가 (29.88%)",
           "cur_prc": 3195,
           "flu_rt": 29.88,
-          "trde_qty": 6311892,
-          "trde_prica_calc": 18712000000,
+          "trde_qty": 6316167,
+          "trde_prica_calc": 18726000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -2794,6 +2834,8 @@
           3195,
           3195,
           3195,
+          3195,
+          3195,
           3195
         ]
       },
@@ -2809,7 +2851,7 @@
       "code": "228340",
       "name": "동양파일",
       "rank": 11,
-      "trade_amount": 15359000000,
+      "trade_amount": 15360000000,
       "change_pct": 29.91,
       "close_price": 4800,
       "open_price": 3365,
@@ -3068,8 +3110,8 @@
           "summary": "동양파일 상한가 (29.91%)",
           "cur_prc": 4800,
           "flu_rt": 29.91,
-          "trde_qty": 3670009,
-          "trde_prica_calc": 15359000000,
+          "trde_qty": 3670593,
+          "trde_prica_calc": 15360000000,
           "consecutive_count": 3,
           "effect_badges": [
             {
@@ -3135,6 +3177,7 @@
           4800,
           4800,
           4800,
+          4800,
           4800
         ]
       },
@@ -3150,7 +3193,7 @@
       "code": "090410",
       "name": "덕신이피씨",
       "rank": 12,
-      "trade_amount": 5152000000,
+      "trade_amount": 5153000000,
       "change_pct": 29.96,
       "close_price": 924,
       "open_price": 711,
@@ -3372,8 +3415,8 @@
           "summary": "덕신이피씨 상한가 (29.96%)",
           "cur_prc": 924,
           "flu_rt": 29.96,
-          "trde_qty": 5888175,
-          "trde_prica_calc": 5152000000,
+          "trde_qty": 5888807,
+          "trde_prica_calc": 5153000000,
           "consecutive_count": 1,
           "effect_badges": [
             {
@@ -3426,6 +3469,9 @@
           924,
           924,
           921,
+          924,
+          924,
+          924,
           924,
           924,
           924,
@@ -3724,6 +3770,7 @@
           28000,
           29100,
           33800,
+          33800,
           33800
         ]
       },
@@ -3952,7 +3999,7 @@
           "summary": "에스폴리텍 상한가 (30.00%)",
           "cur_prc": 1326,
           "flu_rt": 30.0,
-          "trde_qty": 991194,
+          "trde_qty": 991213,
           "trde_prica_calc": 1230000000,
           "consecutive_count": 1,
           "effect_badges": [
@@ -3983,6 +4030,8 @@
           1216,
           1232,
           1142,
+          1326,
+          1326,
           1326,
           1326,
           1326,
@@ -4207,7 +4256,7 @@
           "summary": "모바일어플라이언스 상한가 (29.90%)",
           "cur_prc": 378,
           "flu_rt": 29.9,
-          "trde_qty": 1301712,
+          "trde_qty": 1302435,
           "trde_prica_calc": 472000000,
           "consecutive_count": 1,
           "effect_badges": [
@@ -4232,6 +4281,8 @@
           297,
           340,
           375,
+          378,
+          378,
           378,
           378,
           378,
