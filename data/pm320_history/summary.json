@@ -2,7 +2,7 @@
   "account_mdd_pct": -4.0103,
   "worst_mdd_pct": -4.0103,
   "backtest_detail": {
-    "as_of": "2026-06-29",
+    "as_of": "2026-06-30",
     "table": [
       {
         "date": "2026-04-08",
@@ -640,6 +640,19 @@
         "balance_after": 10691778.37,
         "watered": false,
         "settlement_order": 8
+      },
+      {
+        "date": "2026-06-22",
+        "code": "080220",
+        "name": "제주반도체",
+        "entry_price": 134000,
+        "exit_date": "2026-06-30",
+        "exit_class": "D+6 만기손실",
+        "ret_pct": -24.91,
+        "pnl": -443887.05,
+        "balance_after": 10247891.32,
+        "watered": true,
+        "settlement_order": 9
       }
     ],
     "equity_curve": [
@@ -827,23 +840,28 @@
         "date": "2026-06-29",
         "balance": 10691778.37,
         "name": "브이엠"
+      },
+      {
+        "date": "2026-06-30",
+        "balance": 10247891.32,
+        "name": "제주반도체"
       }
     ]
   },
-  "generated_at": "2026-06-30T08:33:50+09:00",
+  "generated_at": "2026-06-30T09:01:57+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
-  "last_settled_date": "2026-06-29",
-  "total_picks": 49,
-  "settled": 49,
+  "last_settled_date": "2026-06-30",
+  "total_picks": 50,
+  "settled": 50,
   "running": 0,
   "take_profit": 46,
-  "expired_loss": 3,
+  "expired_loss": 4,
   "expired_gain": 0,
-  "win_rate": 93.9,
+  "win_rate": 92.0,
   "start_balance": 10000000,
   "avg_mdd_pct": null,
-  "total_return_pct": 6.9178,
-  "total_pnl": 691778.37,
-  "final_balance": 10691778.37
+  "total_return_pct": 2.4789,
+  "total_pnl": 247891.32,
+  "final_balance": 10247891.32
 }
