@@ -1,6 +1,6 @@
 {
   "date": "2026-06-30",
-  "generated_at": "2026-06-30T09:35:15.869001",
+  "generated_at": "2026-06-30T09:36:23.447300",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -503,8 +503,19 @@
       "low_price": 182200,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체소부장"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체소부장",
+          "path": [
+            "반도체",
+            "반도체소부장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-06-22",
@@ -525,16 +536,16 @@
           "url": "https://www.sedaily.com/article/20060610",
           "source": "서울경제",
           "published_at": "2026-06-26T06:11:11",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "코스닥 대형주(바이오·2차전지) 약세 속 '메모리 수요 둔화 우려는 과도하다'는 증권가 진단과 삼성전자·SK하이닉스의 투자 확대 수혜 기대가 반도체 전공정 장비주로 매수세를 집중시켰다 → 본질 사업이 반도체 전공정 장비 제조인 피에스케이가 직접 수혜주로 부각되며 당일 종가 190,400원(+7.09%)·장중 고가 201,500원으로 52주 신고가를 갱신했고, 거래대금 521억원의 매수 쏠림이 동반됐다.",
+          "macro_event": "메모리 수요 둔화 우려 과도론 + 삼성전자·SK하이닉스 투자 확대 기대로 반도체 전공정 장비주에 매수 집중",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.3,
+          "newzy_virality": 0.3,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.3,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "시세정형"
         }
       ],
       "fallback": true,
@@ -690,7 +701,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "228340",
