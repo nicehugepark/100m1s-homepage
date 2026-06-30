@@ -1,6 +1,6 @@
 {
   "date": "2026-06-30",
-  "generated_at": "2026-06-30T10:05:22.327248",
+  "generated_at": "2026-06-30T10:06:34.818621",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -775,7 +775,7 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/06/30/DDYI7S72F5EBDDY4L4BSGIXO6Q/",
           "source": "조선비즈",
           "published_at": "2026-06-30T00:53:03",
-          "causal_chain": null,
+          "causal_chain": "제공된 뉴스가 자동 시세요약 기사 1건뿐이며, 본문에 한성크린텍 본질 사업(수처리)에 직접 연결되는 수주·실적·정책 등 구체적 펀더멘털 촉매가 제시되지 않았다. '호남 반도체 투자 수혜 기대감'은 자동요약 머리표의 막연한 기대 언급으로 매크로 부착 근거로 채택 불가.",
           "macro_event": null,
           "newzy_freshness": null,
           "newzy_persistence": null,
@@ -784,7 +784,7 @@
           "newzy_tradability": null,
           "newzy_score": null,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "시세정형"
         }
       ],
       "fallback": false,
@@ -1814,7 +1814,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "우선주"
+      "credit_reason": "우선주",
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "418620",
@@ -2530,16 +2533,16 @@
           "url": "https://biz.chosun.com/stock/stock_general/2026/06/30/Z3GMQUAKDFCTTDPAHWKZOK7CG4/",
           "source": "조선비즈",
           "published_at": "2026-06-30T00:49:29",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "유명 배우 이정재 측 회사의 코퍼스코리아 인수 소식 → 엔터 거물 신규 최대주주 진입·사업 재편 기대감 → 매수 주문 집중·잠긴 상한가 → 당일 시초가부터 점상한가(시=고=저=종 2,095원, +29.96%)로 이틀째 '上' 마감, 거래대금 0억원의 매물 잠김 동반.",
+          "macro_event": "배우 이정재 관련 회사의 코퍼스코리아 인수 소식(엔터 거물 신규 최대주주 진입 기대)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.5,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.5,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -2739,9 +2742,7 @@
       "credit_reason": "회사한도초과",
       "togusa_verdict": "neutral",
       "theme_leader": true,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "관찰"
     }
   ]
 }
