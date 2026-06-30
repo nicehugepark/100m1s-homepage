@@ -1,6 +1,6 @@
 {
   "date": "2026-06-30",
-  "generated_at": "2026-06-30T10:35:21.385171",
+  "generated_at": "2026-06-30T10:36:24.663195",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -2103,8 +2103,27 @@
       "low_price": 985,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "AI데이터센터",
+        "AI",
+        "AI 인프라"
+      ],
+      "theme_paths": [
+        {
+          "name": "AI데이터센터",
+          "path": [
+            "AI",
+            "AI데이터센터"
+          ]
+        },
+        {
+          "name": "AI 인프라",
+          "path": [
+            "AI",
+            "AI 인프라"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -2118,16 +2137,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03719526645486968",
           "source": "이데일리",
           "published_at": "2026-06-30T01:27:02",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "AI 데이터센터 구축 확산 → 발열·구조용 PC(폴리카보네이트) 소재 수요 증가 → 에스폴리텍이 본업인 PC 소재를 데이터센터용으로 양산 공급 개시·글로벌 시장 공략 확대 → 신제품 매출 기여 기대감에 매수세 집중 → 당일 +30.00% 상한가(종가 1,326원)·거래대금 12억원 마감.",
+          "macro_event": "AI 데이터센터 증설 확산에 따른 PC(폴리카보네이트) 소재 수요 확대",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.6,
+          "newzy_virality": 0.4,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.52,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -2334,9 +2353,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "087260",
