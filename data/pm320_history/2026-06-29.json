@@ -1,6 +1,6 @@
 {
   "date": "2026-06-29",
-  "generated_at": "2026-07-01T09:21:53+09:00",
+  "generated_at": "2026-07-01T09:31:59+09:00",
   "picked_code": "214450",
   "stocks": [
     {
@@ -16,7 +16,7 @@
         "take_profit_after_watering_price": 162733,
         "expiry_date": "2026-07-07",
         "current_state": "running",
-        "current_pnl_pct": -2.485,
+        "current_pnl_pct": -2.549,
         "current_mdd_pct": -7.437,
         "current_mdd_peak_pct": -11.098,
         "d_offset": 2,
@@ -118,7 +118,7 @@
         "take_profit_after_watering_price": 68929,
         "expiry_date": "2026-07-07",
         "current_state": "running",
-        "current_pnl_pct": -5.124,
+        "current_pnl_pct": -5.574,
         "current_mdd_pct": -10.22,
         "current_mdd_peak_pct": -15.634,
         "d_offset": 2,
@@ -138,7 +138,7 @@
         "take_profit_after_watering_price": 1905,
         "expiry_date": "2026-07-07",
         "current_state": "running",
-        "current_pnl_pct": -15.996,
+        "current_pnl_pct": -11.712,
         "current_mdd_pct": -21.039,
         "current_mdd_peak_pct": -22.881,
         "d_offset": 2,
@@ -346,12 +346,19 @@
         "take_profit_target_price": 8958,
         "take_profit_after_watering_price": 8671,
         "expiry_date": "2026-07-07",
-        "current_state": "running",
-        "current_pnl_pct": -8.734,
-        "current_mdd_pct": -16.598,
-        "current_mdd_peak_pct": -14.425,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
+        "current_mdd_pct": null,
+        "current_mdd_peak_pct": null,
         "d_offset": 2,
-        "result": null
+        "result": {
+          "final_price": 8662,
+          "final_pnl_pct": 3.2,
+          "watered": true,
+          "result_date": "2026-07-01",
+          "mdd_pct": -16.598,
+          "mdd_peak_pct": -14.425
+        }
       }
     },
     {
@@ -677,7 +684,7 @@
     "virtual_count": 25,
     "skip_count": 0,
     "total_cards": 26,
-    "expired_count": 21,
-    "running_count": 5
+    "expired_count": 22,
+    "running_count": 4
   }
 }
