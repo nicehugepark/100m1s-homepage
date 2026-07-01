@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26128.22,
-      "change_pct": -0.33,
+      "point": 26095.27,
+      "change_pct": -0.45,
       "candle": {
         "o": 26040.66,
         "h": 26145.34,
         "l": 25956.22,
-        "c": 26128.22
+        "c": 26095.27
       },
       "range_240d": {
         "low": 20650.13,
@@ -2033,7 +2033,7 @@
           "o": 26040.66,
           "h": 26145.34,
           "l": 25956.22,
-          "c": 26128.22
+          "c": 26095.27
         }
       ],
       "spark": [
@@ -2052,7 +2052,9 @@
         26129.91,
         26097.54,
         26123.46,
-        26128.22
+        26103.57,
+        26090.97,
+        26095.27
       ],
       "news": {
         "summary": "반도체 메모리칩 수급 불균형 심화·대규모 투자 가속화 중. 고객 자체 개발 병행으로 초과공급 리스크 대비 필요. 중국 AI 사이버보안 기술 미국 수준 근접·첨단산업 규제 확대 진행.",
@@ -2072,13 +2074,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7496.71,
-      "change_pct": -0.04,
+      "point": 7491.53,
+      "change_pct": -0.1,
       "candle": {
         "o": 7478.84,
         "h": 7498.21,
         "l": 7449.63,
-        "c": 7496.71
+        "c": 7491.53
       },
       "range_240d": {
         "low": 6238.01,
@@ -4102,7 +4104,7 @@
           "o": 7478.84,
           "h": 7498.21,
           "l": 7449.63,
-          "c": 7496.71
+          "c": 7491.53
         }
       ],
       "spark": [
@@ -4121,7 +4123,9 @@
         7496.12,
         7490.56,
         7496.25,
-        7496.71
+        7493.86,
+        7491.91,
+        7491.53
       ],
       "news": {
         "summary": "연준 선호 물가지표 PCE 5월 3.4% 고착·금리 인하 지연 신호. 신임 의장 통화정책 의사소통 축소·시장 변동성 증대 우려. 소비심리·고용 부분 회복, 제조·부동산 냉각세 지속·국제 경기 회복탄력 미약.",
@@ -4141,13 +4145,13 @@
     },
     {
       "name": "DOW",
-      "point": 52415.31,
-      "change_pct": 0.18,
+      "point": 52409.79,
+      "change_pct": 0.17,
       "candle": {
         "o": 52231.18,
         "h": 52451.57,
         "l": 52026.64,
-        "c": 52415.31
+        "c": 52409.79
       },
       "range_240d": {
         "low": 43588.58,
@@ -6171,7 +6175,7 @@
           "o": 52231.18,
           "h": 52451.57,
           "l": 52026.64,
-          "c": 52415.31
+          "c": 52409.79
         }
       ],
       "spark": [
@@ -6190,7 +6194,9 @@
         52392.93,
         52413.43,
         52424.05,
-        52415.31
+        52409.17,
+        52411.94,
+        52409.79
       ],
       "news": {
         "summary": "연준 선호 물가지표 PCE 5월 3.4% 고착·금리 인하 지연 신호. 신임 의장 통화정책 의사소통 축소·시장 변동성 증대 우려. 소비심리·고용 부분 회복, 제조·부동산 냉각세 지속·국제 경기 회복탄력 미약.",
@@ -6211,91 +6217,89 @@
   ],
   "news_chips": [
     {
-      "summary": "6월 미국 민간 고용 9만8000명 증가, 시장 예상 하회로 고용 둔화 신호",
+      "summary": "연준 신규 이사 Kevin Warsh가 6월 회의 이후 첫 공개 출연, 7월 금리 결정 신호 주목",
+      "source": "WSJ경제",
+      "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876",
+      "published_ts": 1782915480.0,
+      "impact_high": true
+    },
+    {
+      "summary": "6월 민간 부문 고용이 9.8만 명에 그쳐 시장 전망을 밑돌며 노동시장 둔화 신호 확인",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/07/01/private-payrolls-rose-by-98000-in-june-less-than-expected-adp-reports.html",
       "published_ts": 1782913269.0,
       "impact_high": true
     },
     {
-      "summary": "연준 위원이 차기 금리 결정 회의 입장 유보, 시장 금리 경로 불확실성 가중",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876",
-      "published_ts": 1782912720.0,
-      "impact_high": true
-    },
-    {
-      "summary": "유로존 6월 인플레이션 2.8%로 하락, ECB 금리 결정 여유 확대",
+      "summary": "유로존 인플레이션이 6월 2.8%로 하락하며 ECB의 7월 금리 동결 가능성 높아짐",
       "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670",
       "published_ts": 1782902760.0,
       "impact_high": true
     },
     {
-      "summary": "한국 수출이 1978년 이래 최대 폭 증가, 반도체 수요 확대 주도",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/trade/south-koreas-exports-post-biggest-surge-since-1978-4af5f094",
-      "published_ts": 1782872700.0,
+      "summary": "나스닥이 약세 마감, 연준 금리 경로 불확실성과 지정학적 유가 변동이 시장 변동성 지속",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/livecoverage/stock-market-today-dow-sp-500-nasdaq-07-01-2026?mod=rss_markets_main",
+      "published_ts": 1782892764.0,
       "impact_high": true
     },
     {
-      "summary": "미국 소비자 심리지수 6월 상승, 경제 회복 추세 지속",
+      "summary": "6월 ISM 제조업 PMI 53.3 기록, 5월 대비 소폭 하락했으나 확장 수준 유지",
       "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/central-banking/u-s-consumer-sentiment-climbed-in-june-conference-board-says-fbced3fb",
-      "published_ts": 1782830100.0,
-      "impact_high": true
+      "url": "https://www.wsj.com/economy/central-banking/u-s-factory-activity-continued-to-expand-in-june-000fe152",
+      "published_ts": 1782916920.0,
+      "impact_high": false
     },
     {
-      "summary": "삼성·SK하이닉스가 한국 반도체 공장에 5200억 달러 투자, 글로벌 공급 부족 대응",
+      "summary": "미국과 이란이 호르무즈 해협 무력충돌 중단 합의, 중동 긴장 완화로 원유 공급망 안정화",
       "source": "WSJ세계",
       "url": "https://www.wsj.com/world/asia/where-is-aung-san-suu-kyi-myanmars-tainted-pro-democracy-icon-47a4233e",
       "published_ts": 1782871200.0,
       "impact_high": false
     },
     {
-      "summary": "S&P 500 +15%, 나스닥 +21% 2분기 실적으로 6년 최고 분기 성과 마감",
+      "summary": "미국 증시가 2분기 6년 만의 최고 성과 달성 (다우 신고가, S&P 500 +15%, 나스닥 +21%)",
       "source": "WSJ",
       "url": "https://www.wsj.com/finance/stocks/wall-streets-best-quarter-in-six-years-will-be-a-hard-act-to-follow-6dc641d4?mod=rss_markets_main",
       "published_ts": 1782857460.0,
       "impact_high": false
     },
     {
-      "summary": "미국-이란 호르무즈 해협 휴전 합의로 중동 원유 공급 경로 안정화",
-      "source": "WSJ세계",
-      "url": "https://www.wsj.com/world/middle-east/iran-asserts-sole-control-of-hormuz-warns-challenges-will-bring-more-violence-5abea3c7",
-      "published_ts": 1782747420.0,
+      "summary": "연준의 금리 경로 가이던스 부족이 시장 변동성을 확대, 모기지 금리 상승 프리미엄 가능성",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/finance/investing/how-a-tight-lipped-fed-could-lead-to-higher-mortgage-rates-785f802f?mod=rss_markets_main",
+      "published_ts": 1782725400.0,
       "impact_high": false
     },
     {
-      "summary": "중국이 일본 드론·방산 업체 수출 규제 강화, 첨단기술 공급망 경계 심화",
-      "source": "CNBC",
-      "url": "https://www.cnbc.com/2026/06/29/china-japan-export-controls-watch-list-defense-entities.html",
-      "published_ts": 1782708385.0,
+      "summary": "삼성·SK하이닉스가 메모리칩 공급 부족 해소를 위해 한국 공장에 520억 달러 규모 투자 추진",
+      "source": "WSJ세계",
+      "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2",
+      "published_ts": 1782725040.0,
       "impact_high": false
     },
     {
-      "summary": "중국이 미국 AI 기업 수준의 사이버 보안 역량 확보, 미중 기술 경쟁 동향 변화",
+      "summary": "중국이 일본 방위 연구기관 및 기업 다수를 수출통제 대상 추가, 반도체·첨단 소재 공급망 긴장 심화",
       "source": "WSJ세계",
-      "url": "https://www.wsj.com/tech/ai/chinese-ai-anthropic-mythos-cybersecurity-574b02c2",
-      "published_ts": 1782608400.0,
+      "url": "https://www.wsj.com/world/asia/china-adds-more-japanese-entities-to-export-control-list-d014de65",
+      "published_ts": 1782707040.0,
       "impact_high": true
     }
   ],
-  "_article_sig": "ceeb56ea63789e0d1270f480d29c76b364c14509f93955aa6f5f2abd86ba9afc",
+  "_article_sig": "079d37beb5bea83cbf4ff78a105ade81db5bc7eb93e02593ee510cd1ab576315",
   "built_at_kst": "2026-07-01T07:03:03.029178+09:00",
   "futures": {
-    "as_of_kst": "2026-07-01T23:40:06.392711+09:00",
+    "as_of_kst": "2026-07-01T23:50:04.020722+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7551.75,
+        "point": 7552.25,
         "change_pct": 0.05,
         "spark": [
           7543.25,
-          7536.75,
-          7536.0,
           7534.75,
           7534.75,
           7535.25,
@@ -6333,20 +6337,22 @@
           7551.5,
           7551.75,
           7546.5,
-          7551.75
+          7552.5,
+          7549.75,
+          7552.25
         ],
         "candle": {
           "o": 7543.25,
           "h": 7553.75,
           "l": 7505.75,
-          "c": 7551.75
+          "c": 7552.25
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 20.55,
+          "low_change_pct": 20.56,
           "high_change_pct": -0.94
         },
         "daily_expanded": [
@@ -8371,21 +8377,25 @@
             "o": 7543.25,
             "h": 7553.75,
             "l": 7505.75,
-            "c": 7551.75,
-            "v": 496242
+            "c": 7552.25,
+            "v": 526351
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "6월 민간고용 9.8만명 증가로 시장 전망 미달, 경제 모멘텀 약세 신호 심화. 연준 금리 경로 불명확성으로 7월 의사결정 시 정책 방향 불확실성 확대. 소비심리 회복·유로존 물가 완화 긍정 신호 대비 고용 부진이 실적 재평가 변수.",
+          "summary": "연준 긴축 완화 신호. ECB 인상 보류·Kevin Warsh guidance 제한으로 인하 기대 확산. ADP 민간고용 98K 예상 미달로 경기 둔화 신호. 물가 안정·소비심기 회복으로 인플레 완화. S&P500 선물 매크로 주도성.",
           "sources": [
             {
               "name": "CNBC",
               "url": "https://www.cnbc.com/2026/07/01/private-payrolls-rose-by-98000-in-june-less-than-expected-adp-reports.html"
             },
             {
-              "name": "WSJ",
-              "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670"
+            },
+            {
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/central-banking/u-s-consumer-sentiment-climbed-in-june-conference-board-says-fbced3fb"
             }
           ]
         }
@@ -8393,12 +8403,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 30280.25,
-        "change_pct": -0.8,
+        "point": 30263.25,
+        "change_pct": -0.85,
         "spark": [
           30505.75,
-          30403.25,
-          30398.75,
           30389.25,
           30383.25,
           30396.75,
@@ -8436,21 +8444,23 @@
           30294.0,
           30284.75,
           30235.5,
-          30280.25
+          30264.25,
+          30203.25,
+          30263.25
         ],
         "candle": {
           "o": 30505.75,
           "h": 30553.75,
           "l": 30087.75,
-          "c": 30281.0
+          "c": 30263.25
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 32.33,
-          "high_change_pct": -1.41
+          "low_change_pct": 32.25,
+          "high_change_pct": -1.46
         },
         "daily_expanded": [
           {
@@ -10474,21 +10484,25 @@
             "o": 30505.75,
             "h": 30553.75,
             "l": 30087.75,
-            "c": 30281.0,
-            "v": 237236
+            "c": 30263.25,
+            "v": 251112
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "메모리칩 공급 부족 심화에 삼성·SK하이닉스 $520B 대규모 투자 확대. 한국 반도체 수출 1978년 이후 최고 급증, 글로벌 기술주 수요 선도 지속. AI·사이버보안 경쟁 가속 속 장기 혁신 리스크 평가.",
+          "summary": "반도체 수급 강화. 삼성·SK하이닉스 메모리칩 52조 규모 투자로 글로벌 부족 심화 신호. 中 사이버보안 AI 추격 vs 美 Anthropic 기술 경쟁 심화. 나스닥100 기술주·반도체 매수세 강세.",
           "sources": [
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
+              "url": "https://www.wsj.com/world/asia/china-adds-more-japanese-entities-to-export-control-list-d014de65"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/economy/trade/south-koreas-exports-post-biggest-surge-since-1978-4af5f094"
+              "url": "https://www.wsj.com/tech/ai/chinese-ai-anthropic-mythos-cybersecurity-574b02c2"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/the-long-term-threat-to-the-memory-chip-boom-is-innovation-bb289488?mod=rss_markets_main"
             }
           ]
         }
@@ -10496,12 +10510,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52757.0,
-        "change_pct": 0.17,
+        "point": 52768.0,
+        "change_pct": 0.19,
         "spark": [
           52546.0,
-          52571.0,
-          52563.0,
           52553.0,
           52532.0,
           52529.0,
@@ -10539,20 +10551,22 @@
           52749.0,
           52753.0,
           52767.0,
-          52757.0
+          52773.0,
+          52758.0,
+          52768.0
         ],
         "candle": {
           "o": 52546.0,
           "h": 52805.0,
           "l": 52381.0,
-          "c": 52757.0
+          "c": 52768.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52757.0,
+          "high": 52768.0,
           "low_date": "2025-08-01",
           "high_date": "2026-07-01",
-          "low_change_pct": 20.7,
+          "low_change_pct": 20.72,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12577,21 +12591,25 @@
             "o": 52546.0,
             "h": 52805.0,
             "l": 52381.0,
-            "c": 52757.0,
-            "v": 41296
+            "c": 52768.0,
+            "v": 42653
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "고용 부진이 경기순환주 약세 신호 강화 중. 미국-이란 혼무르즈 휴전으로 유가 안정화·해운 회복 기대 부상, JPMorgan 등 금융주 국방·의료산업 투자 확대 동력. 기업 부실화(Dish DBS 파산 신청) 신호 지속으로 경기민감 약세 위험 상존.",
+          "summary": "경기민감 약화. ADP 고용 둔화, AI 구조조정 4개월 연속 최고 이유로 경기 불안 가중. JPMorgan CEO 여성 승계자 탈락으로 금융 인사 신호 변화. 다우 구성주 고용·산업·인사 리스크.",
           "sources": [
             {
-              "name": "CNBC",
-              "url": "https://www.cnbc.com/2026/07/01/private-payrolls-rose-by-98000-in-june-less-than-expected-adp-reports.html"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/jobs/private-sector-hiring-grew-slightly-below-expectations-last-month-adp-report-8b8f5708"
+            },
+            {
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/jobs/layoffs-2026-tracker-784ea69f"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main"
+              "url": "https://www.wsj.com/business/jpmorgan-chase-ceo-search-women-7f593111?mod=rss_markets_main"
             }
           ]
         }
@@ -12599,44 +12617,56 @@
     ]
   },
   "regular_open": true,
-  "intraday_refreshed_kst": "2026-07-01T23:40:10.053081+09:00",
+  "intraday_refreshed_kst": "2026-07-01T23:52:15.333088+09:00",
   "_futures_news": {
     "NASDAQ": {
-      "summary": "메모리칩 공급 부족 심화에 삼성·SK하이닉스 $520B 대규모 투자 확대. 한국 반도체 수출 1978년 이후 최고 급증, 글로벌 기술주 수요 선도 지속. AI·사이버보안 경쟁 가속 속 장기 혁신 리스크 평가.",
+      "summary": "반도체 수급 강화. 삼성·SK하이닉스 메모리칩 52조 규모 투자로 글로벌 부족 심화 신호. 中 사이버보안 AI 추격 vs 美 Anthropic 기술 경쟁 심화. 나스닥100 기술주·반도체 매수세 강세.",
       "sources": [
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
+          "url": "https://www.wsj.com/world/asia/china-adds-more-japanese-entities-to-export-control-list-d014de65"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/economy/trade/south-koreas-exports-post-biggest-surge-since-1978-4af5f094"
+          "url": "https://www.wsj.com/tech/ai/chinese-ai-anthropic-mythos-cybersecurity-574b02c2"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/the-long-term-threat-to-the-memory-chip-boom-is-innovation-bb289488?mod=rss_markets_main"
         }
       ]
     },
     "S&P500": {
-      "summary": "6월 민간고용 9.8만명 증가로 시장 전망 미달, 경제 모멘텀 약세 신호 심화. 연준 금리 경로 불명확성으로 7월 의사결정 시 정책 방향 불확실성 확대. 소비심리 회복·유로존 물가 완화 긍정 신호 대비 고용 부진이 실적 재평가 변수.",
+      "summary": "연준 긴축 완화 신호. ECB 인상 보류·Kevin Warsh guidance 제한으로 인하 기대 확산. ADP 민간고용 98K 예상 미달로 경기 둔화 신호. 물가 안정·소비심기 회복으로 인플레 완화. S&P500 선물 매크로 주도성.",
       "sources": [
         {
           "name": "CNBC",
           "url": "https://www.cnbc.com/2026/07/01/private-payrolls-rose-by-98000-in-june-less-than-expected-adp-reports.html"
         },
         {
-          "name": "WSJ",
-          "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876"
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670"
+        },
+        {
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/central-banking/u-s-consumer-sentiment-climbed-in-june-conference-board-says-fbced3fb"
         }
       ]
     },
     "DOW": {
-      "summary": "고용 부진이 경기순환주 약세 신호 강화 중. 미국-이란 혼무르즈 휴전으로 유가 안정화·해운 회복 기대 부상, JPMorgan 등 금융주 국방·의료산업 투자 확대 동력. 기업 부실화(Dish DBS 파산 신청) 신호 지속으로 경기민감 약세 위험 상존.",
+      "summary": "경기민감 약화. ADP 고용 둔화, AI 구조조정 4개월 연속 최고 이유로 경기 불안 가중. JPMorgan CEO 여성 승계자 탈락으로 금융 인사 신호 변화. 다우 구성주 고용·산업·인사 리스크.",
       "sources": [
         {
-          "name": "CNBC",
-          "url": "https://www.cnbc.com/2026/07/01/private-payrolls-rose-by-98000-in-june-less-than-expected-adp-reports.html"
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/jobs/private-sector-hiring-grew-slightly-below-expectations-last-month-adp-report-8b8f5708"
+        },
+        {
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/jobs/layoffs-2026-tracker-784ea69f"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main"
+          "url": "https://www.wsj.com/business/jpmorgan-chase-ceo-search-women-7f593111?mod=rss_markets_main"
         }
       ]
     }
