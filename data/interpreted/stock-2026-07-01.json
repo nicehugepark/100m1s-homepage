@@ -1,6 +1,6 @@
 {
   "date": "2026-07-01",
-  "generated_at": "2026-07-01T09:15:21.803049",
+  "generated_at": "2026-07-01T09:16:38.808150",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -303,7 +303,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "투자경고"
+      "credit_reason": "투자경고",
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "062040",
@@ -325,7 +328,10 @@
       "bullish_streak": 0,
       "bullish_dates": [],
       "news": [],
-      "fallback": true
+      "fallback": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "228340",
@@ -663,7 +669,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "322780",
@@ -996,7 +1005,7 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "neutral",
       "theme_leader": true,
       "hugepark_grade": "관찰"
     },
@@ -1012,8 +1021,17 @@
       "low_price": 25100,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "게임"
+      ],
+      "theme_paths": [
+        {
+          "name": "게임",
+          "path": [
+            "게임"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -1027,32 +1045,32 @@
           "url": "https://www.etnews.com/20260630000422",
           "source": "전자신문",
           "published_at": "2026-06-30T08:41:23",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "국내 1세대 게임사 위메이드가 미르 IP·MMORPG 개발 역량을 앞세워 9200억원 규모 경영권(지분 39.33%)을 중국계 투자 플랫폼 네오펄스에 매각 → 대규모 외부 자본 유입·중국 시장 확장·AI 기반 게임 개발 기대감으로 매수세 폭주 → 공시 다음날(2026-07-01) 시초부터 점상한가(시=고=저=종 25,100원, +29.85%) 직행.",
+          "macro_event": "박관호 위메이드 의장, 보유 지분 39.33%를 중국계 투자 플랫폼 네오펄스에 9200억원 규모로 매각(SPA 체결) — 최대주주 및 경영권 중국 자본으로 이전",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.9,
+          "newzy_virality": 0.75,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.84,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "공시"
         },
         {
           "title": "‘1세대 국내 게임사’ 위메이드, 중국 자본에 팔렸다 [이런국장 저런주식]",
           "url": "https://www.sedaily.com/article/20062007",
           "source": "서울경제",
           "published_at": "2026-06-30T08:31:33",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "국내 1세대 게임사 위메이드가 미르 IP·MMORPG 개발 역량을 앞세워 9200억원 규모 경영권(지분 39.33%)을 중국계 투자 플랫폼 네오펄스에 매각 → 대규모 외부 자본 유입·중국 시장 확장·AI 기반 게임 개발 기대감으로 매수세 폭주 → 공시 다음날(2026-07-01) 시초부터 점상한가(시=고=저=종 25,100원, +29.85%) 직행.",
+          "macro_event": "박관호 위메이드 의장, 보유 지분 39.33%를 중국계 투자 플랫폼 네오펄스에 9200억원 규모로 매각(SPA 체결) — 최대주주 및 경영권 중국 자본으로 이전",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.9,
+          "newzy_virality": 0.75,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.84,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "공시"
         }
       ],
       "fallback": true,
@@ -1267,9 +1285,9 @@
           25100
         ]
       },
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "126340",
@@ -1283,8 +1301,17 @@
       "low_price": 107700,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -1296,16 +1323,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02679766645510256",
           "source": "이데일리",
           "published_at": "2026-06-30T22:53:30",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "비나텍이 시스템 부문 수주를 시작하며 실적 성장이 본격화될 것이라는 증권사(메리츠) 분석 제시 → 본업 매출 확대·실적 개선 기대감에 매수세 집중 → 당일 시초가부터 점상한가(시=고=저=종 107,700원)로 +29.92% 상한가 마감(거래대금 6억원).",
+          "macro_event": "메리츠증권, 비나텍 시스템 수주 개시로 실적 성장 본격화 전망",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.4,
+          "newzy_virality": 0.2,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.32,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -1497,9 +1524,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "123420",
@@ -2132,7 +2159,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bear",
+      "theme_leader": false,
+      "hugepark_grade": "주의"
     },
     {
       "code": "101730",
