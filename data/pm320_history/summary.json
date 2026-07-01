@@ -2,7 +2,7 @@
   "account_mdd_pct": -4.0103,
   "worst_mdd_pct": -4.0103,
   "backtest_detail": {
-    "as_of": "2026-06-30",
+    "as_of": "2026-07-01",
     "table": [
       {
         "date": "2026-04-08",
@@ -653,6 +653,19 @@
         "balance_after": 10247891.32,
         "watered": true,
         "settlement_order": 9
+      },
+      {
+        "date": "2026-06-30",
+        "code": "095610",
+        "name": "테스",
+        "entry_price": 208000,
+        "exit_date": "2026-07-01",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 27327.71,
+        "balance_after": 10275219.03,
+        "watered": false,
+        "settlement_order": 10
       }
     ],
     "equity_curve": [
@@ -845,23 +858,28 @@
         "date": "2026-06-30",
         "balance": 10247891.32,
         "name": "제주반도체"
+      },
+      {
+        "date": "2026-07-01",
+        "balance": 10275219.03,
+        "name": "테스"
       }
     ]
   },
-  "generated_at": "2026-07-01T09:02:16+09:00",
+  "generated_at": "2026-07-01T09:02:27+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
-  "last_settled_date": "2026-06-30",
-  "total_picks": 50,
-  "settled": 50,
+  "last_settled_date": "2026-07-01",
+  "total_picks": 51,
+  "settled": 51,
   "running": 0,
-  "take_profit": 46,
+  "take_profit": 47,
   "expired_loss": 4,
   "expired_gain": 0,
-  "win_rate": 92.0,
+  "win_rate": 92.2,
   "start_balance": 10000000,
   "avg_mdd_pct": null,
-  "total_return_pct": 2.4789,
-  "total_pnl": 247891.32,
-  "final_balance": 10247891.32
+  "total_return_pct": 2.7522,
+  "total_pnl": 275219.03,
+  "final_balance": 10275219.03
 }
