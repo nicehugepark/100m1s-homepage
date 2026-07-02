@@ -2,7 +2,7 @@
   "account_mdd_pct": -4.0103,
   "worst_mdd_pct": -4.0103,
   "backtest_detail": {
-    "as_of": "2026-07-01",
+    "as_of": "2026-07-02",
     "table": [
       {
         "date": "2026-04-08",
@@ -666,6 +666,19 @@
         "balance_after": 10275219.03,
         "watered": false,
         "settlement_order": 10
+      },
+      {
+        "date": "2026-07-01",
+        "code": "007660",
+        "name": "이수페타시스",
+        "entry_price": 132900,
+        "exit_date": "2026-07-02",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 54801.18,
+        "balance_after": 10330020.21,
+        "watered": true,
+        "settlement_order": 11
       }
     ],
     "equity_curve": [
@@ -863,23 +876,28 @@
         "date": "2026-07-01",
         "balance": 10275219.03,
         "name": "테스"
+      },
+      {
+        "date": "2026-07-02",
+        "balance": 10330020.21,
+        "name": "이수페타시스"
       }
     ]
   },
-  "generated_at": "2026-07-02T11:21:52+09:00",
+  "generated_at": "2026-07-02T11:22:03+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
-  "last_settled_date": "2026-07-01",
-  "total_picks": 51,
-  "settled": 51,
+  "last_settled_date": "2026-07-02",
+  "total_picks": 52,
+  "settled": 52,
   "running": 0,
-  "take_profit": 47,
+  "take_profit": 48,
   "expired_loss": 4,
   "expired_gain": 0,
-  "win_rate": 92.2,
+  "win_rate": 92.3,
   "start_balance": 10000000,
   "avg_mdd_pct": null,
-  "total_return_pct": 2.7522,
-  "total_pnl": 275219.03,
-  "final_balance": 10275219.03
+  "total_return_pct": 3.3002,
+  "total_pnl": 330020.21,
+  "final_balance": 10330020.21
 }
