@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 26049.29,
-      "change_pct": 0.04,
+      "point": 25983.79,
+      "change_pct": -0.22,
       "candle": {
         "o": 26047.08,
         "h": 26260.42,
-        "l": 26018.6,
-        "c": 26049.29
+        "l": 25933.22,
+        "c": 25983.79
       },
       "range_240d": {
         "low": 20650.13,
@@ -2032,8 +2032,8 @@
           "date": "2026-07-02",
           "o": 26047.08,
           "h": 26260.42,
-          "l": 26018.6,
-          "c": 26049.29
+          "l": 25933.22,
+          "c": 25983.79
         }
       ],
       "spark": [
@@ -2051,8 +2051,10 @@
         26142.5,
         26060.01,
         26033.41,
-        26072.44,
-        26049.29
+        26049.29,
+        25969.18,
+        25978.52,
+        25983.79
       ],
       "news": {
         "summary": "AI 투자 과열 우려 심화 중. 버시 '말의 시작'이라며 테슬라·반도체주 공매도 확대, 세계 경제학자들도 AI 버블 경고 동시다발. 삼성·SK하이닉스 5200억 달러 칩 설비 투자로 수급 구조조정 신호 반면, 미국의 앤트로픽 미토스 수출통제 해제는 기술 패권 경쟁 심화 반영.",
@@ -2076,13 +2078,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7510.74,
-      "change_pct": 0.37,
+      "point": 7499.38,
+      "change_pct": 0.22,
       "candle": {
         "o": 7495.14,
         "h": 7540.75,
-        "l": 7495.14,
-        "c": 7510.74
+        "l": 7490.26,
+        "c": 7499.38
       },
       "range_240d": {
         "low": 6238.01,
@@ -4105,8 +4107,8 @@
           "date": "2026-07-02",
           "o": 7495.14,
           "h": 7540.75,
-          "l": 7495.14,
-          "c": 7510.74
+          "l": 7490.26,
+          "c": 7499.38
         }
       ],
       "spark": [
@@ -4125,7 +4127,9 @@
         7507.54,
         7510.01,
         7511.89,
-        7510.74
+        7495.35,
+        7499.4,
+        7499.38
       ],
       "news": {
         "summary": "6월 노동시장 둔화신호 부각. ADP 민간고용 9.8만명 증가로 시장 전망 미달, 해고 계획은 53% 감소 중. ISM 제조업 PMI 53.3·소비심리 개선·주택가격 완만한 반등으로 경제 기초 체력 유지. 연준 Warsh 의장 차기 금리 회의 '좋은 가족 싸움'이라 표현하며 정책 방향성 모호함 가중.",
@@ -4149,13 +4153,13 @@
     },
     {
       "name": "DOW",
-      "point": 52747.0,
-      "change_pct": 0.84,
+      "point": 52714.06,
+      "change_pct": 0.78,
       "candle": {
         "o": 52395.22,
         "h": 52805.12,
         "l": 52395.22,
-        "c": 52747.0
+        "c": 52714.06
       },
       "range_240d": {
         "low": 43588.58,
@@ -6179,7 +6183,7 @@
           "o": 52395.22,
           "h": 52805.12,
           "l": 52395.22,
-          "c": 52747.0
+          "c": 52714.06
         }
       ],
       "spark": [
@@ -6198,7 +6202,9 @@
         52644.48,
         52718.13,
         52749.08,
-        52747.0
+        52658.13,
+        52715.08,
+        52714.06
       ],
       "news": {
         "summary": "금융주 상승세 지속 가운데 JP모건 국방·중요산업 투자 확대 선언(Dimon). 노동시장 연하단 신호·제조업 확장세 둔화로 경기민감주 방어적 흐름. USMCA 갱신 협상 답보로 무역 불확실성 고조, 금융·방위업 재편 시나리오 부각.",
@@ -6223,92 +6229,89 @@
   ],
   "news_chips": [
     {
-      "summary": "유로존 실업률이 사상 최저 수준을 기록하면서 중동 분쟁 속에도 노동시장 회복력이 지속되고 있다.",
+      "summary": "캐나다 제조업 PMI가 53.0으로 상승해 3개월 연속 확장을 기록했다.",
       "source": "WSJ",
-      "url": "https://www.wsj.com/economy/central-banking/eurozone-unemployment-falls-back-to-record-low-1b0e6219",
-      "published_ts": 1782989820.0,
+      "url": "https://www.wsj.com/economy/canada-factory-sector-expands-in-june-on-rising-output-new-orders-d1e90ac6",
+      "published_ts": 1783003260.0,
       "impact_high": true
     },
     {
-      "summary": "유럽의 폭염으로 중국 에어컨 수입이 사상 최고치를 기록하면서 EU의 대중국 무역 수지 개선 정책이 현실적 제약에 직면했다.",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/world/china/europe-learns-its-hard-to-start-a-trade-war-with-china-during-a-heat-wave-a2480fdd",
-      "published_ts": 1782961200.0,
+      "summary": "미국 6월 일자리 증가가 5만7000명으로 예상치를 크게 하회했으며 실업률은 4.2%로 하락했다.",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html",
+      "published_ts": 1782998788.0,
       "impact_high": true
     },
     {
-      "summary": "한국의 6월 물가상승률이 30개월 만에 최고치를 기록하면서 한은의 추가 기준금리 인상 압력이 높아지고 있다.",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/economy/south-korea-inflation-accelerates-to-30-month-high-in-june-e34f9505",
-      "published_ts": 1782950760.0,
-      "impact_high": true
-    },
-    {
-      "summary": "연준 의장이 다음 정책회의에서의 금리 경로를 명시하지 않고 '좋은 가족 논쟁'이라고 표현하면서 연준의 정책 입장 불확실성이 가중되었다.",
+      "summary": "연준 의장이 금리 결정 회의의 의견 불일치를 언급하며 인상 여부를 보류하는 입장을 암시했다.",
       "source": "WSJ",
       "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876",
       "published_ts": 1782932040.0,
       "impact_high": true
     },
     {
-      "summary": "미국 6월 고용이 예상의 절반인 5만7,000명에 그쳤고 실업률은 4.2%로 하락했으나, 약한 노동시장 데이터에도 주가지수는 상승 마감했다.",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/investing/blue-owl-investors-ask-to-withdraw-4-7-billion-from-flagship-funds-43c440cf?mod=rss_markets_main",
-      "published_ts": 1782997020.0,
+      "summary": "구글이 EU 반독점 소송에 패배하여 역대 최대 규모인 약 7.3조원의 과징금이 확정됐다.",
+      "source": "한경",
+      "url": "https://www.hankyung.com/article/2026070230321",
+      "published_ts": 1783000205.0,
       "impact_high": false
     },
     {
-      "summary": "연준의 제한된 가이던스로 인해 금리 기대의 불확실성이 커지면서 모기지 채권에 상승 프리미엄이 반영되고 있다.",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/investing/blue-owl-investors-ask-to-withdraw-4-7-billion-from-flagship-funds-43c440cf?mod=rss_markets_main",
-      "published_ts": 1782997020.0,
+      "summary": "유럽의 기록적 열파로 중국산 에어컨 수입이 급증하면서 EU의 중국 무역 재조정 정책과 현실의 괴리가 드러났다.",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/07/02/european-union-china-meeting-summer-heatwave-trade-imbalance-tariffs-.html",
+      "published_ts": 1782996729.0,
       "impact_high": false
     },
     {
-      "summary": "러시아의 우크라이나 수도 키이우에 대한 대규모 미사일·드론 공습으로 인한 에너지·곡물 공급망 차질이 글로벌 원자재 가격 상승을 견인하고 있다.",
+      "summary": "연준 금리 인하 기대감이 부각되면서 미국 증시가 상승으로 마감했다.",
       "source": "WSJ",
-      "url": "https://www.wsj.com/world/europe/russia-ukraine-strikes-kyiv-9f76c67d",
-      "published_ts": 1782987180.0,
+      "url": "https://www.wsj.com/livecoverage/june-jobs-report-stock-market-07-02-2026?mod=rss_markets_main",
+      "published_ts": 1782980156.0,
       "impact_high": false
     },
     {
-      "summary": "유로존 물가가 2.8%로 하락하면서 에너지 충격이 완화되고 있으며, ECB의 다음 회의에서 금리 동결 가능성이 높아졌다.",
+      "summary": "유로존 인플레이션이 2.8%로 하락하여 ECB의 금리 동결 가능성을 높였다.",
       "source": "WSJ",
       "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670",
       "published_ts": 1782902760.0,
       "impact_high": true
     },
     {
-      "summary": "삼성과 SK하이닉스가 전 세계 메모리칩 부족 대응을 위해 한국 내 반도체 공장에 총 5200억 달러를 투자하기로 결정했다.",
+      "summary": "트럼프 정부가 이란과의 협상을 8월 이후로 연장하기로 하여 중동 긴장 완화와 유가 안정 요인으로 작용할 것으로 예상된다.",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/world/middle-east/trump-briefed-on-all-out-war-options-in-iran-but-opts-to-stick-with-talks-98304b5b",
+      "published_ts": 1782865080.0,
+      "impact_high": true
+    },
+    {
+      "summary": "삼성전자와 SK하이닉스가 한국 반도체 공장에 520억 달러를 투자하여 글로벌 메모리칩 공급을 확대한다.",
       "source": "WSJ",
       "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2",
       "published_ts": 1782725040.0,
       "impact_high": false
     },
     {
-      "summary": "중국이 일본의 방위·반도체 연구기관 4곳과 기업 20여 곳을 이중용도 물품 수출통제 목록에 추가하면서 반도체 공급망 리스크가 확산되고 있다.",
+      "summary": "중국이 일본의 반도체·방산업체를 수출 제한 대상에 추가하면서 공급망 긴장이 고조됐다.",
       "source": "CNBC",
       "url": "https://www.cnbc.com/2026/06/29/china-japan-export-controls-watch-list-defense-entities.html",
       "published_ts": 1782708385.0,
       "impact_high": false
     }
   ],
-  "_article_sig": "d0b231d5aa0104c54e405e8686b52ac9d3909f1051f890e26f7bd53ce0eb2fb5",
+  "_article_sig": "cb17c07082baf5fa0c69fcd8fb723577499ed6b878c6a6ec164821ba675dbfb8",
   "built_at_kst": "2026-07-02T07:00:47.806248+09:00",
   "futures": {
-    "as_of_kst": "2026-07-02T23:40:03.409500+09:00",
+    "as_of_kst": "2026-07-02T23:50:03.309790+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7559.75,
-        "change_pct": 0.22,
+        "point": 7563.75,
+        "change_pct": 0.27,
         "spark": [
           7536.0,
-          7541.0,
-          7542.5,
-          7543.0,
           7541.75,
           7546.5,
           7547.25,
@@ -6345,21 +6348,24 @@
           7587.75,
           7577.25,
           7559.75,
-          7559.75
+          7563.5,
+          7565.25,
+          7549.25,
+          7563.75
         ],
         "candle": {
           "o": 7536.0,
           "h": 7593.75,
           "l": 7520.25,
-          "c": 7560.75
+          "c": 7564.75
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 20.69,
-          "high_change_pct": -0.83
+          "low_change_pct": 20.76,
+          "high_change_pct": -0.77
         },
         "daily_expanded": [
           {
@@ -8383,25 +8389,25 @@
             "o": 7536.0,
             "h": 7593.75,
             "l": 7520.25,
-            "c": 7560.75,
-            "v": 524885
+            "c": 7564.75,
+            "v": 582740
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "6월 일자리 증가 5만7000명으로 예상 11만5000명 크게 하회, 실업률 4.2% 기록 — 노동시장 약화 신호로 금리 인하 기대 반영해 선물 강세. 유로존·스위스 인플레이션 둔화로 글로벌 통화정책 완화 압력 증대, ECB·연준 정책 기조 전환 임박. 연준 금리 인상 여부 논쟁 ('가족 싸움') 속 시장 변동성 고조.",
+          "summary": "미국 고용 57K(예상 115K) 급감 → Fed 금리 인상 우려 완화, 선물 상승 전환. 무역협정 불명확(USMCA 갱신 지연) 속 경기신호 혼합.",
           "sources": [
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6"
+            },
             {
               "name": "CNBC",
               "url": "https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html"
             },
             {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876"
-            },
-            {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670"
+              "name": "WSJ",
+              "url": "https://www.wsj.com/world/americas/u-s-plunges-trade-pact-with-canada-and-mexico-into-doubt-4ee87167"
             }
           ]
         }
@@ -8409,13 +8415,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 29903.0,
-        "change_pct": -0.64,
+        "point": 29918.5,
+        "change_pct": -0.58,
         "spark": [
           30089.75,
-          29984.5,
-          30003.75,
-          30005.75,
           29995.25,
           30036.25,
           30057.5,
@@ -8452,21 +8455,24 @@
           30156.0,
           30079.75,
           29935.0,
-          29903.0
+          29903.0,
+          29923.25,
+          29809.5,
+          29918.5
         ],
         "candle": {
           "o": 30089.75,
           "h": 30320.0,
           "l": 29826.25,
-          "c": 29925.75
+          "c": 29918.5
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 30.77,
-          "high_change_pct": -2.56
+          "low_change_pct": 30.74,
+          "high_change_pct": -2.59
         },
         "daily_expanded": [
           {
@@ -10490,25 +10496,21 @@
             "o": 30089.75,
             "h": 30320.0,
             "l": 29826.25,
-            "c": 29925.75,
-            "v": 262953
+            "c": 29918.5,
+            "v": 284185
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "구글 EU 반독점 소송 패소로 빅테크 규제 강화 신호 심화. 반도체 투자 확대(삼성·SK 하이닉스 520억 달러 공동 투자) 속 메모리칩 수요 강세, 클라우드·AI 펀딩 열풍 지속 중. 벤처 기업 상장 열기(AOL 오너 Bending Spoons 40% 점프) vs PE 유동성 압박(Blue Owl 인출 47억 달러) 양극화.",
+          "summary": "반도체 공급 강화(Samsung/SK Hynix 5,200억달러 투자) 신호에 칩 관련주 강세. 미국 고용 약세로 금리 인상 우려 완화, 기술주 매수 동력. 선물 상승 리드.",
           "sources": [
             {
-              "name": "한경국제",
-              "url": "https://www.hankyung.com/article/2026070230321"
-            },
-            {
-              "name": "WSJ세계",
+              "name": "WSJ",
               "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/finance/stocks/aol-owner-to-go-public-at-over-18-billion-valuation-d00f302c?mod=rss_markets_main"
+              "url": "https://www.wsj.com/livecoverage/june-jobs-report-stock-market-07-02-2026?mod=rss_markets_main"
             }
           ]
         }
@@ -10516,12 +10518,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52968.0,
-        "change_pct": 0.57,
+        "point": 53093.0,
+        "change_pct": 0.81,
         "spark": [
           52640.0,
-          52762.0,
-          52757.0,
           52754.0,
           52766.0,
           52754.0,
@@ -10559,20 +10559,22 @@
           53036.0,
           52970.0,
           53049.0,
-          52968.0
+          53083.0,
+          53000.0,
+          53093.0
         ],
         "candle": {
           "o": 52640.0,
           "h": 53141.0,
           "l": 52551.0,
-          "c": 52968.0
+          "c": 53094.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52968.0,
+          "high": 53094.0,
           "low_date": "2025-08-01",
           "high_date": "2026-07-02",
-          "low_change_pct": 21.18,
+          "low_change_pct": 21.47,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12597,24 +12599,24 @@
             "o": 52640.0,
             "h": 53141.0,
             "l": 52551.0,
-            "c": 52968.0,
-            "v": 44026
+            "c": 53094.0,
+            "v": 46643
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "러시아 우크라 미사일·드론 대규모 공습 심화, 트럼프 이란 핵협상 장기화 추정 — 지정학 프리미엄 + 방위산업 수혜 양면. JPMorgan 국방·핵심산업 투자 공언으로 금융-정부 협력 강화 신호. 미국-캐나다-멕시코 무역협정 연장 불확실로 경기민감주·관세 리스크 고조.",
+          "summary": "미국 고용 약세(57K) → 경기민감 우려 확대. 무역협정 불명확(USMCA) 부담 심화. 캐나다 제조업 소폭 확장(PMI 53.0)도 회복력 약한 신호, 선플 혼합 신호.",
           "sources": [
             {
-              "name": "한경국제",
-              "url": "https://www.hankyung.com/article/2026070230077"
+              "name": "WSJ",
+              "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6"
             },
             {
               "name": "WSJ",
-              "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main"
+              "url": "https://www.wsj.com/economy/canada-factory-sector-expands-in-june-on-rising-output-new-orders-d1e90ac6"
             },
             {
-              "name": "WSJ세계",
+              "name": "WSJ",
               "url": "https://www.wsj.com/world/americas/u-s-plunges-trade-pact-with-canada-and-mexico-into-doubt-4ee87167"
             }
           ]
@@ -12623,55 +12625,51 @@
     ]
   },
   "regular_open": true,
-  "intraday_refreshed_kst": "2026-07-02T23:40:07.206568+09:00",
+  "intraday_refreshed_kst": "2026-07-02T23:52:20.299118+09:00",
   "_futures_news": {
-    "S&P500": {
-      "summary": "6월 일자리 증가 5만7000명으로 예상 11만5000명 크게 하회, 실업률 4.2% 기록 — 노동시장 약화 신호로 금리 인하 기대 반영해 선물 강세. 유로존·스위스 인플레이션 둔화로 글로벌 통화정책 완화 압력 증대, ECB·연준 정책 기조 전환 임박. 연준 금리 인상 여부 논쟁 ('가족 싸움') 속 시장 변동성 고조.",
+    "NASDAQ": {
+      "summary": "반도체 공급 강화(Samsung/SK Hynix 5,200억달러 투자) 신호에 칩 관련주 강세. 미국 고용 약세로 금리 인상 우려 완화, 기술주 매수 동력. 선물 상승 리드.",
       "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/livecoverage/june-jobs-report-stock-market-07-02-2026?mod=rss_markets_main"
+        }
+      ]
+    },
+    "S&P500": {
+      "summary": "미국 고용 57K(예상 115K) 급감 → Fed 금리 인상 우려 완화, 선물 상승 전환. 무역협정 불명확(USMCA 갱신 지연) 속 경기신호 혼합.",
+      "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6"
+        },
         {
           "name": "CNBC",
           "url": "https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html"
         },
         {
-          "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876"
-        },
-        {
-          "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670"
-        }
-      ]
-    },
-    "NASDAQ": {
-      "summary": "구글 EU 반독점 소송 패소로 빅테크 규제 강화 신호 심화. 반도체 투자 확대(삼성·SK 하이닉스 520억 달러 공동 투자) 속 메모리칩 수요 강세, 클라우드·AI 펀딩 열풍 지속 중. 벤처 기업 상장 열기(AOL 오너 Bending Spoons 40% 점프) vs PE 유동성 압박(Blue Owl 인출 47억 달러) 양극화.",
-      "sources": [
-        {
-          "name": "한경국제",
-          "url": "https://www.hankyung.com/article/2026070230321"
-        },
-        {
-          "name": "WSJ세계",
-          "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
-        },
-        {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/stocks/aol-owner-to-go-public-at-over-18-billion-valuation-d00f302c?mod=rss_markets_main"
+          "url": "https://www.wsj.com/world/americas/u-s-plunges-trade-pact-with-canada-and-mexico-into-doubt-4ee87167"
         }
       ]
     },
     "DOW": {
-      "summary": "러시아 우크라 미사일·드론 대규모 공습 심화, 트럼프 이란 핵협상 장기화 추정 — 지정학 프리미엄 + 방위산업 수혜 양면. JPMorgan 국방·핵심산업 투자 공언으로 금융-정부 협력 강화 신호. 미국-캐나다-멕시코 무역협정 연장 불확실로 경기민감주·관세 리스크 고조.",
+      "summary": "미국 고용 약세(57K) → 경기민감 우려 확대. 무역협정 불명확(USMCA) 부담 심화. 캐나다 제조업 소폭 확장(PMI 53.0)도 회복력 약한 신호, 선플 혼합 신호.",
       "sources": [
         {
-          "name": "한경국제",
-          "url": "https://www.hankyung.com/article/2026070230077"
+          "name": "WSJ",
+          "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6"
         },
         {
           "name": "WSJ",
-          "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main"
+          "url": "https://www.wsj.com/economy/canada-factory-sector-expands-in-june-on-rising-output-new-orders-d1e90ac6"
         },
         {
-          "name": "WSJ세계",
+          "name": "WSJ",
           "url": "https://www.wsj.com/world/americas/u-s-plunges-trade-pact-with-canada-and-mexico-into-doubt-4ee87167"
         }
       ]
