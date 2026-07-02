@@ -3,13 +3,13 @@
   "indices": [
     {
       "name": "NASDAQ",
-      "point": 25697.46,
-      "change_pct": -1.32,
+      "point": 25689.84,
+      "change_pct": -1.34,
       "candle": {
         "o": 26047.08,
         "h": 26260.42,
         "l": 25651.95,
-        "c": 25697.46
+        "c": 25689.84
       },
       "range_240d": {
         "low": 20650.13,
@@ -2033,13 +2033,11 @@
           "o": 26047.08,
           "h": 26260.42,
           "l": 25651.95,
-          "c": 25697.46
+          "c": 25689.84
         }
       ],
       "spark": [
         26047.08,
-        26228.45,
-        26242.5,
         26193.9,
         26225.61,
         26193.91,
@@ -2077,7 +2075,9 @@
         25714.24,
         25663.18,
         25697.63,
-        25697.46
+        25701.53,
+        25689.31,
+        25689.84
       ],
       "news": {
         "summary": "AI 투자 과열 우려 심화 중. 버시 '말의 시작'이라며 테슬라·반도체주 공매도 확대, 세계 경제학자들도 AI 버블 경고 동시다발. 삼성·SK하이닉스 5200억 달러 칩 설비 투자로 수급 구조조정 신호 반면, 미국의 앤트로픽 미토스 수출통제 해제는 기술 패권 경쟁 심화 반영.",
@@ -2101,13 +2101,13 @@
     },
     {
       "name": "S&P500",
-      "point": 7442.37,
-      "change_pct": -0.55,
+      "point": 7441.61,
+      "change_pct": -0.56,
       "candle": {
         "o": 7495.14,
         "h": 7540.75,
         "l": 7431.7,
-        "c": 7442.37
+        "c": 7441.61
       },
       "range_240d": {
         "low": 6238.01,
@@ -4131,13 +4131,11 @@
           "o": 7495.14,
           "h": 7540.75,
           "l": 7431.7,
-          "c": 7442.37
+          "c": 7441.61
         }
       ],
       "spark": [
         7495.14,
-        7534.99,
-        7535.75,
         7530.53,
         7537.47,
         7534.82,
@@ -4175,7 +4173,9 @@
         7448.71,
         7435.86,
         7442.01,
-        7442.37
+        7444.21,
+        7441.39,
+        7441.61
       ],
       "news": {
         "summary": "6월 노동시장 둔화신호 부각. ADP 민간고용 9.8만명 증가로 시장 전망 미달, 해고 계획은 53% 감소 중. ISM 제조업 PMI 53.3·소비심리 개선·주택가격 완만한 반등으로 경제 기초 체력 유지. 연준 Warsh 의장 차기 금리 회의 '좋은 가족 싸움'이라 표현하며 정책 방향성 모호함 가중.",
@@ -4199,13 +4199,13 @@
     },
     {
       "name": "DOW",
-      "point": 52544.01,
-      "change_pct": 0.46,
+      "point": 52548.52,
+      "change_pct": 0.47,
       "candle": {
         "o": 52395.22,
         "h": 52805.12,
         "l": 52395.22,
-        "c": 52544.01
+        "c": 52548.52
       },
       "range_240d": {
         "low": 43588.58,
@@ -6229,13 +6229,11 @@
           "o": 52395.22,
           "h": 52805.12,
           "l": 52395.22,
-          "c": 52544.01
+          "c": 52548.52
         }
       ],
       "spark": [
         52395.22,
-        52696.48,
-        52623.27,
         52669.39,
         52752.09,
         52772.69,
@@ -6273,7 +6271,9 @@
         52637.31,
         52544.71,
         52544.86,
-        52544.01
+        52569.49,
+        52549.75,
+        52548.52
       ],
       "news": {
         "summary": "금융주 상승세 지속 가운데 JP모건 국방·중요산업 투자 확대 선언(Dimon). 노동시장 연하단 신호·제조업 확장세 둔화로 경기민감주 방어적 흐름. USMCA 갱신 협상 답보로 무역 불확실성 고조, 금융·방위업 재편 시나리오 부각.",
@@ -6298,138 +6298,139 @@
   ],
   "news_chips": [
     {
-      "summary": "미국이 호르무즈 해협 개방을 위해 이란에 현금 제공을 제안했으나 이란은 독자 통행료 요구로 협상 교착 상태",
+      "summary": "노동시장 약화로 경제활동 인구가 50년 만의 최저 수준으로 하락하며 고용 시장의 악화 신호 확대",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/07/02/job-seekers-giving-up-labor-force-participation-rate-falls-to-lowest-in-50-years-outside-of-covid-era.html",
+      "published_ts": 1783012543.0,
+      "impact_high": true
+    },
+    {
+      "summary": "6월 미국 비농업 고용이 5.7만 명으로 예상(11.5만)을 크게 하회, 실업률은 4.2%로 하락했으나 노동력 감소가 원인인 것으로 지적됨",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html",
+      "published_ts": 1783011027.0,
+      "impact_high": true
+    },
+    {
+      "summary": "러시아가 키이우에 탄도미사일과 드론을 집중 공격해 최대 규모 피해를 입혔으며 에너지 인프라 손상으로 공급망 긴장 고조",
+      "source": "WSJ",
+      "url": "https://www.wsj.com/world/europe/russia-ukraine-strikes-kyiv-9f76c67d",
+      "published_ts": 1783008660.0,
+      "impact_high": true
+    },
+    {
+      "summary": "미국의 호르무즈 해협 개방 보상 제안에 이란이 독자적 통행료 징수 요구로 맞서며 원유 공급 리스크 상존",
       "source": "WSJ",
       "url": "https://www.wsj.com/world/middle-east/u-s-dangles-rewards-for-opening-the-strait-of-hormuz-iran-isnt-budging-07d99135",
       "published_ts": 1783005360.0,
       "impact_high": true
     },
     {
-      "summary": "유럽이 중국 무역 불균형에 대응하는 와중에도 이상 고온으로 중국 에어컨 수입이 급증하면서 구조적 의존 심화",
+      "summary": "연준 의장 워시가 다가올 금리 인상 여부 논쟁에 신중한 입장을 보이며 통화정책 경로 불확실성 지속",
       "source": "WSJ",
-      "url": "https://www.wsj.com/world/china/europe-learns-its-hard-to-start-a-trade-war-with-china-during-a-heat-wave-a2480fdd",
-      "published_ts": 1782961200.0,
-      "impact_high": true
-    },
-    {
-      "summary": "연준 의장이 금리 인상 방향에 대한 구체적 입장을 유보하면서 차기 회의에서 금리 논의 격화 예상",
-      "source": "WSJ경제",
       "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876",
       "published_ts": 1782932040.0,
       "impact_high": true
     },
     {
-      "summary": "미국 6월 고용 증가가 예상치 11.5만명의 절반 수준인 5.7만명에 그쳐 경기 둔화 우려 확산",
-      "source": "WSJ경제",
-      "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6",
-      "published_ts": 1783005000.0,
-      "impact_high": false
-    },
-    {
-      "summary": "러시아가 우크라이나 수도에 대규모 미사일·드론 공습을 감행해 17명 이상 사망, 에너지 시설 피해로 공급 차질 심화",
+      "summary": "다우지수는 고용 부진 뉴스에 반등했으나 기술주 약세 속에 나스닥과 S&P500은 하락 마감",
       "source": "WSJ",
-      "url": "https://www.wsj.com/world/europe/russia-ukraine-strikes-kyiv-9f76c67d",
-      "published_ts": 1782987180.0,
+      "url": "https://www.wsj.com/economy/central-banking/global-ai-selloff-extends-as-traders-ready-for-jobs-day-40ae7d78",
+      "published_ts": 1783008840.0,
       "impact_high": false
     },
     {
-      "summary": "약한 고용 지표 이후 다우지수는 상승했으나 나스닥은 기술주 약세로 하락 마감",
+      "summary": "유로존 6월 인플레이션이 2.8%로 하락하며 에너지 충격 완화 신호로 ECB의 추가 금리 인상 가능성 낮아짐",
       "source": "WSJ",
-      "url": "https://www.wsj.com/livecoverage/june-jobs-report-stock-market-07-02-2026?mod=rss_markets_main",
-      "published_ts": 1782980156.0,
-      "impact_high": false
+      "url": "https://www.wsj.com/economy/global/eurozone-inflation-declines-as-energy-shock-fades-in-relief-for-ecb-0f7d7670",
+      "published_ts": 1782902760.0,
+      "impact_high": true
     },
     {
-      "summary": "일본 엔화가 40년 신저까지 하락하면서 관광 경쟁력은 높아졌으나 재무성의 환율 개입 신호 가능성 주목",
+      "summary": "사우디가 호르무즈 해협 개방 외교에 반발하며 미국과의 관계 균열 심화로 원유 공급 정책의 불확실성 증대",
       "source": "WSJ",
-      "url": "https://www.wsj.com/finance/currencies/japanese-yen-falls-to-40-year-low-pleasing-tourists-but-worrying-tokyo-3903f1e5",
-      "published_ts": 1782817920.0,
+      "url": "https://www.wsj.com/world/middle-east/saudi-arabia-us-relationship-iran-war-ca0f31a0",
+      "published_ts": 1782864000.0,
       "impact_high": false
     },
     {
-      "summary": "JPMorgan이 국방산업 및 중요 인프라 섹터에 자기자본을 투입하며 미국 방위력 강화 수요에 선제 대응",
-      "source": "WSJ",
-      "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main",
-      "published_ts": 1782781200.0,
-      "impact_high": false
-    },
-    {
-      "summary": "삼성·SK하이닉스가 메모리칩 수요 급증을 대비해 한국 내 반도체 공장에 5,200억 달러 규모 투자 결정",
+      "summary": "삼성·SK하이닉스가 글로벌 메모리칩 공급 부족 대응으로 한국 내 반도체 설비에 520억 달러 대규모 투자 발표",
       "source": "WSJ",
       "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2",
       "published_ts": 1782725040.0,
       "impact_high": false
     },
     {
-      "summary": "중국이 일본 방위산업 연구기관 및 기업 20개사를 수출 제한 리스트에 추가하며 첨단 기술 공급망 긴장 고조",
+      "summary": "중국이 일본 방위 연구소와 드론·반도체 관련 기업에 수출제재를 확대하며 글로벌 반도체 공급망 긴장 심화",
       "source": "WSJ",
       "url": "https://www.wsj.com/world/asia/china-adds-more-japanese-entities-to-export-control-list-d014de65",
       "published_ts": 1782707040.0,
       "impact_high": true
     }
   ],
-  "_article_sig": "c7da2e06d12a341cad8708813de42557167a50d5537c980c02732985ae9ec52f",
+  "_article_sig": "d795167a82f217be3ba47316e63e739ebaeb9903b3ab50c615c3f15f59991cb1",
   "built_at_kst": "2026-07-02T07:00:47.806248+09:00",
   "regular_open": true,
   "_futures_news": {
     "S&P500": {
-      "summary": "6월 美 비농업 고용 5.7만 명(예상 11.5만) 크게 미달. 실업률 4.2% 하락에도 고용 둔화 신호 강화. 연준 금리 인상 vs 인하 논쟁 심화. 유로존 인플레 2.8% 낙저로 ECB 동결 가능성 상승.",
+      "summary": "6월 고용 57,000명(예상 115,000명) 부진 속 실업률 4.2% 하락도 노동력 이탈이 원인. 글로벌 인플레 진정(유로존 2.8%, 스위스 0.5%) 추세로 매크로 불안정성 심화 신호.",
       "sources": [
         {
           "name": "CNBC",
           "url": "https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html"
         },
         {
-          "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6"
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/07/02/job-seekers-giving-up-labor-force-participation-rate-falls-to-lowest-in-50-years-outside-of-covid-era.html"
+        }
+      ]
+    },
+    "DOW": {
+      "summary": "고용 부진에도 다우지수 소폭 반등세. 캐나다 제조업 구매관리자지수 53.0 상승 유지, JPMorgan 등 방위산업 투자 확대로 대형 산업주·금융주 방어심 작용.",
+      "sources": [
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/livecoverage/june-jobs-report-stock-market-07-02-2026?mod=rss_markets_main"
         },
         {
           "name": "WSJ경제",
-          "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876"
+          "url": "https://www.wsj.com/economy/canada-factory-sector-expands-in-june-on-rising-output-new-orders-d1e90ac6"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main"
         }
       ]
     },
     "NASDAQ": {
-      "summary": "삼성·SK하이닉스 메모리칩 520억 달러 추가 투자 발표로 반도체 수요 강세 신호 강화. 글로벌 칩 부족 심화 속 대형 기업 팹 확충 경쟁 가속. 구글 EU 반독점 소송 패소·과징금 7.3조 원 확정으로 빅테크 규제 리스크 부상.",
+      "summary": "기술주 약세 심화 속 나스닥100 선물 약세 신호. 다만 삼성·SK하이닉스 520억달러 칩 생산시설 투자, AOL 보유사 IPO 40% 상승 등으로 부분 견조 흐름.",
       "sources": [
+        {
+          "name": "WSJ경제",
+          "url": "https://www.wsj.com/economy/central-banking/global-ai-selloff-extends-as-traders-ready-for-jobs-day-40ae7d78"
+        },
         {
           "name": "WSJ세계",
           "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
         },
         {
-          "name": "한경국제",
-          "url": "https://www.hankyung.com/article/2026070230321"
-        }
-      ]
-    },
-    "DOW": {
-      "summary": "트럼프 나토 압박·이란 협상 장기화로 지정학 리스크 상존. 러시아 우크라이나 미사일 공습·中 일본 수출 규제 확대로 경기민감 기업 수출악화 우려. 美 주택가격 연간 0.8% 상승에도 부동산 시장 소강세 지속.",
-      "sources": [
-        {
-          "name": "WSJ세계",
-          "url": "https://www.wsj.com/world/trump-loyalty-demands-set-stage-for-tense-nato-summit-51dd5a6e"
-        },
-        {
-          "name": "CNBC",
-          "url": "https://www.cnbc.com/2026/06/29/china-japan-export-controls-watch-list-defense-entities.html"
+          "name": "WSJ",
+          "url": "https://www.wsj.com/finance/stocks/aol-owner-to-go-public-at-over-18-billion-valuation-d00f302c?mod=rss_markets_main"
         }
       ]
     }
   },
   "futures": {
-    "as_of_kst": "2026-07-03T02:10:03.055812+09:00",
+    "as_of_kst": "2026-07-03T02:20:06.145823+09:00",
     "session_open": true,
     "futures": [
       {
         "name": "S&P500 선물",
         "label_note": "S&P500 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 7501.5,
-        "change_pct": -0.56,
+        "point": 7495.5,
+        "change_pct": -0.64,
         "spark": [
           7536.0,
-          7585.25,
-          7585.75,
-          7588.75,
           7588.75,
           7583.75,
           7591.0,
@@ -6466,21 +6467,24 @@
           7509.75,
           7509.0,
           7501.5,
-          7501.5
+          7488.25,
+          7495.0,
+          7497.5,
+          7495.5
         ],
         "candle": {
           "o": 7536.0,
           "h": 7593.75,
-          "l": 7498.0,
-          "c": 7502.25
+          "l": 7483.25,
+          "c": 7495.5
         },
         "range_240d": {
           "low": 6264.5,
           "high": 7623.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 19.76,
-          "high_change_pct": -1.59
+          "low_change_pct": 19.65,
+          "high_change_pct": -1.68
         },
         "daily_expanded": [
           {
@@ -8503,26 +8507,22 @@
             "date": "2026-07-02",
             "o": 7536.0,
             "h": 7593.75,
-            "l": 7498.0,
-            "c": 7502.25,
-            "v": 1116136
+            "l": 7483.25,
+            "c": 7495.5,
+            "v": 1156473
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "6월 美 비농업 고용 5.7만 명(예상 11.5만) 크게 미달. 실업률 4.2% 하락에도 고용 둔화 신호 강화. 연준 금리 인상 vs 인하 논쟁 심화. 유로존 인플레 2.8% 낙저로 ECB 동결 가능성 상승.",
+          "summary": "6월 고용 57,000명(예상 115,000명) 부진 속 실업률 4.2% 하락도 노동력 이탈이 원인. 글로벌 인플레 진정(유로존 2.8%, 스위스 0.5%) 추세로 매크로 불안정성 심화 신호.",
           "sources": [
             {
               "name": "CNBC",
               "url": "https://www.cnbc.com/2026/07/02/jobs-report-june-2026-.html"
             },
             {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/jobs/june-jobs-report-unemployment-6c9540b6"
-            },
-            {
-              "name": "WSJ경제",
-              "url": "https://www.wsj.com/economy/central-banking/interest-rates-kevin-warsh-de137876"
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2026/07/02/job-seekers-giving-up-labor-force-participation-rate-falls-to-lowest-in-50-years-outside-of-covid-era.html"
             }
           ]
         }
@@ -8530,12 +8530,10 @@
       {
         "name": "나스닥100 선물",
         "label_note": "나스닥100 E-mini 선물 (나스닥종합과 다른 100종목 기준)",
-        "point": 29465.25,
-        "change_pct": -2.09,
+        "point": 29451.5,
+        "change_pct": -2.14,
         "spark": [
           30089.75,
-          30233.25,
-          30257.5,
           30259.75,
           30182.25,
           30215.5,
@@ -8573,21 +8571,23 @@
           29500.25,
           29462.25,
           29411.0,
-          29465.25
+          29447.5,
+          29454.0,
+          29451.5
         ],
         "candle": {
           "o": 30089.75,
           "h": 30320.0,
-          "l": 29434.0,
-          "c": 29465.25
+          "l": 29387.5,
+          "c": 29451.5
         },
         "range_240d": {
           "low": 22883.75,
           "high": 30712.75,
           "low_date": "2025-08-01",
           "high_date": "2026-06-02",
-          "low_change_pct": 28.76,
-          "high_change_pct": -4.06
+          "low_change_pct": 28.7,
+          "high_change_pct": -4.11
         },
         "daily_expanded": [
           {
@@ -10610,22 +10610,26 @@
             "date": "2026-07-02",
             "o": 30089.75,
             "h": 30320.0,
-            "l": 29434.0,
-            "c": 29465.25,
-            "v": 454508
+            "l": 29387.5,
+            "c": 29451.5,
+            "v": 466868
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "삼성·SK하이닉스 메모리칩 520억 달러 추가 투자 발표로 반도체 수요 강세 신호 강화. 글로벌 칩 부족 심화 속 대형 기업 팹 확충 경쟁 가속. 구글 EU 반독점 소송 패소·과징금 7.3조 원 확정으로 빅테크 규제 리스크 부상.",
+          "summary": "기술주 약세 심화 속 나스닥100 선물 약세 신호. 다만 삼성·SK하이닉스 520억달러 칩 생산시설 투자, AOL 보유사 IPO 40% 상승 등으로 부분 견조 흐름.",
           "sources": [
+            {
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/central-banking/global-ai-selloff-extends-as-traders-ready-for-jobs-day-40ae7d78"
+            },
             {
               "name": "WSJ세계",
               "url": "https://www.wsj.com/tech/samsung-sk-hynix-to-spend-520-billion-on-chip-plants-in-south-korea-7d50aab2"
             },
             {
-              "name": "한경국제",
-              "url": "https://www.hankyung.com/article/2026070230321"
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/stocks/aol-owner-to-go-public-at-over-18-billion-valuation-d00f302c?mod=rss_markets_main"
             }
           ]
         }
@@ -10633,11 +10637,10 @@
       {
         "name": "다우 선물",
         "label_note": "다우 E-mini 선물 (현물 지수와 별개 기초자산)",
-        "point": 52956.0,
-        "change_pct": 0.55,
+        "point": 52869.0,
+        "change_pct": 0.38,
         "spark": [
           52640.0,
-          53046.0,
           53032.0,
           52958.0,
           53000.0,
@@ -10676,20 +10679,21 @@
           53003.0,
           52958.0,
           52858.0,
-          52956.0
+          52866.0,
+          52869.0
         ],
         "candle": {
           "o": 52640.0,
           "h": 53141.0,
           "l": 52551.0,
-          "c": 52956.0
+          "c": 52861.0
         },
         "range_240d": {
           "low": 43710.0,
-          "high": 52956.0,
+          "high": 52861.0,
           "low_date": "2025-08-01",
           "high_date": "2026-07-02",
-          "low_change_pct": 21.15,
+          "low_change_pct": 20.94,
           "high_change_pct": 0.0
         },
         "daily_expanded": [
@@ -12714,26 +12718,30 @@
             "o": 52640.0,
             "h": 53141.0,
             "l": 52551.0,
-            "c": 52956.0,
-            "v": 69297
+            "c": 52861.0,
+            "v": 71147
           }
         ],
         "rollover_gaps": [],
         "news": {
-          "summary": "트럼프 나토 압박·이란 협상 장기화로 지정학 리스크 상존. 러시아 우크라이나 미사일 공습·中 일본 수출 규제 확대로 경기민감 기업 수출악화 우려. 美 주택가격 연간 0.8% 상승에도 부동산 시장 소강세 지속.",
+          "summary": "고용 부진에도 다우지수 소폭 반등세. 캐나다 제조업 구매관리자지수 53.0 상승 유지, JPMorgan 등 방위산업 투자 확대로 대형 산업주·금융주 방어심 작용.",
           "sources": [
             {
-              "name": "WSJ세계",
-              "url": "https://www.wsj.com/world/trump-loyalty-demands-set-stage-for-tense-nato-summit-51dd5a6e"
+              "name": "WSJ",
+              "url": "https://www.wsj.com/livecoverage/june-jobs-report-stock-market-07-02-2026?mod=rss_markets_main"
             },
             {
-              "name": "CNBC",
-              "url": "https://www.cnbc.com/2026/06/29/china-japan-export-controls-watch-list-defense-entities.html"
+              "name": "WSJ경제",
+              "url": "https://www.wsj.com/economy/canada-factory-sector-expands-in-june-on-rising-output-new-orders-d1e90ac6"
+            },
+            {
+              "name": "WSJ",
+              "url": "https://www.wsj.com/finance/banking/jamie-dimon-jpmorgan-investing-defense-091cfc4c?mod=rss_markets_main"
             }
           ]
         }
       }
     ]
   },
-  "intraday_refreshed_kst": "2026-07-03T02:10:07.049335+09:00"
+  "intraday_refreshed_kst": "2026-07-03T02:22:05.812066+09:00"
 }
