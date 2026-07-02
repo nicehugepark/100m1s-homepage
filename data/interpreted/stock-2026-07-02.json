@@ -1,6 +1,6 @@
 {
   "date": "2026-07-02",
-  "generated_at": "2026-07-02T14:15:28.383220",
+  "generated_at": "2026-07-02T14:15:40.909172",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1934,8 +1934,17 @@
       "low_price": 16930,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "신규상장"
+      ],
+      "theme_paths": [
+        {
+          "name": "신규상장",
+          "path": [
+            "신규상장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": true,
@@ -2116,7 +2125,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "007610",
@@ -2407,8 +2419,8 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bull",
-      "theme_leader": true,
+      "togusa_verdict": "neutral",
+      "theme_leader": false,
       "hugepark_grade": "관찰",
       "causal_chain": "",
       "parent_theme": ""
