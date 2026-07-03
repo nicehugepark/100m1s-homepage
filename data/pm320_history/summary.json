@@ -2,7 +2,7 @@
   "account_mdd_pct": -4.0103,
   "worst_mdd_pct": -4.0103,
   "backtest_detail": {
-    "as_of": "2026-07-02",
+    "as_of": "2026-07-03",
     "table": [
       {
         "date": "2026-04-08",
@@ -679,6 +679,19 @@
         "balance_after": 10330020.21,
         "watered": true,
         "settlement_order": 11
+      },
+      {
+        "date": "2026-07-02",
+        "code": "013580",
+        "name": "계룡건설",
+        "entry_price": 25800,
+        "exit_date": "2026-07-03",
+        "exit_class": "D+1 익절",
+        "ret_pct": 3.2,
+        "pnl": 27546.72,
+        "balance_after": 10357566.93,
+        "watered": false,
+        "settlement_order": 12
       }
     ],
     "equity_curve": [
@@ -881,23 +894,28 @@
         "date": "2026-07-02",
         "balance": 10330020.21,
         "name": "이수페타시스"
+      },
+      {
+        "date": "2026-07-03",
+        "balance": 10357566.93,
+        "name": "계룡건설"
       }
     ]
   },
-  "generated_at": "2026-07-03T09:02:21+09:00",
+  "generated_at": "2026-07-03T09:02:32+09:00",
   "since": "2026-04-08",
   "first_pick_date": "2026-04-08",
-  "last_settled_date": "2026-07-02",
-  "total_picks": 52,
-  "settled": 52,
+  "last_settled_date": "2026-07-03",
+  "total_picks": 53,
+  "settled": 53,
   "running": 0,
-  "take_profit": 48,
+  "take_profit": 49,
   "expired_loss": 4,
   "expired_gain": 0,
-  "win_rate": 92.3,
+  "win_rate": 92.5,
   "start_balance": 10000000,
   "avg_mdd_pct": null,
-  "total_return_pct": 3.3002,
-  "total_pnl": 330020.21,
-  "final_balance": 10330020.21
+  "total_return_pct": 3.5757,
+  "total_pnl": 357566.93,
+  "final_balance": 10357566.93
 }
