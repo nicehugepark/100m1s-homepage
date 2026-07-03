@@ -1,6 +1,6 @@
 {
   "date": "2026-07-03",
-  "generated_at": "2026-07-03T14:25:26.458367",
+  "generated_at": "2026-07-03T14:26:14.729625",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -1100,8 +1100,27 @@
       "low_price": null,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체",
+        "반도체 후공정 장비",
+        "반도체소부장"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체 후공정 장비",
+          "path": [
+            "반도체",
+            "반도체 후공정 장비"
+          ]
+        },
+        {
+          "name": "반도체소부장",
+          "path": [
+            "반도체",
+            "반도체소부장"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-06-18",
@@ -1118,48 +1137,48 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=05074166645510584",
           "source": "이데일리",
           "published_at": "2026-07-02T07:30:33",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "반도체 후공정 검사장비를 주력으로 하는 인텍플러스가 대만 기업 등과 85억·140억·218억원 규모의 반도체 검사장비 공급계약을 잇따라 체결 → 외형 확대 기대감이 존재하나, 당일 거래대금이 2억원에 그치며 매수세 유입은 미미 → 종가 46,800원(-0.43%)으로 시세 반응은 사실상 부재.",
+          "macro_event": "반도체 검사장비 대규모 공급계약 수주 (85억·140억·218억원)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.4,
+          "newzy_virality": 0.2,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.32,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         },
         {
           "title": "인텍플러스, 218억원 규모 반도체 검사장비 공급계약",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04979046645510584",
           "source": "이데일리",
           "published_at": "2026-07-02T07:18:49",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "반도체 후공정 검사장비를 주력으로 하는 인텍플러스가 대만 기업 등과 85억·140억·218억원 규모의 반도체 검사장비 공급계약을 잇따라 체결 → 외형 확대 기대감이 존재하나, 당일 거래대금이 2억원에 그치며 매수세 유입은 미미 → 종가 46,800원(-0.43%)으로 시세 반응은 사실상 부재.",
+          "macro_event": "반도체 검사장비 대규모 공급계약 수주 (85억·140억·218억원)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.4,
+          "newzy_virality": 0.2,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.32,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         },
         {
           "title": "인텍플러스, 140억원 규모 반도체 검사장비 공급계약",
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=04700246645485656",
           "source": "이데일리",
           "published_at": "2026-06-26T06:23:01",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "반도체 후공정 검사장비를 주력으로 하는 인텍플러스가 대만 기업 등과 85억·140억·218억원 규모의 반도체 검사장비 공급계약을 잇따라 체결 → 외형 확대 기대감이 존재하나, 당일 거래대금이 2억원에 그치며 매수세 유입은 미미 → 종가 46,800원(-0.43%)으로 시세 반응은 사실상 부재.",
+          "macro_event": "반도체 검사장비 대규모 공급계약 수주 (85억·140억·218억원)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.4,
+          "newzy_virality": 0.2,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.32,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -1315,7 +1334,10 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "neutral",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "011230",
@@ -3041,9 +3063,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "strong_bull",
-      "theme_leader": true,
-      "hugepark_grade": "적극"
+      "togusa_verdict": "weak_bull",
+      "theme_leader": false,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "900300",
