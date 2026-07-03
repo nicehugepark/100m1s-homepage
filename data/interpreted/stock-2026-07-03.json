@@ -1,6 +1,6 @@
 {
   "date": "2026-07-03",
-  "generated_at": "2026-07-03T09:25:21.457988",
+  "generated_at": "2026-07-03T09:26:35.373570",
   "data_source": "kiwoom",
   "macro_events": [
     {
@@ -224,7 +224,12 @@
         }
       ],
       "credit_risk": true,
-      "credit_reason": "신용거래 제한 종목"
+      "credit_reason": "신용거래 제한 종목",
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰",
+      "causal_chain": "",
+      "parent_theme": ""
     },
     {
       "code": "122350",
@@ -269,16 +274,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=03001206645510912",
           "source": "이데일리",
           "published_at": "2026-07-03T00:12:39",
-          "causal_chain": "",
-          "macro_event": null,
+          "causal_chain": "휴머노이드 로봇 부품 채용 확대 기대 → 로봇 골격·부품 사업을 보유한 삼기로 매수세 집중 → 시초가부터 점상한가로 직행하며 당일 종가 2,345원(+29.99% 상한가)·52주 신고가 갱신, 이틀 연속 상한가 흐름.",
+          "macro_event": "글로벌 휴머노이드 로봇 시장 확대 → 로봇 부품 공급 기대감",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.65,
+          "newzy_virality": 0.55,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.61,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -472,11 +477,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bull",
+      "togusa_verdict": "strong_bull",
       "theme_leader": true,
-      "hugepark_grade": "관찰",
-      "causal_chain": "",
-      "parent_theme": ""
+      "hugepark_grade": "적극"
     },
     {
       "code": "452200",
@@ -490,8 +493,17 @@
       "low_price": 1830,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "반도체"
+      ],
+      "theme_paths": [
+        {
+          "name": "반도체",
+          "path": [
+            "반도체"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": null,
       "bullish_today": false,
@@ -503,16 +515,16 @@
           "url": "https://www.etoday.co.kr/news/view/2599892",
           "source": "이투데이",
           "published_at": "2026-07-03T00:08:00",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "민테크가 작년 연매출의 51%에 해당하는 반도체 검사장비를 단일 수주 → 자체 검사장비 사업의 외형 확대 기대감으로 매수세 유입 → 당일 시가 1,950원에서 고가 2,085원까지 오르며 종가 2,085원(+29.74%) 상한가 마감.",
+          "macro_event": "반도체 검사장비 대규모 수주 (작년 매출의 51% 규모)",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.55,
+          "newzy_virality": 0.2,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.41,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": false,
@@ -681,9 +693,9 @@
       },
       "credit_risk": true,
       "credit_reason": "회사한도초과",
-      "togusa_verdict": "weak_bear",
-      "theme_leader": false,
-      "hugepark_grade": "주의"
+      "togusa_verdict": "strong_bull",
+      "theme_leader": true,
+      "hugepark_grade": "적극"
     },
     {
       "code": "900300",
