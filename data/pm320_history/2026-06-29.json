@@ -1,6 +1,6 @@
 {
   "date": "2026-06-29",
-  "generated_at": "2026-07-03T09:02:05+09:00",
+  "generated_at": "2026-07-03T09:11:43+09:00",
   "picked_code": "214450",
   "stocks": [
     {
@@ -16,9 +16,9 @@
         "take_profit_after_watering_price": 162733,
         "expiry_date": "2026-07-07",
         "current_state": "running",
-        "current_pnl_pct": -8.326,
-        "current_mdd_pct": -10.866,
-        "current_mdd_peak_pct": -14.39,
+        "current_pnl_pct": -11.754,
+        "current_mdd_pct": -12.072,
+        "current_mdd_peak_pct": -15.549,
         "d_offset": 4,
         "result": null
       }
@@ -118,7 +118,7 @@
         "take_profit_after_watering_price": 68929,
         "expiry_date": "2026-07-07",
         "current_state": "running",
-        "current_pnl_pct": -6.773,
+        "current_pnl_pct": -8.122,
         "current_mdd_pct": -10.37,
         "current_mdd_peak_pct": -15.775,
         "d_offset": 4,
@@ -137,12 +137,19 @@
         "take_profit_target_price": 1968,
         "take_profit_after_watering_price": 1905,
         "expiry_date": "2026-07-07",
-        "current_state": "running",
-        "current_pnl_pct": -2.167,
-        "current_mdd_pct": -30.15,
-        "current_mdd_peak_pct": -31.78,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
+        "current_mdd_pct": null,
+        "current_mdd_peak_pct": null,
         "d_offset": 4,
-        "result": null
+        "result": {
+          "final_price": 1903,
+          "final_pnl_pct": 3.2,
+          "watered": true,
+          "result_date": "2026-07-03",
+          "mdd_pct": -30.15,
+          "mdd_peak_pct": -31.78
+        }
       }
     },
     {
@@ -573,7 +580,7 @@
           "watered": false,
           "result_date": "2026-06-30",
           "mdd_pct": 0.0,
-          "mdd_peak_pct": 0.0
+          "mdd_peak_pct": -17.16
         }
       }
     },
@@ -644,7 +651,7 @@
         "take_profit_after_watering_price": 2428,
         "expiry_date": "2026-07-07",
         "current_state": "running",
-        "current_pnl_pct": -14.924,
+        "current_pnl_pct": -16.669,
         "current_mdd_pct": -17.35,
         "current_mdd_peak_pct": -13.689,
         "d_offset": 4,
@@ -684,7 +691,7 @@
     "virtual_count": 25,
     "skip_count": 0,
     "total_cards": 26,
-    "expired_count": 22,
-    "running_count": 4
+    "expired_count": 23,
+    "running_count": 3
   }
 }
