@@ -33,6 +33,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import sqlite3
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -1383,6 +1384,79 @@ _ARROW_RE = re.compile(r"\s*(?:→|->|➡|⇒)\s*")
 # 테마맵 라인 중 무시할 스킵 헤더
 _TM_SKIP_LINES = {"연결 종목", "연결종목", "종목", "​", ""}
 
+# ─── 종목명 마스터 대조(994 정밀화, parser_version 2.0.0 신설) ───
+# 문장 조각·서술형 헤더 오추출(예: "오늘 시장의 중심은 MLCC였다.", "동전주", "상폐기준 핵심
+# 요약")을 차단하기 위해 stocks 마스터(2805종목, data/stocks.db :: stocks.name)와 대조해
+# 실제 종목명만 채택. 마스터 로드 실패 시 휴리스틱 fallback(문장·서술형 배제)으로 graceful.
+_STOCK_MASTER_NAMES: set[str] | None = (
+    None  # lazy 로드 캐시 (None=미로드, set=로드완료)
+)
+
+
+def _stock_master_db_path() -> str:
+    """스크래퍼 위치 기준 stocks 마스터 경로. 환경변수 STOCKS_DB_PATH 우선."""
+    env = os.environ.get("STOCKS_DB_PATH")
+    if env:
+        return env
+    here = os.path.dirname(os.path.abspath(__file__))
+    return os.path.normpath(os.path.join(here, "..", "..", "data", "stocks.db"))
+
+
+def _load_stock_master() -> set[str]:
+    """종목명 마스터를 set으로 로드(읽기 전용). 실패 시 빈 set → 휴리스틱 fallback.
+
+    빈 set 반환 = 마스터 미가용 → 호출부가 휴리스틱으로 전환(graceful degrade).
+    """
+    global _STOCK_MASTER_NAMES
+    if _STOCK_MASTER_NAMES is not None:
+        return _STOCK_MASTER_NAMES
+    names: set[str] = set()
+    path = _stock_master_db_path()
+    try:
+        if os.path.exists(path):
+            # 읽기 전용 연결(서빙 DB write 금지)
+            conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
+            try:
+                for (nm,) in conn.execute(
+                    "SELECT name FROM stocks WHERE name IS NOT NULL"
+                ):
+                    if nm:
+                        names.add(nm.strip())
+            finally:
+                conn.close()
+    except Exception:
+        names = set()  # 로드 실패 → 휴리스틱 fallback
+    _STOCK_MASTER_NAMES = names
+    return names
+
+
+def _looks_like_sentence(s: str) -> bool:
+    """서술형 문장 판정(휴리스틱). 종목명은 짧고 마침표·서술어미·다어절이 없다."""
+    s = s.strip()
+    if not s:
+        return True
+    # 마침표·물결·느낌표·물음표로 끝나면 문장
+    if re.search(r"[.。~!?！？]$", s):
+        return True
+    # 공백으로 나눈 어절 3개 이상 = 문장/서술
+    if len(s.split()) >= 3:
+        return True
+    # 한글 서술 종결어미(다/요/음/함/됨/었다/한다 등)로 끝나면 문장
+    if re.search(r"(?:습니다|였다|었다|한다|됩니다|하세요|이다|기대|메모|요약)$", s):
+        return True
+    return False
+
+
+def _accept_stock_name(cand: str, master: set[str]) -> bool:
+    """종목명 후보 채택 여부. 마스터 있으면 마스터 대조, 없으면 휴리스틱."""
+    cand = cand.strip()
+    if not (2 <= len(cand) <= 20 and re.search(r"[가-힣A-Za-z]", cand)):
+        return False
+    if master:
+        return cand in master
+    # 마스터 미가용 fallback: 문장·서술형·stopword 배제
+    return not _looks_like_sentence(cand) and cand not in STOPWORDS
+
 
 def _tm_extract_lines(html: str) -> list[str]:
     """테마맵 본문을 라인 리스트로. se-text-paragraph 우선, 실패 시 html_to_text 개행."""
@@ -1439,6 +1513,7 @@ def parse_theme_map(html: str, text: str, title: str | None) -> dict:
         티커 없음 — 종목명 문자열만. (티커 매핑은 2단계)
     """
     lines = _tm_extract_lines(html)
+    master = _load_stock_master()  # 빈 set이면 휴리스틱 fallback
 
     mappings: list[dict] = []
     cur_theme: str | None = None
@@ -1464,34 +1539,64 @@ def parse_theme_map(html: str, text: str, title: str | None) -> dict:
             flush_pending(None)  # 이전 대기 종목은 사유 없이 확정
             cur_theme = header
             continue
-        # 종목 라인
+
+        # 체인형 라인: "→ 반도체 : 제주반도체 → 하나마이크론 → …" (콜론 뒤 종목 체인)
+        # 또는 "테마 : 종목 → 종목". 콜론 앞=테마(선택), 뒤=화살표로 이은 종목 나열.
+        chain_theme, chain_body = None, line
+        cm = re.match(r"^\s*(?:→|->|➡|⇒)?\s*([^:：]{1,20})\s*[:：]\s*(.+)$", line)
+        if cm and _ARROW_RE.search(cm.group(2)):
+            chain_theme = _EMOJI_RE.sub("", cm.group(1)).strip(" ·-|/")
+            chain_body = cm.group(2)
+            flush_pending(None)
+            chain_names = [
+                tok.strip(" ·-|/")
+                for tok in _ARROW_RE.split(chain_body)
+                if _accept_stock_name(tok.strip(" ·-|/"), master)
+            ]
+            if chain_names:
+                mappings.append(
+                    {
+                        "theme": chain_theme or cur_theme,
+                        "stocks": chain_names,
+                        "reason": None,
+                    }
+                )
+            continue
+
+        # 종목 라인: "종목 → 사유" (사유 자리에 종목이 오면 체인으로 흡수)
         if _ARROW_RE.search(line):
             flush_pending(None)
             parts = _ARROW_RE.split(line, maxsplit=1)
             name = parts[0].strip(" ·-|/")
-            reason = parts[1].strip() if len(parts) > 1 else None
-            # 종목명 여러 개(콤마) 허용
+            rhs = parts[1].strip() if len(parts) > 1 else None
+            # 화살표 앞 토큰 채택(콤마 다종목 허용)
             names = [
                 n.strip()
                 for n in re.split(r"[,，、/]", name)
-                if 2 <= len(n.strip()) <= 20 and re.search(r"[가-힣A-Za-z]", n)
+                if _accept_stock_name(n.strip(), master)
             ]
+            # 화살표 뒤가 또 종목이면(예: "케이피엠테크 → 텔콘RF제약") 체인으로 편입,
+            # 아니면 사유(reason)로 귀속.
+            reason = None
+            if rhs is not None:
+                rhs_first = _ARROW_RE.split(rhs, maxsplit=1)[0].strip(" ·-|/")
+                if _accept_stock_name(rhs_first, master):
+                    names.append(rhs_first)
+                else:
+                    reason = rhs
             if names:
                 mappings.append(
                     {"theme": cur_theme, "stocks": names, "reason": reason or None}
                 )
+            elif rhs:  # 앞이 종목 아님 → 문장 사유일 뿐, 직전 pending에 귀속 시도
+                flush_pending(line)
             continue
-        # 화살표 없는 라인: 종목명 후보(짧고 한글 포함) or 직전 종목의 사유
-        looks_like_stock = (
-            2 <= len(line) <= 20
-            and re.search(r"[가-힣A-Za-z]", line)
-            and "," not in line
-            and line not in STOPWORDS
-        )
-        if pending_stock is None and looks_like_stock:
+
+        # 화살표 없는 라인: 종목명 후보 or 직전 종목의 사유
+        if pending_stock is None and _accept_stock_name(line, master):
             pending_stock = line
         else:
-            # 직전 pending 종목의 사유로 귀속
+            # 직전 pending 종목의 사유로 귀속 (문장/서술형은 여기로 흡수돼 stock_name 오염 안 함)
             flush_pending(line)
 
     flush_pending(None)

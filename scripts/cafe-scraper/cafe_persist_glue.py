@@ -30,7 +30,7 @@ from urllib.parse import urlparse
 
 # 파서 버전 SoT — main.py 실시간 배선 + cafe_backfill.py 재파싱 공용.
 # 파서 로직 변경 시 여기만 올리면 양쪽 반영(백필 탈출 기준).
-PARSER_VERSION = "1.0.0"
+PARSER_VERSION = "2.0.0"  # 994 종목명 마스터 대조 정밀화(문장 오추출 제거). 2026-07-06
 
 
 def theme_map_to_mappings(parsed: dict) -> list[dict]:
