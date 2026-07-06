@@ -6,6 +6,7 @@
 
 저작권: 원문은 저장하지 않음. 요약 + 메타데이터만.
 """
+
 from __future__ import annotations
 
 import json
@@ -18,7 +19,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 try:
-    from bs4 import BeautifulSoup, NavigableString, Tag  # type: ignore
+    from bs4 import BeautifulSoup  # type: ignore
+
     _BS4_AVAILABLE = True
 except Exception:  # pragma: no cover
     _BS4_AVAILABLE = False
@@ -28,6 +30,11 @@ CAFE_ID = "11974608"
 MENU_ID = "167"
 MENU_URL = f"https://cafe.naver.com/f-e/cafes/{CAFE_ID}/menus/{MENU_ID}?viewType=L"
 ARTICLE_URL_TEMPLATE = f"https://cafe.naver.com/f-e/cafes/{CAFE_ID}/articles/{{article_id}}?boardtype=L&menuid={MENU_ID}"
+
+# whole-page fallback(본문 셀렉터 매칭 실패) 을 호출부가 식별하기 위한 내부 마커.
+# fetch_article_html 이 반환한 HTML 앞에 붙이며, parse_post 진입 시 즉시 제거된다.
+# 마커 존재 = "이 글은 본문 파싱 불가(껍데기)" → run() 이 조용한 성공 탐지에 사용.
+_FALLBACK_MARKER = "<!--CAFE_SCRAPER_FALLBACK-->"
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO_ROOT / "data" / "cafe"
@@ -263,48 +270,56 @@ def fetch_article_html(page, article_id: str) -> str | None:
     debug = os.environ.get("DEBUG_FETCH") == "1"
     try:
         page.goto(url, wait_until="domcontentloaded", timeout=20000)
-        time.sleep(3)
-        # 본문 영역 셀렉터 후보 (네이버 카페 신/구 버전)
-        for sel in [
-            ".se-main-container",
-            "#postViewArea",
+        # 2026-07-06: 네이버 카페 f-e SPA 이전 이후 본문은 main frame이 아니라
+        # 지연 로딩되는 ca-fe iframe 안의 .se-main-container 에 렌더된다.
+        # 기존 고정 sleep(3) 은 iframe 렌더 완료 전에 셀렉터를 훑어 매번 실패 →
+        # whole-page fallback(128KB, GNB/CSS 껍데기)으로 빠져 stock_count=0 회귀.
+        # → 모든 frame(main + iframe)을 최대 BODY_WAIT_SEC 폴링하며 본문 셀렉터를 대기.
+        # 신규 셀렉터(.se-main-container/.se-viewer/.article_viewer/.ArticleContentBox)를
+        # 앞에, 구버전(#postViewArea/.article_content/article)은 하위호환으로 뒤에 유지.
+        BODY_SELECTORS = [
+            ".se-main-container",  # 신 f-e SmartEditor 본문 (2026-07 확인)
+            ".se-viewer",
+            ".article_viewer",
+            ".ArticleContentBox",
+            "#postViewArea",  # 구버전 하위호환
             ".article_content",
             "article",
-        ]:
-            try:
-                el = page.query_selector(sel)
-                if el:
-                    html = el.inner_html()
+        ]
+        BODY_WAIT_SEC = 18.0
+        MIN_BODY_BYTES = 300  # 껍데기(빈 #app 등) 오탐 방지
+
+        deadline = time.time() + BODY_WAIT_SEC
+        while time.time() < deadline:
+            for frame in page.frames:
+                for sel in BODY_SELECTORS:
+                    try:
+                        el = frame.query_selector(sel)
+                    except Exception:
+                        continue
+                    if not el:
+                        continue
+                    try:
+                        html = el.inner_html()
+                    except Exception:
+                        continue
+                    if len(html) < MIN_BODY_BYTES:
+                        continue  # 아직 렌더 중(빈 컨테이너)
+                    where = "main" if frame == page.main_frame else "iframe"
                     if debug:
                         (
                             DATA_DIR
-                            / f"debug_article_{article_id}_main_{sel.replace('.', '').replace('#', '')}.html"
+                            / f"debug_article_{article_id}_{where}_{sel.replace('.', '').replace('#', '')}.html"
                         ).write_text(html, encoding="utf-8")
                     log(
-                        f"  [{article_id}] main page selector {sel} 매칭 ({len(html)} bytes)"
+                        f"  [{article_id}] {where} selector {sel} 매칭 ({len(html)} bytes)"
                     )
                     return html
-            except Exception:
-                continue
-        # iframe 내부
-        for frame in page.frames:
-            for sel in [".se-main-container", "#postViewArea", ".article_content"]:
-                try:
-                    el = frame.query_selector(sel)
-                    if el:
-                        html = el.inner_html()
-                        if debug:
-                            (
-                                DATA_DIR
-                                / f"debug_article_{article_id}_iframe_{sel.replace('.', '').replace('#', '')}.html"
-                            ).write_text(html, encoding="utf-8")
-                        log(
-                            f"  [{article_id}] iframe selector {sel} 매칭 ({len(html)} bytes)"
-                        )
-                        return html
-                except Exception:
-                    continue
-        # fallback: 전체 페이지
+            time.sleep(0.5)
+
+        # fallback: 전체 페이지 — 본문 셀렉터를 끝내 못 찾음(삭제/권한/비정형 글).
+        # 반환값은 whole-page 이므로 종목 파싱은 실패한다. 호출부가 이 fallback 비율로
+        # "조용한 성공"(전량 fallback) 을 탐지하도록 판별 가능한 신호를 남긴다.
         full = page.content()
         if debug:
             (DATA_DIR / f"debug_article_{article_id}_fallback.html").write_text(
@@ -313,7 +328,7 @@ def fetch_article_html(page, article_id: str) -> str | None:
         log(
             f"  [{article_id}] ⚠️ 셀렉터 매칭 실패, 전체 페이지 fallback ({len(full)} bytes)"
         )
-        return full
+        return _FALLBACK_MARKER + full
     except Exception as e:
         log(f"⚠️ article {article_id} fetch 실패: {e}")
         return None
@@ -412,7 +427,9 @@ def extract_stock_news_blocks(html: str) -> list[dict]:
     return pairs
 
 
-TITLE_DATE_RE = re.compile(r"\[?\(?\s*(20\d{2})[./\-](\d{1,2})[./\-](\d{1,2})\.?\s*\)?\]?")
+TITLE_DATE_RE = re.compile(
+    r"\[?\(?\s*(20\d{2})[./\-](\d{1,2})[./\-](\d{1,2})\.?\s*\)?\]?"
+)
 # "2026년 4월 8일" / "2026년 04월 07일"
 TITLE_YMD_KO_RE = re.compile(r"(20\d{2})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일")
 # "4월 8일" / "3월6일" (공백 무관)
@@ -429,14 +446,72 @@ META_TIME_DT_RE = re.compile(
     re.IGNORECASE,
 )
 STOPWORDS = {
-    "상승", "하락", "상한가", "하한가", "종목", "관련주", "기대감", "수혜",
-    "이슈", "공시", "테마", "차익", "실현", "재부각", "부각", "신규상장",
-    "시장", "정리", "이하", "미만", "이상", "거래대금", "펀드", "리츠",
-    "우선주", "스팩", "환기", "관리", "상승률", "하락률", "그룹", "기업",
-    "주가", "강세", "약세", "매수", "매도", "투자", "추가", "최대주주",
-    "지분", "양도", "기준", "경우", "포함", "제외", "하였", "하였습니다",
-    "영향", "여파", "기대", "수준", "소식", "이야기", "마감", "오늘", "내일",
-    "작년", "올해", "분기", "실적", "전망", "본격", "사업", "부문", "인수",
+    "상승",
+    "하락",
+    "상한가",
+    "하한가",
+    "종목",
+    "관련주",
+    "기대감",
+    "수혜",
+    "이슈",
+    "공시",
+    "테마",
+    "차익",
+    "실현",
+    "재부각",
+    "부각",
+    "신규상장",
+    "시장",
+    "정리",
+    "이하",
+    "미만",
+    "이상",
+    "거래대금",
+    "펀드",
+    "리츠",
+    "우선주",
+    "스팩",
+    "환기",
+    "관리",
+    "상승률",
+    "하락률",
+    "그룹",
+    "기업",
+    "주가",
+    "강세",
+    "약세",
+    "매수",
+    "매도",
+    "투자",
+    "추가",
+    "최대주주",
+    "지분",
+    "양도",
+    "기준",
+    "경우",
+    "포함",
+    "제외",
+    "하였",
+    "하였습니다",
+    "영향",
+    "여파",
+    "기대",
+    "수준",
+    "소식",
+    "이야기",
+    "마감",
+    "오늘",
+    "내일",
+    "작년",
+    "올해",
+    "분기",
+    "실적",
+    "전망",
+    "본격",
+    "사업",
+    "부문",
+    "인수",
 }
 
 
@@ -563,6 +638,7 @@ def _extract_post_date(
       5) 본문 첫 1500자: 위와 동일 순서
       6) HTML 메타: article:published_time / time[datetime]
     """
+
     # helpers
     def from_ymd(y, mo, d):
         try:
@@ -679,8 +755,22 @@ def _clean_stock_name(tok: str) -> str | None:
     # 종목명은 공백을 거의 포함하지 않음 (있어도 1개 이내 복합 브랜드)
     if tok.count(" ") >= 2:
         return None
-    bad_kw = ("거래대금", "상승률", "하락률", "기준", "종목은", "포함하는", "제외",
-              "너무", "많기", "올리는", "줄여서", "무의미", "탓에", "다보니")
+    bad_kw = (
+        "거래대금",
+        "상승률",
+        "하락률",
+        "기준",
+        "종목은",
+        "포함하는",
+        "제외",
+        "너무",
+        "많기",
+        "올리는",
+        "줄여서",
+        "무의미",
+        "탓에",
+        "다보니",
+    )
     if any(k in tok for k in bad_kw):
         return None
     if tok in STOPWORDS:
@@ -822,7 +912,11 @@ def _parse_rank_table_dom(html: str, title: str | None) -> dict | None:
                 if not stock["theme_label"]:
                     stock["theme_label"] = reason or None
                 # 섹터 멤버 보강 케이스에만 sector_label 유지/부여
-                if is_sector_reinforce and current_sector and not stock.get("sector_label"):
+                if (
+                    is_sector_reinforce
+                    and current_sector
+                    and not stock.get("sector_label")
+                ):
                     stock["sector_label"] = current_sector
                 for lk in links:
                     if any(c.get("url") == lk["url"] for c in stock["news_cards"]):
@@ -899,7 +993,9 @@ def _parse_rank_table_dom(html: str, title: str | None) -> dict | None:
                         st = index[sect][name]
                         if not st["theme_label"]:
                             st["theme_label"] = sector_reason
-                        if not any(c.get("url") == links[0]["url"] for c in st["news_cards"]):
+                        if not any(
+                            c.get("url") == links[0]["url"] for c in st["news_cards"]
+                        ):
                             st["news_cards"].append(
                                 {
                                     "url": links[0]["url"],
@@ -914,15 +1010,15 @@ def _parse_rank_table_dom(html: str, title: str | None) -> dict | None:
         return None
     # 첫 종목에 뉴스가 ≥7개 몰림 = regex 파서와 동일 증상 → 실패 처리
     for sect_list in sections.values():
-        if sect_list and len(sect_list[0]["news_cards"]) >= 7 and all(
-            len(s["news_cards"]) == 0 for s in sect_list[1:]
+        if (
+            sect_list
+            and len(sect_list[0]["news_cards"]) >= 7
+            and all(len(s["news_cards"]) == 0 for s in sect_list[1:])
         ):
             return None
 
     return {
-        "sections": [
-            {"type": k, "stocks": v} for k, v in sections.items() if v
-        ],
+        "sections": [{"type": k, "stocks": v} for k, v in sections.items() if v],
         "post_date": _extract_post_date(
             BeautifulSoup(html, "html.parser").get_text(" ", strip=True), title, html
         ),
@@ -993,8 +1089,7 @@ def parse_rank_table(html: str, text: str, title: str | None) -> dict:
                     continue
                 # 필터 단어 포함 제외
                 if any(
-                    k in tok
-                    for k in ("거래대금", "상승률", "하락률", "종목은", "기준")
+                    k in tok for k in ("거래대금", "상승률", "하락률", "종목은", "기준")
                 ):
                     continue
                 get_or_create(sect, tok)
@@ -1085,15 +1180,26 @@ def parse_post(html: str, title: str | None = None) -> dict:
     """본문 HTML → 구조화된 데이터. 형식별로 분기.
 
     반환 스키마:
-      parse_format: "rank_table" | "essay" | "unknown"
-      parse_status: "ok" | "unsupported_format"
+      parse_format: "rank_table" | "essay" | "unknown" | "fetch_fallback"
+      parse_status: "ok" | "unsupported_format" | "fetch_fallback"
       sections: list  (essay·unknown 은 [])
       post_date: str|None
       essay: dict (essay 형식만)
+      is_fallback: bool  (본문 셀렉터 매칭 실패로 whole-page 를 파싱한 경우 True)
     """
+    # whole-page fallback 마커 감지 → 파싱 시도 없이 fallback 표기.
+    # (GNB/CSS 껍데기라 파싱해봐야 오탐 종목만 생기므로 진입 차단.)
+    if html.startswith(_FALLBACK_MARKER):
+        return {
+            "parse_format": "fetch_fallback",
+            "parse_status": "fetch_fallback",
+            "sections": [],
+            "post_date": None,
+            "is_fallback": True,
+        }
     text = html_to_text(html)
     fmt = detect_format(text)
-    base = {"parse_format": fmt, "parse_status": "ok"}
+    base = {"parse_format": fmt, "parse_status": "ok", "is_fallback": False}
     if fmt == "rank_table":
         return {**base, **parse_rank_table(html, text, title)}
     if fmt == "short_note":
@@ -1105,7 +1211,7 @@ def parse_post(html: str, title: str | None = None) -> dict:
         "parse_status": "unsupported_format",
         "sections": [],
         "post_date": _extract_post_date(text, title, html),
-    }
+    }  # base 에 is_fallback=False 포함
 
 
 def _legacy_parse_post_unused(html: str) -> dict:
@@ -1467,12 +1573,19 @@ def run() -> int:
         log(f"신규 article: {len(new_ids)}")
 
         new_posts = []
+        processed = 0  # 실제 HTML 수집·파싱까지 도달한 신규 글 수
+        fallback_ct = 0  # whole-page fallback(본문 셀렉터 실패) 건수
         for aid in new_ids[:max_articles]:
             log(f"→ article {aid} 처리 중…")
             html = fetch_article_html(page, aid)
             if not html:
                 continue
-            parsed = parse_post(html)  # run()에선 title 미수집 — 제목 포함 날짜는 본문 fallback
+            processed += 1
+            parsed = parse_post(
+                html
+            )  # run()에선 title 미수집 — 제목 포함 날짜는 본문 fallback
+            if parsed.get("is_fallback"):
+                fallback_ct += 1
 
             # 종목별 뉴스 카드에 Gemini 분석 적용 — post 당 최대 50 호출
             # (멀티 뉴스 종목 안전 처리)
@@ -1508,6 +1621,7 @@ def run() -> int:
                 "fetched_at": datetime.now(KST).isoformat(timespec="seconds"),
                 "parse_format": parsed.get("parse_format"),
                 "parse_status": parsed.get("parse_status"),
+                "is_fallback": parsed.get("is_fallback", False),
                 "stock_count": stock_count,
                 "news_count": news_count,
                 "sections": parsed["sections"],
@@ -1548,7 +1662,32 @@ def run() -> int:
     state["last_run_at"] = datetime.now(KST).isoformat(timespec="seconds")
     save_state(state)
 
-    log(f"✓ 완료. 신규 {len(new_posts)}건 처리.")
+    # ─── 조용한 성공 봉쇄 (2026-07-06) ────────────────────────
+    # 2주간 조용히 0-추출된 회귀(f-e SPA iframe 이전) 재발 차단.
+    # 신규 처리분이 1건+ 인데 전량이 whole-page fallback(본문 셀렉터 실패)이면
+    # 명백한 비정상 → stdout 최상단 WARN 마커 + non-zero exit 로 GHA 가 실패 인지.
+    # essay-only 배치는 정상적으로 stock_count=0 일 수 있으므로 fallback 비율로만 판정
+    # (graceful — 종목 0 자체는 정상 신호로 취급, 오탐 방지).
+    total_stock = sum(p["stock_count"] for p in new_posts)
+    total_news = sum(p["news_count"] for p in new_posts)
+    if processed >= 1 and fallback_ct == processed:
+        # 최상단(sort 무관하게 눈에 띄도록) 마커를 먼저 print.
+        print(
+            "::error::CAFE_SCRAPER_ALL_FALLBACK "
+            f"신규 처리 {processed}건 전량 본문 셀렉터 매칭 실패(whole-page fallback). "
+            "네이버 카페 DOM 변경 의심 — 셀렉터 갱신 필요.",
+            flush=True,
+        )
+        log(
+            f"❌ 조용한 성공 봉쇄: 처리 {processed}건 전량 fallback "
+            f"(stock={total_stock}, news={total_news}) — 비정상 종료."
+        )
+        return 5
+
+    log(
+        f"✓ 완료. 신규 {len(new_posts)}건 처리 "
+        f"(fallback {fallback_ct}/{processed}, stock={total_stock}, news={total_news})."
+    )
     return 0
 
 
