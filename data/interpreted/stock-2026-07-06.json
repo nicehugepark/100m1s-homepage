@@ -1,6 +1,6 @@
 {
   "date": "2026-07-06",
-  "generated_at": "2026-07-06T14:35:18.731816",
+  "generated_at": "2026-07-06T14:36:13.498973",
   "data_source": "kiwoom",
   "macro_events": [],
   "narratives": [],
@@ -1123,8 +1123,24 @@
       "low_price": 4725,
       "industry": null,
       "sector": null,
-      "themes": [],
-      "theme_paths": [],
+      "themes": [
+        "저PBR",
+        "실적"
+      ],
+      "theme_paths": [
+        {
+          "name": "저PBR",
+          "path": [
+            "저PBR"
+          ]
+        },
+        {
+          "name": "실적",
+          "path": [
+            "실적"
+          ]
+        }
+      ],
       "pick_count": 1,
       "prev_pick": {
         "date": "2026-06-29",
@@ -1143,16 +1159,16 @@
           "url": "http://www.edaily.co.kr/news/newspath.asp?newsid=02728966645486968",
           "source": "이데일리",
           "published_at": "2026-06-29T22:44:11",
-          "causal_chain": null,
-          "macro_event": null,
+          "causal_chain": "삼성증권이 금호타이어의 배당 재개와 광주공장 부동산 재평가에 따른 자산가치 리레이팅 여지를 제기 → 저평가된 자산가치 부각·주주환원 기대감이 형성 → 매수세가 시초부터 집중되며 시가 4,780원에서 고가이자 종가 6,160원까지 직행, +29.96% 상한가 마감. 거래대금도 418억원으로 유입되며 시세가 강하게 반응.",
+          "macro_event": "삼성증권 리포트 — 금호타이어 배당 재개 기대",
           "newzy_freshness": null,
           "newzy_persistence": null,
-          "newzy_magnitude": null,
-          "newzy_virality": null,
+          "newzy_magnitude": 0.8,
+          "newzy_virality": 0.5,
           "newzy_tradability": null,
-          "newzy_score": null,
+          "newzy_score": 0.68,
           "newzy_verdict": null,
-          "article_type": null
+          "article_type": "호재"
         }
       ],
       "fallback": true,
@@ -1331,7 +1347,10 @@
           ],
           "next_trading_day": "2026-07-07"
         }
-      ]
+      ],
+      "togusa_verdict": "weak_bull",
+      "theme_leader": true,
+      "hugepark_grade": "관찰"
     },
     {
       "code": "065770",
