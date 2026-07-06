@@ -1,6 +1,6 @@
 {
   "date": "2026-07-03",
-  "generated_at": "2026-07-06T09:42:11+09:00",
+  "generated_at": "2026-07-06T09:52:07+09:00",
   "picked_code": null,
   "stocks": [
     {
@@ -123,12 +123,19 @@
         "take_profit_target_price": 4102,
         "take_profit_after_watering_price": 3971,
         "expiry_date": "2026-07-08",
-        "current_state": "running",
-        "current_pnl_pct": 1.761,
-        "current_mdd_pct": -3.774,
-        "current_mdd_peak_pct": -6.25,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
+        "current_mdd_pct": null,
+        "current_mdd_peak_pct": null,
         "d_offset": 1,
-        "result": null
+        "result": {
+          "final_price": 4102,
+          "final_pnl_pct": 3.2,
+          "watered": false,
+          "result_date": "2026-07-06",
+          "mdd_pct": -3.774,
+          "mdd_peak_pct": -6.25
+        }
       }
     },
     {
@@ -143,12 +150,19 @@
         "take_profit_target_price": 53458,
         "take_profit_after_watering_price": 51747,
         "expiry_date": "2026-07-08",
-        "current_state": "running",
-        "current_pnl_pct": 2.703,
-        "current_mdd_pct": -6.371,
-        "current_mdd_peak_pct": -5.458,
+        "current_state": "taken_profit",
+        "current_pnl_pct": 3.2,
+        "current_mdd_pct": null,
+        "current_mdd_peak_pct": null,
         "d_offset": 1,
-        "result": null
+        "result": {
+          "final_price": 53458,
+          "final_pnl_pct": 3.2,
+          "watered": false,
+          "result_date": "2026-07-06",
+          "mdd_pct": -6.371,
+          "mdd_peak_pct": -5.458
+        }
       }
     },
     {
@@ -346,7 +360,7 @@
     "virtual_count": 13,
     "skip_count": 0,
     "total_cards": 13,
-    "expired_count": 11,
-    "running_count": 2
+    "expired_count": 13,
+    "running_count": 0
   }
 }
