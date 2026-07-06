@@ -1,8 +1,11 @@
-name: 뉴지 카페 스크레이퍼 (시간당)
+name: 이시카와 카페 스크레이퍼 (은퇴 예정 — 로컬 launchd 로 이관)
 
+# ⚠️ 은퇴(retirement) 대상 (2026-07-06, 재설계 v2)
+#   서버용 상시 맥미니 로컬 launchd 채택으로 GitHub Actions 스케줄 은퇴.
+#   → schedule cron 제거, 수동(workflow_dispatch)만 유지.
+#   로컬 스케줄러 초안: scripts/cafe-scraper/com.100m1s.cafe-scraper.plist (KST 06~21시 시간당).
+#   실제 워크플로 disable/삭제는 DevOps 게이트에서 결정.
 on:
-  schedule:
-    - cron: '5 * * * *'  # 매 시 5분 (UTC)
   workflow_dispatch:
     inputs:
       backfill:

@@ -16,6 +16,11 @@ data/stocks.db
 data/stocks.db-wal
 data/stocks.db-shm
 
+# 카페 정규화 영구 DB (raw_body 원문 저장, 로컬 전용 — 공개 커밋 금지)
+scripts/cafe-scraper/cafe.db
+scripts/cafe-scraper/cafe.db-wal
+scripts/cafe-scraper/cafe.db-shm
+
 # 운영 DB·자동 생성물
 data/themes.db
 data/themes.db-shm

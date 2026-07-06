@@ -1,6 +1,40 @@
-# 뉴지 — 주식차트연구소 카페 스크레이퍼
+# 이시카와 — 주식차트연구소 카페 스크레이퍼 (재설계 v2, 2026-07-06)
 
-매 시간 GitHub Actions cron으로 실행되어, 주식차트연구소 카페의 메뉴 167(`viewType=L`)에서 새 글을 발견하면 본문을 파싱하여 종목·뉴스 카드·호재/악재 판단을 JSON으로 저장합니다.
+로컬 launchd(KST 06~21시 시간당 1회)로 실행되어 주식차트연구소 카페의 **두 게시판**을 **각각 다른 파서**로 처리, 구조화 JSON을 저장합니다. (기존 GitHub Actions cron 은퇴 예정.)
+
+## 재설계 v2 요지 (두 게시판 · 두 파서 · watermark · 공지제외)
+
+| 게시판 | 대상 선별(제목) | 파서 | 산출 |
+|--------|----------------|------|------|
+| menu 994 테마맵 | `[테마맵]`/`[메인테마맵]` 태그 (미국시황테마맵 제외) | `parse_theme_map` — 이모지 헤더→테마, `종목명 → 사유` 추출 + 제목 테마체인. **티커 없음(종목명 문자열만)** | `data/cafe/theme-map/{YYYY-MM-DD}.json` |
+| menu 167 상하한가 | `^\[YYYY/MM/DD\] 상하한가 종목 및 시장 정리` | `parse_rank_table` (기존 재사용) — `[상승]/[하락]`+`종목:사유`+`<섹터>`+뉴스링크 | `data/cafe/posts/{id}.json` |
+
+- **공지(고정글) 제외**: f-e SPA 목록은 공지에 신뢰할 notice 클래스가 없음(2026-07 실측) → 위 제목 필터로 공지 자동 배제.
+- **증분(watermark)**: `state.json`의 `boards.{menu}.last_article_id`로 게시판별 관리. 당일 글을 오래된→최신 순 처리, 다음 실행은 watermark 초과분만.
+- **조용한 성공 봉쇄**: 대상 글이 있는데 전량 무산출이면 `::error::`+exit 5. "오늘 대상 글 미게시"는 정상 skip(exit 0).
+- **저장 계층(1b 예정)**: SoT = 로컬 SQLite `cafe.db`(정규화 영구). 위 JSON은 SoT 아님(디버그/호환). 파서는 순수 함수(html→dict)로 파일쓰기와 분리 → 1b에서 재사용.
+
+### 파서 시그니처 (1b DB 매핑용)
+
+```python
+parse_theme_map(html, text, title) -> {
+    "mappings": [{"theme": str|None, "stocks": [str,...], "reason": str|None}],
+    "title_chain": [str, ...],          # 제목 화살표 체인 (부모→자식)
+    "post_date": "YYYY-MM-DD"|None,
+    "sections": [],                     # 하위호환
+}
+parse_rank_table(html, text, title) -> {
+    "sections": [{"type": "상승"|"하락",
+                  "stocks": [{"name": str, "ticker": None,
+                              "theme_label": str|None,
+                              "news_cards": [{"url","source",...}]}]}],
+    "post_date": "YYYY-MM-DD"|None,
+}
+```
+
+---
+
+## (레거시 문서) 원본 파이프라인
 
 ## 파이프라인
 

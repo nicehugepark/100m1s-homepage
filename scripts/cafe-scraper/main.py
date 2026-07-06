@@ -1,8 +1,29 @@
-"""
-뉴지 — 주식차트연구소 카페 스크레이퍼
+r"""
+이시카와 — 주식차트연구소 카페 스크레이퍼 (재설계 v2, 2026-07-06)
 
-매 시간 GitHub Actions cron으로 실행.
-새 게시글 발견 → 본문 파싱 → 종목 추출 → 뉴스 링크 요약 → 호재/악재 판단 → JSON 저장.
+로컬 launchd 로 KST 06~21시 시간당 1회 실행 (기존 GitHub Actions cron 은퇴 예정).
+
+■ 두 게시판 · 두 파서 구조
+  - menu 994 (테마맵): 제목에 [테마맵]/[메인테마맵] 포함 글만 대상 (미국시황테마맵 등 제외).
+      산문형 본문 → parse_theme_map() 이 (테마, [종목명…], 사유) + 제목 테마 체인 추출.
+      티커 없음 — 종목명 문자열만 저장 (티커 매핑은 2단계, 별도 위임).
+      산출: data/cafe/theme-map/{YYYY-MM-DD}.json
+  - menu 167 (상하한가): 제목 정규식 ^\[\d{4}/\d{2}/\d{2}\]\s*상하한가 종목 및 시장 정리 매칭 글만.
+      [상승]/[하락] + 종목:사유 + <섹터> 형식 → 기존 parse_rank_table() 재사용.
+      산출: data/cafe/posts/{id}.json (기존 스키마 유지 + board/schema_version 명시)
+
+■ 공지(고정글) 제외
+  네이버 f-e SPA 목록은 공지 행에 신뢰할 notice 클래스를 안 붙임(2026-07 실측).
+  → 클래스 탐지 대신 위 "제목 정규식/태그 필터" 로 공지 자동 배제 (공지 제목엔 대상 패턴 부재).
+
+■ 증분(watermark) 조회
+  게시판별 watermark 를 state.json 에 저장: {"boards": {"994": {"last_article_id","last_processed_at"}, "167": {...}}}.
+  실행 시 당일 게시글을 오래된→최신 순으로 처리, 다음 실행은 watermark 초과 id 만.
+  공지는 watermark 계산에서 제외(항상 최상단이라 오염 방지 — 애초 대상 필터에서 걸러짐).
+
+■ 조용한 성공 봉쇄
+  대상 글이 목록에 있는데 파싱 mappings=0/전량 fallback → ::error:: + non-zero exit.
+  단 "오늘 대상 글 미게시" 는 정상(skip, exit 0) — 대상 부재와 파싱실패를 구분.
 
 저작권: 원문은 저장하지 않음. 요약 + 메타데이터만.
 """
@@ -25,11 +46,42 @@ try:
 except Exception:  # pragma: no cover
     _BS4_AVAILABLE = False
 
+# cafe.db 영속(SoT) — import 실패해도 JSON 산출은 계속(graceful degrade).
+try:
+    import cafe_db  # noqa: F401  (함수 내부에서 cafe_db.* 로 사용)
+    import cafe_persist_glue  # noqa: F401
+
+    _CAFE_DB_AVAILABLE = True
+except Exception as _e:  # pragma: no cover
+    _CAFE_DB_AVAILABLE = False
+    print(f"[warn] cafe_db/glue import 실패 → DB 영속 비활성(JSON만): {_e}", flush=True)
+
 # ─── 설정 ──────────────────────────────────────────────
 CAFE_ID = "11974608"
-MENU_ID = "167"
-MENU_URL = f"https://cafe.naver.com/f-e/cafes/{CAFE_ID}/menus/{MENU_ID}?viewType=L"
-ARTICLE_URL_TEMPLATE = f"https://cafe.naver.com/f-e/cafes/{CAFE_ID}/articles/{{article_id}}?boardtype=L&menuid={MENU_ID}"
+
+# 게시판별 대상 선별 정규식 (제목 기준 — 공지·비대상 글 자동 배제).
+#   994 테마맵: [테마맵] 또는 [메인테마맵] 대괄호 태그 (미국시황테마맵 "테마맵" 문자열은 대괄호 아님→배제)
+#   167 상하한가: [YYYY/MM/DD] 상하한가 종목 및 시장 정리
+THEME_MAP_TITLE_RE = re.compile(r"\[(?:메인)?테마맵\]")
+LIMIT_HL_TITLE_RE = re.compile(r"^\[\d{4}/\d{2}/\d{2}\]\s*상하한가 종목 및 시장 정리")
+
+# 게시판(menu) 설정. kind = 파서 분기 키.
+MENUS: dict[str, dict] = {
+    "994": {"kind": "theme_map", "title_re": THEME_MAP_TITLE_RE, "label": "테마맵"},
+    "167": {"kind": "limit_hl", "title_re": LIMIT_HL_TITLE_RE, "label": "상하한가"},
+}
+
+
+def menu_url(menu_id: str) -> str:
+    return f"https://cafe.naver.com/f-e/cafes/{CAFE_ID}/menus/{menu_id}?viewType=L"
+
+
+def article_url(article_id: str, menu_id: str) -> str:
+    return (
+        f"https://cafe.naver.com/f-e/cafes/{CAFE_ID}/articles/{article_id}"
+        f"?boardtype=L&menuid={menu_id}"
+    )
+
 
 # whole-page fallback(본문 셀렉터 매칭 실패) 을 호출부가 식별하기 위한 내부 마커.
 # fetch_article_html 이 반환한 HTML 앞에 붙이며, parse_post 진입 시 즉시 제거된다.
@@ -49,10 +101,23 @@ def log(msg: str) -> None:
 
 
 # ─── State ────────────────────────────────────────────
+# 재설계 v2: 게시판별 watermark. state["boards"][menu_id] = {
+#     "last_article_id": int|None,   # 마지막으로 처리한 (대상) article id
+#     "last_processed_at": iso str,  # 마지막 처리 시각(KST)
+# }
+# 다음 실행은 last_article_id 초과 id 만 대상 → 중복 방지 + 증분.
+# 공지는 애초 제목 필터에서 배제되므로 watermark 를 오염시키지 않음.
+# (레거시 seen_article_ids 는 하위호환 위해 필드 유지하되 신규 로직은 watermark 사용.)
+# NOTE(1b): 이 watermark 는 SQLite cafe.db 테이블(예: cafe_board_watermark)로 이관 예정.
 def load_state() -> dict:
     if STATE_PATH.exists():
-        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
-    return {"seen_article_ids": [], "last_run_at": None}
+        st = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    else:
+        st = {}
+    st.setdefault("seen_article_ids", [])
+    st.setdefault("last_run_at", None)
+    st.setdefault("boards", {})
+    return st
 
 
 def save_state(state: dict) -> None:
@@ -60,6 +125,134 @@ def save_state(state: dict) -> None:
     STATE_PATH.write_text(
         json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+
+
+def board_watermark(state: dict, menu_id: str) -> int:
+    """게시판 watermark(마지막 처리 article id, 없으면 0)."""
+    b = state.get("boards", {}).get(menu_id) or {}
+    v = b.get("last_article_id")
+    try:
+        return int(v) if v is not None else 0
+    except (TypeError, ValueError):
+        return 0
+
+
+def set_board_watermark(state: dict, menu_id: str, last_id: int) -> None:
+    boards = state.setdefault("boards", {})
+    boards[menu_id] = {
+        "last_article_id": int(last_id),
+        "last_processed_at": datetime.now(KST).isoformat(timespec="seconds"),
+    }
+
+
+# ─── cafe.db 영속 배선 (watermark = cafe_scrape_state 테이블로 이전) ──
+# watermark SoT = cafe.db(get_state/set_state). state.json 은 하위호환/디버그 병행.
+# conn 이 없으면(DB 비활성) state.json watermark 로 graceful fallback.
+def _board_watermark(state: dict, menu_id: str, conn) -> int:
+    """watermark 조회 — cafe.db 우선, DB 값 없으면 state.json fallback.
+
+    최초 마이그레이션(DB 비어있고 state.json 有) 시 state.json 값을 그대로 사용하여
+    이미 처리한 글 재처리를 방지(멱등이라 안전하지만 불필요한 재fetch 회피).
+    """
+    file_wm = board_watermark(state, menu_id)
+    if conn is None or not _CAFE_DB_AVAILABLE:
+        return file_wm
+    try:
+        row = cafe_db.get_state(conn, int(menu_id))
+    except Exception as e:  # noqa: BLE001
+        log(f"[warn] cafe.db get_state({menu_id}) 실패 → state.json fallback: {e}")
+        return file_wm
+    db_wm = (row or {}).get("last_article_id")
+    if db_wm is None:
+        return file_wm  # DB 미초기화 → 파일 watermark 계승(마이그레이션)
+    # 둘 다 있으면 큰 값(더 최근 처리) 채택 — 재처리 최소화.
+    return max(int(db_wm), file_wm)
+
+
+def _set_watermark_db(conn, menu_id: str, last_id: int) -> None:
+    """watermark 를 cafe_scrape_state 테이블에 기록(SoT)."""
+    if conn is None or not _CAFE_DB_AVAILABLE:
+        return
+    try:
+        cafe_db.set_state(conn, int(menu_id), int(last_id))
+    except Exception as e:  # noqa: BLE001
+        log(f"[warn] cafe.db set_state({menu_id},{last_id}) 실패: {e}")
+
+
+def _persist_theme_map_post(conn, aid, menu_id, title, html, parsed: dict) -> None:
+    """994 테마맵: raw_body 보존 upsert + 테마 파생행 멱등 재생성."""
+    if conn is None or not _CAFE_DB_AVAILABLE:
+        return
+    try:
+        post_id = int(aid)
+    except (TypeError, ValueError):
+        log(f"[warn] theme_map post_id 비정수({aid}) → DB 저장 skip")
+        return
+    try:
+        cafe_db.upsert_post(
+            conn,
+            {
+                "post_id": post_id,
+                "board_menu": int(menu_id),
+                "title": title,
+                "post_date": parsed.get("post_date"),
+                "url": article_url(str(aid), menu_id),
+                "raw_body": html,
+                "parse_status": parsed.get("parse_status"),
+                "parse_format": parsed.get("parse_format"),
+                "parser_version": cafe_persist_glue.PARSER_VERSION,
+            },
+        )
+        cafe_db.persist_theme_map(
+            conn,
+            post_id,
+            cafe_persist_glue.theme_map_to_mappings(parsed),
+            parser_version=cafe_persist_glue.PARSER_VERSION,
+            parse_status=parsed.get("parse_status", "ok"),
+        )
+    except Exception as e:  # noqa: BLE001
+        log(f"[warn] theme_map post {aid} DB 영속 실패(JSON은 유지): {e}")
+
+
+def _persist_market_post(conn, aid, menu_id, title, html, parsed: dict) -> None:
+    """167 마켓요약: raw_body 보존 upsert + 마켓아이템/뉴스링크 멱등 재생성."""
+    if conn is None or not _CAFE_DB_AVAILABLE:
+        return
+    try:
+        post_id = int(aid)
+    except (TypeError, ValueError):
+        log(f"[warn] market post_id 비정수({aid}) → DB 저장 skip")
+        return
+    try:
+        blocks = extract_stock_news_blocks(html)
+    except Exception as e:  # noqa: BLE001
+        log(f"[warn] market post {aid} news blocks 추출 실패: {e}")
+        blocks = []
+    try:
+        cafe_db.upsert_post(
+            conn,
+            {
+                "post_id": post_id,
+                "board_menu": int(menu_id),
+                "title": title,
+                "post_date": parsed.get("post_date"),
+                "url": article_url(str(aid), menu_id),
+                "raw_body": html,
+                "parse_status": parsed.get("parse_status"),
+                "parse_format": parsed.get("parse_format"),
+                "parser_version": cafe_persist_glue.PARSER_VERSION,
+            },
+        )
+        cafe_db.persist_market_summary(
+            conn,
+            post_id,
+            cafe_persist_glue.limit_hl_to_market_items(parsed),
+            cafe_persist_glue.news_blocks_to_links(blocks),
+            parser_version=cafe_persist_glue.PARSER_VERSION,
+            parse_status=parsed.get("parse_status", "ok"),
+        )
+    except Exception as e:  # noqa: BLE001
+        log(f"[warn] market post {aid} DB 영속 실패(JSON은 유지): {e}")
 
 
 def load_index() -> dict:
@@ -235,38 +428,63 @@ def naver_login(page, naver_id: str, naver_pw: str) -> bool:
         return False
 
 
-def fetch_menu_article_ids(page) -> list[str]:
-    """메뉴 페이지의 글 목록에서 article ID 리스트 수집."""
-    page.goto(MENU_URL, wait_until="domcontentloaded", timeout=20000)
-    time.sleep(4)  # SPA 렌더링 대기
-    # 카페는 iframe 안에 게시판이 들어있는 경우 + f-e 신버전은 SPA
-    # 두 패턴 모두 시도
-    article_ids: set[str] = set()
+def fetch_menu_listing(page, menu_id: str) -> list[dict]:
+    """메뉴 페이지 목록에서 (article_id, title) 쌍 수집.
 
-    # 전체 HTML에서 articles/<숫자> 패턴 추출
-    html = page.content()
-    for m in re.finditer(rf"/cafes/{CAFE_ID}/articles/(\d+)", html):
-        article_ids.add(m.group(1))
+    반환: [{"id": str, "title": str}, ...]  (id 내림차순 = 최신 먼저)
 
-    # iframe 내부도 확인
+    - 목록 행의 <a href*="/articles/ID"> 앵커 innerText 를 제목으로 사용.
+      본문 title 셀렉터(카페 GNB 타이틀과 혼동)보다 목록 앵커가 안정적(2026-07 실측).
+    - "댓글수\\n[N]" 같은 비-제목 앵커는 제외, id 별 최장 텍스트를 제목으로 채택.
+    - 공지 여부 마킹은 f-e SPA 에서 신뢰 불가 → 상위 run() 의 제목 필터로 배제.
+    """
+    page.goto(menu_url(menu_id), wait_until="domcontentloaded", timeout=25000)
+    time.sleep(5)  # SPA 렌더링 대기
+
+    best: dict[str, str] = {}  # id -> 가장 그럴듯한 제목(최장, 댓글수 제외)
     for frame in page.frames:
         try:
-            fhtml = frame.content()
-            for m in re.finditer(rf"/cafes/{CAFE_ID}/articles/(\d+)", fhtml):
-                article_ids.add(m.group(1))
+            rows = frame.evaluate(
+                r"""() => {
+                    const out = [];
+                    document.querySelectorAll('a[href*="/articles/"]').forEach(a => {
+                        const m = a.href.match(/\/articles\/(\d+)/);
+                        if (!m) return;
+                        const txt = (a.innerText || a.textContent || '').trim();
+                        if (!txt) return;
+                        out.push({id: m[1], title: txt.slice(0, 120)});
+                    });
+                    return out;
+                }"""
+            )
         except Exception:
-            pass
+            continue
+        for r in rows:
+            aid = r.get("id")
+            title = (r.get("title") or "").strip()
+            if not aid or not title:
+                continue
+            # 댓글수/좋아요 등 비-제목 앵커 텍스트 배제
+            if title.startswith("댓글수") or title.startswith("["):
+                # "[N]" 댓글수 배지 형태만 배제 (제목의 [테마맵]/[YYYY/..]는 유지)
+                if re.fullmatch(r"\[\d+\]", title) or title.startswith("댓글수"):
+                    continue
+            prev = best.get(aid, "")
+            if len(title) > len(prev):
+                best[aid] = title
 
-    log(f"메뉴에서 발견한 article ID 수: {len(article_ids)}")
-    return sorted(article_ids, key=int, reverse=True)
+    listing = [{"id": aid, "title": t} for aid, t in best.items()]
+    listing.sort(key=lambda x: int(x["id"]), reverse=True)
+    log(f"[menu {menu_id}] 목록 글 {len(listing)}건 수집")
+    return listing
 
 
-def fetch_article_html(page, article_id: str) -> str | None:
+def fetch_article_html(page, article_id: str, menu_id: str = "167") -> str | None:
     """글 본문 HTML(텍스트 위주) 수집.
 
     DEBUG_FETCH=1 환경변수 설정 시 디버그 HTML을 data/debug_article_<id>_<source>.html 저장.
     """
-    url = ARTICLE_URL_TEMPLATE.format(article_id=article_id)
+    url = article_url(article_id, menu_id)
     debug = os.environ.get("DEBUG_FETCH") == "1"
     try:
         page.goto(url, wait_until="domcontentloaded", timeout=20000)
@@ -1154,6 +1372,148 @@ def parse_rank_table(html: str, text: str, title: str | None) -> dict:
     }
 
 
+# ─── 테마맵(menu 994) 파서 ────────────────────────────
+# 이모지(변형 셀렉터 포함) — 테마 헤더 라인 판별용.
+_EMOJI_RE = re.compile(
+    "[\U0001f000-\U0001faff\U00002600-\U000027bf\U0001f1e6-\U0001f1ff"
+    "\U00002190-\U000021ff\U00002b00-\U00002bff️‍]+"
+)
+# 종목 → 사유 화살표 (유니코드 → / -> 둘 다)
+_ARROW_RE = re.compile(r"\s*(?:→|->|➡|⇒)\s*")
+# 테마맵 라인 중 무시할 스킵 헤더
+_TM_SKIP_LINES = {"연결 종목", "연결종목", "종목", "​", ""}
+
+
+def _tm_extract_lines(html: str) -> list[str]:
+    """테마맵 본문을 라인 리스트로. se-text-paragraph 우선, 실패 시 html_to_text 개행."""
+    lines: list[str] = []
+    # SmartEditor 문단 블록 우선 (라인 경계가 명확)
+    for m in re.finditer(
+        r'class="[^"]*se-text-paragraph[^"]*"[^>]*>(.*?)</', html, re.DOTALL
+    ):
+        raw = m.group(1)
+        raw = re.sub(r"<[^>]+>", " ", raw)
+        raw = raw.replace("&amp;", "&").replace("&nbsp;", " ")
+        raw = raw.replace("&lt;", "<").replace("&gt;", ">")
+        raw = re.sub(r"\s+", " ", raw).strip()
+        if raw:
+            lines.append(raw)
+    if lines:
+        return lines
+    # fallback: 평문 개행
+    return [l.strip() for l in html_to_text(html).split("\n") if l.strip()]
+
+
+def _tm_is_header(line: str) -> str | None:
+    """라인이 테마 헤더면 테마명(이모지 제거) 반환, 아니면 None.
+
+    헤더 조건: 이모지로 시작 OR (화살표·콜론 없는 짧은 명사구, 4어절 이하).
+    사유·종목 라인은 화살표를 포함하거나 길다.
+    """
+    if _ARROW_RE.search(line):
+        return None
+    stripped = _EMOJI_RE.sub("", line).strip(" ·-|/")
+    had_emoji = stripped != line.strip()
+    if not stripped:
+        return None
+    # 이모지로 시작한 라인은 헤더로 확정 (테마명 = 이모지 제거분)
+    if had_emoji and _EMOJI_RE.match(line.strip()):
+        return stripped
+    return None
+
+
+def parse_theme_map(html: str, text: str, title: str | None) -> dict:
+    """menu 994 테마맵 산문 파서.
+
+    본문 형식(실측 2026-07):
+        🛡️ 방산                                  ← 테마 헤더(이모지)
+        엠앤씨솔루션 → 나토 정상회의 방산 기대감    ← 종목 → 사유
+        🛒 유통
+        광주신세계                                ← 종목명만
+        홈플러스 회생 폐지 반사이익 기대            ← (다음 라인) 사유
+    제목 체인: "메가프로젝트 → 건설 → 로봇" (본문 아닌 제목에서 파싱).
+
+    반환:
+        mappings: [{theme, stocks:[명…], reason}]
+        title_chain: [테마…]  (제목 화살표 체인, 부모→자식)
+        티커 없음 — 종목명 문자열만. (티커 매핑은 2단계)
+    """
+    lines = _tm_extract_lines(html)
+
+    mappings: list[dict] = []
+    cur_theme: str | None = None
+    pending_stock: str | None = None  # 화살표 없이 종목명만 나온 경우 사유 대기
+
+    def flush_pending(reason: str | None):
+        nonlocal pending_stock
+        if pending_stock is not None:
+            mappings.append(
+                {
+                    "theme": cur_theme,
+                    "stocks": [pending_stock],
+                    "reason": (reason or "").strip() or None,
+                }
+            )
+            pending_stock = None
+
+    for line in lines:
+        if line in _TM_SKIP_LINES or line.strip("​ ") == "":
+            continue
+        header = _tm_is_header(line)
+        if header is not None:
+            flush_pending(None)  # 이전 대기 종목은 사유 없이 확정
+            cur_theme = header
+            continue
+        # 종목 라인
+        if _ARROW_RE.search(line):
+            flush_pending(None)
+            parts = _ARROW_RE.split(line, maxsplit=1)
+            name = parts[0].strip(" ·-|/")
+            reason = parts[1].strip() if len(parts) > 1 else None
+            # 종목명 여러 개(콤마) 허용
+            names = [
+                n.strip()
+                for n in re.split(r"[,，、/]", name)
+                if 2 <= len(n.strip()) <= 20 and re.search(r"[가-힣A-Za-z]", n)
+            ]
+            if names:
+                mappings.append(
+                    {"theme": cur_theme, "stocks": names, "reason": reason or None}
+                )
+            continue
+        # 화살표 없는 라인: 종목명 후보(짧고 한글 포함) or 직전 종목의 사유
+        looks_like_stock = (
+            2 <= len(line) <= 20
+            and re.search(r"[가-힣A-Za-z]", line)
+            and "," not in line
+            and line not in STOPWORDS
+        )
+        if pending_stock is None and looks_like_stock:
+            pending_stock = line
+        else:
+            # 직전 pending 종목의 사유로 귀속
+            flush_pending(line)
+
+    flush_pending(None)
+
+    # 제목 테마 체인 파싱: 제목의 태그 뒤 "A → B → C"
+    title_chain: list[str] = []
+    if title:
+        chain_src = re.sub(r"\[(?:메인)?테마맵\]", "", title)
+        chain_src = re.sub(r"\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}", "", chain_src)
+        chain_src = re.sub(r"\d{2}월\d{2}일", "", chain_src)
+        parts = _ARROW_RE.split(chain_src)
+        title_chain = [p.strip(" ·-|/") for p in parts if p.strip(" ·-|/")]
+
+    return {
+        "mappings": mappings,
+        "title_chain": title_chain,
+        "post_date": _extract_post_date(text, title, html),
+        # 하위호환: run() 공통 로직이 sections 를 참조하므로 빈 리스트 유지
+        "sections": [],
+    }
+
+
 def parse_essay(html: str, text: str, title: str | None) -> dict:
     """에세이·회고·강의 형식. 종목 표 없음 → sections 비움, 본문 요약 보존."""
     # 본문 앞 1500자 요약 (저작권상 원문 전체 저장 금지)
@@ -1176,28 +1536,48 @@ def parse_essay(html: str, text: str, title: str | None) -> dict:
     }
 
 
-def parse_post(html: str, title: str | None = None) -> dict:
-    """본문 HTML → 구조화된 데이터. 형식별로 분기.
+def parse_post(html: str, title: str | None = None, kind: str | None = None) -> dict:
+    """본문 HTML → 구조화된 데이터.
 
-    반환 스키마:
-      parse_format: "rank_table" | "essay" | "unknown" | "fetch_fallback"
-      parse_status: "ok" | "unsupported_format" | "fetch_fallback"
-      sections: list  (essay·unknown 은 [])
-      post_date: str|None
-      essay: dict (essay 형식만)
-      is_fallback: bool  (본문 셀렉터 매칭 실패로 whole-page 를 파싱한 경우 True)
+    kind 로 게시판별 파서를 명시적으로 라우팅(자동 detect_format 보다 확정적).
+      kind="theme_map" → parse_theme_map (mappings/title_chain 반환)
+      kind="limit_hl"  → parse_rank_table ([상승]/[하락] sections 반환)
+      kind=None        → 기존 자동 판별(하위호환)
+
+    공통 반환:
+      parse_format, parse_status, is_fallback, post_date, sections
+    theme_map 추가: mappings, title_chain / limit_hl 추가: sections(상승/하락)
     """
     # whole-page fallback 마커 감지 → 파싱 시도 없이 fallback 표기.
-    # (GNB/CSS 껍데기라 파싱해봐야 오탐 종목만 생기므로 진입 차단.)
     if html.startswith(_FALLBACK_MARKER):
         return {
             "parse_format": "fetch_fallback",
             "parse_status": "fetch_fallback",
             "sections": [],
+            "mappings": [],
+            "title_chain": [],
             "post_date": None,
             "is_fallback": True,
         }
     text = html_to_text(html)
+
+    # 게시판 kind 명시 라우팅 (재설계 v2)
+    if kind == "theme_map":
+        base = {
+            "parse_format": "theme_map",
+            "parse_status": "ok",
+            "is_fallback": False,
+        }
+        return {**base, **parse_theme_map(html, text, title)}
+    if kind == "limit_hl":
+        base = {
+            "parse_format": "rank_table",
+            "parse_status": "ok",
+            "is_fallback": False,
+        }
+        return {**base, **parse_rank_table(html, text, title)}
+
+    # kind 미지정 — 기존 자동 판별(하위호환)
     fmt = detect_format(text)
     base = {"parse_format": fmt, "parse_status": "ok", "is_fallback": False}
     if fmt == "rank_table":
@@ -1211,7 +1591,7 @@ def parse_post(html: str, title: str | None = None) -> dict:
         "parse_status": "unsupported_format",
         "sections": [],
         "post_date": _extract_post_date(text, title, html),
-    }  # base 에 is_fallback=False 포함
+    }
 
 
 def _legacy_parse_post_unused(html: str) -> dict:
@@ -1427,19 +1807,278 @@ URL: {news_url}
         }
 
 
+# ─── 게시판별 처리 (재설계 v2) ─────────────────────────
+# JSON 산출 스키마 버전. SoT 는 1b 의 SQLite cafe.db, 아래 JSON 은 디버그/호환용.
+SCHEMA_VERSION = "cafe-scraper/2"
+THEME_MAP_DIR = DATA_DIR / "theme-map"
+POSTS_DIR = DATA_DIR / "posts"
+
+
+def _apply_gemini(parsed: dict) -> None:
+    """sections 내 news_cards 에 Gemini 분석 적용 (in-place). limit_hl 전용."""
+    MAX_GEMINI_PER_POST = 50
+    calls = 0
+    for section in parsed.get("sections", []):
+        for stock in section["stocks"]:
+            for card in stock.get("news_cards", []):
+                if calls >= MAX_GEMINI_PER_POST:
+                    return
+                hint = f"{stock['name']} {card.get('theme_hint', '')}"
+                analysis = gemini_analyze_news(card["url"], hint)
+                card.update(analysis)
+                card.pop("theme_hint", None)
+                calls += 1
+
+
+def _select_targets(
+    listing: list[dict], title_re, watermark: int, backfill: bool
+) -> list[dict]:
+    """목록에서 대상 글 선별: 제목 정규식 매칭 + watermark 초과 + 오래된→최신 정렬.
+
+    - title_re 매칭 = 대상 글(공지·비대상 자동 배제).
+    - backfill 아니면 int(id) > watermark 만 (증분).
+    - 반환은 id 오름차순(오래된→최신) — 순차 처리 후 watermark 를 최신으로 전진.
+    """
+    targets = []
+    for row in listing:
+        if not title_re.search(row["title"]):
+            continue
+        if not backfill:
+            try:
+                if int(row["id"]) <= watermark:
+                    continue
+            except ValueError:
+                continue
+        targets.append(row)
+    targets.sort(key=lambda r: int(r["id"]))  # 오래된 → 최신
+    return targets
+
+
+def process_theme_map_board(
+    page, menu_id: str, state: dict, backfill: bool, max_articles: int, conn=None
+) -> dict:
+    """menu 994 테마맵 게시판 처리. 파싱과 파일쓰기 분리(파서는 순수 함수).
+
+    conn(cafe.db) 주입 시 → upsert_post + persist_theme_map 로 영구 저장(SoT).
+    JSON 산출은 디버그/호환용으로 병행 유지.
+    """
+    cfg = MENUS[menu_id]
+    listing = fetch_menu_listing(page, menu_id)
+    wm = _board_watermark(state, menu_id, conn)
+    targets = _select_targets(listing, cfg["title_re"], wm, backfill)
+    log(f"[menu {menu_id} {cfg['label']}] 대상 글 {len(targets)}건 (watermark={wm})")
+
+    stat = {
+        "targeted_present": len(targets),
+        "processed": 0,
+        "productive": 0,
+        "fallback_ct": 0,
+        "theme_mappings": 0,
+        "hl_stocks": 0,
+    }
+    last_id = wm
+    for row in targets[:max_articles]:
+        aid, title = row["id"], row["title"]
+        log(f"→ [테마맵] article {aid} 처리… {title[:40]!r}")
+        html = fetch_article_html(page, aid, menu_id)
+        if not html:
+            continue
+        stat["processed"] += 1
+        parsed = parse_post(html, title=title, kind="theme_map")
+        if parsed.get("is_fallback"):
+            stat["fallback_ct"] += 1
+        mappings = parsed.get("mappings", [])
+        n_stocks = sum(len(m.get("stocks", [])) for m in mappings)
+        if mappings:
+            stat["productive"] += 1
+            stat["theme_mappings"] += len(mappings)
+
+        # self-describing 구조화 JSON 산출 (SoT 아님 — 디버그/호환용)
+        record = {
+            "schema_version": SCHEMA_VERSION,
+            "board": menu_id,
+            "board_kind": "theme_map",
+            "post_id": aid,
+            "post_url": article_url(aid, menu_id),
+            "title": title,
+            "post_date": parsed.get("post_date"),
+            "fetched_at": datetime.now(KST).isoformat(timespec="seconds"),
+            "parse_format": parsed.get("parse_format"),
+            "parse_status": parsed.get("parse_status"),
+            "is_fallback": parsed.get("is_fallback", False),
+            "title_chain": parsed.get("title_chain", []),
+            "mapping_count": len(mappings),
+            "stock_count": n_stocks,
+            "mappings": mappings,
+        }
+        THEME_MAP_DIR.mkdir(parents=True, exist_ok=True)
+        # 날짜별 파일 — 하루 1건 전제, 여러 건이면 최신이 덮어씀(오래된→최신 순 처리라 최신 승리)
+        date_key = parsed.get("post_date") or datetime.now(KST).strftime("%Y-%m-%d")
+        (THEME_MAP_DIR / f"{date_key}.json").write_text(
+            json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        # ── cafe.db 영속(SoT) — raw_body 보존 + 테마 파생행 멱등 재생성 ──
+        _persist_theme_map_post(conn, aid, menu_id, title, html, parsed)
+        try:
+            last_id = max(last_id, int(aid))
+        except ValueError:
+            pass
+        time.sleep(2)  # rate limit
+
+    if last_id > wm:
+        set_board_watermark(state, menu_id, last_id)
+        _set_watermark_db(conn, menu_id, last_id)
+    return stat
+
+
+def process_limit_hl_board(
+    page,
+    menu_id: str,
+    state: dict,
+    index: dict,
+    backfill: bool,
+    max_articles: int,
+    conn=None,
+) -> dict:
+    """menu 167 상하한가 게시판 처리. 기존 parse_rank_table 재사용.
+
+    conn(cafe.db) 주입 시 → upsert_post + persist_market_summary 로 영구 저장(SoT).
+    """
+    cfg = MENUS[menu_id]
+    listing = fetch_menu_listing(page, menu_id)
+    wm = _board_watermark(state, menu_id, conn)
+    targets = _select_targets(listing, cfg["title_re"], wm, backfill)
+    log(f"[menu {menu_id} {cfg['label']}] 대상 글 {len(targets)}건 (watermark={wm})")
+
+    stat = {
+        "targeted_present": len(targets),
+        "processed": 0,
+        "productive": 0,
+        "fallback_ct": 0,
+        "theme_mappings": 0,
+        "hl_stocks": 0,
+    }
+    last_id = wm
+    new_index_entries = []
+    for row in targets[:max_articles]:
+        aid, title = row["id"], row["title"]
+        log(f"→ [상하한가] article {aid} 처리… {title[:40]!r}")
+        html = fetch_article_html(page, aid, menu_id)
+        if not html:
+            continue
+        stat["processed"] += 1
+        parsed = parse_post(html, title=title, kind="limit_hl")
+        if parsed.get("is_fallback"):
+            stat["fallback_ct"] += 1
+        _apply_gemini(parsed)
+
+        stock_count = sum(len(s["stocks"]) for s in parsed["sections"])
+        news_count = sum(
+            len(st.get("news_cards", []))
+            for s in parsed["sections"]
+            for st in s["stocks"]
+        )
+        if stock_count > 0:
+            stat["productive"] += 1
+            stat["hl_stocks"] += stock_count
+
+        record = {
+            "schema_version": SCHEMA_VERSION,
+            "board": menu_id,
+            "board_kind": "limit_hl",
+            "post_id": aid,
+            "post_url": article_url(aid, menu_id),
+            "title": title,
+            "post_date": parsed.get("post_date"),
+            "fetched_at": datetime.now(KST).isoformat(timespec="seconds"),
+            "parse_format": parsed.get("parse_format"),
+            "parse_status": parsed.get("parse_status"),
+            "is_fallback": parsed.get("is_fallback", False),
+            "stock_count": stock_count,
+            "news_count": news_count,
+            "sections": parsed["sections"],
+        }
+        POSTS_DIR.mkdir(parents=True, exist_ok=True)
+        (POSTS_DIR / f"{aid}.json").write_text(
+            json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        # ── cafe.db 영속(SoT) — raw_body 보존 + 마켓 아이템/뉴스링크 멱등 재생성 ──
+        _persist_market_post(conn, aid, menu_id, title, html, parsed)
+        new_index_entries.append(
+            {
+                "post_id": aid,
+                "board": menu_id,
+                "post_date": record["post_date"],
+                "fetched_at": record["fetched_at"],
+                "stock_count": stock_count,
+                "news_count": news_count,
+            }
+        )
+        try:
+            last_id = max(last_id, int(aid))
+        except ValueError:
+            pass
+        time.sleep(2)  # rate limit
+
+    if new_index_entries:
+        index.setdefault("posts", [])
+        index["posts"] = new_index_entries + index["posts"]
+        index["posts"] = index["posts"][:100]
+    if last_id > wm:
+        set_board_watermark(state, menu_id, last_id)
+        _set_watermark_db(conn, menu_id, last_id)
+    return stat
+
+
+def process_all_boards(
+    page, state: dict, index: dict, backfill: bool, max_articles: int, conn=None
+) -> dict:
+    """모든 게시판 처리 후 집계 반환. conn(cafe.db) 주입 시 영구 저장."""
+    agg = {
+        "targeted_present": 0,
+        "processed": 0,
+        "productive": 0,
+        "fallback_ct": 0,
+        "theme_mappings": 0,
+        "hl_stocks": 0,
+    }
+    for menu_id, cfg in MENUS.items():
+        if cfg["kind"] == "theme_map":
+            s = process_theme_map_board(
+                page, menu_id, state, backfill, max_articles, conn=conn
+            )
+        elif cfg["kind"] == "limit_hl":
+            s = process_limit_hl_board(
+                page, menu_id, state, index, backfill, max_articles, conn=conn
+            )
+        else:
+            continue
+        for k in agg:
+            agg[k] += s.get(k, 0)
+    return agg
+
+
 # ─── Main ────────────────────────────────────────────
 def run() -> int:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     state = load_state()
     index = load_index()
 
-    # 백필 모드: BACKFILL=1 이면 state.json 무시, 모든 article 처리
+    # cafe.db 초기화(멱등) — SoT. import/init 실패해도 JSON 산출은 계속.
+    cafe_conn = None
+    if _CAFE_DB_AVAILABLE:
+        try:
+            db_path = cafe_db.init_db()
+            cafe_conn = cafe_db.connect(db_path)
+            log(f"🗄️  cafe.db 영속 활성: {db_path}")
+        except Exception as e:  # noqa: BLE001
+            log(f"⚠️ cafe.db 초기화 실패 → JSON만 산출: {e}")
+            cafe_conn = None
+
+    # 백필 모드: BACKFILL=1 이면 watermark 무시, 대상 글 전량 재처리
     backfill = os.environ.get("BACKFILL", "").strip() in ("1", "true", "True", "yes")
     if backfill:
-        log("🔁 BACKFILL 모드 — state.json 무시, 모든 신규 article 처리")
-        seen_ids: set[str] = set()
-    else:
-        seen_ids = set(state.get("seen_article_ids", []))
+        log("🔁 BACKFILL 모드 — watermark 무시, 대상 글 전량 처리")
 
     # 한 번에 처리할 최대 article 수 (default 10, MAX_ARTICLES env로 override)
     try:
@@ -1567,127 +2206,60 @@ def run() -> int:
                 browser.close()
                 return 4
 
-        log("메뉴 article 목록 수집…")
-        article_ids = fetch_menu_article_ids(page)
-        new_ids = [aid for aid in article_ids if aid not in seen_ids]
-        log(f"신규 article: {len(new_ids)}")
-
-        new_posts = []
-        processed = 0  # 실제 HTML 수집·파싱까지 도달한 신규 글 수
-        fallback_ct = 0  # whole-page fallback(본문 셀렉터 실패) 건수
-        for aid in new_ids[:max_articles]:
-            log(f"→ article {aid} 처리 중…")
-            html = fetch_article_html(page, aid)
-            if not html:
-                continue
-            processed += 1
-            parsed = parse_post(
-                html
-            )  # run()에선 title 미수집 — 제목 포함 날짜는 본문 fallback
-            if parsed.get("is_fallback"):
-                fallback_ct += 1
-
-            # 종목별 뉴스 카드에 Gemini 분석 적용 — post 당 최대 50 호출
-            # (멀티 뉴스 종목 안전 처리)
-            MAX_GEMINI_PER_POST = 50
-            calls = 0
-            for section in parsed["sections"]:
-                for stock in section["stocks"]:
-                    for card in stock.get("news_cards", []):
-                        if calls >= MAX_GEMINI_PER_POST:
-                            break
-                        hint = f"{stock['name']} {card.get('theme_hint', '')}"
-                        analysis = gemini_analyze_news(card["url"], hint)
-                        card.update(analysis)
-                        # theme_hint는 내부용 — 응답에서 제거
-                        card.pop("theme_hint", None)
-                        calls += 1
-                    if calls >= MAX_GEMINI_PER_POST:
-                        break
-                if calls >= MAX_GEMINI_PER_POST:
-                    break
-
-            stock_count = sum(len(s["stocks"]) for s in parsed["sections"])
-            news_count = sum(
-                len(stock.get("news_cards", []))
-                for s in parsed["sections"]
-                for stock in s["stocks"]
-            )
-
-            post_record = {
-                "post_id": aid,
-                "post_url": ARTICLE_URL_TEMPLATE.format(article_id=aid),  # 내부용
-                "post_date": parsed.get("post_date"),
-                "fetched_at": datetime.now(KST).isoformat(timespec="seconds"),
-                "parse_format": parsed.get("parse_format"),
-                "parse_status": parsed.get("parse_status"),
-                "is_fallback": parsed.get("is_fallback", False),
-                "stock_count": stock_count,
-                "news_count": news_count,
-                "sections": parsed["sections"],
-            }
-            if "essay" in parsed:
-                post_record["essay"] = parsed["essay"]
-
-            # 개별 파일 저장
-            post_dir = DATA_DIR / "posts"
-            post_dir.mkdir(exist_ok=True)
-            (post_dir / f"{aid}.json").write_text(
-                json.dumps(post_record, ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
-            new_posts.append(
-                {
-                    "post_id": aid,
-                    "post_date": post_record["post_date"],
-                    "fetched_at": post_record["fetched_at"],
-                    "stock_count": stock_count,
-                    "news_count": news_count,
-                }
-            )
-            seen_ids.add(aid)
-            time.sleep(2)  # rate limit
-
+        # ─── 게시판별 처리 (재설계 v2) ────────────────────────
+        agg = process_all_boards(
+            page,
+            state,
+            index,
+            backfill=backfill,
+            max_articles=max_articles,
+            conn=cafe_conn,
+        )
         browser.close()
 
-    # 인덱스 + state 갱신
-    if new_posts:
-        index.setdefault("posts", [])
-        index["posts"] = new_posts + index["posts"]
-        index["posts"] = index["posts"][:100]  # 최근 100개만
+    if cafe_conn is not None:
+        try:
+            cafe_conn.close()
+        except Exception:  # noqa: BLE001
+            pass
+
     index["updated_at"] = datetime.now(KST).isoformat(timespec="seconds")
     save_index(index)
-
-    state["seen_article_ids"] = sorted(seen_ids, key=int, reverse=True)[:500]
     state["last_run_at"] = datetime.now(KST).isoformat(timespec="seconds")
     save_state(state)
 
-    # ─── 조용한 성공 봉쇄 (2026-07-06) ────────────────────────
-    # 2주간 조용히 0-추출된 회귀(f-e SPA iframe 이전) 재발 차단.
-    # 신규 처리분이 1건+ 인데 전량이 whole-page fallback(본문 셀렉터 실패)이면
-    # 명백한 비정상 → stdout 최상단 WARN 마커 + non-zero exit 로 GHA 가 실패 인지.
-    # essay-only 배치는 정상적으로 stock_count=0 일 수 있으므로 fallback 비율로만 판정
-    # (graceful — 종목 0 자체는 정상 신호로 취급, 오탐 방지).
-    total_stock = sum(p["stock_count"] for p in new_posts)
-    total_news = sum(p["news_count"] for p in new_posts)
-    if processed >= 1 and fallback_ct == processed:
-        # 최상단(sort 무관하게 눈에 띄도록) 마커를 먼저 print.
+    # ─── 조용한 성공 봉쇄 (2026-07-06, 재설계 v2 확장) ─────────
+    # 대상 글(994 테마맵/167 상하한가)이 목록에 있는데 파싱이 전량 실패(fallback 또는
+    # mappings/stock 0)면 ::error:: + non-zero exit. 단 "오늘 대상 글 미게시"는 정상.
+    #   - targeted_present: 목록에 대상 글이 1건+ 존재(watermark 초과분)
+    #   - processed: 실제 fetch·파싱까지 도달한 대상 글 수
+    #   - productive: 파싱이 유의미한 산출(mappings>0 또는 stock>0)을 낸 글 수
+    targeted_present = agg["targeted_present"]
+    processed = agg["processed"]
+    productive = agg["productive"]
+    fallback_ct = agg["fallback_ct"]
+
+    if processed >= 1 and productive == 0:
         print(
             "::error::CAFE_SCRAPER_ALL_FALLBACK "
-            f"신규 처리 {processed}건 전량 본문 셀렉터 매칭 실패(whole-page fallback). "
-            "네이버 카페 DOM 변경 의심 — 셀렉터 갱신 필요.",
+            f"대상 글 {processed}건 처리했으나 유의미한 추출 0건 "
+            f"(fallback {fallback_ct}건). 네이버 카페 DOM/본문 형식 변경 의심 — 파서 점검 필요.",
             flush=True,
         )
         log(
-            f"❌ 조용한 성공 봉쇄: 처리 {processed}건 전량 fallback "
-            f"(stock={total_stock}, news={total_news}) — 비정상 종료."
+            f"❌ 조용한 성공 봉쇄: 대상 {processed}건 전량 무산출 "
+            f"(fallback={fallback_ct}) — 비정상 종료."
         )
         return 5
 
-    log(
-        f"✓ 완료. 신규 {len(new_posts)}건 처리 "
-        f"(fallback {fallback_ct}/{processed}, stock={total_stock}, news={total_news})."
-    )
+    if targeted_present == 0:
+        log("✓ 완료. 오늘 신규 대상 글 없음(정상 skip).")
+    else:
+        log(
+            f"✓ 완료. 대상 {processed}건 처리 "
+            f"(유산출 {productive}, fallback {fallback_ct}). "
+            f"테마맵 매핑 {agg['theme_mappings']}, 상하한가 종목 {agg['hl_stocks']}."
+        )
     return 0
 
 
