@@ -949,20 +949,12 @@ footer .copyright {
     <div class="products-grid">
       <!-- ① 주인공 = PM320 (2칸·햇살 배경) + 주식 라인 허브 (Q-160). 카드 링크 = pm320.100m1s.com 서브도메인 (대표 지시 2026-06-15) -->
       <a href="https://pm320.100m1s.com" class="product-card hero-product live reveal d1">
-        <div class="code">P002 · 주식 라인</div>
+        <div class="code">P002</div>
         <!-- 코워크 제작 PM320 워드마크 (projects/pm320/design/logo/wordmark/wordmark_light.svg, 라이트 배경 정합 #1a1d26+#96741f). 다크모드 = pm320-logo-dark.svg (REQ-HOME-20260613-002 c1264aec3 보존). -->
         <div class="name"><picture><source srcset="/pm320-logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/pm320-logo.svg" alt="PM320" class="product-logo"></picture></div>
         <div class="ko">오후 3시 20분</div>
         <div class="desc">장 마감 10분 전. 하루 단 한 종목, <b style="color:var(--tx)">데이터로 선별하는 주식 결단.</b> 종목 추천 앱이 아니라 15:20 정각, 규율의 브랜드입니다.</div>
-        <!-- 대표 ask 흡수(Q-160): "주식 카테고리에 향후 서비스·용어/팁/교육 편입 예정" → PM320 허브 안 라인 칩으로 정직 노출 (라이브 + 예정 분리) -->
-        <div class="line-label">주식 라인 (확장 중)</div>
-        <div class="line-chips">
-          <span class="line-chip">오늘의 추천</span>
-          <span class="line-chip">백테스트</span>
-          <span class="line-chip soon">주식 용어</span>
-          <span class="line-chip soon">투자 팁</span>
-          <span class="line-chip soon">교육 자료</span>
-        </div>
+        <!-- '주식 라인 (확장 중)' 칩 서브섹션(오늘의 추천·백테스트·주식 용어·투자 팁·교육 자료) + eyebrow '· 주식 라인' 제거 → PM320 카드에서 '주식 라인' 텍스트 완전 소거(대표 2026-07-12). line-label·line-chips CSS(약 534~562행)는 미사용 전이(dead) → 별도 정리 후보. -->
       </a>
 
       <!-- ② ByVias = 성숙도 2번 칸 (베타 런칭 상품·위계 격하 금지). 링크 = byvias.100m1s.com 서브도메인 (github.io 301 경유 제거, 대표 지시 2026-06-15) -->
