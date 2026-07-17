@@ -28,6 +28,8 @@ gtag('js',new Date());gtag('config','G-WCFS5YS9E0');
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+/* JobRecon 제품 워드마크 글리프 subset (원본 SoT = 100m1s-jobrecon static/index.html·brand.py — J,R,b,c,e,n,o 1.5KB) */
+@font-face{font-family:'Fredoka';font-style:normal;font-weight:600;font-display:swap;src:url(/fredoka-600-jobrecon.woff2) format('woff2');unicode-range:U+4a,U+52,U+62-63,U+65,U+6e-6f}
 
 :root {
   --bg: #FAFBFE;
@@ -590,6 +592,27 @@ section.block {
   height: 26px;
   width: auto;
 }
+/* JobRecon 워드마크 — 제품 헤더 .brand verbatim 이식 (100m1s-jobrecon static/index.html:115-131).
+   Fredoka 600·Job(잉크)+Recon(애프리콧)·'o'=조준경 도트(형태 시그니처, 실제 o는 .jr-sr 스크린리더 낭독 보존).
+   색 = brand.py SoT: 라이트 MARK_LIGHT #D4713F / 다크 MARK_DARK #FF9E5B (배경 무드별 명도 조율·단일 hue).
+   스코프 = .jr-wordmark 한정 (홈페이지 Inter 시스템 무접촉). 크기만 .name 22px 컨텍스트 상속. */
+.product-card .name.jr-wordmark {
+  font-family: 'Fredoka', 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: inline-flex; align-items: center;
+  white-space: nowrap; overflow-wrap: normal;   /* 워드마크 = 절대 1행 (원본 QA catch 07-17 보존) */
+}
+.jr-wordmark > span { color: #D4713F; }
+.jr-wordmark .jr-reco { display:inline-block; width:.6em; height:.6em; margin:0 .015em; vertical-align:-.02em;
+  box-sizing:border-box; border:2px solid currentColor; border-radius:50%; position:relative; }
+.jr-wordmark .jr-reco::before { content:""; position:absolute; inset:0; margin:auto; width:2px; height:2px;
+  border-radius:50%; background:currentColor; }
+.jr-sr { position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (prefers-color-scheme: dark) {
+  .jr-wordmark > span { color: #FF9E5B; }
+}
 .product-card .ko {
   font-size: 12px;
   color: var(--dm);
@@ -939,7 +962,8 @@ footer .copyright {
       <!-- ③ JobRecon = 신규 라이브 베타(2026-07-08, jobrecon.100m1s.com 별도 레포). code=P007 조건부(최종 넘버링 미확정 — 확정 시 조정 필요) -->
       <a href="https://jobrecon.100m1s.com" target="_blank" rel="noopener" class="product-card preview reveal d3">
         <div class="code">P007</div>
-        <div class="name">JobRecon</div>
+        <!-- 제품 헤더 워드마크 verbatim 이식 (대표 지시 2026-07-17 19:35) — 원본 = jobrecon static/index.html:936 .brand -->
+        <div class="name jr-wordmark">Job<span>Rec<span class="jr-reco" aria-hidden="true"></span><span class="jr-sr">o</span>n</span></div>
         <div class="ko">취업 정찰</div>
         <div class="desc">지원 버튼을 누르기 전, 알아야 할 것들이 있다. 재무·서사·리스크까지 <b style="color:var(--tx)">파고들어 지원할 가치를 정찰한다.</b> 구직자 편 취업 정찰병 — 베타.</div>
       </a>
